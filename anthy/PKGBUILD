@@ -1,0 +1,32 @@
+#
+# Chakra Packages for Chakra, part of chakra-project.org
+#
+# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
+# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+
+# include global config
+source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+
+pkgname=anthy
+pkgver=9100h
+_filecode=37536
+pkgrel=2
+pkgdesc="Hiragana text to Kana Kanji mixed text Japanese input method"
+arch=("i686" "x86_64")
+url="http://sourceforge.jp/projects/anthy/"
+license=('LGPL' 'GPL')
+depends=('glibc')
+options=('!libtool' 'force')
+source=("http://dl.sourceforge.jp/anthy/${_filecode}/${pkgname}-${pkgver}.tar.gz")
+sha1sums=('bfea9e74e208c4b976b6bd7ac6784cd290c636fd')
+
+build() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	./configure --prefix=/usr --sysconfdir=/etc --disable-static
+	make
+}
+
+package() {
+	cd "${srcdir}/${pkgname}-${pkgver}"
+	make EMACS=emacs DESTDIR="${pkgdir}" install
+}

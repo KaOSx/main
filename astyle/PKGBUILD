@@ -1,0 +1,33 @@
+# Maintainer: Giuseppe Calà <jiveaxe@gmail.com>
+
+pkgname=astyle
+pkgver=2.01
+pkgrel=1
+pkgdesc="Artistic Style is a source code indenter, formatter, and beautifier for the C, C++, C# and Java programming languages."
+arch=('i686' 'x86_64')
+url="http://astyle.sourceforge.net/ "
+license=('LGPL')
+source=(http://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}_${pkgver}_linux.tar.gz)
+md5sums=('e85b31972c532373a4054842e2149b34')
+
+build() {
+  cd ${srcdir}/${pkgname}/build/gcc
+  make
+}
+
+package() {
+  cd ${srcdir}/${pkgname}/build/gcc/bin
+  install -D -m755 -o root -g root astyle ${pkgdir}/usr/bin/astyle
+
+  for files in `find ${srcdir}/${pkgname}/doc -name *.html`
+	do
+	    mkdir -p $pkgdir/usr/share/astyle
+	    cp $files $pkgdir/usr/share/astyle
+	done
+
+  for files in `find ${srcdir}/${pkgname}/doc -name *.css`
+	do
+	    mkdir -p $pkgdir/usr/share/astyle
+	    cp $files $pkgdir/usr/share/astyle
+	done
+}

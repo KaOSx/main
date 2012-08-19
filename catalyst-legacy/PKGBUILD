@@ -1,0 +1,111 @@
+#
+# Chakra Packages for Chakra, part of chakra-project.org
+#
+# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+
+_kernver="3.4.6-1-CHAKRA"
+
+pkgname=(catalyst-legacy chd-catalyst-legacy)
+pkgver=12.6
+pkgrel=4
+arch=('i686' 'x86_64')
+url="http://www.ati.amd.com"
+license=('custom')
+makedepends=('gcc-libs' 'gcc>4.0.0' 'make' 'linux-headers')
+
+source=("http://www2.ati.com/drivers/legacy/amd-driver-installer-${pkgver}-legacy-x86.x86_64.zip"
+        'ati_make.sh'
+        'makefile_compat.patch'
+	'fglrx_supported')
+
+md5sums=('36d5a91d60673b26705e9ac2df952daf'
+         '660396540b0ceaff71d6155c986734de'
+         '3e1b82bd69774ea808da69c983d6a43b'
+         '8bd182de340d6ed8b2dfcedfd3e5a389')
+
+build() {
+
+    msg "Setting compilation variables ..."
+    # include ati_make.sh and use _ati_check function from it
+    . ati_make.sh
+    _ati_check
+
+
+    msg "Unpacking archive ..."
+    /bin/sh ./amd-driver-installer-${pkgver}-legacy-x86.x86_64.run --extract archive_files
+
+
+    if [ "${CARCH}" = "x86_64" ]; then
+	BUILDARCH=x86_64
+	_archdir=x86_64
+    fi
+    if [ "${CARCH}" = "i686" ]; then
+	BUILDARCH=i386
+	_archdir=x86
+    fi
+
+    cd "${srcdir}/archive_files/"
+
+
+    msg "Applying patch(es) ..."
+    # makefile patch to choose arch_compat_alloc_user_space or older compat_alloc_user_space
+    # works only in combination with ati_make.sh script
+    patch -p1 -i ../makefile_compat.patch 
+
+    cd "${srcdir}/archive_files/common/lib/modules/fglrx/build_mod"
+    cp "${srcdir}/archive_files/arch/${_archdir}/lib/modules/fglrx/build_mod/libfglrx_ip.a" . 
+    cp 2.6.x/Makefile . 
+
+
+    msg "Compiling fglrx module ..."
+    # Compile module using _ati_check variables
+    make -C /lib/modules/${_kernver}/build SUBDIRS="`pwd`" ARCH=${BUILDARCH} \
+    MODFLAGS="-DMODULE -DATI -DFGL -DPAGE_ATTR_FIX=$PAGE_ATTR_FIX -DCOMPAT_ALLOC_USER_SPACE=$COMPAT_ALLOC_USER_SPACE $def_smp $def_modversions" \
+    PAGE_ATTR_FIX=$PAGE_ATTR_FIX COMPAT_ALLOC_USER_SPACE=$COMPAT_ALLOC_USER_SPACE modules 
+}
+
+package_catalyst-legacy() {
+    pkgdesc="AMD/ATI Catalyst drivers for linux. fglrx kernel module only"
+    screenshot="http://linuxtation3.files.wordpress.com/2007/03/pantallazo.jpg"
+    depends=('linux>=3.4' 'linux<3.5' 'catalyst-legacy-utils')
+    conflicts=('catalyst-test' 'nvidia' 'xf86-video-ati' 'xf86-video-radeonhd' 'ati-dri' 'catalyst')
+    install=catalyst.install
+
+    # here we are checking kernel's extramodules dir
+    for r in /lib/modules/*; do
+      s=${r:13}
+      if [[ ${s:0:3} = "ext" ]]; then
+	if [[ `cat ${r}/version | grep -c ${_kernver}` != 0 ]]; then
+	  _destidir=${s}
+	  sed -i -e "s/EXTRAMODULES=.*/EXTRAMODULES=${s}/" $startdir/catalyst.install
+	fi
+	elif [[ ${s} = ${_kernver} ]] && [[ ! -e ${r}/extramodules ]]; then
+	  _destidir=${_kernver}/video
+	  sed -i -e "s/EXTRAMODULES=.*/EXTRAMODULES=null/" $startdir/catalyst.install
+      fi
+    done
+
+
+    cd "${srcdir}/archive_files/common/lib/modules/fglrx/build_mod"
+    install -m755 -d "${pkgdir}/lib/modules/${_destidir}/" 
+    install -m644 fglrx.ko "${pkgdir}/lib/modules/${_destidir}/" 
+    find "${pkgdir}" -name '*.ko' -exec gzip -9 {} \;
+    sed -i -e "s/KERNEL_VERSION=.*/KERNEL_VERSION=${_kernver}/" $startdir/catalyst.install
+
+    # License
+    install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
+    install -m644 "${srcdir}/archive_files/LICENSE.TXT" "${pkgdir}/usr/share/licenses/${pkgname}/" 
+
+    sed -i -e "s/KERNEL_VERSION=.*/KERNEL_VERSION=${_kernver}/" $startdir/*.install
+}
+
+package_chd-catalyst-legacy() {
+    pkgdesc="CHD ids for catalyst $pkgver"
+    arch=('any')
+
+    cd "${srcdir}/archive_files/common/lib/modules/fglrx/build_mod/"
+
+    install -dm755 "${pkgdir}/opt/chakra/hwdb"
+    sh -e "${srcdir}/fglrx_supported" fglrxko_pci_ids.h \
+        > "${pkgdir}/opt/chakra/hwdb/hw_ati_legacy_hwdb"
+}

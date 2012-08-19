@@ -1,0 +1,37 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer abveritas[at]chakra-project[dot]org>
+
+pkgname=xf86-input-evdev
+pkgver=2.7.0
+pkgrel=1
+pkgdesc="X.org evdev input driver"
+arch=('i686' 'x86_64')
+url="http://xorg.freedesktop.org/"
+license=('custom')
+depends=('glibc')
+makedepends=('pkgconfig' 'xorg-server>=1.12.3')
+conflicts=('xorg-server<1.12.3')
+options=('!libtool')
+groups=('xorg-input-drivers')
+source=("${url}/releases/individual/driver/${pkgname}-${pkgver}.tar.bz2"
+       'Fix_inverted_horizontal_scroll.diff')
+sha1sums=('f0cb2d8400c33e8e83b538b53512e77ba73367fa'
+          '2210aa4757aecfb4be50bec700b978e208f679ae')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  
+  patch -p1 -i ${srcdir}/Fix_inverted_horizontal_scroll.diff
+  
+  ./configure --prefix=/usr 
+  make 
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
+  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
+}

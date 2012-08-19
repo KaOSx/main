@@ -1,0 +1,61 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer abveritas@chakra-project.org
+
+pkgbase=gstreamer0.10-good
+pkgname=('gstreamer0.10-good' 'gstreamer0.10-good-plugins')
+pkgver=0.10.31
+pkgrel=2
+arch=('i686' 'x86_64')
+license=('LGPL')
+makedepends=('intltool' 'pkgconfig' 'gstreamer0.10-base>=0.10.36' 'libavc1394' 'libiec61883' 'aalib' 'libshout' 'libdv' 
+	     'flac' 'wavpack' 'taglib' 'libsoup' 'v4l-utils' 'libcaca' 'bzip2' 'gdk-pixbuf2' 'libpulse' 'jack' 'systemd')
+url="http://gstreamer.freedesktop.org/"
+options=(!libtool !emptydirs)
+source=(${url}/src/gst-plugins-good/gst-plugins-good-${pkgver}.tar.xz)
+md5sums=('555845ceab722e517040bab57f9ace95')
+
+build() {
+  cd "${srcdir}/gst-plugins-good-${pkgver}"
+
+  sed -i '/AC_PATH_XTRA/d' configure.ac
+  autoreconf
+  ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var \
+    --disable-static --enable-experimental \
+    --disable-schemas-install \
+    --disable-hal \
+    --disable-gconf \
+    --disable-esd \
+    --with-package-name="GStreamer Good Plugins (Chakra GNU/Linux)" \
+    --with-package-origin="http://www.chakra-project.org/"
+
+  make 
+  sed -e 's/gst sys ext/gst/' -i Makefile 
+}
+
+package_gstreamer0.10-good() {
+  depends=('gstreamer0.10-base' 'bzip2')
+  pkgdesc="GStreamer Multimedia Framework Good plugin libraries"
+  conflicts=('gstreamer0.10-bad<=0.10.17')
+
+  cd "${srcdir}/gst-plugins-good-${pkgver}"
+  make GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1 DESTDIR="${pkgdir}" install 
+  rm -rf "${pkgdir}/etc/gconf"
+}
+
+package_gstreamer0.10-good-plugins() {
+  depends=("gstreamer0.10-good=${pkgver}" 'libavc1394' 'libiec61883' 'aalib' 'libshout' 'libdv' 'flac' 
+	   'wavpack' 'taglib' 'libsoup' 'v4l-utils' 'libcaca' 'libpng' 'libjpeg' 'gdk-pixbuf2' 'jack' 'libpulse' 'udev')
+  pkgdesc="GStreamer Multimedia Framework Good Plugins (gst-plugins-good)"
+  groups=('gstreamer0.10-plugins')
+  conflicts=('gstreamer0.10-pulse')
+  replaces=('gstreamer0.10-pulse')
+  provides=('gstreamer0.10-pulse')
+
+  cd "${srcdir}/gst-plugins-good-${pkgver}"
+  make -C sys DESTDIR="${pkgdir}" install 
+  make -C ext GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1 DESTDIR="${pkgdir}" install 
+  install -m755 -d "${pkgdir}/usr/share/gconf/schemas"
+  install -m644 gconf/gstreamer-0.10.schemas "${pkgdir}/usr/share/gconf/schemas/gstreamer0.10-good-plugins.schemas"
+}

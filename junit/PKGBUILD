@@ -1,0 +1,36 @@
+#
+# Chakra Packages, part of chakra-project.org
+#
+# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+
+pkgname=junit
+pkgver=4.10
+_commit=45a4464
+pkgrel=1
+pkgdesc="Automated testing framework for Java"
+arch=('any')
+url="http://www.junit.org/"
+license=('CPL')
+depends=('java-runtime')
+makedepends=('apache-ant')
+source=(http://github.com/KentBeck/junit/tarball/r${pkgver})
+md5sums=('21cc48c80cab9af6e8204d00acf40a87')
+
+build() {
+  cd "${srcdir}/KentBeck-${pkgname}-${_commit}"
+
+  ant dist
+}
+
+package() {
+  cd "${srcdir}/KentBeck-${pkgname}-${_commit}/${pkgname}${pkgver}"
+
+  install -dm755 ${pkgdir}/usr/share/java/${pkgname}
+  install -m644 \
+    ${pkgname}-${pkgver}.jar \
+    ${pkgname}-dep-${pkgver}.jar \
+    ${pkgdir}/usr/share/java/${pkgname}
+  ln -s ${pkgname}/${pkgname}-${pkgver}.jar ${pkgdir}/usr/share/java/${pkgname}.jar
+  ln -s ${pkgname}/${pkgname}-dep-${pkgver}.jar ${pkgdir}/usr/share/java/${pkgname}-dep.jar
+}
+

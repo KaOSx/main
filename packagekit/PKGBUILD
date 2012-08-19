@@ -1,0 +1,104 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer: Giuseppe Calà <jiveaxe@gmail.com>
+
+pkgbase='packagekit'
+pkgname=('packagekit' 'packagekit-qt2' 'packagekit-python')
+pkgver=0.6.22
+pkgrel=1
+pkgdesc="A system designed to make installation and updates of packages easier."
+arch=('i686' 'x86_64')
+url="http://www.packagekit.org"
+license=('GPL')
+makedepends=('dbus-glib' 'gobject-introspection' 'intltool' 'consolekit' 'docbook-xsl'
+             'networkmanager' 'pacman'  'pm-utils' 'polkit' 'python2' 'qt'
+	     'shared-mime-info' 'sqlite3' 'udev' 'automoc4')
+options=('!libtool')
+source=("http://www.packagekit.org/releases/PackageKit-$pkgver.tar.xz"
+        'use-categories.patch'
+        'groups.patch')
+sha256sums=('b9f71721b0b16e106c0a1ce28c97b2277a34b0c15d1a171f4898f34117ebaa2d'
+            '645731060d23d1890b56018a16bb4a574c82bf9d2066f4f93d6aa27461e77dc3'
+            '5ea517ad96557a6c2c6d9b91aa331aff0b3db7ddfdd9b20b698a819b014fe45a')
+ 
+build() {
+  cd "$srcdir/PackageKit-$pkgver"
+ 
+  patch -Np1 -i "$srcdir/use-categories.patch"
+  patch -Np1 -i "$srcdir/groups.patch"
+  
+ 
+  sed -i 's@SUBDIRS = test@SUBDIRS =@' 'backends/Makefile.in'
+  sed -i 's@python @python2 @' 'lib/python/packagekit/Makefile.in'
+  sed -i 's@bin/python@bin/python2@' 'lib/python/packagekit/'*.py
+ 
+  export PYTHON=/usr/bin/python2
+  autoreconf
+  ./configure --prefix=/usr \
+	      --sysconfdir=/etc \
+	      --localstatedir=/var \
+	      --libexecdir=/usr/lib/PackageKit \
+	      --enable-strict \
+	      --disable-static \
+	      --disable-gtk-doc \
+	      --disable-tests \
+	      --disable-local \
+	      --enable-pm-utils \
+	      --disable-browser-plugin \
+	      --disable-gstreamer-plugin \
+	      --disable-gtk-module \
+	      --disable-command-not-found \
+	      --disable-cron \
+	      --disable-debuginfo-install \
+	      --disable-dummy \
+	      --enable-alpm \
+	      --with-default-backend=alpm
+  make -s CFLAGS='-D_FILE_OFFSET_BITS=64'
+}
+ 
+package_packagekit() {
+  backup=('var/lib/PackageKit/transactions.db'
+          'etc/PackageKit/alpm.d/pacman.conf'
+          'etc/PackageKit/alpm.d/repos.list')
+  depends=('dbus-glib' 'pacman>=4.0.0' 'pacman<4.1.0' 'polkit'
+           'shared-mime-info' 'sqlite3' 'udev')
+  optdepends=('networkmanager')
+  install='packagekit.install'
+
+  cd "$srcdir/PackageKit-$pkgver"
+
+  make DESTDIR="$pkgdir" install
+
+  rm -rf "$pkgdir/usr/include/PackageKit/packagekit-qt"*
+  rm -rf "$pkgdir/usr/lib/libpackagekit-qt"*
+  rm -rf "$pkgdir/usr/lib/pkgconfig/packagekit-qt"*
+  rm -rf "$pkgdir/usr/share/cmake"
+
+  rm -rf "$pkgdir/usr/lib/python"*
+  rm -rf "$pkgdir/usr/share/PackageKit/website"
+
+  mkdir -p "$pkgdir/usr/share/bash-completion/completions"
+  mv "$pkgdir/etc/bash_completion.d/pk-completion.bash" \
+     "$pkgdir/usr/share/bash-completion/completions/pkcon"
+  touch "$pkgdir/var/log/PackageKit"
+}
+
+package_packagekit-qt2() {
+  depends=('packagekit' 'qt')
+  pkgdesc=('Qt bindings for PackageKit')
+
+  cd "$srcdir/PackageKit-$pkgver/lib/packagekit-qt2"
+
+  make DESTDIR="$pkgdir" install
+}
+
+package_packagekit-python() {
+  depends=('packagekit' 'python2')
+  pkgdesc=('Python bindings for PackageKit')
+
+  cd "$srcdir/PackageKit-$pkgver/lib/python"
+
+  make DESTDIR="$pkgdir" install
+}
+

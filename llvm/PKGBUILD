@@ -1,0 +1,201 @@
+#
+# Chakra Packages for Chakra, part of chakra-project.org
+#
+# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
+# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+
+pkgname=('llvm' 'llvm-ocaml' 'clang' 'clang-analyzer')
+pkgver=3.1
+_gcc_ver=4.7.0
+pkgrel=2
+arch=('i686' 'x86_64')
+url="http://llvm.org/"
+license=('custom:University of Illinois/NCSA Open Source License')
+makedepends=('gcc-libs' 'libffi' 'python2' 'ocaml' "gcc=${_gcc_ver}" 'groff')
+source=("http://llvm.org/releases/${pkgver}/${pkgname}-${pkgver}.src.tar.gz"
+        "http://llvm.org/releases/${pkgver}/clang-${pkgver}.src.tar.gz")
+md5sums=('16eaa7679f84113f65b12760fdfe4ee1'
+         '59bf2d3120a3805f27cafda3823caaf8')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}.src"
+
+  # At the present, clang must reside inside the LLVM source code tree to build
+  # See http://llvm.org/bugs/show_bug.cgi?id=4840
+  rm -rf tools/clang
+  cp -r "${srcdir}/clang-${pkgver}.src" tools/clang
+
+  # Fix symbolic links from OCaml bindings to LLVM libraries
+  sed -e 's:\$(PROJ_libdir):/usr/lib/llvm:' \
+      -i bindings/ocaml/Makefile.ocaml
+
+  # Fix installation directories, ./configure doesn't seem to set them right
+  sed -e 's:\$(PROJ_prefix)/etc/llvm:/etc/llvm:' \
+      -e 's:\$(PROJ_prefix)/lib:$(PROJ_prefix)/lib/llvm:' \
+      -e 's:\$(PROJ_prefix)/docs/llvm:$(PROJ_prefix)/share/doc/llvm:' \
+      -i Makefile.config.in
+
+  sed -e '/ActiveLibDir = ActivePrefix/s:lib:lib/llvm:' \
+      -i tools/llvm-config/llvm-config.cpp
+
+  sed -e 's:LLVM_LIBDIR="${prefix}/lib":LLVM_LIBDIR="${prefix}/lib/llvm":' \
+      -i autoconf/configure.ac \
+      -i configure
+
+  # Fix insecure rpath (http://bugs.archlinux.org/task/14017)
+  sed -e 's:$(RPATH) -Wl,$(\(ToolDir\|LibDir\|ExmplDir\))::g' \
+      -i Makefile.rules
+
+  # Apply strip option to configure
+  _optimized_switch="enable"
+  [ "$(check_option strip)" == 'n' ] && _optimized_switch="disable"
+
+  # Include location of libffi headers in CPPFLAGS
+  export CPPFLAGS="${CPPFLAGS} $(pkg-config --cflags libffi)"
+
+  _cxx_headers="/usr/include/c++/${_gcc_ver}"
+  if [ ! -d "${_cxx_headers}" ]; then
+    error "Couldn't find the C++ headers, PKGBUILD needs fixing!"
+    return 1
+  fi
+
+  _32bit_headers=""
+  if [ "${CARCH}" == 'x86_64' ]; then
+    # Important for multilib
+    _32bit_headers="32"
+  fi
+
+  ./configure --prefix=/usr \
+              --libdir=/usr/lib/llvm \
+              --sysconfdir=/etc \
+              --enable-shared \
+              --enable-libffi \
+              --enable-targets=all \
+              --disable-expensive-checks \
+              --disable-debug-runtime \
+              --disable-assertions \
+              --with-binutils-include=/usr/include \
+              --with-cxx-include-root="${_cxx_headers}" \
+              --with-cxx-include-arch="${CHOST}" \
+              --with-cxx-include-32bit-dir="${_32bit_headers}" \
+              "--${_optimized_switch}-optimized"
+
+  make REQUIRES_RTTI=1
+}
+
+package_llvm() {
+pkgdesc="Low Level Virtual Machine"
+depends=('perl' 'libffi')
+
+  cd "${srcdir}/${pkgname}-${pkgver}.src"
+
+  # The OCaml binding installation is currently broken, let's fix it
+  # see https://github.com/mxcl/homebrew/issues/8947#issuecomment-3256464
+  sed -e 's:\$(ObjDir)/META.llvm:\$(OcamlDir)/META.llvm:' \
+      -i bindings/ocaml/llvm/Makefile
+
+  # We move the clang directory out of the tree so it won't get installed and
+  # then we bring it back in for the clang package
+  mv tools/clang "${srcdir}"
+  # -j1 is due to race conditions during the installation of the OCaml bindings
+  make -j1 DESTDIR="${pkgdir}" install
+  mv "${srcdir}/clang" tools
+
+  # OCaml bindings go to a separate package
+  rm -rf "${srcdir}"/{ocaml,ocamldoc}
+  mv "${pkgdir}"/usr/{lib/ocaml,share/doc/llvm/ocamldoc} "${srcdir}"
+
+  # Remove duplicate files installed by the OCaml bindings
+  rm "${pkgdir}"/usr/{lib/llvm/libllvm*,share/doc/llvm/ocamldoc.tar.gz}
+
+  # Fix permissions of static libs
+  chmod -x "${pkgdir}"/usr/lib/llvm/*.a
+
+  # Fix libdir in llvm-config (http://bugs.archlinux.org/task/14487)
+  sed -e 's:\(ABS_RUN_DIR/lib\):\1/llvm:' \
+      -i "${pkgdir}/usr/bin/llvm-config"
+
+  # Get rid of example Hello transformation
+  rm "${pkgdir}"/usr/lib/llvm/*LLVMHello.*
+
+  # Symlink the gold plugin where clang expects it
+  ln -s llvm/LLVMgold.so "${pkgdir}/usr/lib/LLVMgold.so"
+
+  # Add ld.so.conf.d entry
+  install -d "${pkgdir}/etc/ld.so.conf.d"
+  echo /usr/lib/llvm >"${pkgdir}/etc/ld.so.conf.d/llvm.conf"
+
+  install -D -m644 LICENSE.TXT "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+}
+
+package_llvm-ocaml() {
+pkgdesc="OCaml bindings for LLVM"
+depends=("llvm=${pkgver}-${pkgrel}" 'ocaml')
+
+  cd "${srcdir}/${pkgname}-${pkgver}.src"
+
+  install -d "${pkgdir}"/{usr/lib,usr/share/doc/llvm}
+  cp -r "${srcdir}/ocaml" "${pkgdir}/usr/lib"
+  cp -r "${srcdir}/ocamldoc" "${pkgdir}/usr/share/doc/llvm"
+
+  # Remove execute bit from static libraries
+  chmod -x "${pkgdir}"/usr/lib/ocaml/libllvm*.a
+
+  install -D -m644 LICENSE.TXT "${pkgdir}/usr/share/licenses/llvm-ocaml/LICENSE"
+}
+
+package_clang() {
+pkgdesc="C language family frontend for LLVM"
+url="http://clang.llvm.org/"
+# It looks like clang still needs GCC to assemble and link object files
+# See http://old.nabble.com/%22clang--v%22-shows-a-GCC-call-td28378453.html
+depends=("llvm=${pkgver}-${pkgrel}" "gcc=${_gcc_ver}")
+
+  # Fix installation path for clang docs
+  sed -e 's:$(PROJ_prefix)/share/doc/llvm:$(PROJ_prefix)/share/doc/clang:' \
+      -i "${srcdir}/${pkgname}-${pkgver}.src/Makefile.config"
+
+  cd "${srcdir}/${pkgname}-${pkgver}.src/tools/clang"
+  make DESTDIR="${pkgdir}" install
+
+  # Fix permissions of static libs
+  chmod -x "${pkgdir}"/usr/lib/llvm/*.a
+
+  # Revert the path change in case we want to do a repackage later
+  sed -e 's:$(PROJ_prefix)/share/doc/clang:$(PROJ_prefix)/share/doc/llvm:' \
+      -i "${srcdir}/${pkgname}-${pkgver}.src/Makefile.config"
+
+  # Install old libstdc++ headers. Contains combined headers from
+  # gcc 4.5.2-6-i686 and gcc-multilib-4.5.2-6-x86_64
+  # install -d "${pkgdir}/usr/include/c++"
+  # cp -rd "${srcdir}/gcc-headers-${_gcc_ver}" "${pkgdir}/usr/include/c++/clang-${pkgver}"
+
+  install -D -m644 LICENSE.TXT "${pkgdir}/usr/share/licenses/clang/LICENSE"
+}
+
+package_clang-analyzer() {
+pkgdesc="A source code analysis framework"
+url="http://clang-analyzer.llvm.org/"
+depends=("clang=${pkgver}-${pkgrel}" 'python2')
+
+  cd "${srcdir}/${pkgname}-${pkgver}.src/tools/clang"
+
+  install -d "${pkgdir}"/usr/{bin,lib/clang-analyzer}
+  for _tool in scan-{build,view}; do
+    cp -r "tools/${_tool}" "${pkgdir}/usr/lib/clang-analyzer"
+    ln -s "/usr/lib/clang-analyzer/${_tool}/${_tool}" "${pkgdir}/usr/bin"
+  done
+
+  # Use Python 2
+  sed -e 's/env python$/&2/' \
+      -i "${pkgdir}/usr/lib/clang-analyzer/scan-view/scan-view" \
+      -i "${pkgdir}/usr/lib/clang-analyzer/scan-build/set-xcode-analyzer"
+
+  # Compile Python scripts
+  python2 -m compileall "${pkgdir}/usr/lib/clang-analyzer"
+  python2 -O -m compileall "${pkgdir}/usr/lib/clang-analyzer"
+
+  install -D -m644 LICENSE.TXT "${pkgdir}/usr/share/licenses/clang-analyzer/LICENSE"
+}
+
+# vim:set ts=2 sw=2 et:

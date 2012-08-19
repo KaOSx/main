@@ -1,0 +1,127 @@
+#
+# Chakra Packages for Chakra, part of chakra-project.org
+#
+# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+
+_kernver="3.4.6-1-CHAKRA"
+
+pkgname=(catalyst chd-catalyst)
+pkgver=12.6
+pkgrel=3
+arch=('i686' 'x86_64')
+url="http://www.ati.amd.com"
+license=('custom')
+makedepends=('gcc-libs' 'gcc>4.0.0' 'make' 'linux-headers' 'linux>=3.4' 'linux<=3.5')
+
+source=(http://www2.ati.com/drivers/linux/amd-driver-installer-${pkgver/./-}-x86.x86_64.run
+        ati_make.sh
+        makefile_compat.patch
+        3.2.8.patch
+        catalyst/3.4.patch
+	fglrx_supported
+	switchlibglx
+	switchlibGL)
+
+md5sums=('6bd4f0875202390ed7122696db29be77'
+         '660396540b0ceaff71d6155c986734de'
+         '3e1b82bd69774ea808da69c983d6a43b'
+         '32c8142c73dcfed5db426f494feda9e3'
+         '7b229c6e48ee3f1af0d97059b9fa5cfe'
+	 '8bd182de340d6ed8b2dfcedfd3e5a389'
+	 '99032d919ede27884b5c3e87ab110a96'
+         '99032d919ede27884b5c3e87ab110a96')
+
+build() {
+
+    msg "Setting compilation variables ..."
+    # include ati_make.sh and use _ati_check function from it
+    . ati_make.sh
+    _ati_check
+
+
+    msg "Unpacking archive ..."
+    /bin/sh ./amd-driver-installer-${pkgver/./-}-x86.x86_64.run --extract archive_files
+
+
+    if [ "${CARCH}" = "x86_64" ]; then
+	BUILDARCH=x86_64
+	_archdir=x86_64
+    fi
+    if [ "${CARCH}" = "i686" ]; then
+	BUILDARCH=i386
+	_archdir=x86
+    fi
+
+    cd "${srcdir}/archive_files/"
+
+
+    msg "Applying patch(es) ..."
+    # makefile patch to choose arch_compat_alloc_user_space or older compat_alloc_user_space
+    # works only in combination with ati_make.sh script
+    patch -p1 -i ../makefile_compat.patch 
+
+    #patch -p1 -i ../3.2.8.patch 
+    patch -p1 -i ../3.4.patch 
+
+    cd "${srcdir}/archive_files/common/lib/modules/fglrx/build_mod"
+    cp "${srcdir}/archive_files/arch/${_archdir}/lib/modules/fglrx/build_mod/libfglrx_ip.a" . 
+    cp 2.6.x/Makefile . 
+
+
+    msg "Compiling fglrx module ..."
+    # Compile module using _ati_check variables
+    make -C /lib/modules/${_kernver}/build SUBDIRS="`pwd`" ARCH=${BUILDARCH} \
+    MODFLAGS="-DMODULE -DATI -DFGL -DPAGE_ATTR_FIX=$PAGE_ATTR_FIX -DCOMPAT_ALLOC_USER_SPACE=$COMPAT_ALLOC_USER_SPACE $def_smp $def_modversions" \
+    PAGE_ATTR_FIX=$PAGE_ATTR_FIX COMPAT_ALLOC_USER_SPACE=$COMPAT_ALLOC_USER_SPACE modules 
+}
+
+package_catalyst() {
+    pkgdesc="AMD/ATI Catalyst drivers for linux. fglrx kernel module only"
+    screenshot="http://linuxtation3.files.wordpress.com/2007/03/pantallazo.jpg"
+    depends=('linux>=3.4' 'linux<3.5' 'catalyst-utils')
+    conflicts=('nvidia' 'xf86-video-ati' 'xf86-video-radeonhd' 'ati-dri' 'catalyst-legacy')
+    install=catalyst.install
+
+    # here we are checking kernel's extramodules dir
+    for r in /lib/modules/*; do
+      s=${r:13}
+      if [[ ${s:0:3} = "ext" ]]; then
+	if [[ `cat ${r}/version | grep -c ${_kernver}` != 0 ]]; then
+	  _destidir=${s}
+	  sed -i -e "s/EXTRAMODULES=.*/EXTRAMODULES=${s}/" $startdir/catalyst.install
+	fi
+	elif [[ ${s} = ${_kernver} ]] && [[ ! -e ${r}/extramodules ]]; then
+	  _destidir=${_kernver}/video
+	  sed -i -e "s/EXTRAMODULES=.*/EXTRAMODULES=null/" $startdir/catalyst.install
+      fi
+    done
+
+
+    cd "${srcdir}/archive_files/common/lib/modules/fglrx/build_mod"
+    install -m755 -d "${pkgdir}/lib/modules/${_destidir}/" 
+    install -m644 fglrx.ko "${pkgdir}/lib/modules/${_destidir}/" 
+    find "${pkgdir}" -name '*.ko' -exec gzip -9 {} \;
+    sed -i -e "s/KERNEL_VERSION=.*/KERNEL_VERSION=${_kernver}/" $startdir/catalyst.install
+
+    # License
+    install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
+    install -m644 "${srcdir}/archive_files/LICENSE.TXT" "${pkgdir}/usr/share/licenses/${pkgname}/"
+    
+    # Switcheroo files
+    install -m755 -d "${pkgdir}/usr/lib/fglrx"
+    install -m644 "${srcdir}/switchlibglx" "${pkgdir}/usr/lib/fglrx/"
+    install -m644 "${srcdir}/switchlibGL" "${pkgdir}/usr/lib/fglrx/"
+
+    sed -i -e "s/KERNEL_VERSION=.*/KERNEL_VERSION=${_kernver}/" $startdir/*.install
+}
+
+package_chd-catalyst() {
+    pkgdesc="CHD ids for catalyst $pkgver"
+    arch=('any')
+
+    cd "${srcdir}/archive_files/common/lib/modules/fglrx/build_mod/"
+
+    install -dm755 "${pkgdir}/opt/chakra/hwdb"
+    sh -e "${srcdir}/fglrx_supported" fglrxko_pci_ids.h \
+        > "${pkgdir}/opt/chakra/hwdb/hw_ati_hwdb"
+}

@@ -1,0 +1,26 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
+# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+
+# include global config
+source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+
+pkgname=aspell-ca
+pkgver=2.1.5
+pkgrel=1
+pkgdesc="Catalan dictionary for aspell"
+arch=('i686' 'x86_64')
+url="http://aspell.net/"
+license=('GPL')
+depends=('aspell')
+source=(ftp://ftp.gnu.org/gnu/aspell/dict/ca/aspell6-ca-$pkgver-1.tar.bz2)
+md5sums=(153d26f724866909c6faf49eecefe8b3)
+
+build() {
+  cd $srcdir/aspell6-ca-$pkgver-1
+  ./configure || return 1
+  make || return 1
+  make DESTDIR=$pkgdir install || return 1
+}

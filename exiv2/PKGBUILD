@@ -1,0 +1,31 @@
+#
+# Chakra Packages for Chakra, part of chakra-project.org
+#
+# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
+# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+
+# include global config
+source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+
+pkgname=exiv2
+pkgver=0.21.1
+pkgrel=1
+pkgdesc="Exif and Iptc metadata manipulation library and tools."
+arch=('i686' 'x86_64')
+url="http://exiv2.org"
+license=('GPL2')
+depends=('gcc-libs' 'zlib' 'expat')
+options=('!libtool')
+source=("http://www.exiv2.org/${pkgname}-${pkgver}.tar.gz")
+md5sums=('5c99bbcaa998f6b200b92f2bf0ac4f9e')
+
+build() {
+  cd ${srcdir}/${pkgname}-${pkgver}
+  ./configure --prefix=/usr
+  make || return 1
+}
+
+package() {
+  cd ${srcdir}/${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install
+}

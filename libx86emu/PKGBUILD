@@ -1,0 +1,33 @@
+#
+# Chakra Packages for Chakra, part of chakra-project.org
+#
+# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
+# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+
+
+pkgname=libx86emu
+pkgver=1.1
+_minorver=15.1
+pkgrel=2
+pkgdesc="x86 emulation library"
+arch=('i686' 'x86_64')
+url="http://www.opensuse.org"
+license=('BSD')
+depends=('glibc')
+makedepends=('rpmextract')
+options=('!emptydirs')
+source=("http://download.opensuse.org/source/factory/repo/oss/suse/src/${pkgname}-${pkgver}-${_minorver}.src.rpm")
+md5sums=('c3edd3bf1ee56ab2a7b64515c7bc6f27')
+
+build() {
+  cd "${srcdir}"
+  rpmextract.sh "${pkgname}-${pkgver}-${_minorver}.src.rpm"
+  tar -xjf $pkgname-$pkgver.tar.bz2
+  cd "${srcdir}/${pkgname}-${pkgver}"
+
+  make LIBDIR=/usr/lib
+  make LIBDIR=/usr/lib DESTDIR=$pkgdir install
+  install -Dm644 LICENSE \
+  ${pkgdir}/usr/share/licenses/$pkgname/LICENSE
+}
+

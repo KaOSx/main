@@ -1,0 +1,247 @@
+# page_medium.uim - The layout for the medium building page
+#
+# (c) Copyright 2010 Michael Towers (larch42 at googlemail dot com)
+#
+# This file is part of the larch project.
+#
+#    larch is free software; you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation; either version 2 of the License, or
+#    (at your option) any later version.
+#
+#    larch is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with larch; if not, write to the Free Software Foundation, Inc.,
+#    51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+#
+#----------------------------------------------------------------------------
+# 2010.10.24
+
+(lambda MEDIA, SRC:
+[
+    ['Page', ':page_medium',
+            {   'layout':
+                    ['VBOX', '*',
+                        ['HBOX', ':mtlabel', 'VLINE', ':srcframe', 'VLINE', ':vlabel',],
+                        '*', 'HLINE', '*',
+                        ['HBOX', ':mediumprofile', 'VLINE', ':mediumopts'],
+                        'HLINE',
+                        ['HBOX', '*', ':make_medium']
+                    ]
+            }
+    ],
+
+    ['Frame', ':srcframe',
+            {   'text': _("Source of the larch system"),
+                'tt': _("Normally the larchified Arch install,\n"
+                        "but it could also be an existing larch medium"),
+                'layout':
+                    ['VBOX', ['HBOX', ':srctype', ':selectsrc'], ':srclocation']
+            },
+    ],
+    ['ComboBox', ':srctype',
+            {   'width': 180,
+                'set': [m[1] for m in SRC],
+                'tt': _("Select where the system to put on the medium comes from")
+            },
+        'changed'
+    ],
+    ['LineEdit', ':srclocation',
+            {   'ro': True,
+                #'width': 250,
+                'tt': _("The larch data comes from here")
+            }
+    ],
+    ['Button', ':selectsrc',
+            {   'text': _("Choose"),
+                'tt': _("Select the source of the larch system")
+            },
+        'clicked'
+    ],
+
+    ['Frame', ':mtlabel',
+            {   'text': _("Type of medium to build"),
+                'tt': _("A writeable medium could be a USB-stick or a hard drive partition, for example"),
+                'layout':
+                    ['VBOX', ['HBOX', ':mediumtype', ':selectpart'], ':larchpart']
+            },
+    ],
+    ['ComboBox', ':mediumtype',
+            {   'width': 180,
+                'set': [m[1] for m in MEDIA],
+                'tt': _("Select the larch source.")
+            },
+        'changed'
+    ],
+
+    ['Frame', ':mediumprofile',
+            {   'text': _("Medium profile"),
+                'tt': _("Settings which are saved in the profile"),
+                'layout':
+                    ['VBOX', ':bootlines', ':syslinuxtemplate', ':cdroot']
+            },
+    ],
+    ['Button', ':bootlines',
+            {   'text': _("Edit boot entries"),
+                'tt': _("Edit the file determining the boot entries")
+            },
+        'clicked'
+    ],
+    ['Button', ':syslinuxtemplate',
+            {   'text': _("Edit bootloader template"),
+                'tt': _("Edit the syslinux/extlinux/isolinux configuration file\n"
+                        "(the larch boot entries are handled separately)")
+            },
+        'clicked'
+    ],
+    ['Button', ':cdroot',
+            {   'text': _("Edit medium files"),
+                'tt': _("Open a file browser on the profile's 'cd-root' folder")
+            },
+        'clicked'
+    ],
+
+#++++
+    ['LineEdit', ':larchpart',
+            {   'ro': True,
+                #'width': 250,
+                'tt': _("The partition or iso-file to receive the larch system")
+            }
+    ],
+    ['Button', ':selectpart',
+            {   'text': _("Choose"),
+                'tt': _("Select the destination medium or file")
+            },
+        'clicked'
+    ],
+
+    ['Frame', ':mediumopts',
+            {   'text': _("Medium options"),
+                'tt': _("Optional settings for larch partitions"),
+                'layout':
+                    ['VBOX',
+                        ['GRID',    ['+', ':detection_l', ':detection', '-'],
+                                    ['+', ':persist',     'VLINE,3', '*'],
+                                    ['+', ':ovl_journal', '|',      ':nombr'],
+                                    ['+', ':pformat',     '|',      ':nolarchboot'],
+                        ],
+                    ],
+            },
+        'toggled'
+    ],
+    ['CheckBox', ':pformat',
+            {   'text': _("Format medium"),
+                'tt': _("Normally the medium should be formatted before writing, but IF YOU\n"
+                        "KNOW WHAT YOU ARE DOING it might be useful to skip the formatting")
+            },
+        'toggled'
+    ],
+    ['CheckBox', ':nombr',
+            {   'text': _("Don't set MBR"),
+                'tt': _("The bootloader will be installed to the partition only,"
+                        " leaving the mbr untouched\n"
+                        "(you'll need to provide some other means of booting)")
+            },
+#        'toggled'
+    ],
+    ['CheckBox', ':nolarchboot',
+            {   'text': _("Not bootable via search"),
+                'tt': _("Don't create the file 'larch/larchboot':\n"
+                        " the medium will only be bootable by uuid, label"
+                        " or partition name")
+            },
+        'toggled'
+    ],
+    ['CheckBox', ':persist',
+            {   'text': _("Data persistence"),
+                'tt': _("Support data persistence by using the medium as a writeable overlay"),
+            },
+        'toggled'
+    ],
+    ['CheckBox', ':ovl_journal',
+            {   'text': _("Use journalling"),
+                'tt': _("The file-system containing the overlay can use journalling\n"
+                        "to aid data integrity")
+            },
+        'toggled'
+    ],
+
+    ['Label', ':detection_l',
+            {   'text': _("Medium Detection:")
+            }
+    ],
+    ['ComboBox', ':detection',
+            {   'tt': _("Choose how the boot scripts determine where to"
+                        " look for the larch system"),
+            },
+        'changed'
+    ],
+#----
+
+#+
+    ['Frame', ':vlabel',
+            {   'text': _("Volume Label:"),
+                'tt': _("The 'label' given to the created medium"),
+                'layout': ['VBOX', ':vlabele', ':vlabelb']
+            }
+    ],
+    ['LineEdit', ':vlabele',
+            {   'ro': True,
+                'width': 120,
+                'tt': _("The length may not exceed 16 bytes,"
+                        " 11 for vfat")
+            }
+    ],
+    ['Button', ':vlabelb',
+            {   'text': _("Change"),
+                'tt': _("Enter a new label for the volume, empty to use default")
+            },
+        'clicked'
+    ],
+#-
+
+    ['Button', ':make_medium',
+            {   'text': _("Write the larch medium"),
+                'tt': _("The larch image will be written to the 'iso' file"
+                        " or to the partition, as selected")
+            },
+        'clicked'
+    ],
+
+    ['DATA', 'medium_page_data',
+            {   'messages':
+                    {   'parts_t':      _("Choose unmounted partition"),
+                        'parts_src':    _("Select larch source partition"),
+                        'parts_dst':    _("Device to receive larch system\n"
+                                "WARNING: Be very careful in choosing here,\n"
+                                "if you choose the wrong one you might\n"
+                                "seriously damage your system!"),
+                        'msg_med':      _("Invalid larch medium folder: %s"),
+                        'prompt_label': _("Volume label (clear to use default):"),
+                        'isopath':      _("Save 'iso' to ..."),
+                        'isoget':       _("Read 'iso' file"),
+                        'media':        [m[0] for m in MEDIA],
+                        'sources':      [m[0] for m in SRC],
+                        'detectionmodes':
+                            {   'label':   "LABEL",
+                                'uuid':    "UUID",
+                                'device':  _("Device (e.g. /dev/sdb1)"),
+                                'search':  _("Search (for 'larchboot' file)")
+                            },
+                    }
+            },
+    ],
+]
+)(  [   ('medium-w', _("writeable medium")),
+        ('medium-iso', "iso file"),
+        ('medium-boot', _("boot iso")),
+    ],
+    [   ('larchified', _("larchify output")),
+        ('device',  _("other medium")),
+        ('isofile', _("iso file")),
+    ],
+)

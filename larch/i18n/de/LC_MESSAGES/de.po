@@ -1,0 +1,1556 @@
+# German translations for larch-8 package.
+# Copyright (C) 2010 Michael Towers
+# Automatically generated, 2010.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: larch 8\n"
+"POT-Creation-Date: 2011-01-07 20:13+CET\n"
+"PO-Revision-Date: 2010-11-05 16:48+CET\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: mt\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: pygettext.py 1.5\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: cli/archin.py:38
+msgid "Operations on '/' are not supported ..."
+msgstr "Ungültiger Basis-Ordner: '/'"
+
+#: cli/archin.py:61
+msgid "No pacman executable found"
+msgstr "Ausführbare Datei 'pacman' nicht gefunden"
+
+#: cli/archin.py:143
+msgid "Install Arch to '%s'?"
+msgstr "Arch zu '%s' installieren?"
+
+#: cli/archin.py:157
+msgid "Couldn't write to the installation path (%s)"
+msgstr "Konnte nicht im Installationsordner (%s) abspeichern."
+
+#: cli/archin.py:161
+msgid "The installation path (%s) is mounted 'nodev'."
+msgstr "Installationspfad (%s) 'nodev' gemountet"
+
+#: cli/archin.py:168
+msgid "The installation path (%s) is mounted 'noexec'."
+msgstr "Installationspfad (%s) 'noexec' gemountet"
+
+#: cli/archin.py:193
+msgid "Package installation failed"
+msgstr "Paket-Installation fehlgeschlagen"
+
+#: cli/archin.py:200
+msgid "Arch installation completed"
+msgstr "Arch-Installation ist fertig"
+
+#: cli/archin.py:207
+msgid "No '%s' file"
+msgstr "Datei '%s' existiert nicht"
+
+#: cli/archin.py:221
+msgid "Invalid package file include: %s"
+msgstr "Ungültiges Paket-Datei-'include': %s"
+
+#: cli/archin.py:253
+msgid "Couldn't synchronize pacman database (pacman -Sy)"
+msgstr "pacman-Datenbank konnte nicht aktualisiert werden (pacman -Sy)"
+
+#: cli/archin.py:316
+msgid "usage: %%prog [options] %s [packages]"
+msgstr "Anwendung: %%prog [Optionen] %s [Pakete]"
+
+#: cli/archin.py:321 cli/larchify.py:577 cli/medium.py:188
+msgid "Profile: 'user:profile-name' or path to profile directory"
+msgstr "Profil: 'Benutzer:Profilname' oder Pfad zum Profilordner"
+
+#: cli/archin.py:324 cli/larchify.py:580
+msgid "Path to directory to be larchified (default %s)"
+msgstr "Pfad zum zu larchifizierenden Ordner (Voreinstellung %s)"
+
+#: cli/archin.py:327 cli/larchify.py:583 cli/medium.py:226
+msgid "Run as a slave from a controlling program (e.g. from a gui)"
+msgstr "Als Dienst (Unterprozess) (z.B. vom gui) ausführen"
+
+#: cli/archin.py:330 cli/larchify.py:586 cli/medium.py:223
+msgid "Suppress output messages, except errors (no effect if -s specified)"
+msgstr ""
+"Meldungen, außer Fehler, unterdrücken (ohne Wirkung, wenn -s angegeben)"
+
+#: cli/archin.py:335 cli/larchify.py:594
+msgid "Don't ask for confirmation"
+msgstr "Weiterfahren ohne um Bestätigung zu bitten"
+
+#: cli/archin.py:339
+msgid ""
+"Supply a substitute repository list (pacman.conf.repos) for the installation "
+"only"
+msgstr ""
+"Ersatz-Paketquellenliste (pacman.conf.repos) nur für die Installation angeben"
+
+#: cli/archin.py:343
+msgid "pacman cache directory (default /var/cache/pacman/pkg)"
+msgstr "pacman Cache-Ordner (Voreinstellung /var/cache/pacman/pkg)"
+
+#: cli/archin.py:346
+msgid "Don't show pacman's progress bar"
+msgstr "pacman-Fortschrittbalken unterdrücken"
+
+#: cli/archin.py:358
+msgid "You must specify which operation to perform:\n"
+msgstr "Die auszuführende Operation muss angegeben werden:\n"
+
+#: cli/archin.py:363 cli/larchify.py:599 cli/medium.py:273
+msgid "This application must be run as root"
+msgstr "Diese Anwendung muss als 'root' ausgeführt werden"
+
+#: cli/archin.py:369
+msgid "Invalid operation: '%s'\n"
+msgstr "Ungültiger Befehl:' %s'\n"
+
+#: cli/backend.py:79
+msgid ""
+"larch (%s) seems to be running already.\n"
+"If you are absolutely sure this is not the case,\n"
+"you may continue. Otherwise you should cancel.\n"
+"\n"
+"Shall I continue?"
+msgstr ""
+"larch (%s) scheint schon aktiv zu sein.\n"
+"Wenn du wirklich sicher bist, dass das nicht der Fall ist,\n"
+"darfst du fortfahren. Sonst abbrechen.\n"
+"\n"
+"Fortfahren?"
+
+#: cli/backend.py:129
+msgid "The backend reported %d failed calls, you may want to investigate"
+msgstr ""
+"%d Aufrufe schlugen im Backend fehl, eine Untersuchung könnte sich lohnen"
+
+#: cli/backend.py:149
+msgid "Yes:y|No:n"
+msgstr "Ja:j|Nein:n"
+
+#: cli/backend.py:181
+msgid "Something went wrong:\n"
+msgstr "Irgendetwas schlug fehl:\n"
+
+#: cli/backend.py:312
+msgid "Invalid profile: %s"
+msgstr "Ungültiges larch-Profil: %s"
+
+#: cli/backend.py:315
+msgid "Invalid profile folder: %s"
+msgstr "Ungültiger Profilordner': %s"
+
+#: cli/backend.py:440
+msgid "Couldn't read file: %s"
+msgstr "Konnte Datei '%s' nicht lesen"
+
+#: cli/larchify.py:46
+msgid ""
+"File '%s' doesn't exist:\n"
+"  '%s' not an Arch installation?"
+msgstr ""
+"Datei '%s' existiert nicht:\n"
+"  '%s' etwa keine Arch-Installation?"
+
+#: cli/larchify.py:54
+msgid ""
+"Building a larch live medium from the running system is\n"
+"an error prone process. Changes to the running system\n"
+"made while running this function may be only partially\n"
+"incorporated into the compressed system images.\n"
+"\n"
+"Do you wish to continue?"
+msgstr ""
+"Die Konstruktion eines larch-live-Mediums vom laufenden System kann\n"
+"zu Fehlern führen. Änderungen am laufenden System, die während\n"
+"der Ausführung dieser Funktion auftreten, werden vielleicht nur\n"
+"teilweise in die komprimierten Systemabbildungen übernommen.\n"
+"\n"
+"Fortfahren?"
+
+#: cli/larchify.py:134
+msgid "Squashing system.sqf failed"
+msgstr "Komprimierung der system.sqf-Datei ist fehlgeschlagen"
+
+#: cli/larchify.py:151
+msgid "Warning: /boot in the profile's overlay will not be used"
+msgstr "Achtung: /boot im Profil-Überlagerungsordner wird nicht verwendet"
+
+#: cli/larchify.py:232
+msgid "Build customization script failed"
+msgstr "Skript zur Anpassung der Konstruktion schlug fehl"
+
+#: cli/larchify.py:255 cli/medium.py:105
+msgid "Squashing mods.sqf failed"
+msgstr "Komprimierung der mods.sqf-Datei ist fehlgeschlagen"
+
+#: cli/larchify.py:261
+msgid "larchify-process completed"
+msgstr "Larchifizierung abgeschlossen"
+
+#: cli/larchify.py:365
+msgid "%d user account operation(s) failed"
+msgstr "%d Benutzerkonto-Operation(en) schlug(en) fehl"
+
+#: cli/larchify.py:386
+msgid "No squashfs module found\n"
+msgstr "Kein squashfs-Modul wurde gefunden\n"
+
+#: cli/larchify.py:398
+msgid "No aufs or unionfs module found\n"
+msgstr "Kein aufs- oder unionfs-Modul wurde gefunden\n"
+
+#: cli/larchify.py:402
+msgid "Package '%s' is needed by larch systems\n"
+msgstr "larch-Systeme brauchen das Paket '%s'\n"
+
+#: cli/larchify.py:405
+msgid ""
+"Without package 'syslinux' you will not be able\n"
+"to create syslinux or isolinux booting media\n"
+msgstr ""
+"Das Paket 'syslinux' ist für die Herstellung\n"
+"syslinux und isolinux Boot-Medien notwendig\n"
+
+#: cli/larchify.py:409
+msgid ""
+"Without package 'cdrkit' (or 'cdrtools') you will\n"
+"not be able to create CD/DVD media\n"
+msgstr ""
+"Das Paket 'cdrkit' (oder 'cdrtools') ist für die\n"
+"Herstellung CD/DVD-Medien notwendig\n"
+
+#: cli/larchify.py:413
+msgid ""
+"Without package 'eject' you will have problems\n"
+"using CD/DVD media\n"
+msgstr ""
+"Das Paket 'eject' ist beim Einsatz CD/DVD-Boot-Medien\n"
+"sehr sinnvoll\n"
+
+#: cli/larchify.py:417
+msgid ""
+"WARNING:\n"
+"%s\n"
+"    Continue building?"
+msgstr ""
+"WARNUNG:\n"
+"%s\n"
+"    Verfahren fortsetzen?"
+
+#: cli/larchify.py:423
+msgid ""
+"ERROR:\n"
+"%s"
+msgstr ""
+"FEHLER:\n"
+"%s"
+
+#: cli/larchify.py:457
+msgid "Kernel file '%s' not found"
+msgstr "Kernel-Datei '%s' nicht gefunden"
+
+#: cli/larchify.py:476
+msgid "No mkinitcpio preset file (%s)"
+msgstr "Keine mkinitcpio-preset-Datei gefunden (%s)"
+
+#: cli/larchify.py:512
+msgid ""
+"WARNING:\n"
+"  You seem to have installed a package containing modules\n"
+"which aren't compatible with your kernel (see log).\n"
+"Please check that this won't cause problems.\n"
+"Maybe you need the corresponding package for your kernel?\n"
+"\n"
+"    Continue building?"
+msgstr ""
+"WARNUNG:\n"
+"  Es ist anscheinend ein Paket installiert worden, das Kernel-Module\n"
+"enthält, die mit dem installierten Kernel nicht kompatibel sind\n"
+"(siehe Log).\n"
+"Bitte überprüfen, ob dadurch Probleme entstehen.\n"
+"Vielleicht müsste das entsprechende Paket für den vorhandenen Kernel\n"
+"installiert werden?\n"
+"\n"
+"    Verfahren fortsetzen?"
+
+#: cli/larchify.py:529
+msgid "Couldn't find kernel modules"
+msgstr "Kernel-Module nicht gefunden"
+
+#: cli/larchify.py:573
+msgid "usage: %prog [options]"
+msgstr "Anwendung: %prog [Optionen]"
+
+#: cli/larchify.py:589
+msgid "Reuse previously generated system.sqf"
+msgstr "Vorhandenes system.sqf verwenden"
+
+#: cli/larchify.py:592
+msgid "Reuse previously generated locales"
+msgstr "Vorhandene 'locales' wiederverwenden"
+
+#: cli/media_common.py:62
+msgid "Invalid source medium: '%s'"
+msgstr "Ungültiges Quellmedium: '%s'"
+
+#: cli/media_common.py:115
+msgid "No kernel and/or initramfs"
+msgstr "Kein kernel und/oder initramfs"
+
+#: cli/media_common.py:173
+msgid "No loader binary, "
+msgstr "Kein Lader für ausführbare Dateien gefunden, "
+
+#: cli/media_common.py:200
+msgid "Invalid output device: %s"
+msgstr "Ungültiges Zielgerät: %s"
+
+#: cli/media_common.py:224
+msgid "Couldn't get format information for %s"
+msgstr "Konnte Format von %s nicht herausfinden"
+
+#: cli/media_common.py:233
+msgid "Unsupported file-system: %s"
+msgstr "Nicht unterstütztes Dateisystem: %s"
+
+#: cli/media_common.py:276
+msgid "Couldn't format %s"
+msgstr "Konnte %s nicht formatieren"
+
+#: cli/media_common.py:303
+msgid "Couldn't mount larch partition, %s"
+msgstr "larch-Partition, %s, konnte nicht gemountet werden"
+
+#: cli/media_common.py:333
+msgid "iso build failed"
+msgstr "iso-Erstellung schlug fehl"
+
+#: cli/media_common.py:334
+msgid "%s was successfully created"
+msgstr "Dein larch-iso, %s, wurde erfolgreich erstellt"
+
+#: cli/media_common.py:344
+msgid "File '%s' doesn't exist, '%s' is not a larch medium"
+msgstr "Datei '%s' existiert nicht, '%s' ist kein larch-Medium"
+
+#: cli/media_common.py:360
+msgid "The volume label is too long. Use the default (%s)?"
+msgstr "Das Volume-Label ist zu lang. Die Voreinstellung (%s) verwenden?"
+
+#: cli/media_common.py:364
+msgid "Cancelled"
+msgstr "Abgebrochen"
+
+#: cli/media_common.py:384
+msgid "Can't boot to label - device has no label"
+msgstr "Booten zu 'label' nicht möglich, das Gerät hat kein 'label'"
+
+#: cli/media_common.py:395
+msgid "Boot configuration file '%s' not found"
+msgstr "Boot-Konfigurationsdatei '%s' nicht gefunden"
+
+#: cli/media_common.py:434
+msgid "Base configuration file (%s) not found"
+msgstr "Basis-Konfigurationsdatei '%s' nicht gefunden"
+
+#: cli/medium.py:74
+msgid "Couldn't find boot configuration file"
+msgstr "Konnte Bootlader-Konfigurationsdatei nicht finden"
+
+#: cli/medium.py:86
+msgid ""
+"Copying of devices with both 'overlay.medium' and 'mods.sqf'\n"
+"is not supported."
+msgstr ""
+"Das kopieren von Medien mit den beiden Dateien 'overlay.medium'\n"
+"UND 'mods.sqf' wird nicht unterstützt."
+
+#: cli/medium.py:117
+msgid "Unpacking of modifications archive failed, see log"
+msgstr "Änderungsarchiv konnte nicht entpackt werden, siehe Log"
+
+#: cli/medium.py:152
+msgid "Completed writing to %s"
+msgstr "Schreibvorgang nach %s vollendet"
+
+#: cli/medium.py:171
+msgid "usage: %prog [options] [partition (e.g. /dev/sdb1)]"
+msgstr "Anwendung: %prog [Optionen] [Partition (z.B. /dev/sdb1)]"
+
+#: cli/medium.py:175
+msgid ""
+"Specify source medium, an iso-file (path ending '.iso'), device (starting '/"
+"dev/') or volume label"
+msgstr ""
+"Quellmedium, eine iso-Datei (mit '.iso' endend), Gerät ('/dev/...') oder "
+"'Volume-Label' angeben"
+
+#: cli/medium.py:179
+msgid "Volume label for boot medium (default: %s - or %s if boot iso)"
+msgstr ""
+"'Volume-Label' für Boot-Medium (Voreinstellung %s - oder %s für Boot-iso)"
+
+#: cli/medium.py:183
+msgid "Build a boot iso for the source partition"
+msgstr "Eine Boot-iso-Datei für die Quellpartition erstellen"
+
+#: cli/medium.py:191
+msgid "Path to larchified directory (default %s)"
+msgstr "Pfad zum larchifizierten Ordner (Voreinstellung %s)"
+
+#: cli/medium.py:196
+msgid ""
+"Specify the output file (default: '%s' in the current directory - or '%s' if "
+"boot iso)"
+msgstr ""
+"Gib die zu erstellende Datei (Voreinstellung: '%s' im aktuellen Ordner - "
+"oder '%s' für Boot-iso) an"
+
+#: cli/medium.py:202
+msgid "Method for boot partition detection: %s (default: label)"
+msgstr "Ansatz zur Suche nach der Boot-Partition: %s (Voreinstellung: label)"
+
+#: cli/medium.py:206
+msgid "Don't generate 'larch/larchboot' file"
+msgstr "'larch/larchboot-Datei nicht erstellen"
+
+#: cli/medium.py:209
+msgid "Don't format the medium (WARNING: Only for experts)"
+msgstr "Medium nicht formatieren (ACHTUNG: Nur für Experten)"
+
+#: cli/medium.py:212
+msgid ""
+"Enable data persistence (using medium as writeable file-system). Default: "
+"disabled"
+msgstr ""
+"Datenerhaltung aktivieren (das Medium wird als beschreibbares Dateisystem "
+"verwendet). Voreinstellung: nicht verwenden"
+
+#: cli/medium.py:216
+msgid "Don't install the bootloader (to the MBR)"
+msgstr "Bootlader nicht (zum MBR) installieren"
+
+#: cli/medium.py:218
+msgid "Don't use journalling on boot medium (default: journalling enabled)"
+msgstr ""
+"Kein 'journalling' auf Medium verwenden (Voreinstellung: 'journalling' "
+"verwenden)"
+
+#: cli/medium.py:230
+msgid "Test source or destination medium only (used by gui)"
+msgstr "Nur Quell- oder Zielmedium testen (die gui verwendet diese Funktion)"
+
+#: cli/medium.py:237
+msgid "Unexpected argument: %s"
+msgstr "Unerwarteter Parameter: %s"
+
+#: cli/medium.py:239
+msgid "No source specified for boot iso"
+msgstr "Keine Quellpartition für Boot-iso"
+
+#: cli/medium.py:244
+msgid "Generating larch boot iso file: %s\n"
+msgstr "larch-Boot-iso-Datei wird erstellt: %s\n"
+
+#: cli/medium.py:250
+msgid "Generating larch iso file: %s\n"
+msgstr "larch-iso-Datei wird erstellt: %s\n"
+
+#: cli/medium.py:259
+msgid "Testing output medium: %s\n"
+msgstr "Zielmedium wird getestet: %s\n"
+
+#: cli/medium.py:261
+msgid "Creating larch medium on: %s\n"
+msgstr "larch-Medium wird erstellt:: %s\n"
+
+#: cli/medium.py:263
+msgid "Invalid partition: '%s'"
+msgstr "Ungültige Partition:' %s'"
+
+#: cli/medium.py:267
+msgid "Testing source medium: %s\n"
+msgstr "Quellmedium testen: %s\n"
+
+#: cli/userinfo.py:45
+msgid "Invalid 'users' file"
+msgstr "Ungültige 'users'-Datei"
+
+#: cli/userinfo.py:67
+msgid "Couldn't add user '%s'"
+msgstr "Konnte Benutzer '%s' nicht einrichten"
+
+#: cli/userinfo.py:75
+msgid "Couldn't remove user '%s'"
+msgstr "Konnte Benutzer '%s' nicht entfernen"
+
+#: cli/userinfo.py:90
+msgid "Couldn't save 'users' file"
+msgstr "Konnte 'users'-Datei nicht speichern"
+
+#: gui/controller.py:120
+msgid "Couldn't read file '%s'"
+msgstr "Konnte Datei '%s' nicht lesen"
+
+#: gui/controller.py:133
+msgid "Couldn't save file '%s'"
+msgstr "Konnte Datei '%s' nicht speichern"
+
+#: gui/front/page_larchify.py:63
+msgid "No Arch installation at %s"
+msgstr "Keine Arch-Installation in %s"
+
+#: gui/front/page_larchify.py:270
+msgid "Invalid kernel binary: %s"
+msgstr "Ungültige Kernel-Datei: %s"
+
+#: gui/front/page_larchify.py:287
+msgid "Invalid kernel mkinitcpio preset: %s"
+msgstr "Ungültige mkinitcpio-preset-Datei: %s"
+
+#: gui/front/page_project.py:131
+msgid "Name for new profile:"
+msgstr "Der Name für das neue Profil:"
+
+#: gui/layouts/docviewer.uim:35
+msgid "Documentation"
+msgstr "Dokumentation"
+
+#: gui/layouts/docviewer.uim:40 gui/layouts/logger.uim:52
+msgid "Hide"
+msgstr "Ansicht Schließen"
+
+#: gui/layouts/docviewer.uim:41
+msgid "Return to the larch controls"
+msgstr "Zurückkehren zu den larch-Kontrollen"
+
+#: gui/layouts/docviewer.uim:47
+msgid "Go back in the viewing history"
+msgstr "Zurück in der Browser-Geschichte"
+
+#: gui/layouts/docviewer.uim:53
+msgid "Go forward in the viewing history"
+msgstr "Nach vorne in der Browser-Seitengeschichte"
+
+#: gui/layouts/docviewer.uim:60
+msgid "Reload the documentation for the current larch tab"
+msgstr "Die Dokumentation für die aktuelle larch-Seite anzeigen"
+
+#: gui/layouts/docviewer.uim:67
+msgid "Go to the general larch documentation index"
+msgstr "Das allgemeine larch-Inhaltsverzeichnis anzeigen"
+
+#: gui/layouts/editor.uim:39
+msgid "Editor"
+msgstr "Editor"
+
+#: gui/layouts/editor.uim:45
+msgid "OK"
+msgstr "Annehmen"
+
+#: gui/layouts/editor.uim:50 gui/layouts/progress.uim:54
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: gui/layouts/editor.uim:55
+msgid "Revert"
+msgstr "Zurücksetzen"
+
+#: gui/layouts/editor.uim:56
+msgid "Restore the text to its initial/default state"
+msgstr "Text zum ursprünglichen Zustand zurücksetzen"
+
+#: gui/layouts/editor.uim:61
+msgid "Copy"
+msgstr "Kopieren"
+
+#: gui/layouts/editor.uim:66
+msgid "Cut"
+msgstr "Ausschneiden"
+
+#: gui/layouts/editor.uim:71
+msgid "Paste"
+msgstr "Einfügen"
+
+#: gui/layouts/editor.uim:76
+msgid "Undo"
+msgstr "Rückgängig"
+
+#: gui/layouts/editor.uim:81
+msgid "Redo"
+msgstr "Wieder ausführen"
+
+#: gui/layouts/editor.uim:88
+msgid "Editing '%s'"
+msgstr "Editiere '%s'"
+
+#: gui/layouts/logger.uim:37
+msgid "Low-level Command Logging"
+msgstr "Log der einzelnen Befehle"
+
+#: gui/layouts/logger.uim:38 gui/layouts/progress.uim:39
+msgid "Here you can follow the detailed, low-level progress of the commands."
+msgstr "Hier kann man die einzelnen Schritte detailliert verfolgen"
+
+#: gui/layouts/logger.uim:47
+msgid "Clear"
+msgstr "Löschen"
+
+#: gui/layouts/logger.uim:53
+msgid "Go back to the larch controls"
+msgstr "Zurückkehren zu den larch-Kontrollen"
+
+#: gui/layouts/page_installation.uim:42
+msgid "Edit Profile"
+msgstr "Profil editieren"
+
+#: gui/layouts/page_installation.uim:53
+msgid "Edit 'addedpacks'"
+msgstr "'addedpacks' editieren"
+
+#: gui/layouts/page_installation.uim:54
+msgid "Edit the list of packages to be installed"
+msgstr "Zu installierende Pakete ändern"
+
+#: gui/layouts/page_installation.uim:59
+msgid "Edit 'vetopacks'"
+msgstr "'vetopacks' editieren"
+
+#: gui/layouts/page_installation.uim:60
+msgid "Edit the list of packages NOT to install"
+msgstr "NICHT zu installierende Pakete ändern"
+
+#: gui/layouts/page_installation.uim:65
+msgid "Edit pacman.conf options"
+msgstr "pacman.conf-Optionen editieren"
+
+#: gui/layouts/page_installation.uim:66
+msgid "Edit pacman.conf options - not the repositories"
+msgstr "pacman.conf-Optionen editieren - nicht die Quellen"
+
+#: gui/layouts/page_installation.uim:71
+msgid "Edit pacman.conf repositories"
+msgstr "pacman.conf-Quellen editieren"
+
+#: gui/layouts/page_installation.uim:72
+msgid "Edit the repository entries for pacman.conf"
+msgstr "pacman.conf-Quellen editieren"
+
+#: gui/layouts/page_installation.uim:79
+msgid "Tweak Installed Packages"
+msgstr "Installierte Pakete ändern"
+
+#: gui/layouts/page_installation.uim:85
+msgid "Synchronize db    [-Sy]"
+msgstr "Paket-db synchronisieren [-Sy]"
+
+#: gui/layouts/page_installation.uim:86
+msgid "Synchronize the pacman db on the target (pacman -Sy)"
+msgstr "Paketen-Datenbank (Zielsystem) synchronisieren (pacman -Sy)"
+
+#: gui/layouts/page_installation.uim:91
+msgid "Update all packages    [-Su]"
+msgstr "Alle Pakete aktualisieren  [-Su]"
+
+#: gui/layouts/page_installation.uim:92
+msgid ""
+"Update all installed packages for which a newer version is available\n"
+"(you will normally need to synchronize the pacman db first)"
+msgstr ""
+"Aktualisiere alle installierten Pakete, für die eine neuere Version zur "
+"Verfügung steht\n"
+"(man sollte normalerweise die Pacman-Datanbank zuerst synchronisieren)"
+
+#: gui/layouts/page_installation.uim:98
+msgid "Update / Add package    [-U]"
+msgstr "Paket aktualisieren/installieren  [-U]"
+
+#: gui/layouts/page_installation.uim:99
+msgid "Update / Add a package from a package file using pacman -U"
+msgstr ""
+"Ein Paket von einer Paketdatei mittels pacman -U aktualisieren / installieren"
+
+#: gui/layouts/page_installation.uim:105
+msgid "Add package(s)    [-S]"
+msgstr "Paket(e) installieren  [-S]"
+
+#: gui/layouts/page_installation.uim:106
+msgid "Add one or more packages (space separated) using pacman -S"
+msgstr ""
+"Ein oder mehr Pakete (mit Leerzeichen getrennt) mittels pacman -S "
+"installieren"
+
+#: gui/layouts/page_installation.uim:112
+msgid "Remove package(s)    [-Rs]"
+msgstr "Paket(e) entfernen  [-Rs]"
+
+#: gui/layouts/page_installation.uim:113
+msgid "Remove one or more packages (space separated) using pacman -Rs"
+msgstr ""
+"Ein oder mehr Pakete (mit Leerzeichen getrennt) mittels pacman -Rs entfernen"
+
+#: gui/layouts/page_installation.uim:121
+msgid "Advanced Installation Options"
+msgstr "Installationsoptionen für Experten"
+
+#: gui/layouts/page_installation.uim:127
+msgid "Use project repository list"
+msgstr "Projekt-Paketquellenliste verwenden"
+
+#: gui/layouts/page_installation.uim:128
+msgid "Enables use of an alternative pacman.conf for installation only"
+msgstr ""
+"Ermöglicht die Verwendung einer alternativen pacman.conf-Datei nur für die "
+"Installation"
+
+#: gui/layouts/page_installation.uim:136
+msgid "Edit repository list"
+msgstr "Projekt-Paketquellenliste editieren"
+
+#: gui/layouts/page_installation.uim:137
+msgid "Edit repository list file used for installation"
+msgstr "Paketquellenliste für die Installation editieren"
+
+#: gui/layouts/page_installation.uim:142
+msgid "Edit mirror list"
+msgstr "'mirrorlist' editieren"
+
+#: gui/layouts/page_installation.uim:143
+msgid ""
+"Edit the pacman mirror list for the live system\n"
+"(not for the build process)"
+msgstr ""
+"Die Paketquellenserverliste (mirrorlist) für das live-System editieren\n"
+"(nicht für den Konstruktionsprozess)"
+
+#: gui/layouts/page_installation.uim:150
+msgid "Package Cache"
+msgstr "Paket-Speicher"
+
+#: gui/layouts/page_installation.uim:157
+msgid "The path to the (host's) package cache"
+msgstr "Paketencache-Pfad (im 'Host'-Dateisystem)"
+
+#: gui/layouts/page_installation.uim:161 gui/layouts/page_larchify.uim:80
+#: gui/layouts/page_larchify.uim:98 gui/layouts/page_larchify.uim:190
+#: gui/layouts/page_medium.uim:200 gui/layouts/page_project.uim:151
+#: gui/layouts/profile_browse.uim:84
+msgid "Change"
+msgstr "Ändern"
+
+#: gui/layouts/page_installation.uim:162
+msgid "Change the package cache path"
+msgstr "Paketencache-Pfad ändern"
+
+#: gui/layouts/page_installation.uim:168
+msgid "Install"
+msgstr "Installieren"
+
+#: gui/layouts/page_installation.uim:169
+msgid "This will start the installation to the set path"
+msgstr "Zum Starten der Installation zum eingestellen Pfad"
+
+#: gui/layouts/page_installation.uim:176
+msgid "Editing pacman.conf options only"
+msgstr "Editiere nur die Optionen von pacman.conf"
+
+#: gui/layouts/page_installation.uim:177
+msgid "Editing pacman repositories"
+msgstr "pacman.conf-Quellen editieren"
+
+#: gui/layouts/page_installation.uim:178
+msgid "Editing mirror list for installation"
+msgstr "Paketquellenserverliste (mirrorlist) für die Installation editieren"
+
+#: gui/layouts/page_installation.uim:179
+msgid "Enter new package cache path:"
+msgstr "Neuen Paket-cache-Pfad eingeben:"
+
+#: gui/layouts/page_installation.uim:180
+msgid "Editing pacman repositories for installation"
+msgstr "Editiere nur die Paket-Quellen von pacman.conf"
+
+#: gui/layouts/page_installation.uim:181
+msgid "Package to add/update"
+msgstr "Paket zum Installieren / Aktualisieren"
+
+#: gui/layouts/page_installation.uim:182
+msgid "Packages"
+msgstr "Pakete"
+
+#: gui/layouts/page_installation.uim:183
+msgid ""
+"Enter the names of packages to install -\n"
+"  separated by spaces:"
+msgstr ""
+"Die Namen der zu installierenden Pakete eingeben -\n"
+"  mit Leerzeichen getrennt:"
+
+#: gui/layouts/page_installation.uim:185
+msgid ""
+"Enter the names of packages to remove -\n"
+"  separated by spaces:"
+msgstr ""
+"Die Namen der zu entfernenden Pakete eingeben -\n"
+"  mit Leerzeichen getrennt:"
+
+#: gui/layouts/page_larchify.uim:46
+msgid "Supported locales"
+msgstr "Unterstützte Lokalen"
+
+#: gui/layouts/page_larchify.uim:47
+msgid "Edit the /etc/locale.gen file to select supported glibc locales"
+msgstr "/etc/locale.gen editieren, um unterstützte glibc-locales festzulegen"
+
+#: gui/layouts/page_larchify.uim:53
+msgid "Edit /etc/rc.conf"
+msgstr "/etc/rc.conf editieren"
+
+#: gui/layouts/page_larchify.uim:54
+msgid "Edit the general system configuration file for the live system"
+msgstr "System-Konfigurationsdatei für das live-system editieren"
+
+#: gui/layouts/page_larchify.uim:60
+msgid "Edit overlay"
+msgstr "Overlay bearbeiten"
+
+#: gui/layouts/page_larchify.uim:61
+msgid "Open a file browser on the profile's 'rootoverlay'"
+msgstr "'rootoverlay'-Ordner vom Profil im Datei-Browser öffnen"
+
+#: gui/layouts/page_larchify.uim:68
+msgid "Live kernel filename"
+msgstr "live-System-Kernel"
+
+#: gui/layouts/page_larchify.uim:69
+msgid "The name of the kernel binary file (in /boot)"
+msgstr "Der Dateiname der Kerneldatei (in /boot)"
+
+#: gui/layouts/page_larchify.uim:81
+msgid "Change the name of the kernel binary file (in /boot)"
+msgstr "Kerneldateinamen ändern (in /boot)"
+
+#: gui/layouts/page_larchify.uim:86
+msgid "Live kernel package"
+msgstr "live-Kernel-Paket"
+
+#: gui/layouts/page_larchify.uim:87
+msgid "The name of the kernel for mkinitcpio (the preset file)"
+msgstr "Der Kernelname für mkinitcpio (die 'preset'-Datei)"
+
+#: gui/layouts/page_larchify.uim:99
+msgid "Change the name of the kernel preset file (for mkinitcpio)"
+msgstr "Kernel-preset-Dateinamen ändern (für mkinitcpio)"
+
+#: gui/layouts/page_larchify.uim:106
+msgid "Advanced Options"
+msgstr "Optionen für Experten"
+
+#: gui/layouts/page_larchify.uim:112
+msgid "Edit mkinitcpio.conf"
+msgstr "mkinitcpio.conf editieren"
+
+#: gui/layouts/page_larchify.uim:113
+msgid "Edit the configuration file for generating the initramfs via mkinitcpio"
+msgstr ""
+"Die Konfigurationsdatei für initramfs-Erzeugung mittels mkinitcpio editieren"
+
+#: gui/layouts/page_larchify.uim:119
+msgid "Generate ssh keys"
+msgstr "ssh-Schlüssel erzeugen"
+
+#: gui/layouts/page_larchify.uim:120
+msgid "The ssh host keys will be pre-generated"
+msgstr "Die ssh-host-Schlüssel werden vorgeneriert"
+
+#: gui/layouts/page_larchify.uim:125
+msgid "Reuse existing locales"
+msgstr "Vorhandene 'locales' wiederverwenden"
+
+#: gui/layouts/page_larchify.uim:126
+msgid ""
+"To save time it may be possible to reuse glibc locales from a previous run"
+msgstr ""
+"Um Zeit zu sparen, könnte es möglich sein, die glibc-locales von "
+"einemfrüheren Ablauf zu verwenden"
+
+#: gui/layouts/page_larchify.uim:133
+msgid "Reuse existing system.sqf"
+msgstr "Vorhandenes system.sqf verwenden"
+
+#: gui/layouts/page_larchify.uim:134
+msgid ""
+"Reuse existing system.sqf, to save time if the base system hasn't changed"
+msgstr ""
+"Schon vorhandenes system.sqf wiederverwenden, um Zeit zu sparen, falls das "
+"Basis-System unverändert ist."
+
+#: gui/layouts/page_larchify.uim:140 gui/layouts/page_main.uim:85
+msgid "Larchify"
+msgstr "Larchifizieren"
+
+#: gui/layouts/page_larchify.uim:141
+msgid "Build the main components of the larch system"
+msgstr "Die Hauptkomponenten des larch-Systems erzeugen"
+
+#: gui/layouts/page_larchify.uim:148
+msgid "User accounts"
+msgstr "Benutzer"
+
+#: gui/layouts/page_larchify.uim:162
+msgid "Click on a row to select, click on a selected cell to edit"
+msgstr ""
+"Klicke auf eine Zeile um sie zu selektieren,Klicke auf eine selektierte "
+"Zelle um sie zu editieren"
+
+#: gui/layouts/page_larchify.uim:169
+msgid "Add user"
+msgstr "Neuen Benutzer"
+
+#: gui/layouts/page_larchify.uim:170
+msgid "Create a new user-name"
+msgstr "Einen neuen Benutzernamen erstellen"
+
+#: gui/layouts/page_larchify.uim:175
+msgid "Delete user"
+msgstr "Benutzer löschen"
+
+#: gui/layouts/page_larchify.uim:176
+msgid "Remove the selected user-name"
+msgstr "Entferne den selektierten Benutzernamen"
+
+#: gui/layouts/page_larchify.uim:181
+msgid "Root password:"
+msgstr "'root'-Passwort:"
+
+#: gui/layouts/page_larchify.uim:186
+msgid "The unencrypted root password for the live system"
+msgstr "Das unverschlüsseltes 'root'-Passwort für das Live-System"
+
+#: gui/layouts/page_larchify.uim:191
+msgid "Enter a new password for the 'root' user"
+msgstr "Neues 'root'-Passwort eingeben"
+
+#: gui/layouts/page_larchify.uim:200
+msgid "Renaming failed, see log"
+msgstr "Umbennenung schlug fehl, siehe Log"
+
+#: gui/layouts/page_larchify.uim:201
+msgid "Couldn't adjust user definition"
+msgstr "Konnte Benutzer-Information nicht ändern"
+
+#: gui/layouts/page_larchify.uim:202
+msgid "Default (/etc/skel)"
+msgstr "Standard (/etc/skel)"
+
+#: gui/layouts/page_larchify.uim:203
+msgid ""
+"This folder will be copied\n"
+"to build the user's home folder:"
+msgstr ""
+"Dieser Ordner wird kopiert\n"
+"um den Home-Ordner des neuen\n"
+"Benutzers zu erstellen:"
+
+#: gui/layouts/page_larchify.uim:205
+msgid "Choose 'skel' Folder"
+msgstr "'skel'-Ordner auswählen"
+
+#: gui/layouts/page_larchify.uim:206
+msgid "Enter login-name for new user:"
+msgstr "Neuen Anmeldenamen eingeben:"
+
+#: gui/layouts/page_larchify.uim:207
+msgid "Enter root password for live system:"
+msgstr "Das unverschlüsseltes 'root'-Passwort für das Live-System"
+
+#: gui/layouts/page_larchify.uim:208
+msgid "Name of kernel binary:"
+msgstr "Kernel-Dateinamen:"
+
+#: gui/layouts/page_larchify.uim:209
+msgid "Name of kernel mkinitcpio preset:"
+msgstr "Dateiname der mkinitcpio-preset-Datei:"
+
+#: gui/layouts/page_larchify.uim:214
+msgid "Group"
+msgstr "Gruppe"
+
+#: gui/layouts/page_larchify.uim:214
+msgid "Password"
+msgstr "Passwort"
+
+#: gui/layouts/page_larchify.uim:214
+msgid "User-Name"
+msgstr "Benutzername"
+
+#: gui/layouts/page_larchify.uim:215
+msgid "'skel' directory"
+msgstr "'skel'-Ordner"
+
+#: gui/layouts/page_larchify.uim:216
+msgid "Additional Groups"
+msgstr "Zusätzliche Gruppen"
+
+#: gui/layouts/page_larchify.uim:216
+msgid "Expert options"
+msgstr "Optionen für Experten"
+
+#: gui/layouts/page_main.uim:50
+msgid "Live Arch Linux Construction Kit"
+msgstr "Live-Arch-Linux-Baukasten"
+
+#: gui/layouts/page_main.uim:54
+msgid "View Log"
+msgstr "Log Zeigen"
+
+#: gui/layouts/page_main.uim:55
+msgid "This button switches to the log viewer"
+msgstr "Dieser Knopf wechselt zum Log-Anzeige"
+
+#: gui/layouts/page_main.uim:60
+msgid "Help"
+msgstr "Hilfe"
+
+#: gui/layouts/page_main.uim:61
+msgid "This button switches to the documentation viewer"
+msgstr "Dieser Knopf wechselt zur Dokumentationsanzeige"
+
+#: gui/layouts/page_main.uim:66
+msgid "Quit"
+msgstr "Anwendung Schließen"
+
+#: gui/layouts/page_main.uim:67
+msgid "Stop the current action and quit the program"
+msgstr "Aktuellen Vorgang anhalten und Anwendung schließen"
+
+#: gui/layouts/page_main.uim:83
+msgid "Project Settings"
+msgstr "Projekteinstellungen"
+
+#: gui/layouts/page_main.uim:84
+msgid "Installation"
+msgstr "Installation"
+
+#: gui/layouts/page_main.uim:86
+msgid "Make Medium"
+msgstr "Medium Erstellen"
+
+#: gui/layouts/page_main.uim:94
+msgid "Authentication failure"
+msgstr "Fehler beim Authetifizieren"
+
+#: gui/layouts/page_main.uim:95
+msgid "Enter the password to run as administrator:"
+msgstr "Administrator-Passwort eingeben:"
+
+#: gui/layouts/page_medium.uim:39
+msgid "Source of the larch system"
+msgstr "larch-System-Quelle"
+
+#: gui/layouts/page_medium.uim:40
+msgid ""
+"Normally the larchified Arch install,\n"
+"but it could also be an existing larch medium"
+msgstr ""
+"Normalerweise die larchifizierte Arch-Installation,\n"
+"es könnte aber auch ein schon existierendes larch-Medium sein"
+
+#: gui/layouts/page_medium.uim:49
+msgid "Select where the system to put on the medium comes from"
+msgstr "Quelle für das zu erstellende System wählen"
+
+#: gui/layouts/page_medium.uim:56
+msgid "The larch data comes from here"
+msgstr "Die larch-Daten kommen von hier"
+
+#: gui/layouts/page_medium.uim:60 gui/layouts/page_medium.uim:116
+msgid "Choose"
+msgstr "Wählen"
+
+#: gui/layouts/page_medium.uim:61
+msgid "Select the source of the larch system"
+msgstr "Die QUelle des larch-Systems wählen"
+
+#: gui/layouts/page_medium.uim:67
+msgid "Type of medium to build"
+msgstr "Mediumwahl"
+
+#: gui/layouts/page_medium.uim:68
+msgid ""
+"A writeable medium could be a USB-stick or a hard drive partition, for "
+"example"
+msgstr ""
+"Ein beschreibbares Medium könnte z.B. ein USB-Stick oder eine "
+"Festplattenpartition sein."
+
+#: gui/layouts/page_medium.uim:76
+msgid "Select the larch source."
+msgstr "larch-System-Quelle wählen."
+
+#: gui/layouts/page_medium.uim:82
+msgid "Medium profile"
+msgstr "Medium-Profil"
+
+#: gui/layouts/page_medium.uim:83
+msgid "Settings which are saved in the profile"
+msgstr "Einstellungen, die im Profil gespeichert werden"
+
+#: gui/layouts/page_medium.uim:89
+msgid "Edit boot entries"
+msgstr "Boot-Optionen editieren"
+
+#: gui/layouts/page_medium.uim:90
+msgid "Edit the file determining the boot entries"
+msgstr "Die Datei editieren, die die Boot-Einträge bestimmt"
+
+#: gui/layouts/page_medium.uim:95
+msgid "Edit bootloader template"
+msgstr "Bootlader-Schablone editieren"
+
+#: gui/layouts/page_medium.uim:96
+msgid ""
+"Edit the syslinux/extlinux/isolinux configuration file\n"
+"(the larch boot entries are handled separately)"
+msgstr ""
+"Die 'syslinux/extlinux/isolinux'-Konfigurationsdatei editieren\n"
+"(die larch-Booteinträge werden separat eingestellt)"
+
+#: gui/layouts/page_medium.uim:102
+msgid "Edit medium files"
+msgstr "Medium-Dateien editieren"
+
+#: gui/layouts/page_medium.uim:103
+msgid "Open a file browser on the profile's 'cd-root' folder"
+msgstr "'cd-root'-Ordner vom Profil im Datei-Browser öffnen"
+
+#: gui/layouts/page_medium.uim:112
+msgid "The partition or iso-file to receive the larch system"
+msgstr "Die Ziel-Partition oder iso-Datei für das larch-System"
+
+#: gui/layouts/page_medium.uim:117
+msgid "Select the destination medium or file"
+msgstr "Wähle das zu erstellende Medium oder die Datei"
+
+#: gui/layouts/page_medium.uim:123
+msgid "Medium options"
+msgstr "Medium-Optionen"
+
+#: gui/layouts/page_medium.uim:124
+msgid "Optional settings for larch partitions"
+msgstr "Optionale Einstellungen für larch-Partitionen"
+
+#: gui/layouts/page_medium.uim:137
+msgid "Format medium"
+msgstr "medium formatieren"
+
+#: gui/layouts/page_medium.uim:138
+msgid ""
+"Normally the medium should be formatted before writing, but IF YOU\n"
+"KNOW WHAT YOU ARE DOING it might be useful to skip the formatting"
+msgstr ""
+"Normalerweise sollte das Medium zuerst formatiert werden, es könnte aber\n"
+"sinnvoll sein - WENN DU GENUG WEISST - die Formatierung zu überspringen"
+
+#: gui/layouts/page_medium.uim:144
+msgid "Don't set MBR"
+msgstr "MBR nicht schreiben"
+
+#: gui/layouts/page_medium.uim:145
+msgid ""
+"The bootloader will be installed to the partition only, leaving the mbr "
+"untouched\n"
+"(you'll need to provide some other means of booting)"
+msgstr ""
+"Bootlader nur auf Partition installieren, die Master-Boot-Record bleibt "
+"unberührt\n"
+"( die Bootfähigkeit muss anderweitig sichergestellt werden)"
+
+#: gui/layouts/page_medium.uim:152
+msgid "Not bootable via search"
+msgstr "Nicht über 'Suche' bootfähig"
+
+#: gui/layouts/page_medium.uim:153
+msgid ""
+"Don't create the file 'larch/larchboot':\n"
+" the medium will only be bootable by uuid, label or partition name"
+msgstr ""
+"Erstelle nicht die Datei 'larch/larchboot':\n"
+" Das Medium wird nur über 'uuid', 'label' oder Partitionsbezeichnung "
+"bootfähig sein"
+
+#: gui/layouts/page_medium.uim:160
+msgid "Data persistence"
+msgstr "Datenerhaltung"
+
+#: gui/layouts/page_medium.uim:161
+msgid "Support data persistence by using the medium as a writeable overlay"
+msgstr ""
+"Datenerhaltung unterstützen, indem das Medium als beschreibbare Überlagerung "
+"verwendet wird"
+
+#: gui/layouts/page_medium.uim:166
+msgid "Use journalling"
+msgstr "'Journalling' verwenden"
+
+#: gui/layouts/page_medium.uim:167
+msgid ""
+"The file-system containing the overlay can use journalling\n"
+"to aid data integrity"
+msgstr ""
+"Das Dateisystem kann 'journalling' verwenden, um die Datenerhaltung zu "
+"unterstützen"
+
+#: gui/layouts/page_medium.uim:174
+msgid "Medium Detection:"
+msgstr "Medium-Identifizierung:"
+
+#: gui/layouts/page_medium.uim:178
+msgid ""
+"Choose how the boot scripts determine where to look for the larch system"
+msgstr "Bestimme, wie die Bootskripts das larch-System entdecken"
+
+#: gui/layouts/page_medium.uim:187
+msgid "Volume Label:"
+msgstr "Medium-'Label':"
+
+#: gui/layouts/page_medium.uim:188
+msgid "The 'label' given to the created medium"
+msgstr "Das 'Label' für das erstellte Medium"
+
+#: gui/layouts/page_medium.uim:195
+msgid "The length may not exceed 16 bytes, 11 for vfat"
+msgstr "Die Länge darf 16 Zeichen, 11 für vfat, nicht überschreiten"
+
+#: gui/layouts/page_medium.uim:201
+msgid "Enter a new label for the volume, empty to use default"
+msgstr ""
+"Neues 'Label' für das Boot-Medium eingeben, leer lassen umdie Voreinstellung "
+"zu übernehmen"
+
+#: gui/layouts/page_medium.uim:208
+msgid "Write the larch medium"
+msgstr "larch-Medium Erstellen"
+
+#: gui/layouts/page_medium.uim:209
+msgid ""
+"The larch image will be written to the 'iso' file or to the partition, as "
+"selected"
+msgstr ""
+"Das larch-Abbild wird in die 'iso'-Datei oder zur Partition geschrieben, so "
+"wie gewählt"
+
+#: gui/layouts/page_medium.uim:217
+msgid "Choose unmounted partition"
+msgstr "Nicht-eingebundene Partition wählen"
+
+#: gui/layouts/page_medium.uim:218
+msgid "Select larch source partition"
+msgstr "larch-QUellPartition wählen"
+
+#: gui/layouts/page_medium.uim:219
+msgid ""
+"Device to receive larch system\n"
+"WARNING: Be very careful in choosing here,\n"
+"if you choose the wrong one you might\n"
+"seriously damage your system!"
+msgstr ""
+"Gerät zum Aufspielen des larch-Systems.\n"
+"ACHTUNG bei der Wahl,\n"
+"eine schlechte Wahl könnte deinem System\n"
+"ernsthafte Schäden zufügen!"
+
+#: gui/layouts/page_medium.uim:223
+msgid "Invalid larch medium folder: %s"
+msgstr "Ungültiger larch-Ordner': %s"
+
+#: gui/layouts/page_medium.uim:224
+msgid "Volume label (clear to use default):"
+msgstr "Volume-Label (leer, um die Voreinstellung zu übernehmen):"
+
+#: gui/layouts/page_medium.uim:225
+msgid "Save 'iso' to ..."
+msgstr "'iso' speichern unter ..."
+
+#: gui/layouts/page_medium.uim:226
+msgid "Read 'iso' file"
+msgstr "iso-Datei '%s' lesen"
+
+#: gui/layouts/page_medium.uim:232
+msgid "Device (e.g. /dev/sdb1)"
+msgstr "Gerät (z.B. /dev/sdb1)"
+
+#: gui/layouts/page_medium.uim:233
+msgid "Search (for 'larchboot' file)"
+msgstr "Suche (nach 'larchboot'-Datei)"
+
+#: gui/layouts/page_medium.uim:239
+msgid "writeable medium"
+msgstr "beschreibbares Medium"
+
+#: gui/layouts/page_medium.uim:241
+msgid "boot iso"
+msgstr "Boot-iso"
+
+#: gui/layouts/page_medium.uim:243
+msgid "larchify output"
+msgstr "Larchify-Ergebnis"
+
+#: gui/layouts/page_medium.uim:244
+msgid "other medium"
+msgstr "anderes Medium"
+
+#: gui/layouts/page_medium.uim:245
+msgid "iso file"
+msgstr "iso-Datei"
+
+#: gui/layouts/page_project.uim:37
+msgid "Profile"
+msgstr "Profil"
+
+#: gui/layouts/page_project.uim:48
+msgid "Select:"
+msgstr "Auswählen:"
+
+#: gui/layouts/page_project.uim:54
+msgid "Choose a profile from those already in your larch working folder"
+msgstr "Ein Profil von den im Arbeitsverzeichnis schon vorhandenen wählen"
+
+#: gui/layouts/page_project.uim:60
+msgid "Browse for Profile"
+msgstr "Profil suchen"
+
+#: gui/layouts/page_project.uim:61
+msgid "Fetch a profile from the file-system"
+msgstr "Ein Profil vom Datei-System holen"
+
+#: gui/layouts/page_project.uim:66
+msgid "Clone"
+msgstr "Klonen"
+
+#: gui/layouts/page_project.uim:67
+msgid "Make a copy of the current profile under a new name"
+msgstr "Das aktuelle Profil kopieren und neu benennen"
+
+#: gui/layouts/page_project.uim:72
+msgid "Rename"
+msgstr "Umbenennen"
+
+#: gui/layouts/page_project.uim:73
+msgid "Rename the current profile"
+msgstr "Aktuelles Profil umbenennen"
+
+#: gui/layouts/page_project.uim:78 gui/layouts/page_project.uim:132
+msgid "Delete"
+msgstr "Löschen"
+
+#: gui/layouts/page_project.uim:79
+msgid "Delete an unused profile"
+msgstr "Ein nicht verwendetes Profil löschen"
+
+#: gui/layouts/page_project.uim:84
+msgid "Copy to ..."
+msgstr "Kopieren nach ..."
+
+#: gui/layouts/page_project.uim:85
+msgid "Copy the current profile to somehere else"
+msgstr "Das aktuelle Profil irgendwohin kopieren"
+
+#: gui/layouts/page_project.uim:92
+msgid "Advanced Project Options"
+msgstr "Projekt-Optionen für Experten"
+
+#: gui/layouts/page_project.uim:116
+msgid "Choose Existing Project:"
+msgstr "Vorhandenes Projekt Wählen:"
+
+#: gui/layouts/page_project.uim:120
+msgid "Choose a project from those already defined"
+msgstr "Ein Projekt von den schon definierten wählen"
+
+#: gui/layouts/page_project.uim:126
+msgid "New Project"
+msgstr "Neues Projekt"
+
+#: gui/layouts/page_project.uim:127
+msgid "Create a new project"
+msgstr "Ein neues Projekt erstellen"
+
+#: gui/layouts/page_project.uim:133
+msgid "Delete a project"
+msgstr "Ein Projekt löschen"
+
+#: gui/layouts/page_project.uim:138
+msgid "Installation Path"
+msgstr "Installationspfad"
+
+#: gui/layouts/page_project.uim:146
+msgid "The root directory of the Arch installation to larchify"
+msgstr "Das Root-Verzeichnis der zu larchifizierenden Arch-Installation"
+
+#: gui/layouts/page_project.uim:152
+msgid "Change the root directory of the Arch installation"
+msgstr "Das Root-Verzeichnis der Arch-Installation ändern"
+
+#: gui/layouts/page_project.uim:159
+msgid "Select profile source folder"
+msgstr "Profil-Quellordner wählen"
+
+#: gui/layouts/page_project.uim:160
+msgid "Destination profile exists - replace it?"
+msgstr "Ziel (Profilordner) existiert schon, ersetzen?"
+
+#: gui/layouts/page_project.uim:161
+msgid "Enter new name for current profile:"
+msgstr "Neuen Namen für aktuelles Profil eingeben:"
+
+#: gui/layouts/page_project.uim:162
+msgid "Profile '%s' exists already"
+msgstr "Profil '%s' existiert schon"
+
+#: gui/layouts/page_project.uim:163
+msgid "Can't rename the profile, it is in use by other projects"
+msgstr ""
+"Profil kann nicht umbennant werden, es wird von anderen Projekten gebraucht"
+
+#: gui/layouts/page_project.uim:165
+msgid "Save profile folder"
+msgstr "Profilordner speichern"
+
+#: gui/layouts/page_project.uim:166
+msgid "Destination exists - replace it?"
+msgstr "Ziel existiert schon - ersetzen?"
+
+#: gui/layouts/page_project.uim:167
+msgid "Select the profile for deletion"
+msgstr "Profil zum Löschen auswählen"
+
+#: gui/layouts/page_project.uim:168
+msgid "Remove Profile"
+msgstr "Profil löschen"
+
+#: gui/layouts/page_project.uim:169
+msgid "There are no profiles which can be deleted - all are in use"
+msgstr "Kein Profil kann gelöscht werden - alle werden gebraucht"
+
+#: gui/layouts/page_project.uim:171
+msgid "Couldn't delete profile '%s' - check permissions"
+msgstr "Profil '%s' konnte nicht gelöscht werden - Rechte überprüfen"
+
+#: gui/layouts/page_project.uim:173
+msgid ""
+"An empty path here will reset to the default.\n"
+"  WARNING: Double check your path -\n"
+"  If you make a mistake here it could destroy your system!\n"
+"\n"
+"Enter new installation path:"
+msgstr ""
+"Ein leerer Pfad wird die Voreinstellung übernehmen.\n"
+"ACHTUNG: Den Pfad gut kontrollieren -\n"
+"  Ein Fehler könnte dein System zerstören!\n"
+"\n"
+"Neuen Installationspfad eingeben:"
+
+#: gui/layouts/page_project.uim:177
+msgid "Enter name for new project:"
+msgstr "Neuen Projektnamen eingeben:"
+
+#: gui/layouts/page_project.uim:178
+msgid "Project '%s' already exists"
+msgstr "Projekt '%s' existiert schon."
+
+#: gui/layouts/page_project.uim:179
+msgid "Select the project for deletion"
+msgstr "Zu löschendes Projekt auswählen"
+
+#: gui/layouts/page_project.uim:180
+msgid "Remove Project"
+msgstr "Projekt löschen"
+
+#: gui/layouts/page_project.uim:181
+msgid "There are no projects which can be deleted"
+msgstr "Kein Projekt kann gelöscht werden"
+
+#: gui/layouts/page_project.uim:182
+msgid "'%s' is not a profile folder"
+msgstr "Ungültiger Profilordner: '%s'"
+
+#: gui/layouts/page_project.uim:183
+msgid "The path '%s' is already in use, not saving"
+msgstr "Der Pfad '%s' wird schon benutzt, kann nicht speichern"
+
+#: gui/layouts/page_project.uim:184
+msgid "Enter the name for the new profile:"
+msgstr "Den neuen Namen für das neue Profil eingeben:"
+
+#: gui/layouts/profile_browse.uim:43
+msgid ""
+"You can browse the file-system for the source profile directory,\n"
+"or else choose one of the examples"
+msgstr ""
+"Man kann das Dateisystem browsen, um den Profil-Quellordner festzulegen,\n"
+"oder eins der Beispiel-Profile kann gewählt werden."
+
+#: gui/layouts/profile_browse.uim:48
+msgid "Example Profiles"
+msgstr "Beispiel-Profile"
+
+#: gui/layouts/profile_browse.uim:49
+msgid ""
+"Here you can select one of the example profiles to use as a starting point"
+msgstr "Hier kann eins der Beispiel-Profile as Ausgangspunkt gewählt werden"
+
+#: gui/layouts/profile_browse.uim:60
+msgid "Browse file-system"
+msgstr "Dateisystem browsen"
+
+#: gui/layouts/profile_browse.uim:61
+msgid "Open a file dialog to search for the profile"
+msgstr "Datei-Dialog öffnen, um das Profil zu suchen"
+
+#: gui/layouts/profile_browse.uim:66
+msgid "Source:"
+msgstr "Quelle:"
+
+#: gui/layouts/profile_browse.uim:71
+msgid "The path from which the profile directory will be copied"
+msgstr "Der Pfad zum Profil-Quellordner"
+
+#: gui/layouts/profile_browse.uim:75
+msgid "New name:"
+msgstr "Neuer Name:"
+
+#: gui/layouts/profile_browse.uim:80
+msgid "The name the profile will be given in the work area"
+msgstr "Der Name, unter dem das Profil im Arbeitsordner bekannt wird"
+
+#: gui/layouts/profile_browse.uim:85
+msgid "Open a dialog to change the new profile's name"
+msgstr "Eingabe-Dialog öffnen, um den Namen des neuen Profils zu ändern"
+
+#: gui/layouts/progress.uim:38
+msgid "Processing ..."
+msgstr "Prozess läuft ..."
+
+#: gui/layouts/progress.uim:49
+msgid "An indication of the progress of the current operation, if possible"
+msgstr "Zeigt den Fortschritt der aktuellen Operation, insoweit möglich"
+
+#: gui/layouts/progress.uim:55
+msgid "Stop the current action"
+msgstr "Aktuellen Vorgang anhalten"
+
+#: gui/layouts/progress.uim:60
+msgid "Done"
+msgstr "Fertig"
+
+#~ msgid "The profile's overlay may not contain /boot"
+#~ msgstr "Der Überlagerungsordner des Profils darf /boot nicht enthalten"

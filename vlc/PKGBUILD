@@ -1,0 +1,74 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer abveritas@chakra-project.org
+
+pkgname='vlc'
+pkgver=2.0.3
+pkgrel=2
+arch=('i686' 'x86_64')
+url="http://www.videolan.org/vlc/"
+license=('GPL')
+depends=('a52dec' 'fluidsynth' 'libmtp' 'libdvbpsi' 'libxpm' 'libcdio'
+         'libdca' 'qt' 'libproxy' 'sdl_image' 'libdvdnav' 'mesa'
+         'lua' 'v4l-utils' 'libcddb' 'smbclient' 'libmatroska' 'zvbi'
+         'taglib' 'sysfsutils' 'libmpcdec' 'ffmpeg' 'faad2' 'libupnp'
+         'libshout' 'libmad' 'fribidi' 'libmpeg2' 'libmodplug' 
+         'ttf-freefont' 'libxv' 'libass' 'xdg-utils' 'desktop-file-utils' 'xcb-util-keysyms')
+makedepends=('avahi' 'pkgconfig' 'live-media' 'libnotify' 'libbluray'
+             'flac' 'libtheora' 'alsa-lib' 'jack' 'kdelibs' 'udev'
+             'libraw1394' 'libdc1394' 'libavc1394' 'libva' 'libpulse'
+             'lirc-utils' 'gnutls' 'libcaca')
+optdepends=('avahi: for service discovery using bonjour protocol'
+            'libnotify: for notification plugin'
+            'ncurses: for ncurses interface support'
+            'libdvdcss: for decoding encrypted DVDs'
+            'lirc-utils: for lirc plugin'
+            'libavc1394: for devices using the 1394ta AV/C'
+            'libdc1394: for IEEE 1394 plugin'
+            'libpulse: PulseAudio support'
+            'vdpau-video: vdpau back-end for nvidia'
+            'libva-driver-intel: back-end for intel cards'
+            'libbluray: for Blu-Ray disks')
+conflicts=('vlc-plugin')
+replaces=('vlc-plugin')
+backup=('usr/share/vlc/http/.hosts'
+        'usr/share/vlc/http/dialogs/.hosts'
+        'usr/share/vlc/lua/http/.hosts'
+        'usr/share/vlc/lua/http/dialogs/.hosts')
+categories=('multimedia')
+options=('!libtool')
+install="vlc.install"
+source=("http://downloads.sourceforge.net/project/$pkgname/$pkgver/$pkgname-$pkgver.tar.xz?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2F$pkgname%2Ffiles%2F$pkgver%2F&ts=1329594862&use_mirror=iweb")
+md5sums=('a7e79565e3df07dcf9abc6cad3ac26bb')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+
+  sed -i -e 's:truetype/freefont:TTF:g' modules/text_renderer/freetype.c
+
+  ./configure --prefix=/usr \
+              --disable-rpath \
+              --enable-faad \
+              --enable-dbus-control \
+              --enable-nls \
+              --enable-lirc \
+              --enable-pvr \
+              --enable-ncurses \
+              --enable-upnp \
+              --enable-realrtsp \
+              --enable-bluray
+  make
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+
+  make DESTDIR="${pkgdir}" install
+
+  for res in 16 32 48 128; do
+    install -D -m644 "${srcdir}/vlc-${pkgver}/share/icons/${res}x${res}/vlc.png" \
+        "${pkgdir}/usr/share/icons/hicolor/${res}x${res}/apps/vlc.png"
+  done
+}
+

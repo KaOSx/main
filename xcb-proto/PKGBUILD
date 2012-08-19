@@ -1,0 +1,32 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
+# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+
+# include global config
+source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+
+pkgname=xcb-proto
+pkgver=1.7
+pkgrel=1
+pkgdesc="XML-XCB protocol descriptions"
+arch=(any)
+url="http://xcb.freedesktop.org/"
+license=('custom')
+makedepends=('python2' 'libxml2')
+source=(${url}/dist/${pkgname}-${pkgver}.tar.bz2)
+sha1sums=('f47772de91394aa9ad8ee8a5b57a71072d438b2b')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  ./configure --prefix=/usr 
+  make 
+}
+
+package() {
+  cd "$srcdir/${pkgname}-${pkgver}"
+  make DESTDIR="${pkgdir}" install 
+  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
+  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/" 
+}

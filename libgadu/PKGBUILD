@@ -1,0 +1,33 @@
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
+# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+
+# include global config
+source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+
+pkgname=libgadu
+pkgver=1.11.1
+pkgrel=1
+pkgdesc="This library implements the client side of the Gadu-Gadu protocol"
+arch=('i686' 'x86_64')
+url="http://toxygen.net/libgadu/"
+license=('GPL')
+depends=('openssl')
+options=('!libtool')
+source=("http://toxygen.net/${pkgname}/files/${pkgname}-${pkgver}.tar.gz")
+md5sums=('01016ad3b0ea955b61ef4badf2bd48bf')
+
+build() {
+  cd "${srcdir}"/${pkgname}-${pkgver}
+  ./configure --prefix=/usr \
+ 	 --disable-static \
+	 --enable-shared \
+	 --with-pthread
+  make
+}
+
+package() {
+  cd "${srcdir}"/${pkgname}-${pkgver}
+  make DESTDIR="${pkgdir}" install
+}

@@ -1,0 +1,14 @@
+diff -Naur PackageKit-0.7.1-orig//backends/alpm/pk-backend-groups.c PackageKit-0.7.1/backends/alpm/pk-backend-groups.c
+--- PackageKit-0.7.1-orig//backends/alpm/pk-backend-groups.c	2011-08-04 12:42:46.000000000 +0200
++++ PackageKit-0.7.1/backends/alpm/pk-backend-groups.c	2012-03-05 18:25:35.160996366 +0100
+@@ -132,8 +132,8 @@
+ 	g_return_val_if_fail (pkg != NULL, NULL);
+ 	g_return_val_if_fail (grps != NULL, NULL);
+ 
+-	/* use the first group that we recognise */
+-	for (i = alpm_pkg_get_groups (pkg); i != NULL; i = i->next) {
++	/* use the first categories that we recognise */
++	for (i = alpm_pkg_get_categories (pkg); i != NULL; i = i->next) {
+ 		gpointer value = g_hash_table_lookup (grps, i->data);
+ 
+ 		if (value != NULL) {

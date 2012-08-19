@@ -1,0 +1,34 @@
+# Platform Packages for Chakra, part of chakra-project.org
+
+pkgname=perl-sdl
+pkgver=2.536
+pkgrel=4
+pkgdesc="Simple DirectMedia Layer for Perl."
+arch=(i686 x86_64)
+license=(LGPL)
+url="http://sdl.perl.org"
+depends=(perl-alien-sdl perl-tie-simple
+         sdl_{net,ttf,image,mixer,gfx,pango} mesa smpeg)
+options=('!emptydirs')
+replaces=(sdl_perl)
+conflicts=(sdl_perl)
+provides=("sdl_perl=$pkgver")
+source=(http://search.cpan.org/CPAN/authors/id/F/FR/FROGGS/SDL-$pkgver.tar.gz)
+md5sums=('5c682e8a96cd655e959497b034b978ce')
+
+build() {
+  cd $srcdir/SDL-$pkgver
+  #unset CFLAGS
+  perl Build.PL installdirs=vendor destdir=$pkgdir
+  perl Build
+}
+
+check() {
+  cd "$srcdir/SDL-$pkgver"
+  perl Build test || true
+}
+
+package() {
+  cd "$srcdir/SDL-$pkgver"
+  perl Build install destdir="$pkgdir"
+}

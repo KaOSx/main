@@ -1,0 +1,31 @@
+# Platform packages for Chakra
+
+pkgname=hunspell-sv
+pkgver=2.2
+pkgrel=1
+pkgdesc="Swedish dictionaries for Hunspell"
+arch=('any')
+url="http://hunspell.sourceforge.net/"
+license=('LGPL3')
+depends=('hunspell')
+source=("https://dsso.googlecode.com/files/sv-$pkgver.zip")
+md5sums=('1cf8154f157d3783ede884b47063d27e')
+
+package() {
+    cd $srcdir
+    install -D -m644 sv_SE.dic $pkgdir/usr/share/hunspell/sv_SE.dic
+    install -D -m644 sv_SE.aff $pkgdir/usr/share/hunspell/sv_SE.aff
+    install -D -m644 sv_FI.dic $pkgdir/usr/share/hunspell/sv_FI.dic
+    install -D -m644 sv_FI.aff $pkgdir/usr/share/hunspell/sv_FI.aff
+
+    #myspell symlinks
+    install -dm755 "${pkgdir}"/usr/share/myspell/dicts
+    pushd "${pkgdir}"/usr/share/myspell/dicts  
+    for file in "${pkgdir}"/usr/share/hunspell/*; do
+        ln -sv /usr/share/hunspell/"$(basename "${file}")" .
+    done
+    popd
+}
+
+
+

@@ -1,0 +1,30 @@
+#
+# Chakra Packages for Chakra, part of chakra-project.org
+#
+# maintainer abveritas@chakra-project.org
+
+pkgname=yaz
+pkgver=4.2.29
+pkgrel=1
+pkgdesc="A toolkit supporting the development of Z39.50/SRW/SRU clients and servers"
+arch=('i686' 'x86_64')
+license=('custom')
+url="http://www.indexdata.dk/yaz"
+depends=('openssl' 'libxslt' 'icu')
+options=('!libtool')
+source=(http://ftp.indexdata.dk/pub/$pkgname/$pkgname-$pkgver.tar.gz)
+md5sums=('584bcf12401f182a42091616c6cf7e0a')
+
+build() {
+  cd "$srcdir/$pkgname-$pkgver"
+  ./configure --prefix=/usr \
+    --enable-shared=yaz \
+    --with-openssl=/usr
+  make 
+}
+
+package() {
+  cd "$srcdir/$pkgname-$pkgver"
+  make DESTDIR="$pkgdir" install
+  install -D LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}

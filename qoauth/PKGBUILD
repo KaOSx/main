@@ -1,0 +1,38 @@
+#
+# Chakra Packages for Chakra, part of chakra-project.org
+#
+# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
+# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+
+# PKGBUILD based on: http://aur.archlinux.org/packages.php?ID=26800
+
+# include global config
+source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+
+pkgname=qoauth
+pkgver=1.0.1
+pkgrel=1
+pkgdesc="Support with OAuth-powered network services"
+url="http://github.com/ayoy/qoauth"
+license=('GPL')
+arch=('i686' 'x86_64')
+depends=('qca')
+makedepends=('cmake' 'automoc4')
+source=("http://files.ayoy.net/qoauth/release/current/src/${pkgname}-${pkgver}-src.tar.bz2")
+md5sums=('bcb6d01e6c9a6fb22099c9e0f5889578')
+
+build() {
+  cd ${srcdir}/${pkgname}-${pkgver}-src
+  qmake
+  make
+}
+
+package() {
+  cd ${srcdir}/${pkgname}-${pkgver}-src
+  make INSTALL_ROOT=${pkgdir} install
+
+  # Move libraries from /usr/lib64 to /usr/lib
+  if [ -d ${pkgdir}/usr/lib64 ]; then
+    mv ${pkgdir}/usr/lib64 ${pkgdir}/usr/lib
+  fi
+}

@@ -1,0 +1,50 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer abveritas@chakra-project.org
+
+pkgname=nouveau-dri
+pkgver=8.0.3.1
+pkgrel=1
+pkgdesc="Mesa Gallium3D drivers for Nouveau"
+arch=('i686' 'x86_64')
+depends=('libgl' 'libdrm')
+makedepends=('pkgconfig' 'glproto' 'libdrm' 'libxxf86vm' 'llvm' 'libxdamage' 'expat'
+             'libx11' 'libxt' 'gcc-libs' 'dri2proto'  'python2' 'talloc' 'libxml2' 'imake')
+url="http://mesa3d.sourceforge.net"
+license=('custom')
+source=("mesa.tar.xz"
+        'LICENSE')
+md5sums=('74eea16bbd177d01e4d2d33a1ced06af'
+         '5c65a0fe315dd347e09b1f2826a1df5a')
+
+build() {
+    cd ${srcdir}/mesa
+
+     autoreconf -vfi
+    ./configure --prefix=/usr \
+    --with-dri-driverdir=/usr/lib/xorg/modules/dri \
+    --with-gallium-drivers=nouveau \
+    --with-dri-drivers=nouveau \
+    --enable-gallium-llvm \
+    --enable-gallium-egl \
+    --enable-shared-glapi \
+    --enable-gbm \
+    --enable-glx-tls \
+    --enable-dri \
+    --enable-glx \
+    --enable-osmesa \
+    --enable-gles1 \
+    --enable-gles2 \
+    --enable-egl \
+    --enable-texture-float \
+    --enable-xa 
+  make
+}
+
+package() {
+  # classic mesa driver for nv10 , nv20 nouveau_vieux_dri.so
+  #make -C ${srcdir}/mesa/src/mesa/drivers/dri/nouveau DESTDIR="${pkgdir}" install
+  # gallium3D driver for nv30 - nv40 - nv50 nouveau_dri.so
+  make -C ${srcdir}/mesa/src/gallium/targets/dri-nouveau DESTDIR="${pkgdir}" install
+}

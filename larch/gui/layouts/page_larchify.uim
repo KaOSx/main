@@ -1,0 +1,216 @@
+# page_larchify.uim - The layout for the larchify page
+#
+# (c) Copyright 2010 Michael Towers (larch42 at googlemail dot com)
+#
+# This file is part of the larch project.
+#
+#    larch is free software; you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation; either version 2 of the License, or
+#    (at your option) any later version.
+#
+#    larch is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with larch; if not, write to the Free Software Foundation, Inc.,
+#    51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+#
+#----------------------------------------------------------------------------
+# 2010.10.10
+
+(lambda USERHEADERS:
+[
+    ['Page', ':page_larchify',
+            {   'layout':
+                    ['VBOX',
+#                        ':larchify',
+                        ':users',
+                        'HLINE',
+                        ['HBOX',
+                            ['VBOX', ':overlay', ':locales', ':rcconf'],
+                            'VLINE',
+                            ['VBOX', ':kernelfile', '*', ':kernelpack'],
+                            'VLINE',
+                            ':larchify_advanced'
+                        ],
+                        'HLINE',
+                        ['HBOX', ':oldsquash', '*', ':build']
+                    ]
+            }
+    ],
+    # - - - - The profile editing frame
+    ['Button', ':locales',
+            {   'text': _("Supported locales"),
+                'tt': _("Edit the /etc/locale.gen file to select"
+                        " supported glibc locales")
+            },
+        'clicked'
+    ],
+    ['Button', ':rcconf',
+            {   'text': _("Edit /etc/rc.conf"),
+                'tt': _("Edit the general system configuration file for the"
+                        " live system")
+            },
+        'clicked'
+    ],
+    ['Button', ':overlay',
+            {   'text': _("Edit overlay"),
+                'tt': _("Open a file browser on the profile's 'rootoverlay'")
+            },
+        'clicked'
+    ],
+
+    # - - - - The kernel selection frame
+    ['Frame', ':kernelfile',
+            {   'text': _("Live kernel filename"),
+                'tt': _("The name of the kernel binary file (in /boot)"),
+                'layout':
+                    ['HBOX', ':kernele', ':kernelb']
+            }
+    ],
+    ['LineEdit', ':kernele',
+            {   'width': 100,
+                'ro': True,
+            }
+    ],
+    ['Button', ':kernelb',
+            {   'text': _("Change"),
+                'tt': _("Change the name of the kernel binary file (in /boot)")
+            },
+        'clicked'
+    ],
+    ['Frame', ':kernelpack',
+            {   'text': _("Live kernel package"),
+                'tt': _("The name of the kernel for mkinitcpio (the preset file)"),
+                'layout':
+                    ['HBOX', ':kernelmkie', ':kernelmkib']
+            }
+    ],
+    ['LineEdit', ':kernelmkie',
+            {   'width': 100,
+                'ro': True,
+            }
+    ],
+    ['Button', ':kernelmkib',
+            {   'text': _("Change"),
+                'tt': _("Change the name of the kernel preset file (for mkinitcpio)")
+            },
+        'clicked'
+    ],
+
+
+    ['OptionalFrame', ':larchify_advanced',
+            {   'text': _("Advanced Options"),
+                'layout':
+                    ['VBOX', ':initcpio', ':oldlocales', ':ssh'],
+            }
+    ],
+    ['Button', ':initcpio',
+            {   'text': _("Edit mkinitcpio.conf"),
+                'tt': _("Edit the configuration file for generating"
+                        " the initramfs via mkinitcpio")
+            },
+        'clicked'
+    ],
+    ['CheckBox', ':ssh',
+            {   'text': _("Generate ssh keys"),
+                'tt': _("The ssh host keys will be pre-generated")
+            },
+        'toggled'
+    ],
+    ['CheckBox', ':oldlocales',
+            {   'text': _("Reuse existing locales"),
+                'tt': _("To save time it may be possible to reuse glibc"
+                        " locales from a previous run")
+            },
+#        'toggled'
+    ],
+
+    ['CheckBox', ':oldsquash',
+            {   'text': _("Reuse existing system.sqf"),
+                'tt': _("Reuse existing system.sqf, to save time if the"
+                        " base system hasn't changed")
+            },
+#        'toggled'
+    ],
+    ['Button', ':build',
+            {   'text': _("Larchify"),
+                'tt': _("Build the main components of the larch system")
+            },
+        'clicked'
+    ],
+
+#Note that this should be disabled if installation directory is '/'
+    ['Frame', ':users',
+            {   'text': _("User accounts"),
+                'layout':
+                    ['VBOX',
+                        ':utable',
+                        ['HBOX', ':useradd', ':userdel', '*',
+                            ':rootpwl', ':rootpwe', ':rootpwb'
+                        ]
+                    ]
+            }
+    ],
+    ['List', ':utable',
+            {   'selectionmode': 'Single',
+                'headers': USERHEADERS,
+                'compact': True,
+                'tt': _("Click on a row to select, click on a selected"
+                        " cell to edit")
+            },
+#        'select',
+        'clicked'
+    ],
+    ['Button', ':useradd',
+            {   'text': _("Add user"),
+                'tt': _("Create a new user-name")
+            },
+        'clicked'
+    ],
+    ['Button', ':userdel',
+            {   'text': _("Delete user"),
+                'tt': _("Remove the selected user-name")
+            },
+        'clicked'
+    ],
+    ['Label', ':rootpwl',
+            {   'text': _("Root password:")
+            }
+    ],
+    ['LineEdit', ':rootpwe',
+            {   'ro': True,
+                'tt': _("The unencrypted root password for the live system")
+            }
+    ],
+    ['Button', ':rootpwb',
+            {   'text': _("Change"),
+                'tt': _("Enter a new password for the 'root' user")
+            },
+        'clicked'
+    ],
+
+
+    ['DATA', 'larchify_page_data',
+            {   'messages':
+                    {   'uheaders': USERHEADERS,
+                        'rn_error': _("Renaming failed, see log"),
+                        'ud_error': _("Couldn't adjust user definition"),
+                        'def_skel': _("Default (/etc/skel)"),
+                        'skel_lbl': _("This folder will be copied\n"
+                "to build the user's home folder:"),
+                        'skel_ttl': _("Choose 'skel' Folder"),
+                        'newlogin': _("Enter login-name for new user:"),
+                        'newrootpw': _("Enter root password for live system:"),
+                        'kernelf':  _("Name of kernel binary:"),
+                        'kernelp':  _("Name of kernel mkinitcpio preset:"),
+                    }
+            },
+    ],
+]
+)([_("User-Name"), _("Password"), _("Group"),
+                        "UID", _("'skel' directory"),
+                        _("Additional Groups"), _("Expert options")])

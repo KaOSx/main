@@ -1,0 +1,31 @@
+#
+# Chakra Packages for Chakra, part of chakra-project.org
+#
+# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
+# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+
+# include global config
+source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+
+pkgname=glew
+pkgver=1.5.8
+pkgrel=1
+pkgdesc="A cross-platform C/C++ extension loading library"
+arch=('i686' 'x86_64')
+url="http://glew.sourceforge.net"
+license=('BSD' 'MIT' 'GPL')
+depends=('libxmu' 'libxi' 'mesa')
+source=(http://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tgz)
+sha1sums=('450946935faa20ac4950cb42ff025be2c1f7c22e')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  sed -i 's|lib64|lib|' config/Makefile.linux
+  make
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  make GLEW_DEST="${pkgdir}/usr" install
+  install -D -m644 LICENSE.txt "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+}

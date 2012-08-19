@@ -1,0 +1,35 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
+# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+
+# include global config
+source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+
+pkgname=libxau
+pkgver=1.0.6
+pkgrel=2
+pkgdesc="X11 authorisation library"
+arch=(i686 x86_64)
+url="http://xorg.freedesktop.org/"
+depends=('glibc')
+makedepends=('pkgconfig' 'xproto>=7.0.15')
+license=('custom')
+options=('!libtool')
+source=(${url}/releases/individual/lib/libXau-${pkgver}.tar.bz2)
+sha1sums=('0e1ab449f98026e4599f6e0d7491810d36c8fe4d')
+
+build() {
+  cd "${srcdir}/libXau-${pkgver}"
+  ./configure --prefix=/usr --sysconfdir=/etc
+  make
+}
+
+package () {
+  cd "${srcdir}/libXau-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+
+  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
+  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
+}

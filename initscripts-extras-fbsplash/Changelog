@@ -1,0 +1,22 @@
+
+Improved fbsplash-scripts (aka initscripts-extras-fbsplash)
+ for Chakra GNU/Linux mkinitcpio and initscripts
+
+Changelog
+
+ 2.0    Rewritten from scratch to ease maintenance
+        (dropping some less important workarounds and functionality)
+        Feature List
+        * Initcpio hook for early splash screen
+        * Supports early daemon start in initcpio (themes w/o pre-init script)
+        * Supports splash stop/fadeout before X started from DAEMONS array
+        * Supports Fbsplash services events (icons for services/'daemons')
+        * Supports theme hook scripts
+        * Provides rc.sysinit pseudo services and fine grained progress
+        * Can push initscripts [BUSY] messages to the splash status line
+        * Filesystem check progress status messages (ext[234])
+        * Writes initscripts [FAIL] messages into the splash textbox
+        * Can switch to console on any [FAIL] message
+        * Provides log file /lib/splash/cache/profile for debuging
+
+# EOF #

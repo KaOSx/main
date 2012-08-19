@@ -1,0 +1,64 @@
+#
+# Chakra Packages for Chakra, part of chakra-project.org
+#
+# maintainer abveritas@chakra-project.org
+
+_extramodules=extramodules-3.4-CHAKRA
+_kver="$(cat /lib/modules/${_extramodules}/version)"
+
+pkgname=(nvidia-173xx chd-nvidia-173xx)
+pkgver=173.14.35
+pkgrel=4
+arch=('i686' 'x86_64')
+[ "$CARCH" = "i686"   ] && ARCH=x86
+[ "$CARCH" = "x86_64" ] && ARCH=x86_64
+url="http://www.nvidia.com/"
+makedepends=('linux-headers')
+license=('custom')
+source=("http://download.nvidia.com/XFree86/Linux-$ARCH/${pkgver}/NVIDIA-Linux-$ARCH-${pkgver}-pkg0.run"
+	"https://gitorious.org/chakra/chakra-hardware-detection/blobs/raw/master/hwdb/nvidia_supported"
+	"ftp://download.nvidia.com/XFree86/patches/security/2012-08-01/nvidia-blacklist-vga-pmu-registers-195.diff")
+md5sums=('0fa45e6fc23a2dc69faa8a66ae0e0cc5')
+[ "$CARCH" = "x86_64" ] && md5sums=('6934b522d2cf313ae6e94e25763fe1a8')
+md5sums+=('62d0cdb856cfae64753c0f3acf729d47'
+	  '4d9eeb020da469b6c75cab6e05f4cf77')
+
+build() {
+    cd $srcdir
+
+    sh NVIDIA-Linux-$ARCH-${pkgver}-pkg0.run --extract-only
+    cd NVIDIA-Linux-$ARCH-${pkgver}-pkg0
+
+    # apply security patch "http://nvidia.custhelp.com/app/answers/detail/a_id/3140"
+    patch -p0 < "${srcdir}/nvidia-blacklist-vga-pmu-registers-195.diff"
+    cd usr/src/nv/
+    ln -s Makefile.kbuild Makefile
+    make SYSSRC=/lib/modules/${_kver}/build/ module
+}
+
+package_nvidia-173xx() {
+    pkgdesc="Legacy NVIDIA drivers for linux."
+    depends=('linux>=3.4' 'linux<3.5' 'nvidia-173xx-utils')
+    conflicts=('nvidia-96xx' 'nvidia')
+    install=nvidia.install
+
+    cd $srcdir/"NVIDIA-Linux-$ARCH-${pkgver}-pkg0/usr/src/nv/"
+    mkdir -p $pkgdir/lib/modules/${_extramodules}
+    install -m644 nvidia.ko $pkgdir/lib/modules/${_extramodules}
+    mkdir -p "${pkgdir}/etc/modprobe.d"
+    echo "blacklist nouveau" >> $pkgdir/etc/modprobe.d/nouveau_blacklist.conf
+    sed -i -e "s/EXTRAMODULES='.*'/EXTRAMODULES='${_extramodules}'/" $startdir/nvidia.install
+    # gzip -9 module
+    gzip "${pkgdir}/lib/modules/${_extramodules}/nvidia.ko"
+}
+
+package_chd-nvidia-173xx() {
+    pkgdesc="CHD ids for nvidia $pkgver"
+    arch=('any')
+
+    cd "${srcdir}/NVIDIA-Linux-$ARCH-${pkgver}-pkg0/usr/src/nv/"
+
+    install -dm755 "${pkgdir}/opt/chakra/hwdb"
+    sh -e "${srcdir}/nvidia_supported" ../../share/doc/README.txt nv-kernel.o \
+        > "${pkgdir}/opt/chakra/hwdb/hw_nvidia173xx_hwdb"
+}

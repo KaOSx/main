@@ -1,0 +1,31 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer abveritas@chakra-project.org
+
+pkgname=liblrdf
+pkgver=0.5.0
+pkgrel=1
+pkgdesc="A library for the manipulation of RDF file in LADSPA plugins"
+arch=('i686' 'x86_64')
+url="http://sourceforge.net/projects/lrdf" #"http://sourceforge.net/projects/lrdf"
+depends=('raptor' 'ladspa')
+makedepends=('pkgconfig')
+license=('GPL')
+options=('!libtool')
+source=("https://github.com/swh/LRDF/tarball/${pkgver}")
+groups=('ladspa-plugins')
+md5sums=('005ea24152620da7f2ee80a78e17f784')
+
+build() {
+  cd "${srcdir}/swh-LRDF-7ebc032"
+
+  autoreconf -vfi
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd "${srcdir}/swh-LRDF-7ebc032"
+  make DESTDIR="${pkgdir}" install
+}

@@ -1,0 +1,97 @@
+#
+# Chakra Packages for Chakra, part of chakra-project.org
+#
+# maintainer abveritas@chakra-project.org
+
+
+pkgname=lirc-utils
+pkgver=0.9.0
+pkgrel=4
+pkgdesc="Linux Infrared Remote Control utils"
+arch=('i686' 'x86_64')
+url="http://www.lirc.org/"
+license=('GPL')
+_kernver='3.4.6-1'
+depends=('alsa-lib' 'libusb' 'libx11' 'libsm' 'python' 'libftdi' 'linux>=3.4' 'linux<3.5')
+makedepends=('help2man' 'linux-headers>=3.4' 'linux-headers<3.5')
+replaces=('lirc+pctv')
+backup=('etc/conf.d/lircd.conf' 'etc/conf.d/irexec.conf')
+options=('!libtool' '!makeflags')
+source=(http://sourceforge.net/projects/lirc/files/LIRC/$pkgver/lirc-$pkgver.tar.bz2
+        lirc_wpc8769l.patch
+        lircd-handle-large-config.patch
+        lirc_atiusb-kfifo.patch
+        kernel-2.6.39.patch
+	lircd lircmd lirc.logrotate lircd.conf irexec.conf irexecd)
+md5sums=('b232aef26f23fe33ea8305d276637086'
+         '1cce37e18e3f6f46044abab29016d18f'
+         '1014f2ea03a557c673c9084118676111'
+         '86e6894acde723ebc8a2284512283f17'
+         '087a7d102e1c96bf1179f38db2b0b237'
+         '310f718169b16b6afa6615fa53a0ef21'
+         '85f7fdac55e5256967241864049bf5e9'
+         '3deb02604b37811d41816e9b4385fcc3'
+         '5b1f8c9cd788a39a6283f93302ce5c6e'
+         'f0c0ac930326168035f0c8e24357ae55'
+         '618ca4f666341d6ade8c616ce59f4d1b')
+
+build() {
+        # configure
+        cd ${srcdir}/lirc-$pkgver 
+        patch -p1 -i "${srcdir}/lirc_wpc8769l.patch"
+        patch -p1 -i "${srcdir}/lircd-handle-large-config.patch"
+        patch -p1 -i "${srcdir}/lirc_atiusb-kfifo.patch"
+        patch -p1 -i "${srcdir}/kernel-2.6.39.patch"
+
+      # Disabling lirc_gpio driver as it does no longer work Kernel 2.6.22+
+	sed -i -e "s:lirc_gpio\.o::" drivers/lirc_gpio/Makefile.am 
+
+	autoreconf 
+	libtoolize 
+
+	./configure --enable-sandboxed --prefix=/usr \
+	--with-driver=all --with-kerneldir=/usr/src/linux-${_kernver} \
+	--with-moduledir=/lib/modules/${_kernver}/kernel/drivers/misc \
+	--with-transmitter \
+		
+	# disable parallel and bt829
+        # because of incompatibility with smp systems
+        sed -e "s:lirc_dev::" -e "s:lirc_bt829::" -e "s:lirc_igorplugusb::" \
+            -e "s:lirc_imon::" -e "s:lirc_parallel::" -e "s:lirc_sasem::" \
+            -e "s:lirc_serial::" -e "s:lirc_sir::" -e "s:lirc_ttusbir::" \
+            -i Makefile drivers/Makefile drivers/*/Makefile tools/Makefile 
+                
+
+  	# build
+	make 
+}
+
+package() {
+        cd "${srcdir}/lirc-${pkgver}"
+	make DESTDIR=${pkgdir} install 
+	mkdir -p ${pkgdir}/usr/share/lirc ${pkgdir}/etc/rc.d \
+		
+	cp ${srcdir}/{lircd,lircmd,irexecd} ${pkgdir}/etc/rc.d/ \
+		
+	cp -rp remotes ${pkgdir}/usr/share/lirc 
+	chmod -R go-w ${pkgdir}/usr/share/lirc/ 
+
+
+	# install the logrotate config
+    	install -D -m644 ${srcdir}/lirc.logrotate \
+        	${pkgdir}/etc/logrotate.d/lirc 
+    
+	# install conf.d file
+	install -D -m644 ${srcdir}/lircd.conf \
+        	${pkgdir}/etc/conf.d/lircd.conf 
+
+	# install conf.d file
+        install -D -m644 ${srcdir}/irexec.conf \
+                ${pkgdir}/etc/conf.d/irexec.conf 
+
+	install -d -m755 ${pkgdir}/etc/lirc 
+	install -d -m755 ${pkgdir}/var/run/lirc 
+
+	# remove built modules
+	rm -r ${pkgdir}/lib/
+}

@@ -1,0 +1,54 @@
+# Chakra Packages for Chakra, part of chakra-project.org
+#
+# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
+# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+
+pkgname=libjpeg-turbo
+pkgver=1.1.1
+pkgrel=4
+pkgdesc="libjpeg derivative with accelerated baseline JPEG compression and decompression"
+arch=('i686' 'x86_64')
+url="http://libjpeg-turbo.virtualgl.org/"
+license=('GPL' 'custom')
+makedepends=('nasm')
+provides=('libjpeg=8.0.2' 'libjpeg6=6b')
+replaces=('libjpeg' 'libjpeg6')
+conflicts=('libjpeg' 'libjpeg6')
+options=('!libtool')
+source=(http://sourceforge.net/projects/$pkgname/files/$pkgver/$pkgname-$pkgver.tar.gz)
+md5sums=('03b9c1406c7bfdc204313c2917ce6962')
+
+build() {
+  cd "$srcdir/$pkgname-$pkgver"
+
+  # create libjpeg6
+  ./configure --prefix=/usr --with-jpeg6 --mandir=/usr/share/man
+  make
+  mkdir -p $srcdir/libjpeg6
+  cp -d .libs/libjpeg.so.6* $srcdir/libjpeg6
+  rm -R .libs
+  # create libjpeg8
+  ./configure --prefix=/usr --with-jpeg8 --mandir=/usr/share/man
+  make
+}
+
+package() {
+  cd "$srcdir/$pkgname-$pkgver"
+
+  # install libjpeg6
+  mkdir -p $pkgdir/usr/lib
+  cp -vd $srcdir/libjpeg6/libjpeg.so.6* $pkgdir/usr/lib
+  
+  # install libjpeg8
+  make DESTDIR="$pkgdir/" install
+
+  # provide jpegint.h as it is required by various software
+  install -m644 jpegint.h $pkgdir/usr/include/
+  
+  # do not distributre libturbojpeg as it is unversioned
+  #rm $pkgdir/usr/lib/libturbojpeg.{so,a}
+  #rm $pkgdir/usr/include/turbojpeg.h
+  rm $pkgdir/usr/bin/jpgtest
+
+  install -Dm644 LICENSE.txt $pkgdir/usr/share/licenses/libjpeg-turbo/LICENSE
+}

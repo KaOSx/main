@@ -1,0 +1,162 @@
+@charset "UTF-8";
+/* This uses YAML's basic containers, but in a highly customized way */
+
+@media screen, projection
+{
+  /**
+   * (en) Forcing vertical scrollbars in IE8, Firefox, Webkit & Opera
+   * (de) Erzwingen vertikaler Scrollbalken in IE8, Firefox, Webkit & Opera
+   *
+   * @workaround
+   * @affected IE8, FF, Webkit, Opera
+   * @css-for all
+   * @valid CSS3
+   */
+
+  body { overflow-y: scroll; }
+
+  /*------------------------------------------------------------------------------------------------------*/
+
+  /**
+   * (en) Formatting YAML's  basic layout elements
+   * (de) Gestaltung des YAML Basis-Layouts
+   */
+
+  /* (en) Marginal areas & page background */
+  /* (de) Randbereiche & Seitenhintergrund */
+  body {background: #c55500 url(bark.jpg) repeat fixed;}
+
+  /* (en) Centering layout in old IE-versions */
+  /* (de) Zentrierung des Layouts in alten IE-versionen */
+  body { text-align: center; }
+  .page_margins { text-align:left; margin: 20px auto; }
+
+  /* (en) Layout: width, background, borders */
+  /* (de) Layout: Breite, Hintergrund, Rahmen */
+  .page_margins {
+    min-width: 640px; max-width: 70em;
+  }
+  .page {
+    font-size: 125%;
+    margin: 0 20px;
+    background: url(top-left.png) no-repeat left top;
+  }
+
+  #top {
+    height: 20px;
+    margin-left: 200px;
+    background: url(top-right.png) top right no-repeat;
+  }
+  #tm { height: 100%; margin-right: 20px; background: #abf39c; }
+
+  #bottom {
+    height: 20px;
+    background: url(bottom-right.png) bottom right no-repeat;
+  }
+  #bl { height: 100%; background: url(bottom-left.png) bottom left no-repeat; }
+  #bm { height: 100%; margin-left: 200px; margin-right: 20px; background: #abf39c; }
+
+
+  /* (en) Designing main layout elements */
+  /* (de) Gestaltung der Hauptelemente des Layouts */
+
+  #header {
+    padding: 0 2em 1em 50px;
+    border-bottom: 1px #45f202 solid;
+    margin-bottom: 20px;
+  }
+  #header h1 {
+    font-size:2.5em;
+    letter-spacing:-1px;
+    line-height:65%;
+    color:#c55500;
+  }
+
+  #footer { padding: 10px 20px 0 20px; }
+  #footer-content {
+    color:#886;
+    padding: 10px 20px;
+    border: 1px #c55500 solid;
+    line-height: 1.5em;
+  }
+  #footer a { color: #888; font-weight: bold; }
+  #footer a:focus { color: #D087C7; text-decoration: underline; }
+  #footer a:hover,
+  #footer a:active { color: #4D87C7; text-decoration: underline; }
+
+
+  /*------------------------------------------------------------------------------------------------------*/
+
+  /**
+   * (en) Formatting content containers
+   * (de) Formatierung der Inhalts-Container
+   */
+
+  /* main column | Hauptspalte */
+  #col1 {
+    float: none;
+    width: 100%;
+    background: #abf39c url(green-gradient200.jpg) repeat-y;
+  }
+  #col1_content { padding: 0 20px; min-height: 400px; }
+
+  #col3 { width: 100%; margin: 0; }
+  .vlist h6, .vlist .indent1 { display: inline; }
+  .indent2 { float: right ; }
+  .vlist { margin-top: 10px; width: 360px; }
+  li h6 { font-weight: bold; }
+  .indent1 { margin-left: 10px; }
+  .level1 { font-size: 120%; }
+  .level2 { font-size: 110%; }
+  .rlink { font-size: 150%; color: #b04000; }
+
+  /*------------------------------------------------------------------------------------------------------*/
+
+  /**
+   * (en) Styling of layout specific elements
+   * (de) Gestaltung layoutabhängiger Elemente
+   */
+
+  li { margin-bottom: 3px; }
+  h4 { font-weight: bold; }
+  table { border-top: 2px solid #c55500; border-bottom: 2px solid #c55500; margin: 15px; }
+  tbody td, tbody th { border: 1px solid #c55500; }
+  .empty td { padding: 1px; }
+
+  .topref { padding: 20px 40px; }
+  .topref a {
+    font-weight: bold;
+    padding: 10px;
+    border-top: 3px solid #45f202;
+    border-bottom: 3px solid #45f202;
+  }
+  .topref a:focus { background: #45f202; text-decoration: none; }
+  .topref a:hover,
+  .topref a:active { background: #e08000; text-decoration: none; }
+
+  pre { overflow: auto; background: #a0f090; }
+  a, a:visited { color: #c55500 }
+  a:hover, a:active { color: #003366 }
+
+/**
+  * ------------------------------------------------------------------------------------------------- #
+  *
+  * Skiplinks
+  *
+  * (en) Visual styling for skiplink navigation
+  * (de) Visuelle Gestaltung der Skiplink-Navigation
+  *
+  * @section content-skiplinks
+  */
+
+  #skiplinks a.skip:focus,
+  #skiplinks a.skip:active {
+    color: #fff;
+    background: #333;
+    border-bottom: 1px #000 solid;
+    padding: 10px 0;
+    text-decoration:none;
+  }
+
+}
+

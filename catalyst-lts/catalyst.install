@@ -1,0 +1,27 @@
+remove_hook(){
+   ##removing hook's entries
+    # remove hook fglrx
+     sed '/^HOOKS/s/ *fglrx//' -i etc/mkinitcpio.conf
+    # remove heads
+     sed '/^SyncFirst/s/ *linux-lts-headers//' -i etc/pacman.conf
+}
+
+post_install() {
+    EXTRAMODULES=extramodules-3.0-lts
+    depmod $(cat /lib/modules/$EXTRAMODULES/version)
+}
+
+post_upgrade() {
+    remove_hook
+    EXTRAMODULES=extramodules-3.0-lts
+    depmod $(cat /lib/modules/$EXTRAMODULES/version)
+}
+
+post_remove() {
+    EXTRAMODULES=extramodules-3.0-lts
+    depmod $(cat /lib/modules/$EXTRAMODULES/version)
+    echo "----------------------------------------------------------------"
+    echo "Don't forget to remove fglrx from MODULES array of /etc/rc.conf"
+    echo "----------------------------------------------------------------"
+}
+

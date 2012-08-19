@@ -1,0 +1,27 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
+# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+
+# include global config
+source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+
+pkgname=terminus-font
+pkgver=4.32
+pkgrel=1
+pkgdesc="A superb, monospace bitmap font (for X11 and console)"
+depends=(xorg-fonts-encodings xorg-fonts-alias xorg-font-utils fontconfig)
+replaces=(xserver-terminus-fonts)
+arch=(i686 x86_64)
+source=("http://downloads.sourceforge.net/project/${pkgname}/${pkgname}-${pkgver}/${pkgname}-${pkgver}.tar.gz")
+url="http://sourceforge.net/projects/terminus-font/"
+install=terminus-font.install
+license=('GPL-2')
+
+build() { 
+  cd $startdir/src/$pkgname-$pkgver
+  ./configure --prefix=/usr --x11dir=/usr/share/fonts/local/ --psfdir=/usr/share/kbd/consolefonts/
+  make DESTDIR=$startdir/pkg install
+}
+md5sums=('9b74047edcc236a7d4af8abf966c3e7c')

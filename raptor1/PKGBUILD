@@ -1,0 +1,31 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
+# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+
+pkgname=raptor1
+pkgver=1.4.21
+pkgrel=2
+pkgdesc="A C library that parses RDF/XML/N-Triples into RDF triples"
+arch=('i686' 'x86_64')
+url="http://librdf.org/raptor"
+depends=('libxml2>=2.7.6' 'curl>=7.19.7' 'zlib>=1.2.3.3-3' 'openssl>=0.9.8l' 'libxslt>=1.1.26')
+license=('LGPL')
+options=('!libtool')
+source=(http://librdf.org/dist/source/raptor-$pkgver.tar.gz)
+md5sums=('992061488af7a9e2d933df6b694bb876')
+
+build() {
+  cd ${srcdir}/raptor-${pkgver}
+  ./configure --prefix=/usr --disable-static
+  make
+}
+
+package() {
+  cd ${srcdir}/raptor-${pkgver}
+  make prefix=${pkgdir}/usr install
+  
+  mv ${pkgdir}/usr/bin/rapper ${pkgdir}/usr/bin/rapperV1
+  rm -f ${pkgdir}/usr/share/man/man1/rapper.1
+}

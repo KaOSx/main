@@ -1,0 +1,36 @@
+#
+# Chakra Packages for Chakra, part of chakra-project.org
+#
+# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
+# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+
+# include global config
+source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+
+pkgname=gnome-keyring
+pkgver=2.91.0
+pkgrel=1
+pkgdesc="GNOME Password Management daemon"
+arch=(i686 x86_64)
+license=('GPL' 'LGPL')
+depends=('gconf>=2.28.1')
+makedepends=('intltool' 'pkgconfig' 'python')
+options=('!libtool' '!emptydirs')
+url="http://www.gnome.org"
+install=gnome-keyring.install
+source=(http://ftp.gnome.org/pub/gnome/sources/${pkgname}/2.91/${pkgname}-${pkgver}.tar.bz2)
+sha256sums=('4a24263ab76023bdf17b9b7d6e1ad08577a0a25bf805e924d0437c20f6039598')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  ./configure --prefix=/usr --sysconfdir=/etc \
+      --localstatedir=/var --disable-static \
+      --libexecdir=/usr/lib/gnome-keyring \
+      --with-pam-dir=/lib/security --with-root-certs=/etc/ssl/certs
+  make || return 1
+  make -j1 GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1 DESTDIR="${pkgdir}" install
+
+  install -m755 -d "${pkgdir}/usr/share/gconf/schemas"
+  gconf-merge-schema "${pkgdir}/usr/share/gconf/schemas/${pkgname}.schemas" --domain gnome-keyring ${pkgdir}/etc/gconf/schemas/*.schemas
+  rm -f ${pkgdir}/etc/gconf/schemas/*.schemas
+}

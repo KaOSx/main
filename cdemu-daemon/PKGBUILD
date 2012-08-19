@@ -1,0 +1,49 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer abveritas@chakra-project.org
+
+pkgname=cdemu-daemon
+pkgver=1.5.0
+pkgrel=1
+pkgdesc="CD/DVD-ROM device emulator daemon"
+arch=('i686' 'x86_64')
+backup=('etc/conf.d/cdemud'
+	'etc/dbus-1/system.d/cdemud-dbus.conf')
+url="http://cdemu.sourceforge.net/"
+license=('GPL')
+depends=('glib2' 'dbus' 'dbus-glib' 'libdaemon' 'vhba-module' "libmirage=$pkgver" 'libao')
+optdepends=('alsa-lib: to enable the ALSA audio driver'
+            'pulseaudio: to enable the PA audio driver')
+source=("http://downloads.sourceforge.net/cdemu/$pkgname-$pkgver.tar.bz2"
+        'cdemud.conf'
+        'cdemud.rc'
+        'cdemu-daemon.service')
+md5sums=('5ba780caa26d855942512b5b3c22405a'
+         '2edf08fc6c773813084ca7ba4e07221f'
+         'cbc0937ef4ac50db3ce5cdbbe2e17a3b'
+         'be9a8f50da3f42129c0a0e3dea8cd56c')
+
+build() {
+  cd $srcdir/$pkgname-$pkgver
+  ./configure --prefix=/usr \
+              --sysconfdir=/etc \
+              --libexecdir=/usr/lib/$pkgname
+  make
+}
+
+package() {
+  cd $srcdir/$pkgname-$pkgver
+  make DESTDIR=$pkgdir install
+  install -Dm644 "$srcdir/cdemud.conf" "$pkgdir/etc/conf.d/cdemud"
+  install -Dm755 "$srcdir/cdemud.rc" "$pkgdir/etc/rc.d/cdemud"
+  install -d "$pkgdir/usr/lib/modules-load.d"
+  echo "vhba" > "$pkgdir/usr/lib/modules-load.d/cdemu.conf"
+
+  # for systemd
+  install -Dm644 "$srcdir/cdemu-daemon.service" \
+    "$pkgdir/usr/lib/systemd/system/cdemu-daemon.service"
+  echo "SystemdService=cdemu-daemon.service" >> \
+    "$pkgdir/usr/share/dbus-1/system-services/net.sf.cdemu.CDEMUD_Daemon.service"
+
+}

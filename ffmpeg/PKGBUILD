@@ -1,0 +1,56 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer abveritas@chakra-project.org
+
+pkgname=ffmpeg
+pkgver=0.10.3
+pkgrel=2
+pkgdesc="Complete and free Internet live audio and video broadcasting solution for Linux/Unix"
+arch=('i686' 'x86_64')
+url="http://ffmpeg.org/"
+license=('GPL')
+depends=('bzip2' 'lame' 'sdl' 'libvorbis' 'xvidcore' 'zlib' 'x264' 'libtheora' 'opencore-amr' 'alsa-lib' 'libvdpau' 'libxfixes' 'schroedinger' 'libvpx' 'libva' 'openjpeg' 'rtmpdump' 'speex' 'gsm' 'libpulse')
+makedepends=('yasm')
+source=("http://${pkgname}.org/releases/${pkgname}-${pkgver}.tar.bz2")
+md5sums=('775d184933f71ff44a2fff4968e78b2b')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+
+  ./configure --prefix=/usr \
+              --enable-libmp3lame \
+              --enable-libvorbis \
+              --enable-libxvid \
+              --enable-libx264 \
+              --enable-libvpx \
+              --enable-libtheora \
+              --enable-libgsm \
+              --enable-postproc \
+              --enable-shared \
+              --enable-x11grab \
+              --enable-libopencore_amrnb \
+              --enable-libopencore_amrwb \
+              --enable-libschroedinger \
+              --enable-libopenjpeg \
+              --enable-librtmp \
+              --enable-libpulse \
+              --enable-gpl \
+              --enable-version3 \
+              --enable-runtime-cpudetect \
+              --enable-libspeex \
+              --disable-debug \
+              --disable-static
+
+  make
+  make tools/qt-faststart
+  make doc/ff{mpeg,play,server}.1
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  make DESTDIR="${pkgdir}" install install-man
+  install -D -m755 tools/qt-faststart "${pkgdir}/usr/bin/qt-faststart"
+}
+
+# vim:set ts=2 sw=2 et:

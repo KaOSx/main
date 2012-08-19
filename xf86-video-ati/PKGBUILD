@@ -1,0 +1,40 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer abveritas@chakra-project.org
+
+pkgname=xf86-video-ati
+pkgver=6.14.6
+pkgrel=2
+pkgdesc="X.org ati video driver"
+arch=(i686 x86_64)
+url="http://xorg.freedesktop.org/"
+license=('custom')
+depends=('libpciaccess' 'libdrm' 'systemd' 'pixman' 'ati-dri')
+makedepends=('xorg-server' 'libdrm' 'xf86driproto' 'mesa')
+conflicts=('xorg-server<1.12.3')
+groups=('xorg-video-drivers')
+options=('!libtool')
+source=("${url}/releases/individual/driver/${pkgname}-${pkgver}.tar.bz2")
+sha1sums=('b30383c7e5487c1df403a3af19fce8626d617a8d')
+
+build() { 
+    cd ${srcdir}/${pkgname}-${pkgver}
+    
+    ./configure \
+            --prefix=/usr \
+            --enable-maintainer-mode \
+            --enable-dependency-tracking \
+            --enable-exa \
+            --enable-dri
+    make
+}
+
+package() {
+    cd ${srcdir}/${pkgname}-${pkgver}
+    make DESTDIR=${pkgdir} install 
+ 
+    msg "Copying license..."
+    install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
+    install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
+}

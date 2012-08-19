@@ -1,0 +1,32 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer abveritas@chakra-project.org
+
+pkgname=xorg-util-macros
+pkgver=1.17
+pkgrel=1
+pkgdesc="X.Org Autotools macros"
+arch=('any')
+license=('custom')
+url="http://xorg.freedesktop.org/"
+source=("http://ftp.x.org/pub/individual/util/util-macros-${pkgver}.tar.bz2")
+sha1sums=('c424a09fa6f628e24eff74496acebef13e8093b9')
+
+build() {
+  cd "${srcdir}/util-macros-${pkgver}"
+
+  ./configure --prefix=/usr 
+  make
+}
+
+package() {
+  cd "${srcdir}/util-macros-${pkgver}" 
+
+  make DESTDIR="${pkgdir}" install 
+  install -m755 -d "${pkgdir}/usr/lib"
+
+  mv "${pkgdir}/usr/share/pkgconfig" "${pkgdir}/usr/lib/" 
+  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
+  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/" 
+}

@@ -1,0 +1,33 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer abveritas@chakra-project.org
+
+pkgname=xf86-input-keyboard
+pkgver=1.6.1
+pkgrel=1
+pkgdesc="X.Org keyboard input driver"
+arch=('i686' 'x86_64')
+license=('custom')
+url="http://xorg.freedesktop.org/"
+depends=('glibc')
+makedepends=('xorg-server')
+conflicts=('xorg-server<1.12.3')
+options=('!libtool')
+groups=('xorg-input-drivers')
+source=("${url}/releases/individual/driver/${pkgname}-${pkgver}.tar.bz2")
+sha1sums=('ef30fecb9e846a5268ae339846401489a785e413')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  
+  make DESTDIR="${pkgdir}" install
+  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
+  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
+}

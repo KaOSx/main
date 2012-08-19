@@ -1,0 +1,32 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer abveritas[at]chakra-project[dot]org>
+
+pkgname=xf86-input-mouse
+pkgver=1.7.2
+pkgrel=1
+pkgdesc="X.org mouse input driver"
+arch=('i686' 'x86_64')
+license=('custom')
+url="http://xorg.freedesktop.org/"
+depends=('glibc')
+makedepends=('xorg-server')
+conflicts=('xorg-server<1.12.3')
+options=('!libtool')
+groups=('xorg-drivers' 'xorg')
+source=("${url}/releases/individual/driver/${pkgname}-${pkgver}.tar.bz2")
+sha1sums=('0da6390c6f3d7d636110a52f08193739929ae4ae')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+  install -d -m755 "${pkgdir}/usr/share/licenses/${pkgname}"
+  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
+}

@@ -1,0 +1,25 @@
+# $Id: PKGBUILD 59900 2009-11-29 16:03:59Z jgc $
+# Maintainer: damir <damir@archlinux.org>
+# Contributor: damir <damir@archlinux.org>
+
+pkgname=libcdio
+pkgver=0.82
+pkgrel=1
+pkgdesc="GNU Compact Disc Input and Control Library"
+arch=("i686" "x86_64")
+license=('GPL3')
+url="http://www.gnu.org/software/libcdio/"
+depends=('gcc-libs>=4.4.2' 'libcddb' 'ncurses')
+options=('!libtool')
+install=libcdio.install
+source=(http://ftp.gnu.org/gnu/libcdio/${pkgname}-${pkgver}.tar.gz)
+md5sums=('1c29b18e01ab2b966162bc727bf3c360')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  ./configure --prefix=/usr --disable-vcd-info --enable-cpp-progs || return 1
+  make || return 1
+  make -j1 DESTDIR="${pkgdir}" install || return 1
+  #install -m644 libcdio_paranoia.pc libcdio_cdda.pc \
+  #  "${pkgdir}/usr/lib/pkgconfig/" || return 1
+}

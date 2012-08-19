@@ -1,0 +1,51 @@
+#
+# Chakra Packages for Chakra, part of chakra-project.org
+#
+# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
+# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+
+# include global config
+source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+
+pkgname=gotoblas2
+_pkgname=GotoBLAS2
+pkgver=1.13_bsd
+pkgrel=1
+pkgdesc="The fastest implementations of the Basic Linear Algebra Subroutines"
+arch=('i686' 'x86_64')
+url="http://www.tacc.utexas.edu/tacc-projects/gotoblas2/"
+license=('custom')
+depends=('gcc-libs')
+makedepends=('perl')
+provides=('blas')
+conflicts=('blas')
+optdepends=('lapack4goto: trimmed down lapack library')
+options=(!makeflags)
+source=("${_pkgname}-${pkgver}.tar.gz"
+        gfortranlink.patch)
+md5sums=('2e29b8449a85de9e08d337736ba72274'
+         '0448bd9cf72895c838bf98ecbe853d0c')
+
+build() {
+  cd "$srcdir/$_pkgname"
+
+  patch -Np0 -i "$srcdir/gfortranlink.patch"
+  unset CFLAGS
+  unset CXXFLAGS
+  make NO_CBLAS=1 NOFORTRAN=1
+}
+
+package() {
+  cd "$srcdir/$_pkgname"
+
+  install -dm755 $pkgdir/usr/include/goto2
+  install -m644 *.h $pkgdir/usr/include/goto2
+  install -Dm644 00License.txt $pkgdir/usr/share/licenses/$pkgname/License.txt
+  install -dm755 $pkgdir/usr/lib
+  cp -d lib* $pkgdir/usr/lib
+  ln -s libgoto2.so $pkgdir/usr/lib/libblas.so.3
+  ln -s libgoto2.a $pkgdir/usr/lib/libblas.a
+  ln -sf libblas.so.3 $pkgdir/usr/lib/libblas.so
+}
+
+# vim:set ts=2 sw=2 et:

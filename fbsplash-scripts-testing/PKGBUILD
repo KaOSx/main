@@ -1,0 +1,52 @@
+#
+# Chakra Packages for Chakra, part of chakra-project.org
+#
+# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
+# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+# Maintainer: Kurt J. Bosch <kjb-temp-2009 at alpenjodel.de>
+
+# include global config
+source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+
+
+
+pkgname=fbsplash-scripts-testing
+pkgver=2.0
+pkgrel=1
+pkgdesc="Basic Fbsplash scripts for Chakra GNU/Linux"
+arch=('any')
+url="http://aur.archlinux.org/packages.php?ID=35428"
+license=( 'GPL' )
+depends=( 'bash>=4' 'fbsplash>=1.5.4.3-1' 'initscripts>=2010.06' 'mkinitcpio>=0.6.6'  )
+conflicts=( 'initscripts-extras-fbsplash' 'initscripts-splashy' 'fbsplash-scripts' 'initscripts-extras-fbsplash-testing')
+backup=('etc/conf.d/splash')
+install=fbsplash-scripts.install
+source=(
+	Changelog
+	splash.conf
+	fbsplash-basic.sh
+	fbsplash.initcpio_install
+	fbsplash.initcpio_hook
+	fbcondecor.daemon
+	fbcondecor.conf
+)
+build() {
+	cd ${pkgdir}
+	# Install Changelog
+	install -D -m644 ${srcdir}/Changelog usr/share/doc/${pkgname}/Changelog
+	# Install fbsplash scripts and config file
+	install -D -m644 ${srcdir}/splash.conf               etc/conf.d/splash                      &&
+	install -D -m644 ${srcdir}/fbsplash-basic.sh         etc/rc.d/functions.d/fbsplash-basic.sh &&
+	install -D -m644 ${srcdir}/fbsplash.initcpio_install lib/initcpio/install/fbsplash          &&
+	install -D -m644 ${srcdir}/fbsplash.initcpio_hook    lib/initcpio/hooks/fbsplash   || return 1
+	# Install fbcodecor script and config file
+	install -D -m644 ${srcdir}/fbcondecor.conf           etc/conf.d/fbcondecor &&
+	install -D -m755 ${srcdir}/fbcondecor.daemon         etc/rc.d/fbcondecor   || return 1
+}
+md5sums=('f468fb85f337b179bf0aac63ddc5f56e'
+         '87256fc4c2441a30f544ad5eaf411691'
+         'e9f66236ac4c13e54f8d42dd994eaefc'
+         'b34b1a8d85f52bae2e36c046e23a9fb3'
+         '390dacdfb3be761728ff2a1cdafd178b'
+         '715926469d05eecd345c052e6248ca32'
+         'b3db9d4fd902b62ac9e38589677e2d16')

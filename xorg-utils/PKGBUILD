@@ -1,0 +1,70 @@
+#
+# Chakra Packages for Chakra, part of chakra-project.org
+#
+# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
+# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+
+# include global config
+source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+
+pkgname=xorg-utils
+pkgver=7.6
+pkgrel=4
+pkgdesc="Collection of client utilities used to query the X server"
+arch=(i686 x86_64)
+url="http://xorg.freedesktop.org/"
+license=('custom')
+depends=('libxxf86dga' 'libxi' 'libxxf86misc' 'libxtst' 'libxinerama' 'libxv'
+         'libdmx' 'libxft' 'libxaw>=1.0.6' 'libgl' 'libxcomposite' 'xorg-util-macros' 'xcb-util')
+makedepends=('pkgconfig' 'mesa' 'glproto')
+groups=('xorg')
+source=(${url}/releases/individual/app/xdpyinfo-1.2.0.tar.bz2
+        ${url}/releases/individual/app/xdriinfo-1.0.4.tar.bz2
+        ${url}/releases/individual/app/xev-1.0.4.tar.bz2
+        ${url}/releases/individual/app/xfd-1.1.0.tar.bz2
+        ${url}/releases/individual/app/xfontsel-1.0.3.tar.bz2
+        ${url}/releases/individual/app/xlsatoms-1.1.0.tar.bz2
+        ${url}/releases/individual/app/xlsclients-1.1.2.tar.bz2
+        ${url}/releases/individual/app/xlsfonts-1.0.3.tar.bz2
+        ${url}/releases/individual/app/xprop-1.2.0.tar.bz2
+        ${url}/releases/individual/app/xvinfo-1.1.1.tar.bz2
+        ${url}/releases/individual/app/xwininfo-1.1.1.tar.bz2
+        LICENSE.xdpyinfo LICENSE.xfd LICENSE.xlsclients 
+        LICENSE.xprop LICENSE.xwininfo LICENSE.xev 
+        LICENSE.xlsatoms LICENSE.xlsfonts LICENSE.xvinfo)
+md5sums=('c52fda7bbc80e74b7839f29298cb1d77'
+         '3d3cad4d754e10e325438193433d59fd'
+         '5f98c0a2725a33d60ef4956befe078fb'
+         '17d8ef0d490301158f8abf7641cca243'
+         '299fabe7d7be92b6572d814895ce3bb1'
+         'c543ccb6489b629d427810d9a57d0724'
+         '760099f0af112401735801e3b9aa8595'
+         'bf6f3e7074479839d5182ffed735d2be'
+         'e6d0673a1e1e469f0a6220a6868fb94b'
+         'c88feb501083951a8f47a21aaeb1529d'
+         '7a7f44b826d877ba39c19cf5913978d7'
+         'b43f731a9e2684728230ce8e33f63228'
+         '9e8a82b7e9898f36c378b80509f170a6'
+         '9e8a82b7e9898f36c378b80509f170a6'
+         '801f9850b29dad506e995d011efe2914'
+         '1c47d00801594a0e251694d70c7fb0b8'
+         'e84310edd65e120d85914350c795bfac'
+         '9ee99bda91248e945186090905db25d8'
+         '345d6e65d71fdde292cc27f93c15e4a1'
+         '67ea6bb3b11620c82ce4d24e78b4a0a9')
+
+build() {
+  cd "${srcdir}"
+  for i in *; do
+    if [ -d "${i}" ]; then
+      pushd "${i}"
+      ./configure --prefix=/usr --mandir=/usr/share/man || return 1
+      make || return 1
+      make DESTDIR="${pkgdir}" install || return 1
+      install -D -m644 COPYING "${pkgdir}"/usr/share/licenses/${pkgname}/LICENSE.${i%-*} || return 1
+      popd
+    fi
+  done
+# Replacing stub license files
+  install -D -m644 "${srcdir}"/LICENSE.* "${pkgdir}/usr/share/licenses/${pkgname}/"  || return 1
+}

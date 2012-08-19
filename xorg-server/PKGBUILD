@@ -1,0 +1,105 @@
+#
+# Chakra Packages for Chakra, part of chakra-project.org
+#
+# maintainer abveritas@chakra-project.org
+
+pkgname=xorg-server
+pkgver=1.12.3
+pkgrel=3
+pkgdesc="X.Org X servers"
+arch=('i686' 'x86_64')
+license=('custom')
+url="http://xorg.freedesktop.org"
+depends=('xproto' 'randrproto' 'renderproto' 'xextproto' 'inputproto' 'kbproto' 'fontsproto'
+         'videoproto' 'dri2proto' 'xineramaproto' 'xorg-util-macros' 'pixman' 'libpciaccess'
+         'libxfont' 'libxi' 'mesa' 'libgcrypt' 'libxv' 'libxau' 'libxaw' 'libxrender' 'libdmx'
+         'libdrm' 'libxfixes' 'libxext' 'libxdmcp' 'libxau' 'udev' 'xf86-input-evdev'
+         'xkeyboard-config' 'xorg-xkb-utils' 'xorg-fonts-misc')
+makedepends=('libx11' 'xf86driproto' 'xcmiscproto' 'xtrans' 'bigreqsproto'
+             'compositeproto' 'recordproto' 'scrnsaverproto' 'resourceproto' 'libxkbfile'
+             'xf86dgaproto' 'libxmu' 'dmxproto' 'libxtst' 'libxres' 'links')
+backup=('etc/X11/xorg.conf.d/10-evdev.conf' 'etc/X11/xorg.conf.d/10-quirks.conf')
+options=('!libtool')
+provides=('x-server')
+groups=('xorg')
+source=("${url}/releases/individual/xserver/${pkgname}-${pkgver}.tar.bz2"
+        'autoconfig-nvidia.patch'
+        'xvfb-run'
+        'xvfb-run.1'
+        '10-quirks.conf'
+        'autoconfig-sis.patch')
+sha1sums=('f3f3d59f3c5e15459152987ffc644f06a0d1374f'
+          '746f0204050ceca7caa111b52a87336b7356dcd2'
+          'c94f742d3f9cabf958ae58e4015d9dd185aabedc'
+          '6838fc00ef4618c924a77e0fb03c05346080908a'
+          '993798f3d22ad672d769dae5f48d1fa068d5578f'
+          '175de5630b43dbc97778adfba5563b7fdd77f11f')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+
+  # Use nouveau/nv/nvidia drivers for nvidia devices
+  patch -p1 -i "${srcdir}/autoconfig-nvidia.patch"
+  
+  # Use unofficial imedia SiS driver for supported SiS devices
+  patch -p0 -i "${srcdir}/autoconfig-sis.patch"
+
+  autoreconf -fiv
+  ./configure --prefix=/usr \
+      --enable-ipv6 \
+      --enable-dri \
+      --enable-dmx \
+      --enable-xvfb \
+      --enable-xnest \
+      --enable-composite \
+      --enable-xcsecurity \
+      --enable-xorg \
+      --enable-xephyr \
+      --enable-glx-tls \
+      --enable-kdrive \
+      --enable-kdrive-evdev \
+      --enable-kdrive-kbd \
+      --enable-kdrive-mouse \
+      --enable-install-setuid \
+      --enable-config-udev \
+      --disable-config-dbus \
+      --enable-record \
+      --disable-xfbdev \
+      --disable-xfake \
+      --disable-static \
+      --sysconfdir=/etc/X11 \
+      --localstatedir=/var \
+      --with-xkb-path=/usr/share/X11/xkb \
+      --with-xkb-output=/var/lib/xkb \
+      --with-fontrootdir=/usr/share/fonts
+  make
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"  
+  make DESTDIR="${pkgdir}" install
+
+  install -m755 -d "${pkgdir}/usr/lib/xorg"
+  install -m644 dix/protocol.txt "${pkgdir}/usr/lib/xorg/"
+
+  install -m755 "${srcdir}/xvfb-run" "${pkgdir}/usr/bin/"
+  install -m644 "${srcdir}/xvfb-run.1" "${pkgdir}/usr/share/man/man1/"
+
+  install -m755 -d "${pkgdir}/var/lib/xkb"
+
+  # Install sane config files in /etc. 
+  install -m755 -d "${pkgdir}/etc/X11"
+  mv "${pkgdir}/usr/share/X11/xorg.conf.d" "${pkgdir}/etc/X11/"
+  install -m644 "${srcdir}/10-quirks.conf" "${pkgdir}/etc/X11/xorg.conf.d/"
+
+  rmdir "${pkgdir}/usr/share/X11"
+
+  # Needed for non-mesa drivers, libgl will restore it
+  mv "${pkgdir}/usr/lib/xorg/modules/extensions/libglx.so" \
+     "${pkgdir}/usr/lib/xorg/modules/extensions/libglx.xorg"
+
+  rm -rf "${pkgdir}/var/log"
+
+  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
+  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
+}

@@ -1,0 +1,35 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
+# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+
+# include global config
+source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+
+pkgname=a52dec
+pkgver=0.7.4
+pkgrel=5
+pkgdesc="liba52 is a free library for decoding ATSC A/52 streams."
+arch=('i686' 'x86_64')
+license=('GPL2')
+depends=('glibc')
+options=(!libtool)
+source=(http://liba52.sourceforge.net/files/${pkgname}-${pkgver}.tar.gz
+	a52dec-0.7.4-build.patch)
+url="http://liba52.sourceforge.net/"
+md5sums=('caa9f5bc44232dc8aeea773fea56be80' 'fa16f224a7dceb7613824380abef0052')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  patch -Np1 -i "${srcdir}/a52dec-0.7.4-build.patch"
+  ./bootstrap
+  ./configure --prefix=/usr --enable-shared
+  make
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+  install -m644 liba52/a52_internal.h "${pkgdir}/usr/include/a52dec/"
+}

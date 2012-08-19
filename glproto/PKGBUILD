@@ -1,0 +1,29 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
+# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+
+# include global config
+source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+
+pkgname=glproto
+pkgver=1.4.14
+pkgrel=1
+pkgdesc="X11 OpenGL extension wire protocol"
+arch=(any)
+url="http://xorg.freedesktop.org/"
+license=('custom')
+source=(http://xorg.freedesktop.org/releases/individual/proto/${pkgname}-${pkgver}.tar.bz2
+        COPYING)
+md5sums=('f48257daf0017f7a7667e5bf48ca3578'
+         'a2228066bf4e15d351290deec0d9c250')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  ./configure --prefix=/usr || return 1
+  make || return 1
+  make DESTDIR="${pkgdir}" install || return 1
+  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
+  install -m644 "${srcdir}/COPYING" "${pkgdir}/usr/share/licenses/${pkgname}/" || return 1
+}

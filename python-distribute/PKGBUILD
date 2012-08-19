@@ -1,0 +1,24 @@
+#
+# Chakra Packages for Chakra, part of chakra-project.org
+#
+# contributor (x86_64): Giuseppe Calà <jiveaxe@gmail.com>
+
+pkgname=python-distribute
+pkgver=0.6.25
+pkgrel=2
+pkgdesc="A collection of extensions to the Python 2 distutils"
+arch=('any')
+license=('PSF')
+url="http://packages.python.org/distribute"
+depends=('python2')
+conflicts=('setuptools')
+replaces=('setuptools')
+provides=('setuptools=0.6c11')
+source=(http://pypi.python.org/packages/source/d/distribute/distribute-${pkgver}.tar.gz)
+
+sha1sums=('6f402212f294840468d80dc154ebd454e76eba4b')
+
+package() {
+   cd ${srcdir}/distribute-${pkgver}
+   python2 setup.py install --prefix=/usr --root=${pkgdir}
+}

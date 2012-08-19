@@ -1,0 +1,60 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer abveritas@chakra-project.org
+ 
+pkgname=mplayer2
+pkgver=2.0.4
+pkgrel=2
+pkgdesc="A movie player"
+arch=('i686' 'x86_64')
+license=('GPL')
+url="http://www.mplayer2.org/"
+depends=('desktop-file-utils' 'ttf-dejavu' 'enca' 'libxss' 'a52dec' 'libvpx' 'lirc-utils' 'x264' 'libmng' 'libdca' 'aalib' 'lame' 'fontconfig'  'libgl'
+    'libxinerama' 'libvdpau' 'libpulse' 'smbclient' 'xvidcore' 'opencore-amr' 'jack' 'cdparanoia' 'libmad' 'sdl' 'libtheora' 'libcaca' 'libxxf86dga' 'fribidi'
+    'libjpeg' 'faac' 'faad2' 'libxvmc' 'schroedinger' 'mpg123' 'libass' 'libxxf86vm' 'libbluray' 'ffmpeg')    
+makedepends=('live-media' 'mesa' 'unzip' 'yasm')
+categories=('multimedia')
+backup=('etc/mplayer/codecs.conf' 'etc/mplayer/input.conf')
+provides=('mplayer=99999')
+conflicts=('mplayer')
+source=("http://chakra-linux.org/sources/mplayer2/mplayer2-$pkgver.tar.xz")
+md5sums=('78e9cd71457d0f440426350f9267a7c0')
+
+# create tarball: source PKGBUILD && mksource
+
+mksource() {
+  git clone git://git.mplayer2.org/mplayer2.git
+  pushd mplayer2
+  popd
+  tar -cvJf mplayer2-${pkgver}.tar.xz mplayer2/*
+  md5sum mplayer2-${pkgver}.tar.xz
+}
+
+build() {
+
+  cd "${srcdir}/${pkgname}"
+
+  ./configure --prefix=/usr \
+              --enable-runtime-cpudetection \
+              --disable-speex \
+              --disable-openal \
+              --disable-libdv \
+              --disable-musepack \
+              --disable-mga \
+              --language=all \
+              --enable-translation \
+              --confdir=/etc/mplayer
+  make
+}
+
+package() {
+  cd "${srcdir}/${pkgname}"
+
+  make DESTDIR="${pkgdir}" install
+  install -Dm644 etc/{codecs.conf,input.conf,example.conf} "${pkgdir}/etc/mplayer"
+  install -dm755 "${pkgdir}/usr/share/mplayer"
+  ln -s /usr/share/fonts/TTF/DejaVuSans.ttf "${pkgdir}/usr/share/mplayer/subfont.ttf"
+}
+
+# vim:set ts=2 sw=2 et:

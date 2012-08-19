@@ -1,0 +1,70 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+
+pkgname=wicd
+pkgver=1.7.2.4
+pkgrel=1
+pkgdesc="New and alternative wireless/wired network management utility"
+arch=('i686' 'x86_64')
+url="http://wicd.sourceforge.net/"
+license=('GPL2')
+depends=('python2' 'dbus-python' 'dhcpcd' 'wpa_supplicant' 'wireless_tools' 'python-babel'
+           'net-tools' 'ethtool' 'shared-mime-info' 'python-urwid' 'pygobject' 'gettext')
+optdepends=('python-wpactrl:	needed if you want to use the new experimental ioctrl backend'
+	    'python-iwscan:	needed if you want to use the new experimental ioctrl backend'
+	    'wicd-client-kde:	needed if you want to use kde ui')
+conflicts=('wicd-svn')
+install=wicd.install
+source=(https://launchpad.net/wicd/1.7/$pkgver/+download/$pkgname-$pkgver.tar.gz     
+        wicd-daemon
+        wicd.desktop
+        dbus_string_fix.patch)
+categories=('network')
+options=('emptydirs')
+backup=('etc/wicd/encryption/templates/active')
+md5sums=('c2435ddfdef0b9898852d72a85a45f0f'
+         'f40e5f59998d0829707a7c9976afa8f8'
+         '326df163a5732d38741371baa4fce9e5'
+         '1d28a46ef05a972cd5a69530f5b53856')
+
+build() {
+  cd $srcdir/$pkgname-$pkgver
+
+  patch -p0 < $srcdir/dbus_string_fix.patch
+
+  find . -type f -exec sed -i 's@#!/usr.*python@#!/usr/bin/python2@' {} \;
+  export PYTHON=python2
+
+  python2 setup.py configure --no-install-init \
+                             --resume=/usr/share/wicd/scripts/ \
+                             --suspend=/usr/share/wicd/scripts/ \
+                             --verbose \
+                             --python=/usr/bin/python2 \
+                             --lib=/usr/lib \
+			    --systemd=/usr/lib/systemd/system
+
+  mkdir -p translations/ast/LC_MESSAGES
+  msgfmt po/ast.po -o translations/ast/LC_MESSAGES/wicd.mo
+}
+
+package() {
+  cd $srcdir/$pkgname-$pkgver
+  python2 setup.py install --optimize=1 --root=$pkgdir
+  
+  # Add custom rc.d script
+  install -Dm755 $srcdir/wicd-daemon $pkgdir/etc/rc.d/wicd
+  
+  cd build/lib/wicd
+  for i in *.py; do
+    install -Dm 755 $i $pkgdir/usr/lib/wicd/$i
+  done
+  
+  rm -rf $pkgdir/usr/share/autostart
+
+  #deleting the GTK stuff
+  rm -rf $pkgdir/etc/xdg
+  rm -f $pkgdir/usr/bin/{wicd-client,wicd-gtk}
+  rm -rf $pkgdir/usr/share/{applications,icons,pixmaps}
+  rm -rf $pkgdir/usr/share/wicd/gtk  
+}

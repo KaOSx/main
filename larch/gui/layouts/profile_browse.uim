@@ -1,0 +1,94 @@
+# profile_browse.uim - The layout for the profile browser widget
+#
+# (c) Copyright 2010 Michael Towers (larch42 at googlemail dot com)
+#
+# This file is part of the larch project.
+#
+#    larch is free software; you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation; either version 2 of the License, or
+#    (at your option) any later version.
+#
+#    larch is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with larch; if not, write to the Free Software Foundation, Inc.,
+#    51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+#
+#----------------------------------------------------------------------------
+# 2010.08.15
+
+[
+    ['Dialog', 'dialog:profile_browser',
+            {   'title': None,
+                'layout':
+                    ['VBOX',
+                        'dpb:label_f', '*,5',
+                        ['HBOX', 'dpb:browse',  'VLINE,10', 'dpb:examples'],
+                        ['HBOX', 'dpb:source_l', 'dpb:source'],
+                        ['HBOX', 'dpb:name_l', 'dpb:name', 'dpb:name_s'],
+                        'HLINE',
+                        'dpb:dbuttons'
+                    ],
+            }
+    ],
+    ['Frame', 'dpb:label_f',
+            {   'layout':   ['VBOX', 'dpb:label'],
+            }
+    ],
+    ['Label', 'dpb:label',
+            {   'text': _("You can browse the file-system for the source profile"
+                    " directory,\nor else choose one of the examples"),
+            }
+    ],
+    ['Frame', 'dpb:examples',
+            {   'text':     _("Example Profiles"),
+                'tt':       _("Here you can select one of the example profiles to use as a starting point"),
+                'layout':   ['VBOX', 'dpb:example_list'],
+            }
+    ],
+    ['ComboBox', 'dpb:example_list',
+            {
+            },
+        'changed'
+
+    ],
+    ['Button', 'dpb:browse',
+            {   'text': _("Browse file-system"),
+                'tt': _("Open a file dialog to search for the profile"),
+            },
+        'clicked'
+    ],
+    ['Label', 'dpb:source_l',
+            {   'text': _("Source:"),
+            }
+    ],
+    ['LineEdit', 'dpb:source',
+            {   'ro': True,
+                'tt': _("The path from which the profile directory will be copied"),
+            }
+    ],
+    ['Label', 'dpb:name_l',
+            {   'text': _("New name:")
+            }
+    ],
+    ['LineEdit', 'dpb:name',
+            {   'ro': True,
+                'tt': _("The name the profile will be given in the work area"),
+            }
+    ],
+    ['Button', 'dpb:name_s',
+            {   'text': _("Change"),
+                'tt': _("Open a dialog to change the new profile's name"),
+            },
+        'clicked'
+    ],
+    ['DialogButtons', 'dpb:dbuttons',
+            {   'buttons':   ('Ok', 'Cancel'),
+                'dialog':   'dialog:profile_browser',
+            },
+    ],
+]

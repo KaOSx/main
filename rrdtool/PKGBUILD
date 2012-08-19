@@ -1,0 +1,36 @@
+# $Id: PKGBUILD 79791 2010-05-07 14:12:03Z dan $
+# Maintainer: Eric Belanger <eric@archlinux.org>
+# Contributor: Tom K <tom@archlinux.org>
+
+pkgname=rrdtool
+pkgver=1.4.4
+pkgrel=1
+pkgdesc="Data logging and graphing application"
+arch=('i686' 'x86_64')
+url="http://www.rrdtool.org"
+license=('GPL')
+depends=('libpng' 'libxml2' 'pango')
+makedepends=('intltool' 'ruby' 'python2' 'tcl' 'lua')
+optdepends=('tcl: to use corresponding binding' \
+            'python2: to use corresponding binding' \
+            'ruby: to use corresponding binding' \
+            'lua: to use corresponding binding')
+options=('!libtool' '!emptydirs' '!makeflags')
+source=(http://oss.oetiker.ch/rrdtool/pub/rrdtool-${pkgver}.tar.gz)
+md5sums=('93ad2fc2e9ddcd7d99c611fe30284a54')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  ./configure --prefix=/usr --localstatedir=/var --disable-rpath --enable-perl \
+    --enable-perl-site-install --with-perl-options='INSTALLDIRS=vendor' \
+    --enable-ruby --enable-ruby-site-install --enable-python \
+    --enable-lua --enable-lua-site-install \
+    --enable-tcl || return 1
+  make || return 1
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  make DESTDIR="${pkgdir}" LIBRUBYARG_SHARED="-Wl,-L/usr/lib -lruby" \
+    LIBPATH="-L. -L/usr/lib -L../../src/.libs" install || return 1
+}

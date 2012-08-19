@@ -1,0 +1,26 @@
+#
+# Chakra Packages for Chakra, part of chakra-project.org
+#
+# maintainer: abveritas@chakra-project.org
+
+pkgname=pycups
+pkgver=1.9.61
+pkgrel=1
+pkgdesc="Python CUPS Bindings"
+url="http://cyberelk.net/tim/software/pycups/"
+arch=('i686' 'x86_64')
+license=('GPL')
+depends=('libcups' 'python2')
+source=(http://cyberelk.net/tim/data/${pkgname}/${pkgname}-${pkgver}.tar.bz2{,.asc})
+md5sums=('7464093b349b907dcdefb913674e959b'
+         'cb780142a614300792a08d462e198589')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  python2 setup.py build
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  python2 setup.py install --root="${pkgdir}" --optimize=1
+}

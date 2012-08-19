@@ -1,0 +1,43 @@
+#
+# Chakra Packages for Chakra, part of chakra-project.org
+#
+# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
+# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+
+# use ../makepkg
+_kernver="2.6.35-CHAKRA-LTS"
+
+pkgname=acerhk-lts
+pkgver=0.5.35
+pkgrel=1
+pkgdesc="Acer hotkey driver"
+url="http://www.cakey.de/acerhk/"
+arch=('i686') # Unavailable for x86_64
+license=('GPL')
+depends=('kernel26-lts>=2.6.35' 'kernel26-lts<2.6.36')
+makedepends=('kernel26-lts-headers>=2.6.35' 'kernel26-lts-headers<2.6.36')
+source=(http://www.cakey.de/acerhk/archives/acerhk-${pkgver}.tgz acerhk.rc
+        2.6.30.patch kernelversion.patch 2.6.36.patch)
+install=acerhk.install
+
+build() {
+  cd "${srcdir}/acerhk-${pkgver}"
+  sed -i 's/CFLAGS/EXTRA_CFLAGS/' Makefile
+  patch -Np1 -i "${srcdir}/2.6.30.patch" || return 1
+  patch -Np0 -i "${srcdir}/2.6.36.patch" || return 1
+  patch -N -p1 < "$srcdir/kernelversion.patch" || return 1
+  # Set KERNELSRC.  The makefile tries to autodetect it with uname,
+  # but that is unreliable.
+  make KERNELSRC="/lib/modules/${_kernver}/build" acerhk.ko || return 1
+  install -Dm644 "${srcdir}/acerhk-${pkgver}/acerhk.ko" \
+    "${pkgdir}/lib/modules/${_kernver}/kernel/drivers/block/acerhk.ko" || return 1
+  install -Dm755 "${srcdir}/acerhk.rc" "${pkgdir}/etc/rc.d/acerhk-lts" || return 1
+  sed -i -e "s/KERNEL_VERSION='.*'/KERNEL_VERSION='${_kernver}'/" $startdir/acerhk.install
+}
+
+# vim:set ts=2 sw=2 et:
+md5sums=('05255919f312cb76af473a760c284433'
+         '935584b3e4bfbb3af8460558e5b98bb5'
+         '2a0bc99e5b12e25096441df4d53d7df7'
+         'fd2ef062ecbc9d670e1b42aa5866d32d'
+         'd257a4e9223ebfde48b9608805df9c99')

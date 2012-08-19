@@ -1,0 +1,60 @@
+add_daemon() {
+  local checkdmn=$(grep '^DAEMONS' /etc/rc.conf | grep cups)
+
+  if [ -z "${checkdmn}" ]; then
+    sed -i '/^DAEMONS/{s/)$/ cups)/}' /etc/rc.conf
+  fi
+}
+
+add_group() {
+  # Create the "lpadmin" group, if needed
+  if ! getent group lpadmin 2> /dev/null; then
+    groupadd --system lpadmin
+  fi
+
+  # Add all the users in the "lp" group to "lpadmin" (expect for "daemon")
+  for user in $(getent group lp | cut -d ':' -f 4 | tr ',' ' '); do
+    [ "${user}" != "daemon" ] && gpasswd -a "${user}" lpadmin > /dev/null
+  done
+}
+
+post_install() {
+  xdg-icon-resource forceupdate --theme hicolor 2> /dev/null
+  echo ">> If you use an HTTPS connection to CUPS, the first time you access"
+  echo ">> the interface it may take a very long time before the site comes up."
+  echo ">> This is because the first request triggers the generation of the CUPS"
+  echo ">> SSL certificates which can be a very time-consuming job."
+  add_group
+  add_daemon
+  /etc/rc.d/cups restart
+}
+
+post_upgrade() {
+  xdg-icon-resource forceupdate --theme hicolor 2> /dev/null
+
+  # If the "lp" user group is still present, and the user has not changed the cupsd.conf
+  # from the old default "SystemGroup sys root" setting, let's replace that line, so that
+  # it will also allow for the "lp" user group to administrate CUPS.
+  # Without this, non-root users will see the Printers KCM silently hang (the CUPS server
+  # will deny access).
+
+  local cupsd=etc/cups/cupsd.conf
+
+  if ( getent group lp && grep '^SystemGroup sys root$' "${cupsd}") &>/dev/null; then
+    echo "[NOTICE] The CUPS configuration is being automatically tweaked to allow all users belonging to the \"lp\" group to administrate the server."
+    sed -i 's/^SystemGroup sys root$/SystemGroup sys root lpadmin/g' "${cupsd}"
+  fi
+
+  add_group
+  add_daemon
+  /etc/rc.d/cups restart
+}
+
+pre_remove() {
+  /etc/rc.d/cups stop
+}
+
+post_remove() {
+  xdg-icon-resource forceupdate --theme hicolor 2> /dev/null
+  sed -i '/^DAEMONS/{s/ cups)$/)/}' /etc/rc.conf
+}

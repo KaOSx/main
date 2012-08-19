@@ -1,0 +1,39 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer abveritas@chakra-project.org
+
+pkgname=gstreamer0.10
+pkgver=0.10.36
+pkgrel=1
+pkgdesc="GStreamer Multimedia Framework"
+arch=('i686' 'x86_64')
+license=('LGPL')
+url="http://gstreamer.freedesktop.org/"
+depends=('libxml2' 'glib2')
+makedepends=('intltool' 'pkgconfig' 'gobject-introspection')
+options=('!libtool')
+source=(${url}/src/gstreamer/gstreamer-${pkgver}.tar.xz)
+md5sums=('15389c73e091b1dda915279c388b9cb2')
+
+build() {
+  cd "${srcdir}/gstreamer-${pkgver}"
+
+  ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var --libexecdir=/usr/lib \
+	--with-package-name="GStreamer (Chakra GNU/Linux)" \
+	--with-package-origin="http://www.chakra-project.org/" \
+	--disable-static
+
+  make
+}
+
+package() {
+  cd "${srcdir}/gstreamer-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+
+  #Remove unversioned gst-* binaries to get rid of conflicts
+  cd "${pkgdir}/usr/bin"
+  for bins in `ls *-0.10`; do
+    rm -f ${bins/-0.10/}
+  done
+}

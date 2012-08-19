@@ -1,0 +1,30 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
+# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+
+# include global config
+source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+
+pkgname=libxdamage
+pkgver=1.1.3
+pkgrel=1
+pkgdesc="X11 damaged region extension library"
+arch=(i686 x86_64)
+url="http://xorg.freedesktop.org/"
+license=('custom')
+depends=('libxfixes>=4.0.4' 'damageproto>=1.2.0')
+makedepends=('pkgconfig')
+options=('!libtool')
+source=(${url}/releases/individual/lib/libXdamage-${pkgver}.tar.bz2)
+md5sums=('44774e1a065158b52f1a0da5100cebec')
+
+build() {
+  cd ${srcdir}/libXdamage-${pkgver}
+  ./configure --prefix=/usr --sysconfdir=/etc --disable-static \
+              --build=${CHOST} --host=${CHOST}
+  make || return 1
+  make DESTDIR=${pkgdir} install || return 1
+  install -D -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}

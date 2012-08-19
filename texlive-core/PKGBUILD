@@ -1,0 +1,147 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
+# maintainer (x86_64): Drake Justice <djustice[at]chakra-linux[dot]org>
+
+
+pkgname=texlive-core
+pkgver=2012.26892
+_revnr=${pkgver#2011.}
+pkgrel=1
+pkgdesc="TeX Live core distribution"
+license=('GPL')
+arch=(any)
+depends=('texlive-bin')
+optdepends=(
+  'perl:        for many useful tools'
+  'ruby:        for old ConTeXT MkII and epspdf'
+  'tk:          for texdoctk'
+  'python:      for dviasm'
+  'ghostscript: for epstopdf, epspdf and other ConTeXt tools' 
+  'psutils:     to manipulate the output of dvips'
+  't1utils:     can be useful when installing Type1 fonts'
+)
+groups=('texlive-most')
+conflicts=('tetex' 'texlive-latex3')
+provides=('tetex' 'texlive-latex3')
+replaces=('tetex' 'texlive-latex3')
+url='http://tug.org/texlive/'
+source=("ftp://ftp.archlinux.org/other/texlive/$pkgname-$pkgver-src.zip"
+        "$pkgname.maps")
+options=(!strip)
+install=texlive.install
+md5sums=('c913b3c01bdcf81da80e4833cd4cc691'
+         '82c03f7226e1df4440f30c89c05ee653')
+
+build() {
+   cd "${srcdir}"
+
+   echo -n "   --> extracting all packages... "
+   for p in *.tar.xz; do 
+     bsdtar -xf $p
+   done
+   echo "done"
+
+   rm -rf {tlpkg,doc,source,omega} || true
+}
+package() {
+   install -m755 -d $pkgdir/var/lib/texmf/arch/installedpkgs
+   sed -i '/^#/d' CONTENTS
+   install -m644 CONTENTS $pkgdir/var/lib/texmf/arch/installedpkgs/${pkgname}_${_revnr}.pkgs
+   install -m644 $pkgname.maps $pkgdir/var/lib/texmf/arch/installedpkgs/
+   install -m755 -d $pkgdir/usr/share
+
+   wanteddirs=$(for d in *; do test -d $d && [[ $d != texmf* ]] && echo $d; done) || true
+   for dir in $wanteddirs; do
+     find $dir -type d -exec install -d -m755 $pkgdir/usr/share/texmf-dist/'{}' \;
+     find $dir -type f -exec install -m644 '{}' $pkgdir/usr/share/texmf-dist/'{}' \;
+   done
+
+   find texmf-dist -type d -exec install -d -m755 $pkgdir/usr/share/'{}' \;
+   find texmf-dist -type f -exec install -m644 '{}' $pkgdir/usr/share/'{}' \;
+
+   if [[ -d $pkgdir/usr/share/texmf-dist/scripts ]]; then
+     find $pkgdir/usr/share/texmf-dist/scripts -type f -exec chmod a+x '{}' \;
+   fi
+
+   # use python for dviasm
+   sed -i 's/env python/env python/' $pkgdir/usr/share/texmf-dist/scripts/dviasm/dviasm.py
+   
+   # remove obsolete stuff (we don't provide the omega and aleph binaries anyway)
+   rm -f $pkgdir/usr/share/texmf-dist/tex/plain/config/{omega,aleph}.ini
+   rm -rf $pkgdir/usr/share/texmf-dist/scripts/context/stubs/mswin/
+
+   # remove upstream updmap.cfg: it contains too many maps.
+   rm "${pkgdir}/usr/share/texmf-dist/web2c/updmap.cfg"
+
+    # link programs from /usr/share/texmf-dist/scripts
+    _linked_scripts="
+accfonts/mkt1font
+accfonts/vpl2ovp
+accfonts/vpl2vpl
+bundledoc/arlatex
+bundledoc/bundledoc
+checkcites/checkcites.lua
+context/perl/mptopdf.pl
+ctanify/ctanify
+ctanupload/ctanupload.pl
+de-macro/de-macro
+dviasm/dviasm.py
+epstopdf/epstopdf.pl
+findhyph/findhyph
+fontools/afm2afm
+fontools/autoinst
+fontools/ot2kpx
+fragmaster/fragmaster.pl
+installfont/installfont-tl
+latex2man/latex2man
+latexdiff/latexdiff-vc.pl
+latexdiff/latexdiff.pl
+latexdiff/latexrevise.pl
+latexfileversion/latexfileversion
+latexmk/latexmk.pl
+luaotfload/mkluatexfontdb.lua
+match_parens/match_parens
+mf2pt1/mf2pt1.pl
+mkjobtexmf/mkjobtexmf.pl
+oberdiek/pdfatfi.pl
+pdfcrop/pdfcrop.pl
+pdfjam/pdf180
+pdfjam/pdf270
+pdfjam/pdf90
+pdfjam/pdfbook
+pdfjam/pdfflip
+pdfjam/pdfjam
+pdfjam/pdfjam-pocketmod
+pdfjam/pdfjam-slides3up
+pdfjam/pdfjam-slides6up
+pdfjam/pdfjoin
+pdfjam/pdfnup
+pdfjam/pdfpun
+pkfix-helper/pkfix-helper
+pkfix/pkfix.pl
+purifyeps/purifyeps
+sty2dtx/sty2dtx.pl
+texcount/texcount.pl
+texdef/texdef.pl
+texdiff/texdiff
+texdirflatten/texdirflatten
+texloganalyser/texloganalyser
+thumbpdf/thumbpdf.pl
+texliveonfly/texliveonfly.py
+"
+
+    install -m755 -d $pkgdir/usr/bin
+    for _script in ${_linked_scripts}; do
+      scriptbase=$(basename $_script)
+      scriptbase=${_scriptbase%.*}
+      ln -s /usr/share/texmf-dist/scripts/${_script} ${pkgdir}/usr/bin/${_scriptbase}
+    done
+
+    ln -s /usr/share/texmf-dist/scripts/listings-ext/listings-ext.sh ${pkgdir}/usr/bin/listings-ext.sh
+
+    # additional symlinks
+    ln -s epstopdf ${pkgdir}/usr/bin/repstopdf
+    ln -s pdfcrop ${pkgdir}/usr/bin/rpdfcrop
+}

@@ -1,0 +1,355 @@
+# larch -  initramfs 'hook' for larch live media
+
+# (c) Copyright 2010 Michael Towers (larch42 at googlemail dot com)
+#
+# This file is part of the larch project.
+#
+#    larch is free software; you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation; either version 2 of the License, or
+#    (at your option) any later version.
+#
+#    larch is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with larch; if not, write to the Free Software Foundation, Inc.,
+#    51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+#
+#----------------------------------------------------------------------------
+#2010.11.28
+
+
+union_init ()
+{
+    ### aufs specific mount command components
+    # Need aufs module
+    modprobe aufs
+    ovlmnt="ro+wh"
+    sqfmnt="rr"
+    solmnt="rr+wh"
+    bropt="xino=/tfs/.aufs.xino,br:"
+    utype="aufs"
+}
+
+
+# Replacement for msg which includes leading and trailing spaces
+msg_ () { [ "${quiet}" != "y" ] && echo "$@"; }
+# Version which requires 'verbose' flag to output
+msg_v () { [ "${quiet}" != "y" ] && [ "${verbose}" = "y" ] && echo "$@"; }
+
+
+testdevice ()
+{
+    fstype=$( blkid -s TYPE -o value ${LDEV} )
+    /bin/mount -r -t ${fstype} -o noatime "${LDEV}" "${mediummount}" >/dev/null 2>&1
+    if [ $? -eq 0 ]; then
+        if [ -f "${mediummount}/larch/system.sqf" ]; then
+            msg ":: larch system at ${LDEV}"
+        else
+            /bin/umount "${mediummount}" 2>&1
+            msg_v  "!! No larch system at ${LDEV}"
+            LDEV=""
+        fi
+    else
+        msg_v "!! Couldn't mount ${LDEV}"
+        LDEV=""
+    fi
+}
+
+
+run_hook ()
+{
+    msg ":: Creating temporary filesystem (tmpfs)"
+    /bin/mkdir "/tfs"
+    [ -n "${tmpfs}" ] || tmpfs="60%"
+    /bin/mount -t tmpfs -o "size=${tmpfs}" tmpfs "/tfs"
+
+    # Directory for test mounts (and then for live CD, etc.)
+    mediummount="/livemedium"
+    /bin/mkdir "${mediummount}"
+
+    modprobe loop
+
+    # Loop device test every second up to some limit
+    if [ -n "${usbdelay}" ]; then
+        waittime=${usbdelay}
+    else
+        waittime=12
+    fi
+    waitcount=0
+    while [ ${waittime} -ne ${waitcount} ]; do
+
+        if [ -n "${uuid}" ]; then
+            [ ${waitcount} -eq 0 ] && msg ":: Looking for UUID ${uuid}"
+            LDEV=$( blkid -U ${uuid} )
+            if [ -n "${LDEV}" ]; then
+                testdevice
+            fi
+
+        elif [ -n "${label}" ]; then
+            [ ${waitcount} -eq 0 ] && msg ":: Looking for LABEL ${label}"
+            LDEV=$( blkid -L ${label} )
+            if [ -n "${LDEV}" ]; then
+                testdevice
+            fi
+
+        elif [ -n "${root}" ]; then
+            [ ${waitcount} -eq 0 ] && msg ": Looking for ${root}"
+            # Set LDEV directly, e.g. /dev/sda1
+            if [ -e ${root} ]; then
+                LDEV=${root}
+                testdevice
+            fi
+
+        else
+            [ ${waitcount} -eq 0 ] && msg ":: Looking for boot device"
+            if [ -z "${nocd}" ]; then
+                # Look for CD
+                cdroms=$( /bin/cat /proc/sys/dev/cdrom/info | { while read a b c; do
+                        if [ "${a}" = "drive" -a "${b}" = "name:" ]; then
+                            echo "${c}"
+                            break
+                        fi
+                    done
+                } )
+                for i in ${cdroms}; do
+                    LDEV=/dev/${i}
+                    testdevice
+                    if [ -n "${LDEV}" ]; then
+                        break
+                    fi
+                done
+            fi
+
+            # Test partitions
+            if [ -z "${LDEV}" ]; then
+                for d in /dev/sd[a-z][0-9]*; do
+                    LDEV=${d}
+                    testdevice
+                    if [ -n "${LDEV}" ]; then
+                        if [ -f "${mediummount}/larch/larchboot" ]; then
+                            break
+                        else
+                            msg ":: ${LDEV} has no /larch/larchboot file"
+                            LDEV=""
+                        fi
+                    fi
+                done
+            fi
+
+        fi
+
+        [ -n "${LDEV}" ] && break
+
+        /bin/sleep 1
+        waitcount=$(( ${waitcount} + 1 ))
+    done
+
+    if [ -z "${LDEV}" ]; then
+        echo "!! Sorry, couldn't find boot medium ..."
+        echo "!! If the larch system is on a partition you should specify"
+        echo "!! its UUID with 'uuid=xxxxxxx' or its LABEL with 'label=xxxxxx'"
+        echo "!! as a boot parameter. 'root=/dev/sdXN' is another possibility."
+        break="y"
+        finalize
+        return
+    fi
+
+    ### Set up paths to system components
+    # Path to compressed base system
+    sysSqf=${mediummount}/larch/system.sqf
+    # Squashed overlay (mods) file (on read-only system)
+    modSqf=${mediummount}/larch/mods.sqf
+
+    # Optional overlay:
+    if [ -f ${mediummount}/larch/overlay.medium ]; then
+        overlaypath=${mediummount}
+    else
+        overlaypath=""
+    fi
+
+    # Path to optional squashed 'bundles' directory
+    bundlespath=${mediummount}/larch/bundles
+
+    # A possibility to use alternative files:
+    [ -f ${mediummount}/larch/boot-init ] && . ${mediummount}/larch/boot-init
+
+    union_init
+
+    msg_v ":: Mounting squashed system image"
+    /bin/mkdir /tfs/system
+    # sometimes it takes udev a while to create device nodes
+    while [ ! -e "/dev/loop0" ]; do
+        sleep 1
+    done
+    /bin/mount -r -o loop -t squashfs ${sysSqf} /tfs/system
+
+    # Begin preparing union mount command
+    layers="/tfs/system=${sqfmnt}"
+
+    # Add 'bundles' (assume no whiteouts in bundles!)
+    loopnum=8   # Index loop devices, as they will need to be added
+    for bundle in ${bundlespath}/*.sqb; do
+        if [ -f ${bundle} ]; then
+            bname=${bundle%.*}  # strip suffix
+            bname=${bname##*/}  # remove path
+            msg_v ":: Adding bundle ${bname}"
+            bmount=/tfs/bundles/${bname}
+            /bin/mkdir -p ${bmount}
+
+            # Probably need to add loop device
+            [ -b /dev/loop${loopnum} ] || /bin/mknod /dev/loop${loopnum} b 7 ${loopnum}
+            /bin/losetup /dev/loop${loopnum} ${bundle}
+            /bin/mount -r -t squashfs /dev/loop${loopnum} ${bmount}
+            layers="${bmount}=${sqfmnt}:${layers}"
+            loopnum=$(( ${loopnum} + 1 ))
+        fi
+    done
+
+    if [ -f ${modSqf} ]; then
+        msg_v ":: Mounting squashed modification layer"
+        /bin/mkdir /tfs/mods
+        /bin/mount -r -o loop -t squashfs ${modSqf} /tfs/mods
+        #  Assume there could be whiteouts in mods layer (by default there aren't)
+        layers="/tfs/mods=${solmnt}:${layers}"
+    fi
+
+    # Now deal with the overlay and - if necessary - an additional writeable one
+    if [ -z "${nw}" ]; then
+        rmode="rw"
+        rmode_u="rw"
+    else
+        rmode="ro"
+        rmode_u=${ovlmnt}
+    fi
+
+    if  [ -n "${overlaypath}" ]; then
+        # Remount the medium in writeable mode, unless 'nw' boot parameter is set
+        [ -z "${nw}" ] && /bin/mount -o remount,rw ${mediummount}
+        msg_v ":: Adding medium as overlay"
+        mkdir /tfs/overlay
+        /bin/mount -o bind ${overlaypath} /tfs/overlay
+        layers="/tfs/overlay=${rmode_u}:${layers}"
+    else
+        # Force use of additional tmpfs layer
+        nw="y"
+    fi
+
+    if [ -n "${nw}" ]; then
+        msg_v ":: Running without data persistence"
+        # Add a writeable layer
+        /bin/mkdir /tfs/write
+        layers="/tfs/write=rw:${layers}"
+    fi
+
+    msg ":: Setting up union file system"
+
+    # Make union root
+    /bin/mkdir /union
+    /bin/mount -t ${utype} -o ${bropt}${layers} ${utype} /union
+
+    # Make the tmpfs stuff accessible within the union
+    /bin/mkdir -p /union/.livesys
+    /bin/mount -o bind /tfs /union/.livesys
+    /bin/mount -o bind /tfs/system /union/.livesys/system
+    [ -d /tfs/mods ] && /bin/mount -o bind /tfs/mods /union/.livesys/mods
+    [ -d /tfs/overlay ] && /bin/mount -o bind /tfs/overlay /union/.livesys/overlay
+    [ -d /tfs/write ] && /bin/mount -o bind /tfs/write /union/.livesys/write
+    if [ -d /tfs/bundles ]; then
+        for bd in /tfs/bundles/*; do
+            /bin/mount -o bind ${bd} /union/.livesys/bundles/${bd##*/}
+        done
+    fi
+
+    # Make special directories
+    /bin/mkdir -m 1777 /tfs/tmp
+    /bin/mkdir -p /union/tmp
+    /bin/mount -o bind /tfs/tmp /union/tmp
+    /bin/mkdir -p /union/media
+    /bin/mkdir -p /union/sys
+    /bin/mkdir -p /union/proc
+    /bin/mkdir -p /union/dev
+    if [ ! -f /union/boot/larch.img ]; then
+        /bin/mkdir -p /union/boot
+        /bin/mount -o bind ${mediummount}/boot /union/boot
+    fi
+    /bin/mkdir /union/.livesys/medium
+    /bin/mount -o move ${mediummount} /union/.livesys/medium
+
+# Still needed?
+    [ -c /union/dev/console ] || /bin/mknod /union/dev/console c 5 1
+
+    # Remember the boot device
+    echo "${LDEV}" > /tfs/bootdevice
+
+    # fstab
+    # /etc/fstab.larch will be used if it exists, else generate a basic one
+    if [ -f /union/etc/fstab.larch ]; then
+        cat /union/etc/fstab.larch >/union/etc/fstab
+    else
+        cat >/union/etc/fstab <<EOT
+# fstab generated by larch initcpio
+#<file system>   <dir>         <type>      <options>    <dump> <pass>
+none            /dev/pts      devpts      defaults        0     0
+none            /dev/shm      tmpfs       defaults        0     0
+EOT
+        if [ -n "${swap}" ]; then
+            swap=""
+        else
+            swap="#"
+        fi
+        for s in $( cat /proc/swaps | while read a b; do [ -z "${a%%/*}" ] && echo $a; done ); do
+            echo "${swap}${s} swap       swap   defaults        0     0" >>/union/etc/fstab
+        done
+        # Any further entries can be added at a later point in the boot process
+    fi
+
+#Still needed?
+    # Only needed to suppress an error message from /etc/rc.sysinit
+    echo "rootfs / rootfs rw 0 0" >/union/etc/mtab
+
+    # Handle special features of /var
+    /bin/mkdir -p -m 1777 /union/var/tmp
+    /bin/mkdir -p -m 1777 /union/var/lock
+    /bin/mkdir -p /union/var/log
+    :>/union/var/log/wtmp
+    :>/union/var/log/btmp
+    /bin/chmod 0600 /union/var/log/btmp
+    :>/union/var/log/lastlog
+
+    msg ":: End of live system set-up"
+
+    # This is in archiso ... why?
+    #if [ -d /proc/sys/dev/cdrom ]; then
+    #    echo 0 > /proc/sys/dev/cdrom/lock
+    #    echo 0 > /proc/sys/dev/cdrom/autoeject
+    #fi
+
+    finalize
+}
+
+
+finalize ()
+{
+    if [ "${break}" = "y" ]; then
+        echo ":: Break requested, type 'exit' to resume operation"
+        launch_interactive_shell
+    fi
+
+    #Special handling if udev is running
+    udevpid=$(/bin/pidof udevd)
+    if [ -n "${udevpid}" ]; then
+        # Settle pending uevents, then kill udev
+        /sbin/udevadm settle
+        /bin/kill -9 ${udevpid} > /dev/null 2>&1
+        /bin/sleep 0.01
+    fi
+
+    umount /proc
+    umount /sys
+    [ -z "${init}" ] && init="/sbin/init"
+    exec /sbin/switch_root -c /dev/console /union ${init} ${CMDLINE}
+}

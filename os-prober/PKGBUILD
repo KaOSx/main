@@ -1,0 +1,62 @@
+#
+# Chakra Packages for Chakra, part of chakra-project.org
+#
+# maintainer abveritas[at]chakra-project[dot]org>
+
+pkgname=os-prober
+pkgver=1.54
+pkgrel=3
+pkgdesc="Utility to detect other operating systems on a set of drives."
+url="http://joey.kitenet.net/code/os-prober/"
+arch=('i686' 'x86_64')
+license=('GPL')
+depends=('sh')
+makedepends=('gcc' 'sed')
+source=("ftp://ftp.us.debian.org/debian/pool/main/o/${pkgname}/${pkgname}_${pkgver}.tar.gz"
+        'btrfs-detection.patch')
+md5sums=('9a7e8e5adeeaff4913f727fa2c95490a'
+         'c12d27b045ee044eb57d971ff74aaefe')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+
+  # patch to make it recognize systems on Btrfs volumes
+  patch -p1 -i "${srcdir}/btrfs-detection.patch"
+
+  # adjust lib dir to allow detection of 64-bit distros
+  sed -e "s:/lib/ld\*\.so\*:/lib*/ld*.so*:g" \
+      -i os-probes/mounted/common/90linux-distro || return 1
+
+  make
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+
+  install -D -m755 linux-boot-prober "${pkgdir}/usr/bin/linux-boot-prober"
+  install -D -m755 os-prober "${pkgdir}/usr/bin/os-prober"
+  install -D -m755 newns "${pkgdir}/usr/lib/os-prober/newns"
+  install -D -m755 common.sh "${pkgdir}/usr/share/os-prober/common.sh"
+
+  local probelist=('os-probes' 'os-probes/mounted' 'os-probes/init'
+                   'linux-boot-probes' 'linux-boot-probes/mounted')
+
+  for probes in "${probelist[@]}"; do
+    install -d -m755 "${pkgdir}/usr/lib/${probes}"
+    install -m755 -t "${pkgdir}/usr/lib/${probes}" "${probes}/common"/*
+    if [ -e "${probes}/x86" ]; then
+      install -d -m755 "${pkgdir}/usr/lib/${probes}"
+      install -m755 -t "${pkgdir}/usr/lib/${probes}" "${probes}/x86"/*
+    fi
+  done
+
+  install -D -m755 os-probes/mounted/powerpc/20macosx \
+                   "${pkgdir}/usr/lib/os-probes/mounted/20macosx"
+
+  # create a empty labels file, will be used by os-prober at execution
+  install -d "${pkgdir}/var/lib/os-prober"
+  touch "${pkgdir}/var/lib/os-prober/labels"
+  chmod 644 "${pkgdir}/var/lib/os-prober/labels"
+}
+
+# vim:set ts=2 sw=2 et:

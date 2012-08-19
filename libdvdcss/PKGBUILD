@@ -1,0 +1,26 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer abveritas@chakra-project.org
+
+pkgname=libdvdcss
+pkgver=1.2.12
+pkgrel=1
+pkgdesc="libdvdcss is a cross-platform library for transparent DVD device access with on-the-fly CSS decryption."
+arch=('i686' 'x86_64')
+license=('GPL')
+depends=('glibc')
+options=('!libtool')
+source=(http://download.videolan.org/pub/${pkgname}/${pkgver}/${pkgname}-${pkgver}.tar.bz2)
+md5sums=('2218a193900e3203aa10dc24cdf54275')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  make DESTDIR="$pkgdir" install
+}

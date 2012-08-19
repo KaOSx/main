@@ -1,0 +1,39 @@
+#
+# KDE SC Packages for Chakra, part of chakra-project.org
+#
+# maintainer abevritas@chakra-project.org
+
+pkgname=gutenprint
+pkgver=5.2.9
+pkgrel=1
+pkgdesc="Top quality printer drivers for POSIX systems."
+arch=('i686' 'x86_64')
+license=('GPL')
+install=gutenprint.install
+depends=('glibc') 
+makedepends=('cups>=1.4.2' 'foomatic-db-engine' 'ghostscript>=8.71')
+optdepends=('cups:		to use cups printer spooler(recommended)'
+            'foomatic-db-engine:	to use foomatic spooler'
+            'ghostscript:	adds postscript support for ijsgutenprint')
+source=("http://downloads.sourceforge.net/gimp-print/$pkgname-$pkgver.tar.bz2")
+url="http://gimp-print.sourceforge.net/"
+replaces=('gimp-print' 'gutenprint')
+options=('!libtool' '!emptydirs')
+md5sums=('aefbec27b96dd404d9ac9811e17d58ce')
+
+build() {
+  cd ${srcdir}/${pkgname}-${pkgver}
+
+  ./configure --prefix=/usr --disable-samples --with-cups \
+	--disable-translated-cups-ppds \
+	--enable-cups-ppds --enable-cups-ppds-at-top-level \
+	--with-foomatic --with-foomatic3 --with-ghostscript \
+	--disable-globalized-cups-ppds
+  make
+}
+
+package() {
+  cd ${srcdir}/${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install
+}
+

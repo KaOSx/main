@@ -1,0 +1,35 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
+# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+
+# include global config
+source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+
+pkgname=aspell
+pkgver=0.60.6.1
+_pkgmajorver=0.60
+pkgrel=1
+pkgdesc="A spell checker designed to eventually replace Ispell"
+url="http://aspell.net/"
+arch=('i686' 'x86_64')
+license=('LGPL')
+depends=('gcc-libs' 'ncurses')
+optdepends=('perl: to import old dictionaries')
+options=(!libtool)
+install=aspell.install
+source=(ftp://ftp.gnu.org/gnu/${pkgname}/${pkgname}-${pkgver}.tar.gz)
+md5sums=('e66a9c9af6a60dc46134fdacf6ce97d7')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  ./configure --prefix=/usr --sysconfdir=/etc
+  make
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+  ln -s ${pkgname}-${_pkgmajorver} "${pkgdir}/usr/lib/${pkgname}"
+}

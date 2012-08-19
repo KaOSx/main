@@ -1,0 +1,33 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
+# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+
+# include global config
+source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+
+pkgname=rasqal
+pkgver=0.9.26
+pkgrel=1
+pkgdesc="a free C library that handles Resource Description Framework (RDF) query syntaxes, query construction and query execution returning result bindings"
+url="http://librdf.org/rasqal"
+license=('GPL' 'LGPL')
+arch=('i686' 'x86_64')
+depends=('raptor>=2.0.3' 'mpfr')
+options=('!libtool')
+source=(http://download.librdf.org/source/${pkgname}-${pkgver}.tar.gz)
+md5sums=('1e9fe5423498f10f636319633855e691')
+
+build() {
+  cd ${srcdir}/${pkgname}-${pkgver}
+  ./configure --prefix=/usr \
+	--disable-static \
+	--enable-release
+  make
+}
+
+package() {
+  cd ${srcdir}/${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install
+}

@@ -1,0 +1,70 @@
+# $Id$
+# Contributor: friesoft <friesoft@gmail.com>
+# This package provides the master-stable branch of Qt
+
+pkgname=qt-git
+pkgver=20120206
+pkgrel=1
+pkgdesc="The C++ Qt GUI framework - current development snapshot (master-stable branch)"
+arch=('i686' 'x86_64')
+url="http://www.qtsoftware.com"
+license=('GPL3' 'LGPL')
+
+depends=('libpng' 'mesa' 'fontconfig' 'libtiff' 'libmng' 'sqlite3' 'libxrandr' 'glib2' 'libxi' 'dbus' 'libxcursor' 'libxinerama' 'libxrender' 'ca-certificates' 'xcb-util-wm' 'xcb-util-renderutil' 'xcb-util-image' 'xcb-util-keysyms' 'python2' 'libpulse' 'gdb' 'libgl')
+optdepends=('postgresql-libs' 'libmysqlclient' 'unixodbc')
+makedepends=('inputproto' 'postgresql-libs' 'mysql' 'unixodbc' 'cups' 'libxfixes' 'libmysqlclient' 'qtwebkit')
+provides=('qt' 'qt4' 'qt-doc' 'qt=4.8.0' 'qt4=4.8.0')
+replaces=('qt' 'qt4' 'qt-doc' 'qt4-git' 'qt4-doc')
+conflicts=('qt' 'qt4' 'qt-doc' 'qt4-git' 'qt4-doc')
+options=('!libtool' 'docs')
+
+# desktop files and qdoc3 patch -- needed for qtdesigner-git build
+#source=('assistant.desktop' 'designer.desktop' 'linguist.desktop' 'qtconfig.desktop')
+
+#md5sums=('83d1fd8da6a350dc1f1459d0c8cd226b'
+#         'bb1afccb14bcad7e7dac826612f5dc9c'
+#         '038d7083823c2600c97239fe088b2f4b'
+#         '8618e4b1875143fab8ad244688b2aae7')
+
+_gitroot="git://gitorious.org/qt/qt5.git"
+_gitname="qt5"
+
+build() {
+          msg "Connecting to git server...."
+
+          if [ -d ${srcdir}/$_gitname ] ; then
+                    cd $_gitname
+                    git reset --hard HEAD
+                    git pull origin 
+
+                    msg "The local files have been updated to the current revision"
+
+                    cd $srcdir/$_gitname
+          else
+                    git clone $_gitroot
+
+                    cd $srcdir/$_gitname
+
+                    #sed -i "s|-O2|$CXXFLAGS|" mkspecs/common/g++.conf
+                    #sed -i "/^QMAKE_RPATH/s| -Wl,-rpath,||g" mkspecs/common/g++.conf
+                    #sed -i "/^QMAKE_LFLAGS\s/s|+=|+= $LDFLAGS|g" mkspecs/common/g++.conf
+          fi
+    
+          #perl init-repository
+          #unset QMAKESPEC
+          export QTDIR=$NEW_QTDIR
+          export PATH=$QTDIR/bin:$PATH
+          #export LD_LIBRARY_PATH=${QT5DIR}/lib:${LD_LIBRARY_PATH}
+
+          ./configure -opensource -confirm-license -no-pch -nomake examples -nomake demos -nomake tests -no-gtkstyle -nomake translations -qt-zlib -qt-libpng -qt-libjpeg -qt-sql-sqlite -release -prefix $QTDIR
+                
+          cd $srcdir/$_gitname/qtbase
+          make $THREADS
+}
+
+package() {
+          cd $srcdir/$_gitname
+
+          #install everything
+          make INSTALL_ROOT=$pkgdir install
+}

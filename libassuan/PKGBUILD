@@ -1,0 +1,29 @@
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
+# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+
+pkgname=libassuan
+pkgver=2.0.2
+pkgrel=1
+pkgdesc="A IPC library used by some GnuPG related software"
+arch=('i686' 'x86_64')
+license=('GPL')
+url="http://www.gnupg.org/related_software/libassuan"
+depends=('libgpg-error')
+options=('!libtool')
+source=(ftp://ftp.gnupg.org/gcrypt/$pkgname/$pkgname-$pkgver.tar.bz2)
+install=libassuan.install
+md5sums=('3e7d00fd2ee8a0b9c51ac7616ef3f1ec')
+
+build() {
+  cd ${srcdir}/${pkgname}-${pkgver}
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd ${srcdir}/${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install
+}
+

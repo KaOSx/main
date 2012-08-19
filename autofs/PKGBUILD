@@ -1,0 +1,55 @@
+#
+# Chakra Packages for Chakra, part of chakra-project.org
+#
+# maintainer abveritas@chakra-project.org
+
+pkgname=autofs
+_pkgname=autofs5
+pkgver=5.0.6
+pkgrel=4
+pkgdesc='A kernel-based automounter for Linux.'
+arch=('i686' 'x86_64')
+url='http://freshmeat.net/projects/autofs'
+license=('GPL2')
+depends=('libldap' 'libxml2' 'krb5')
+backup=('etc/autofs/auto.master'
+        'etc/autofs/auto.misc'
+        'etc/conf.d/autofs')
+options=(!makeflags)
+install='autofs.install'
+source=("http://archive.ubuntu.com/ubuntu/pool/main/a/autofs5/autofs5_5.0.6.orig.tar.gz"
+        "http://www.kernel.org/pub/linux/daemons/${pkgname}/v5/patches-5.0.7/${pkgname}-${pkgver}-fix-ipv6-name-for-lookup-fix.patch"
+        'autofs'
+        'autofs.conf.d'
+        'auto.master'
+        'auto.misc')
+md5sums=('57ec52ba214f2ed99cae6a239a95e7ed'
+         '221bf50d6e496b22014a9a7b234fe556'
+         'e307bf6d2638e46eeb916cf42fe029b2'
+         '47f597c870410055e0fdb66103daf928'
+         'a6cefb591e77b31b79dbb7243646c96b'
+         'd8a15ec9186c5c0b36e5cea1e2739e8a')
+
+build() {
+  cd "${srcdir}/${_pkgname}-${pkgver}"
+
+  sed -i "s:SUBDIRS = lib daemon modules man samples:SUBDIRS = lib daemon modules man:" \
+    Makefile.rules
+
+  patch -p1 -i "../${pkgname}-${pkgver}-fix-ipv6-name-for-lookup-fix.patch"
+
+  ./configure --prefix=/usr --sysconfdir=/etc/autofs --with-mapdir=/etc/autofs --without-hesiod \
+    --enable-ignore-busy
+  make
+}
+
+package() {
+  cd "${srcdir}/${_pkgname}-${pkgver}"
+
+  make INSTALLROOT="${pkgdir}" install
+
+  install -Dm0644 "${srcdir}/auto.master" "${pkgdir}/etc/autofs/auto.master"
+  install -Dm0644 "${srcdir}/auto.misc" "${pkgdir}/etc/autofs/auto.misc"
+  install -Dm0755 "${srcdir}/autofs" "${pkgdir}/etc/rc.d/autofs"
+  install -Dm0644 "${srcdir}/autofs.conf.d" "${pkgdir}/etc/conf.d/autofs"
+}

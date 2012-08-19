@@ -1,0 +1,32 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
+# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+
+pkgname=telepathy-glib
+pkgver=0.19.0
+pkgrel=1
+pkgdesc="GLib bindings for the Telepathy D-Bus protocol"
+arch=('i686' 'x86_64')
+url="http://telepathy.freedesktop.org"
+groups=('telepathy')
+license=('LGPL2.1')
+options=('!libtool' '!emptydirs')
+depends=('dbus-glib')
+makedepends=('libxslt' 'vala' 'gobject-introspection')
+source=("http://telepathy.freedesktop.org/releases/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+md5sums=('a4a01b748b6b7134853a561228fe70e4')
+
+build() {
+    cd "${srcdir}/${pkgname}-${pkgver}"
+    PYTHON=/usr/bin/python2 ./configure --prefix=/usr \
+        --libexecdir=/usr/lib/telepathy \
+        --enable-static=no
+    make
+}
+
+package() {
+    cd "${srcdir}/${pkgname}-${pkgver}"
+    make DESTDIR=${pkgdir} install
+}

@@ -1,0 +1,41 @@
+#
+# Chakra Packages for Chakra, part of chakra-project.org
+#
+# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
+# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+
+# include global config
+source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+
+pkgname=eject
+pkgver=2.1.5
+pkgrel=5
+pkgdesc="Eject is a program for ejecting removable media under software control."
+arch=('i686' 'x86_64')
+url="http://eject.sourceforge.net/"
+license=('GPL')
+depends=('glibc')
+source=("http://chakra.sourceforge.net/sources/${pkgname}/${pkgname}-${pkgver}.tar.gz"
+        'gentoo-2.1.5-toggle.patch')
+md5sums=('63c52a4debf84f718d61684e2aff1b20'
+         '177cba21a4c66be4956ded46550573c1')
+
+build() {
+  cd "${srcdir}/${pkgname}"
+
+  # Patch adapted from the original Gentoo one
+  patch -Np1 -i "${srcdir}/gentoo-2.1.5-toggle.patch"
+
+  # Ensure the project has been properly bootstrapped
+  [ ! -x ./configure ] && ./bootstrap
+
+  ./configure --prefix=/usr --mandir=/usr/share/man
+  make
+}
+
+package() {
+  cd "${srcdir}/${pkgname}"
+  make DESTDIR="${pkgdir}" install
+}
+
+# vim:set ts=2 sw=2 et:

@@ -1,0 +1,127 @@
+#! /bin/sh
+#
+# x10d_fstab  - add detected devices to fstab (for live system)
+#
+# Author: Michael Towers (larch42 at googlemail dot com)
+#
+# This file is part of the larch project.
+#
+#    larch is free software; you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation; either version 2 of the License, or
+#    (at your option) any later version.
+#
+#    larch is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with larch; if not, write to the Free Software Foundation, Inc.,
+#    51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+#
+#----------------------------------------------------------------------------
+# 2009.10.01
+
+# Passing '-n' as command-line option will just report on the
+# changes that would be made, nothing will be written to /etc/fstab.
+# Otherwise if /etc/fstab.larch exists the script will do nothing at all.
+
+# Get a list of partitions which could, potentially be mounted.
+# Return the device basename, a tag: '+' for removable or '-' for not,
+# and the detected file-system type, space separated.
+
+# Note that paths within /sys might prove to be a bit variable
+
+usables ()
+{
+    blkid -c /dev/null -s TYPE | sed -r s'|:.*=| |' |  tr -d \" | \
+        while read dev type; do
+            # Ignore if type is "swap", these are included by the initramfs
+            if [ "${type}" = "swap" ]; then
+                continue
+            fi
+            # Ignore if type is "lvm2pv"
+            if [ "${type}" = "lvm2pv" ]; then
+                continue
+            fi
+            part=${dev:5}
+            bdev=${part:0:3}
+            # skip loop devices
+            [ "${bdev}" = "loo" ] && continue
+            echo -n "${part}"
+            if [ $( cat /sys/block/${bdev}/removable 2>/dev/null ) -ne 0 ]; then
+                echo -n " + "
+            else
+                echo -n " - "
+            fi
+            echo "${type}"
+        done
+}
+
+ # This may be useful, too:
+ #blkid -o value -s UUID -s TYPE /dev/sda8
+
+# test if the script is started by root user. If not, exit
+if [ $UID -ne 0 ]; then
+    echo "Only root can run ${APP}"; exit 1
+fi
+
+# In addition, mountpoints will be generated
+MNT=/mnt
+
+if [ "$1" = "-n" ]; then
+    DST=""
+elif [ -f /etc/fstab.larch ]; then
+    exit
+else
+    DST=">>/etc/fstab"
+    if [ -n "$( df | grep " ${MNT}" )" ]; then
+        echo "ERROR: Mounted filesystem at/within ${MNT}"
+        exit 1
+    fi
+    mkdir -p ${MNT}
+    rm -rf ${MNT}/*
+fi
+
+# Get usable partitions, but only fixed ones
+usables | while read part rem fstype; do
+        if [ "${rem}" = "+" ]; then
+            # Removable
+            continue
+        fi
+        mp=$( basename ${part} )
+        if [ "${fstype}" = "ntfs" ]; then
+            eval printf '"/dev/%-12s %-12s %-8s users,noauto,utf8,umask=0   0 0\n"' \
+                    ${part} ${MNT}/${mp} ntfs-3g ${DST}
+        elif [ "${fstype}" = "vfat" ]; then
+            eval printf '"/dev/%-12s %-12s %-8s users,noauto,utf8,umask=0   0 0\n"' \
+                    ${part} ${MNT}/${mp} vfat ${DST}
+        else
+            eval printf '"/dev/%-12s %-12s %-8s users,noauto,noatime   0 0\n"' \
+                    ${part} ${MNT}/${mp} ${fstype} ${DST}
+        fi
+        if [ -n "${DST}" ]; then
+            mkdir -p ${MNT}/${mp}
+        fi
+    done
+
+### CD devices
+#if [ -f /proc/sys/dev/cdrom/info ]; then
+#    for dev in $( cat /proc/sys/dev/cdrom/info 2>/dev/null | head -n 3 | \
+#            tail -n 1 | cut -d ":" -f 2 ); do
+#        mountdir="${dev}_cd"
+#        mkdir ${MNT}/${mountdir}
+#        eval printf '"%-12s %-12s %-8s user,noauto,exec,unhide 0     0\n"' \
+#                /dev/${dev} /mnt/${mountdir} auto >>${DEST}
+#    done
+#fi
+
+#eval echo ${DST}
+#eval echo "# This would do for a floppy" ${DST}
+#eval echo "#/dev/fd0        /mnt/floppy    vfat,ext2 rw,user,noauto,noatime    0     0" ${DST}
+#eval echo "#    +   mkdir /mnt/floppy" ${DST}
+#eval echo ${DST}
+#eval echo "# E.g. for USB storage:" ${DST}
+#eval echo "#/dev/sdb1        /mnt/usb      auto      rw,user,noauto,noatime   0     0" ${DST}
+#eval echo "#    +   mkdir /mnt/usb" ${DST}

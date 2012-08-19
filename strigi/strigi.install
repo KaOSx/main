@@ -1,0 +1,13 @@
+post_install() {
+  if grep -q "fs.inotify.max_user_watches = 524288" "/etc/sysctl.conf" ; then
+    echo "nepomuk optimization found"
+  else
+    echo "fs.inotify.max_user_watches = 524288" >> /etc/sysctl.conf
+  fi
+}
+
+
+post_upgrade() {
+  post_install $1
+}
+

@@ -1,0 +1,49 @@
+#
+# Chakra Packages for Chakra, part of chakra-project.org
+#
+# maintainer abveritas@chakra-project.org
+
+pkgname=fftw
+pkgver=3.3.2
+pkgrel=1
+pkgdesc="A library for computing the discrete Fourier transform (DFT)"
+arch=('i686' 'x86_64')
+license=('GPL2')
+url="http://www.fftw.org/"
+depends=('glibc' 'bash')
+makedepends=('gcc-fortran')
+options=('!libtool')
+source=(http://www.fftw.org/${pkgname}-${pkgver}.tar.gz)
+install=fftw.install
+md5sums=('6977ee770ed68c85698c7168ffa6e178')
+
+# notes:
+# http://www.fftw.org/fftw2_doc/fftw_6.html#SEC69
+# http://www.fftw.org/faq/section2.html#singleprec
+# http://www.fftw.org/fftw3_doc/Precision.html#Precision
+
+build() {
+  cd ${srcdir}/${pkgname}-${pkgver}
+  
+  CFLAGS+=" -O3 -fomit-frame-pointer -malign-double -fstrict-aliasing -ffast-math"
+
+  CONFIGURE="./configure F77=gfortran --prefix=/usr \
+                 --enable-shared --enable-threads --enable-type-prefix"
+
+  # build & install double precision
+  $CONFIGURE --enable-sse2
+  make
+  make DESTDIR=${pkgdir} install
+  make clean 
+
+  # build & install long double precission
+  $CONFIGURE --enable-long-double
+  make
+  make DESTDIR=${pkgdir} install
+  make clean
+
+  # build & install single precision
+  $CONFIGURE --enable-float --enable-sse
+  make
+  make DESTDIR=${pkgdir} install
+}

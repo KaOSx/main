@@ -1,0 +1,34 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+
+pkgname=vala
+pkgver=0.17.1
+pkgrel=1
+pkgdesc="Compiler for the GObject type system."
+arch=('i686' 'x86_64')
+url="http://live.gnome.org/Vala"
+license=('LGPL')
+depends=('glib2')
+makedepends=('libxslt')
+options=('!libtool')
+source=("http://ftp.gnome.org/pub/gnome/sources/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+md5sums=('39f0cc9c85360d9fbbd70b0e16241c01')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+
+  # No, please DON'T mark this as a development version only because Git tells you so;
+  # Git is only watching my chroot status, not Vala's repository directory...
+  #sed -i 's#v="\$v-dirty" ;;$#;;#g' build-aux/git-version-gen
+
+  ./configure --prefix=/usr --enable-vapigen
+
+  make
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+}

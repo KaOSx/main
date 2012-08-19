@@ -1,0 +1,25 @@
+#
+# Chakra Packages for Chakra, part of chakra-project.org
+#
+# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
+# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+
+pkgname=poppler-data
+pkgver=0.4.5
+pkgrel=1
+pkgdesc="Encoding data for the poppler PDF rendering library"
+arch=(any)
+license=('custom' 'GPL2')
+conflicts=('poppler<0.10.5')
+url="http://poppler.freedesktop.org/"
+source=(http://poppler.freedesktop.org/${pkgname}-${pkgver}.tar.gz)
+md5sums=('448dd7c5077570e340340706cef931aa')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  make prefix=/usr DESTDIR="${pkgdir}" install
+
+  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
+  install -m644 COPYING COPYING.adobe \
+    "${pkgdir}/usr/share/licenses/${pkgname}/"
+}

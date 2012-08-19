@@ -1,0 +1,91 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer abveritas@chakra-project.org
+
+pkgname=mplayer
+pkgver=34923
+pkgrel=2
+pkgdesc="Multimedia player."
+arch=('i686' 'x86_64')
+depends=('a52dec' 'aalib' 'alsa-lib' 'bzip2' 'cdparanoia' 'directfb' 'enca' 'faac' 'faad2'
+         'fontconfig' 'freetype2' 'fribidi' 'gcc-libs' 'giflib' 'glibc' 'gsm' 'jack' 'ladspa' 'lame'
+         'libass' 'libbluray' 'libbs2b' 'libcaca' 'libcdio' 'libdca' 'libdv'
+         'libdvdnav'
+         'libdvdread' 'libgl' 'libjpeg' 'libmad' 'libmng' 'libmpeg2' 'libogg'
+         'libpng' 'libpulse' 'libtheora' 'libvdpau' 'libvpx'
+         'libx11' 'libxext' 'libxinerama' 'libxss' 'libxv' 'libxxf86dga' 'libxxf86vm' 'lirc-utils'
+         'live-media>=2010.01.13' 'lzo2' 'mpg123' 'nas' 'ncurses' 'openal' 'opencore-amr' 'openjpeg'
+         'orc' 'rtmpdump' 'schroedinger' 'sdl' 'smbclient' 'speex' 'toolame' 'ttf-dejavu'
+         'vstream-client'
+         'x264' 'xvidcore' 'zlib')
+makedepends=('live-media>=2010.01.13' 'mesa' 'unzip' 'yasm')
+license=('GPL2')
+url="http://www.mplayerhq.hu/"
+categories=('multimedia')
+screenshot=("http://www.mplayerhq.hu/images/screenshots/gui-preview-01.jpg")
+provides=('mencoder')
+conflicts=('mencoder')
+replaces=('mencoder')
+backup=('etc/mplayer/codecs.conf' 'etc/mplayer/input.conf')
+install=mplayer.install
+source=(http://chakra-linux.org/sources/${pkgname}/${pkgname}-${pkgver}.tar.xz mplayer.desktop mplayer.png)
+md5sums=('f1de384b2b73d95bcd4cc55b609f19d5'
+         'c0d6ef795cf6de48e3b87ff7c23f0319'
+         'd00874ccc644b7f43d6ef1c942fcef28')
+
+# create tarball: source PKGBUILD && mksource
+
+mksource() {
+    rm -vRf ${pkgname}
+    echo "checkout mplayer"
+    _pkgver=`svn info svn://svn.mplayerhq.hu/mplayer/trunk | grep Revision: | cut -d' ' -f2`
+    svn co svn://svn.mplayerhq.hu/mplayer/trunk --config-dir ./ ${pkgname} || return 1
+    cd ${pkgname}
+    echo "checkout ffmpeg"
+    git clone git://git.videolan.org/ffmpeg.git ffmpeg
+    echo "clean checkout"
+    rm -vRf ffmpeg/.git
+    find . -name ".svn" -exec rm -rf {} \;
+    cd ..
+    pushd ${pkgname}
+    popd
+    echo "pack checkout"
+    tar -cvJf ${pkgname}-${_pkgver}.tar.xz ${pkgname}/*
+    md5sum ${pkgname}-${_pkgver}.tar.xz
+    echo "change pkgver to ${_pkgver}"
+}
+
+build() {
+    cd ${srcdir}/${pkgname}
+    
+    # Custom CFLAGS break the mplayer build
+    unset CFLAGS LDFLAGS
+
+    ./configure \
+      --confdir=/etc/mplayer \
+      --disable-dvdread-internal \
+      --enable-runtime-cpudetection \
+      --language=all \
+      --prefix=/usr
+        
+    [ "$CARCH" = "i686" ] &&  sed 's|-march=i486|-march=i686|g' -i config.mak
+
+    make
+}
+
+package() {
+  cd ${srcdir}/${pkgname}               
+  
+  make DESTDIR=${pkgdir} install
+  
+  install -Dm644 etc/{codecs.conf,input.conf,example.conf} ${pkgdir}/etc/mplayer/               
+  
+  install -dm755 ${pkgdir}/usr/share/mplayer/           
+  ln -s /usr/share/fonts/TTF/DejaVuSans.ttf ${pkgdir}/usr/share/mplayer/subfont.ttf             
+  rm -rf ${pkgdir}/usr/share/mplayer/font               
+  
+  # Desktop Integration.
+  install -Dm644 ${srcdir}/mplayer.desktop ${pkgdir}/usr/share/applications/mplayer.desktop             
+  install -Dm644 ${srcdir}/mplayer.png ${pkgdir}/usr/share/pixmaps/mplayer.png
+}

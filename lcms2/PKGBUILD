@@ -1,0 +1,32 @@
+#
+# Chakra Packages for Chakra, part of chakra-project.org
+#
+# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
+# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+
+pkgname=lcms2
+pkgver=2.1
+pkgrel=1
+pkgdesc="Small-footprint color management engine"
+arch=('i686' 'x86_64')
+url="http://www.littlecms.com/"
+license=('MIT')
+depends=('libtiff')
+options=(!libtool)
+source=(http://downloads.sourceforge.net/project/lcms/lcms/$pkgver/lcms2-$pkgver.tar.gz)
+md5sums=('08036edb115ad74456dfa20b1998b5f4')
+
+build() {
+  cd "$srcdir"/lcms2-$pkgver
+
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd "$srcdir"/lcms2-$pkgver
+
+  make DESTDIR="$pkgdir/" install
+  install -D -m644 COPYING "$pkgdir"/usr/share/licenses/$pkgname/COPYING
+}
+

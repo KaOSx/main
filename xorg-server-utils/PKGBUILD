@@ -1,0 +1,81 @@
+#
+# Chakra Packages for Chakra, part of chakra-project.org
+#
+# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
+# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+
+# include global config
+source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+
+pkgname=xorg-server-utils
+pkgver=7.6
+pkgrel=3
+pkgdesc="X.Org utilities required by xorg-server"
+arch=(i686 x86_64)
+url="http://xorg.freedesktop.org/"
+license=('custom')
+depends=('libxfontcache>=1.0.5' 'libxi>=1.3' 'libxaw>=1.0.7' 'libxxf86misc>=1.0.2' 'libxrandr>=1.3.0' 'libxxf86vm>=1.1.0' 'mcpp>=2.7.2')
+makedepends=('pkgconfig' 'xbitmaps' 'bigreqsproto' 'xtrans')
+groups=('xorg')
+source=(${url}/releases/individual/app/iceauth-1.0.5.tar.bz2
+        ${url}/releases/individual/app/rgb-1.0.4.tar.bz2
+        ${url}/releases/individual/app/sessreg-1.0.7.tar.bz2
+        ${url}/releases/individual/app/xcmsdb-1.0.3.tar.bz2
+        ${url}/releases/individual/app/xbacklight-1.1.2.tar.bz2
+        ${url}/releases/individual/app/xgamma-1.0.4.tar.bz2
+        ${url}/releases/individual/app/xhost-1.0.4.tar.bz2
+        ${url}/releases/individual/app/xinput-1.5.3.tar.bz2
+        ${url}/releases/individual/app/xmodmap-1.0.5.tar.bz2
+        ${url}/releases/individual/app/xrandr-1.3.5.tar.bz2
+        ${url}/releases/individual/app/xrdb-1.0.9.tar.bz2
+        ${url}/releases/individual/app/xrefresh-1.0.4.tar.bz2
+        ${url}/releases/individual/app/xset-1.2.2.tar.bz2
+        ${url}/releases/individual/app/xsetmode-1.0.0.tar.bz2
+        ${url}/releases/individual/app/xsetroot-1.1.0.tar.bz2
+        ${url}/releases/individual/app/xvidtune-1.0.2.tar.bz2
+        LICENSE.iceauth
+        LICENSE.xcmsdb
+        LICENSE.xvidtune)
+md5sums=('08e3f6b523da8b0af179f22f339508b2'
+         '35c6cccbf25a872bdd62bfcb1a73d951'
+         'e99172cbd72700eeeae99f64632b5dc2'
+         'a8f013229f7234d582e0ee2c89879e30'
+         'c9891d6a3f3129d56cede72daa0ba26c'
+         '34d22b130bffd8aa857eae6d9da4bbb1'
+         '2be663a0afbcc0856c1591477d5bf32a'
+         '1e2f0ad4f3fa833b65c568907f171d28'
+         'b18850d373f3717dca569377c449d091'
+         '9735173a84dca9b05e06fd4686196b07'
+         'ed2e48cf33584455d74615ad4bbe4246'
+         '2f63f88ad0dcecd33c8cf000f38e9250'
+         'd44e0057d6722b25d5a314e82e0b7e7c'
+         'd074e79d380b031d2f60e4cd56538c93'
+         'b78a2da4cf128775031a5a3422fc0b78'
+         'e40eeb4454f2a7cdde3a14f5dfd3aadd'
+         '65695dc24c24958190724a23655ffda7'
+         'b6235416dca2205f0ba83c0c4b3ddeb8'
+         '4e6babde6334e3c5cb4a3136526aa564')
+
+build() {
+  cd "${srcdir}"
+  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
+  for i in *; do
+    if [ -d "${i}" ]; then
+      pushd "${i}"
+      case "${i}" in
+        xrdb*)
+          ./configure --prefix=/usr --mandir=/usr/share/man --with-cpp=/usr/bin/mcpp || return 1
+          ;;
+        *)
+          ./configure --prefix=/usr --mandir=/usr/share/man || return 1
+          ;;
+      esac
+      make || return 1
+      make DESTDIR="${pkgdir}" install || return 1
+      install -m644 COPYING "${pkgdir}"/usr/share/licenses/${pkgname}/LICENSE.${i%-*} || return 1
+      popd
+    fi
+  done
+# Replacing stub license files
+  install -m644 "${srcdir}"/LICENSE.* "${pkgdir}/usr/share/licenses/${pkgname}/"  || return 1
+}

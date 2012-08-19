@@ -1,0 +1,36 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer abveritas@chakra-project.org
+
+pkgname=telepathy-qt
+pkgver=0.9.3
+pkgrel=1
+pkgdesc="A library for Qt-based Telepathy clients."
+arch=('i686' 'x86_64')
+url="http://telepathy.freedesktop.org"
+groups=('telepathy')
+license=('LGPL')
+options=('!libtool')
+depends=('qt' 'telepathy-farstream' 'dbus-python')
+makedepends=('libxslt' 'python2' 'cmake' 'doxygen')
+conflicts=('telepathy-qt4')
+provides=('telepathy-qt4')
+source=("http://telepathy.freedesktop.org/releases/$pkgname/$pkgname-$pkgver.tar.gz")
+md5sums=('94ac93aedf5f6fff49837bc8368e5a37')
+
+build() {
+    cd "${srcdir}"
+
+    mkdir build
+    cd build
+    cmake ../${pkgname}-${pkgver} \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_INSTALL_PREFIX=/usr
+    make
+}
+
+package() {
+    cd "${srcdir}"/build
+    make DESTDIR="$pkgdir" install
+}

@@ -1,0 +1,84 @@
+# larch handlers for rc. script hooks
+# 2010.10.14
+
+
+sysinit_premount_larch() {
+    status "larch sysinit_premount hook"
+#    # Rebuild /etc/mtab
+#    grep "^aufs */ " /proc/mounts               >/etc/mtab.new
+#    grep "^tmpfs */.livesys " /proc/mounts      >>/etc/mtab.new
+#    if [ -d /.livesys/medium/larch ]; then
+#        grep " /.livesys/medium " /proc/mounts  >>/etc/mtab.new
+#    fi
+#    grep -v "^rootfs " /etc/mtab                >>/etc/mtab.new
+#    mv /etc/mtab.new /etc/mtab
+
+    # Add disk partitions to /etc/fstab
+    x10d_fstab
+}
+add_hook sysinit_premount sysinit_premount_larch
+
+
+sysinit_end_larch() {
+    # Allow setting up of xorg.conf before xorg is started
+    status "larch sysinit_end hook"
+    [ -x /etc/X11/xinit/xorg.conf.set ] && /etc/X11/xinit/xorg.conf.set
+}
+add_hook sysinit_end sysinit_end_larch
+
+
+shutdown_postkillall_larch() {
+    status "larch shutdown_postkillall hook"
+    if ! [ -f /.livesys/saveclock ]; then
+        # This will prevent the hardware clock from being set
+        HARDWARECLOCK='LIVE'
+    fi
+}
+add_hook shutdown_postkillall shutdown_postkillall_larch
+
+
+shutdown_poweroff_larch() {
+    status "larch shutdown_poweroff hook"
+
+    # This shouldn't be needed, but better safe than sorry?
+    sync
+
+    # Eject CD/DVD
+    ############################# Deal with ejecting
+    # See if boot device still mounted and ejectable (CD/DVD)
+    bootdev=$( cat /.livesys/bootdevice )
+    if [ -f /proc/sys/dev/cdrom/info ]; then
+        cdroms=$( cat /proc/sys/dev/cdrom/info | { while read a b c; do
+                if [ "${a}" = "drive" -a "${b}" = "name:" ]; then
+                    echo "${c}"
+                    break
+                fi
+            done
+        } )
+        for d in ${cdroms}; do
+            if [ "/dev/${d}" = "${bootdev}" ]; then
+                # booted from CD/DVD
+                if grep "^${bootdev} " /proc/mounts &>/dev/null; then
+                    # it needs to be ejected
+                    doeject ${bootdev}
+                fi
+                break
+            fi
+        done
+    fi
+}
+add_hook shutdown_poweroff shutdown_poweroff_larch
+
+doeject ()
+{
+    echo "Ejecting live CD"
+    mount -n -o remount,rw /
+    # Remove the boot medium from /etc/mtab so that eject works
+    sed "/ \/.livesys\/medium / d" -i /etc/mtab
+    eject $1
+    mount -n -o remount,ro /
+    echo "========================================"
+    echo "It's safe to switch the computer off now"
+    echo -ne "Press Enter to continue"
+    read junk
+}

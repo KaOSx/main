@@ -1,0 +1,54 @@
+# Maintainer: Daniele Cocca <jmc@chakra-project.org>
+
+pkgname=wxx11
+_pkgname=wxX11
+pkgver=2.8.12
+pkgrel=1
+pkgdesc="wxX11 is a port of wxWidgets using X11 (The X Window System) as the underlying graphics backend."
+arch=('i686' 'x86_64')
+url="http://www.wxwidgets.org/"
+license=('custom:wxWindows')
+depends=('pango' 'gstreamer0.10-base' 'libgl' 'libsm' 'libxxf86vm' 'libxinerama' 'libpng' 'libxpm' 'libjpeg' 'libtiff')
+provides=('wxwidgets')
+conflicts=('wxgtk')
+replaces=('wxgtk')
+source=("http://prdownloads.sourceforge.net/wxwindows/${_pkgname}-${pkgver}.tar.gz")
+md5sums=('b75c609a848b31b2cc440ecb51c8358e')
+
+build() {
+  cd "${srcdir}/${_pkgname}-${pkgver}"
+
+  ./configure --prefix=/usr \
+              --libdir=/usr/lib \
+              --with-x11 \
+              --with-opengl \
+              --with-regex=builtin \
+              --with-libpng=sys \
+              --with-libxpm=sys \
+              --with-libjpeg=sys \
+              --with-libtiff=sys \
+              --enable-universal \
+              --enable-unicode \
+              --enable-dnd \
+              --enable-mediactrl \
+              --disable-precomp-headers
+
+  make
+  make -C locale allmo
+
+  cd contrib/src
+  make
+}
+
+package() {
+  cd "${srcdir}/${_pkgname}-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+
+  cd contrib/src
+  make DESTDIR="${pkgdir}" install
+
+  cd "${srcdir}/${_pkgname}-${pkgver}"
+  install -D -m644 docs/licence.txt "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+}
+
+# vim:set ts=2 sw=2 et:

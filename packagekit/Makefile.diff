@@ -1,0 +1,11 @@
+--- a/backends/alpm/Makefile.am	2011-08-04 06:42:46.000000000 -0400
++++ b/backends/alpm/Makefile.am	2012-03-03 14:01:22.313320727 -0500
+@@ -9,7 +9,7 @@
+ PK_BACKEND_DEFAULT_LOGFILE = $(localstatedir)/log/pacman.log
+ 
+ ALPM_CACHE_PATH = $(localstatedir)/lib/pacman/sync
+-ALPM_PACKAGE_URL = "http://www.archlinux.org/packages/%s/%s/%s/"
++ALPM_PACKAGE_URL = "http://chakra-project.org/packages/index.php?act=search&subdir=%s/%s&sortby=date&order=descending&searchpattern=%s"
+ 
+ DEFS = -DPK_BACKEND_CONFIG_FILE=\"$(PK_BACKEND_CONFIG_FILE)\" \
+        -DPK_BACKEND_GROUP_FILE=\"$(PK_BACKEND_GROUP_FILE)\" \

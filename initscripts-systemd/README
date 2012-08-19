@@ -1,0 +1,11 @@
+Unit files needed to make systemd a drop-in replacement for the traditional Chakra-Project GNU/Linux initscripts.
+
+The goal is to one day become obsolete.
+
+Functionality
+-------------
+1) chakra-load-modules.service: parses rc.conf for the modules to be loaded at boot and saves the list where systemd-load-modules will find it.
+2) chakra-daemons.target: starts the daemons listed in rc.conf, preserving ordering and using rc scripts if no native systemd unit with the same name is found.
+3) rc-local{,-shutdown}.service: compatibility with the legacy scripts.
+
+TODO: Both dmraid and lvm need testers. The tools do not support hotplugging, so we might need to add some more synchronisation points to avoid races.

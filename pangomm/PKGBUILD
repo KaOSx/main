@@ -1,0 +1,34 @@
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# contributor (x86_64): Giuseppe Calà <jiveaxe@gmail.com>
+
+pkgbase=pangomm
+pkgname=('pangomm' 'pangomm-docs')
+pkgver=2.28.4
+pkgrel=1
+arch=('i686' 'x86_64')
+license=('LGPL')
+makedepends=('pango' 'glibmm' 'glibmm-docs' 'cairomm' 'pkgconfig')
+source=(http://ftp.gnome.org/pub/GNOME/sources/${pkgname}/2.28/${pkgname}-${pkgver}.tar.xz)
+options=('!libtool')
+url="http://gtkmm.sourceforge.net/"
+sha256sums=('778dcb66a793cbfd52a9f92ee5a71b888c3603a913fc1ddc48a30204de6d6c82')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  ./configure --prefix=/usr
+  make
+}
+package_pangomm() {
+  pkgdesc="C++ bindings for pango"
+  depends=('pango' 'glibmm' 'cairomm')
+  cd "${srcdir}/${pkgbase}-${pkgver}"
+  sed -i -e 's/^doc_subdirs/#doc_subdirs/' Makefile
+  make DESTDIR="${pkgdir}" install
+}
+
+package_pangomm-docs() {
+  pkgdesc="Developer documentation for pangomm"
+  cd "${srcdir}/${pkgbase}-${pkgver}/docs"
+  make DESTDIR="${pkgdir}" install
+}

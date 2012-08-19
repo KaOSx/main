@@ -1,0 +1,190 @@
+# page_installation.uim - The layout for the installation page
+#
+# (c) Copyright 2010 Michael Towers (larch42 at googlemail dot com)
+#
+# This file is part of the larch project.
+#
+#    larch is free software; you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation; either version 2 of the License, or
+#    (at your option) any later version.
+#
+#    larch is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with larch; if not, write to the Free Software Foundation, Inc.,
+#    51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+#
+#----------------------------------------------------------------------------
+# 2010.10.10
+
+[
+    ['Page', ':page_installation',
+            {   'layout':
+                    ['VBOX',
+                        ['HBOX',
+                            ['VBOX', ':editmirrorlist', ':edit_profile'],
+                            'VLINE,20',
+                            ':pacmanops'
+                        ],
+                        '*',
+                        ':settings_advanced',
+                        'HLINE',
+                        ['HBOX', '*', ':install']
+                    ]
+            }
+    ],
+    # - - - - The profile editing frame
+    ['Frame', ':edit_profile',
+            {   'text': _("Edit Profile"),
+                'layout':
+                    ['VBOX',
+                        ':addedpacks',
+                        ':vetopacks',
+                        ':pacmanconf',
+                        ':repos'
+                    ]
+            }
+    ],
+    ['Button', ':addedpacks',
+            {   'text': _("Edit 'addedpacks'"),
+                'tt': _("Edit the list of packages to be installed")
+            },
+        'clicked'
+    ],
+    ['Button', ':vetopacks',
+            {   'text': _("Edit 'vetopacks'"),
+                'tt': _("Edit the list of packages NOT to install")
+            },
+        'clicked'
+    ],
+    ['Button', ':pacmanconf',
+            {   'text': _("Edit pacman.conf options"),
+                'tt': _("Edit pacman.conf options - not the repositories")
+            },
+        'clicked'
+    ],
+    ['Button', ':repos',
+            {   'text': _("Edit pacman.conf repositories"),
+                'tt': _("Edit the repository entries for pacman.conf")
+            },
+        'clicked'
+    ],
+
+    # - - - - The installed package tweaking frame
+    ['OptionalFrame', ':pacmanops',
+            {   'text': _("Tweak Installed Packages"),
+                'layout':
+                    ['VBOX', ':sync', ':updateall', ':update', ':add', ':remove']
+            }
+    ],
+    ['Button', ':sync',
+            {   'text': _("Synchronize db    [-Sy]"),
+                'tt': _("Synchronize the pacman db on the target (pacman -Sy)")
+            },
+        'clicked'
+    ],
+    ['Button', ':updateall',
+            {   'text': _("Update all packages    [-Su]"),
+                'tt': _("Update all installed packages for which a newer version is available\n"
+                        "(you will normally need to synchronize the pacman db first)")
+            },
+        'clicked'
+    ],
+    ['Button', ':update',
+            {   'text': _("Update / Add package    [-U]"),
+                'tt': _("Update / Add a package from a package file"
+                        " using pacman -U")
+            },
+        'clicked'
+    ],
+    ['Button', ':add',
+            {   'text': _("Add package(s)    [-S]"),
+                'tt': _("Add one or more packages (space separated)"
+                        " using pacman -S")
+            },
+        'clicked'
+    ],
+    ['Button', ':remove',
+            {   'text': _("Remove package(s)    [-Rs]"),
+                'tt': _("Remove one or more packages (space separated)"
+                        " using pacman -Rs")
+            },
+        'clicked'
+    ],
+
+    # - - - - The advanced installation options frame
+    ['OptionalFrame', ':settings_advanced',
+            {   'text': _("Advanced Installation Options"),
+                'layout': ['HBOX', ':installrepos', 'VLINE,3', ':cache']
+            }
+    ],
+
+    ['OptionalFrame', ':installrepos',
+            {   'text': _("Use project repository list"),
+                'tt': _("Enables use of an alternative pacman.conf"
+                        " for installation only"),
+                'layout':
+                    ['HBOX', ':editrepolist']
+            },
+        'toggled'
+    ],
+    ['Button', ':editrepolist',
+            {   'text': _("Edit repository list"),
+                'tt': _("Edit repository list file used for installation")
+            },
+        'clicked'
+    ],
+    ['Button', ':editmirrorlist',
+            {   'text': _("Edit mirror list"),
+                'tt': _("Edit the pacman mirror list for the live system\n"
+                        "(not for the build process)")
+            },
+        'clicked'
+    ],
+
+    ['Frame', ':cache',
+            {   'text': _("Package Cache"),
+                'layout':
+                    ['HBOX', ':cache_show', ':cache_change']
+            }
+    ],
+    ['LineEdit', ':cache_show',
+            {   'ro': True,
+                'tt': _("The path to the (host's) package cache")
+            }
+    ],
+    ['Button', ':cache_change',
+            {   'text': _("Change"),
+                'tt': _("Change the package cache path")
+            },
+        'clicked'
+    ],
+
+    ['Button', ':install',
+            {   'text': _("Install"),
+                'tt': _("This will start the installation to the set path")
+            },
+        'clicked'
+    ],
+
+    ['DATA', 'install_page_data',
+            {   'messages':
+                    {   'edit_pc':  _("Editing pacman.conf options only"),
+                        'edit_pr':  _("Editing pacman repositories"),
+                        'edit_mli': _("Editing mirror list for installation"),
+                        'prompt_ncp': _("Enter new package cache path:"),
+                        'edit_pri': _("Editing pacman repositories for installation"),
+                        'msg_pu':   _("Package to add/update"),
+                        'filter_pu': _("Packages"),
+                        'prompt_pi': _("Enter the names of packages to install -"
+                                    "\n  separated by spaces:"),
+                        'prompt_pr': _("Enter the names of packages to remove -"
+                                    "\n  separated by spaces:"),
+                    }
+            },
+    ],
+]

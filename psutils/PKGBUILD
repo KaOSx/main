@@ -1,0 +1,35 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
+# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+
+pkgname=psutils
+pkgver=1.17
+pkgrel=1
+pkgdesc="A set of postscript utilities"
+arch=(i686 x86_64)
+license=('custom')
+depends=('glibc' 'ghostscript')
+provides=('psutils-lprng')
+replaces=('psutils-lprng')
+url="http://www.tardis.ed.ac.uk/~ajcd/psutils/index.html"
+source=(ftp://ftp.enst.fr/pub/unix/a2ps/${pkgname}-${pkgver}.tar.gz
+        psutils-1.17.diff)
+md5sums=('b161522f3bd1507655326afa7db4a0ad'
+         '2b49e9e796000b42f42804d4b50a2be1')
+
+build() {
+  cd "${srcdir}/${pkgname}"
+  patch -Np1 -i "${srcdir}/psutils-1.17.diff" || return 1
+  install -d -m755 "${pkgdir}/usr/include"
+  install -d -m755 "${pkgdir}/usr/share/man"
+  make -j1 -f Makefile.unix BINDIR="${pkgdir}/usr/bin" \
+    INCLUDEDIR="${pkgdir}/usr/include/psutils" PERL=/usr/bin/perl \
+    MANDIR="${pkgdir}/usr/share/man/man1" || return 1
+  make -j1 -f Makefile.unix BINDIR="${pkgdir}/usr/bin" \
+    INCLUDEDIR="${pkgdir}/usr/include/psutils" PERL=/usr/bin/perl \
+    MANDIR="${pkgdir}/usr/share/man/man1" install || return 1
+  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
+  install -m644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/" || return 1
+}

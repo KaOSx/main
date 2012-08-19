@@ -1,0 +1,36 @@
+#
+# Chakra Packages for Chakra, part of chakra-project.org
+#
+# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
+# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+# contributor : Radu Andries <admiral0[at]tuxfamily[dot]org>
+
+pkgname=networkmanager-openconnect
+pkgver=0.9.2.0
+pkgrel=1
+pkgdesc="NetworkManager VPN integration for openconnect"
+arch=('i686' 'x86_64')
+license=('GPL')
+url="http://www.gnome.org/projects/NetworkManager/"
+depends=('networkmanager>=0.9' 'openconnect>=3.14' 'dbus-glib')
+makedepends=('intltool') # No 'gtk2' 'libglade' 'gconf' 'gnome-keyring' 'libgnome-keyring')
+# optdepends=('network-manager-applet: GNOME frontends to NetWorkmanager')
+options=('!libtool')
+install=$pkgname.install
+source=(http://ftp.gnome.org/pub/GNOME/sources/NetworkManager-openconnect/0.9/NetworkManager-openconnect-${pkgver}.tar.bz2)
+sha256sums=('5e95aac22178bf2e686b5dfb0d13d31ac09510aefaf54b619193ec5ed9d766e6')
+
+build() {
+  cd "${srcdir}/NetworkManager-openconnect-${pkgver}"
+  ./configure --prefix=/usr \
+  	--sysconfdir=/etc \
+	--libexecdir=/usr/lib/networkmanager \
+        --without-gnome \
+	--disable-static || return 1
+  make || return 1
+}
+
+package() {
+  cd "${srcdir}/NetworkManager-openconnect-${pkgver}"
+  make DESTDIR="${pkgdir}" install || return 1
+}

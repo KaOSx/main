@@ -1,0 +1,72 @@
+# docviewer.uim - The layout for the documentation viewer widget
+#
+# (c) Copyright 2010 Michael Towers (larch42 at googlemail dot com)
+#
+# This file is part of the larch project.
+#
+#    larch is free software; you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation; either version 2 of the License, or
+#    (at your option) any later version.
+#
+#    larch is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with larch; if not, write to the Free Software Foundation, Inc.,
+#    51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+#
+#----------------------------------------------------------------------------
+# 2010.05.21
+
+[
+    ['Frame', 'doc:page',
+            {   'layout':
+                    ['VBOX',
+                        ['HBOX', 'doc:header', '*', 'doc:back', 'doc:forward',
+                                'doc:home', 'doc:parent', 'doc:hide'],
+                        'doc:content'
+                    ]
+            }
+    ],
+    ['Label', 'doc:header',
+            {   'markup': ['h2', _("Documentation")]
+            }
+    ],
+    ['HtmlView', 'doc:content', {}],
+    ['Button', 'doc:hide',
+            {   'text': _("Hide"),
+                'tt': _("Return to the larch controls"),
+                'clicked': ''
+            },
+    ],
+    ['Button','doc:back',
+            {   'icon': 'left',
+                'tt': _("Go back in the viewing history"),
+                'clicked': ''
+            },
+    ],
+    ['Button','doc:forward',
+            {   'icon': 'right',
+                'tt': _("Go forward in the viewing history"),
+                'clicked': ''
+            },
+    ],
+
+    ['Button','doc:home',
+            {   'icon': 'reload',
+                'tt': _("Reload the documentation for the current larch tab"),
+                'clicked': ''
+            },
+    ],
+
+    ['Button','doc:parent',
+            {   'icon': 'up',
+                'tt': _("Go to the general larch documentation index"),
+                'clicked': ''
+            },
+    ],
+
+]

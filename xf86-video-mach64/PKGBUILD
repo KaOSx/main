@@ -1,0 +1,34 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer abveritas@chakra-project.org
+
+pkgname=xf86-video-mach64
+pkgver=6.9.2
+pkgrel=1
+pkgdesc="X.org mach64 video driver"
+arch=('i686' 'x86_64')
+url="http://xorg.freedesktop.org/"
+license=('custom')
+depends=('glibc')
+makedepends=('pkgconfig' 'xorg-server>=1.12.3' 'xineramaproto' 'xf86driproto' 'mesa>=7.6' 'glproto')
+conflicts=('xorg-server<1.12.3')
+groups=('xorg-video-drivers')
+options=('!libtool')
+source=(${url}/releases/individual/driver/${pkgname}-${pkgver}.tar.bz2)
+sha1sums=('0b8163cddfa851ea1fc0cf148b3bd6eb9f66e4c4')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+
+  ./configure --prefix=/usr --disable-dri
+  make
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+
+  make DESTDIR="${pkgdir}" install
+  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
+  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
+}

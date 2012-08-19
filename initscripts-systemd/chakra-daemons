@@ -1,0 +1,47 @@
+#!/bin/bash
+#
+# /lib/systemd/system-generators/arch-daemons
+#
+
+. /etc/rc.conf
+
+[[ $1 ]] || exit 1
+
+# when called at boot, this is /run/systemd/generator-$rand
+dest=$1
+
+# list of services that have to be started before the next one
+deps=()
+
+# Make service file
+create_unit() {
+  local daemon=${1%.service}; shift
+  local deps=$*
+
+  printf "
+[Unit]
+Description=Legacy unit for %s
+After=%s
+
+[Service]
+ExecStart=/etc/rc.d/%s start
+ExecStop=/etc/rc.d/%s stop
+RemainAfterExit=yes
+Type=forking
+" "$1" "$deps" "$daemon" "$daemon" > "$dest/chakra-daemons.target.wants/$1"
+
+}
+
+[[ -d $dest/chakra-daemons.target.wants ]] || /bin/mkdir -p "$dest/chakra-daemons.target.wants"
+
+for daemon in "${DAEMONS[@]}"; do
+  service="$daemon.service"
+  case ${daemon:0:1} in
+    '!') continue ;;
+    '@') create_unit "${service:1}" "${deps[@]}" ;;
+    *) create_unit "$service" "${deps[@]}"
+       deps+=("$service") ;;
+   esac
+done
+
+# vim: et sw=2:

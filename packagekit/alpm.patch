@@ -1,0 +1,118 @@
+diff --git a/backends/alpm/pk-backend-alpm.c b/backends/alpm/pk-backend-alpm.c
+index ba993f0..4cc9af2 100644
+--- a/backends/alpm/pk-backend-alpm.c
++++ b/backends/alpm/pk-backend-alpm.c
+@@ -22,8 +22,10 @@
+  */
+ 
+ #include <config.h>
++#include <locale.h>
+ #include <glib/gstdio.h>
+ #include <sys/utsname.h>
++#include <pk-backend-spawn.h>
+ 
+ #include "pk-backend-alpm.h"
+ #include "pk-backend-databases.h"
+@@ -194,6 +196,66 @@ pk_backend_logcb (pmloglevel_t level, const gchar *format, va_list args)
+	g_free (output);
+ }
+ 
++static void
++pk_backend_initialize_environment (PkBackend *self)
++{
++	gchar *value;
++
++	g_return_if_fail (self != NULL);
++
++	value = pk_backend_get_locale (self);
++	if (value != NULL) {
++		setlocale (LC_ALL, value);
++		g_free (value);
++	}
++
++	value = pk_backend_get_proxy_http (self);
++	if (value != NULL) {
++		gchar *uri = pk_backend_spawn_convert_uri (value);
++		g_setenv ("http_proxy", uri, TRUE);
++		g_free (uri);
++		g_free (value);
++	}
++
++	value = pk_backend_get_proxy_https (self);
++	if (value != NULL) {
++		gchar *uri = pk_backend_spawn_convert_uri (value);
++		g_setenv ("https_proxy", uri, TRUE);
++		g_free (uri);
++		g_free (value);
++	}
++
++	value = pk_backend_get_proxy_ftp (self);
++	if (value != NULL) {
++		gchar *uri = pk_backend_spawn_convert_uri (value);
++		g_setenv ("ftp_proxy", uri, TRUE);
++		g_free (uri);
++		g_free (value);
++	}
++
++	value = pk_backend_get_proxy_socks (self);
++	if (value != NULL) {
++		gchar *uri = pk_backend_spawn_convert_uri (value);
++		g_setenv ("socks_proxy", uri, TRUE);
++		g_free (uri);
++		g_free (value);
++	}
++
++	value = pk_backend_get_no_proxy (self);
++	if (value != NULL) {
++		g_setenv ("no_proxy", value, TRUE);
++		g_free (value);
++	}
++
++	value = pk_backend_get_pac (self);
++	if (value != NULL) {
++		gchar *uri = pk_backend_spawn_convert_uri (value);
++		g_setenv ("pac", uri, TRUE);
++		g_free (uri);
++		g_free (value);
++	}
++}
++
+ static gboolean
+ pk_backend_initialize_alpm (PkBackend *self, GError **error)
+ {
+@@ -260,6 +322,8 @@ pk_backend_initialize (PkBackend *self)
+ 
+	g_return_if_fail (self != NULL);
+ 
++	pk_backend_initialize_environment (self);
++
+	if (!pk_backend_initialize_alpm (self, &error) ||
+	    !pk_backend_initialize_databases (self, &error) ||
+	    !pk_backend_initialize_groups (self, &error)) {
+@@ -380,3 +444,11 @@ pk_backend_finish (PkBackend *self, GError *error)
+	pk_backend_thread_finished (self);
+	return (error == NULL);
+ }
++
++void
++pk_backend_transaction_start (PkBackend *self)
++{
++	g_return_if_fail (self != NULL);
++
++	pk_backend_initialize_environment (self);
++}
+diff --git a/backends/alpm/pk-backend-transaction.c b/backends/alpm/pk-backend-transaction.c
+index fdb840e..a4a712f 100644
+--- a/backends/alpm/pk-backend-transaction.c
++++ b/backends/alpm/pk-backend-transaction.c
+@@ -280,8 +280,8 @@ pk_backend_install_ignorepkg (PkBackend *self, pmpkg_t *pkg, gint *result)
+ }
+ 
+ static void
+-pk_backend_select_provider (PkBackend *self, pmdepend_t *dep,
+-			    const alpm_list_t *providers)
++pk_backend_select_provider (PkBackend *self, const alpm_list_t *providers,
++			    pmdepend_t *dep)
+ {
+	gchar *output;
+ 

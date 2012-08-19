@@ -1,0 +1,33 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer abveritas@chakra-project.org
+
+pkgname=dssi
+pkgver=1.1.1
+pkgrel=4
+pkgdesc="An API for audio plugins, with particular application for software synthesis plugins with native user interfaces."
+arch=("i686" "x86_64")
+url="http://dssi.sourceforge.net/"
+license=('LGPL' 'BSD' 'custom')
+depends=('gcc-libs' 'liblo' 'jack-audio-connection-kit' 'libsamplerate' 'libx11')
+makedepends=('ladspa' 'pkgconfig' 'qt')
+options=('!libtool')
+source=(http://downloads.sourceforge.net/$pkgname/$pkgname-$pkgver.tar.gz
+	'LICENSE')
+md5sums=('619ab73c883b02dc37ddb37001591f8b'
+	'258ca4d0ca28c5c4d4675147621fac18')
+
+build() {
+  cd $srcdir/$pkgname-$pkgver
+  ./configure --prefix=/usr 
+}
+
+package() {
+  cd "$srcdir/$pkgname-$pkgver"
+
+  make DESTDIR="$pkgdir" install
+
+  install -Dm644 "$srcdir/LICENSE" \
+    "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}

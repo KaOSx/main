@@ -1,0 +1,29 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer: abveritas[at]chakra-project[dot]org>
+
+pkgname=libavc1394
+pkgver=0.5.4
+pkgrel=1
+pkgdesc="A library to control A/V devices using the 1394ta AV/C commands."
+arch=("i686" "x86_64")
+url="http://sourceforge.net/projects/libavc1394/"
+license=('LGPL')
+depends=('libraw1394')
+options=('!libtool')
+source=(http://downloads.sourceforge.net/sourceforge/libavc1394/${pkgname}-${pkgver}.tar.gz)
+md5sums=('caf0db059d8b8d35d6f08e6c0e1c7dfe')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+
+  ./configure --prefix=/usr --mandir=/usr/share/man 
+  make
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+
+  make DESTDIR="${pkgdir}" install 
+}

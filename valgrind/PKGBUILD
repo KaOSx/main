@@ -1,0 +1,40 @@
+#
+# Chakra Packages for Chakra, part of chakra-project.org
+#
+# maintainer: Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+
+pkgname=valgrind
+pkgver=3.7.0
+pkgrel=1
+pkgdesc="Instrumentation framework for building dynamic analysis tools"
+arch=('i686' 'x86_64')
+license=('GPL')
+url="http://valgrind.org/"
+screenshot="http://valgrind.org/images/valgrind-100.png"
+depends=('glibc>=2.15' 'glibc<2.16' 'perl')
+makedepends=('gdb')
+options=('!emptydirs' )
+source=(http://valgrind.org/downloads/${pkgname}-${pkgver}.tar.bz2
+        glibc-2.15.patch)
+md5sums=('a855fda56edf05614f099dca316d1775'
+         'ab868cd16b578ff564874d043349170d')
+
+build() {
+  cd ${srcdir}/${pkgname}-${pkgver}
+
+  msg "Applying patches..."
+  # patch for Glibc 2.15
+  patch -p1 -i ${srcdir}/glibc-2.15.patch
+
+  if [ "${CARCH}" = "x86_64" ]; then
+    ./configure --prefix=/usr --mandir=/usr/share/man --enable-only64bit
+  else
+    ./configure --prefix=/usr --mandir=/usr/share/man
+  fi
+  make
+}
+
+package() {
+  cd ${srcdir}/${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install
+}

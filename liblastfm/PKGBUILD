@@ -1,0 +1,37 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer abveritas@chakra-project.org
+
+pkgname=liblastfm
+pkgver=1.0.1
+pkgrel=1
+pkgdesc='A Qt C++ library for the Last.fm webservices'
+url="https://github.com/eartle/liblastfm/"
+license=('GPL3')
+arch=('i686' 'x86_64')
+depends=('qt')
+makedepends=('lsb-release')
+source=("https://github.com/eartle/${pkgname}/zipball/${pkgver}")
+_ziphash=9b4efb5
+md5sums=('547da2099954a85f6ab475945b4a7de4')
+
+build() {
+  if [[ -e ${srcdir}/${pkgname}-${pkgver}-build ]]; then rm -rf ${srcdir}/${pkgname}-${pkgver}-build; else mv ${srcdir}/eartle-${pkgname}-${_ziphash} ${srcdir}/${pkgname}-${pkgver}; fi
+
+  mkdir ${srcdir}/${pkgname}-${pkgver}-build
+  cd ${srcdir}/${pkgname}-${pkgver}-build
+
+  cmake -DCMAKE_INSTALL_PREFIX=/usr \
+        -DCMAKE_INSTALL_LIBDIR=lib \
+        -DCMAKE_INSTALL_LIBEXECDIR=lib/${_pkgname} \
+        -DCMAKE_BUILD_TYPE=Release \
+        ../${pkgname}-${pkgver}
+  make
+}
+
+package() {
+  cd ${srcdir}/${pkgname}-${pkgver}-build
+  make DESTDIR=${pkgdir} install
+}
+

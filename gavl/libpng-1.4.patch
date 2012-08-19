@@ -1,0 +1,36 @@
+diff -up src/blend_test.c.png14 src/blend_test.c
+--- src/blend_test.c.png14	2010-01-27 22:28:03.520702943 -0200
++++ src/blend_test.c	2010-01-27 22:28:25.287743724 -0200
+@@ -179,7 +179,7 @@ static gavl_video_frame_t * read_png(con
+     {
+     case PNG_COLOR_TYPE_GRAY:       /*  (bit depths 1, 2, 4, 8, 16) */
+       if(bit_depth < 8)
+-        png_set_gray_1_2_4_to_8(png_ptr);
++        png_set_expand_gray_1_2_4_to_8(png_ptr);
+       if (png_get_valid(png_ptr, info_ptr, PNG_INFO_tRNS))
+         {
+         png_set_tRNS_to_alpha(png_ptr);
+diff -up src/pngutil.c.png14 src/pngutil.c
+--- src/pngutil.c.png14	2010-01-27 22:28:46.413703815 -0200
++++ src/pngutil.c	2010-01-27 22:28:59.380703073 -0200
+@@ -173,7 +173,7 @@ gavl_video_frame_t * read_png(const char
+     {
+     case PNG_COLOR_TYPE_GRAY:       /*  (bit depths 1, 2, 4, 8, 16) */
+       if(bit_depth < 8)
+-        png_set_gray_1_2_4_to_8(png_ptr);
++        png_set_expand_gray_1_2_4_to_8(png_ptr);
+       if (png_get_valid(png_ptr, info_ptr, PNG_INFO_tRNS))
+         {
+         png_set_tRNS_to_alpha(png_ptr);
+diff -up src/scaletest.c.png14 src/scaletest.c
+--- src/scaletest.c.png14	2010-01-27 22:29:19.249739376 -0200
++++ src/scaletest.c	2010-01-27 22:29:28.199706880 -0200
+@@ -210,7 +210,7 @@ static gavl_video_frame_t * read_png(con
+     {
+     case PNG_COLOR_TYPE_GRAY:       /*  (bit depths 1, 2, 4, 8, 16) */
+       if(bit_depth < 8)
+-        png_set_gray_1_2_4_to_8(png_ptr);
++        png_set_expand_gray_1_2_4_to_8(png_ptr);
+       if (png_get_valid(png_ptr, info_ptr, PNG_INFO_tRNS))
+         {
+         png_set_tRNS_to_alpha(png_ptr);

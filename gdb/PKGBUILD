@@ -1,0 +1,40 @@
+# Platform packages for Chakra
+
+pkgname=gdb
+pkgver=7.3.1
+pkgrel=1
+pkgdesc="The GNU Debugger"
+arch=('i686' 'x86_64')
+url="http://www.gnu.org/software/gdb/"
+license=('GPL3')
+depends=('ncurses' 'expat' 'python')
+makedepends=('texinfo')
+backup=('etc/gdb/gdbinit')
+options=('!libtool')
+install=gdb.install
+source=(http://ftp.gnu.org/gnu/gdb/${pkgname}-${pkgver}.tar.bz2)
+md5sums=('b89a5fac359c618dda97b88645ceab47')
+
+build() {
+  cd ${srcdir}/${pkgname}-${pkgver}
+  
+  ./configure --prefix=/usr --disable-nls \
+    --with-system-readline \
+    --with-python=/usr/bin/python \
+    --with-system-gdbinit=/etc/gdb/gdbinit
+  make
+}
+
+package() {
+  cd ${srcdir}/${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install
+
+  # install "custom" system gdbinit
+  install -dm755 $pkgdir/etc/gdb
+  touch $pkgdir/etc/gdb/gdbinit
+
+  # resolve conflicts with binutils
+  rm ${pkgdir}/usr/include/{ansidecl,bfd,bfdlink,dis-asm,symcat}.h
+  rm ${pkgdir}/usr/lib/{libbfd,libiberty,libopcodes}.a
+  rm ${pkgdir}/usr/share/info/{bfd,configure,standards}.info
+}

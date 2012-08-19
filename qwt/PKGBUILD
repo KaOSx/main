@@ -1,0 +1,41 @@
+# Platform packages for Chakra
+
+pkgname=qwt
+pkgver=6.0.1
+pkgrel=1
+pkgdesc="Qt Widgets for Technical Applications"
+arch=('i686' 'x86_64')
+url="http://qwt.sourceforge.net/"
+depends=('qt>=4.5.1')
+options=('!makeflags')
+license=("custom:$pkgname")
+source=("http://downloads.sourceforge.net/sourceforge/qwt/$pkgname-$pkgver.tar.bz2" \
+        "qwtconfig-chakra.pri")
+md5sums=('ace68558eab873e2da7e641179c4ef0c'
+         'd8eca7cf236a2552c86c90accc580090')
+
+build() {
+  cd ${srcdir}/${pkgname}-${pkgver}
+
+  # copy our config file to the right place
+  install -Dm644 ${srcdir}/qwtconfig-chakra.pri \
+	${srcdir}/${pkgname}-${pkgver}/qwtconfig.pri
+
+  # build qwt:
+  qmake qwt.pro
+  make
+}
+
+package() {
+  cd ${srcdir}/${pkgname}-${pkgver}
+
+  make INSTALL_ROOT=${pkgdir} QTDIR=/usr install
+
+  # Move man files to proper directory.
+#  install -d ${pkgdir}/usr/share/man/man3
+#  mv -f ${pkgdir}/usr/share/doc/qwt/man/man3/* ${pkgdir}/usr/share/man/man3
+
+  # install licence
+  install -Dm644 ${srcdir}/${pkgname}-${pkgver}/COPYING \
+	${pkgdir}/usr/share/licenses/${pkgname}/license.txt
+}

@@ -1,0 +1,31 @@
+#
+# Chakra Packages for Chakra, part of chakra-project.org
+#
+# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
+# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+
+# include global config
+source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+
+pkgname=libasyncns
+pkgver=0.8
+pkgrel=1
+pkgdesc="A C library for Linux/Unix for executing name service queries asynchronously"
+arch=('i686' 'x86_64')
+url="http://0pointer.de/lennart/projects/libasyncns"
+license=('LGPL')
+options=('!libtool')
+depends=('glibc')
+source=(http://0pointer.de/lennart/projects/libasyncns/${pkgname}-${pkgver}.tar.gz)
+md5sums=('1f553d6ce1ad255bc83b3d8e9384f515')
+
+build() {
+  cd ${srcdir}/libasyncns-${pkgver}
+  ./configure --prefix=/usr --disable-lynx
+  make || return 1
+}
+
+package() {
+  cd ${srcdir}/libasyncns-${pkgver}
+  make DESTDIR=${pkgdir} install
+}

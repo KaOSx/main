@@ -1,0 +1,26 @@
+#
+# Chakra Packages for Chakra, part of chakra-project.org
+#
+# maintainer abveritas@chakra-project.org
+
+pkgname=ktoblzcheck
+pkgver=1.39
+pkgrel=1
+pkgdesc="tool for verification of account numbers and bank codes"
+arch=('i686' 'x86_64')
+license=('LGPL')
+url="http://ktoblzcheck.sourceforge.net/"
+depends=('python2' 'gcc-libs')
+source=("http://downloads.sourceforge.net/project/$pkgname/$pkgname-$pkgver.tar.gz")
+md5sums=('ef5efd6e2c31aaf6405060ec477c200c')
+
+build() {
+  cd $srcdir/$pkgname-$pkgver
+  ./configure --prefix=/usr --enable-python
+  make
+}
+
+package() {
+  cd "$srcdir/ktoblzcheck-$pkgver"
+   make DESTDIR="$pkgdir" install
+}

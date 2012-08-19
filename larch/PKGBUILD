@@ -1,0 +1,43 @@
+# Maintainer: Michael Towers <larch42 (at) googlemail (dot) com>
+# 2011.01.30
+pkgname=larch
+pkgver=8.2.17
+pkgrel=5
+
+pkgdesc="Design your own 'live' Chakra GNU/Linux DVDs, CDs and USB-sticks (etc.)"
+url="http://larch.berlios.de"
+depends=(python-pexpect liblarch cdrkit parted)
+optdepends=('larch-profiles: for example build profiles')
+arch=(any)
+license=('GPL')
+install=larch.install
+
+build() {
+  _destdir=opt/apps/larch
+  cd ${pkgdir}
+  mkdir -p usr/bin
+  mkdir -p usr/share/{pixmaps,applications}
+  mkdir -p ${_destdir}
+
+  rm -f ${startdir}/{cli,gui,gui/front}/*.pyc
+  rm -f ${startdir}/docs/build/src/*~
+  for d in buildscripts cd-root cli data docs gui i18n images profiles scripts; do
+    cp -dr ${startdir}/${d} ${_destdir}
+  done
+
+  # Build documentation
+  mv ${_destdir}/docs/build ${srcdir}
+  python2 ${srcdir}/build/builddocs.py
+  rm -f ${_destdir}/docs/html
+  cp -r ${srcdir}/build/html ${_destdir}/docs
+
+  ln -s /${_destdir}/images/larch.png usr/share/pixmaps/larch.png
+  cp ${startdir}/larch.desktop usr/share/applications
+
+  for s in archin larchify medium; do
+      ln -s /${_destdir}/cli/${s}.py usr/bin/larch-${s}
+  done
+
+  ln -s /${_destdir}/gui/larch.py usr/bin/larch
+
+}

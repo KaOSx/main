@@ -1,0 +1,31 @@
+pkgname=fpc-qtbindings
+pkgver=2.5
+pkgrel=1
+_qt4pas=V"$pkgver"_Qt4.5.3
+pkgdesc='Free Pascal Qt4 Binding'
+url='http://users.telenet.be/Jan.Van.hijfte/qtforfpc/fpcqt4.html'
+license=('GPL')
+depends=('qt')
+conflicts=('gdk-pixbuf')
+arch=('i686' 'x86_64')
+source=(http://users.telenet.be/Jan.Van.hijfte/qtforfpc/V"$pkgver"/qt4pas-$_qt4pas.tar.gz
+        http://chakra-linux.org/sources/fpc-qtbindings/gdk-pixbuf-1.0.tar.gz)
+md5sums=('8249bc17e4167e077d22c7f5fb118bb2'
+         'e0cd561f24e8fd71621230c24fed73cc')
+
+build() {
+  cd $srcdir/qt4pas-$_qt4pas
+  qmake
+  make
+}
+
+package() {
+  cd $srcdir/qt4pas-$_qt4pas
+  mkdir -p $pkgdir/usr/lib
+  cp -v libQt4Pas.so.5.$pkgver $pkgdir/usr/lib
+  ln -sfv libQt4Pas.so.5.$pkgver $pkgdir/usr/lib/libQt4Pas.so.5.2
+  ln -sfv libQt4Pas.so.5.$pkgver $pkgdir/usr/lib/libQt4Pas.so.5
+  ln -sfv libQt4Pas.so.5.$pkgver $pkgdir/usr/lib/libQt4Pas.so
+  mkdir -p $pkgdir/usr/include/gdk-pixbuf-1.0/gdk-pixbuf
+  cp -v $srcdir/gdk-pixbuf/* $pkgdir/usr/include/gdk-pixbuf-1.0/gdk-pixbuf
+}

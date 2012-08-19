@@ -1,0 +1,21 @@
+#
+# Chakra Packages for Chakra, part of chakra-project.org
+#
+# maintainer abveritas@chakra-project.org
+# contributor Marius L. Meyer <marius.l.meyer at gmail dot com>
+
+pkgname=carl9170-fw
+pkgver=1.9.6
+pkgrel=1
+pkgdesc="Firmware for the carl9170 WiFi driver"
+arch=('i686' 'x86_64')
+url="http://wireless.kernel.org/en/users/Drivers/carl9170"
+license=('GPL2')
+source=('carl9170-1.fw::http://linuxwireless.org/en/users/Drivers/carl9170/fw1.9.6?action=AttachFile&do=get&target=carl9170-1.fw')
+md5sums=('2fa6ed98d53d0b5fbcc136d1cf5e9609')
+
+build() {
+  mkdir -p $pkgdir/usr/lib/firmware
+  cp $srcdir/* $pkgdir/usr/lib/firmware  
+}
+

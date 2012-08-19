@@ -1,0 +1,48 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer abveritas@chakra-project.org
+
+pkgbase=('gstreamer0.10-base')
+pkgname=('gstreamer0.10-base' 'gstreamer0.10-base-plugins')
+pkgver=0.10.36
+pkgrel=1
+arch=('i686' 'x86_64')
+license=('LGPL')
+makedepends=('pkgconfig' "gstreamer0.10>=${pkgver}" 'orc' 'libxv' 'alsa-lib' 'cdparanoia' 'libvisual' 'libvorbis' 'libtheora' 'pango' 'gobject-introspection')
+options=(!libtool !emptydirs)
+url="http://gstreamer.freedesktop.org/"
+source=(${url}/src/gst-plugins-base/gst-plugins-base-${pkgver}.tar.xz)
+md5sums=('3d2337841b132fe996e5eb2396ac9438')
+
+build() {
+  cd "${srcdir}/gst-plugins-base-${pkgver}"
+  sed -i '/AC_PATH_XTRA/d' configure.ac
+  autoreconf
+  ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var \
+    --disable-static --enable-experimental --disable-gnome_vfs --enable-subparse\
+    --with-package-name="GStreamer Base Plugins (Chakra GNU/Linux)" \
+    --with-package-origin="http://www.chakra-project.org/"
+
+  make 
+  sed -e 's/^SUBDIRS_EXT =.*/SUBDIRS_EXT =/' -i Makefile
+}
+
+package_gstreamer0.10-base() {
+  pkgdesc="GStreamer Multimedia Framework Base plugin libraries"
+  depends=('gstreamer0.10>=0.10.36' 'orc' 'libxv')
+
+  cd "${srcdir}/gst-plugins-base-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+}
+
+package_gstreamer0.10-base-plugins() {
+  pkgdesc="GStreamer Multimedia Framework Base Plugins (gst-plugins-base)"
+  depends=("gstreamer0.10-base=${pkgver}" 'alsa-lib' 'cdparanoia' 'libvisual' 'libvorbis' 'libtheora' 'pango')
+  groups=('gstreamer0.10-plugins')
+
+  cd "${srcdir}/gst-plugins-base-${pkgver}"
+  make -C gst-libs DESTDIR="${pkgdir}" install
+  make -C ext DESTDIR="${pkgdir}" install
+  make -C gst-libs DESTDIR="${pkgdir}" uninstall
+}

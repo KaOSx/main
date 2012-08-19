@@ -1,0 +1,47 @@
+#
+# Chakra Packages for Chakra, part of chakra-project.org
+#
+# maintainer abveritas@chakra-project.org
+
+# Find the kernel name inside the chroot
+_extramodules=extramodules-`pacman -Q linux-lts | cut -c11-13 | sed 's/linux-lts //g'`-lts
+_kver="$(cat /lib/modules/${_extramodules}/version)"
+
+pkgname=nvidia-lts
+pkgver=304.32
+pkgrel=1
+pkgdesc="NVIDIA drivers for linux."
+arch=('i686' 'x86_64')
+url="http://www.nvidia.com/"
+depends=('linux-lts' "nvidia-utils=${pkgver}")
+makedepends=('linux-lts-headers')
+conflicts=('nvidia-96xx-lts' 'nvidia-173xx-lts')
+license=('custom')
+install=nvidia.install
+
+if [ "$CARCH" = "i686" ]; then
+    _ARCH='x86'
+    _pkg="NVIDIA-Linux-${_ARCH}-${pkgver}"
+    source=("http://us.download.nvidia.com/XFree86/Linux-${_ARCH}/${pkgver}/${_pkg}.run")
+    md5sums=('b7f908ea08218df08db06026215ec419')
+elif [ "$CARCH" = "x86_64" ]; then
+    _ARCH='x86_64'
+    _pkg="NVIDIA-Linux-${_ARCH}-${pkgver}-no-compat32"
+    source=("http://us.download.nvidia.com/XFree86/Linux-${_ARCH}/${pkgver}/${_pkg}.run")
+    md5sums=('e6d9d1f73196d5f7ea110fef59bd466e')
+fi
+
+build() {
+    cd "${srcdir}"
+    sh "${_pkg}.run" --extract-only
+    cd "${_pkg}/kernel"
+    make SYSSRC=/lib/modules/"${_kver}/build" module
+}
+
+package() {
+    install -D -m644 "${srcdir}/${_pkg}/kernel/nvidia.ko" \
+        "${pkgdir}/lib/modules/${_extramodules}/nvidia.ko"
+    install -d -m755 "${pkgdir}/etc/modprobe.d"
+    sed -i -e "s/EXTRAMODULES='.*'/EXTRAMODULES='${_extramodules}'/" "${startdir}/nvidia.install"
+    gzip "${pkgdir}/lib/modules/${_extramodules}/nvidia.ko"
+}

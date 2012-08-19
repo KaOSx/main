@@ -1,0 +1,31 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# Maintainer: Adrián Chaves Fernández (Gallaecio) <adriyetichaves@gmail.com>
+# Contributor: Andrew Mellor
+
+pkgname=vstream-client
+pkgver=1.2.1.1
+pkgrel=1
+pkgdesc="A fork off of the vstream library from the tivo-mplayer project."
+arch=('i686' 'x86_64')
+license=('GPL')
+url="http://vstream-client.googlecode.com"
+depends=()
+makedepends=()
+source=("http://${pkgname}.googlecode.com/files/${pkgname}-${pkgver}.tar.bz2")
+md5sums=('4f2fc3e5835592f5d8c230aaacd6a7b6')
+
+build() {
+  cd ${srcdir}/${pkgname}-${pkgver}
+  
+  ./configure \
+    --prefix=${pkgdir}/usr
+    
+  make ${pkgname}
+}
+
+package() {
+  cd ${srcdir}/${pkgname}-${pkgver}
+  make INSTALL='install -D' install
+}

@@ -1,0 +1,92 @@
+# editor.uim - The layout for the editor widget
+#
+# (c) Copyright 2009-2010 Michael Towers (larch42 at googlemail dot com)
+#
+# This file is part of the larch project.
+#
+#    larch is free software; you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation; either version 2 of the License, or
+#    (at your option) any later version.
+#
+#    larch is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with larch; if not, write to the Free Software Foundation, Inc.,
+#    51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+#
+#----------------------------------------------------------------------------
+# 2010.05.21
+
+[
+    ['Frame', 'edit:page',
+            {   'layout':
+                    ['VBOX',
+                        ['HBOX', 'edit:header', '*', 'edit:title'],
+                        ['HBOX', 'edit:content',
+                            ['VBOX', 'edit:copy', 'edit:cut', 'edit:paste',
+                                    'edit:undo', 'edit:redo', 'edit:revert',
+                                    '*', 'edit:cancel', 'edit:ok'
+                            ]
+                        ]
+                    ]
+            }
+    ],
+    ['Label', 'edit:header',
+            {   'markup': ['h2', _("Editor")]
+            }
+    ],
+    ['Label', 'edit:title', {}],
+    ['TextEdit', 'edit:content', {}],
+    ['Button', 'edit:ok',
+            {   'text': _('OK'),
+                'clicked': ''
+            }
+    ],
+    ['Button', 'edit:cancel',
+            {   'text': _('Cancel'),
+                'clicked': ''
+            }
+    ],
+    ['Button', 'edit:revert',
+            {   'text': _('Revert'),
+                'tt': _('Restore the text to its initial/default state'),
+                'clicked': ''
+            }
+    ],
+    ['Button', 'edit:copy',
+            {   'text': _('Copy'),
+                'clicked': ''
+            }
+    ],
+    ['Button', 'edit:cut',
+            {   'text': _('Cut'),
+                'clicked': ''
+            }
+    ],
+    ['Button', 'edit:paste',
+            {   'text': _('Paste'),
+                'clicked': ''
+            }
+    ],
+    ['Button', 'edit:undo',
+            {   'text': _('Undo'),
+                'clicked': ''
+            }
+    ],
+    ['Button', 'edit:redo',
+            {   'text': _('Redo'),
+                'clicked': ''
+            }
+    ],
+
+    ['DATA', 'editor_data',
+            {   'messages':
+                    {   'msg_dflt':  _("Editing '%s'")
+                    }
+            },
+    ],
+]

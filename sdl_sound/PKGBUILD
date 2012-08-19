@@ -1,0 +1,34 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer abveritas@chakra-project.org
+
+pkgname=sdl_sound
+pkgver=1.0.3
+pkgrel=8
+pkgdesc="A library to decode several popular sound file formats, such as .WAV and .MP3"
+arch=('i686' 'x86_64')
+url="http://icculus.org/SDL_sound/"
+license=('LGPL')
+depends=('libmodplug' 'sdl' 'libmikmod' 'libvorbis' 'flac' 'speex' 'smpeg')
+options=('!libtool')
+source=(http://icculus.org/SDL_sound/downloads/SDL_sound-$pkgver.tar.gz 
+        flac.patch)
+md5sums=('aa09cd52df85d29bee87a664424c94b5'
+         '302aa9dc94cc71dd3339ca3177d36e1c')
+
+build() {
+  cd ${srcdir}/SDL_sound-${pkgver}
+
+  CFLAGS="$CFLAGS -I/usr/include/smpeg" \
+  CXXFLAGS="$CXXFLAGS -I/usr/include/smpeg" \
+  ./configure --prefix=/usr
+
+  make 
+}
+
+package() {
+  cd ${srcdir}/SDL_sound-${pkgver}
+  make DESTDIR=${pkgdir} install
+}
+

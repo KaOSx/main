@@ -1,0 +1,48 @@
+#
+# Chakra Packages for Chakra, part of chakra-project.org
+#
+# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
+# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+
+pkgname=hwinfo
+pkgver=19.1
+pkgrel=1
+pkgdesc="A simple program that lists results from the hardware detection library."
+arch=('i686' 'x86_64')
+url="http://www.opensuse.org"
+license=('GPL2')
+depends=('perl' 'libx86emu')
+makedepends=('sysfsutils' 'rpmextract' 'flex')
+options=('!emptydirs')
+source=("http://download.opensuse.org/source/factory/repo/oss/suse/src/${pkgname}-${pkgver}-1.2.src.rpm"
+        "kbd.patch")
+
+build() {
+  cd "${srcdir}"
+
+  msg2 "Extracting source rpm..."
+  rpmextract.sh "${pkgname}-${pkgver}-1.2.src.rpm"
+  tar -xjf ${pkgname}-${pkgver}.tar.bz2
+  cd "${pkgname}-${pkgver}"
+  msg2 "Patching..."
+  patch -p0 < ../kbd.patch 
+  msg2 "Compiling..."
+  
+  # Fix Makefile using /usr/lib64 instead of /usr/lib - it broke x86_64, possibly i686 too. 
+  # Comment if this fix breaks it.
+  #sed -i 's_usr/lib64_usr/lib_' src/hd/Makefile 
+  
+  #Added this from ARCH, to fix the above issue:
+  make -j1 CFLAGS+="-fPIC -I${srcdir}/${pkgname}-${pkgver}/src/hd" LIBDIR=/usr/lib
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+
+  #Added this from ARCH, to fix the same issue as stated earlier:
+  make LIBDIR=/usr/lib DESTDIR=${pkgdir} install
+  #  disabled the following line to add the one above
+  #  make DESTDIR=${pkgdir} install
+}
+md5sums=('d882c16b44d86aff480e0f86c1ef129d'
+         '1500ecfa26f6aaf4d7967eea74e86e5d')

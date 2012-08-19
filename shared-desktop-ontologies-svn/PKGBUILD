@@ -1,0 +1,42 @@
+#
+# KDE SC Packages for Chakra, part of chakra-project.org
+#
+# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
+# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+
+# include global config
+#source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+
+pkgname=shared-desktop-ontologies-svn
+pkgver=116
+pkgrel=1
+pkgdesc="Ontologies necessary for the Nepomuk semantic desktop"
+arch=('any')
+url="http://sourceforge.net/apps/trac/oscaf/"
+license=('GPL')
+makedepends=("cmake")
+source=()
+md5sums=()
+
+# undash the lines when you want to update the pkg and dash them after!
+#_svntrunk="https://oscaf.svn.sourceforge.net/svnroot/oscaf"
+
+build() {
+  cd ${srcdir}
+
+#  if [[ -d oscaf/.svn ]]; then
+#     (cd oscaf && svn up -r $pkgver)
+#  else
+     svn co https://oscaf.svn.sourceforge.net/svnroot/oscaf --config-dir ./ -r ${pkgver} oscaf
+#  fi
+
+  mkdir oscaf/trunk/ontologies/build
+  cd oscaf/trunk/ontologies/build
+  cmake .. -DCMAKE_INSTALL_PREFIX=/usr || return 1
+  make || return 1
+}
+
+package() {
+  cd ${srcdir}/oscaf/trunk/ontologies/build
+  make DESTDIR=${pkgdir} install
+}

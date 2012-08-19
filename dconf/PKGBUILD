@@ -1,0 +1,33 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer abveritas@chakra-project.org
+
+pkgname=dconf
+pkgver=0.11.0
+pkgrel=1
+pkgdesc="A low-level configuration system."
+arch=('i686' 'x86_64')
+url="http://live.gnome.org/dconf"
+license=('LGPL2.1')
+depends=('glib2')
+makedepends=('vala' 'gobject-introspection')
+optdepends=('gtk3: for dconf-editor')
+install=dconf.install
+source=("http://download.gnome.org/sources/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+md5sums=('0ab8876f7c9eddc0768d64e8e760fece')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+
+  ./configure --prefix=/usr --sysconfdir=/etc \
+    --libexecdir=/usr/lib/dconf --disable-editor
+  make
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+}
+
+# vim:set ts=2 sw=2 et:

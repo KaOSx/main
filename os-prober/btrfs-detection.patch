@@ -1,0 +1,100 @@
+diff -ru os-prober-1.54/common.sh os-prober-1.54.new/common.sh
+--- os-prober-1.54/common.sh	2012-03-28 01:01:05.000000000 +0000
++++ os-prober-1.54.new/common.sh	2012-07-28 13:05:55.428647379 +0000
+@@ -1,3 +1,5 @@
++btrfs_subvol=__active
++
+ newns () {
+   [ "$OS_PROBER_NEWNS" ] || exec /usr/lib/os-prober/newns "$0" "$@"
+ }
+diff -ru os-prober-1.54/linux-boot-probes/common/50mounted-tests os-prober-1.54.new/linux-boot-probes/common/50mounted-tests
+--- os-prober-1.54/linux-boot-probes/common/50mounted-tests	2012-03-28 01:01:05.000000000 +0000
++++ os-prober-1.54.new/linux-boot-probes/common/50mounted-tests	2012-07-28 14:32:12.127361440 +0000
+@@ -40,6 +40,21 @@
+ 	mounted=1
+ 	type="$(grub-probe -d "$partition" -t fs)"
+ 	[ "$type" ] || type=fuseblk
++	case "$type" in
++		btrfs|fuse)
++			if [ -x "$tmpmnt/${btrfs_subvol}/lib" ]; then
++				if ! mount --bind "$tmpmnt/${btrfs_subvol}" "$tmpmnt"; then
++					warn "failed to bind mount" "the subvolume:${btrfs_subvol} on $partition"
++					if ! umount $tmpmnt; then
++						warn "failed to" "unmount $tmpmnt"
++					fi
++					mounted=
++				fi
++			fi
++			;;
++		*)
++			;;
++	esac 
+ else
+ 	ro_partition "$partition"
+ 	for type in $types; do
+@@ -64,6 +79,20 @@
+ 				if ! umount "$tmpmnt"; then
+ 					warn "failed to umount $tmpmnt"
+ 				fi
++				case $type in
++					btrfs|fuse)
++						if [ -x "$tmpmnt/${btrfs_subvol}/lib" ]; then
++							# umount to account
++							# for the mount-bind
++							if ! umount $tmpmnt; then
++								warn "failed to " "umount $tmpmnt"
++							fi
++						fi
++						;;
++					*)
++						;;
++				esac
++
+ 				rmdir "$tmpmnt" || true
+ 				exit 0
+ 			fi
+diff -ru os-prober-1.54/os-probes/common/50mounted-tests os-prober-1.54.new/os-probes/common/50mounted-tests
+--- os-prober-1.54/os-probes/common/50mounted-tests	2012-04-21 01:01:42.000000000 +0000
++++ os-prober-1.54.new/os-probes/common/50mounted-tests	2012-07-28 14:30:30.750595142 +0000
+@@ -53,6 +53,21 @@
+ 	type="$(grub-probe -d "$partition" -t fs)"
+ 	if [ "$type" ]; then
+ 		debug "mounted using GRUB $type filesystem driver"
++		case "$type" in
++			btrfs|fuse)
++				if [ -x "$tmpmnt/${btrfs_subvol}/lib" ]; then
++					if ! mount --bind "$tmpmnt/${btrfs_subvol}" "$tmpmnt"; then
++						warn "failed to bind mount" "the subvolume:${btrfs_subvol} on $partition"
++						if ! umount $tmpmnt; then
++							warn "failed to" "unmount $tmpmnt"
++						fi
++						mounted=
++					fi
++				fi
++				;;
++			*)
++				;;
++		esac
+ 	else
+ 		debug "mounted using GRUB, but unknown filesystem?"
+ 		type=fuseblk
+@@ -77,6 +92,19 @@
+ 				if ! umount "$tmpmnt"; then
+ 					warn "failed to umount $tmpmnt"
+ 				fi
++				case "$type" in
++					btrfs|fuse)
++						if [ -x "$tmpmnt/${btrfs_subvol}/lib" ]; then
++							# umount to account
++							# for the mount-bind
++							if ! umount $tmpmnt; then
++								warn "failed to " "umount $tmpmnt"
++							fi
++						fi
++						;;
++					*)
++						;;
++				esac
+ 				rmdir "$tmpmnt" || true
+ 				exit 0
+ 			fi

@@ -1,0 +1,29 @@
+#
+# Chakra Packages for Chakra, part of chakra-project.org
+#
+# maintainer abveritas@chakra-project.org
+
+pkgname=unrar
+pkgver=4.2.3
+pkgrel=1
+pkgdesc="The RAR uncompression program"
+arch=('i686' 'x86_64')
+url="http://www.rarlab.com/rar_add.htm"
+license=('custom')
+depends=('gcc-libs')
+source=(http://www.rarlab.com/rar/unrarsrc-${pkgver}.tar.gz)
+md5sums=('6c6c778dc08246065c89f67fe06a7134')
+
+build() {
+  cd "${srcdir}/${pkgname}"
+
+  make -f makefile.unix
+}
+
+package() {
+  cd "${srcdir}/${pkgname}"
+
+  install -Dm755 unrar ${pkgdir}/usr/bin/unrar 
+  # install license
+  install -Dm644 license.txt "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE" 
+}

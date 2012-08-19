@@ -1,0 +1,11 @@
+[Unit]
+Description=Load modules defined in rc.conf
+DefaultDependencies=no
+Before=systemd-modules-load.service
+
+[Service]
+ExecStart=/usr/lib/systemd/chakra-modules-load
+Type=oneshot
+
+[Install]
+WantedBy=sysinit.target

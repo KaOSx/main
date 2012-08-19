@@ -1,0 +1,85 @@
+#!/bin/bash
+
+# km - set console keymap and font
+
+# Based on official Arch Linux version from archiso (Feb. 2009), but modified to allow
+# results to be saved to /etc/rc.conf
+# Also added test for being run as root
+# Also added 'Default' font to font list (for convenience)
+#-------------------------------------
+#2009.02.11
+
+# test if the script is started by root user. If not, exit
+if [ $UID -ne 0 ]; then
+    echo "This should be run as root"; exit 1
+fi
+
+ANSWER=$(mktemp)
+BASEDIR="/usr/share/kbd"
+
+domenu()
+{
+    menutype=$1 ; shift
+    text=$1     ; shift
+    height=$1   ; shift
+    width=$1    ; shift
+    mheight=$1  ; shift
+
+    dialog --cancel-label "Skip" --$menutype "$text" $height $width $mheight $*
+}
+
+KEYMAPS=
+for i in $(find $BASEDIR/keymaps -name "*.gz" | sort); do
+    KEYMAPS="$KEYMAPS ${i##$BASEDIR/keymaps/} -"
+done
+domenu menu "Select A Keymap" 22 60 16 $KEYMAPS 2>$ANSWER
+keymap=$(cat $ANSWER)
+
+FONTS="Default -"
+# skip .cp.gz and partialfonts files for now see bug #6112, #6111
+for i in $(find $BASEDIR/consolefonts -maxdepth 1 ! -name '*.cp.gz' -name "*.gz"  | sed 's|^.*/||g' | sort); do
+    FONTS="$FONTS $i -"
+done
+domenu menu "Select A Console Font" 22 60 16 $FONTS 2>$ANSWER
+font=$(cat $ANSWER)
+
+if [ "$keymap" ]; then
+    loadkeys -q $BASEDIR/keymaps/$keymap
+fi
+
+if [ "$font" ]; then
+    if [ "$font" = "Default" ]; then
+        sf=
+    else
+        sf=$BASEDIR/consolefonts/$font
+    fi
+    for i in $(seq 1 4); do
+        if [ -d /dev/vc ]; then
+            setfont $sf -C /dev/vc/${i}
+        else
+            setfont $sf -C /dev/tty${i}
+        fi
+    done
+fi
+
+rm -f $ANSWER
+clear
+read -p "Save results to /etc/rc.conf? [y/N] " ans
+if [ -z "$( echo ${ans} | grep '^ *[yY]' )" ]; then exit 0; fi
+
+# Save results to /etc/rc.conf
+if [ "$keymap" ]; then
+    sed -i "s|^KEYMAP=.*|KEYMAP=\"$( basename $keymap | \
+           cut -d'.' -f1 )\"|" /etc/rc.conf
+fi
+if [ "$font" ]; then
+    if [ "$font" = "Default" ]; then
+        sed -i "s|^CONSOLEFONT=.*|CONSOLEFONT=" /etc/rc.conf
+    else
+        sed -i "s|^CONSOLEFONT=.*|CONSOLEFONT=\"$( echo $font | \
+               cut -d'.' -f1 )\"|" /etc/rc.conf
+    fi
+fi
+
+exit 0
+

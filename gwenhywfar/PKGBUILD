@@ -1,0 +1,24 @@
+#
+# Chakra Packages for Chakra, part of chakra-project.org
+#
+# maintainer abveritas@chakra-project.org
+
+pkgname=gwenhywfar
+pkgver=4.3.3
+pkgrel=1
+pkgdesc="OS abstraction functions for various projects"
+arch=(i686 x86_64)
+url="http://www.aquamaniac.de"
+options=('!libtool')
+license=("LGPL")
+depends=('openssl' 'qt' 'gnutls' 'libgcrypt')
+source=("gwenhywfar-$pkgver.tar.gz::http://www2.aquamaniac.de/sites/download/download.php?package=01&release=67&file=01&dummy=gwenhywfar-$pkgver.tar.gz")
+md5sums=('c5b9d52a25960f84f9264a5a5dd484d1')
+
+build() {
+  pacman -Q gwenhywfar && return 1
+  cd $srcdir/gwenhywfar-4.3.3
+  ./configure --prefix=/usr --sysconfdir=/etc --enable-ssl --with-guis=qt4 --disable-gtk2
+  make
+  make DESTDIR=$pkgdir install
+}

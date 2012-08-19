@@ -1,0 +1,38 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer abveritas@chakra-project.org
+
+pkgname=mobile-broadband-provider-info
+pkgver=20120621
+pkgrel=1
+pkgdesc="Network Management daemon"
+arch=('any')
+license=('other')
+url="http://git.gnome.org/browse/mobile-broadband-provider-info/"
+source=(http.//chakra-linux.org/sources/${pkgname}/${pkgname}-${pkgver}.tar.xz)
+sha256sums=('11c6c87c18514b2be1a91698204c8a7fe2a2524b579a0d98efa60b61ec5b0aa4')
+
+# create tarball: source PKGBUILD && mksource
+
+mksource() {
+	  rm -vRf ${pkgname}-${pkgver}
+	  git clone git://git.gnome.org/${pkgname}.git ${pkgname}-${pkgver}
+	  rm -vRf ${pkgname}-${pkgver}/.git
+	  pushd ${pkgname}-${pkgver}
+	  popd
+	  tar -cvJf ${pkgname}-${pkgver}.tar.xz ${pkgname}-${pkgver}/*
+	  sha256sum ${pkgname}-${pkgver}.tar.xz
+}
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  ./autogen.sh
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+}

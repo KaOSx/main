@@ -1,0 +1,61 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
+# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+
+pkgname=ntp
+pkgver=4.2.6.p4
+_realver=4.2.6p4
+pkgrel=4
+pkgdesc="NTP (Network Time Protocol) tries to keep servers in sync"
+arch=('i686' 'x86_64')
+license=('custom')
+url="http://www.ntp.org/"
+depends=('openssl' 'readline' 'libcap')
+makedepends=('perl-html-parser')
+backup=('etc/ntp.conf' 'etc/conf.d/ntpd.conf')
+install=install
+source=("http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/ntp-${_realver}.tar.gz"
+        ntp.conf
+        ntpd.conf
+        ntpd
+        ntpdate
+	ntpd.service)
+md5sums=('1447121a07b49361677ffda4f6e29527'
+         '302c19233dc599328f0faefcce45f109'
+         '58997d6cf4846d80e35a01b855376a33'
+         '1a487594387e87039169e200f74a8346'
+         'ab55ac8d8d7d0eefa3c3bec2ec98a1f4'
+         '866dcdb71cf27a9a9ec8d70fabb83839')
+
+build() {
+  cd "${srcdir}/${pkgname}-${_realver}"
+  ./configure --prefix=/usr \
+    --mandir=/usr/share/man \
+    --enable-linux-caps
+  make
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-$_realver"
+  
+  make DESTDIR="${pkgdir}" install
+  
+  rmdir "${pkgdir}"/usr/{lib,sbin}
+  install -Dm755 ../ntpd "${pkgdir}"/etc/rc.d/ntpd
+  install -Dm755 ../ntpdate "${pkgdir}"/etc/rc.d/ntpdate
+  install -Dm644 ../ntp.conf "${pkgdir}"/etc/ntp.conf
+  install -Dm644 ../ntpd.conf "${pkgdir}"/etc/conf.d/ntpd.conf
+  install -Dm644 ../ntpd.service "${pkgdir}"/usr/lib/systemd/system/ntpd.service
+  
+  cd html
+  ../scripts/html2man
+  install -d "${pkgdir}"/usr/share/man
+  mv man/man* "${pkgdir}"/usr/share/man
+  mv "${pkgdir}/usr/share/man/man8/ntpd.8" "${pkgdir}/usr/share/man/man8/ntp-ntpd.8" # we should ditch openntpd
+  cd ..
+  
+  install -d "${pkgdir}/var/lib/ntp"
+  install -Dm644 COPYRIGHT "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+}

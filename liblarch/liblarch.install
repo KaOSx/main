@@ -1,0 +1,23 @@
+_destdir=opt/apps/liblarch
+
+post_install() {
+  post_upgrade
+}
+
+post_upgrade() {
+  echo "byte-compile python modules ..."
+  python2 -m compileall -l ${_destdir}
+}
+
+pre_remove() {
+  pre_upgrade
+}
+
+pre_upgrade() {
+  echo "Remove .pyc files ..."
+  rm -f $_destdir/*.pyc
+}
+
+op=$1
+shift
+$op $*

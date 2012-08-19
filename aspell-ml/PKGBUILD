@@ -1,0 +1,24 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
+# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+# contributor Sebin A Jacob <sebinajacob at gmail dot com>
+ 
+pkgname=aspell-ml
+pkgver=0.03
+pkgrel=1
+pkgdesc="Malayalam dictionary for aspell"
+arch=('i686' 'x86_64')
+url="http://aspell.net"
+license=('GPL')
+depends=('aspell')
+source=(ftp://ftp.gnu.org/gnu/aspell/dict/ml/aspell6-ml-${pkgver}-1.tar.bz2)
+ 
+build() {
+  cd $startdir/src/aspell6-ml-${pkgver}-1
+  ./configure
+  make || return 1
+  make DESTDIR=$startdir/pkg install
+}
+md5sums=('5ac03b3b0d0618b0aa470c9f5ac46866')

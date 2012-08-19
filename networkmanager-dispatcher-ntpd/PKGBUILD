@@ -1,0 +1,25 @@
+#
+# Chakra Packages for Chakra, part of chakra-project.org
+#
+# Maintainer: Daniele Cocca <jmc@chakra-project.org>
+# Original Arch Linux 'community' Maintainer: Jelle van der Waa <jelle vdwaa nl>
+
+# include global config
+source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+
+pkgname=networkmanager-dispatcher-ntpd
+pkgver=1.0
+pkgrel=2
+pkgdesc="Dispatcher script for ntpd."
+arch=(any)
+license=('BSD')
+url="http://www.gnome.org/projects/NetworkManager"
+depends=('networkmanager' 'ntp')
+source=("10-ntpd")
+md5sums=('634640886979278dc3a74dbae342d3e7')
+
+package() {
+  install -Dm700 "${srcdir}/10-ntpd" "${pkgdir}/etc/NetworkManager/dispatcher.d/10-ntpd"
+}
+
+# vim:set ts=2 sw=2 et:

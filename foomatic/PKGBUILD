@@ -1,0 +1,101 @@
+#
+# Chakra Packages for Chakra, part of chakra-project.org
+#
+# maintainer abveritas@chakra-project.org
+ 
+pkgbase="foomatic"
+pkgname=('foomatic-db' 'foomatic-filters' 'foomatic-db-engine' 'foomatic-db-nonfree')
+arch=('i686' 'x86_64') # needs to be changed  in the subpackages when makepkg will support it
+_snapdate=20120704
+_filtersver=4.0.16
+_relver=4.0.8
+pkgver=${_filtersver}_${_snapdate}
+pkgrel=1
+makedepends=('cups' 'perl' 'libxml2' 'enscript' 'perl' 'net-snmp' 'bash')
+source=(http://www.openprinting.org/download/foomatic/$pkgbase-filters-${_filtersver}.tar.gz
+        http://www.openprinting.org/download/foomatic/$pkgbase-db-engine-${_relver}.tar.gz
+        http://chakra-linux.org/sources/foomatic/$pkgbase-db-4.0-${_snapdate}.tar.gz
+        http://chakra-linux.org/sources/foomatic/$pkgbase-db-nonfree-${_snapdate}.tar.gz)
+url="http://www.linuxprinting.org/foomatic.html"
+options=('force' '!emptydirs')
+md5sums=('ec907d9ea17e03bccb91db66e9470586' #foomatic-filters-4.0.16.tar.gz
+         '5283cd5125a96dc0b35d896326512b1a' #foomatic-db-engine-4.0.8.tar.gz
+         'b154741f5af949398998032bcff2a8eb' #foomatic-db-4.0-20120704.tar.gz
+         '54448fcc03b30135400b6ef14a3b5820') #foomatic-db-nonfree-20120704.tar.gz
+
+
+# source PKGBUILD && _get-tarballs
+_get-tarballs() {
+        wget http://www.openprinting.org/download/foomatic/$pkgbase-filters-${_filtersver}.tar.gz
+        wget http://www.openprinting.org/download/foomatic/$pkgbase-db-engine-${_relver}.tar.gz
+        wget http://www.openprinting.org/download/foomatic/$pkgbase-db-4.0-${_snapdate}.tar.gz
+        wget http://www.openprinting.org/download/foomatic/$pkgbase-db-nonfree-${_snapdate}.tar.gz
+        md5sum $pkgbase-filters-*
+        md5sum $pkgbase-db-engine-*
+        md5sum $pkgbase-db-4.0-*
+        md5sum $pkgbase-db-nonfree-*
+}
+
+package_foomatic-db() {
+
+ pkgdesc="Foomatic - The collected knowledge about printers, drivers, and driver options in XML files, used by foomatic-db-engine to generate PPD files."
+# arch=('any')
+ license=('GPL' 'custom')
+ depends=('perl' 'libxml2')
+
+   cd ${srcdir}/${pkgname}-${_snapdate}
+   ./configure --prefix=/usr
+   make DESTDIR=${pkgdir} install 
+   install -v -Dm644 ${srcdir}/${pkgname}-${_snapdate}/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING 
+}
+
+package_foomatic-filters() {
+
+ pkgdesc="Foomatic - Filter scripts used by the printer spoolers to convert the incoming PostScript data into the printer's native format."
+# arch=('i686' 'x86_64')
+ license=('GPL')
+ backup=(etc/foomatic/filter.conf)
+ depends=('glibc' 'dbus-core')
+ optdepends=('perl:      for the "beh" Backend End Handler used by cups'
+            'net-snmp:  certain (mostly HP) printers need it to work')
+
+#   cd ${srcdir}/${pkgname}-${pkgver}
+   cd ${srcdir}/foomatic-filters-${_filtersver}
+   ./configure --prefix=/usr --sysconfdir=/etc
+   make 
+   make DESTDIR=${pkgdir} install 
+}
+
+package_foomatic-db-engine() {
+
+ pkgdesc="Foomatic - Foomatic's database engine generates PPD files from the data in Foomatic's XML database. It also contains scripts to directly generate print queues and handle jobs."
+# arch=(i686 x86_64)
+ license=('GPL')
+ depends=('perl' 'libxml2' 'foomatic-filters' 'bash')
+
+   cd ${srcdir}/foomatic-db-engine-${_relver}
+    ./configure --prefix=/usr
+   make 
+   eval `perl -V:archname`
+   make DESTDIR=${pkgdir} \
+        INSTALLARCHLIB=/usr/lib/perl5/vendor_perl/ \
+        INSTALLSITELIB=/usr/lib/perl5/vendor_perl/ \
+        INSTALLSITEARCH=/usr/lib/perl5/vendor_perl/ install 
+   /usr/bin/find ${pkgdir} -name '.packlist' -delete
+   # fix permissions
+   chmod 755 ${pkgdir}/usr/lib{,/perl5,/perl5/vendor_perl}
+}
+
+package_foomatic-db-nonfree() {
+
+ pkgdesc="Foomatic - database extension consisting of manufacturer-supplied PPD files released under non-free licenses"
+# arch=('any')
+ license=('custom')
+ depends=('perl' 'libxml2' "foomatic-db-engine" 'foomatic-db')
+
+   cd ${srcdir}/foomatic-db-nonfree-${_snapdate}
+   ./configure --prefix=/usr
+   make DESTDIR=${pkgdir} install 
+#   install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING || return 1
+   install -Dm644 COPYING ${pkgdir}/usr/share/licenses/foomatic-db-nonfree/COPYING 
+}

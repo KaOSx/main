@@ -1,0 +1,8 @@
+#!/bin/bash
+
+command=$1
+shift
+
+FULLPATH="$( readlink -f $0 )"
+LIBDIR="$( dirname ${FULLPATH} )/lib"
+$LIBDIR/loader --library-path $LIBDIR $LIBDIR/$command $*

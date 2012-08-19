@@ -1,0 +1,24 @@
+#
+# Chakra Packages for Chakra, part of chakra-project.org
+#
+# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
+# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+
+pkgname=disper
+pkgver=0.3.0
+pkgrel=1
+pkgdesc="An on-the-fly display switch utility, intended to be used on laptops, especially with nVidia cards."
+arch=('any')
+url="http://willem.engen.nl/projects/disper/"
+license=('GPL')
+depends=('python2')
+source=(http://ppa.launchpad.net/disper-dev/ppa/ubuntu/pool/main/d/disper/disper_${pkgver}.tar.gz)
+md5sums=('aff6ca9266eecfc3f646c0de573eca91')
+
+build() {
+  cd "$srcdir/dispercur"
+
+  make || return 1
+  make DESTDIR="$pkgdir" install
+}
+

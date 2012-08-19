@@ -1,0 +1,44 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
+# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+
+pkgname=hugin-tools
+_pkgname=hugin
+pkgver=2011.0.0
+pkgrel=3
+pkgdesc="Hugin libs and tools to be used by Kipi-plugins"
+arch=('i686' 'x86_64')
+url="http://hugin.sourceforge.net/"
+license=('LGPL')
+depends=('libpano13' 'boost-libs' 'enblend-enfuse' 'exiv2' 'openexr'
+         'autopano-sift-c' 'lapack' 'desktop-file-utils' 'make' 'perl-exiftool')
+makedepends=('zip' 'cmake' 'boost')
+conflict=('hugin')
+provides=('hugin')
+source=(http://downloads.sourceforge.net/${_pkgname}/${_pkgname}-${pkgver}.tar.bz2)
+md5sums=('ac8a129b4c3021233df6d9368c8164cf')
+sha1sums=('22e1ad3846291a9bbe58570683e213921a6f0116')
+
+build() {
+  cd "${srcdir}"
+  mkdir build && cd build
+
+  # this makes possible to compile all the hugin tools without GUis
+  sed -i -e "s~FIND_PACKAGE(wxWidgets REQUIRED)~~g" ${srcdir}/${_pkgname}-${pkgver}/CMakeLists.txt
+  mkdir ${srcdir}/${_pkgname}-${pkgver}/src/hugin_base/PT
+  cp ${srcdir}/${_pkgname}-${pkgver}/src/hugin1/PT/*.h ${srcdir}/${_pkgname}-${pkgver}/src/hugin_base/PT
+
+  cmake "${srcdir}/${_pkgname}-${pkgver}" \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_EXE_LINKER_FLAGS="-lpthread" \
+    -DENABLE_LAPACK=yes 
+  make
+}
+
+package(){
+  cd "${srcdir}/build"
+  make DESTDIR="${pkgdir}" install
+}

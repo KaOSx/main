@@ -1,0 +1,21 @@
+# $Id: PKGBUILD 72496 2010-03-17 04:36:17Z eric $
+# Maintainer: Eric Belanger <eric@archlinux.org>
+
+pkgname=mutagen
+pkgver=1.19
+pkgrel=2
+pkgdesc="An audio metadata tag reader and writer implemented in pure python"
+arch=('any')
+url="http://code.google.com/p/mutagen/"
+license=('GPL2')
+depends=('python2')
+source=(http://mutagen.googlecode.com/files/${pkgname}-${pkgver}.tar.gz)
+md5sums=('68132949f3cd68491b87ff880ded4680')
+sha1sums=('a2e25d311999ffe76c1e7f85510cf5c04d24638d')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  python2 setup.py install --root="${pkgdir}" || return 1
+  install -d "${pkgdir}/usr/bin" || return 1
+  install -m755 tools/* "${pkgdir}/usr/bin" || return 1
+}

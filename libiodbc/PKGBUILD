@@ -1,0 +1,32 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer abveritas@chakra-project.org
+
+pkgname=libiodbc
+pkgver=3.52.8
+pkgrel=1
+pkgdesc='Independent Open DataBase Connectivity for Linux'
+arch=('i686' 'x86_64')
+url='http://www.iodbc.org'
+license=('LGPL')
+depends=('glibc' 'sh')
+options=('!libtool')
+source=("http://downloads.sourceforge.net/sourceforge/iodbc/${pkgname}-${pkgver}.tar.gz")
+md5sums=('9889f95f632f10895ff53b8a22162810')
+
+build() {
+	cd ${srcdir}/${pkgname}-${pkgver}
+	./configure --prefix=/usr \
+		--disable-static \
+		--includedir=/usr/include/libiodbc \
+		--disable-gui \
+		--disable-libodbc
+	make 
+}
+
+package() {
+	cd ${srcdir}/${pkgname}-${pkgver}
+	make DESTDIR=${pkgdir} install
+	rm -rf ${pkgdir}/usr/share/libiodbc/
+}

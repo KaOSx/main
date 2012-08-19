@@ -1,0 +1,55 @@
+#
+# Chakra Packages for Chakra, part of chakra-project.org
+#
+# contributor (x86_64): Giuseppe Calà <jiveaxe@gmail.com>
+
+# include global config
+source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+
+pkgname=strigi
+pkgver=0.7.7
+pkgrel=1
+pkgdesc="Fast crawling desktop search engine with Qt4 GUI"
+arch=('i686' 'x86_64')
+url="http://www.vandenoever.info/software/strigi/"
+license=('GPL2')
+depends=('bzip2' 'exiv2' 'libxml2' 'boost-libs')
+makedepends=('qt' 'cmake' 'pkgconfig' 'boost')
+provides=('strigi-git')
+replaces=('strigi-git')
+conflicts=('strigi-git')
+source=("http://chakra-linux.org/sources/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
+md5sums=('ca0a0fd5c2b99879f6330837aeede996')
+options=('!libtool')
+
+build() {
+  cd "${srcdir}"/${pkgname}-${pkgver}/libstreamanalyzer
+
+  cd "${srcdir}"
+  mkdir build
+  cd build
+  cmake ../${pkgname}-${pkgver} \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DENABLE_INOTIFY=ON \
+    -DENABLE_LOG4CXX=OFF \
+    -DENABLE_FAM=OFF \
+    -DENABLE_CLUCENE=OFF \
+    -DENABLE_CLUCENE_NG=OFF \
+    -DENABLE_FFMPEG=OFF
+  make
+}
+
+package() {
+  cd "${srcdir}/build/libstreams"
+  make DESTDIR="${pkgdir}" install
+
+  cd "${srcdir}/build/libstreamanalyzer"
+  make DESTDIR="${pkgdir}" install
+
+  cd "${srcdir}/build/strigiclient/lib/searchclient/qtdbus"
+  make DESTDIR="${pkgdir}" install
+  
+  cd "${srcdir}/build/strigiutils"
+  make DESTDIR="${pkgdir}" install
+}

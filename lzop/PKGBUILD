@@ -1,0 +1,21 @@
+# $Id: PKGBUILD 55991 2009-10-17 11:56:13Z andrea $
+# Contributor: Damir Perisa <damir.perisa@bluewin.ch>
+
+pkgname=lzop
+pkgver=1.02rc1
+pkgrel=4
+pkgdesc="File compressor using lzo lib"
+arch=('i686' 'x86_64')
+license=('GPL')
+url="http://www.lzop.org/"
+depends=('lzo2')
+source=(http://www.lzop.org/download/${pkgname}-${pkgver}.tar.gz)
+md5sums=('4b999030716b1353c3dac049b269df7a')
+
+build() {
+  cd ${srcdir}/${pkgname}-${pkgver}
+  ./configure --prefix=/usr \
+    --mandir=/usr/share/man
+  make || return 1
+  make DESTDIR=${pkgdir} install
+}

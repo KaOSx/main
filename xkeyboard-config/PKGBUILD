@@ -1,0 +1,34 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
+# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+
+pkgname=xkeyboard-config
+pkgver=2.4.1
+pkgrel=1
+pkgdesc="X keyboard configuration files"
+arch=(any)
+license=('custom')
+url="http://www.freedesktop.org/wiki/Software/XKeyboardConfig"
+depends=('xorg-xkb-utils')
+makedepends=('intltool')
+provides=('xkbdata')
+replaces=('xkbdata')
+conflicts=('xkbdata')
+source=(http://xorg.freedesktop.org/releases/individual/data/${pkgname}-${pkgver}.tar.bz2)
+sha1sums=('0596017597a6ead04ada1dda7e0b2de2ce597adb')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  ./configure --prefix=/usr \
+      --with-xkb-base=/usr/share/X11/xkb \
+      --with-xkb-rules-symlink=xorg \
+      --enable-compat-rules=yes
+  make
+  make DESTDIR="${pkgdir}" install
+  rm -f "${pkgdir}/usr/share/X11/xkb/compiled"
+  install -m755 -d "${pkgdir}/var/lib/xkb"
+  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
+  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
+}

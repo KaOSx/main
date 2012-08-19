@@ -1,0 +1,36 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer abveritas@chakar-project.org
+
+pkgname=xf86-video-chips
+pkgver=1.2.5
+pkgrel=1
+pkgdesc="X.org Chips and Technologies video driver"
+arch=('i686' 'x86_64')
+url="http://xorg.freedesktop.org/"
+license=('custom')
+depends=('glibc')
+makedepends=('xorg-server')
+conflicts=('xorg-server<1.12.3')
+groups=('xorg-video-drivers')
+options=('!libtool')
+source=("${url}/releases/individual/driver/${pkgname}-${pkgver}.tar.bz2" 'iopl.h')
+sha1sums=('5642e1d1bf3a05d24a0b8db48ca3b522c1962b00'
+          'ec143f9a8c2958ba5fcd6759780362a70fa8abba')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+
+  cp ${srcdir}/iopl.h util/
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+
+  make DESTDIR="${pkgdir}" install
+  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
+  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
+}

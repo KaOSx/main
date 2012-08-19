@@ -1,0 +1,30 @@
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
+# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+
+# include global config
+source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+
+pkgname=cairo
+pkgver=1.10.2
+pkgrel=4
+pkgdesc="Cairo vector graphics library"
+arch=(i686 x86_64)
+license=('LGPL' 'MPL')
+url="http://cairographics.org/"
+depends=('libpng>=1.4.0' 'libxrender' 'fontconfig>=2.8.0' 'pixman>=0.24.0' 'glib2>=2.24.0')
+makedepends=('pkgconfig')
+options=('!libtool')
+source=(http://cairographics.org/releases/${pkgname}-${pkgver}.tar.gz
+        cairo-1.10.0-buggy_gradients.patch)
+sha1sums=('ccce5ae03f99c505db97c286a0c9a90a926d3c6e'
+          'e867f1020391686b972d5bedcce3c6d1193d7953')
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  patch -Np1 -i "${srcdir}/cairo-1.10.0-buggy_gradients.patch"
+  ./configure --prefix=/usr --sysconfdir=/etc \
+    --localstatedir=/var --disable-static --enable-tee
+  make
+  make DESTDIR="${pkgdir}" install
+}

@@ -1,0 +1,33 @@
+#
+# Chakra Packages for Chakra, part of chakra-project.org
+#
+# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
+# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+
+pkgname=qimageblitz
+pkgver=0.0.6
+pkgrel=1
+pkgdesc="An interm image effect library"
+arch=('i686' 'x86_64')
+url="http://sourceforge.net/projects/qimageblitz"
+license=('custom')
+depends=('qt>=4.4.3')
+makedepends=('cmake' 'pkgconfig')
+source=("http://download.kde.org/stable/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
+md5sums=('0ae2f7d4e0876764a97ca73799f61df4')
+options=(!libtool)
+
+build() {
+  cd ${srcdir}
+  mkdir build
+  cd build
+  cmake ../${pkgname}-${pkgver} \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr 
+  make
+}
+
+package() {
+  cd ${srcdir}/build
+  make DESTDIR=${pkgdir} install
+}

@@ -1,0 +1,31 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
+# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+
+# include global config
+source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+
+pkgname=dmidecode
+pkgver=2.11
+pkgrel=1
+pkgdesc="Desktop Management Interface table related utilities"
+arch=('i686' 'x86_64')
+url="http://www.nongnu.org/dmidecode"
+license=('GPL')
+depends=('glibc')
+source=(http://download.savannah.nongnu.org/releases/${pkgname}/${pkgname}-${pkgver}.tar.bz2)
+md5sums=('535487cc041f2db746587cf40a2059f0')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+
+  make prefix=/usr
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+
+  make prefix=/usr DESTDIR=${pkgdir} install
+}

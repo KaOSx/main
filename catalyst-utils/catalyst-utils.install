@@ -1,0 +1,36 @@
+
+whisperer(){
+    echo "----------------------------------------------------------------"
+    echo "WARNING WARNING WARNING WARNING"
+    echo "--------------------------------"
+    echo "For ATI HD 4xxxx and below graphics users:"
+    echo "This driver is not compatible, install catalyst-legacy before rebooting."
+    echo "sudo pacman -S catalyst-legacy"
+    echo "You can use the tool 'aticonfig' to regenerate an xorg.conf file."
+    echo "Further reading: http://chakra-project.org/bbs/viewtopic.php?pid=56704#p56704"
+    echo "--------------------------------"
+    echo "WARNING WARNING WARNING WARNING"
+    echo "----------------------------------------------------------------"
+}
+
+check_libdri_so(){
+    if [ ! -e usr/lib/xorg/modules/extensions/libdri.so ]; then
+        ln -sf usr/lib/xorg/modules/extensions/libdri.xorg usr/lib/xorg/modules/extensions/libdri.so
+    fi
+}
+
+post_install(){
+    check_libdri_so
+    whisperer
+}
+
+post_upgrade(){
+    check_libdri_so
+    whisperer
+}
+
+post_remove(){
+    # If the symlink is dead, remove it
+     check_libdri_so
+     echo "NOTE: Don't forget to recover your original xorg.conf file."
+}

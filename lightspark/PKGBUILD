@@ -1,0 +1,50 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
+# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+
+# include global config
+source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+
+pkgname=lightspark
+pkgver=0.5.2.1
+pkgrel=2
+pkgdesc='An alternative Flash Player for Linux.'
+arch=('i686' 'x86_64')
+url='http://lightspark.sourceforge.net'
+license=('LGPL3')
+conflicts=('lightspark-git')
+depends=('mesa' 'ftgl' 'sdl' 'gtk2' 'curl' 'zlib' 'ffmpeg' 'glew' 'pcre' 'libpulse' 'libffi' 'boost-libs' 'glibmm' 'desktop-file-utils' 'libxml++' 'libxml2')
+makedepends=('cmake' 'nasm' 'xulrunner' 'llvm' 'glproto' 'boost' 'fontconfig')
+optdepends=('gnash-gtk: fallback support')
+install="$pkgname.install"
+source=("http://launchpad.net/$pkgname/trunk/$pkgname-${pkgver}/+download/$pkgname-${pkgver}.tar.gz"
+        'llvm29.diff')
+md5sums=('ac2233a83e8bf0b305563bbce322cd76'
+         'e9efe78b9462d9834a01fe2cb1ef9697')
+
+build() {
+  cd $pkgname-${pkgver}
+  patch -Np0 -i ${srcdir}/llvm29.diff
+  cd ${srcdir}
+
+  rm -rf build
+  mkdir build
+  cd build
+
+  cmake \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCOMPILE_PLUGIN=1 \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DGNASH_EXE_PATH=/usr/bin/gtk-gnash \
+    ../$pkgname-${pkgver}
+
+  make
+}
+
+package() {
+  cd build
+
+  make DESTDIR=${pkgdir} install
+}

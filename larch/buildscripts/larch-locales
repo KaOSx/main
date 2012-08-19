@@ -1,0 +1,56 @@
+#!/bin/bash
+#
+# larch-locales - Generate glibc locales to an overlay (a slightly tricky business)
+#
+#2011.01.30
+
+# If there is a 'locale.gen' file in the profile (rootoverlay/etc/locale.gen)
+# it will be used for the generation, otherwise the existing '/etc/locale.gen'
+# (in the system to be larchified!) will be used (by default all locales are
+# commented out).
+
+# $1: path to system to be larchified ("" if running system)
+# $2: path to temporary overlay directory (where the overlay is being built)
+
+INSTLDIR="$1"
+OVERLAYDIR="$2"
+
+mkdir -p ${OVERLAYDIR}/usr/lib
+echo
+echo "********** Generating locales to an overlay **********"
+echo
+rm -f ${INSTLDIR}/etc/locale.gen_new
+rm -rf ${INSTLDIR}/usr/lib/locale.save
+if [ -f ${OVERLAYDIR}/etc/locale.gen ]; then
+    mv -f ${INSTLDIR}/etc/locale.gen ${INSTLDIR}/etc/locale.gen_old
+
+    grep -A 1000 '^###--- autogen' ${INSTLDIR}/etc/locale.gen_old > /tmp/locale.gen
+    if [ $? -ne 0 ]; then
+        echo '###--- autogen' > /tmp/locale.gen
+        cat ${INSTLDIR}/etc/locale.gen_old >> /tmp/locale.gen
+    fi
+    echo '###+++ autogen' > ${INSTLDIR}/etc/locale.gen
+    grep -v '^#' ${OVERLAYDIR}/etc/locale.gen >> ${INSTLDIR}/etc/locale.gen
+    sed 's|\(^[^#]\)|#\1|' /tmp/locale.gen >> ${INSTLDIR}/etc/locale.gen
+    cp ${INSTLDIR}/etc/locale.gen ${OVERLAYDIR}/etc
+
+    cp -a ${INSTLDIR}/usr/lib/locale ${INSTLDIR}/usr/lib/locale.save
+fi
+
+if [ -n "${INSTLDIR}" ]; then
+    chroot ${INSTLDIR} /usr/sbin/locale-gen
+else
+    /usr/sbin/locale-gen
+fi
+
+rm -rf ${OVERLAYDIR}/usr/lib/locale
+cp -a ${INSTLDIR}/usr/lib/locale ${OVERLAYDIR}/usr/lib
+# /usr/lib/locale will be excluded from system.sqf
+
+# Restore old locale files
+if [ -f ${INSTLDIR}/etc/locale.gen_old ]; then
+    mv -f ${INSTLDIR}/etc/locale.gen_old ${INSTLDIR}/etc/locale.gen
+    rm -rf ${INSTLDIR}/usr/lib/locale
+    mv ${INSTLDIR}/usr/lib/locale.save ${INSTLDIR}/usr/lib/locale
+fi
+

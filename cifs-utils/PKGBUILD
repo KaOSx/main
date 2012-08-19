@@ -1,0 +1,31 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
+# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+
+pkgname=cifs-utils
+pkgver=5.3
+pkgrel=1
+pkgdesc="Split userspace tools for cifs/samba"
+arch=(i686 x86_64)
+url="http://wiki.samba.org/index.php/LinuxCIFS_utils"
+license=('GPL')
+depends=('libcap' 'keyutils' 'krb5' 'talloc')
+source=(ftp://ftp.samba.org/pub/linux-cifs/cifs-utils/$pkgname-$pkgver.tar.bz2)
+ 
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  ./configure \
+	--prefix=/usr
+  make
+}
+ 
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+  msg 'if you want to enable user mounting and unmounting you need to set the suid flag'
+  msg 'chmod +s /sbin/mount.cifs'
+  msg 'and put the mount in the fstab. use the nosuid option in fstab for remote execution prevention'
+}
+md5sums=('e1a428558a96d2d28ccdaacdc47ea0b7')

@@ -1,0 +1,15 @@
+#!/bin/sh
+
+if  cat /proc/mounts | grep " $1/sys" &>/dev/null; then
+    umount -l "$1/sys"
+fi
+if  cat /proc/mounts | grep " $1/proc" &>/dev/null; then
+    umount -l "$1/proc"
+fi
+
+if ls "$1" &>/dev/null; then
+    rm -rf "$1/*"
+fi
+for x in $( ls -A "$1" ); do
+    rm -rf "$1/$x"
+done

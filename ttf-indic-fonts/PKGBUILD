@@ -1,0 +1,29 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
+# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+
+# include global config
+source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+
+pkgname=ttf-indic-fonts
+pkgver=0.5.11
+pkgrel=1
+pkgdesc="A set of free high-quality TrueType fonts covering for every official Indian language"
+arch=('any')
+url="http://www.chakra-project.org"
+license=('GPL')
+depends=('fontconfig' 'xorg-font-utils')
+install=ttf-indic-fonts.install
+source=(http://chakra-project.org/sources/$pkgname/$pkgname-$pkgver.tar.gz)
+md5sums=('8f62cc27085965ef2becab71e7c53590')
+
+build() {
+  cd "${srcdir}/$pkgname-${pkgver}"
+  install -m755 -d "${pkgdir}/usr/share/fonts/TTF"
+  install -m644 */*.ttf "${pkgdir}/usr/share/fonts/TTF/"
+
+  install -m755 -d "${pkgdir}/etc/fonts/conf.avail"
+  install -m644 */*.conf "${pkgdir}/etc/fonts/conf.avail/"
+}

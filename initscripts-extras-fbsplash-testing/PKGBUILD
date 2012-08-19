@@ -1,0 +1,58 @@
+#
+# Chakra Packages for Chakra, part of chakra-project.org
+#
+# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
+# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+# Maintainer: Kurt J. Bosch <kjb-temp-2009 at alpenjodel.de>
+
+# include global config
+source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+
+pkgname=initscripts-extras-fbsplash-testing
+_pkgname=initscripts-extras-fbsplash
+pkgver=2.0
+pkgrel=2
+pkgdesc="Improved Fbsplash scripts for Chakra GNU/Linux"
+arch=('any')
+url="http://aur.archlinux.org/packages.php?ID=26039"
+license=( 'GPL' )
+depends=( 'bash>=4' 'fbsplash>=1.5.4.3-1' 'initscripts>=2010.06' 'mkinitcpio>=0.6.6' )
+conflicts=( 'fbsplash-scripts' 'initscripts-splashy' 'fbsplash-scripts-testing' 'initscripts-extras-fbsplash')
+provides=( 'fbsplash-scripts' 'initscripts-extras-fbsplash')
+optdepends=( 'fbsplash-themes-chakra-phoix: sample theme' )
+backup=('etc/conf.d/splash')
+install=$_pkgname.install
+source=(
+	Changelog
+	splash.conf
+	fbsplash-extras.sh
+	fbsplash-initscripts-services-get
+	fbsplash.initcpio_install
+	fbsplash.initcpio_hook
+	fbcondecor.daemon
+	fbcondecor.conf
+)
+build() {
+	cd ${pkgdir}
+	# Install Changelog
+	install -D -m644 ${srcdir}/Changelog usr/share/doc/${_pkgname}/Changelog
+	# Install fbsplash scripts and config file
+	install -D -m644 ${srcdir}/splash.conf               etc/conf.d/splash                       &&
+	install -D -m644 ${srcdir}/fbsplash-extras.sh        etc/rc.d/functions.d/fbsplash-extras.sh &&
+	install -D -m644 ${srcdir}/fbsplash.initcpio_install lib/initcpio/install/fbsplash           &&
+	install -D -m644 ${srcdir}/fbsplash.initcpio_hook    lib/initcpio/hooks/fbsplash    || return 1
+	# Install utility script
+	mkdir -p usr/bin/
+	install -m755 ${srcdir}/fbsplash-initscripts-services-get   usr/bin/
+	# Install fbcodecor script and config file
+	install -D -m644 ${srcdir}/fbcondecor.conf           etc/conf.d/fbcondecor &&
+	install -D -m755 ${srcdir}/fbcondecor.daemon         etc/rc.d/fbcondecor   || return 1
+}
+md5sums=('3e35ebf331bc2faee9bc2a8645d51503'
+         '87256fc4c2441a30f544ad5eaf411691'
+         '94518453b4ee30d30aaeabc501353b1a'
+         '1821489d53b45c8c5c68d3695bc78d36'
+         'b34b1a8d85f52bae2e36c046e23a9fb3'
+         '390dacdfb3be761728ff2a1cdafd178b'
+         '715926469d05eecd345c052e6248ca32'
+         'b3db9d4fd902b62ac9e38589677e2d16')

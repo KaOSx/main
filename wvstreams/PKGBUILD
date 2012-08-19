@@ -1,0 +1,44 @@
+#
+# Chakra Packages for Chakra, part of chakra-project.org
+#
+# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
+# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+
+pkgname=wvstreams
+pkgver=4.6.1
+pkgrel=1
+pkgdesc="A network programming library written in C++"
+arch=('i686' 'x86_64')
+url="http://alumnit.ca/wiki/?page=WvStreams"
+license=('LGPL')
+depends=('zlib' 'pam' 'xplc' "openssl" 'readline')
+source=(http://wvstreams.googlecode.com/files/${pkgname}-${pkgver}.tar.gz
+        gcc-4.5.1.patch)
+md5sums=('2760dac31a43d452a19a3147bfde571c'
+         'ce642b80f787e61038c2dea04d2f0635')
+options=('!makeflags')
+
+build() {
+  cd ${srcdir}/${pkgname}-${pkgver}
+  patch -Np0 -i $startdir/gcc-4.5.1.patch
+  ./configure --prefix=/usr \
+     --sysconfdir=/etc \
+     --localstatedir=/var \
+     --without-dbus \
+     --with-pam \
+     --with-openssl \
+     --without-tcl \
+     --without-qt || return 1
+  make COPTS="$CFLAGS -fPIC" CXXOPTS="$CXXFLAGS -fPIC -fpermissive" VERBOSE=1 || return 1
+}
+
+package() {
+  cd ${srcdir}/${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install || return 1
+  
+  # FS#15974
+  # --without-dbus still installs the pkg-config file
+  rm ${pkgdir}/usr/lib/pkgconfig/libwvdbus.pc
+  # --without-qt still installs the pkg-config file
+  rm ${pkgdir}/usr/lib/pkgconfig/libwvqt.pc
+}

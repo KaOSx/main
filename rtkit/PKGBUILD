@@ -1,0 +1,43 @@
+#
+# Chakra Packages for Chakra, part of chakra-project.org
+#
+# maintainer abveritas@chakra-project.org
+
+pkgname=rtkit
+pkgver=0.11
+pkgrel=1
+pkgdesc="Realtime Policy and Watchdog Daemon"
+arch=('i686' 'x86_64')
+url="http://git.0pointer.de/?p=rtkit.git"
+license=('GPL' 'custom:BSD')
+depends=('dbus' 'polkit')
+install=rtkit.install
+source=(http://0pointer.de/public/$pkgname-$pkgver.tar.xz)
+md5sums=('a96c33b9827de66033d2311f82d79a5d')
+
+build() {
+  cd "$srcdir/$pkgname-$pkgver"
+
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --libexecdir=/usr/lib/rtkit \
+    --with-systemdsystemunitdir=/usr/lib/systemd/system
+
+  make
+}
+
+package() {
+  cd "$srcdir/$pkgname-$pkgver"
+  make DESTDIR="$pkgdir" install
+
+  # DBus configuration
+  mkdir -p "$pkgdir/usr/share/dbus-1/interfaces"
+  ./rtkit-daemon --introspect >"$pkgdir/usr/share/dbus-1/interfaces/org.freedesktop.RealtimeKit1.xml"
+
+  # Client license
+  mkdir -p "$pkgdir/usr/share/licenses/rtkit"
+  sed -ne '4,25p' rtkit.c >"$pkgdir/usr/share/licenses/rtkit/COPYING"
+}
+
+

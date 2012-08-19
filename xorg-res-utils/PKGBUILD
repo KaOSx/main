@@ -1,0 +1,41 @@
+#
+# Chakra Packages for Chakra, part of chakra-project.org
+#
+# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
+# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+
+pkgname=xorg-res-utils
+pkgver=1.0.5
+pkgrel=1
+pkgdesc="X.Org X11 resource utilities"
+arch=(i686 x86_64)
+url="http://xorg.freedesktop.org/"
+license=('custom')
+depends=('libxaw')
+makedepends=('pkgconfig')
+groups=('xorg')
+source=(${url}/releases/individual/app/appres-1.0.3.tar.bz2
+        ${url}/releases/individual/app/editres-1.0.5.tar.bz2
+        ${url}/releases/individual/app/listres-1.0.2.tar.bz2
+        ${url}/releases/individual/app/viewres-1.0.3.tar.bz2
+        LICENSE.listres LICENSE.viewres)
+md5sums=('48d56924f76738872ef6c90f99030e34' '87e499fd2599910af7961187205ca7ed'\
+         '3c0d5d8d6abaf411cd0647bc7073ac38' 'c9d15462c0190dce61d04a6717dd7622'\
+         '9c9b17ae5e9be0c570dabe9e54f54f6d' '9c9b17ae5e9be0c570dabe9e54f54f6d')
+
+build() {
+  cd ${srcdir}
+  for i in *; do
+    if [ -d "${i}" ]; then
+      pushd "${i}"
+      ./configure --prefix=/usr --mandir=/usr/share/man --disable-xprint
+      make || return 1
+      make DESTDIR=${pkgdir} install || return 1
+      install -D -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.${i%-*}
+      popd
+    fi
+  done
+#Replacing stub license files
+  install -D -m644 "${srcdir}/LICENSE.listres" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.listres"
+  install -D -m644 "${srcdir}/LICENSE.viewres" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.viewres"
+}
