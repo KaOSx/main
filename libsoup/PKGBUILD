@@ -1,40 +1,39 @@
 #
 # Chakra Packages for Chakra, part of chakra-project.org
 #
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
-
-# include global config
-source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+# maintainer abveritas[at]chakra-project[dot]org>
 
 pkgname=libsoup
-pkgver=2.34.2
+pkgver=2.40.3
 pkgrel=2
-arch=(i686 x86_64)
+pkgdesc="GNOME HTTP Library - base library"
+arch=('x86_64')
 license=('LGPL')
-makedepends=('glib2' 'libxml2' 'sqlite3' 'libgnome-keyring' 'intltool' 'gobject-introspection')
+depends=('glib2>=2.34.0' 'libxml2' 'gnutls' 'sqlite3' )
+makedepends=('intltool' 'gobject-introspection' 'python2' 'libgnome-keyring')
 url="http://www.gnome.org"
-source=(http://ftp.gnome.org/pub/gnome/sources/${pkgname}/2.34/${pkgname}-${pkgver}.tar.bz2)
+source=("http://ftp.gnome.org/pub/gnome/sources/${pkgname}/2.40/${pkgname}-${pkgver}.tar.xz")
 options=('!libtool' '!emptydirs')
 provides=('libsoup-gnome')
 replaces=('libsoup-gnome')
 conflicts=('libsoup-gnome')
-sha256sums=('1d70edc48c309528635012269733739f9cd22548913125864318a65d1b6f1261')
+md5sums=('ee111c5cf9f95b4a7aa24afe13dddb98')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
-  ./configure --prefix=/usr --sysconfdir=/etc \
-      --localstatedir=/var --disable-static --disable-tls-check --without-gnome || return 1
-  make || return 1
+  sed -i -e 's/env python/python2/' libsoup/tld-parser.py
+  
+  ./configure --prefix=/usr \
+      --sysconfdir=/etc \
+      --localstatedir=/var \
+      --disable-static \
+      --disable-tls-check \
+      --without-gnome 
+  make 
 }
 
-package_libsoup() {
-  pkgdesc="GNOME HTTP Library - base library"
-  depends=('glib2>=2.24.0' 'libxml2>=2.7.7' 'gnutls>=2.8.6')
-
+package() {
   cd "${srcdir}/${pkgname}-${pkgver}"
-  make DESTDIR="${pkgdir}" install || return 1
-  rm -f "${pkgdir}"/usr/lib/libsoup-gnome-2.4.*
-  rm -f "${pkgdir}/usr/lib/pkgconfig/libsoup-gnome-2.4.pc"
-  rm -rf "${pkgdir}/usr/include/libsoup-gnome-2.4"
+  
+  make DESTDIR="${pkgdir}" install 
 }

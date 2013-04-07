@@ -4,7 +4,7 @@
 
 pkgname=ttf-bitstream-vera
 pkgver=1.10
-pkgrel=7
+pkgrel=8
 pkgdesc="Bitstream vera fonts"
 arch=('any')
 license=('custom')
@@ -15,9 +15,8 @@ source=(http://ftp.gnome.org/pub/GNOME/sources/${pkgname}/1.10/${pkgname}-${pkgv
 md5sums=(bb22bd5b4675f5dbe17c6963d8c00ed6)
 
 build() {
-  cd ${srcdir}/${pkgname}-${pkgver}
-  mkdir -p  ${pkgdir}/usr/share/fonts/TTF
-  install -m644 *.ttf ${pkgdir}/usr/share/fonts/TTF/
-  mkdir -p ${pkgdir}/usr/share/licenses/ttf-bitstream-vera
-  install -m644 COPYRIGHT.TXT ${pkgdir}/usr/share/licenses/ttf-bitstream-vera/LICENSE
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  install -d "${pkgdir}/usr/share/fonts/TTF"
+  install -m0644 *.ttf "${pkgdir}/usr/share/fonts/TTF/"
+  install -Dm0644 COPYRIGHT.TXT "${pkgdir}/usr/share/licenses/ttf-bitstream-vera/LICENSE"
 }

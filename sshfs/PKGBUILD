@@ -1,22 +1,26 @@
-# $Id: PKGBUILD 68118 2010-02-10 20:03:32Z giovanni $
-# Maintainer: Giovanni Scafora <giovanni@archlinux.org>
+# Maintainer: Michael Haesel <michael[dot]haesel[at]gmail[dot]com>
 
 pkgname=sshfs
-pkgver=2.2
-pkgrel=3
+pkgver=2.4
+pkgrel=2
 pkgdesc="FUSE client based on the SSH File Transfer Protocol"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://fuse.sourceforge.net/sshfs.html"
 license=('GPL')
 depends=('fuse' 'glib2' 'openssh')
 makedepends=('pkgconfig')
 source=(http://downloads.sourceforge.net/sourceforge/fuse/${pkgname}-fuse-${pkgver}.tar.gz)
-md5sums=('26e9206eb5169e87e6f95f54bc005a4f')
+sha256sums=('3c93ba8522568093c94ff9c5a3763929380dd229365d905769ff82475d774dd1')
 
 build() {
   cd "${srcdir}/${pkgname}-fuse-${pkgver}"
 
   ./configure --prefix=/usr
-  make || return 1
-  make DESTDIR="${pkgdir}" install || return 1
+  make
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-fuse-${pkgver}"
+
+  make DESTDIR="${pkgdir}" install
 }

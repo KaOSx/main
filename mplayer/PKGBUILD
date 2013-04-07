@@ -4,20 +4,18 @@
 # maintainer abveritas@chakra-project.org
 
 pkgname=mplayer
-pkgver=34923
+pkgver=35624
 pkgrel=2
 pkgdesc="Multimedia player."
-arch=('i686' 'x86_64')
+arch=('x86_64')
 depends=('a52dec' 'aalib' 'alsa-lib' 'bzip2' 'cdparanoia' 'directfb' 'enca' 'faac' 'faad2'
          'fontconfig' 'freetype2' 'fribidi' 'gcc-libs' 'giflib' 'glibc' 'gsm' 'jack' 'ladspa' 'lame'
-         'libass' 'libbluray' 'libbs2b' 'libcaca' 'libcdio' 'libdca' 'libdv'
-         'libdvdnav'
-         'libdvdread' 'libgl' 'libjpeg' 'libmad' 'libmng' 'libmpeg2' 'libogg'
-         'libpng' 'libpulse' 'libtheora' 'libvdpau' 'libvpx'
-         'libx11' 'libxext' 'libxinerama' 'libxss' 'libxv' 'libxxf86dga' 'libxxf86vm' 'lirc-utils'
-         'live-media>=2010.01.13' 'lzo2' 'mpg123' 'nas' 'ncurses' 'openal' 'opencore-amr' 'openjpeg'
-         'orc' 'rtmpdump' 'schroedinger' 'sdl' 'smbclient' 'speex' 'toolame' 'ttf-dejavu'
-         'vstream-client'
+         'libass' 'libbluray' 'libbs2b' 'libcaca' 'libcdio' 'libdca' 'libdv' 'libdvdnav'
+         'libdvdread' 'libgl' 'libjpeg' 'libmad' 'libmng' 'libmpeg2' 'libogg' 'libpng'
+         'pulseaudio' 'libtheora' 'libvdpau' 'libvpx' 'libx11' 'libxext' 'libxinerama'
+         'libxss' 'libxv' 'libxxf86dga' 'libxxf86vm' 'lirc-utils' 'live-media>=2010.01.13'
+         'lzo2' 'mpg123' 'nas' 'ncurses' 'openal' 'opencore-amr' 'openjpeg' 'orc' 'rtmpdump'
+         'schroedinger' 'sdl' 'samba' 'speex' 'toolame' 'ttf-dejavu' 'vstream-client'
          'x264' 'xvidcore' 'zlib')
 makedepends=('live-media>=2010.01.13' 'mesa' 'unzip' 'yasm')
 license=('GPL2')
@@ -29,8 +27,10 @@ conflicts=('mencoder')
 replaces=('mencoder')
 backup=('etc/mplayer/codecs.conf' 'etc/mplayer/input.conf')
 install=mplayer.install
-source=(http://chakra-linux.org/sources/${pkgname}/${pkgname}-${pkgver}.tar.xz mplayer.desktop mplayer.png)
-md5sums=('f1de384b2b73d95bcd4cc55b609f19d5'
+source=("http://chakra-linux.org/sources/${pkgname}/${pkgname}-${pkgver}.tar.xz"
+        "mplayer.desktop"
+        "mplayer.png")
+md5sums=('99c1fe331a101f4b137226edb6836b77'
          'c0d6ef795cf6de48e3b87ff7c23f0319'
          'd00874ccc644b7f43d6ef1c942fcef28')
 
@@ -68,8 +68,6 @@ build() {
       --enable-runtime-cpudetection \
       --language=all \
       --prefix=/usr
-        
-    [ "$CARCH" = "i686" ] &&  sed 's|-march=i486|-march=i686|g' -i config.mak
 
     make
 }

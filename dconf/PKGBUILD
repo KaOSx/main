@@ -4,18 +4,17 @@
 # maintainer abveritas@chakra-project.org
 
 pkgname=dconf
-pkgver=0.11.0
+pkgver=0.12.0
 pkgrel=1
 pkgdesc="A low-level configuration system."
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://live.gnome.org/dconf"
 license=('LGPL2.1')
 depends=('glib2')
 makedepends=('vala' 'gobject-introspection')
-optdepends=('gtk3: for dconf-editor')
 install=dconf.install
 source=("http://download.gnome.org/sources/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
-md5sums=('0ab8876f7c9eddc0768d64e8e760fece')
+md5sums=('6aec9d37fca1614cd672bc5b2215c9f3')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"

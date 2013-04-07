@@ -1,21 +1,17 @@
 # Platform Packages for Chakra, part of chakra-project.org
 #
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
-
-# include global config
-source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+# maintainer abveritas[at]chakra-project[dot]org>
 
 pkgname=cairomm
 pkgver=1.10.0
-pkgrel=1
+pkgrel=3
 pkgdesc="C++ bindings to Cairo vector graphics library"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://www.cairographics.org"
 license=('LGPL' 'MPL')
 depends=('cairo' 'libsigc++2.0')
 makedepends=('pkgconfig')
-source=(http://www.cairographics.org/releases/${pkgname}-${pkgver}.tar.gz)
+source=("http://www.cairographics.org/releases/${pkgname}-${pkgver}.tar.gz")
 options=('!libtool' '!emptydirs')
 sha1sums=('f08bf8a331067f0d1e876523f07238fba6b26b99')
 

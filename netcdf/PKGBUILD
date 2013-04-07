@@ -1,28 +1,23 @@
-#
-# Apps Packages for Chakra, part of chakra-project.org
-#
+# Platform Packages for Chakra, part of chakra-project.org
 # maintainer (x86_64): Giuseppe Calà <jiveaxe@gmail.com>
 
-# include global config
-source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
-
 pkgname=netcdf
-pkgver=4.1.1
+pkgver=4.2.1
 pkgrel=1
 pkgdesc="Network Common Data Form interface for array-oriented data access and corresponding library."
-arch=("i686" "x86_64")
+arch=("x86_64")
 url="http://www.unidata.ucar.edu/downloads/netcdf/index.jsp"
 depends=('gcc-libs' 'hdf5' 'gcc-fortran')
-options=('force' '!libtool' '!makeflags')
+options=('!libtool' '!makeflags')
 license=('custom')
 source=(http://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-${pkgver}.tar.gz)
-sha1sums=('6fece208825b978fc2240732f6f57927d71a0552')
+sha1sums=('dfb6b10ef8dd20e785efa5e29b448383090f144d')
 
 build() {
   cd ${srcdir}/${pkgname}-${pkgver}
   ./configure --prefix=/usr --enable-shared --enable-netcdf-4
   make
-  make check
+#  make check
 }
 
 package() {

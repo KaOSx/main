@@ -5,7 +5,7 @@
 # maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
 
 pkgname=libvpx
-pkgver=0.9.6
+pkgver=1.1.0
 pkgrel=2
 pkgdesc="The VP8 Codec SDK"
 arch=('i686' 'x86_64')
@@ -13,12 +13,13 @@ url="http://www.webmproject.org/"
 license=('BSD')
 depends=('glibc')
 makedepends=('yasm')
-source=(http://webm.googlecode.com/files/${pkgname}-v${pkgver}.tar.bz2)
-sha1sums=('a3522bd2b73d52381ba767ded1cbf4760e9cc6f8')
+source=("http://webm.googlecode.com/files/${pkgname}-v${pkgver}.tar.bz2")
+sha1sums=('356af5f770c50cd021c60863203d8f30164f6021')
 
 build() {
     cd "${srcdir}/${pkgname}-v${pkgver}"
-    ./configure --enable-vp8 \
+    ./configure --prefix=/usr \
+        --enable-vp8 \
         --enable-runtime-cpu-detect \
         --enable-shared \
         --enable-postproc \
@@ -33,5 +34,5 @@ package() {
 
     make DIST_DIR="$pkgdir/usr" install
     chmod -R o+r "${pkgdir}/usr/include/vpx"
-    install -D -m 0644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE" || return 1
+    install -D -m 0644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
 }

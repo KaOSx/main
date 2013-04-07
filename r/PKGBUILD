@@ -4,22 +4,22 @@
 # maintainer: Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
 
 pkgname=r
-pkgver=2.15.0
-pkgrel=1
+pkgver=2.15.2
+pkgrel=2
 pkgdesc="Language and environment for statistical computing and graphics"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 license=('GPL')
 url=('http://www.r-project.org/')
 depends=('atlas-lapack' 'bzip2'  'libpng' 'libjpeg' 'libtiff'
          'ncurses' 'pcre' 'readline' 'zlib' 'perl' 'gcc-libs'
          'tk' 'libxt' 'libxmu' 'pango' 'xz')
-makedepends=('openjdk6' 'gcc-fortran')
+makedepends=('openjdk' 'gcc-fortran')
 backup=('etc/R/Makeconf' 'etc/R/Renviron' 'etc/R/ldpaths' 'etc/R/repositories')
 options=('!makeflags')
 source=("http://cran.r-project.org/src/base/R-2/R-${pkgver}.tar.gz"
 	'r.desktop'
 	'r.png')
-sha1sums=('a633f87fdbd22e8c371971c535ca815e63c297f6'
+sha1sums=('c80da687d66ee88d1e34fc1ae5c1bd525f9513dd'
           'bcc0320d7cc49d56408edc756b50a0f9ba98fe43'
           'a69a07ec363440efc18ce0a7f2af103375dea978')
 

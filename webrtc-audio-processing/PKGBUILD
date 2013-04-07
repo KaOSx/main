@@ -5,15 +5,15 @@
 
 pkgname=webrtc-audio-processing
 pkgver=0.1
-pkgrel=1
+pkgrel=4
 pkgdesc="AudioProcessing library based on Google's implementation of WebRTC"
-arch=(i686 x86_64)
+arch=('x86_64')
 url="http://freedesktop.org/software/pulseaudio/webrtc-audio-processing"
 license=(custom)
-depends=(gcc-libs)
+depends=('gcc-libs')
 options=(!libtool)
 source=("http://freedesktop.org/software/pulseaudio/webrtc-audio-processing/$pkgname-$pkgver.tar.xz")
-sha256sums=('ed4b52f9c2688b97628035a5565377d74704d7c04de4254a768df3342c7afedc')
+md5sums=('da25bb27812c8404060d4cc0dc712f04')
 
 build() {
   cd $pkgname-$pkgver

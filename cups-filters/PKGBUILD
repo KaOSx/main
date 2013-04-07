@@ -3,27 +3,35 @@
 # maintainer abveritas@chakraproject.org
 
 pkgname=cups-filters
-pkgver=1.0.20
-pkgrel=1
+pkgver=1.0.29
+pkgrel=3
 pkgdesc="OpenPrinting CUPS Filters"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://www.linuxfoundation.org/collaborate/workgroups/openprinting"
 license=('GPL')
-depends=('lcms2' 'poppler>=0.20.2')
-makedepends=('ghostscript' 'ttf-dejavu') # ttf-dejavu for make check
+depends=('lcms2' 'poppler>=0.20.2' 'qpdf>=4.0.0')
+makedepends=('ghostscript' 'ttf-dejavu') 
 optdepends=('ghostscript: for non-PostScript printers to print with CUPS to convert PostScript to raster images'
 	    'foomatic-db: drivers use Ghostscript to convert PostScript to a printable form directly'
 	    'foomatic-db-engine: drivers use Ghostscript to convert PostScript to a printable form directly'
 	    'foomatic-db-nonfree: drivers use Ghostscript to convert PostScript to a printable form directly')
 backup=(etc/fonts/conf.d/99pdftoopvp.conf)
 options=(!libtool)
-source=(http://www.openprinting.org/download/cups-filters/$pkgname-$pkgver.tar.gz)
-md5sums=('fc1d2b8cb5b0513224d7e2b01f900704')
+source=("http://www.openprinting.org/download/cups-filters/$pkgname-$pkgver.tar.gz"
+        'cups-browsed.service'
+        'poppler_buildfix.diff')
+md5sums=('0640a02a3fb88d3dbdb224e3becd400d'
+         'c1101c052abfd93759d4963f6f6c36f0'
+         '8029f71aa240f5ed814bcdc900ec1b27')
 
 build() {
   cd "$srcdir/$pkgname-$pkgver"
+  patch -p0 -i "${srcdir}"/poppler_buildfix.diff
+  
   ./configure --prefix=/usr  \
     --sysconfdir=/etc \
+    --with-rcdir=no \
+    --enable-avahi \
     --with-test-font-path=/usr/share/fonts/TTF/DejaVuSans.ttf
   make
 }
@@ -38,4 +46,6 @@ package() {
   make DESTDIR="$pkgdir/" install
   # drop static lib
   rm -f ${pkgdir}/usr/lib/*.a
+  # systemd service
+  install -Dm644 ${srcdir}/cups-browsed.service ${pkgdir}/usr/lib/systemd/system/cups-browsed.service
 }

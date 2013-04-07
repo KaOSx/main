@@ -1,13 +1,18 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer abveritas@chakra-project.org
+
 pkgname=libmms
 pkgver=0.6.2
-pkgrel=1
+pkgrel=2
 pkgdesc="MMS stream protocol library"
-arch=(i686 x86_64)
+arch=('x86_64')
 url="http://sourceforge.net/projects/libmms/"
 license=(LGPL)
-depends=('glib2>=2.24.1')
+depends=('glib2')
 options=('!libtool')
-source=(http://download.sourceforge.net/libmms/${pkgname}-${pkgver}.tar.gz)
+source=("http://download.sourceforge.net/libmms/${pkgname}-${pkgver}.tar.gz")
 md5sums=('9f63aa363deb4874e072a45850161bff')
 
 build() {

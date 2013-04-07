@@ -1,23 +1,23 @@
 #
-# Platforms packages for Chakra
+# Platform Packages for Chakra, part of chakra-project.org
 #
+# maintainer abveritas@chakra-project.org
 
 pkgname=djvulibre
-pkgver=3.5.25.2
+pkgver=3.5.25.3
 pkgrel=1
 pkgdesc="Suite to create, manipulate and view DjVu ('déjà vu') documents"
-arch=("i686" "x86_64")
+arch=("x86_64")
 license=('GPL')
 url="http://djvu.sourceforge.net/"
 depends=('gcc-libs' 'libtiff' 'bash' 'hicolor-icon-theme')
-makedepends=('pkg-config')
+makedepends=('librsvg')
 provides=("libdjvu=${pkgver}")
 replaces=('libdjvu')
 conflicts=('libdjvu')
-optdepends=('djview4: Viewer application')
 options=('!libtool')
-source=(http://downloads.sourceforge.net/djvu/${pkgname}-${pkgver}.tar.gz)
-md5sums=('994e2ff1d4ae6a763764dfe20509826e')
+source=("http://downloads.sourceforge.net/djvu/${pkgname}-${pkgver}.tar.gz")
+md5sums=('5f45d6cd5700b4dd31b1eb963482089b')
 
 build() {
   cd "${srcdir}/${pkgname}-3.5.25"

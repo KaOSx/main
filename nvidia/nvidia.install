@@ -1,15 +1,20 @@
 post_install() {
-    EXTRAMODULES='extramodules-3.4-CHAKRA'
+    EXTRAMODULES='extramodules-3.7-CHAKRA'
     depmod $(cat /lib/modules/$EXTRAMODULES/version)
     echo 'In order to use nvidia module, reboot the system.'
 }
 
 post_upgrade() {
-    EXTRAMODULES='extramodules-3.4-CHAKRA'
+    EXTRAMODULES='extramodules-3.7-CHAKRA'
     depmod $(cat /lib/modules/$EXTRAMODULES/version)
+    echo -e '\e[31;46m WARNING'
+    echo -e '\e[31;46m If your card is from the 7xxx series or earlier, switch to nvidia-304xx'
+    echo -e '\e[31;46m pacman -S nvidia-304xx'
+    echo -e '\e[0m'
 }
 
 post_remove() {
-    EXTRAMODULES='extramodules-3.4-CHAKRA'
+    EXTRAMODULES='extramodules-3.7-CHAKRA'
     depmod $(cat /lib/modules/$EXTRAMODULES/version)
+    
 }

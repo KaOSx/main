@@ -1,20 +1,16 @@
 #
 # Chakra Packages for Chakra, part of chakra-project.org
 #
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
-
-# include global config
-source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+# maintainer abveritas@chakra-project.org
 
 pkgname=xorg-apps
 pkgver=7.6
-pkgrel=1
+pkgrel=2
 pkgdesc="Various X.Org applications"
-arch=(i686 x86_64)
+arch=('x86_64')
 url="http://xorg.freedesktop.org/"
 license=('custom')
-depends=(libxcursor libxkbfile 'libpng>=1.4.0' libxft libfontenc libxaw)
+depends=('libxcursor' 'libxkbfile' 'libpng>=1.5.0' 'libxft' 'libfontenc' 'libxaw')
 makedepends=(pkgconfig xbitmaps)
 source=(${url}/releases/individual/app/oclock-1.0.2.tar.bz2
         ${url}/releases/individual/app/luit-1.1.0.tar.bz2
@@ -74,7 +70,7 @@ build() {
 	          -i Makefile.* || return 1
 	      ;;
         xcursorgen*)
-          sed -e 's/libpng12/libpng14/g' -i configure
+          sed -e 's/libpng12/libpng15/g' -i configure
         ;;
       esac
       ./configure --prefix=/usr --disable-xprint --mandir=/usr/share/man \

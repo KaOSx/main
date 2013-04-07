@@ -5,10 +5,10 @@
 # maintainer : Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
 
 pkgname=apache
-pkgver=2.4.2
-pkgrel=1
+pkgver=2.4.3
+pkgrel=3
 pkgdesc='A high performance Unix-based HTTP server'
-arch=('i686' 'x86_64')
+arch=('x86_64')
 options=('!libtool')
 url='http://www.apache.org/dist/httpd'
 license=('Apache')
@@ -17,29 +17,32 @@ backup=(etc/conf.d/apache etc/httpd/conf/httpd.conf
         etc/httpd/conf/extra/httpd-{manual,mpm,multilang-errordoc}.conf
         etc/httpd/conf/extra/httpd-{ssl,userdir,vhosts}.conf
         etc/logrotate.d/httpd)
-depends=('openssl' 'zlib' 'apr-util' 'pcre')
+depends=('openssl' 'zlib' 'apr-util' 'pcre' 'systemd>=189')
 optdepends=('lynx: apachectl status')
+install=${pkgname}.install
 source=("http://www.apache.org/dist/httpd/httpd-${pkgver}.tar.bz2"
         "http://www.apache.org/dist/httpd/httpd-${pkgver}.tar.bz2.asc"
         "http://mpm-itk.sesse.net/apache2.4-mpm-itk-2.4.2-01.patch"
         'apache.conf.d'
         'httpd.logrotate'
-        'httpd'
-        'chakra.layout')
-md5sums=('6bb12f726e22656f0ad2baf91f1f8329'
-         '12311bf05e630a34c81bce5d9469b1be'
+        'chakra.layout'
+        'httpd.service'
+        'httpd-tmpfile.conf')
+md5sums=('87aaf7bc7e8715f0455997bb8c6791aa'
+         'c65a2229a7d15bc6f0e9730fc929a5c7'
          '7b5fb06ba65d80d40f19e32f95426486'
          '08b3c875f6260644f2f52b4056d656b0'
          '6382331e9700ed9e8cc78ea51887b537'
-         'c7e300a287ef7e2e066ac7639536f87e'
-         '9404bc261cffce7ad88850f0569e9067')
+         '9404bc261cffce7ad88850f0569e9067'
+         '4af19522704050f98ba13e40d3eaca0b'
+         '110a056408252de4356be7f53872b11d')
 
 build() {
   cd "${srcdir}/httpd-${pkgver}"
 
   # apply the monolithic ITK patch
   # see http://mpm-itk.sesse.net/
-  patch -Np1 -i "${srcdir}/apache2.4-mpm-itk-2.4.2-01.patch"
+  patch -p1 -i "${srcdir}/apache2.4-mpm-itk-2.4.2-01.patch"
 
   # set default user
   sed -e 's#User daemon#User http#' \
@@ -103,14 +106,20 @@ package() {
     popd >/dev/null
   done
 
-  install -D -m755 "${srcdir}/httpd" \
-                   "${pkgdir}/etc/rc.d/httpd" 
-
   install -D -m644 "${srcdir}/httpd.logrotate" \
                    "${pkgdir}/etc/logrotate.d/httpd" 
 
   install -D -m644 "${srcdir}/apache.conf.d" \
                    "${pkgdir}/etc/conf.d/apache" 
+
+  # systemd
+  install -D -m644 "${srcdir}/httpd-tmpfile.conf" \
+                   "${pkgdir}/usr/lib/tmpfiles.d/httpd.conf"
+
+  install -d "${pkgdir}"/usr/lib/systemd/system
+
+  install -D -m644 "${srcdir}/httpd.service" \
+                   "${pkgdir}/usr/lib/systemd/system/"
 
   # symlinks for /etc/httpd
   ln -fs /var/log/httpd "${pkgdir}/etc/httpd/logs"
@@ -130,5 +139,3 @@ package() {
       -e 's|#\(LoadModule slotmem_shm_module modules/mod_slotmem_shm.so\)|\1|' \
       -i "${pkgdir}/etc/httpd/conf/httpd.conf"
 }
-
-# vim:set ts=2 sw=2 et:

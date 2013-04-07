@@ -4,28 +4,31 @@
 # maintainer abveritas@chakra-project.org
 
 pkgname=mpg123
-pkgver=1.14.2
-pkgrel=1
+pkgver=1.14.4
+pkgrel=3
 pkgdesc="A console based real time MPEG Audio Player for Layer 1, 2 and 3"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://sourceforge.net/projects/mpg123"
 license=('GPL2' 'LGPL2.1')
 depends=('glibc' 'libltdl' 'alsa-lib')
 makedepends=('sdl' 'jack' 'libpulse')
 optdepends=('sdl: for sdl audio support'
             'jack: for jack audio support'
-            'libpulse: for pulse audio support')
+            'pulseaudio: for pulse audio support')
 conflicts=('mpg321')
 provides=('mpg321')
 replaces=('mpg321')
 options=('libtool')
 categories=('multimedia')
-source=(http://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}-${pkgver}.tar.bz2)
-md5sums=('70ccfc51fc9f7f1c776ae8cf611f6be3')
+source=("http://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
+sha1sums=('9f53e27bb40b8df3d3b6df25f5f9a8a83b1fccfe')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
-  ./configure --prefix=/usr --enable-int-quality --with-audio="alsa oss sdl jack pulse"
+  ./configure --prefix=/usr \
+              --enable-int-quality \
+              --with-audio="alsa oss sdl jack pulse" \
+              --with-module-suffix=.so
   make
 }
 

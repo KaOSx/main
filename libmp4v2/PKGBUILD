@@ -1,28 +1,29 @@
-# $Id: PKGBUILD 71330 2010-03-06 18:41:25Z andrea $
-# Maintainer:
-# Contributor: Andrea Scarpino <andrea@archlinux.org>
-# Contributor: Jan de Groot <jgc@archlinux.org>
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer abveritas@chakra-project.org
 
 pkgname=libmp4v2
-pkgver=1.9.1
+pkgver=2.0.0
 pkgrel=1
 pkgdesc="MPEG-4 library"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 license=('MPL')
 url="http://code.google.com/p/mp4v2/"
+depends=('gcc-libs')
 options=('!libtool')
-source=(http://mp4v2.googlecode.com/files/mp4v2-${pkgver}.tar.bz2)
-md5sums=('986701929ef15b03155ac4fb16444797')
+source=("http://mp4v2.googlecode.com/files/mp4v2-${pkgver}.tar.bz2")
+md5sums=('c91f06711225b34b4c192c9114887b14')
 
 build() {
-  cd ${srcdir}/mp4v2-${pkgver}
+  cd "${srcdir}/mp4v2-${pkgver}"
 
-  ./configure --prefix=/usr || return 1
-  make || return 1
+  ./configure --prefix=/usr
+  make
 }
 
 package() {
-  cd ${srcdir}/mp4v2-${pkgver}
-  make DESTDIR=${pkgdir} install || return 1
-  make DESTDIR=${pkgdir} install-man || return 1
+  cd "${srcdir}/mp4v2-${pkgver}"
+  make DESTDIR=${pkgdir} install
+  make DESTDIR=${pkgdir} install-man
 }

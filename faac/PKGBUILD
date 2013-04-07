@@ -1,30 +1,37 @@
-# $Id: PKGBUILD 71335 2010-03-06 18:43:34Z andrea $
-# Maintainer: Hugo Doria <hugo@archlinux.org>
-# Contributor: Sarah Hay <sarah@archlinux.org>
-# Contributor: dorphell <dorphell@archlinux.org>
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer abveritas@chakra-project.org
 
 pkgname=faac
 pkgver=1.28
-pkgrel=2
+pkgrel=3
 pkgdesc="FAAC is an AAC audio encoder"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://www.audiocoding.com/"
 license=('GPL' 'custom')
 depends=('libmp4v2' 'glibc')
 makedepends=('automake' 'autoconf' 'libtool')
 options=('!libtool')
 source=("http://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tar.gz"
-	'mp4v2-1.9.patch')
+	'mp4v2-1.9.patch'
+	'mp4v2-2.0.0.patch'
+	'altivec.patch')
 md5sums=('80763728d392c7d789cde25614c878f6'
-         '9d52a17e68fa15ca94e88e1457b94b74')
+         '9d52a17e68fa15ca94e88e1457b94b74'
+         '979ff4f13f36217cb15c92df9fd75f0c'
+         'e1ee422ab524fb1f78d178700c3a0e7f')
 
 build() {
   cd ${srcdir}/${pkgname}-${pkgver}
-  patch -Np1 -i ${srcdir}/mp4v2-1.9.patch || return 1
+  patch -p1 -i ${srcdir}/mp4v2-1.9.patch 
+  patch -p0 -i ${srcdir}/mp4v2-2.0.0.patch 
+  patch -p0 -i ${srcdir}/altivec.patch 
+  
   find . -type f -print0 | xargs -0 sed -i 's/\r//g'
   ./bootstrap
-  ./configure --prefix=/usr --with-mp4v2
-  make || return 1
+  ./configure --prefix=/usr 
+  make 
 }
 
 package() {

@@ -2,12 +2,13 @@
 # QT Packages for Chakra, part of chakra-project.org
 #
 # maintainer abveritas@chakra-project.org
+## rebuild on icu update
 
 pkgbase=qt
 pkgname=('qt' 'qt-private-headers')
-pkgver=4.8.2
+pkgver=4.8.4
 pkgrel=5
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url='http://qt.nokia.com/'
 license=('GPL3' 'LGPL')
 makedepends=('libtiff' 'libpng' 'libmng' 'sqlite3' 'ca-certificates' 'glib2' 'dbus'
@@ -18,15 +19,15 @@ options=('!libtool')
 _pkgfqn="qt-everywhere-opensource-src-${pkgver}"
 source=("http://releases.qt-project.org/qt4/source/${_pkgfqn}.tar.gz"
         'assistant.desktop' 'designer.desktop' 'linguist.desktop'
-        'qtconfig.desktop' 'fix-assistant-crash.patch'
-	'improve-cups-support.patch')
-md5sums=('3c1146ddf56247e16782f96910a8423b'
+        'qtconfig.desktop' 'improve-cups-support.patch' 'qt_no_debug.patch' 'qlocale.diff')
+md5sums=('89c5ecba180cae74c66260ac732dc5cb'
          'fc211414130ab2764132e7370f8e5caa'
          '85179f5e0437514f8639957e1d8baf62'
          'f11852b97583610f3dbb669ebc3e21bc'
          '6b771c8a81dd90b45e8a79afa0e5bbfd'
-         '57590084078b6379f0501f7728b02ae2'
-         'b9fb6b953cec428d59c026b1ef370e86')
+         'b9fb6b953cec428d59c026b1ef370e86'
+         '742bfebaebc44c26f6cabe654f702cc8'
+         '2c018c532ed356c2199018e7987c67d2')
 
 # source PKGBUILD && _create-kdeqt-patch
 _create-kdeqt-patch() {
@@ -55,12 +56,10 @@ build() {
 #	  sed -i -e 's/^.*kde-qt .*/        echo "   kde-qt '${kdeqtver}'"/' $startdir/qt.install
 #	fi
 
-	msg "Applying fixes..."
-	#patch -Np1 -i ${srcdir}/fix-qtextlayout.diff
-	#patch -p1 -i "${srcdir}"/fix-buffer-overflow.patch
-
-	#patch -p1 -i "${srcdir}"/improve-cups-support.patch
-	patch -p1 -i "${srcdir}"/fix-assistant-crash.patch
+        # from Fedora, removing "QDBusConnection:..." message for qt apps
+	patch -p1 -i "${srcdir}"/qt_no_debug.patch
+	# Slovak locale issue bug https://bugreports.qt-project.org/browse/QTBUG-28843
+	patch -p1 -i "${srcdir}"/qlocale.diff
 
         export QT4DIR="${srcdir}"/${_pkgfqn}
         export LD_LIBRARY_PATH=${QT4DIR}/lib:${LD_LIBRARY_PATH}
@@ -95,7 +94,6 @@ build() {
                  -reduce-relocations \
                  -dbus-linked \
                  -no-openvg \
-                 -separate-debug-info \
                  -xcursor
 	 make
 }
@@ -109,7 +107,8 @@ package_qt() {
 	  'libmysqlclient: MySQL driver'
 	  'unixodbc: ODBC driver'
 	  'libxinerama: Xinerama support'
-	  'libxfixes: Xfixes support')
+	  'libxfixes: Xfixes support'
+	  'icu: Unicode support')
     conflicts=('qt-doc' 'qt-demos' 'qt-tools')
     provides=('qt-tools')
     install='qt.install'

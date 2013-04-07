@@ -4,47 +4,50 @@
 # maintainer: Samir Benmendil <ram-z[at]chakra-project[dot]org>
 
 pkgbase=dhcp
-pkgname=('dhcp'
-         'dhclient')
+pkgname=('dhcp' 
+	 'dhclient')
 # separate patch levels with a period to maintain proper versioning.
-pkgver=4.2.4.1
-_pkgver=4.2.4-P1
-pkgrel=1
-arch=('i686' 'x86_64')
+pkgver=4.2.4.2
+_pkgver=4.2.4-P2
+pkgrel=2
+arch=('x86_64')
 license=('custom:isc-dhcp')
 url="https://www.isc.org/software/dhcp"
 source=(ftp://ftp.isc.org/isc/${pkgbase}/${_pkgver}/${pkgbase}-${_pkgver}.tar.gz
-	dhcp4 dhcp6 dhcp.conf.d 
-	dhcp-4.1.1-missing-ipv6-not-fatal.patch 
-	dhclient-script-pathFixes.patch)
-md5sums=('0ca7181024651f6323951d5498c8020b'
-         'c49b1497837ba56c54e401a66e1bab9b'
-         '12c2f3ae47ed23eb698eb7f1bfd80f20'
+        dhcp.conf.d 
+        dhcpd4.service
+        dhcpd6.service
+        dhcp-4.2.4-P2-missing-ipv6-not-fatal.patch
+        dhclient-script-pathFixes.patch)
+md5sums=('fe36056f2d274fa4b82a5422f192e65f'
          '8f357e46e1efcbb746f38737a3f977a2'
-         'fd64aeb4f399dcc41ea43089a3811094'
+         '7045e63a5d294c761ce306084eec2c67'
+         'a2ebf4460c049cbee3e49cb26a475f68'
+         '55967504078bfd7f821d2bd7c2542b29'
          '0fc1241ef7879d8be0fe140deb8ae48d')
 
 build() {
-  cd ${srcdir}/${pkgname}-${_pkgver}
+  cd "${srcdir}/${pkgname}-${_pkgver}"
 
   # Define _GNU_SOURCE to fix IPV6.
   sed '/^CFLAGS="$CFLAGS/ s/INGS"/INGS -D_GNU_SOURCE"/' -i configure
 
   # Make not having ipv6 non-fatal.
-  patch -p0 -i ${srcdir}/dhcp-4.1.1-missing-ipv6-not-fatal.patch
+  patch -p1 -i "${srcdir}/dhcp-4.2.4-P2-missing-ipv6-not-fatal.patch"
 
-  ./configure --prefix=/usr --sysconfdir=/etc \
-      --with-srv-lease-file=/var/state/dhcp/dhcpd.leases \
-      --with-srv6-lease-file=/var/state/dhcp/dhcpd6.leases \
-      --with-cli-lease-file=/var/state/dhclient/dhclient.leases \
-      --with-cli6-lease-file=/var/state/dhclient/dhclient6.leases
+  ./configure --prefix=/usr \
+              --sysconfdir=/etc \
+              --with-srv-lease-file=/var/state/dhcp/dhcpd.leases \
+              --with-srv6-lease-file=/var/state/dhcp/dhcpd6.leases \
+              --with-cli-lease-file=/var/state/dhclient/dhclient.leases \
+              --with-cli6-lease-file=/var/state/dhclient/dhclient6.leases
 
   make
 
   patch -i "${srcdir}/dhclient-script-pathFixes.patch" client/scripts/linux
 }
 
-package_dhcp(){
+package_dhcp() {
   pkgdesc="A DHCP server, client, and relay agent"
   depends=('openssl>=0.9.8a')
   backup=('etc/dhcpd.conf' 'etc/conf.d/dhcp')
@@ -53,23 +56,28 @@ package_dhcp(){
   cd "${srcdir}/${pkgname}-${_pkgver}"
   make DESTDIR="${pkgdir}" install
 
-  install -D -m755 "${srcdir}/dhcp4" "${pkgdir}/etc/rc.d/dhcp4"
-  install -D -m755 "${srcdir}/dhcp6" "${pkgdir}/etc/rc.d/dhcp6"
-  install -D -m644 "${srcdir}/dhcp.conf.d" "${pkgdir}/etc/conf.d/${pkgbase}"
+  install -D -m0644 "${srcdir}/dhcp.conf.d" "${pkgdir}/etc/conf.d/${pkgbase}"
   mkdir -p "${pkgdir}/var/state/dhcp"
 
+  # Install systemd service files
+  install -D -m0644 "${srcdir}/dhcpd4.service" "${pkgdir}/usr/lib/systemd/system/dhcpd4.service"
+  install -D -m0644 "${srcdir}/dhcpd6.service" "${pkgdir}/usr/lib/systemd/system/dhcpd6.service"
+  ln -s dhcpd4.service "${pkgdir}/usr/lib/systemd/system/dhcp4.service"
+  ln -s dhcpd6.service "${pkgdir}/usr/lib/systemd/system/dhcp6.service"
+  
   # Remove dhclient
   make -C client DESTDIR="${pkgdir}" uninstall 
 
   # install licenses
-  install -Dm644 LICENSE "${pkgdir}/usr/share/licenses/dhcp/LICENSE"
+  install -Dm0644 LICENSE "${pkgdir}/usr/share/licenses/dhcp/LICENSE"
 }
 
-package_dhclient(){
+package_dhclient() {
+  _pkgname=dhcp
   pkgdesc="dhclient is standalone client from the dhcp package"
   depends=('bash' 'iproute2' 'net-tools')
-
-  cd "${srcdir}/${pkgname}-${_pkgver}"
+  
+  cd "${srcdir}/${_pkgname}-${_pkgver}"
   make -C client DESTDIR="${pkgdir}" install 
 
   #move dhclient.conf to dhclient.conf.example
@@ -78,8 +86,8 @@ package_dhclient(){
   install -d "${pkgdir}/var/state/dhclient"
 
   # install dhclient linux script
-  install -Dm755 client/scripts/linux "${pkgdir}/sbin/dhclient-script"
+  install -Dm0755 client/scripts/linux "${pkgdir}/sbin/dhclient-script"
 
   # install licenses
-  install -Dm644 LICENSE "${pkgdir}/usr/share/licenses/dhclient/LICENSE"
+  install -Dm0644 LICENSE "${pkgdir}/usr/share/licenses/dhclient/LICENSE"
 }

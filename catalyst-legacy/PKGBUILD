@@ -1,27 +1,31 @@
 #
 # Chakra Packages for Chakra, part of chakra-project.org
 #
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+# maintainer abveritas[at]chakra-project[dot]org>
 
-_kernver="3.4.6-1-CHAKRA"
+_kernver="3.7.6-2-CHAKRA"
 
-pkgname=(catalyst-legacy chd-catalyst-legacy)
-pkgver=12.6
+pkgname=('catalyst-legacy' 'chd-catalyst-legacy')
+pkgver=13.1
 pkgrel=4
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://www.ati.amd.com"
 license=('custom')
-makedepends=('gcc-libs' 'gcc>4.0.0' 'make' 'linux-headers')
+makedepends=('gcc-libs' 'gcc>4.0.0' 'make' 'linux-headers' 'catalyst-legacy-utils')
 
-source=("http://www2.ati.com/drivers/legacy/amd-driver-installer-${pkgver}-legacy-x86.x86_64.zip"
+source=("http://www2.ati.com/drivers/legacy/amd-driver-installer-catalyst-${pkgver}-legacy-linux-x86.x86_64.zip"
         'ati_make.sh'
         'makefile_compat.patch'
-	'fglrx_supported')
+	'fglrx_supported'
+	'3.5-do_mmap.patch'
+	'arch-fglrx-3.7.patch')
 
-md5sums=('36d5a91d60673b26705e9ac2df952daf'
+md5sums=('c07fd1332abe4c742a9a0d0e0d0a90de'
          '660396540b0ceaff71d6155c986734de'
          '3e1b82bd69774ea808da69c983d6a43b'
-         '8bd182de340d6ed8b2dfcedfd3e5a389')
+         '9adef6e20662d5e486e15bc5ec40751f'
+         '83b8d2063458cc9e8b6679567b280e36'
+         'ff60c162b46e21e9810a722718023451')
 
 build() {
 
@@ -32,17 +36,10 @@ build() {
 
 
     msg "Unpacking archive ..."
-    /bin/sh ./amd-driver-installer-${pkgver}-legacy-x86.x86_64.run --extract archive_files
+    /bin/sh ./amd-driver-installer-catalyst-${pkgver}-legacy-linux-x86.x86_64.run --extract archive_files
 
-
-    if [ "${CARCH}" = "x86_64" ]; then
 	BUILDARCH=x86_64
 	_archdir=x86_64
-    fi
-    if [ "${CARCH}" = "i686" ]; then
-	BUILDARCH=i386
-	_archdir=x86
-    fi
 
     cd "${srcdir}/archive_files/"
 
@@ -51,6 +48,9 @@ build() {
     # makefile patch to choose arch_compat_alloc_user_space or older compat_alloc_user_space
     # works only in combination with ati_make.sh script
     patch -p1 -i ../makefile_compat.patch 
+    # kernel fixes
+    patch -p1 -i ../3.5-do_mmap.patch
+    patch -p1 -i ../arch-fglrx-3.7.patch
 
     cd "${srcdir}/archive_files/common/lib/modules/fglrx/build_mod"
     cp "${srcdir}/archive_files/arch/${_archdir}/lib/modules/fglrx/build_mod/libfglrx_ip.a" . 
@@ -67,8 +67,8 @@ build() {
 package_catalyst-legacy() {
     pkgdesc="AMD/ATI Catalyst drivers for linux. fglrx kernel module only"
     screenshot="http://linuxtation3.files.wordpress.com/2007/03/pantallazo.jpg"
-    depends=('linux>=3.4' 'linux<3.5' 'catalyst-legacy-utils')
-    conflicts=('catalyst-test' 'nvidia' 'xf86-video-ati' 'xf86-video-radeonhd' 'ati-dri' 'catalyst')
+    depends=('linux>=3.7' 'linux<3.8' 'catalyst-legacy-utils')
+    conflicts=('catalyst-test' 'nvidia' 'xf86-video-ati' 'xf86-video-radeonhd' 'catalyst')
     install=catalyst.install
 
     # here we are checking kernel's extramodules dir
@@ -101,7 +101,7 @@ package_catalyst-legacy() {
 
 package_chd-catalyst-legacy() {
     pkgdesc="CHD ids for catalyst $pkgver"
-    arch=('any')
+    arch=('x86_64')
 
     cd "${srcdir}/archive_files/common/lib/modules/fglrx/build_mod/"
 

@@ -4,16 +4,16 @@
 # maintainer abveritas@chakra-project.org
 
 pkgname=libshout
-pkgver=2.3.0
+pkgver=2.3.1
 pkgrel=3
 pkgdesc="Library for accessing a shoutcast/icecast server"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 depends=('libvorbis' 'libtheora' 'speex')
 url="http://www.icecast.org/"
-options=('!libtool' 'force')
+options=('!libtool')
 license=('LGPL')
-source=(http://downloads.xiph.org/releases/${pkgname}/${pkgname}-${pkgver}.tar.gz)
-md5sums=('976a5979505f3de4026ae7fffb10754b')
+source=("http://downloads.xiph.org/releases/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+md5sums=('11765b2592e7ea623ccd93d3f8df172c')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"

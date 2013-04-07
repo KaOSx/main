@@ -4,12 +4,9 @@
 # maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
 # maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
 
-# include global config
-source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
-
 _pkgname=ubuntu-font-family
 pkgname=ttf-ubuntu-font
-pkgver=0.71.2
+pkgver=0.80
 pkgrel=1
 pkgdesc="The default TTF font family used by Ubuntu."
 arch=('any')
@@ -17,13 +14,14 @@ license=('custom:ubuntu-font-licence-1.0')
 url="http://font.ubuntu.com/"
 depends=('fontconfig' 'xorg-font-utils')
 source=("http://font.ubuntu.com/download/${_pkgname}-${pkgver}.zip")
-install="fc-cache.install"
-md5sums=('5be61a17e940a0aa9a98bf468b1e4e90')
+install=$pkgname.install
+sha256sums=('107170099bbc3beae8602b97a5c423525d363106c3c24f787d43e09811298e4c')
 
 package() {
   cd "${srcdir}/${_pkgname}-${pkgver}"
 
-  install -m0644 -D LICENCE.txt "${pkgdir}/usr/share/${pkgname}/LICENSE"
-  install -d "${pkgdir}/usr/share/fonts/TTF"
-  cp -r "${srcdir}/${_pkgname}-${pkgver}" "${pkgdir}/usr/share/fonts/TTF/${pkgname}"
+  install -dm755 "${pkgdir}/usr/share/fonts/TTF"
+  install -m0644 Ubuntu-{L,R,B,C}*.ttf "${pkgdir}/usr/share/fonts/TTF/"
+  install -m0644 UbuntuMono-*.ttf "${pkgdir}/usr/share/fonts/TTF/"
+  install -Dm0644 LICENCE.txt "${pkgdir}/usr/share/${pkgname}/LICENSE"
 }

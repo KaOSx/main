@@ -1,12 +1,10 @@
 #
-# Chakra Packages for Chakra, part of chakra-project.org
+# Platform Packages for Chakra, part of chakra-project.org
 #
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
 
 pkgname=qca
 pkgver=2.0.3
-pkgrel=1
+pkgrel=2
 pkgdesc="Qt Cryptographic Architecture"
 arch=('i686' 'x86_64')
 url="http://delta.affinix.com/qca/"
@@ -17,6 +15,7 @@ md5sums=('fc15bd4da22b8096c51fcfe52d2fa309')
 
 build() {
 	cd $srcdir/${pkgname}-${pkgver}
+	sed -i '217s@set@this->set@' src/botantools/botan/botan/secmem.h &&
 	./configure \
 		--prefix=/usr \
 		--disable-tests \

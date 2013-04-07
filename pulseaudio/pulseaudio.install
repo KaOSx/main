@@ -1,21 +1,8 @@
-post_install() {
-  cat << MES
->>> Make sure to install pulseaudio-alsa to configure ALSA for PulseAudio.
-
->>> You might want to blacklist the "snd-pcm-oss" module in /etc/rc.conf to
-    keep ALSA's OSS emulation from interfering with ALSA or PulseAudio. 
-MES
-}
-
 post_upgrade() {
-  # Delete old users and groups
-  # System-wide daemon not supported anymore
-  getent passwd pulse &>/dev/null && usr/sbin/userdel -f pulse
-  getent group pulse-access &>/dev/null && usr/sbin/groupdel pulse-access
-  getent group pulse-rt &>/dev/null && usr/sbin/groupdel pulse-rt
-  getent group pulse &>/dev/null && usr/sbin/groupdel pulse
-
-  true
+  echo -e '\e[31;46m WARNING \e[0m'
+  echo 'If you have per-user copies of configuration files in ~/.pulse/,'
+  echo 'make sure you keep them in sync with changes to the packaged files in /etc/pulse/.'
+  echo 'Otherwise, PulseAudio may refuse to start due to configuration errors.'
+  echo 'Deleting ~/.pulse/ is another option to avoid these configuration errors.'
 }
 
-# vim:set ts=2 sw=2 et:

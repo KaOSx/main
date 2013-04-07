@@ -9,12 +9,12 @@ source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
 
 pkgname=('mesa-demos')
 pkgver=8.0.1
-pkgrel=2.1
-arch=(i686 x86_64)
+pkgrel=3
+arch=('x86_64')
 pkgdesc="Mesa demos and tools"
 url="http://mesa3d.sourceforge.net"
 license=('custom')
-depends=('glew>=1.5.6')
+depends=('glew>=1.9' 'freeglut')
 conflicts=('mesa<7.9')
 source=(ftp://ftp.freedesktop.org/pub/mesa/demos/${pkgver}/mesa-demos-${pkgver}.tar.bz2
         LICENSE)
@@ -23,6 +23,7 @@ md5sums=('320c2a4b6edc6faba35d9cb1e2a30bf4'
 
 build() {
   cd "${srcdir}/mesa-demos-${pkgver}"
+  export LDFLAGS="-lX11 -lGL -lm"
   ./configure --prefix=/usr
   make
 }

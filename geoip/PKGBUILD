@@ -1,25 +1,40 @@
-# $Id: PKGBUILD 40078 2009-05-27 06:04:17Z juergen $
-# Maintainer: Dan McGee <dan@archlinux.org>
-# Contributor: Manolis Tzanidakis <manolis@archlinux.org>
+# Maintainer: Michael Haesel <michael[dot]haesel[at]gmail[dot]com>
 
 pkgname=geoip
-pkgver=1.4.6
+pkgver=1.4.8
 pkgrel=1
 pkgdesc="Non-DNS IP-to-country resolver C library & utils"
 arch=(i686 x86_64)
 license=('GPL')
 url="http://www.maxmind.com/app/c"
-depends=('zlib')
+depends=('zlib' 'geoip-database')
 backup=(etc/geoip/GeoIP.conf)
-options=('!libtool')
+options=('!libtool' '!emptydirs')
 source=(http://www.maxmind.com/download/geoip/api/c/GeoIP-${pkgver}.tar.gz)
-md5sums=('cb14b1beeb40631a12676b11ca0c309a')
+sha256sums=('cf0f6b2bac1153e34d6ef55ee3851479b347d2b5c191fda8ff6a51fab5291ff4')
 
 build() {
-  cd ${startdir}/src/GeoIP-${pkgver}
-  ./configure --prefix=/usr --mandir=/usr/share/man --sysconfdir=/etc/geoip
-  make || return 1
-  make check || return 1
-  make DESTDIR=${startdir}/pkg install
+  cd "${srcdir}/GeoIP-${pkgver}"
+
+  autoreconf -vi
+  ./configure --prefix=/usr \
+              --mandir=/usr/share/man \
+              --sysconfdir=/etc/geoip
+
+  make
+}
+
+check() {
+  cd "${srcdir}/GeoIP-${pkgver}"
+
+  make check
+}
+
+package() {
+  cd "${startdir}/src/GeoIP-${pkgver}"
+
+  make DESTDIR="${pkgdir}" install
+
+  rm "${pkgdir}/usr/share/GeoIP/GeoIP.dat"
 }
 

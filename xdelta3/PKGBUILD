@@ -1,37 +1,34 @@
+# Platform Packages for Chakra, part of chakra-project.org
 #
-# Core Packages for Chakra, part of chakra-project.org
-#
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+# maintainer: Neophytos Kolokotronis
+# Contributors from Arch: Allan McRae <allan@archlinux.org>
+#                          Eduard "bekks" Warkentin <eduard.warkentin@gmail.com>
+#                         Henning Garus <henning.garus@gmail.com>
 
 pkgname=xdelta3
-pkgver=3.0z
+pkgver=3.0.4
 pkgrel=1
 pkgdesc="A diff utility which works with binary files"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://xdelta.org/"
 license=('GPL')
 makedepends=('python2')
 optdepends=('python2: for python modules')
-source=(http://xdelta.googlecode.com/files/xdelta$pkgver.tar.gz
-        xdelta3-makefile.patch)
-md5sums=('2b5b3c33438cff581ce5c12d66c28b6c'
-         '378e9a735d92fb2fc695ed9ce2fad2d5')
+source=("http://xdelta.googlecode.com/files/$pkgname-$pkgver.tar.gz")
+md5sums=('c04f7fd9da45741a0095438cfe527b89')
 
 build() {
-  cd $srcdir/xdelta$pkgver
-  patch -Np1 -i $srcdir/xdelta3-makefile.patch
-  sed -i "/PYVER = /s/2.6/2.7/" Makefile
-  
-  make xdelta3
-  make xdelta3module.so
+  cd "$srcdir/$pkgname-$pkgver"
+    ./configure --prefix=/usr
+  make
+}
+
+check() {
+  cd "$srcdir/$pkgname-$pkgver"
+  ./xdelta3 test
 }
 
 package() {
-  cd $srcdir/xdelta$pkgver
-  
-  install -D xdelta3 $pkgdir/usr/bin/xdelta3
-  python2 ./setup.py install --root ${pkgdir}
-  install -m644 {xdelta3.py,xdelta3module.so} ${pkgdir}/usr/lib/python2.7/site-packages
+  cd "$srcdir/$pkgname-$pkgver"
+  make DESTDIR="${pkgdir}" install
 }
-

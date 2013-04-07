@@ -1,38 +1,12 @@
-post_install() 
-{
-    DKMS=`which dkms 2>/dev/null`
-
-    echo ">>> DKMS: Module add, build, and install "
-    _pkgver="${1%-*}"
-
-    $DKMS add  -m nvidia -v "$_pkgver"
-    $DKMS build -m nvidia -v "$_pkgver"
-    $DKMS install -m nvidia -v "$_pkgver"
-
-    /sbin/depmod -a
-}
-
-pre_upgrade() 
-{
+pre_upgrade() {
     pre_remove
 }
 
-post_upgrade() 
-{
-    post_install
+post_upgrade() {
+    echo ">>> Make sure to run sudo systemctl enable dkms.service, to have "
+    echo ">>> this kernel module rebuild on each kernel update "
 }
 
-pre_remove() 
-{
-    DKMS=`which dkms 2>/dev/null`
-    echo ">>> DKMS: Module uninstall "
-
-    _pkgver="${1%-*}"
-    $DKMS remove -m nvidia -v $_pkgver --all
-
-}
-
-post_remove()
-{
-    /sbin/depmod -a
+pre_remove() {
+    dkms remove -m nvidia -v 313.18 --all
 }

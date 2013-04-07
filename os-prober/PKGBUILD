@@ -4,17 +4,17 @@
 # maintainer abveritas[at]chakra-project[dot]org>
 
 pkgname=os-prober
-pkgver=1.54
-pkgrel=3
+pkgver=1.57
+pkgrel=2
 pkgdesc="Utility to detect other operating systems on a set of drives."
 url="http://joey.kitenet.net/code/os-prober/"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 license=('GPL')
 depends=('sh')
 makedepends=('gcc' 'sed')
 source=("ftp://ftp.us.debian.org/debian/pool/main/o/${pkgname}/${pkgname}_${pkgver}.tar.gz"
         'btrfs-detection.patch')
-md5sums=('9a7e8e5adeeaff4913f727fa2c95490a'
+md5sums=('67548b17d55cc32c1168bb5a4061170d'
          'c12d27b045ee044eb57d971ff74aaefe')
 
 build() {
@@ -25,7 +25,7 @@ build() {
 
   # adjust lib dir to allow detection of 64-bit distros
   sed -e "s:/lib/ld\*\.so\*:/lib*/ld*.so*:g" \
-      -i os-probes/mounted/common/90linux-distro || return 1
+      -i os-probes/mounted/common/90linux-distro 
 
   make
 }
@@ -52,7 +52,7 @@ package() {
 
   install -D -m755 os-probes/mounted/powerpc/20macosx \
                    "${pkgdir}/usr/lib/os-probes/mounted/20macosx"
-
+                   
   # create a empty labels file, will be used by os-prober at execution
   install -d "${pkgdir}/var/lib/os-prober"
   touch "${pkgdir}/var/lib/os-prober/labels"

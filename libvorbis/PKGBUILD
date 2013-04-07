@@ -5,14 +5,14 @@
 
 pkgname=libvorbis
 pkgver=1.3.3
-pkgrel=3
+pkgrel=6
 pkgdesc="Vorbis codec library"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 license=('custom')
 url="http://www.xiph.org/ogg/vorbis/"
 depends=('libogg')
 options=('!libtool')
-source=(http://downloads.xiph.org/releases/vorbis/${pkgname}-${pkgver}.tar.gz)
+source=("http://downloads.xiph.org/releases/vorbis/${pkgname}-${pkgver}.tar.gz")
 md5sums=('6b1a36f0d72332fae5130688e65efe1f')
 
 build() {

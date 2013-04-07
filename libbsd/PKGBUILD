@@ -1,33 +1,25 @@
-#
-# Chakra Packages for Chakra, part of chakra-project.org
-#
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+# Platform Packages for Chakra, part of chakra-project.org
+# maintainer: Neophytos Kolokotronis <tetris4@gmail.com>
 
 pkgname=libbsd
-pkgver=0.2.0
+pkgver=0.4.2
 pkgrel=1
 pkgdesc="Provides useful functions commonly found on BSD systems like strlcpy()"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://libbsd.freedesktop.org"
 license=('custom')
 depends=('glibc')
-source=(http://libbsd.freedesktop.org/releases/$pkgname-$pkgver.tar.gz
-        LICENSE)
-md5sums=('c6d5413e76949b14e4bf13258e63d355'
-         '5bd59ff83a7df4873b034478ffae62a6')
+source=(http://libbsd.freedesktop.org/releases/$pkgname-$pkgver.tar.gz)
+md5sums=('591fc9de4ca22f78cf87a94e648a92f4')
 
 build() {
   cd $srcdir/$pkgname-$pkgver
-
-  make exec_prefix=/usr includedir=/usr/include/libbsd || return 1
+ ./configure --prefix=/usr
+  make
 }
 
 package() {
   cd $srcdir/$pkgname-$pkgver
-
-  make exec_prefix=/usr includedir=/usr/include/libbsd DESTDIR=$pkgdir install
-  install -D -m644 $srcdir/LICENSE $pkgdir/usr/share/licenses/$pkgname/LICENSE
+  make DESTDIR=$pkgdir install
+  install -D -m644 COPYING $pkgdir/usr/share/licenses/$pkgname/LICENSE
 }
-
-# vim:set ts=2 sw=2 et:

@@ -1,30 +1,26 @@
 #
 # Chakra Packages for Chakra, part of chakra-project.org
 #
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
-
-# include global config
-source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+# maintainer abveritas@chakra-project.org
 
 pkgname=('ntrack')
-pkgver=13
+pkgver=16
 pkgrel=2
 pkgdesc="A networked sound server"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://launchpad.net/ntrack/"
 license=('GPL' 'LGPL')
 depends=('python' 'qt' 'libnl' 'gcc-libs')
-options=(emptydirs !libtool !makeflags !strip)
+options=('!emptydirs' '!libtool')
 source=("http://launchpad.net/ntrack/main/0${pkgver}/+download/${pkgname}-0${pkgver}.tar.gz"
-        "http://bazaar.launchpad.net/~ubuntu-branches/ubuntu/natty/ntrack/natty-updates/download/head:/deadloopfix.patch-20110517171152-h0hhhprka057brkm-1/dead-loop-fix.patch")
-md5sums=('90596b924a108f8b4eea52239ba64369'
-         'bb313e3ba7163519a86fd72cadf46452')
+        'libnl3.patch')
+md5sums=('21691dac43460a6791cba3decbc68242'
+         '0a1f6b7f9a01c323e81d6da95cad93cd')
 
 build() {
   cd "${srcdir}/${pkgname}-0${pkgver}"
 
-  patch -Np1 -i "${srcdir}/dead-loop-fix.patch"
+  patch -p1 -i "${srcdir}/libnl3.patch"
 
   ./configure --libexecdir=/usr/lib \
 	      --localstatedir=/var \

@@ -1,18 +1,19 @@
+#
 # Platform Packages for Chakra, part of chakra-project.org
 #
-# contributor (x86_64): Giuseppe Calà <jiveaxe@gmail.com>
+# maintainer abveritas@chakra-project.org
 
 pkgbase=atkmm
 pkgname=(atkmm atkmm-docs)
 pkgver=2.22.6
-pkgrel=1
-arch=('i686' 'x86_64')
+pkgrel=2
+arch=('x86_64')
 makedepends=('atk' 'glibmm' 'glibmm-docs' 'libsigc++2.0')
 license=('LGPL')
 options=('!libtool' '!emptydirs')
 url="http://gtkmm.sourceforge.net/"
-source=(http://ftp.gnome.org/pub/GNOME/sources/${pkgbase}/2.22/${pkgbase}-${pkgver}.tar.xz)
-sha256sums=('0a74295106b9e3ae552b169eb4e098b8b825c4115045b9d5134a6c79a238aeb6')
+source=("http://ftp.gnome.org/pub/GNOME/sources/${pkgbase}/2.22/${pkgbase}-${pkgver}.tar.xz")
+md5sums=('30f8e34c92b14f17ba3029937b2f218a')
 
 build() {
   cd "${srcdir}/${pkgbase}-${pkgver}"

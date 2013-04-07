@@ -1,21 +1,28 @@
-# $Id: PKGBUILD 72496 2010-03-17 04:36:17Z eric $
-# Maintainer: Eric Belanger <eric@archlinux.org>
+# Maintainer: Neophytos Kolokotronis <tetris4@gmail.com>
+# Contributor from Arch: Eric Belanger <eric@archlinux.org>
 
 pkgname=mutagen
-pkgver=1.19
-pkgrel=2
+pkgver=1.20
+pkgrel=1
 pkgdesc="An audio metadata tag reader and writer implemented in pure python"
 arch=('any')
 url="http://code.google.com/p/mutagen/"
 license=('GPL2')
 depends=('python2')
-source=(http://mutagen.googlecode.com/files/${pkgname}-${pkgver}.tar.gz)
-md5sums=('68132949f3cd68491b87ff880ded4680')
-sha1sums=('a2e25d311999ffe76c1e7f85510cf5c04d24638d')
+source=(http://mutagen.googlecode.com/files/${pkgname}-${pkgver}.tar.gz{,.sig})
+sha1sums=('7a8c1918160e6b5d24acd146f57c08ed942a2fa8'
+          '046c2d763cd59f86ee920a6dc28a32f86b555473')
 
-build() {
+check() {
   cd "${srcdir}/${pkgname}-${pkgver}"
-  python2 setup.py install --root="${pkgdir}" || return 1
-  install -d "${pkgdir}/usr/bin" || return 1
-  install -m755 tools/* "${pkgdir}/usr/bin" || return 1
+  python2 setup.py test
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  python2 setup.py install --root="${pkgdir}"
+  install -d "${pkgdir}/usr/bin"
+  install -m755 tools/* "${pkgdir}/usr/bin"
+  sed -i 's|^#!.*/usr/bin/env.*python|#!/usr/bin/env python2|' "${pkgdir}"/usr/bin/* \
+    "${pkgdir}/usr/lib/python2.7/site-packages/mutagen/__init__.py"
 }

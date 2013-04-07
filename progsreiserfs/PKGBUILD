@@ -6,28 +6,37 @@
 
 pkgname=progsreiserfs
 pkgver=0.3.0.5
-pkgrel=6
+pkgrel=7
 pkgdesc="library for accessing and manipulating reiserfs partitions"
-arch=(i686 x86_64)
+arch=('i686' 'x86_64')
 url="http://www.namesys.com"
 license=('GPL')
 depends=('e2fsprogs')
 options=('!libtool')
-source=(#ftp://ftp.namesys.com/pub/libreiserfs/${pkgname}-${pkgver}.tar.gz
-	ftp://ftp.archlinux.org/other/progsreiserfs/${pkgname}-${pkgver}.tar.gz
-	)
-md5sums=('d822579bbd4a29a1be5e4490869d9bee')
+source=("ftp://ftp.archlinux.org/other/${pkgname}/${pkgname}-${pkgver}.tar.gz"
+        'fix-underquoted-definition.patch')
+md5sums=('d822579bbd4a29a1be5e4490869d9bee'
+         '0ff24db039edbcc574f59075340b003a')
 
-build()        {
-        cd ${srcdir}/${pkgname}-${pkgver}
-        ./configure --prefix=/usr --mandir=/usr/share/man 
-        make
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+
+  patch -Np1 -i "${srcdir}/fix-underquoted-definition.patch"
+
+  ./configure --prefix=/usr \
+              --mandir=/usr/share/man
+
+  make
 }
+
 package() {
-        cd ${srcdir}/${pkgname}-${pkgver} 
-        make DESTDIR=${pkgdir} install
-        # only provide lib and includes files
-        # https://bugs.archlinux.org/task/22255
-        rm -r ${pkgdir}/usr/sbin
-	rm -r ${pkgdir}/usr/share/man/
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  make install DESTDIR="${pkgdir}"
+
+  # only provide lib and includes files
+  # https://bugs.archlinux.org/task/22255
+  rm -r "${pkgdir}/usr/sbin"
+	rm -r "${pkgdir}/usr/share/man"
 }
+
+# vim:set ts=2 sw=2 et:

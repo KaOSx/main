@@ -6,23 +6,17 @@
 pkgbase=nvidia-utils
 pkgname=('nvidia-utils' 'opencl-nvidia' 'libcl' 'nvidia-settings')
 # Edit chakra-hardware-detection/hooks/hwdetect_7_graphics on version jump from 3xx.xx
-pkgver=304.32
+pkgver=313.26
 pkgrel=1
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://www.nvidia.com/"
 license=('custom')
 options=('!strip')
 
-[ "$CARCH" = 'i686' ] && {
-  ARCH='x86'
-  _pkg="NVIDIA-Linux-${ARCH}-${pkgver}"
-  md5sums=('b7f908ea08218df08db06026215ec419')
-}
-
 [ "$CARCH" = "x86_64" ] && {
   ARCH='x86_64'
   _pkg="NVIDIA-Linux-${ARCH}-${pkgver}-no-compat32"
-  md5sums=('780561a808dffbfc74be84547733f30f')
+  md5sums=('2d35124fa5a4b009f170fe893b5d07e3')
 }
 
 source=("ftp://download.nvidia.com/XFree86/Linux-${ARCH}/${pkgver}/${_pkg}.run"
@@ -33,10 +27,10 @@ md5sums=("${md5sums[@]}"
 create_links() {
   # create soname links
   while read -d '' _lib; do
-    _soname="$(dirname "${_lib}")/$(readelf -d "${_lib}" | sed -nr 's/.*Library soname: \[(.*)\].*/\1/p')"
-    [ -e "${_soname}" ] || ln -s "$(basename "${_lib}")" "${_soname}"
-    [ -e "${_soname/.[0-9]*/}" ] || ln -s "$(basename "${_soname}")" "${_soname/.[0-9]*/}"
-  done < <(find "${pkgdir}" -type f -name '*.so*' -print0)
+        _soname="$(dirname "${_lib}")/$(LC_ALL=C readelf -d "${_lib}" | sed -nr 's/.*Library soname: \[(.*)\].*/\1/p')"
+        [[ -e "${_soname}" ]] || ln -s "$(basename "${_lib}")" "${_soname}"
+        [[ -e "${_soname/.[0-9]*/}" ]] || ln -s "$(basename "${_soname}")" "${_soname/.[0-9]*/}"
+    done < <(find "${pkgdir}" -type f -name '*.so*' -print0)
 }
 
 build() {
@@ -46,7 +40,7 @@ build() {
 
 package_libcl() {
   pkgdesc="OpenCL library and ICD loader from NVIDIA"
-  pkgver=1.1.9.3
+  pkgver=1.1.9.8
 
   cd "${srcdir}/${_pkg}"
 
@@ -65,9 +59,7 @@ package_opencl-nvidia() {
   # OpenCL
   install -D -m644 nvidia.icd "${pkgdir}/etc/OpenCL/vendors/nvidia.icd"
   install -D -m755 "libnvidia-compiler.so.${pkgver}" "${pkgdir}/usr/lib/libnvidia-compiler.so.${pkgver}"
-  # CUDA
-  install -D -m755 "libcuda.so.${pkgver}" "${pkgdir}/usr/lib/libcuda.so.${pkgver}"
-  install -D -m755 "libnvcuvid.so.${pkgver}" "${pkgdir}/usr/lib/libnvcuvid.so.${pkgver}"
+  install -D -m755 "libnvidia-opencl.so.${pkgver}" "${pkgdir}/usr/lib/libnvidia-opencl.so.${pkgver}"
 
   create_links
 }
@@ -92,9 +84,6 @@ package_nvidia-utils() {
   install -D -m755 "libGL.so.${pkgver}" "${pkgdir}/usr/lib/libGL.so.${pkgver}"
   # OpenGL core library
   install -D -m755 "libnvidia-glcore.so.${pkgver}" "${pkgdir}/usr/lib/libnvidia-glcore.so.${pkgver}"
-  # XvMC
-  install -D -m644 libXvMCNVIDIA.a "${pkgdir}/usr/lib/libXvMCNVIDIA.a"
-  install -D -m755 "libXvMCNVIDIA.so.${pkgver}" "${pkgdir}/usr/lib/libXvMCNVIDIA.so.${pkgver}"
   # VDPAU
   install -D -m755 "libvdpau_nvidia.so.${pkgver}" "${pkgdir}/usr/lib/vdpau/libvdpau_nvidia.so.${pkgver}"
   # nvidia-tls library
@@ -102,7 +91,13 @@ package_nvidia-utils() {
   install -D -m755 "libnvidia-cfg.so.${pkgver}" "${pkgdir}/usr/lib/libnvidia-cfg.so.${pkgver}"
 
   install -D -m755 "libnvidia-ml.so.${pkgver}" "${pkgdir}/usr/lib/libnvidia-ml.so.${pkgver}"
-
+  # CUDA
+  install -D -m755 "libcuda.so.${pkgver}" "${pkgdir}/usr/lib/libcuda.so.${pkgver}"
+  install -D -m755 "libnvcuvid.so.${pkgver}" "${pkgdir}/usr/lib/libnvcuvid.so.${pkgver}"
+  install -D -m755 nvidia-cuda-proxy-server "${pkgdir}/usr/bin/nvidia-cuda-proxy-server"
+  install -D -m644 nvidia-cuda-proxy-control.1.gz "${pkgdir}/usr/share/man/man1/nvidia-cuda-proxy-control.1.gz"
+  # DEBUG
+  install -D -m755 nvidia-debugdump "${pkgdir}/usr/bin/nvidia-debugdump"
   # nvidia-xconfig
   install -D -m755 nvidia-xconfig "${pkgdir}/usr/bin/nvidia-xconfig"
   install -D -m644 nvidia-xconfig.1.gz "${pkgdir}/usr/share/man/man1/nvidia-xconfig.1.gz"
@@ -123,7 +118,7 @@ package_nvidia-utils() {
 
 package_nvidia-settings() {
   pkgdesc="Gtk Graphical User Interface for nVidia"
-  depends=('nvidia-utils' 'gtk2')
+  depends=('nvidia-utils' 'gtk2' 'pangox-compat')
 
   cd "${srcdir}/${_pkg}"
 

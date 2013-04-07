@@ -1,3 +1,8 @@
+post_install() {
+  echo "Enabling systemd service"
+         systemctl enable NetworkManager.service
+}
+
 post_upgrade() {
   (( $(vercmp 0.8.3 $2) > 0 )) && cat <<MSG
 ATTENTION:
@@ -6,4 +11,12 @@ ATTENTION:
   any custom settings to the new config file.
 MSG
   true
+  
+  echo "Enabling systemd service"
+         systemctl enable NetworkManager.service
+}
+
+pre_remove() {
+   echo "Disabling systemd service"
+         systemctl disable NetworkManager.service
 }

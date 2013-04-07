@@ -1,27 +1,27 @@
 #
 # Platform Packages for Chakra, part of chakra-project.org
 #
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+# maintainer abveritas[at]chakra-project[dot]org>
 
 pkgname=raptor
-pkgver=2.0.4
+pkgver=2.0.8
 pkgrel=1
 pkgdesc="A C library that parses RDF/XML/N-Triples into RDF triples"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://librdf.org/raptor"
-depends=('libxml2>=2.7.8' 'curl>=7.21.6' 'zlib>=1.2.5' 'libxslt>=1.1.26')
+depends=('libxml2' 'curl' 'zlib>=1.2.5' 'libxslt' 'icu')
 license=('LGPL')
 options=('!libtool')
 source=("http://librdf.org/dist/source/raptor2-$pkgver.tar.gz")
-md5sums=('0373efb8d85dc872bc7bb5b1c69299fb')
+md5sums=('ac60858b875aab8fa7917f21a1237aa9')
 
 build() {
   cd "${srcdir}"/raptor2-${pkgver}
 
   ./configure --prefix=/usr \
     --disable-static \
-    --with-yajl=no
+    --with-yajl=no \
+    --with-icu-config=/usr/bin/icu-config
   make
 }
 

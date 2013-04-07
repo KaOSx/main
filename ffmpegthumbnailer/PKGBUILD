@@ -4,16 +4,16 @@
 # maintainer abveritas@chakra-project.org
 
 pkgname=ffmpegthumbnailer
-pkgver=2.0.7
+pkgver=2.0.8
 pkgrel=4
 pkgdesc="Lightweight video thumbnailer that can be used by file managers."
 url="http://code.google.com/p/ffmpegthumbnailer/"
 license=('GPL2')
-arch=('i686' 'x86_64')
-depends=('ffmpeg' 'libjpeg' 'libpng')
-source=(http://ffmpegthumbnailer.googlecode.com/files/$pkgname-$pkgver.tar.gz)
+arch=('x86_64')
+depends=('ffmpeg' 'libjpeg-turbo' 'libpng')
+source=("http://ffmpegthumbnailer.googlecode.com/files/$pkgname-$pkgver.tar.gz")
 options=(!libtool)
-sha1sums=('b8f5371aa995fefd1fb75e306e8cd76e8c9f3a73')
+sha1sums=('2c54ca16efd953f46547e22799cfc40bd9c24533')
 
 build() {
 	cd "${srcdir}/${pkgname}-${pkgver}"

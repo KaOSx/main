@@ -1,11 +1,9 @@
 #
 # Platform Packages for Chakra, part of chakra-project.org
 #
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
 
 pkgname=libxi
-pkgver=1.4.3
+pkgver=1.6.1
 pkgrel=1
 pkgdesc="X11 Input extension library"
 arch=('i686' 'x86_64')
@@ -15,7 +13,8 @@ makedepends=('pkgconfig' 'xorg-util-macros')
 options=(!libtool)
 license=('custom')
 source=(${url}/releases/individual/lib/libXi-${pkgver}.tar.bz2)
-sha1sums=('c66cfdee74e8d169a7992b5f257395e653ca761b')
+sha1sums=('4b53b41fdaa3acc86606c696c68d5eed11454612')
+
 
 build() {
   cd "${srcdir}/libXi-${pkgver}"

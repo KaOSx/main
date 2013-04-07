@@ -1,29 +1,29 @@
 #
 # Packages for Chakra, part of chakra-project.org
 #
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+# maintainer abveritas[at]chakra-project[dot]org>
 
 pkgname=cyrus-sasl
 pkgver=2.1.23
-pkgrel=10
+pkgrel=12
 pkgdesc="SASL authentication daemon"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 license=('custom')
 url="http://asg.web.cmu.edu/cyrus/download/"
-depends=('pam>=1.0.1-2' 'krb5' 'libldap' 'cyrus-sasl-plugins>=2.1.22-7' 'db>=4.7')
-replaces=(cyrus-sasl-mysql cyrus-sasl-pgsql)
-conflicts=(cyrus-sasl-mysql cyrus-sasl-pgsql)
+depends=('pam' 'krb5' 'libldap' 'cyrus-sasl-plugins' 'db')
 backup=(etc/conf.d/saslauthd)
-source=(ftp://ftp.andrew.cmu.edu/pub/cyrus-mail/${pkgname}-${pkgver}.tar.gz
-	saslauthd
-	saslauthd.conf.d) 
+source=("ftp://ftp.andrew.cmu.edu/pub/cyrus-mail/${pkgname}-${pkgver}.tar.gz"
+	'saslauthd.service'
+	'saslauthd.conf.d'
+	'tmpfiles.conf') 
 md5sums=('2eb0e48106f0e9cd8001e654f267ecbc'
-         '697dfb51206c398bc976ce9f4cffe72d'
-         '96d8a2f6189501f8044838e04d5cae7f')
+         '3499dcd610ad1ad58e0faffde2aa7a23'
+         '96d8a2f6189501f8044838e04d5cae7f'
+         '45bb0192d2f188066240b9a66ee6365f')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
+  
   ./configure --prefix=/usr --mandir=/usr/share/man \
     --with-ldap=/usr --with-saslauthd=/var/run/saslauthd
   cd saslauthd
@@ -33,8 +33,9 @@ build() {
   install -m755 testsaslauthd "${pkgdir}/usr/sbin" 
 
   install -dm766 "${pkgdir}/var/run/saslauthd"
-  install -Dm755 "${srcdir}/saslauthd" "${pkgdir}/etc/rc.d/saslauthd"
   install -Dm644 "${srcdir}/saslauthd.conf.d" "${pkgdir}/etc/conf.d/saslauthd"
+  install -Dm644 "${srcdir}/saslauthd.service" "${pkgdir}/usr/lib/systemd/system/saslauthd.service"
+  install -Dm644 "${srcdir}/tmpfiles.conf" "${pkgdir}/usr/lib/tmpfiles.d/saslauthd.conf"
 
   install -Dm644 ../COPYING "${pkgdir}/usr/share/licenses/cyrus-sasl/COPYING"
 }

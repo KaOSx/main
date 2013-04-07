@@ -5,15 +5,18 @@
 
 pkgname=python-numpy
 pkgver=1.6.2
-pkgrel=1
+pkgrel=2
 pkgdesc="Scientific tools for Python"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 license=('custom')
 url="http://numpy.scipy.org/"
 depends=('blas' 'lapack' 'python2')
-makedepends=('python-nose' 'gcc-fortran')
-optdepends=('python-nose: test suite')
-source=(http://downloads.sourceforge.net/numpy/numpy-${pkgver}.tar.gz)
+makedepends=('python2-nose' 'gcc-fortran')
+optdepends=('python2-nose: test suite')
+provides=('python-numeric')
+conflicts=('python-numeric')
+replaces=('python-numeric')
+source=("http://downloads.sourceforge.net/numpy/numpy-${pkgver}.tar.gz")
 md5sums=('95ed6c9dcc94af1fc1642ea2a33c1bba')
 
 build() {

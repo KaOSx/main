@@ -1,25 +1,19 @@
 # Platform Packages for Chakra, part of chakra-project.org
-#
 # Maintainer: Neophytos Kolokotronis <tetris4@gmail.com>
-# Contributor: FigoDaPaura <ffigoDaPaura>
-
-# include global config
-source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+# Contributions from AUR: https://aur.archlinux.org/packages/virtualgl/
 
 pkgname=virtualgl
-_srcname=VirtualGL
-pkgver=2.2.90
-_srcbranch='2.2.90 (2.3beta1)'
-pkgrel=4
+pkgver=2.3.2
+pkgrel=1
 pkgdesc="Redirects 3D commands from an OpenGL application onto a server-side 3D graphics card."
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://virtualgl.org"
 license=('LGPL')
 depends=('mesa' 'libxv' 'libjpeg-turbo')
 makedepends=('cmake')
 provides=('virtualgl')
-source=("http://downloads.sourceforge.net/project/virtualgl/VirtualGL/$_srcbranch/VirtualGL-$pkgver.tar.gz")
-md5sums=('4153b8ffd8d6087c6ec945f687eae332')
+source=("http://downloads.sourceforge.net/project/virtualgl/VirtualGL/$pkgver/VirtualGL-$pkgver.tar.gz")
+sha1sums=('f042862c21ceaba57c6e1f0ec72adb4f838725e9')
 
 build() {
   cd "$srcdir/VirtualGL-$pkgver"

@@ -1,13 +1,11 @@
 # Platform Packages for Chakra, part of chakra-project.org
 #
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
 
 pkgname=xbitmaps
 pkgver=1.1.1
 pkgrel=1
 pkgdesc="X.org Bitmap files"
-arch=('any')
+arch=('x86_64')
 url="http://xorg.freedesktop.org/"
 license=('custom')
 makedepends=('xorg-util-macros')
@@ -18,6 +16,10 @@ build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
   ./configure --prefix=/usr
   make
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
   make DESTDIR="${pkgdir}" install
   install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
   install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"

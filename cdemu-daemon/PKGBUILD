@@ -4,46 +4,47 @@
 # maintainer abveritas@chakra-project.org
 
 pkgname=cdemu-daemon
-pkgver=1.5.0
+# See https://groups.google.com/forum/?hl=en&fromgroups#!topic/chakra-devel/7F1Ze0zChnM
+pkgver=2.0.0
 pkgrel=1
 pkgdesc="CD/DVD-ROM device emulator daemon"
-arch=('i686' 'x86_64')
-backup=('etc/conf.d/cdemud'
-	'etc/dbus-1/system.d/cdemud-dbus.conf')
+arch=('x86_64')
+backup=('etc/conf.d/cdemu-daemon'
+	'etc/dbus-1/system.d/cdemu-daemon-dbus.conf')
 url="http://cdemu.sourceforge.net/"
 license=('GPL')
 depends=('glib2' 'dbus' 'dbus-glib' 'libdaemon' 'vhba-module' "libmirage=$pkgver" 'libao')
+makedepends=('cmake')
 optdepends=('alsa-lib: to enable the ALSA audio driver'
             'pulseaudio: to enable the PA audio driver')
+install=$pkgname.install
 source=("http://downloads.sourceforge.net/cdemu/$pkgname-$pkgver.tar.bz2"
-        'cdemud.conf'
-        'cdemud.rc'
-        'cdemu-daemon.service')
-md5sums=('5ba780caa26d855942512b5b3c22405a'
-         '2edf08fc6c773813084ca7ba4e07221f'
-         'cbc0937ef4ac50db3ce5cdbbe2e17a3b'
-         'be9a8f50da3f42129c0a0e3dea8cd56c')
+        'cdemu-daemon.conf')
+md5sums=('8f6ad3a9f758938e1572046bccc30417'
+         '109d1eb46eb2943e511715611907d1e9')
 
 build() {
-  cd $srcdir/$pkgname-$pkgver
-  ./configure --prefix=/usr \
-              --sysconfdir=/etc \
-              --libexecdir=/usr/lib/$pkgname
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  
+  mkdir build
+  cd build
+  cmake .. \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_SYSCONFDIR=/etc \
+    -DCMAKE_INSTALL_LIBEXECDIR=lib/$pkgname  
   make
 }
 
 package() {
-  cd $srcdir/$pkgname-$pkgver
-  make DESTDIR=$pkgdir install
-  install -Dm644 "$srcdir/cdemud.conf" "$pkgdir/etc/conf.d/cdemud"
-  install -Dm755 "$srcdir/cdemud.rc" "$pkgdir/etc/rc.d/cdemud"
-  install -d "$pkgdir/usr/lib/modules-load.d"
-  echo "vhba" > "$pkgdir/usr/lib/modules-load.d/cdemu.conf"
-
-  # for systemd
-  install -Dm644 "$srcdir/cdemu-daemon.service" \
-    "$pkgdir/usr/lib/systemd/system/cdemu-daemon.service"
-  echo "SystemdService=cdemu-daemon.service" >> \
-    "$pkgdir/usr/share/dbus-1/system-services/net.sf.cdemu.CDEMUD_Daemon.service"
-
+  cd "${srcdir}/${pkgname}-${pkgver}/build"
+  make DESTDIR="${pkgdir}" install
+  
+  install -d "${pkgdir}/usr/lib/modules-load.d"
+  echo "vhba" > "${pkgdir}/usr/lib/modules-load.d/cdemu.conf"
+  
+  cd ../..
+  
+  # Chakra settings
+  install -Dm644 "${srcdir}/cdemu-daemon.conf" "${pkgdir}/etc/conf.d/cdemu-daemon"
 }

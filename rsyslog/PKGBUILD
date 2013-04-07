@@ -5,7 +5,7 @@
 # maintainer: Mateusz Krawczuk <willingmagic[at]gmail[dot]com>
 
 pkgname=rsyslog
-pkgver=6.2.2
+pkgver=6.4.2
 pkgrel=1
 pkgdesc="An enhanced multi-threaded syslogd with a focus on security and reliability"
 url="http://www.rsyslog.com/"
@@ -25,20 +25,18 @@ source=("http://www.rsyslog.com/files/download/rsyslog/rsyslog-$pkgver.tar.gz"
         'rsyslog'
         'rsyslog.logrotate'
         'rsyslog.conf.d')
-
-md5sums=('b797b8222d6ea4d5dfa007efe8aafa7f'
-         '64e6a66d045cc5546f9bab29b6c5658d'
-         'f4e158a7c7376c543f6060b06af6c382'
-         '39a822977949bb36cc12c74c05b993ba')
+sha256sums=('ca92434c87f7390a5ea7ce6aea94c6cb05474bf778ec5d8ebc0b9a50f321749c'
+            'ca6ab11c33f6b11236a9d04f8277d101384b003d09612349734ba1a66e8d0d9f'
+            '12f400a97a2a46ccbc068fa5b9bafc70bddefa30b10dcc41df5c04c9c82f851d'
+            '64fccf3ea60fce51749d154b5ac91134d0bc7d062ef83ca8ced96f7b7dd43522')
 
 build() {
-  cd ${srcdir}/${pkgname}-${pkgver}
+  cd "${srcdir}/${pkgname}-${pkgver}"
   ./configure --prefix=/usr \
               --enable-mysql \
               --enable-pgsql \
               --enable-mail \
               --enable-imfile \
-              --enable-imtemplate \
               --enable-snmp \
               --enable-gnutls \
               --enable-inet \
@@ -47,17 +45,17 @@ build() {
   make
 }
 package() {
-  cd ${srcdir}/${pkgname}-${pkgver}
-  make install DESTDIR=${pkgdir}
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  make install DESTDIR="${pkgdir}"
 
   # Install Daemons and Configuration Files
-  install -D -m755 ${srcdir}/${pkgname} ${pkgdir}/etc/rc.d/${pkgname}d
-  install -D -m644 ${pkgname}.conf ${pkgdir}/etc/${pkgname}.conf
-  install -D -m644 $srcdir/${pkgname}.logrotate ${pkgdir}/etc/logrotate.d/${pkgname}
-  install -D -m644 ${srcdir}/${pkgname}.conf.d ${pkgdir}/etc/conf.d/${pkgname}
+  install -D -m0755 "${srcdir}/${pkgname}" "${pkgdir}/etc/rc.d/${pkgname}d"
+  install -D -m0644 "${pkgname}.conf" "${pkgdir}/etc/${pkgname}.conf"
+  install -D -m0644 "$srcdir/${pkgname}.logrotate" "${pkgdir}/etc/logrotate.d/${pkgname}"
+  install -D -m0644 "${srcdir}/${pkgname}.conf.d" "${pkgdir}/etc/conf.d/${pkgname}"
   
   # fix location of systemctl and remove start precondition
-  sed -i "$pkgdir/usr/lib/systemd/system/rsyslog.service" \
+  sed -i "${pkgdir}/usr/lib/systemd/system/rsyslog.service" \
     -e 's@/bin/systemctl@/usr&@' \
     -e '/^ExecStartPre/d'
 }

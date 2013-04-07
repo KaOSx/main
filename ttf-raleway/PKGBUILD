@@ -2,7 +2,7 @@
 
 pkgname=ttf-raleway
 pkgver=1
-pkgrel=2
+pkgrel=3
 pkgdesc="A sans-serif typeface"
 arch=('any')
 url="http://theleagueofmoveabletype.com/raleway/"
@@ -14,5 +14,5 @@ md5sums=('d61ac36dbb0efd1ffaddc78ab9a082f8')
 
 package() {
     install -d ${pkgdir}/usr/share/fonts/TTF/
-    install -m644 ${srcdir}/raleway-family-v2/*.ttf ${pkgdir}/usr/share/fonts/TTF/
+    install -m644 ${srcdir}/raleway-family-v2/Raleway-Thin.ttf ${pkgdir}/usr/share/fonts/TTF/
 }

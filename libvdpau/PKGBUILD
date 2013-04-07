@@ -1,29 +1,32 @@
 #
 # Chakra Packages for Chakra, part of chakra-project.org
 #
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+# maintainer abveritas[at]chakra-project[dot]org>
 
 pkgname=libvdpau
-pkgver=0.4.1
+pkgver=0.5
 pkgrel=1
 pkgdesc="Nvidia VDPAU library"
-arch=(i686 x86_64)
+arch=('x86_64')
 url=http://cgit.freedesktop.org/~aplattner/libvdpau
-depends=('gcc-libs>=4.4.2')
-conflicts=('nvidia-utils<190.42-2')
-options=('!libtool' 'force')
-license=('custom')
-source=(http://people.freedesktop.org/~aplattner/vdpau/${pkgname}-${pkgver}.tar.gz)
+depends=('gcc-libs')
 makedepends=('libx11')
-sha256sums=('061b6f86c64912f79851bfefcac4f77b401e9a939dbbb7b1ec795bc7d5aaf59b')
+conflicts=('nvidia-utils<190.42-2')
+options=('!libtool')
+license=('custom')
+source=("http://people.freedesktop.org/~aplattner/vdpau/${pkgname}-${pkgver}.tar.gz")
+sha1sums=('1b18b8f75eea52740af84881313d860ad5c27d0b')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
-  ./configure --prefix=/usr || return 1
-  make || return 1
-  make DESTDIR="${pkgdir}" install || return 1
+  ./configure --prefix=/usr 
+  make
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  make DESTDIR="${pkgdir}" install 
 
   install -d -m755 "${pkgdir}/usr/share/licenses/${pkgname}"
-  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/" || return 1
+  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/" 
 }

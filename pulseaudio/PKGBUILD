@@ -3,107 +3,62 @@
 #
 # maintainer abveritas@chakra-project.org
 
-pkgbase=pulseaudio
-pkgname=('pulseaudio' 'libpulse')
+pkgname=pulseaudio
 pkgdesc="A featureful, general-purpose sound server"
-pkgver=2.1
-pkgrel=1
-arch=('i686' 'x86_64')
+pkgver=3.0
+pkgrel=4
+arch=('x86_64')
 url="http://pulseaudio.org/"
 license=('GPL' 'LGPL')
-makedepends=('libasyncns' 'libcap' 'attr' 'libxtst' 'libsm' 'libsamplerate'
-             'libltdl' 'rtkit' 'speex' 'tdb' 'dbus-core' 'xcb-util'
-             'avahi' 'bluez' 'intltool' 'jack' 'lirc-utils' 'openssl' 'fftw' 'orc'
-             'json-c' 'webrtc-audio-processing' 'systemd>=188')
-options=(!emptydirs !libtool !makeflags)
-source=("http://freedesktop.org/software/${pkgbase}/releases/${pkgbase}-${pkgver}.tar.xz"
-        "${pkgbase}.xinit")
-sha256sums=('ef6b347bf47abfb98080795f1583018ac959b4aeb4df916b879f9e1eaba0ca7f'
-            '4beae1ce931ae4bde3d2faca25735cc62a6eac182323f257dd9e703d499f7aa8')
-
-build() {
-  cd "${srcdir}/${pkgbase}-${pkgver}"
-
-  ./configure --prefix=/usr \
-              --sysconfdir=/etc \
-              --libexecdir=/usr/lib \
-              --localstatedir=/var \
-              --with-udev-rules-dir=/usr/lib/udev/rules.d \
-              --with-database=tdb \
-              --disable-hal \
-              --disable-tcpwrap \
-              --disable-rpath \
-              --disable-default-build-tests
-
-  make
-}
-
-package_libpulse() {
-pkgdesc="${pkgdesc} (client library)"
 depends=('dbus-core' 'xcb-util' 'libasyncns' 'libcap' 'libxtst' 'libsm'
-         'libsamplerate' 'json-c')
-optdepends=('alsa-plugins: ALSA support'
-            'avahi: zeroconf support')
-backup=(etc/pulse/client.conf)
-
-  mv "${srcdir}/libpulse"/* "${pkgdir}"
-}
-
-package_pulseaudio() {
-depends=("libpulse=${pkgver}-${pkgrel}" 'rtkit' 'libltdl' 'speex' 'tdb'
-         'fftw' 'orc' 'webrtc-audio-processing' 'systemd')
+         'libsamplerate' 'json-c' 'rtkit' 'libltdl' 'speex' 'tdb'
+         'fftw' 'orc' 'webrtc-audio-processing' 'systemd>=195' 'sbc')
+makedepends=('attr' 'libltdl' 'avahi' 'bluez' 'intltool' 'jack' 'lirc-utils' 'openssl'
+             'libsndfile' 'pkgconfig' 'sh')
 optdepends=('avahi: zeroconf support'
             'bluez: bluetooth support'
-            'gconf: configuration through gconf (paprefs)'
             'jack: jack support'
             'lirc-utils: infra-red support'
             'openssl: RAOP support')
 backup=(etc/pulse/{daemon.conf,default.pa,system.pa})
 install="pulseaudio.install"
+provides=("libpulse=${pkgver}")
+replaces=('libpulse')
+conflicts=('libpulse')
+options=(!emptydirs !libtool !makeflags)
+#source=("http://freedesktop.org/software/${pkgname}/releases/${pkgname}-${pkgver}.tar.xz")
+source=("http://chakra.sourceforge.net/sources/${pkgname}/${pkgname}.tar.xz")
+md5sums=('10049e1fa0577be38ba04d8bab159fd1')
 
-  cd "${srcdir}/${pkgbase}-${pkgver}"
+build() {
+  cd "${srcdir}/${pkgname}"
+
+  ./autogen.sh --prefix=/usr \
+               --sysconfdir=/etc \
+               --libexecdir=/usr/lib \
+               --localstatedir=/var \
+               --with-udev-rules-dir=/usr/lib/udev/rules.d \
+               --with-database=tdb \
+               --disable-rpath \
+               --disable-default-build-tests
+
+  make
+}
+
+package() {
+  cd "${srcdir}/${pkgname}"
   make DESTDIR="${pkgdir}" install
-
-  # Lower resample quality, saves CPU
-  sed -e '/resample-method/iresample-method=speex-float-0' \
-      -i "${pkgdir}/etc/pulse/daemon.conf"
 
   # Disable cork-request module, can result in e.g. media players unpausing
   # when there's a Skype call incoming
   sed -e 's|/usr/bin/pactl load-module module-x11-cork-request|#&|' \
       -i "${pkgdir}/usr/bin/start-pulseaudio-x11"
 
-  # Make some modules optional
-  sed -e $'/load-module module-console-kit/{i.nofail\n;a.fail\n;}' \
-      -e '/load-module module-jackdbus-detect/s/^/#/' \
-      -i "${pkgdir}/etc/pulse/default.pa"
-
   # Python fix
   sed -i '1s:python$:&2:' "${pkgdir}/usr/bin/qpaeq"
 
-  install -D -m755 "${srcdir}/pulseaudio.xinit" "${pkgdir}/etc/X11/xinit/xinitrc.d/pulseaudio"
-
   rm "${pkgdir}/etc/dbus-1/system.d/pulseaudio-system.conf"
-
-### Split libpulse
-
-  mkdir -p "$srcdir"/libpulse/{etc/pulse,usr/{lib/pulseaudio,share/man/man5}}
-
-  mv {"${pkgdir}","${srcdir}/libpulse"}/etc/pulse/client.conf
-
-  mv "${pkgdir}"/usr/lib/libpulse{,-simple,-mainloop-glib}.so* \
-     "${srcdir}/libpulse/usr/lib"
-
-  mv "$pkgdir"/usr/lib/pulseaudio/libpulsedsp.so \
-     "$pkgdir"/usr/lib/pulseaudio/libpulsecommon-*.so \
-     "$srcdir/libpulse/usr/lib/pulseaudio"
-
-  mv {"$pkgdir","$srcdir/libpulse"}/usr/lib/cmake
-  mv {"${pkgdir}","${srcdir}/libpulse"}/usr/lib/pkgconfig
-  mv {"${pkgdir}","${srcdir}/libpulse"}/usr/include
-
-  mv {"${pkgdir}","${srcdir}/libpulse"}/usr/share/man/man5/pulse-client.conf.5
-  mv {"${pkgdir}","${srcdir}/libpulse"}/usr/share/vala
+  rm "${pkgdir}/etc/xdg/autostart/pulseaudio.desktop"
+  rm "${pkgdir}/etc/xdg/autostart/pulseaudio-kde.desktop"
+  
 }
-
-# vim:set ts=2 sw=2 et:

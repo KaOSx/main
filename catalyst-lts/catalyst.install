@@ -20,8 +20,5 @@ post_upgrade() {
 post_remove() {
     EXTRAMODULES=extramodules-3.0-lts
     depmod $(cat /lib/modules/$EXTRAMODULES/version)
-    echo "----------------------------------------------------------------"
-    echo "Don't forget to remove fglrx from MODULES array of /etc/rc.conf"
-    echo "----------------------------------------------------------------"
 }
 

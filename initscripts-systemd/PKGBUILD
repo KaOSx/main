@@ -1,12 +1,12 @@
 pkgname=initscripts-systemd
 pkgver=20120412
-pkgrel=2
+pkgrel=1
 pkgdesc="Chakra GNU/Linux specific systemd initialization/bootup scripts for systemd"
 arch=('any')
 url="https://gitorious.org/chakra/chakra-initscripts-systemd"
 license=('GPL')
 groups=('systemd')
-depends=('systemd')
+depends=('systemd' 'initscripts')
 install=initscripts-systemd.install
 source=('Makefile' 'README' 'chakra-daemons.target' 'chakra-modules-load.service' 'rc-local-shutdown.service'
         'chakra-daemons' 'chakra-modules-load' 'initscripts-systemd.install' 'rc-local.service')

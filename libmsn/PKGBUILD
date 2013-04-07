@@ -1,26 +1,27 @@
 #
-# Chakra Packages for Chakra, part of chakra-project.org
+# Platform Packages for Chakra, part of chakra-project.org
 #
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
-
-# include global config
-source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+# maintainer abveritas[at]chakra-project[dot]org
 
 pkgname=libmsn
-pkgver=4.2
+pkgver=4.2.1
 pkgrel=1
 pkgdesc="A reusable, open-source, fully documented library for connecting to Microsoft's MSN"
 url="http://sourceforge.net/projects/libmsn/"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 license=('GPL2')
 depends=('openssl')
 makedepends=('cmake')
-source=("http://downloads.sourceforge.net/$pkgname/$pkgname-$pkgver.tar.bz2")
-md5sums=('8887196051d2960a9279a5e00c8416a4')
+source=("http://downloads.sourceforge.net/$pkgname/$pkgname-$pkgver.tar.bz2"
+        'gcc47.diff')
+md5sums=('38e46e589720eefd71f92b6b76993bf0'
+         'c1eb66d32fdcc69de2a6ec0756514081')
 
 build() {
   cd "${srcdir}"
+  
+  patch -p1 -i "${srcdir}/gcc47.diff"
+  
   mkdir build
   cd build
   cmake ../${pkgname}-${pkgver} \
@@ -34,7 +35,3 @@ package() {
   make "DESTDIR=${pkgdir}" install
 }
 
-package() {
-  cd ${srcdir}/build
-  make DESTDIR=${pkgdir} install
-}

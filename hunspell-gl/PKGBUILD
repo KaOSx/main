@@ -1,7 +1,7 @@
-# Maintainer: Adrián Chaves Fernández (Gallaecio) <adriyetichaves@gmail.com>, 2009-2010.
+# Maintainer: Adrián Chaves Fernández (Gallaecio) <adriyetichaves@gmail.com>
 
 pkgname=hunspell-gl
-pkgver=2.9b
+pkgver=20120819
 pkgrel=1
 pkgdesc="Galician spellchecker for Hunspell"
 arch=('any')
@@ -14,16 +14,26 @@ md5sums=('209fd16dd47e5cb334fa39563d23c79f')
 lang="gl"
 lang2="gl_ES"
 
-build() {
-
-  # Creation of necesary folders...
-  mkdir -p $pkgdir/usr/share/myspell
-  mkdir -p $pkgdir/usr/share/enchant
+package() {
+  install -d $pkgdir/usr/share/{hunspell,myspell/dicts,enchant}
     
-  # Fix so Enchant can use dictionaries for Hunspell too.  
-  ln -s /usr/share/myspell $pkgdir/usr/share/enchant/hunspell
-  
   # Actual installation...
-  install -D -m644 "$srcdir/$lang2.aff"	"$pkgdir/usr/share/myspell/$lang.aff" || return 1
-  install -D -m644 "$srcdir/$lang2.dic"	"$pkgdir/usr/share/myspell/$lang.dic" || return 1
+  install -Dm644 "$srcdir/$lang2.aff"	"$pkgdir/usr/share/hunspell/$lang.aff"
+  install -Dm644 "$srcdir/$lang2.dic"	"$pkgdir/usr/share/hunspell/$lang.dic"
+
+  # Locale aliases.
+  pushd $pkgdir/usr/share/hunspell
+    ln -s $lang.aff $lang2.aff
+    ln -s $lang.dic $lang2.dic
+  popd
+
+  # Myspell aliases.
+  pushd ${pkgdir}/usr/share/myspell/dicts
+    for file in ${pkgdir}/usr/share/hunspell/*; do
+      ln -sv /usr/share/hunspell/$(basename ${file}) .
+    done
+  popd
+
+  # Enchant aliases.
+  ln -s /usr/share/hunspell $pkgdir/usr/share/enchant/hunspell
 }

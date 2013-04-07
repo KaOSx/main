@@ -1,17 +1,13 @@
 #
 # Platform Packages for Chakra, part of chakra-project.org
 #
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
-
-# include global config
-source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+# maintainer abveritas[at]chakra-project[dot]org>
 
 pkgname=maxima
-pkgver=5.25.1
+pkgver=5.28.0
 pkgrel=2
 pkgdesc="Maxima - a sophisticated Computer Algebra System."
-arch=('i686' 'x86_64')
+arch=('x86_64')
 license=('GPL')
 url="http://maxima.sourceforge.net"
 depends=('sbcl' 'texinfo' 'sh')
@@ -24,7 +20,7 @@ options=('!makeflags' '!zipman') # don't zip info pages or they won't work insid
 install="maxima.install"
 source=("http://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}-${pkgver}.tar.gz"
         "${pkgname}.desktop")
-md5sums=('f2a7399e53eadc38e0bedb843d5d7055'
+md5sums=('de12d5081194325f0336abef263e7263'
          '24aa81126fbb8b726854e5a80d4c2415')
 
 build() {
@@ -44,13 +40,11 @@ package() {
   cd "${srcdir}/${pkgname}-${pkgver}"
 
   make DESTDIR="${pkgdir}" install
-  
+
   # install some freedesktop.org compatibility
   install -Dm644 "${srcdir}/${pkgname}.desktop" "${pkgdir}/usr/share/applications/${pkgname}.desktop"
-  
+
   # make sure we have a nice icon for the desktop file at the right place ;)
   install -d "${pkgdir}/usr/share/pixmaps"
   ln -s /usr/share/maxima/${pkgver}/xmaxima/maxima-new.png "${pkgdir}/usr/share/pixmaps/${pkgname}.png"
 }
-
-# vim:set ts=2 sw=2 et:

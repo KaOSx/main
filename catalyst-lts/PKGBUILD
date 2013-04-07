@@ -1,28 +1,29 @@
 #
 # Chakra Packages for Chakra, part of chakra-project.org
 #
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+# maintainer abveritas[at]chakra-project[dot]org>
 
-_kernver="3.0.35-2-lts"
+_kernver="3.0.62-1-lts"
 
 pkgname=catalyst-lts
-pkgver=12.6
-pkgrel=1
+pkgver=13.1
+pkgrel=2
+_amdver=9.01
 pkgdesc="AMD/ATI Catalyst drivers for linux. fglrx kernel module only"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://www.ati.amd.com"
 screenshot="http://linuxtation3.files.wordpress.com/2007/03/pantallazo.jpg"
 license=('custom')
 depends=('linux-lts>=3.0' 'linux-lts<3.3' 'catalyst-utils')
 makedepends=('gcc-libs' 'gcc>4.0.0' 'make' 'linux-lts-headers')
-conflicts=('catalyst-test' 'nvidia' 'xf86-video-ati' 'xf86-video-radeonhd' 'ati-dri')
+conflicts=('catalyst-test' 'nvidia' 'xf86-video-ati' 'xf86-video-radeonhd')
 install=catalyst.install
 
-source=(http://www2.ati.com/drivers/linux/amd-driver-installer-${pkgver/./-}-x86.x86_64.run
+source=(http://www2.ati.com/drivers/linux/amd-driver-installer-catalyst-${pkgver}-linux-x86.x86_64.zip
         ati_make.sh
         makefile_compat.patch)
 
-md5sums=('6bd4f0875202390ed7122696db29be77'
+md5sums=('b5d9de9b000448dcc2a9eb74a889116d'
          '660396540b0ceaff71d6155c986734de'
          '3e1b82bd69774ea808da69c983d6a43b')
 
@@ -35,17 +36,10 @@ build() {
 
 
     msg "Unpacking archive ..."
-    /bin/sh ./amd-driver-installer-${pkgver/./-}-x86.x86_64.run --extract archive_files
+    /bin/sh ./amd-driver-installer-catalyst-${pkgver}-linux-x86.x86_64.run --extract archive_files
 
-
-    if [ "${CARCH}" = "x86_64" ]; then
 	BUILDARCH=x86_64
 	_archdir=x86_64
-    fi
-    if [ "${CARCH}" = "i686" ]; then
-	BUILDARCH=i386
-	_archdir=x86
-    fi
 
     cd "${srcdir}/archive_files/"
 

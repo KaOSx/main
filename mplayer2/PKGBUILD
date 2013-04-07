@@ -4,31 +4,39 @@
 # maintainer abveritas@chakra-project.org
  
 pkgname=mplayer2
-pkgver=2.0.4
+pkgver=20121207
 pkgrel=2
 pkgdesc="A movie player"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 license=('GPL')
 url="http://www.mplayer2.org/"
-depends=('desktop-file-utils' 'ttf-dejavu' 'enca' 'libxss' 'a52dec' 'libvpx' 'lirc-utils' 'x264' 'libmng' 'libdca' 'aalib' 'lame' 'fontconfig'  'libgl'
-    'libxinerama' 'libvdpau' 'libpulse' 'smbclient' 'xvidcore' 'opencore-amr' 'jack' 'cdparanoia' 'libmad' 'sdl' 'libtheora' 'libcaca' 'libxxf86dga' 'fribidi'
-    'libjpeg' 'faac' 'faad2' 'libxvmc' 'schroedinger' 'mpg123' 'libass' 'libxxf86vm' 'libbluray' 'ffmpeg')    
-makedepends=('live-media' 'mesa' 'unzip' 'yasm')
+depends=('desktop-file-utils' 'ttf-dejavu' 'enca' 'libxss' 'a52dec' 'libvpx' 'lirc-utils'
+         'x264' 'libmng' 'libdca' 'aalib' 'lame' 'fontconfig'  'libgl' 'libxinerama'
+         'libvdpau' 'libpulse' 'smbclient' 'xvidcore' 'opencore-amr' 'jack' 'cdparanoia'
+         'libmad' 'sdl' 'libtheora' 'libcaca' 'libxxf86dga' 'fribidi' 'libjpeg-turbo'
+         'faac' 'faad2' 'libxvmc' 'schroedinger' 'mpg123' 'libass' 'libxxf86vm' 'libbluray'
+         'ffmpeg' 'libbs2b' 'directfb' 'nas')    
+makedepends=('live-media' 'mesa' 'unzip' 'yasm' 'python3' 'docutils')
 categories=('multimedia')
 backup=('etc/mplayer/codecs.conf' 'etc/mplayer/input.conf')
 provides=('mplayer=99999')
 conflicts=('mplayer')
 source=("http://chakra-linux.org/sources/mplayer2/mplayer2-$pkgver.tar.xz")
-md5sums=('78e9cd71457d0f440426350f9267a7c0')
+sha1sums=('751334e473a95d23be9d92953568cfe8d7eac152')
 
 # create tarball: source PKGBUILD && mksource
 
 mksource() {
-  git clone git://git.mplayer2.org/mplayer2.git
+  echo "checkout ${pkgname}"
+  git clone git://git.${pkgname}.org/${pkgname}.git
+  echo "clean checkout"
+  rm -vRf mplayer2/.git
   pushd mplayer2
   popd
-  tar -cvJf mplayer2-${pkgver}.tar.xz mplayer2/*
-  md5sum mplayer2-${pkgver}.tar.xz
+  echo "pack checkout"
+  tar -cvJf ${pkgname}-${pkgver}.tar.xz mplayer2/*
+  echo -n "sha1sum: "
+  sha1sum ${pkgname}-${pkgver}.tar.xz
 }
 
 build() {
@@ -41,7 +49,6 @@ build() {
               --disable-openal \
               --disable-libdv \
               --disable-musepack \
-              --disable-mga \
               --language=all \
               --enable-translation \
               --confdir=/etc/mplayer

@@ -4,19 +4,16 @@
 # Maintainer: Daniele Cocca <jmc@chakra-project.org>
 # Original Arch Linux 'community' Maintainer: Jelle van der Waa <jelle vdwaa nl>
 
-# include global config
-source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
-
 pkgname=networkmanager-dispatcher-ntpd
 pkgver=1.0
-pkgrel=2
+pkgrel=5
 pkgdesc="Dispatcher script for ntpd."
 arch=(any)
 license=('BSD')
 url="http://www.gnome.org/projects/NetworkManager"
 depends=('networkmanager' 'ntp')
 source=("10-ntpd")
-md5sums=('634640886979278dc3a74dbae342d3e7')
+md5sums=('c5c3059c50498d6bb148444b8cf7c73d')
 
 package() {
   install -Dm700 "${srcdir}/10-ntpd" "${pkgdir}/etc/NetworkManager/dispatcher.d/10-ntpd"

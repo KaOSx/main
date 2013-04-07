@@ -1,34 +1,34 @@
 #
 # Platform Packages for Chakra, part of chakra-project.org
 #
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+# maintainer abveritas[at]chakra-project[dot]org>
 
 pkgname=xdg-utils
-pkgver=1.1.0rc1
+pkgver=1.1.0.1
+_gitver=050333e34e2fe7430ad2ead37e5a0420ac0c2a3e 
 pkgrel=1
 pkgdesc='Command line tools that assist applications with a variety of desktop integration tasks.'
 arch=('any')
 url='http://portland.freedesktop.org/'
 depends=('sh')
 makedepends=('docbook-xsl' 'lynx' 'xmlto')
-optdepends=('xorg-utils: needed if using Xfce')
-license=('custom')
-source=("http://portland.freedesktop.org/download/${pkgname}-${pkgver/rc1/-rc1}.tar.gz")
-md5sums=('fadf5e7a08e0526fc60dbe3e5b7ef8d6')
+license=('MIT')
+source=("http://cgit.freedesktop.org/xdg/xdg-utils/snapshot/xdg-utils-${_gitver}.tar.gz")
+md5sums=('eb6ddcae050ce3ecd2c8433e90f56247')
 
 build() {
-	cd ${srcdir}/${pkgname}-${pkgver/rc1/-rc1}
+	cd ${srcdir}/${pkgname}-${_gitver}
+	
 	./configure --prefix=/usr --mandir=/usr/share/man
-	make -C scripts
-	make
+	make scripts-clean -C scripts 
+	make man scripts -C scripts 
 }
 
 package() {
-	#cd ${srcdir}/${pkgname}-${pkgver}
-	cd ${srcdir}/${pkgname}-${pkgver/rc1/-rc1}
-	make DESTDIR=${pkgdir} install
-	install -D -m644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+	cd ${srcdir}/${pkgname}-${_gitver}
+	
+	make DESTDIR="${pkgdir}" install
+	install -D -m644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
 }
 
 _source() {

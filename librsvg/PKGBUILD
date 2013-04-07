@@ -1,26 +1,36 @@
-# $Id: PKGBUILD 79310 2010-05-02 17:40:37Z ibiru $
-# Maintainer: Jan de Groot <jgc@archlinux.org>
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer abveritas@chakra-project.org
 
 pkgname=librsvg
-pkgver=2.32.1
-pkgrel=2
+pkgver=2.36.4
+pkgrel=1
 pkgdesc="SAX-based renderer for SVG files into a GdkPixbuf"
-arch=(i686 x86_64)
+arch=('x86_64')
 license=('LGPL')
 depends=('gdk-pixbuf2' 'pango' 'libcroco')
-makedepends=('intltool')
+makedepends=('intltool' 'gobject-introspection')
 optdepends=('python: rsvg commandline utility')
 options=('!libtool')
 url="http://librsvg.sourceforge.net/"
-source=(http://ftp.gnome.org/pub/gnome/sources/${pkgname}/2.32/${pkgname}-${pkgver}.tar.bz2)
+source=("http://ftp.gnome.org/pub/gnome/sources/${pkgname}/2.36/${pkgname}-${pkgver}.tar.xz")
 install=librsvg.install
-sha256sums=('91b98051f352fab8a6257688d6b2fd665b4648ed66144861f2f853ccf876d334')
+sha256sums=('1021935204798f4f0ad3004a09b583668ea94a48593461b147fdcff68a18e6c2')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
-  ./configure --prefix=/usr --libexecdir=/usr/lib/${pkgname} \
-              --with-croco --disable-static \
-	      --with-svgz --disable-gtk-theme || return 1
-  make || return 1
-  make DESTDIR="${pkgdir}" install || return 1
+  
+  ./configure --prefix=/usr \
+              --libexecdir=/usr/lib/${pkgname} \
+              --with-croco \
+              --disable-static \
+	      --with-svgz \
+	      --disable-gtk-theme 
+  make 
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  
+  make DESTDIR="${pkgdir}" install 
 }

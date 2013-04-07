@@ -1,29 +1,28 @@
 #
-# Chakra Packages for Chakra, part of chakra-project.org
+# Platform Packages for Chakra, part of chakra-project.org
 #
 # maintainer abveritas@chakra-project.org
 
 pkgname=libimobiledevice
-pkgver=1.1.1
+pkgver=1.1.4
 pkgrel=1
 pkgdesc="Is a software library that talks the protocols to support iPhone and iPod Touch devices on Linux"
 url="http://libimobiledevice.org/"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 license=('GPL2' 'LGPL2.1')
 depends=('gnutls'  'glib2' 'libplist' 'usbmuxd' 'libgcrypt')
 makedepends=('swig' 'python2')
 options=('!libtool')
 source=(http://libimobiledevice.org/downloads/${pkgname}-${pkgver}.tar.bz2
-        swig-version-check.patch)
-md5sums=('cdc13037e822d9ac2e109536701d153a'
-         '8bb215e36fe0e08a72332c108c7842cc')
+        home-segfault.patch)
+md5sums=('3f28cbc6a2e30d34685049c0abde5183'
+         '7d9e56447b3975f945c753374a797dab')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
-  # SWIG version check is wrong (still not fixed upstream)
-  patch -p1 -i "$srcdir"/swig-version-check.patch
+  patch -p0 < "$srcdir/home-segfault.patch"
 
-  PYTHON=/usr/bin/python2 ./configure --prefix=/usr --libexecdir=/usr/lib/usbmuxd
+  PYTHON=/usr/bin/python2 ./configure --prefix=/usr
   make
 }
 

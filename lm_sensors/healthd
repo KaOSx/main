@@ -21,6 +21,13 @@ while [ $# -gt 0 ] ; do
 	esac
 done
 
+case "${ALARM_RESET}" in
+	yes) /usr/bin/sensors > /dev/null
+	;;
+        no) true
+	;;
+esac
+
 [ -n "${cmd}" ] && [ -n "$( which -- "${cmd%% *}" )" ] || \
 	[ -n "${addr}" ] || exit 1
 

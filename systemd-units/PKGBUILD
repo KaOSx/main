@@ -2,9 +2,9 @@
 
 pkgname=systemd-units
 pkgver=20120528
-pkgrel=3
+pkgrel=16
 pkgdesc="Chakra GNU/Linux specific Systemd unit files"
-arch=('any')
+arch=('x86_64')
 url="http://github.com/falconindy/systemd-arch-units"
 license=('MIT')
 depends=('systemd>=44')
@@ -36,6 +36,7 @@ package() {
   rm "$pkgdir"/usr/lib/systemd/system/udisks.service
   rm "$pkgdir"/usr/lib/systemd/system/dcron.service
   rm "$pkgdir"/usr/lib/systemd/system/dhcpcd@.service
+  rm "$pkgdir"/usr/lib/systemd/system/dhcpd@.service
   rm "$pkgdir"/usr/lib/systemd/system/dmraid.service
   rm "$pkgdir"/usr/lib/systemd/system/krb5*
   rm "$pkgdir"/usr/lib/systemd/system/lvm.service
@@ -45,4 +46,20 @@ package() {
   rm "$pkgdir"/usr/lib/tmpfiles.d/openssh.conf
   rm "$pkgdir"/usr/lib/systemd/system/wpa_supplicant.service
   rm "$pkgdir"/usr/lib/systemd/system/ufw.service
+  rm "$pkgdir"/usr/lib/systemd/system/kdm.service
+  rm "$pkgdir"/usr/lib/systemd/system/clamav-clamd.service
+  rm "$pkgdir"/usr/lib/systemd/system/clamav-freshclamd.service
+  rm "$pkgdir"/usr/lib/systemd/system/ddclient.service
+  rm "$pkgdir"/usr/lib/systemd/system/gdm.service
+  rm "$pkgdir"/usr/lib/systemd/system/network.service
+  rm "$pkgdir"/usr/lib/systemd/system/tor.service
+  rm "$pkgdir"/usr/lib/systemd/system/zram.service
+  rm "$pkgdir"/usr/lib/systemd/system/polkitd.service
+  rm "$pkgdir"/usr/lib/systemd/system/fancontrol.service
+  rm "$pkgdir"/usr/lib/systemd/system/nscd.service
+  rm "$pkgdir"/usr/lib/systemd/system/smartd.service
+  rm "$pkgdir"/usr/lib/systemd/system/openntpd.service
+  rm "$pkgdir"/usr/lib/systemd/system/gpsd.service
+  rm "$pkgdir"/usr/lib/systemd/system/gpsd.socket
+  rm "$pkgdir"/usr/lib/systemd/system/pdnsd.service
 }

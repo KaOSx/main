@@ -5,10 +5,10 @@
 
 pkgname=catalyst-legacy-utils
 # Edit chakra-hardware-detection/hooks/hwdetect_7_graphics on version jump from 1x.x
-pkgver=12.6
-pkgrel=2
+pkgver=13.1
+pkgrel=1
 pkgdesc="AMD/ATI Catalyst drivers utilities and libraries."
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://www.ati.amd.com"
 license=('custom')
 depends=('xorg-server>=1.11.0' 'xorg-server<1.13.0' 'netkit-bsd-finger' 'libxrandr' 'libsm' 'fontconfig' 'libxcursor' 'libxi' 'gcc-libs' 'libxinerama')
@@ -18,21 +18,21 @@ conflicts=('catalyst-test' 'nvidia-utils' 'libgl' 'catalystpxp-utils' 'catalyst-
 provides=('libgl' "libatical=${pkgver}" 'catalyst-utils-legacy')
 replaces=('catalyst-utils-legacy')
 install=${pkgname}.install
-
-source=("http://www2.ati.com/drivers/legacy/amd-driver-installer-${pkgver}-legacy-x86.x86_64.zip"
+      
+source=("http://www2.ati.com/drivers/legacy/amd-driver-installer-catalyst-${pkgver}-legacy-linux-x86.x86_64.zip"
         'catalyst.sh'
         'amdcccle.desktop'
         'atieventsd.sh'
         'signature')
 
-md5sums=('36d5a91d60673b26705e9ac2df952daf'
+md5sums=('c07fd1332abe4c742a9a0d0e0d0a90de'
          'bdafe749e046bfddee2d1c5e90eabd83'
          '4efa8414a8fe9eeb50da38b5522ef81d'
          'f729bf913613f49b0b9759c246058a87'
          '7df4e6c408d3191736f05706469e5caa')
 build() {
   ## Unpack archive
-    /bin/sh ./amd-driver-installer-${pkgver}-legacy-x86.x86_64.run --extract archive_files
+    /bin/sh ./amd-driver-installer-catalyst-${pkgver}-legacy-linux-x86.x86_64.run --extract archive_files
 }
 
 package() {
@@ -65,11 +65,7 @@ package() {
       install -m755 -d "${pkgdir}/usr/share/pixmaps"
 
     # X.org driver
-      if [ "${CARCH}" = "i686" ]; then
-	cd "${srcdir}/archive_files/xpic/usr/X11R6/lib/modules" 
-      elif [ "${CARCH}" = "x86_64" ]; then
-	cd "${srcdir}/archive_files/xpic_64a/usr/X11R6/lib64/modules" 
-      fi
+      cd "${srcdir}/archive_files/xpic_64a/usr/X11R6/lib64/modules" 
 
      # *.a added in 11.2, and removed in 11.3...
       #install -m644 *.a "${pkgdir}/usr/lib/xorg/modules/" 
@@ -82,13 +78,8 @@ package() {
       #install -m755 extensions/libdri.so "${pkgdir}/usr/lib/xorg/modules/extensions/libdri.ati" 
 
     # Controlcenter / libraries
-      if [ "${CARCH}" = "i686" ]; then
-	cd "${srcdir}/archive_files/arch/x86/usr" 
-	_lib=lib
-      elif [ "${CARCH}" = "x86_64" ]; then
 	cd "${srcdir}/archive_files/arch/x86_64/usr" 
 	_lib=lib64
-      fi
 
       install -m755 X11R6/bin/* "${pkgdir}/usr/bin/" 
       install -m755 sbin/* "${pkgdir}/usr/sbin/" 
@@ -160,6 +151,6 @@ package() {
       install -m644 "${srcdir}/archive_files/LICENSE.TXT" "${pkgdir}/usr/share/licenses/${pkgname}/" 
       
     # Signature file  
-      rm "${srcdir}/archive_files/common/etc/ati/signature"
-      install -m644 "${srcdir}/signature" "${pkgdir}/etc/ati/"
+    #  rm "${srcdir}/archive_files/common/etc/ati/signature"
+    #  install -m644 "${srcdir}/signature" "${pkgdir}/etc/ati/"
 }

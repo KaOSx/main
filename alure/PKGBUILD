@@ -1,33 +1,43 @@
 #
-# Chakra Apps for Chakra, part of chakra-project.org
+# Platform Packages for Chakra, part of chakra-project.org
 #
-# contributor (x86_64): Giuseppe Calà <jiveaxe@gmail.com>
-
-# include global config
-source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+# Maintainer: Adrian Chaves Fernandez (Gallaecio) <adriyetichaves@gmail.com>
 
 pkgname=alure
-pkgver=1.1
-pkgrel=3
+pkgver=1.2
+pkgrel=1
 pkgdesc="Utility library to help manage common tasks with OpenAL applications."
 arch=('i686' 'x86_64')
 url="http://kcat.strangesoft.net/alure.html"
-license=('LGPL')
+license=('MIT')
 depends=('openal')
-makedepends=('cmake' 'libsndfile' 'libvorbis' 'flac' 'mpg123' 'dumb' 'fluidsynth')
+makedepends=('cmake' 'libsndfile' 'libvorbis' 'flac' 'mpg123' 'fluidsynth')
 optdepends=('libsndfile: for uncompressed audio support'
             'libvorbis: for OGG Vorbis support'
             'flac: for FLAC support'
             'mpg123: for MPEG support'
-            'dumb: for IT, XM, S3M and MOD support'
             'fluidsynth: for SoundFont 2 support')
-source=(http://kcat.strangesoft.net/alure-releases/alure-${pkgver}.tar.bz2)
-md5sums=('a2f6934d3783c8478c460965a13e4e12')
+source=(http://kcat.strangesoft.net/alure-releases/alure-${pkgver}.tar.bz2
+        http://patch-tracker.debian.org/patch/series/dl/alure/1.2-6/fix-build-with-gcc-4.7.patch)
+md5sums=('3088aba074ad02d95ea51e705053b9f5'
+         '889f1d1bd871f15f7511f1308f1720e0')
 
 build() {
-  cd $startdir/src/$pkgname-$pkgver
+  cd $srcdir/$pkgname-$pkgver
 
-  cmake . -DCMAKE_INSTALL_PREFIX=/usr || return 1
-  make || return 1
-  make DESTDIR=$startdir/pkg install || return 1
+  # Patches.
+  patch -uN src/codec_fluidsynth.cpp $srcdir/fix-build-with-gcc-4.7.patch
+
+  cmake \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    .
+  make
+}
+
+package() {
+  cd $srcdir/$pkgname-$pkgver
+  make DESTDIR=$pkgdir install
+
+  # License.
+  install -Dm0644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/COPYING"
 } 

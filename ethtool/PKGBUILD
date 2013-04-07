@@ -5,19 +5,24 @@
 # maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
 
 pkgname=ethtool
-pkgver=6
+epoch=1
+pkgver=3.5
 pkgrel=1
-pkgdesc="gkernel ethtool"
+pkgdesc="Utility for controlling network drivers and hardware"
 arch=(i686 x86_64)
-url="http://sourceforge.net/projects/gkernel/"
+url="http://www.kernel.org/pub/software/network/ethtool/"
 license=('GPL')
 depends=(glibc)
-source=(http://downloads.sourceforge.net/sourceforge/gkernel/$pkgname-$pkgver.tar.gz)
-md5sums=('3b721ec27f17ebf320ba8c505cf66d9c')
+source=(http://www.kernel.org/pub/software/network/$pkgname/$pkgname-$pkgver.tar.xz)
+md5sums=('021b5785f65637a04d65c2d44d6c2250')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
   ./configure --prefix=/usr --mandir=/usr/share/man || return 1
   make || return 1
+}
+
+package() {
+  cd "$srcdir/$pkgname-$pkgver"
   make DESTDIR="${pkgdir}" install || return 1
 }

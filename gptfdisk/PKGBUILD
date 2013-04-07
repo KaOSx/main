@@ -4,18 +4,18 @@
 # maintainer abveritas@chakra-project.org
 
 pkgname=gptfdisk
-pkgver=0.8.4
+pkgver=0.8.6
 pkgrel=1
 pkgdesc="A text-mode partitioning tool that works on Globally Unique Identifier (GUID) Partition Table (GPT) disks"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://www.rodsbooks.com/gdisk/"
 license=('GPL2')
 depends=('gcc-libs' 'util-linux' 'popt' 'icu')
 provides=("gdisk=$pkgver")
 conflicts=('gdisk')
 replaces=('gdisk')
-source=(http://downloads.sourceforge.net/project/$pkgname/$pkgname/$pkgver/$pkgname-$pkgver.tar.gz)
-md5sums=('fe3bfc0bf067091cfc5f3c992f8e2d4f')
+source=("http://downloads.sourceforge.net/project/$pkgname/$pkgname/$pkgver/$pkgname-$pkgver.tar.gz")
+md5sums=('f5ec6647d3de43644ad7e99b34f74982')
 
 build() {
   cd "$srcdir/$pkgname-$pkgver"
@@ -26,8 +26,8 @@ build() {
 package () {
   cd "$srcdir/$pkgname-$pkgver"
 
-  install -d "$pkgdir"/{sbin,usr/share/{doc/gdisk,man/man8}}
-  install -t "$pkgdir/sbin" {,c,s}gdisk fixparts
+  install -d "$pkgdir"/usr/{bin,share/{doc/gdisk,man/man8}}
+  install -t "$pkgdir/usr/bin" {,c,s}gdisk fixparts
   install -m644 -t "$pkgdir/usr/share/man/man8" {{,c,s}gdisk,fixparts}.8
   install -m644 -t "$pkgdir/usr/share/doc/gdisk" README NEWS
 }

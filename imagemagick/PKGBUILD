@@ -4,42 +4,35 @@
 # maintainer abveritas@chakra-project.org
 
 pkgname=imagemagick
-pkgver=6.6.6.10
-pkgrel=2
+pkgver=6.8.0.3
+pkgrel=1
 pkgdesc="An image viewing/manipulation program"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://www.imagemagick.org/"
 license=('custom')
-depends=('libtool' 'lcms' 'lcms2' 'libxt' 'gcc-libs' 'bzip2' 'freetype2' 'fontconfig'
-	 'libxext' 'fftw' 'liblqr' 'libwmf' 'librsvg' 'libxml2' )
+depends=('libltdl' 'lcms' 'lcms2' 'libxt' 'gcc-libs' 'bzip2' 'freetype2' 'fontconfig'
+	 'libxext' 'fftw' 'liblqr' 'libwmf' 'librsvg' 'libxml2' 'perl' )
 makedepends=('ghostscript' 'openexr' 'jasper')
 optdepends=('ghostscript: for Ghostscript support' 
             'openexr: for OpenEXR support'  
             'jasper: for JPEG-2000 support')
 options=('!makeflags' '!docs')
-#source=(ftp://ftp.imagemagick.org/pub/ImageMagick/ImageMagick-${pkgver%.*}-${pkgver##*.}.tar.xz \
-source=(http://sourceforge.net/projects/imagemagick/files/old-sources/6.x/6.6/ImageMagick-6.6.6-10.tar.gz
-        libpng_mmx_patch_x86_64.patch 
-	perlmagick.rpath.patch)
-md5sums=('1eead645376210cfe473ebe89c4a1b89'
-	 '069980fc2590c02aed86420996259302'
-         'ff9974decbfe9846f8e347239d87e4eb')
+source=("http://sourceforge.net/projects/imagemagick/files/6.8.0-sources/ImageMagick-6.8.0-3.tar.xz"
+	'perlmagick.rpath.patch')
+md5sums=('3b985a05f95768767649820ab21e2060'
+	 'ff9974decbfe9846f8e347239d87e4eb')
 
 build() {
 	cd ${srcdir}/ImageMagick-${pkgver%.*}-${pkgver##*.}
 
-	if [ "${CARCH}" = 'x86_64' ]; then
-		patch -p1 < ../libpng_mmx_patch_x86_64.patch 
-	fi
-
-	patch -p0 < ../perlmagick.rpath.patch 
+	patch -p0 -i "${srcdir}/perlmagick.rpath.patch" 
 
 	./configure --prefix=/usr --with-modules --disable-static \
 	    --enable-openmp --with-x --with-wmf --with-openexr --with-xml \
 	    --with-gslib --with-gs-font-dir=/usr/share/fonts/Type1 \
 	    --with-perl --with-perl-options="INSTALLDIRS=vendor" \
 	    --without-gvc --without-djvu --without-autotrace --with-jp2 \
-	    --without-jbig --without-fpx --without-dps 
+	    --without-jbig --without-fpx --without-dps --without-fftw 
 	make 
 }
 

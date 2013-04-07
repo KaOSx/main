@@ -3,25 +3,21 @@
 #
 # maintainer abveritas@chakra-project.org
 
-_extramodules=extramodules-3.4-CHAKRA
+_extramodules=extramodules-3.7-CHAKRA
 _kver="$(cat /lib/modules/${_extramodules}/version)"
 
 pkgname=(nvidia-173xx chd-nvidia-173xx)
-pkgver=173.14.35
-pkgrel=4
-arch=('i686' 'x86_64')
-[ "$CARCH" = "i686"   ] && ARCH=x86
-[ "$CARCH" = "x86_64" ] && ARCH=x86_64
+pkgver=173.14.36
+pkgrel=2
+arch=('x86_64')
+ARCH=x86_64
 url="http://www.nvidia.com/"
 makedepends=('linux-headers')
 license=('custom')
 source=("http://download.nvidia.com/XFree86/Linux-$ARCH/${pkgver}/NVIDIA-Linux-$ARCH-${pkgver}-pkg0.run"
-	"https://gitorious.org/chakra/chakra-hardware-detection/blobs/raw/master/hwdb/nvidia_supported"
-	"ftp://download.nvidia.com/XFree86/patches/security/2012-08-01/nvidia-blacklist-vga-pmu-registers-195.diff")
-md5sums=('0fa45e6fc23a2dc69faa8a66ae0e0cc5')
-[ "$CARCH" = "x86_64" ] && md5sums=('6934b522d2cf313ae6e94e25763fe1a8')
-md5sums+=('62d0cdb856cfae64753c0f3acf729d47'
-	  '4d9eeb020da469b6c75cab6e05f4cf77')
+	"https://gitorious.org/chakra/chakra-hardware-detection/blobs/raw/master/hwdb/nvidia_supported")
+md5sums=('c341612429c2885980103b40542cb2b2'
+         '62d0cdb856cfae64753c0f3acf729d47')
 
 build() {
     cd $srcdir
@@ -29,8 +25,6 @@ build() {
     sh NVIDIA-Linux-$ARCH-${pkgver}-pkg0.run --extract-only
     cd NVIDIA-Linux-$ARCH-${pkgver}-pkg0
 
-    # apply security patch "http://nvidia.custhelp.com/app/answers/detail/a_id/3140"
-    patch -p0 < "${srcdir}/nvidia-blacklist-vga-pmu-registers-195.diff"
     cd usr/src/nv/
     ln -s Makefile.kbuild Makefile
     make SYSSRC=/lib/modules/${_kver}/build/ module
@@ -38,7 +32,7 @@ build() {
 
 package_nvidia-173xx() {
     pkgdesc="Legacy NVIDIA drivers for linux."
-    depends=('linux>=3.4' 'linux<3.5' 'nvidia-173xx-utils')
+    depends=('linux>=3.7' 'linux<3.8' 'nvidia-173xx-utils')
     conflicts=('nvidia-96xx' 'nvidia')
     install=nvidia.install
 

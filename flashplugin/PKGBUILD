@@ -1,46 +1,32 @@
-#
-# Chakra Packages for Chakra, part of chakra-project.org
-#
 # maintainer abveritas@chakra-project.org
 
 pkgname=flashplugin
 _licensefile='PlatformClients_PC_WWEULA_Combined_20100108_1657.pdf'
-pkgver=11.2.202.236
+pkgver=11.2.202.275
 pkgrel=1
 pkgdesc='Adobe Flash Player'
 url='http://labs.adobe.com/technologies/flashplatformruntimes/flashplayer11/'
-arch=('i686' 'x86_64')
-conflicts=("flashplugin-square")
-replaces=("flashplugin-square")
-provides=("flashplugin-square")
-source=("http://fpdownload.macromedia.com/get/flashplayer/pdc/$pkgver/install_flash_player_11_linux.i386.tar.gz"
-        "http://www.adobe.com/products/eulas/pdfs/${_licensefile}"
-        'mms.cfg')
-md5sums=('00b3dd02b9ac600272440ebadda724e1'
-         '94ca2aecb409abfe36494d1a7ec7591d'
-         'dcd4454dc4aa8116b4d7a6c3ba159ea4') 
-if [[ $CARCH == x86_64 ]]; then
-source[0]=http://fpdownload.macromedia.com/get/flashplayer/pdc/$pkgver/install_flash_player_11_linux.x86_64.tar.gz
-md5sums[0]=f3cec2b9b38bd58f5e20f543d957bc17
-fi
-
+arch=('x86_64')
 depends=('mozilla-common' 'libxt' 'libxpm' 'gtk2' 'nss' 'curl')
 optdepends=('libvdpau: GPU acceleration on Nvidia card')
 conflicts=('flashplugin')
 provides=('flashplayer' 'flashplugin')
 license=('custom')
 options=(!strip)
-install=flashplugin.install
-backup=(etc/adobe/mms.cfg)
+install='flashplugin.install'
+backup=('etc/adobe/mms.cfg')
+source=("http://fpdownload.macromedia.com/get/flashplayer/pdc/$pkgver/install_flash_player_11_linux.x86_64.tar.gz"
+        "http://www.adobe.com/products/eulas/pdfs/${_licensefile}"
+        'mms.cfg')
+
+md5sums=('d0a35620a3e54f6fa9e4c64b7c3d095f'
+         '94ca2aecb409abfe36494d1a7ec7591d'
+         'dcd4454dc4aa8116b4d7a6c3ba159ea4')
 
 package () {
     cd ${srcdir}
     install -Dm755 libflashplayer.so "${pkgdir}/usr/lib/mozilla/plugins/libflashplayer.so"
-    if [ "$CARCH" = x86_64 ]; then
-        install -Dm755 usr/lib64/kde4/kcm_adobe_flash_player.so "${pkgdir}/usr/lib/kde4/kcm_adobe_flash_player.so"
-    else
-        install -Dm755 usr/lib/kde4/kcm_adobe_flash_player.so "${pkgdir}/usr/lib/kde4/kcm_adobe_flash_player.so"
-    fi
+    install -Dm755 usr/lib64/kde4/kcm_adobe_flash_player.so "${pkgdir}/usr/lib/kde4/kcm_adobe_flash_player.so"
     install -Dm755 usr/bin/flash-player-properties "${pkgdir}/usr/bin/flash-player-properties"
     for i in 16x16 22x22 24x24 32x32 48x48; do
         install -Dm644 usr/share/icons/hicolor/${i}/apps/flash-player-properties.png \
@@ -51,4 +37,3 @@ package () {
     install -Dm644 "${_licensefile}" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.pdf"
     install -Dm644 ${srcdir}/mms.cfg "${pkgdir}/etc/adobe/mms.cfg"
 }
-

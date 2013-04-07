@@ -1,19 +1,20 @@
 #!/bin/bash
 
-if [ -e "/etc/rc.d/ntpd" ]; then
-	case "$2" in
-		up)
-			/etc/rc.d/ntpd start
-		;;
-		vpn-up)
-			/etc/rc.d/ntpd start
-		;;
-		down)
-			/etc/rc.d/ntpd stop
-		;;
-		vpn-down)
-			/etc/rc.d/ntpd stop
-		;;
-	esac
-fi
+timedate1() {
+    gdbus call \
+        --system \
+        --object-path /org/freedesktop/timedate1 \
+        --dest org.freedesktop.timedate1 \
+        --method org.freedesktop.timedate1.SetNTP "$@"
+}
 
+if [ -e /sys/fs/cgroup/systemd ]; then
+        case "$2" in
+                up)
+                        timedate1 true false
+                ;;
+                down)
+                        timedate1 false false
+                ;;
+        esac
+fi

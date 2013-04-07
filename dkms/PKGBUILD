@@ -6,20 +6,22 @@
 
 pkgname=dkms
 pkgver=2.2.0.3
-pkgrel=3
+pkgrel=12
 pkgdesc='Dynamic Kernel Modules System'
-arch=('any')
+arch=('x86_64')
 url='http://linux.dell.com/dkms/'
 license=('GPL2')
-depends=('linux-headers' 'kmod')
-backup=('etc/dkms/framework.conf' "etc/conf.d/$pkgname")
+depends=('linux-headers' 'kmod' 'sh')
+backup=('etc/dkms/framework.conf')
 source=("http://linux.dell.com/$pkgname/permalink/$pkgname-$pkgver.tar.gz"
-        "$pkgname.rc"
-        "$pkgname.conf"
+        "$pkgname.service"
+        "$pkgname.systemd"
+        "$pkgname.default"
         '01-broken-uninstall.patch')
 md5sums=('11a8aaade2ebec2803653837c7593030'
-         'cf3bcc0cec00caf67a6d393e94c65de5'
-         '8be6746da3df4dcb61cd2b1459974fce'
+         '02e9744e3fdc3d2f68e46966fb32e260'
+         '267632312aa52a190ec0db0758920dd3'
+         '33be2fbf1bcc1b3fb2f38d9e7eaa809d'
          '4e3a580c09b5af8de7ffde0b61bdcfcf')
 
 build() {
@@ -43,8 +45,9 @@ package() {
   # move bash completion in right place
   install -d -m 755 "$pkgdir/usr/share/bash-completion"
   mv "$pkgdir/etc/bash_completion.d" "$pkgdir/usr/share/bash-completion/completions"
-  # add initscripts
-  install -D -m 755 $pkgname.rc "$pkgdir/etc/rc.d/$pkgname"
-  install -D -m 644 $pkgname.conf "$pkgdir/etc/conf.d/$pkgname"
+  # add systemd
+  install -D -m 644 $pkgname.service "$pkgdir/usr/lib/systemd/system/$pkgname.service"
+  install -D -m 755 $pkgname.systemd "$pkgdir/usr/lib/systemd/scripts/$pkgname"
+  install -D -m 644 $pkgname.default "$pkgdir/etc/default/$pkgname"
 }
 

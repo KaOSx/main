@@ -1,14 +1,10 @@
 # Platform Packages for Chakra, part of chakra-project.org
 #
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
-
-# include global config
-source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+# maintainer abveritas@chakra-project.org
 
 pkgbase=libofx
 pkgname=('libofx' 'libofx-doc')
-pkgver=0.9.4
+pkgver=0.9.5
 pkgrel=1
 pkgdesc="API for the OFX banking standard"
 arch=('i686' 'x86_64')
@@ -16,12 +12,13 @@ url="http://libofx.sourceforge.net"
 license=('GPL')
 depends=('opensp' 'curl' 'libxml++')
 checkdepends=('gnupg')
-source=(http://downloads.sourceforge.net/$pkgname/$pkgname-$pkgver.tar.gz)
-md5sums=('f2419bf8d01c0cff74efe7084e0a26c5')
-sha1sums=('7370245c011ac4ea9313ba24a88c70e0eb9c317b')
+source=(http://downloads.sourceforge.net/$pkgname/$pkgname-$pkgver.tar.gz gcc47.patch)
+md5sums=('58443fd7fa00dbbb6a36c75830774368'
+         '6cd9128973e4d90ea8129ea0a785fcbe' )
 
 build() {
   cd "$srcdir/$pkgbase-$pkgver"
+  patch -p1 -i "$srcdir/gcc47.patch"
   ./configure --prefix=/usr
   make
 }

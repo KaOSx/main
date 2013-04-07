@@ -4,19 +4,24 @@
 # maintainer: Samir Benmendil <ram-z[at]chakra-project[dot]org>
 
 pkgname=aspell-el
-pkgver=0.50
-pkgrel=4
+pkgver=0.08
+pkgrel=1
+epoch=1
 pkgdesc="Greek dictionary for aspell."
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://aspell.net/"
 license=('GPL')
 depends=('aspell')
-source=(ftp://ftp.gnu.org/gnu/aspell/dict/el/$pkgname-0.50-3.tar.bz2)
-md5sums=('0ea2c42ceb9b91f7f5de2c017234ad37')
+source=(http://elspell.math.upatras.gr/files/aspell/aspell6-el-$pkgver-0.tar.bz2)
+md5sums=('cf0e677c37ffb64e4b8ebe13acd233c7')
 
 build() {
-  cd $srcdir/$pkgname-0.50-3
-  ./configure || return 1
-  make || return 1
-  make DESTDIR=$pkgdir install || return 1
+  cd "$srcdir/aspell6-el-$pkgver-0"
+  ./configure
+  make
+}
+
+package() {
+  cd "$srcdir/aspell6-el-$pkgver-0"
+  make DESTDIR=$pkgdir install
 }

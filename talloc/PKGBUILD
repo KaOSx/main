@@ -1,26 +1,32 @@
-# $Id: PKGBUILD 63108 2010-01-14 18:54:03Z tpowa $
-# Maintainer: Tobias Powalowski <tpowa@archlinux.org>
+# Maintainer: Neophytos Kolokotronis <tetris4@gmail.com>
+# Contributions from Arch: https://www.archlinux.org/packages/extra/x86_64/talloc/
 
 pkgname=talloc
-pkgver=2.0.1
+pkgver=2.0.8
 pkgrel=1
-pkgdesc="talloc is a hierarchical pool based memory allocator with destructors"
-arch=(i686 x86_64)
+pkgdesc="A hierarchical pool based memory allocator with destructors"
+arch=(x86_64)
 license=('GPL3')
 url="http://tdb.samba.org/"
 source=(http://samba.org/ftp/${pkgname}/${pkgname}-${pkgver}.tar.gz)
 depends=('glibc')
+makedepends=('python2' 'docbook-xsl')
+optdepends=('python2: for python bindings')
+md5sums=('7857200b58a8617ca18fe2c91296cd93')
 
 build() {
-   cd ${srcdir}/${pkgname}-${pkgver}
+   cd "${srcdir}/${pkgname}-${pkgver}"
+   sed -i -e 's#python#python2#g' buildtools/bin/waf
    ./configure --prefix=/usr \
    --sysconfdir=/etc/samba \
    --localstatedir=/var \
-   --enable-talloc-compat1 \
-   --enable-largefile
-   make || return 1
+   --enable-talloc-compat1
+   make
+}
+
+package() {
+   cd ${srcdir}/${pkgname}-${pkgver}
    make DESTDIR=$pkgdir/ install
    # fix permission
-   chmod 644 $pkgdir/usr/lib/libtalloc.a
+   #chmod 644 $pkgdir/usr/lib/libtalloc.a
 }
-md5sums=('c6e736540145ca58cb3dcb42f91cf57b')

@@ -1,18 +1,17 @@
 #
 # Platform Packages for Chakra, part of chakra-project.org
 #
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
 # maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
 
 pkgname=libspnav
 pkgver=0.2.2
-pkgrel=1
-pkgdesc="The spacenav project provides a free, compatible alternative, to the proprietary 3Dconnexion device driver and SDK, for their 3D input devices (called 'space 
-navigator', 'space pilot', 'space traveller', etc)."
+pkgrel=4
+pkgdesc="The spacenav project provides a free, compatible alternative, to the proprietary 3Dconnexion device driver and SDK, for their 3D input devices (called 'space navigator', 'space pilot', 'space traveller', etc)."
 arch=('i686' 'x86_64')
 url="http://spacenav.sourceforge.net/"
 license=('GPL')
 makedepends=('gcc make')
+depends=('libx11')
 provides=('libspnav')
 options=()
 install=

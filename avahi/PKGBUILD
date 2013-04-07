@@ -5,24 +5,22 @@
 
 pkgname=avahi
 pkgver=0.6.31
-pkgrel=3
+pkgrel=5
 pkgdesc="A multicast/unicast DNS-SD framework"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://www.avahi.org/"
 license=('LGPL')
 depends=('dbus>=1.1.20-1' 'libcap>=2.16' 'libdaemon>=0.11' 'gdbm' 'glib2' 'expat')
 optdepends=('qt: qt bindings'
-	'nss-mdns: NSS support for mDNS'
-	'dbus-python: avahi-discover'
-        'twisted: avahi-bookmarks')
+	    'nss-mdns: NSS support for mDNS'
+	    'dbus-python: avahi-discover'
+            'twisted: avahi-bookmarks')
 makedepends=('qt' 'dbus-python' 'gobject-introspection' 'pygtk' 'intltool')
 backup=(etc/avahi/avahi-daemon.conf etc/avahi/services/{sftp-,}ssh.service)
 install=avahi.install
-conflicts=('howl' 'mdnsresponder')
-provides=('howl' 'mdnsresponder')
-replaces=('howl' 'mdnsresponder')
 options=('!libtool')
-source=(http://www.avahi.org/download/avahi-${pkgver}.tar.gz gnome-nettool.png avahi-daemon-dbus.patch)
+source=("http://www.avahi.org/download/avahi-${pkgver}.tar.gz"
+        'gnome-nettool.png' 'avahi-daemon-dbus.patch')
 sha1sums=('7e05bd78572c9088b03b1207a0ad5aba38490684'
           'cf56387c88aed246b9f435efc182ef44de4d52f3'
           'd81f472ebb5b6635f5b2621933e7eae45878ca14')

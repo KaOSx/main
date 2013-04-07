@@ -1,14 +1,13 @@
 #
 # Platform Packages for Chakra, part of chakra-project.org
 #
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+# maintainer abveritas[at]chakra-project[dot]org>
 
 pkgname=mono
-pkgver=2.10.1
+pkgver=2.10.8
 pkgrel=1
 pkgdesc="Free implementation of the .NET platform including runtime and compiler"
-arch=(i686 x86_64)
+arch=('x86_64')
 license=('GPL' 'LGPL2' 'MPL' 'custom:MITX11')
 url="http://www.mono-project.com/"
 depends=('zlib' 'libgdiplus>=2.10' 'sh')
@@ -16,40 +15,39 @@ makedepends=('pkgconfig')
 options=('!libtool' '!makeflags')
 provides=('monodoc')
 conflicts=('monodoc')
-source=(http://ftp.novell.com/pub/mono/sources/${pkgname}/${pkgname}-${pkgver}.tar.bz2
-        mono.rc.d)
-md5sums=('ae8d1875447527599e68dd6c1d82bc11'
-         '8315e46c6a6e9625502521fc0ad1a322')
+source=("http://download.mono-project.com/sources/${pkgname}/${pkgname}-${pkgver}.tar.bz2"
+        'mono.binfmt.d')
+md5sums=('c012b01ac17bedb0af52b7a16405da84'
+         '568c72e1b42f089a9fec20dfe4bcc3b4')
 
 build() {
   cd ${srcdir}/${pkgname}-${pkgver}
   # build mono
   ./configure --prefix=/usr --sysconfdir=/etc \
               --with-libgdiplus=installed 
-  make || return 1
+  make 
 
   # build jay
   cd ${srcdir}/${pkgname}-${pkgver}/mcs/jay
-  make || return 1
+  make 
 }
 
 package() {
   cd ${srcdir}/${pkgname}-${pkgver}
-  make DESTDIR=${pkgdir} install || return 1
+  make DESTDIR=${pkgdir} install 
 
   # install jay
   cd ${srcdir}/${pkgname}-${pkgver}/mcs/jay
   make DESTDIR=${pkgdir} prefix=/usr INSTALL=../../install-sh install
   cd ${srcdir}/${pkgname}-${pkgver}
 
-  # install daemons and pathes
-  mkdir -p ${pkgdir}/etc/rc.d
-  install -m755 ${srcdir}/mono.rc.d ${pkgdir}/etc/rc.d/mono
+  # install binfmt conf file
+  install -D -m644 "${srcdir}"/mono.binfmt.d "${pkgdir}"/usr/lib/binfmt.d/mono.conf
 
   #install license
   mkdir -p ${pkgdir}/usr/share/licenses/${pkgname}
   install -m644 mcs/MIT.X11 ${pkgdir}/usr/share/licenses/${pkgname}/
   
-  #fix .pc file to be able to request mono on what it depends, fixes #go-oo build
+  #fix .pc file to be able to request mono on what it depends
   sed -i -e "s:#Requires:Requires:" ${pkgdir}/usr/lib/pkgconfig/mono.pc
 }

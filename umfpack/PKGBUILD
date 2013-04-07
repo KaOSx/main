@@ -1,22 +1,18 @@
 # 
 # Platform Packages for Chakra, part of chakra-project.org       
 #   
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
-
-# include global config
-source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+# maintainer abveritas@chakra-project.org
 
 pkgname=umfpack
-pkgver=5.5.0
-_ufcfgver=3.5.0
+pkgver=5.6.1
+_ufcfgver=4.0.2
 _amdver=2.2.1
 _cholmodver=1.7.1
 _colamdver=2.7.2
 _ccolamdver=2.7.2
 pkgrel=1
 pkgdesc="A multifrontal direct solver for unsymmetric linear systems (AMD/${_amdver}, UFConfig/${_ufcgfgver})"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://www.cise.ufl.edu/research/sparse/umfpack"
 license=('LGPL')
 makedepends=('lapack' 'blas')
@@ -24,7 +20,7 @@ noextract=(CHOLMOD-${_cholmodver}.tar.gz
         COLAMD-${_colamdver}.tar.gz
         CCOLAMD-${_ccolamdver}.tar.gz)
 source=(http://www.cise.ufl.edu/research/sparse/umfpack/UMFPACK-$pkgver.tar.gz
-        http://www.cise.ufl.edu/research/sparse/UFconfig/UFconfig-${_ufcfgver}.tar.gz
+        http://www.cise.ufl.edu/research/sparse/SuiteSparse_config/SuiteSparse_config-${_ufcfgver}.tar.gz
         http://www.cise.ufl.edu/research/sparse/amd/AMD-${_amdver}.tar.gz
         http://www.cise.ufl.edu/research/sparse/cholmod/CHOLMOD-${_cholmodver}.tar.gz
         http://www.cise.ufl.edu/research/sparse/colamd/COLAMD-${_colamdver}.tar.gz

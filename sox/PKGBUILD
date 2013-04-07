@@ -6,13 +6,13 @@
 
 pkgname=sox
 pkgver=14.4.0
-pkgrel=1
+pkgrel=5
 pkgdesc="The Swiss Army knife of sound processing tools"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://sox.sourceforge.net/"
 license=('GPL' 'LGPL')
 depends=('libltdl' 'file' 'libsndfile' 'libpng' 'lame' 'opencore-amr' 'gsm')
-makedepends=('ffmpeg' 'libao' 'libmad' 'libid3tag' 'wavpack' 'libpulse')
+makedepends=('ffmpeg' 'libao' 'libmad' 'libid3tag' 'wavpack' 'pulseaudio')
 optdepends=('libao: for ao plugin'
             'ffmpeg: for ffmpeg plugin'
             'libmad: for mp3 plugin'
@@ -20,8 +20,8 @@ optdepends=('libao: for ao plugin'
             'wavpack: for wavpack plugin'
             'libpulse: for pulse plugin')
 options=('!libtool')
-source=(http://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tar.bz2
-        sox.diff)
+source=("http://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tar.bz2"
+        'sox.diff')
 md5sums=('813807c6d6fcd4b0af5c995e61f46687'
          'd91175d132c02364994905808acf04e0')
 

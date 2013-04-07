@@ -1,10 +1,13 @@
-# $Id: PKGBUILD 356 2008-04-18 22:56:27Z aaron $
-# Maintainer: Jan de Groot <jgc@archlinux.org>
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# Maintainer: Adrian Chaves Fernandez (Gallaecio) <adriyetichaves@gmail.com>
+# Contributor: Jan de Groot <jgc@archlinux.org>
 # Contributor: Tom Newsom <Jeepster@gmx.co.uk>
 
 pkgname=libggz
 pkgver=0.0.14.1
-pkgrel=1
+pkgrel=2
 pkgdesc="GGZ base library, used by the GGZ Gaming Zone server (ggzd), the ggzcore library and other components"
 arch=(i686 x86_64)
 url="http://www.ggzgamingzone.org/"
@@ -15,8 +18,13 @@ source=(http://ftp.ggzgamingzone.org/pub/ggz/${pkgver}/${pkgname}-${pkgver}.tar.
 md5sums=('603739504648833779aa13b0327a1c3d')
 
 build() {
-  cd ${startdir}/src/${pkgname}-${pkgver}
-  ./configure --prefix=/usr || return 1
-  make || return 1
-  make DESTDIR=${startdir}/pkg install || return 1
+  cd ${srcdir}/${pkgname}-${pkgver}
+  ./configure \
+    --prefix=/usr
+  make
+}
+
+package() {
+  cd ${srcdir}/${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install
 }

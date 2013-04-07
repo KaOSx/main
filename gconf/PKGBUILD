@@ -4,22 +4,22 @@
 # maintainer abveritas@chakra-project.org
 
 pkgname=gconf
-pkgver=2.32.4
-pkgrel=1
+pkgver=3.2.5
+pkgrel=2
 pkgdesc="A configuration database system"
-arch=(i686 x86_64)
+arch=('x86_64')
 license=('LGPL')
-depends=('orbit2>=2.14.18' 'gtk2>=2.22.0' 'libxml2>=2.7.7' 'polkit>=0.98' 'libldap>=2.4.23' 'dbus-glib>=0.86')
+depends=('orbit2' 'gtk2' 'libxml2' 'polkit' 'libldap' 'dbus-glib')
 makedepends=('pkgconfig' 'intltool' 'gobject-introspection')
 options=('!libtool')
 install=gconf.install
 url="http://www.gnome.org"
-source=(http://ftp.gnome.org/pub/gnome/sources/GConf/2.32/GConf-${pkgver}.tar.bz2
-        gconf-merge-schema
-        gconfpkg
-        gconf-reload.patch
-        01_xml-gettext-domain.patch)
-md5sums=('b4475bb58c51ca59c7781cd95b302c13'
+source=("http://ftp.gnome.org/pub/gnome/sources/GConf/3.2/GConf-${pkgver}.tar.xz"
+        'gconf-merge-schema'
+        'gconfpkg'
+        'gconf-reload.patch'
+        '01_xml-gettext-domain.patch')
+md5sums=('1b803eb4f8576c572d072692cf40c9d8'
          '240b473fa17b748fc9020caf372d936c'
          'b745f04b4121d8724c002b14a4c110b6'
          'cfcc8e15be7b8a48de4aa34336ff6090'
@@ -28,9 +28,9 @@ md5sums=('b4475bb58c51ca59c7781cd95b302c13'
 build() {
   cd "${srcdir}/GConf-${pkgver}"
   # Patch from fedora - reloads gconf after installing schemas
-  patch -Np1 -i "${srcdir}/gconf-reload.patch"
+  patch -p1 -i "${srcdir}/gconf-reload.patch"
   # http://bugzilla.gnome.org/show_bug.cgi?id=568845
-  patch -Np1 -i "${srcdir}/01_xml-gettext-domain.patch"
+  patch -p1 -i "${srcdir}/01_xml-gettext-domain.patch"
 
   # Python2 fix
   sed -i '1s|#!/usr/bin/env python$|&2|' gsettings/gsettings-schema-convert

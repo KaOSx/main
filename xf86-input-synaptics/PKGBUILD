@@ -4,10 +4,10 @@
 # maintainer abveritas[at]chakra-project[dot]org>
 
 pkgname=xf86-input-synaptics
-pkgver=1.6.2
-pkgrel=1
+pkgver=1.6.3
+pkgrel=2
 pkgdesc="Synaptics driver for notebook touchpads"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 license=('custom')
 url="http://xorg.freedesktop.org/"
 depends=('libxtst' 'mtdev')
@@ -20,12 +20,16 @@ groups=('xorg-drivers' 'xorg')
 options=(!libtool)
 backup=('etc/X11/xorg.conf.d/10-synaptics.conf')
 source=("http://xorg.freedesktop.org/releases/individual/driver/${pkgname}-${pkgver}.tar.bz2"
-        '10-synaptics.conf')
-sha1sums=('6e59871c0cb683a1fa84731db73a662727a76976'
-          '68e1f4ef5e1038231d210eb422fa4d18c5922f0f')
+        '10-synaptics.conf'
+        'multitouch.patch')
+sha1sums=('2aaeca3abef245ade1435bcf87bbad6116e8e319'
+          '68e1f4ef5e1038231d210eb422fa4d18c5922f0f'
+          '18d2508d5fcfd14951bcd316094187af367c720b')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
+  # bug http://chakra-project.org/bugs/index.php?do=details&task_id=488
+  patch -p1 -i "${srcdir}"/multitouch.patch
   ./configure --prefix=/usr
   make
 }

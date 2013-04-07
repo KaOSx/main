@@ -4,27 +4,21 @@
 # maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
 # maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
 
-# include global config
-source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
-
 pkgname=taglib
-pkgver=1.7
+pkgver=1.8
 pkgrel=1
 pkgdesc="A Library for reading and editing the meta-data of several popular audio formats"
 arch=('i686' 'x86_64')
 url="http://developer.kde.org/~wheeler/taglib.html"
 license=('GPL2')
 depends=('sh' 'zlib' 'gcc-libs')
-makedepends=('cmake' 'pkgconfig')
-source=("http://developer.kde.org/~wheeler/files/src/$pkgname-$pkgver.tar.gz"
-        'ape-idev2.patch')
+makedepends=('cmake' 'pkg-config')
+source=("https://github.com/downloads/$pkgname/$pkgname/$pkgname-$pkgver.tar.gz")
 options=('!libtool')
-md5sums=('6a7e312668f153fa905a81714aebc257'
-         'c7c165d99acf01456351ba39ff7056cb')
+md5sums=('dcb8bd1b756f2843e18b1fdf3aaeee15')
 
 build() {
   cd "${srcdir}"/${pkgname}-${pkgver}
-  patch -p1 -i "${srcdir}"/ape-idev2.patch
 
   cd "${srcdir}"
   mkdir build

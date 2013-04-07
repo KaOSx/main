@@ -8,28 +8,21 @@ _extramodules=extramodules-`pacman -Q linux-lts | cut -c11-13 | sed 's/linux-lts
 _kver="$(cat /lib/modules/${_extramodules}/version)"
 
 pkgname=nvidia-lts
-pkgver=304.32
+pkgver=313.26
 pkgrel=1
 pkgdesc="NVIDIA drivers for linux."
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://www.nvidia.com/"
-depends=('linux-lts' "nvidia-utils=${pkgver}")
+depends=('linux-lts>=3.0' 'linux-lts<3.1' "nvidia-utils=${pkgver}")
 makedepends=('linux-lts-headers')
 conflicts=('nvidia-96xx-lts' 'nvidia-173xx-lts')
 license=('custom')
 install=nvidia.install
 
-if [ "$CARCH" = "i686" ]; then
-    _ARCH='x86'
-    _pkg="NVIDIA-Linux-${_ARCH}-${pkgver}"
-    source=("http://us.download.nvidia.com/XFree86/Linux-${_ARCH}/${pkgver}/${_pkg}.run")
-    md5sums=('b7f908ea08218df08db06026215ec419')
-elif [ "$CARCH" = "x86_64" ]; then
     _ARCH='x86_64'
     _pkg="NVIDIA-Linux-${_ARCH}-${pkgver}-no-compat32"
     source=("http://us.download.nvidia.com/XFree86/Linux-${_ARCH}/${pkgver}/${_pkg}.run")
-    md5sums=('e6d9d1f73196d5f7ea110fef59bd466e')
-fi
+    md5sums=('2d35124fa5a4b009f170fe893b5d07e3')
 
 build() {
     cd "${srcdir}"

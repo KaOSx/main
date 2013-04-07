@@ -4,7 +4,7 @@
 # Maintainer: Giuseppe Calà <jiveaxe@gmail.com>
 
 pkgname=nas
-pkgver=1.9.2
+pkgver=1.9.3
 pkgrel=1
 pkgdesc='Network Audio System is a network transparent, client/server audio transport system'
 arch=('i686' 'x86_64')
@@ -14,11 +14,11 @@ depends=('libxaw')
 makedepends=('imake')
 source=("http://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}-${pkgver}.src.tar.gz"
         'license.txt')
-md5sums=('ed7864f55b384452167959022cfb403b'
+md5sums=('ecd01a3b4e17a9d464efa83a03618025'
          'f11eb8c3fb83946e66e60f7532e8d5da')
 
 build() {
-  cd ${pkgname}-${pkgver}
+  cd "${srcdir}/${pkgname}-${pkgver}"
 
   xmkmf
 
@@ -26,11 +26,9 @@ build() {
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
+  cd "${srcdir}/${pkgname}-${pkgver}"
 
-  make DESTDIR=${pkgdir} USRLIBDIR=/usr/lib install
+  make DESTDIR="${pkgdir}" USRLIBDIR=/usr/lib install
 
-  chmod 644 ${pkgdir}/usr/include/audio/*
-
-  install -D -m644 ${srcdir}/license.txt ${pkgdir}/usr/share/licenses/${pkgname}/license
+  install -D -m644 "${srcdir}/license.txt" "${pkgdir}/usr/share/licenses/${pkgname}/license"
 }

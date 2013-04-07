@@ -1,22 +1,31 @@
-# $Id: PKGBUILD 49462 2009-08-08 15:03:23Z tpowa $
-# Maintainer: Tobias Powalowski <tpowa@archlinux.org>
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer abveritas@chakra-project.org
 
 pkgname=liblqr
 pkgver=0.4.1
-pkgrel=1
+pkgrel=2
 pkgdesc="A seam-carving C/C++ library called Liquid Rescale"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://liblqr.wikidot.com/"
 license=('GPL')
 depends=('glibc' 'glib2')
 makedepends=('pkgconfig')
 options=('!libtool')
-source=(http://liblqr.wikidot.com/local--files/en:download-page/$pkgname-1-$pkgver.tar.bz2)
+source=("http://liblqr.wikidot.com/local--files/en:download-page/$pkgname-1-$pkgver.tar.bz2")
+md5sums=('0e24ed3c9fcdcb111062640764d7b87a')
 
 build() {
   cd "$srcdir/$pkgname-1-$pkgver"
+  
   ./configure --prefix=/usr 
-  make || return 1
-  make DESTDIR="$pkgdir/" install || return 1
+  make 
 }
-md5sums=('0e24ed3c9fcdcb111062640764d7b87a')
+
+package() {
+  cd "$srcdir/$pkgname-1-$pkgver"
+
+  make DESTDIR="$pkgdir/" install 
+}
+

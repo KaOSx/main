@@ -1,15 +1,11 @@
 #
 # Chakra Packages for Chakra, part of chakra-project.org
 #
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
-
-# include global config
-source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+# Maintainer: Fabian Kosmale <0inkaen@googlemail.com>
 
 pkgname=libmodplug
-pkgver=0.8.8.3
-pkgrel=2
+pkgver=0.8.8.4
+pkgrel=1
 pkgdesc="A MOD playing library"
 arch=('i686' 'x86_64')
 url="http://modplug-xmms.sourceforge.net/"
@@ -17,7 +13,7 @@ license=('custom')
 depends=('gcc-libs')
 options=('!libtool')
 source=("http://downloads.sourceforge.net/modplug-xmms/${pkgname}-${pkgver}.tar.gz")
-md5sums=('8a9c713f0f56894163ddc61f9a0d1f71')
+md5sums=('fddc3c704c5489de2a3cf0fedfec59db')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"

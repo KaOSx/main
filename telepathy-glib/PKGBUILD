@@ -1,11 +1,10 @@
 #
 # Platform Packages for Chakra, part of chakra-project.org
 #
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+# maintainer: Neophytos Kolokotronis <tetris4@gmail.com>
 
 pkgname=telepathy-glib
-pkgver=0.19.0
+pkgver=0.20.0
 pkgrel=1
 pkgdesc="GLib bindings for the Telepathy D-Bus protocol"
 arch=('i686' 'x86_64')
@@ -16,7 +15,7 @@ options=('!libtool' '!emptydirs')
 depends=('dbus-glib')
 makedepends=('libxslt' 'vala' 'gobject-introspection')
 source=("http://telepathy.freedesktop.org/releases/${pkgname}/${pkgname}-${pkgver}.tar.gz")
-md5sums=('a4a01b748b6b7134853a561228fe70e4')
+md5sums=('9d7b2bcc2d9f8e0352c8789952717d83')
 
 build() {
     cd "${srcdir}/${pkgname}-${pkgver}"

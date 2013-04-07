@@ -1,22 +1,29 @@
-# $Id: PKGBUILD 58892 2009-11-16 22:42:10Z andrea $
-# Contributor: Tobias Powalowski <tpowa@archlinux.org>
+#
+# Chakra Packages for Chakra, part of chakra-project.org
+#
+# maintainer abveritas@chakra-project.org
 
 pkgname=libftdi
-pkgver=0.16
-pkgrel=1
+pkgver=0.20
+pkgrel=2
 pkgdesc="A library to talk to FTDI chips"
-arch=("i686" "x86_64")
+arch=('x86_64')
 url="http://www.intra2net.com/en/developer/libftdi/download.php"
 license=("GPL2")
-depends=("libusb")
+depends=('libusb-compat' 'gcc-libs')
+makedepends=('boost')
 source=("http://www.intra2net.com/en/developer/libftdi/download/$pkgname-$pkgver.tar.gz")
-md5sums=('524af6f39aefa1a4e8fac12c6be0ed06')
+md5sums=('355d4474e3faa81b485d6a604b06951f')
 options=('!libtool')
 
 build() {
   cd $srcdir/$pkgname-$pkgver
-  sed -i '/no-install/d' examples/Makefile.in || return 1
+  sed -i '/no-install/d' examples/Makefile.in 
   ./configure --prefix=/usr
-  make || return 1
+  make 
+}
+
+package() {
+  cd $srcdir/$pkgname-$pkgver
   make DESTDIR=$pkgdir install
 }

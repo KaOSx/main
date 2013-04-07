@@ -1,24 +1,30 @@
 #
 # Platform Packages for Chakra, part of chakra-project.org
 #
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+# maintainer abveritas[at]chakra-project[dot]org>
 
 pkgname=sdl_image
-pkgver=1.2.10
-pkgrel=3
+pkgver=1.2.12
+pkgrel=1
 pkgdesc="A simple library to load images of various formats as SDL surfaces"
-arch=('i686' 'x86_64')
-license=('LGPL')
-depends=('sdl>=1.2.13' 'libpng' 'libjpeg>=7' 'libtiff' 'zlib')
+arch=('x86_64')
+license=('custom')
+depends=('sdl>=1.2.13' 'libpng' 'libjpeg-turbo' 'libtiff' 'zlib')
 options=('!libtool')
 url="http://www.libsdl.org/projects/SDL_image/"
-source=(http://www.libsdl.org/projects/SDL_image/release/SDL_image-${pkgver}.tar.gz)
-md5sums=('6c06584b31559e2b59f2b982d0d1f628')
+source=("http://www.libsdl.org/projects/SDL_image/release/SDL_image-${pkgver}.tar.gz")
+md5sums=('a0f9098ebe5400f0bdc9b62e60797ecb')
 
 build() {
-  cd ${srcdir}/SDL_image-${pkgver}
-  ./configure --prefix=/usr
-  make || return 1
+  cd "${srcdir}/SDL_image-${pkgver}"
+  
+  ./configure --prefix=/usr --disable-static
+  make 
+}
+
+package() {
+  cd "${srcdir}/SDL_image-${pkgver}"
+  
   make DESTDIR=${pkgdir} install
+  install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
 }

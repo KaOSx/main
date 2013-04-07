@@ -4,13 +4,13 @@
 # maintainer abveritas@chakra-project.org
 
 pkgname=alsa-plugins
-pkgver=1.0.25
-pkgrel=3
+pkgver=1.0.26
+pkgrel=1
 pkgdesc="Extra alsa plugins"
-arch=(i686 x86_64)
+arch=('x86_64')
 url="http://www.alsa-project.org"
 license=(GPL)
-depends=(alsa-lib)
+depends=('alsa-lib')
 makedepends=('libpulse' 'jack' 'ffmpeg')
 optdepends=('libpulse: PulseAudio plugin'
             'jack: Jack plugin'
@@ -18,26 +18,18 @@ optdepends=('libpulse: PulseAudio plugin'
             'libsamplerate: libsamplerate resampling plugin'
             'speex: libspeexdsp resampling plugin')
 options=('!libtool')
-source=("ftp://ftp.alsa-project.org/pub/plugins/$pkgname-$pkgver.tar.bz2")
-md5sums=('038c023eaa51171f018fbf7141255185')
-
-#source=("http://chakra.sourceforge.net/sources/${pkgname}/${pkgname}-${pkgver}.tar.xz")
-#md5sums=('01d00251cbe4f510e131eeee69c8361a')
-
-# create tarball: source PKGBUILD && mksource
-
-mksource() {
-	  rm -vRf ${pkgname}-${pkgver}
-	  git clone git://git.alsa-project.org/${pkgname}.git ${pkgname}-${pkgver}
-	  rm -vRf ${pkgname}-${pkgver}/.git
-	  pushd ${pkgname}-${pkgver}
-	  popd
-	  tar -cvJf ${pkgname}-${pkgver}.tar.xz ${pkgname}-${pkgver}/*
-	  md5sum ${pkgname}-${pkgver}.tar.xz
-}
+source=("ftp://ftp.alsa-project.org/pub/plugins/$pkgname-$pkgver.tar.bz2"
+        "alsa-plugins-1.0.25-ffmpeg-0.11-obsolete-avcodec_init.patch"
+        "alsa-plugins-1.0.25-ffmpeg-0.11-renamed-CH_LAYOUT-defs-v2.patch")
+md5sums=('4facd408326ef5567a7d4ceb6589e6b0'
+         '9c52cbe8f1bc8c823d70a92b171c1055'
+         '07d382f969d0514297e9dbc5f642bbdf')
 
 build() {
   cd "$srcdir/$pkgname-$pkgver"
+  
+  patch -p1 -i "${srcdir}/alsa-plugins-1.0.25-ffmpeg-0.11-renamed-CH_LAYOUT-defs-v2.patch"
+  patch -p1 -i "${srcdir}/alsa-plugins-1.0.25-ffmpeg-0.11-obsolete-avcodec_init.patch"
   ./configure --prefix=/usr
   make
 }
@@ -46,6 +38,6 @@ package() {
   cd "$srcdir/$pkgname-$pkgver"
   make DESTDIR="$pkgdir" install
 
-  mkdir -p "$pkgdir/usr/share/doc/$pkgname"
+  install -d "$pkgdir/usr/share/doc/$pkgname"
   install -m644 doc/README* doc/*.txt "$pkgdir/usr/share/doc/$pkgname/"
 }

@@ -4,22 +4,28 @@
 # maintainer abveritas@chakra-project.org
 
 pkgname=('phonon-backend-gstreamer')
-pkgver=4.6.1
+pkgver=4.6.3
 pkgrel=1
 pkgdesc="Phonon GStreamer backend"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url='http://phonon.kde.org'
 license=('LGPL')
 depends=('gstreamer0.10-base-plugins' 'phonon')
-makedepends=('pkgconfig' 'cmake' 'automoc4' 'mesa')
+makedepends=('pkg-config' 'cmake' 'automoc4' 'mesa')
 groups=("kde-complete" "kde-uninstall")
 conflicts=('phonon-gstreamer')
 replaces=('phonon-gstreamer')
-source=("http://download.kde.org/stable/phonon/phonon-backend-gstreamer/${pkgver}/src/phonon-backend-gstreamer-${pkgver}.tar.xz")
-md5sums=('c0c8a1064e32c83dd6976187dcc491a3')
+source=("http://download.kde.org/stable/phonon/phonon-backend-gstreamer/${pkgver}/src/phonon-backend-gstreamer-${pkgver}.tar.xz"
+        "fix-double-window.patch")
+md5sums=('d7b0b6245f380347c52c09033a814931'
+	 '3a828b776d354c16a2c1dfe4ec49e12e')
 
 build() {
-	cd ${srcdir}
+	cd ${srcdir}/${pkgname}-${pkgver}
+
+        patch -p1 -i ${srcdir}/fix-double-window.patch  
+
+        cd ${srcdir}
 	mkdir -p build
 	cd build
 	cmake ../${pkgname}-${pkgver} \
@@ -32,4 +38,3 @@ package() {
 	cd ${srcdir}/build
 	make DESTDIR=${pkgdir} install
 }
-

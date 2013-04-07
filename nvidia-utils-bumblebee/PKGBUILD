@@ -1,39 +1,24 @@
 # Platform Packages for Chakra, part of chakra-project.org
 #
 # Maintainer: Neophytos Kolokotronis <tetris4@gmail.com>
-# Contributor: Samsagax <samsagax@gmail.com>
-# Contributor: borman <borisov.mikhail@gmail.com>
+# Contributions from AUR: https://aur.archlinux.org/packages/nvidia-utils-bumblebee/
 
 pkgname=nvidia-utils-bumblebee
 
-#_pacman_get_key()
-#{
-#  pacman --print --print-format $1 -S nvidia-utils | grep nvidia-utils
-#}
-
-pkgver=304.32
+pkgver=313.26
 pkgrel=1
 pkgdesc="NVIDIA drivers utilities and libraries. Repacked and installed in different folder to be used simultaneously with libgl."
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://www.nvidia.com/"
-depends=('xorg-server' 'libxvmc' "dkms-nvidia=$pkgver" "opencl-nvidia=$pkgver")
-optdepends=('gtk2: nvidia-settings' 'pkgconfig: nvidia-xconfig')
-conflicts=('nvidia-utils')
-provides=("nvidia-utils=$pkgver")
+depends=('xorg-server' 'pango' 'pangox-compat')
+optdepends=('gtk2: nvidia-settings' 'pkgconfig: nvidia-xconfig' 'opencl-nvidia: OpenCL support')
+conflicts=('nvidia-utils' 'nvidia-settings')
+provides=("nvidia-utils=$pkgver" 'nvidia-settings')
 license=('custom')
 install=nvidia.install
+source=("ftp://download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}-no-compat32.run")
+md5sums=('2d35124fa5a4b009f170fe893b5d07e3')
 
-if [ "$CARCH" = "i686" ]; then
-    _carch='x86'
-    _pkg="NVIDIA-Linux-${_carch}-${pkgver}"
-    source=("ftp://download.nvidia.com/XFree86/Linux-${_carch}/${pkgver}/${_pkg}.run")
-    md5sums=('b7f908ea08218df08db06026215ec419')
-elif [ "$CARCH" = "x86_64" ]; then
-    _carch='x86_64'
-    _pkg="NVIDIA-Linux-${_carch}-${pkgver}-no-compat32"
-    source=("ftp://download.nvidia.com/XFree86/Linux-${_carch}/${pkgver}/${_pkg}.run")
-    md5sums=('e6d9d1f73196d5f7ea110fef59bd466e')
-fi
 
 create_links() {
     # create soname links
@@ -46,11 +31,11 @@ create_links() {
 
 build() {
     cd "${srcdir}"
-    sh "${_pkg}.run" --extract-only
+    sh "NVIDIA-Linux-x86_64-${pkgver}-no-compat32.run" --extract-only
 }
 
 package() {
-    cd "${srcdir}/${_pkg}"
+    cd "${srcdir}/NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
     # X driver
     install -D -m755 nvidia_drv.so "${pkgdir}/usr/lib/xorg/modules/drivers/nvidia_drv.so"
     # GLX extension module for X
@@ -60,9 +45,6 @@ package() {
     install -D -m755 "libGL.so.${pkgver}" "${pkgdir}/usr/lib/nvidia-bumblebee/libGL.so.${pkgver}"
     # OpenGL core library
     install -D -m755 "libnvidia-glcore.so.${pkgver}" "${pkgdir}/usr/lib/libnvidia-glcore.so.${pkgver}"
-    # XvMC
-    install -D -m644 libXvMCNVIDIA.a "${pkgdir}/usr/lib/libXvMCNVIDIA.a"
-    install -D -m755 "libXvMCNVIDIA.so.${pkgver}" "${pkgdir}/usr/lib/libXvMCNVIDIA.so.${pkgver}"
     # VDPAU
     install -D -m755 "libvdpau_nvidia.so.${pkgver}" "${pkgdir}/usr/lib/vdpau/libvdpau_nvidia.so.${pkgver}"
     # nvidia-tls library
@@ -70,7 +52,9 @@ package() {
     install -D -m755 "libnvidia-cfg.so.${pkgver}" "${pkgdir}/usr/lib/libnvidia-cfg.so.${pkgver}"
 
     install -D -m755 "libnvidia-ml.so.${pkgver}" "${pkgdir}/usr/lib/libnvidia-ml.so.${pkgver}"
-
+    # CUDA
+    install -D -m755 "libcuda.so.${pkgver}" "${pkgdir}/usr/lib/libcuda.so.${pkgver}"
+    install -D -m755 "libnvcuvid.so.${pkgver}" "${pkgdir}/usr/lib/libnvcuvid.so.${pkgver}"
     # nvidia-xconfig
     install -D -m755 nvidia-xconfig "${pkgdir}/usr/bin/nvidia-xconfig"
     install -D -m644 nvidia-xconfig.1.gz "${pkgdir}/usr/share/man/man1/nvidia-xconfig.1.gz"

@@ -1,29 +1,29 @@
 #
 # Platform Packages for Chakra, part of chakra-project.org
 #
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+# maintainer abveritas[at]chakra-project[dot]org>
 
 pkgname=hugin-tools
 _pkgname=hugin
-pkgver=2011.0.0
+pkgver=2012.0.0
 pkgrel=3
 pkgdesc="Hugin libs and tools to be used by Kipi-plugins"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://hugin.sourceforge.net/"
 license=('LGPL')
-depends=('libpano13' 'boost-libs' 'enblend-enfuse' 'exiv2' 'openexr'
-         'autopano-sift-c' 'lapack' 'desktop-file-utils' 'make' 'perl-exiftool')
-makedepends=('zip' 'cmake' 'boost')
+depends=('boost-libs' 'enblend-enfuse' 'exiv2' 'openexr' 'libpano13>=2.9.18'
+         'lapack' 'desktop-file-utils' 'icu' 'libxt' 'lensfun')
+makedepends=('zip' 'cmake' 'boost' 'mesa' 'tclap')
 conflict=('hugin')
 provides=('hugin')
-source=(http://downloads.sourceforge.net/${_pkgname}/${_pkgname}-${pkgver}.tar.bz2)
-md5sums=('ac8a129b4c3021233df6d9368c8164cf')
-sha1sums=('22e1ad3846291a9bbe58570683e213921a6f0116')
+source=("http://downloads.sourceforge.net/${_pkgname}/${_pkgname}-${pkgver}.tar.bz2")
+md5sums=('6a4fb2585eb3539ba6769cf4557f6e88')
 
 build() {
   cd "${srcdir}"
-  mkdir build && cd build
+
+  mkdir build 
+  cd build
 
   # this makes possible to compile all the hugin tools without GUis
   sed -i -e "s~FIND_PACKAGE(wxWidgets REQUIRED)~~g" ${srcdir}/${_pkgname}-${pkgver}/CMakeLists.txt
@@ -34,11 +34,13 @@ build() {
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_EXE_LINKER_FLAGS="-lpthread" \
-    -DENABLE_LAPACK=yes 
+    -DENABLE_LAPACK=yes \
+    -DBUILD_HSI=no
   make
 }
 
-package(){
+package() {
   cd "${srcdir}/build"
   make DESTDIR="${pkgdir}" install
+  rm -f "${pkgdir}"/usr/share/applications/pto_gen.desktop 
 }

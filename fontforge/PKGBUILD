@@ -1,30 +1,38 @@
 #
 # Platform Packages for Chakra, part of chakra-project.org
 #
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
-
-# include global config
-source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+# maintainer abveritas@chakra-project.org
 
 pkgname=fontforge
-pkgver=20110222
+pkgver=20120731
+_pkgver=20120731-b
 pkgrel=1
 pkgdesc="An outline and bitmap font editor"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://fontforge.sourceforge.net"
 license=('BSD')
-depends=('libxkbui' 'libxi' 'libxml2' 'pango' 'giflib' 'libpng' 'libtiff' 'libjpeg' 'python')
+depends=('libxkbui' 'libxi' 'libxml2' 'pango' 'giflib' 'libpng' 'libtiff' 'libjpeg-turbo' 'python2')
 options=('!libtool' '!makeflags')
-source=(http://downloads.sourceforge.net/sourceforge/fontforge/fontforge_full-${pkgver}.tar.bz2)
-sha1sums=('8fada07647f102351bb1d7d1c4da487356e7142f')
+source=("http://sourceforge.net/projects/fontforge/files/fontforge-source/fontforge_full-${_pkgver}.tar.bz2")
+md5sums=('a8a90473a97da87e45f66d11007b6e7c')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
-  #patch -p1 < ../libpng14.patch || return 1
-  ./configure --prefix=/usr --mandir=/usr/share/man --enable-type3 --enable-double \
-    --enable-devicetables --with-regular-link --with-python2 --enable-pyextensions || return 1
-  make || return 1
-  make DESTDIR="${pkgdir}" install || return 1
-  install -D -m644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE" || return 1
+  cd "${srcdir}/${pkgname}-${_pkgver}"
+  
+  ./configure --prefix=/usr \
+              --mandir=/usr/share/man \
+              --enable-type3 \
+              --enable-double \
+              --enable-devicetables \
+              --with-regular-link \
+              --with-python2 \
+              --enable-pyextensions 
+  make 
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${_pkgver}"
+  
+  make DESTDIR="${pkgdir}" install 
+  install -D -m644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE" 
 }

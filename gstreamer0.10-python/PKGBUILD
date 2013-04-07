@@ -5,15 +5,15 @@
 
 pkgname=gstreamer0.10-python
 pkgver=0.10.22
-pkgrel=4
+pkgrel=9
 pkgdesc="Python bindings for GStreamer 0.10"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 license=('LGPL')
 url="http://gstreamer.freedesktop.org/"
-depends=('pygobject' 'gstreamer0.10-base')
+depends=('python2-gobject' 'gstreamer0.10-base')
 makedepends=('pkgconfig')
 options=('!libtool')
-source=(http://gstreamer.freedesktop.org/src/gst-python/gst-python-${pkgver}.tar.bz2)
+source=("http://gstreamer.freedesktop.org/src/gst-python/gst-python-${pkgver}.tar.bz2")
 md5sums=('937152fe896241f827689f4b53e79b22')
 
 build() {

@@ -1,12 +1,11 @@
 #
 # Platform Packages for Chakra, part of chakra-project.org
 #
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+#Maintainer: Neophytos Kolokotronis <tetris4@gmail.com>
 
 pkgname=obexfs
 pkgver=0.12
-pkgrel=3
+pkgrel=4
 pkgdesc="FUSE based filesystem using ObexFTP (currently beta)."
 arch=('i686' 'x86_64')
 url="http://openobex.triq.net/obexfs"
@@ -22,6 +21,10 @@ build() {
   export OBEXFTP_LIBS="-lobexftp -lmulticobex -lbfb -lopenobex -lbluetooth"
 
   ./configure --prefix=/usr
-  make || return 1
-  make DESTDIR=$pkgdir install || return 1
+  make
+}
+
+package() {
+  cd $srcdir/$pkgname-$pkgver
+  make DESTDIR=$pkgdir install
 }

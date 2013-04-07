@@ -1,33 +1,29 @@
 #
 # Platform Packages for Chakra, part of chakra-project.org
 #
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
-
-# include global config
-source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+# Maintainer: Neophytos Kolokotronis <tetris4@gmail.com>
+# Contributors from Arch: Andrzej Giniewicz <gginiu@gmail.com>
+#			  Smith Dhumbumroong <zodmaner at gmail dot com>
 
 pkgname=unionfs-fuse
-pkgver=0.24
-pkgrel=1
+pkgver=0.26
+pkgrel=2
 pkgdesc="unionfs-fuse is an effort to create a userland unionfs implementation that is way more flexible than the current in-kernel based unionfs solution."
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://podgorny.cz/moin/UnionFsFuse"
-license=('custom')
+license=('BSD')
 depends=('fuse')
 makedepends=('cmake')
-source=(http://podgorny.cz/unionfs-fuse/releases/$pkgname-$pkgver.tar.bz2)
-md5sums=('ab00f252c55a9a7252fca13a53260bf5')
+source=(http://podgorny.cz/unionfs-fuse/releases/$pkgname-$pkgver.tar.xz)
+md5sums=('689c636484756f6f7a728ef354cbeac2')
 
 build() {
-    mkdir -p $pkgdir/usr/sbin
-    mkdir -p $pkgdir/usr/share/man/man8
+  cd "$srcdir"/$pkgname-$pkgver
+  make
+}
 
-    cd "$srcdir/$pkgname-$pkgver"
-    cmake -DCMAKE_INSTALL_PREFIX=/usr . || return 1
-
-    make || return 1
-    make DESTDIR="$pkgdir" install
-    # install license
-    install -Dm644 $srcdir/$pkgname-$pkgver/LICENSE $pkgdir/usr/share/licenses/$pkgname/LICENSE
+package() {
+  cd "$srcdir"/$pkgname-$pkgver
+  make DESTDIR="$pkgdir" PREFIX=/usr install
+  install -Dm644 "$srcdir"/$pkgname-$pkgver/LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
 }

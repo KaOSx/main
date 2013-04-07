@@ -5,9 +5,9 @@
 
 pkgname=normalize
 pkgver=0.7.7
-pkgrel=6
+pkgrel=9
 pkgdesc="A tool for adjusting the volume of WAV files to a standard level"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://normalize.nongnu.org"
 license=('GPL')
 depends=('audiofile' 'libmad' 'vorbis-tools' 'lame' 'flac' 'mpg123')
@@ -22,8 +22,8 @@ md5sums=('1749b16fc7a08aa5d0cf9f76eeaa8436'
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
 
-  patch -Np1 -i "${srcdir}/normalize-0.7.7-audiofile-pkgconfig.patch"
-  patch -Np0 -i "${srcdir}/normalize-0.7.7-m4.patch"
+  patch -p1 -i "${srcdir}/normalize-0.7.7-audiofile-pkgconfig.patch"
+  patch -p0 -i "${srcdir}/normalize-0.7.7-m4.patch"
 
   touch AUTHORS NEWS ChangeLog
   libtoolize --force --copy

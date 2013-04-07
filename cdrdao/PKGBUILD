@@ -6,16 +6,16 @@
 
 pkgname=('cdrdao')
 pkgver=1.2.3
-pkgrel=6
-arch=('i686' 'x86_64')
+pkgrel=9
+arch=('x86_64')
 license=('GPL')
 url="http://cdrdao.sourceforge.net/"
 makedepends=('gcc-libs' 'lame' 'libmad' 'libvorbis' 'libao' \
              'libsigc++2.0')
-source=(http://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tar.bz2
-	cdrdao-1.2.3-autoconf-update.patch
-        cdrdao-1.2.3-k3b.patch
-        cdrdao-1.2.3-stat.patch)
+source=("http://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tar.bz2"
+	'cdrdao-1.2.3-autoconf-update.patch'
+        'cdrdao-1.2.3-k3b.patch'
+        'cdrdao-1.2.3-stat.patch')
 md5sums=('8d15ba6280bb7ba2f4d6be31d28b3c0c'
          '8e53dfc174f7c0882194caa05e68b85e'
          '696f6ca01e1eeb9b6a5be88e535d9398'
@@ -24,9 +24,9 @@ md5sums=('8d15ba6280bb7ba2f4d6be31d28b3c0c'
 build() {
 	cd ${srcdir}/${pkgbase}-${pkgver}
   
-	patch -Np1 -i "${srcdir}/cdrdao-1.2.3-autoconf-update.patch"
-	patch -Np1 -i "${srcdir}/cdrdao-1.2.3-k3b.patch"
-	patch -Np1 -i "${srcdir}/cdrdao-1.2.3-stat.patch"
+	patch -p1 -i "${srcdir}/cdrdao-1.2.3-autoconf-update.patch"
+	patch -p1 -i "${srcdir}/cdrdao-1.2.3-k3b.patch"
+	patch -p1 -i "${srcdir}/cdrdao-1.2.3-stat.patch"
   
 	./configure --prefix=/usr \
 	   --mandir=/usr/share/man \

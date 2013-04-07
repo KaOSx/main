@@ -1,24 +1,24 @@
 #
 # Chakra Packages for Chakra, part of chakra-project.org
 #
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+# maintainer Daniele Cocca <jmc@chakra-project.org>
 
+pkgbase="llvm"
 pkgname=('llvm' 'llvm-ocaml' 'clang' 'clang-analyzer')
-pkgver=3.1
-_gcc_ver=4.7.0
+pkgver=3.2
+_gcc_ver=4.7.2
 pkgrel=2
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://llvm.org/"
 license=('custom:University of Illinois/NCSA Open Source License')
 makedepends=('gcc-libs' 'libffi' 'python2' 'ocaml' "gcc=${_gcc_ver}" 'groff')
-source=("http://llvm.org/releases/${pkgver}/${pkgname}-${pkgver}.src.tar.gz"
+source=("http://llvm.org/releases/${pkgver}/${pkgbase}-${pkgver}.src.tar.gz"
         "http://llvm.org/releases/${pkgver}/clang-${pkgver}.src.tar.gz")
-md5sums=('16eaa7679f84113f65b12760fdfe4ee1'
-         '59bf2d3120a3805f27cafda3823caaf8')
+md5sums=('71610289bbc819e3e15fdd562809a2d7'
+         '3896ef4334df08563b05d0848ba80582')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}.src"
+  cd "${srcdir}/${pkgbase}-${pkgver}.src"
 
   # At the present, clang must reside inside the LLVM source code tree to build
   # See http://llvm.org/bugs/show_bug.cgi?id=4840
@@ -84,10 +84,10 @@ build() {
 }
 
 package_llvm() {
-pkgdesc="Low Level Virtual Machine"
+pkgdesc="The LLVM Core libraries provide a modern source- and target-independent optimizer, along with code generation support for many popular CPUs."
 depends=('perl' 'libffi')
 
-  cd "${srcdir}/${pkgname}-${pkgver}.src"
+  cd "${srcdir}/${pkgbase}-${pkgver}.src"
 
   # The OCaml binding installation is currently broken, let's fix it
   # see https://github.com/mxcl/homebrew/issues/8947#issuecomment-3256464
@@ -129,10 +129,10 @@ depends=('perl' 'libffi')
 }
 
 package_llvm-ocaml() {
-pkgdesc="OCaml bindings for LLVM"
+pkgdesc="OCaml bindings for LLVM."
 depends=("llvm=${pkgver}-${pkgrel}" 'ocaml')
 
-  cd "${srcdir}/${pkgname}-${pkgver}.src"
+  cd "${srcdir}/${pkgbase}-${pkgver}.src"
 
   install -d "${pkgdir}"/{usr/lib,usr/share/doc/llvm}
   cp -r "${srcdir}/ocaml" "${pkgdir}/usr/lib"
@@ -141,11 +141,11 @@ depends=("llvm=${pkgver}-${pkgrel}" 'ocaml')
   # Remove execute bit from static libraries
   chmod -x "${pkgdir}"/usr/lib/ocaml/libllvm*.a
 
-  install -D -m644 LICENSE.TXT "${pkgdir}/usr/share/licenses/llvm-ocaml/LICENSE"
+  install -D -m644 LICENSE.TXT "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
 }
 
 package_clang() {
-pkgdesc="C language family frontend for LLVM"
+pkgdesc="Clang is an \"LLVM native\" C/C++/Objective-C compiler, which aims to deliver amazingly fast compiles, extremely useful error and warning messages and to provide a platform for building great source level tools."
 url="http://clang.llvm.org/"
 # It looks like clang still needs GCC to assemble and link object files
 # See http://old.nabble.com/%22clang--v%22-shows-a-GCC-call-td28378453.html
@@ -153,9 +153,9 @@ depends=("llvm=${pkgver}-${pkgrel}" "gcc=${_gcc_ver}")
 
   # Fix installation path for clang docs
   sed -e 's:$(PROJ_prefix)/share/doc/llvm:$(PROJ_prefix)/share/doc/clang:' \
-      -i "${srcdir}/${pkgname}-${pkgver}.src/Makefile.config"
+      -i "${srcdir}/${pkgbase}-${pkgver}.src/Makefile.config"
 
-  cd "${srcdir}/${pkgname}-${pkgver}.src/tools/clang"
+  cd "${srcdir}/${pkgbase}-${pkgver}.src/tools/clang"
   make DESTDIR="${pkgdir}" install
 
   # Fix permissions of static libs
@@ -163,22 +163,22 @@ depends=("llvm=${pkgver}-${pkgrel}" "gcc=${_gcc_ver}")
 
   # Revert the path change in case we want to do a repackage later
   sed -e 's:$(PROJ_prefix)/share/doc/clang:$(PROJ_prefix)/share/doc/llvm:' \
-      -i "${srcdir}/${pkgname}-${pkgver}.src/Makefile.config"
+      -i "${srcdir}/${pkgbase}-${pkgver}.src/Makefile.config"
 
   # Install old libstdc++ headers. Contains combined headers from
   # gcc 4.5.2-6-i686 and gcc-multilib-4.5.2-6-x86_64
   # install -d "${pkgdir}/usr/include/c++"
   # cp -rd "${srcdir}/gcc-headers-${_gcc_ver}" "${pkgdir}/usr/include/c++/clang-${pkgver}"
 
-  install -D -m644 LICENSE.TXT "${pkgdir}/usr/share/licenses/clang/LICENSE"
+  install -D -m644 LICENSE.TXT "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
 }
 
 package_clang-analyzer() {
-pkgdesc="A source code analysis framework"
+pkgdesc="The Clang Static Analyzer is a tool that automatically finds bugs in your code, and is a great example of the sort of tool that can be built using the Clang frontend as a library to parse C/C++ code."
 url="http://clang-analyzer.llvm.org/"
 depends=("clang=${pkgver}-${pkgrel}" 'python2')
 
-  cd "${srcdir}/${pkgname}-${pkgver}.src/tools/clang"
+  cd "${srcdir}/${pkgbase}-${pkgver}.src/tools/clang"
 
   install -d "${pkgdir}"/usr/{bin,lib/clang-analyzer}
   for _tool in scan-{build,view}; do
@@ -195,7 +195,7 @@ depends=("clang=${pkgver}-${pkgrel}" 'python2')
   python2 -m compileall "${pkgdir}/usr/lib/clang-analyzer"
   python2 -O -m compileall "${pkgdir}/usr/lib/clang-analyzer"
 
-  install -D -m644 LICENSE.TXT "${pkgdir}/usr/share/licenses/clang-analyzer/LICENSE"
+  install -D -m644 LICENSE.TXT "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
 }
 
 # vim:set ts=2 sw=2 et:

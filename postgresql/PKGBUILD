@@ -1,77 +1,85 @@
 #
 # Chakra Packages for Chakra, part of chakra-project.org
 #
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+# maintainer abveritas[at]chakra-project[dot]org>
 
 pkgbase=postgresql
 pkgname=('postgresql-libs' 'postgresql-docs' 'postgresql')
-pkgver=9.1.2
+pkgver=9.2.3
 _majorver=${pkgver%.*}
-pkgrel=3
-arch=('i686' 'x86_64')
+pkgrel=1
+arch=('x86_64')
 url="http://www.postgresql.org/"
 license=('custom:PostgreSQL')
-makedepends=('libxml2' 'python2' 'perl' 'openssl>=1.0.0')
-source=(ftp://ftp.postgresql.org/pub/source/v${pkgver}/postgresql-${pkgver}.tar.bz2
-        postgresql postgresql.confd postgresql.pam postgresql.logrotate postgresql.service
-	postgresql-initdb)
-md5sums=('7dbff52221954c46595313eb7f92c3e0'
-         '4a6e9b63f2aa50195735f2b46aba040b'
-         'a54d09a20ab1672adf08f037df188d53'
-         '96f82c38f3f540b53f3e5144900acf17'
-         'd28e443f9f65a5712c52018b84e27137'
-         '1ec1fbf1ce998324248c543e6cc2c5e6'
-         '1488a98a5d5d96a04416e4f5872223bf')
+makedepends=('krb5' 'libxml2' 'python2' 'perl' 'tcl' 'openssl>=1.0.0')
+source=("ftp://ftp.postgresql.org/pub/source/v${pkgver}/postgresql-${pkgver}.tar.bz2"
+	'postgresql.confd'
+	'postgresql.pam'
+	'postgresql.logrotate'
+	'postgresql.service'
+	'postgresql-initdb')
+sha256sums=('c4f5a63290c0c32d8d9899edee8188d0c8ab124a7199b154fac75e62eec35f7f'
+            '419550699aae3d19715e87e51f32d1ad50cbb5d3175794f5476697572383b4e3'
+            '57dfd072fd7ef0018c6b0a798367aac1abb5979060ff3f9df22d1048bb71c0d5'
+            '6abb842764bbed74ea4a269d24f1e73d1c0b1d8ecd6e2e6fb5fb10590298605e'
+            '7014ccc8f3bbac8be9473a43fca2ed4037ee04e56d8e07d6027b3b4ef0317c89'
+            'c22f82a3cf5b555935039853fab2d7e5ff6188cdb1fb528fa9171a87b94f42b0')
 
 build() {
   cd "${srcdir}/postgresql-${pkgver}"
 
-  ./configure --prefix=/usr --mandir=/usr/share/man \
-  --datadir=/usr/share/postgresql \
-  --with-libxml --with-openssl --with-perl \
-  --with-python PYTHON=/usr/bin/python2 --with-pam \
-  --with-system-tzdata=/usr/share/zoneinfo --enable-nls \
-  --enable-thread-safety
+  ./configure --prefix=/usr \
+              --mandir=/usr/share/man \
+              --datadir=/usr/share/postgresql \
+              --with-krb5 \
+              --with-libxml \
+              --with-openssl \
+              --with-perl \
+              --with-python PYTHON=/usr/bin/python2 \
+              --with-tcl \
+              --with-pam \
+              --with-system-tzdata=/usr/share/zoneinfo \
+              --enable-nls \
+              --enable-thread-safety
 
   make world
 }
 
 package_postgresql-libs() {
   pkgdesc="Libraries for use with PostgreSQL"
-  depends=('openssl>=1.0.0' 'readline>=6.0')
+  depends=('krb5' 'openssl>=1.0.0' 'readline>=6.0')
   provides=('postgresql-client')
   conflicts=('postgresql-client')
 
   cd "${srcdir}/postgresql-${pkgver}"
 
   # install license
-  install -D -m644 COPYRIGHT "${pkgdir}/usr/share/licenses/postgresql-libs/LICENSE"
+  install -Dm0644 COPYRIGHT "${pkgdir}/usr/share/licenses/postgresql-libs/LICENSE"
 
   # install libs
   for dir in src/interfaces src/bin/pg_config src/bin/psql; do
     make -C ${dir} DESTDIR="${pkgdir}" install
   done
 
-  install -D -m644 doc/src/sgml/man1/pg_config.1 "${pkgdir}/usr/share/man/man1/pg_config.1"
-  install -D -m644 doc/src/sgml/man1/psql.1 "${pkgdir}/usr/share/man/man1/psql.1"
+  install -D -m0644 doc/src/sgml/man1/pg_config.1 "${pkgdir}/usr/share/man/man1/pg_config.1"
+  install -D -m0644 doc/src/sgml/man1/psql.1 "${pkgdir}/usr/share/man/man1/psql.1"
 
   cd src/include
 
   mkdir -p "${pkgdir}"/usr/include/{libpq,postgresql/internal/libpq}
 
   # these headers are needed by the public headers of the interfaces
-  install -m644 pg_config.h "${pkgdir}/usr/include/"
-  install -m644 pg_config_os.h "${pkgdir}/usr/include/"
-  install -m644 postgres_ext.h "${pkgdir}/usr/include/"
-  install -m644 libpq/libpq-fs.h "${pkgdir}/usr/include/libpq/"
-  install -m644 pg_config_manual.h "${pkgdir}/usr/include/"
+  install -m0644 pg_config.h "${pkgdir}/usr/include/"
+  install -m0644 pg_config_os.h "${pkgdir}/usr/include/"
+  install -m0644 postgres_ext.h "${pkgdir}/usr/include/"
+  install -m0644 libpq/libpq-fs.h "${pkgdir}/usr/include/libpq/"
+  install -m0644 pg_config_manual.h "${pkgdir}/usr/include/"
 
   # these headers are needed by the not-so-public headers of the interfaces
-  install -m644 c.h "${pkgdir}/usr/include/postgresql/internal/"
-  install -m644 port.h "${pkgdir}/usr/include/postgresql/internal/"
-  install -m644 postgres_fe.h "${pkgdir}/usr/include/postgresql/internal/"
-  install -m644 libpq/pqcomm.h "${pkgdir}/usr/include/postgresql/internal/libpq/"
+  install -m0644 c.h "${pkgdir}/usr/include/postgresql/internal/"
+  install -m0644 port.h "${pkgdir}/usr/include/postgresql/internal/"
+  install -m0644 postgres_fe.h "${pkgdir}/usr/include/postgresql/internal/"
+  install -m0644 libpq/pqcomm.h "${pkgdir}/usr/include/postgresql/internal/libpq/"
 }
 
 package_postgresql-docs() {
@@ -81,7 +89,7 @@ package_postgresql-docs() {
   cd "${srcdir}/postgresql-${pkgver}"
 
   # install license
-  install -D -m644 COPYRIGHT "${pkgdir}/usr/share/licenses/postgresql-docs/LICENSE"
+  install -Dm0644 COPYRIGHT "${pkgdir}/usr/share/licenses/postgresql-docs/LICENSE"
 
   make -C doc/src/sgml DESTDIR="${pkgdir}" install-html
   chown -R root:root "${pkgdir}/usr/share/doc/postgresql/html/"
@@ -94,9 +102,10 @@ package_postgresql-docs() {
 package_postgresql() {
   pkgdesc="A sophisticated object-relational DBMS"
   backup=('etc/conf.d/postgresql' 'etc/pam.d/postgresql' 'etc/logrotate.d/postgresql')
-  depends=("postgresql-libs>=${pkgver}" 'libxml2' 'readline>=6.0' 'openssl>=1.0.0')
+  depends=("postgresql-libs>=${pkgver}" 'krb5' 'libxml2' 'readline>=6.0' 'openssl>=1.0.0')
   optdepends=('python2: for PL/Python support'
               'perl: for PL/Perl support'
+              'tcl: for PL/Tcl support'
               'postgresql-old-upgrade: upgrade from previous major version using pg_upgrade')
   install=postgresql.install
 
@@ -115,7 +124,7 @@ package_postgresql() {
   rm "${pkgdir}/usr/share/man/man1/psql.1"
 
   # install license
-  install -D -m644 COPYRIGHT "${pkgdir}/usr/share/licenses/${pkgbase}/LICENSE"
+  install -D -m0644 COPYRIGHT "${pkgdir}/usr/share/licenses/${pkgbase}/LICENSE"
 
   # clean up unneeded installed items
   rm -rf "${pkgdir}/usr/include/postgresql/internal"
@@ -123,20 +132,16 @@ package_postgresql() {
   find "${pkgdir}/usr/include" -maxdepth 1 -type f -execdir rm {} +
   rmdir "${pkgdir}/usr/share/doc/postgresql/html"
 
-  # install launch script
-  install -D -m755 "${srcdir}/postgresql" "${pkgdir}/etc/rc.d/postgresql"
-
   # install conf file
-  install -D -m644 ${srcdir}/postgresql.confd \
-    "${pkgdir}/etc/conf.d/postgresql"
+  install -Dm0644 "${srcdir}/postgresql.confd" "${pkgdir}/etc/conf.d/postgresql"
 
-  install -D -m644 ${srcdir}/postgresql.pam \
-    "${pkgdir}/etc/pam.d/postgresql"
+  # install pam file
+  install -Dm0644 "${srcdir}/postgresql.pam" "${pkgdir}/etc/pam.d/postgresql"
 
-  install -D -m644 ${srcdir}/postgresql.logrotate \
-    "${pkgdir}/etc/logrotate.d/postgresql"
+  # install logrotate file
+  install -Dm0644 "${srcdir}/postgresql.logrotate" "${pkgdir}/etc/logrotate.d/postgresql"
 
   # install systemd unit
-  install -Dm644 ${srcdir}/postgresql.service "${pkgdir}/usr/lib/systemd/system/postgresql.service"
-  install -Dm644 "$srcdir/postgresql-initdb" "$pkgdir/usr/lib/systemd/scripts/postgresql-initdb"
+  install -Dm0644 "${srcdir}/postgresql.service" "${pkgdir}/usr/lib/systemd/system/postgresql.service"
+  install -Dm0755 "$srcdir/postgresql-initdb" "$pkgdir/usr/lib/systemd/scripts/postgresql-initdb"
 }

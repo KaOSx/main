@@ -1,21 +1,20 @@
 #
 # Chakra Packages for Chakra, part of chakra-project.org
 #
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+# maintainer abveritas[at]chakra-project[dot]org>
 
 pkgname=libgnome-keyring
-pkgver=2.32.0
-pkgrel=2
+pkgver=3.6.0
+pkgrel=1
 pkgdesc="GNOME keyring client library"
-arch=(i686 x86_64)
+arch=('x86_64')
 license=('GPL' 'LGPL')
-depends=('dbus-core>=1.4.0' 'libgcrypt>=1.4.6' 'glib2>=2.26.0')
-makedepends=('intltool' 'pkgconfig' 'python2')
+depends=('dbus-core>=1.4.0' 'libgcrypt>=1.4.6' 'glib2>=2.34.0')
+makedepends=('intltool' 'gobject-introspection' 'python2')
 options=('!libtool' '!emptydirs')
 url="http://www.gnome.org"
-source=(http://ftp.gnome.org/pub/gnome/sources/${pkgname}/2.32/${pkgname}-${pkgver}.tar.bz2)
-sha256sums=('56388c0d81ddfdb57d30e4963c83ecc1c18498aab99395420e0fff69929a0f0c')
+source=("http://ftp.gnome.org/pub/gnome/sources/${pkgname}/3.6/${pkgname}-${pkgver}.tar.xz")
+md5sums=('4d8a8e81e6f5413c2c0c472380988e6e')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
@@ -23,5 +22,9 @@ build() {
       --localstatedir=/var --disable-static \
       --libexecdir=/usr/lib/gnome-keyring
   make
-  make -j1 DESTDIR="${pkgdir}" install
+}
+
+package() {
+  cd "$pkgname-$pkgver"
+  make DESTDIR="$pkgdir" install
 }

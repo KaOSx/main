@@ -7,8 +7,8 @@
 
 pkgname=texlive-core
 pkgver=2012.26892
-_revnr=${pkgver#2011.}
-pkgrel=1
+_revnr=${pkgver#2012.}
+pkgrel=2
 pkgdesc="TeX Live core distribution"
 license=('GPL')
 arch=(any)
@@ -75,8 +75,11 @@ package() {
    # remove upstream updmap.cfg: it contains too many maps.
    rm "${pkgdir}/usr/share/texmf-dist/web2c/updmap.cfg"
 
-    # link programs from /usr/share/texmf-dist/scripts
-    _linked_scripts="
+   # more cleanup
+   rm -rf $pkgdir/usr/share/texmf-dist/scripts/context/stubs/mswin/
+
+   # link programs from /usr/share/texmf-dist/scripts
+   _linked_scripts="
 accfonts/mkt1font
 accfonts/vpl2ovp
 accfonts/vpl2vpl
@@ -134,8 +137,8 @@ texliveonfly/texliveonfly.py
 
     install -m755 -d $pkgdir/usr/bin
     for _script in ${_linked_scripts}; do
-      scriptbase=$(basename $_script)
-      scriptbase=${_scriptbase%.*}
+      _scriptbase=$(basename $_script)
+      _scriptbase=${_scriptbase%.*}
       ln -s /usr/share/texmf-dist/scripts/${_script} ${pkgdir}/usr/bin/${_scriptbase}
     done
 

@@ -4,27 +4,35 @@
 # maintainer abveritas@chakra-project.org
 
 pkgname=cpupower
-pkgver=3.4
+pkgver=3.7
 pkgrel=1
 pkgdesc='Linux kernel tool to examine and tune power saving related features of your processor'
 license=('GPL2')
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url='http://www.kernel.org'
 depends=('pciutils')
 makedepends=('asciidoc' 'xmlto')
 conflicts=('cpufrequtils')
-backup=('etc/conf.d/cpupower')
+replaces=('cpufrequtils')
+backup=('etc/default/cpupower')
 options=('!strip')
 source=("http://ftp.kernel.org/pub/linux/kernel/v3.x/linux-$pkgver.tar.xz"
-        'cpupower.rc'
+        "http://ftp.kernel.org/pub/linux/kernel/v3.x/patch-$pkgver.1.xz"
         'cpupower.conf'
-        'cpupower.service')
-md5sums=('967f72983655e2479f951195953e8480'
-         'ad84b0bf8459cac1de9de9241b5ae017'
+        'cpupower.service'
+        'cpupower.systemd')
+md5sums=('21223369d682bcf44bcdfe1521095983'
+         '48f5f530b048e387e978e3e49de7742a'
          'fb4b3d184850f5972c5a1bba3ead4e05'
-         '20870541e88109d2f153be3c58a277f1')
+         '2450e8ff41b30eb58d43b5fffbfde1f4'
+         'e02e88977fbdde29a2ae38aa064a367d')
 
 build() {
+  if (( NOEXTRACT == 0 )) && [[ -e "$srcdir"/patch-* ]]; then
+    msg2 'Applying stable patch set'
+    patch -N -p1 -i "$srcdir"/patch-*
+  fi
+
   pushd linux-$pkgver/tools/power/cpupower
   
   LDFLAGS=${LDFLAGS:+"$LDFLAGS,--no-as-needed"}
@@ -41,8 +49,8 @@ package() {
     install install-man
   popd
 
-  install -D -m 755 cpupower.rc "$pkgdir/etc/rc.d/cpupower"
-  install -D -m 644 cpupower.conf "$pkgdir/etc/conf.d/cpupower"
-  install -D -m 644 cpupower.service "$pkgdir/usr/lib/systemd/system/cpupower.service"
+  install -Dm 644 cpupower.conf "$pkgdir/etc/default/cpupower"
+  install -Dm 644 cpupower.service "$pkgdir/usr/lib/systemd/system/cpupower.service"
+  install -Dm 755 cpupower.systemd "$pkgdir/usr/lib/systemd/scripts/cpupower"
 }
 

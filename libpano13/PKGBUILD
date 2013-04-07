@@ -1,20 +1,19 @@
 #
 # Platform Packages for Chakra, part of chakra-project.org
 #
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+# maintainer abveritas[at]chakra-project[dot]org>
 
 pkgname=libpano13
 pkgver=2.9.18
-pkgrel=1
+pkgrel=2
 pkgdesc="Basic library to calculate panoramical pictures - core functions of the panotools"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://panotools.sourceforge.net/"
 license=('GPL2')
 depends=('libpng' 'libtiff')
-makedepends=('openjdk6')
+makedepends=('openjdk')
 options=('!libtool')
-source=(http://downloads.sourceforge.net/sourceforge/panotools/${pkgname}-${pkgver}.tar.gz)
+source=("http://downloads.sourceforge.net/sourceforge/panotools/${pkgname}-${pkgver}.tar.gz")
 md5sums=('9c3a4fce8b6f1d79e395896ce5d8776e')
 
 build() {

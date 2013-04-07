@@ -1,17 +1,15 @@
 #
 # Chakra Packages for Chakra, part of chakra-project.org
 #
-# maintainer (x86_64): Mateusz Krawczuk <willingmagic[at]gmail[dot]com>
-
-# include global config
-source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+# maintainer abveritas@chakra-project.org
+# contributor Mateusz Krawczuk <willingmagic[at]gmail[dot]com>
 
 pkgname=python3
-pkgver=3.2.2
-pkgrel=2
-_pybasever=3.2
+pkgver=3.3.0
+pkgrel=3
+_pybasever=3.3
 pkgdesc="Next generation of the python high-level scripting language"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 license=('custom')
 url="http://www.python.org"
 depends=('expat' 'bzip2' 'gdbm' 'openssl' 'libffi' 'zlib')
@@ -20,8 +18,8 @@ optdepends=('tk: for tkinter')
 provides=('python3')
 replaces=('python3')
 options=('!makeflags')
-source=(http://www.python.org/ftp/python/${pkgver}/Python-${pkgver}.tar.bz2)
-md5sums=('9d763097a13a59ff53428c9e4d098a05')  
+source=("http://www.python.org/ftp/python/${pkgver}/Python-${pkgver}.tar.bz2")
+md5sums=('b3b2524f72409d919a4137826a870a8f')  
 
 build() {
   cd "${srcdir}/Python-${pkgver}"
@@ -43,8 +41,8 @@ build() {
               --with-computed-gotos \
               --enable-ipv6 \
               --with-valgrind \
-              --with-wide-unicode \
               --with-system-expat \
+              --with-dbmliborder=gdbm:ndbm \
               --with-system-ffi
 
   make
@@ -76,10 +74,10 @@ package() {
 
   # Fix FS#22552
   ln -sf ../../libpython${_pybasever}mu.so \
-    "${pkgdir}/usr/lib/python${_pybasever}/config-${_pybasever}mu/libpython${_pybasever}mu.so"
+    "${pkgdir}/usr/lib/python${_pybasever}/config-${_pybasever}m/libpython${_pybasever}m.so"
 
   # Clean-up reference to build directory
-  sed -i "s#$srcdir/Python-${pkgver}:##" "$pkgdir/usr/lib/python${_pybasever}/config-${_pybasever}mu/Makefile"
+  sed -i "s#$srcdir/Python-${pkgver}:##" "$pkgdir/usr/lib/python${_pybasever}/config-${_pybasever}m/Makefile"
 
   # License
   install -Dm644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"

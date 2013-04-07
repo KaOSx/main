@@ -4,10 +4,10 @@
 # maintainer abveritas@chakra-project.org
 
 pkgname=libvirt
-pkgver=0.9.12
-pkgrel=2
+pkgver=1.0.2
+pkgrel=1
 pkgdesc="API for controlling virtualization engines (openvz,kvm,qemu,virtualbox,xen,etc)"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://libvirt.org/"
 license=('LGPL')
 depends=('e2fsprogs' 'gnutls' 'iptables' 'libxml2' 'parted' 'polkit' 'python2'
@@ -28,19 +28,15 @@ backup=('etc/conf.d/libvirtd'
 	'etc/sasl2/libvirt.conf')
 install="libvirt.install"
 source=("http://libvirt.org/sources/$pkgname-$pkgver.tar.gz"
-	libvirtd.rc.d
-	libvirtd.conf.d
-	libvirtd-guests.rc.d
-	libvirtd-guests.conf.d
-	openbsd-netcat-default.patch)
-	#libvirt-libnl3.patch)
-md5sums=('5e842bc55733ceba60c64767580ff3e4'
-         'c43244c40a0437038c82089618e7beaa'
+	'libvirtd.conf.d'
+	'libvirtd-guests.conf.d'
+	'libvirt.tmpfiles.d'
+	'openbsd-netcat-default.patch')
+md5sums=('7e268ed702c4331d393e5b43449cae13'
          '3ed0e24f5b5e25bf553f5427d64915e6'
-         '8297b1be794a24cc77f66af9380ace59'
          'bc2971dacdbac967fc3474e50affc345'
+         '8d98e62915785686b0b6c8c070628392'
          '895e836d7b5d0da5e8e77439b8219238')
-         #'ba27fbcd989de8d84cfff98326f10c54')
 
 build() {
   cd "$srcdir/$pkgname-$pkgver"
@@ -52,19 +48,16 @@ build() {
     sed -i 's_#!.*/usr/bin/env.*python_#!/usr/bin/env python2_' $file
   done
 
-  [ $NOEXTRACT -eq 1 ] || patch -Np1 -i "$srcdir"/openbsd-netcat-default.patch
-
-  #patch -Np1 -i ${srcdir}/libvirt-libnl3.patch
-  aclocal
-  automake --add-missing || true
-  autoreconf
-
   export LDFLAGS=-lX11
   export RADVD=/usr/sbin/radvd
   [ -f Makefile ] || ./configure --prefix=/usr --libexec=/usr/lib/"$pkgname" \
-	--with-storage-lvm --without-xen --with-udev --without-hal --disable-static
+	--with-storage-lvm --without-xen --with-udev --without-hal --disable-static \
+	--with-init-script=systemd
   find -name Makefile -exec sed -i 's#-L /usr#-L/usr#' {} \;
   make -j1
+  sed -i 's|/etc/sysconfig/libvirtd|/etc/conf.d/libvirtd|' daemon/libvirtd.service
+  sed -i 's|/etc/sysconfig/libvirt-guests|/etc/conf.d/libvirtd-guests|' tools/libvirt-guests.service
+  sed -i 's|/etc/init.d/libvirt-g|/etc/rc.d/libvirtd-g|g' tools/libvirt-guests.service
 }
 
 package() {
@@ -72,11 +65,15 @@ package() {
 
   make DESTDIR="$pkgdir" install
 
-  install -D -m755 "$srcdir"/libvirtd.rc.d "$pkgdir"/etc/rc.d/libvirtd
   install -D -m644 "$srcdir"/libvirtd.conf.d "$pkgdir"/etc/conf.d/libvirtd
-
-  install -D -m755 "$srcdir"/libvirtd-guests.rc.d "$pkgdir"/etc/rc.d/libvirtd-guests
   install -D -m644 "$srcdir"/libvirtd-guests.conf.d "$pkgdir"/etc/conf.d/libvirtd-guests
+
+  install -D -m644 "$srcdir"/libvirt.tmpfiles.d "$pkgdir"/usr/lib/tmpfiles.d/libvirt.conf
+  mv $pkgdir/lib/* $pkgdir/usr/lib/
+
+  sed -i \
+	's|After=.*|After=syslog.target network.target libvirtd.service|' \
+	$pkgdir/usr/lib/systemd/system/libvirt-guests.service
 
   rm -rf $pkgdir/var/run
 }

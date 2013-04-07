@@ -5,10 +5,10 @@
 
 pkgname=liblrdf
 pkgver=0.5.0
-pkgrel=1
+pkgrel=4
 pkgdesc="A library for the manipulation of RDF file in LADSPA plugins"
-arch=('i686' 'x86_64')
-url="http://sourceforge.net/projects/lrdf" #"http://sourceforge.net/projects/lrdf"
+arch=('x86_64')
+url="https://github.com/swh/LRDF"
 depends=('raptor' 'ladspa')
 makedepends=('pkgconfig')
 license=('GPL')
@@ -21,7 +21,8 @@ build() {
   cd "${srcdir}/swh-LRDF-7ebc032"
 
   autoreconf -vfi
-  ./configure --prefix=/usr
+  ./configure --prefix=/usr \
+              --disable-static
   make
 }
 

@@ -1,18 +1,19 @@
+#
 # Platform Packages for Chakra, part of chakra-project.org
 #
-# contributor (x86_64): Giuseppe Calà <jiveaxe@gmail.com>
+# maintainer abveritas@chakra-project.org
 
 pkgbase=pangomm
 pkgname=('pangomm' 'pangomm-docs')
 pkgver=2.28.4
-pkgrel=1
-arch=('i686' 'x86_64')
+pkgrel=3
+arch=('x86_64')
 license=('LGPL')
 makedepends=('pango' 'glibmm' 'glibmm-docs' 'cairomm' 'pkgconfig')
-source=(http://ftp.gnome.org/pub/GNOME/sources/${pkgname}/2.28/${pkgname}-${pkgver}.tar.xz)
+source=("http://ftp.gnome.org/pub/GNOME/sources/${pkgname}/2.28/${pkgname}-${pkgver}.tar.xz")
 options=('!libtool')
 url="http://gtkmm.sourceforge.net/"
-sha256sums=('778dcb66a793cbfd52a9f92ee5a71b888c3603a913fc1ddc48a30204de6d6c82')
+md5sums=('f4fe0905ee56e1ff0205005e61d2a66f')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"

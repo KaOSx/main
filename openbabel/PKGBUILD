@@ -1,23 +1,32 @@
-# $Id: PKGBUILD 54590 2009-10-11 11:10:53Z andrea $
-# Maintainer: Andrea Scarpino <andrea@archlinux.org>
-# Contributor: Damir Perisa <damir.perisa@bluewin.ch>
+#
+# Chakra Packages for Chakra, part of chakra-project.org
+#
+# maintainer : abveritas@chakra-project.org
 
 pkgname=openbabel
-pkgver=2.2.3
+pkgver=2.3.1
 pkgrel=1
-pkgdesc="A library designed to interconvert between many file formats used in molecular modeling and computational chemistry."
+pkgdesc="Open, collaborative project allowing anyone to search, convert, analyze, or store data from molecular modeling, chemistry, solid-state materials, biochemistry, or related areas"
 arch=('i686' 'x86_64')
 url="http://openbabel.sourceforge.net/"
 license=('GPL')
-depends=('gcc-libs' 'libxml2')
+depends=('gcc-libs' 'libxml2' 'eigen')
+makedepends=('cmake')
 options=('!libtool')
 source=("http://downloads.sourceforge.net/$pkgname/$pkgname-$pkgver.tar.gz")
-md5sums=('7ea8845c54d6d3a9be378c78088af804')
+md5sums=('1f029b0add12a3b55582dc2c832b04f8')
 
 build() {
-  cd ${srcdir}/$pkgname-$pkgver
+ cd "${srcdir}"
+  mkdir build
+  cd build
+  cmake ../${pkgname}-${pkgver} \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr
+  make
+}
 
-  ./configure --prefix=/usr
-  make || return 1
-  make prefix=${pkgdir}/usr install
+package() {
+  cd "${srcdir}/build"
+  make DESTDIR="${pkgdir}" install
 }

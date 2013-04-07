@@ -4,16 +4,16 @@
 # maintainer abveritas@chakra-project.org
 
 pkgname=yaz
-pkgver=4.2.29
+pkgver=4.2.49
 pkgrel=1
 pkgdesc="A toolkit supporting the development of Z39.50/SRW/SRU clients and servers"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 license=('custom')
 url="http://www.indexdata.dk/yaz"
 depends=('openssl' 'libxslt' 'icu')
 options=('!libtool')
-source=(http://ftp.indexdata.dk/pub/$pkgname/$pkgname-$pkgver.tar.gz)
-md5sums=('584bcf12401f182a42091616c6cf7e0a')
+source=("http://ftp.indexdata.dk/pub/$pkgname/$pkgname-$pkgver.tar.gz")
+md5sums=('dcb852bd4711a9d8b952a30fbf1e0b46')
 
 build() {
   cd "$srcdir/$pkgname-$pkgver"

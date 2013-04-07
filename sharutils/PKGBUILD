@@ -3,22 +3,27 @@
 # Contributor: Tom Newsom <Jeepster@gmx.co.uk>
 
 pkgname=sharutils
-pkgver=4.6.3
-pkgrel=3
+pkgver=4.11.1
+pkgrel=1
 pkgdesc="GNU shar makes so-called shell archives out of many files"
-arch=(i686 x86_64)
+arch=(x86_64)
 url="http://www.gnu.org/software/sharutils/"
 license=('GPL')
 depends=('gettext' 'texinfo')
 install=sharutils.install
-source=(ftp://ftp.gnu.org/pub/gnu/${pkgname}/REL-${pkgver}/${pkgname}-${pkgver}.tar.gz)
-md5sums=('74127a560e59be6dfa8b59993eb0ca91')
+source=(ftp://ftp.gnu.org/gnu/${pkgname}/${pkgname}-${pkgver}.tar.bz2)
+md5sums=('52dd02b6f5e0a148ba871234ae29bba2')
 
 build() {
   cd ${srcdir}/${pkgname}-${pkgver}
-  ./configure --prefix=/usr --mandir=/usr/share/man --infodir=/usr/share/info --disable-nls || return 1
-  make || return 1
-  make DESTDIR=${pkgdir} install || return 1
-  rm ${pkgdir}/usr/share/info/dir
-  gzip ${pkgdir}/usr/share/info/*
+  ./configure --prefix=/usr \
+              --mandir=/usr/share/man \
+              --infodir=/usr/share/info \
+              --disable-nls
+    make
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  make DESTDIR=${pkgdir} install
 }

@@ -4,19 +4,21 @@
 # maintainer abveritas@chakra-project.org
 
 pkgname=xf86-video-ati
-pkgver=6.14.6
-pkgrel=2
+pkgver=7.1.0
+pkgrel=1
 pkgdesc="X.org ati video driver"
-arch=(i686 x86_64)
+arch=('x86_64')
 url="http://xorg.freedesktop.org/"
 license=('custom')
-depends=('libpciaccess' 'libdrm' 'systemd' 'pixman' 'ati-dri')
-makedepends=('xorg-server' 'libdrm' 'xf86driproto' 'mesa')
-conflicts=('xorg-server<1.12.3')
+depends=('libpciaccess' 'libdrm>=2.4.41' 'systemd' 'pixman' 'mesa')
+makedepends=('xorg-server' 'xf86driproto')
+conflicts=('xorg-server<1.12.3' 'xf86-video-radeonhd')
+provides=('xf86-video-radeonhd')
+replaces=('xf86-video-radeonhd')
 groups=('xorg-video-drivers')
 options=('!libtool')
 source=("${url}/releases/individual/driver/${pkgname}-${pkgver}.tar.bz2")
-sha1sums=('b30383c7e5487c1df403a3af19fce8626d617a8d')
+sha1sums=('f94730e5ffc5f75fa3126579bed0222fe8330653')
 
 build() { 
     cd ${srcdir}/${pkgname}-${pkgver}
@@ -24,9 +26,7 @@ build() {
     ./configure \
             --prefix=/usr \
             --enable-maintainer-mode \
-            --enable-dependency-tracking \
-            --enable-exa \
-            --enable-dri
+            --enable-dependency-tracking 
     make
 }
 

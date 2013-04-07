@@ -6,10 +6,11 @@
 pkgbase=('gstreamer0.10-base')
 pkgname=('gstreamer0.10-base' 'gstreamer0.10-base-plugins')
 pkgver=0.10.36
-pkgrel=1
-arch=('i686' 'x86_64')
+pkgrel=5
+arch=('x86_64')
 license=('LGPL')
-makedepends=('pkgconfig' "gstreamer0.10>=${pkgver}" 'orc' 'libxv' 'alsa-lib' 'cdparanoia' 'libvisual' 'libvorbis' 'libtheora' 'pango' 'gobject-introspection')
+makedepends=('pkgconfig' "gstreamer0.10>=${pkgver}" 'orc' 'libxv' 'alsa-lib' 'cdparanoia'
+             'libvisual' 'libvorbis' 'libtheora' 'pango' 'gobject-introspection')
 options=(!libtool !emptydirs)
 url="http://gstreamer.freedesktop.org/"
 source=(${url}/src/gst-plugins-base/gst-plugins-base-${pkgver}.tar.xz)

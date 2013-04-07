@@ -4,20 +4,19 @@
 # maintainer abveritas@chakra-project.org
 
 pkgname=xf86-video-nouveau
-pkgver=1.0.1
-pkgrel=2
-pkgdesc="Open Source 3D acceleration driver for nVidia cards (experimental)"
-arch=('i686' 'x86_64')
+pkgver=1.0.6
+pkgrel=1
+pkgdesc="Open Source 3D acceleration driver for nVidia cards"
+arch=('x86_64')
 url="http://nouveau.freedesktop.org/"
 license=('GPL') #and MIT, not yet a license file, see http://nouveau.freedesktop.org/wiki/FAQ#head-09f75d03eb30011c754038a3893119a70745de4e
-depends=('libdrm' 'systemd' 'libgl')
-optdepends=('nouveau-dri:	experimental gallium3d features')
+depends=('libdrm' 'systemd' 'mesa')
 makedepends=('xorg-server' 'xf86driproto')
 conflicts=('xorg-server<1.12.3')
 options=('!libtool') # 'force')
 install=${pkgname}.install
-source=("$url/release/$pkgname-$pkgver.tar.bz2")
-md5sums=('d120bdd4ee9fc3581f3b93e3b31c4574')
+source=("http://xorg.freedesktop.org/archive/individual/driver/$pkgname-$pkgver.tar.bz2")
+md5sums=('140e819c983fc01ed7a52d915dcffd74')
 
 build() {
   cd ${srcdir}/$pkgname-$pkgver

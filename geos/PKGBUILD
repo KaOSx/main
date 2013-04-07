@@ -1,28 +1,27 @@
-#
 # Apps Packages for Chakra, part of chakra-project.org
-#
 # maintainer (x86_64): Giuseppe Calà <jiveaxe@gmail.com>
 
-# include global config
-source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
-
 pkgname=geos
-pkgver=3.2.1
+pkgver=3.3.5
 pkgrel=1
 pkgdesc="A C++ port of the Java Topology Suite"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://trac.osgeo.org/geos/"
 license=('LGPL')
 depends=('gcc-libs')
-options=('!libtool')
+options=('!libtool' '!emptydirs')
 source=(http://download.osgeo.org/${pkgname}/${pkgname}-${pkgver}.tar.bz2)
-md5sums=('01f01943bdf598977cee40905c9abfbf')
+md5sums=('2ba61afb7fe2c5ddf642d82d7b16e75b')
 
 build() {
   cd ${srcdir}/${pkgname}-${pkgver}
 
   ./configure --prefix=/usr
-  make || return 1
+  make
+}
+
+package() {
+  cd ${srcdir}/${pkgname}-${pkgver}
   make DESTDIR=${pkgdir} install
 }
- 
+

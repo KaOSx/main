@@ -1,15 +1,18 @@
-# Platform packages for Chakra
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer abveritas[at]chakra-project[dot]org
 
 pkgname=perl-crypt-openssl-random
 pkgver=0.04
-pkgrel=6
+pkgrel=7
 pkgdesc="Interface to OpenSSL PRNG methods"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://search.cpan.org/dist/Crypt-OpenSSL-Random"
 depends=('perl' 'openssl')
 license=('GPL')
 options=('!emptydirs')
-source=(http://www.cpan.org/authors/id/I/IR/IROBERTS/Crypt-OpenSSL-Random-$pkgver.tar.gz)
+source=("http://www.cpan.org/authors/id/I/IR/IROBERTS/Crypt-OpenSSL-Random-$pkgver.tar.gz")
 md5sums=('c56ac5dbdd46122eb9b8da59613b7b0a')
 
 build() {

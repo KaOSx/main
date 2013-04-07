@@ -5,10 +5,10 @@ post_install() {
   #echo "If dhcpd doesn't start, ensure the ipv6 kernel module is loaded."
 
   echo
-  echo "==> The dhcp server has now two rc.d scripts."
-  echo "==> Use '/etc/rc.d/dhcp6' to use IPv6 dhcp server or"
-  echo "==> '/etc/rc.d/dhcp4' to use IPv4 dhcp server."
-  echo "==> Make sure that you change your DAEMONS array in '/etc/rc.conf'!"
+  echo "==> The dhcp server has two service files."
+  echo "==> Use 'dhcpd6.service' to use IPv6 dhcp server or"
+  echo "==> 'dhcpd4.service' to use IPv4 dhcp server."
+  echo "==> Make sure that you enable your service file with systemctl!"
 }
 
 # arg 1:  the new package version

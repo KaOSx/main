@@ -1,27 +1,27 @@
 #
 # Chakra Packages for Chakra, part of chakra-project.org
 #
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
-# contributor (x86_64): Giuseppe Calà <jiveaxe@gmail.com>
-
-# include global config
-source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+# maintainer abveritas@chakra-project.org
 
 pkgname=exif
-pkgver=0.6.19
+pkgver=0.6.21
 pkgrel=1
 pkgdesc="A small command-line utility to show EXIF information hidden in JPEG files."
-arch=(i686 x86_64)
+arch=('x86_64')
 license=('LGPL')
 url="http://sourceforge.net/projects/libexif"
 depends=('libexif' 'popt')
-source=(http://downloads.sf.net/sourceforge/libexif/${pkgname}-${pkgver}.tar.bz2)
-md5sums=('75f0dd6f9f2d128261721c0896e0b324')
+source=("http://downloads.sf.net/sourceforge/libexif/${pkgname}-${pkgver}.tar.bz2")
+md5sums=('0e744471b8c3b3b1534d5af38bbf6408')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
-  ./configure --prefix=/usr || return 1
-  make || return 1
-  make DESTDIR="${pkgdir}" install || return 1
+  ./configure --prefix=/usr 
+  make
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  
+  make DESTDIR="${pkgdir}" install
 }

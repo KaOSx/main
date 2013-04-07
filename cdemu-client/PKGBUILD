@@ -4,29 +4,35 @@
 # maintainer abveritas@chakra-project.org
 
 pkgname=cdemu-client
-pkgver=1.4.0
-pkgrel=4
+pkgver=2.0.0
+pkgrel=2
 pkgdesc="Simple command-line client for controlling cdemu-daemon"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://cdemu.sourceforge.net/"
 license=('GPL')
 depends=('python2' 'dbus-python' 'cdemu-daemon')
-makedepends=('intltool')
+makedepends=('intltool' 'cmake')
 conflicts=('cdemu')
-source=(http://downloads.sourceforge.net/cdemu/$pkgname-$pkgver.tar.gz)
-md5sums=('ce469f0660dfa4a9306faed00b3e6d6c')
+source=("http://downloads.sourceforge.net/cdemu/$pkgname-$pkgver.tar.bz2")
+md5sums=('ceeec43270c28ea02c7e8a5a7009f3e0')
 
 build() {
-  cd $srcdir/$pkgname-$pkgver
+  cd "$srcdir/$pkgname-$pkgver"
 
   # python2 fix
   sed -i 's_#!/usr/bin/env python_#!/usr/bin/env python2_' src/cdemu
 
-  ./configure --prefix=/usr
+  mkdir build
+  cd build
+  cmake .. \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr
   make
 }
 
 package() {
-  cd $srcdir/$pkgname-$pkgver
-  make DESTDIR=$pkgdir install
+  cd "$srcdir/$pkgname-$pkgver/build"
+  make DESTDIR="$pkgdir" install
+  rm -f "${pkgdir}"/usr/share/applications/cdemu-client.desktop
 }
+

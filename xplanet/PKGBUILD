@@ -1,26 +1,28 @@
-# $Id: PKGBUILD 8986 2010-01-23 01:24:16Z foutrelis $
-# Maintainer: Sergej Pupykin <pupykin.s+arch@gmail.com>
-# Maintainer: dorphell <dorphell@archlinux.org>
-# Committer: Judd Vinet <jvinet@zeroflux.org>
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer abveritas@chakra-project.org
 
 pkgname=xplanet
-pkgver=1.2.1
-pkgrel=3
+pkgver=1.3.0
+pkgrel=1
 pkgdesc="An Xearth wannabe"
-arch=(i686 x86_64)
+arch=('x86_64')
 url="http://xplanet.sourceforge.net/"
 license=('GPL')
 depends=('pango' 'libungif' 'libtiff' 'perl' 'libxss')
-source=(http://kent.dl.sourceforge.net/sourceforge/$pkgname/$pkgname-$pkgver.tar.gz)
-md5sums=('5dca0369ca64fa3c006b616b72b5e1cf')
+source=("http://downloads.sourceforge.net/project/xplanet/xplanet/$pkgver/xplanet-$pkgver.tar.gz")
+md5sums=('41f7db2ccd1d8b4b989cacaf9adfe692')
 
 build() {
-  cd $startdir/src/$pkgname-$pkgver
-
-  sed -i '1,2i#include <stdio.h>' src/Satellite.cpp
-  sed -i '1,2i#include <stdio.h>' src/Separation.cpp
+  cd "$startdir/src/$pkgname-$pkgver"
 
   ./configure --prefix=/usr --with-freetype
-  make || return 1
+  make
+}
+
+package() {
+  cd "$startdir/src/$pkgname-$pkgver"
+  
   make prefix=$startdir/pkg/usr install
 }

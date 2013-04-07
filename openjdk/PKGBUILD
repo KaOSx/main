@@ -2,55 +2,54 @@
 
 pkgname=('openjdk' 'openjdk-src')
 pkgbase='openjdk'
-_icedtea_release="2.2.1"
+_icedtea_release="2.3.2"
 _icedtea_jdkver="7"
-_pkgver="7u5"
-pkgver="${_pkgver}_${_icedtea_release}"
-pkgrel=1
+_openjdk_build="b30"
+_pkgver="7u7"
+pkgver="${_pkgver}_${_openjdk_build}_${_icedtea_release}"
+pkgrel=2
 pkgdesc="An open-source implementation of the seventh edition of the Java SE Platform."
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://icedtea.classpath.org/"
 license=('GPL2 with Classpath exception')
 makedepends=('java-environment=7' 'apache-ant>=1.6.5' 'zip' 'unzip'
              'fastjar' 'cpio' 'cups' 'orbit2' 'gtk2' 'coreutils'
-             'wget' 'gzip' 'alsa-lib' 'libpulse>=-.9.11' 'zlib' 'libjpeg'
+             'wget' 'gzip' 'alsa-lib' 'pulseaudio' 'zlib' 'libjpeg-turbo'
              'libpng' 'giflib' 'lcms2' 'freetype2' 'rhino' 'nss' 'libxt'
              'libxtst' 'libxp' 'libxrender' 'ca-certificates-java')
 
-_hg_url="http://icedtea.classpath.org/hg/release/icedtea7-forest-2.2"
-_corba_changeset="38deb372c569"
-_hotspot_changeset="889dffcf4a54"
-_jaxp_changeset="335fb0b059b7"
-_jaxws_changeset="5471e01ef43b"
-_jdk_changeset="6c3b742b735d"
-_langtools_changeset="beea46c7086b"
-_openjdk_changeset="0b776ef59474"
+_hg_url="http://icedtea.classpath.org/hg/release/icedtea7-forest-2.3"
+_corba_changeset="7fae6a3a68c7"
+_jaxp_changeset="ee4bd94136ec"
+_jaxws_changeset="c89c6ac953e7"
+_jdk_changeset="f78eb7e08ee1"
+_langtools_changeset="867d5041bee6"
+_openjdk_changeset="acba2d30209d"
+_hotspot_changeset="ea39d76b3bde"
 _jvmdir="/usr/lib/jvm/java-${_icedtea_jdkver}-openjdk"
 
 source=("http://icedtea.classpath.org/download/source/icedtea-${_icedtea_release}.tar.gz"
-        "${_hg_url}/archive/${_openjdk_changeset}.tar.gz"
         "${_hg_url}/corba/archive/${_corba_changeset}.tar.gz"
         "${_hg_url}/jaxp/archive/${_jaxp_changeset}.tar.gz"
         "${_hg_url}/jaxws/archive/${_jaxws_changeset}.tar.gz"
         "${_hg_url}/jdk/archive/${_jdk_changeset}.tar.gz"
         "${_hg_url}/langtools/archive/${_langtools_changeset}.tar.gz"
+        "${_hg_url}/archive/${_openjdk_changeset}.tar.gz"
         "${_hg_url}/hotspot/archive/${_hotspot_changeset}.tar.gz"
-        'archlinux-disable_Werror.diff'
         'archlinux-fontconfig-paths.diff'
         'archlinux-fix_corba_cmds_path.diff'
         'archlinux-openjdk7_fix_jdk_cmds_path.diff'
         'archlinux-openjdk7_nonreparenting-wm.diff'
         'openjdk.profile.sh'
         'openjdk.profile.csh')
-sha256sums=('0f5ba163904f7c50374ab345216dd1b66c077fc431592eb3d4801f7ecda200b6'
-            '15a6eab62f5108efbf7937b1de7697bd789971886fc1fc08ee8199e16a5c10fe'
-            'b892b0db6f3e4f89fd480d46ecb7c9ce5c71a884ae5bfe953b4bda9eedf7ea93'
-            'ff4ab3710fe316b7adc4e57d4d21ff967ca20e2ccc5267ac26b93cd22db8b3fd'
-            '1ef055749ee46ebf7a5be94403b461d8d32e95c98906da459aeb217a0784ff1d'
-            '48a513d18c919ec08d44cffdc12ae65f1e8942924c6cfcca5c1ffa8ca38afd0e'
-            '17055cf1490fab1cccc57bf3aa5b32d655c408859790c7f671bfde180ddf70cb'
-            'b29a8929bb4aadbc033e99dca6a381ca6342f0373b9c3f67827bfc025187ba41'
-            '557910dc4e5e9b551641db129c3910abe572aba8744a83cc4bcbc1314c1d8386'
+sha256sums=('d7e87de527934fcbb06c162e0e119d9b118069f3f52a1420d303fe19c5d74ef2'
+            '8d94e9b594e4ae0eff6899cb4ff899ce66db3b4d6ef158e019b7be96e193ec0f'
+            '26991edc468b7599a332753a60ff861fde78af439d0a5b87d0e5b389d5e53fb5'
+            'a411bdde270bb0451b74fc9ba890159ed1f7070bc25f21b3ebd17b79b42805f8'
+            '74cd8b7c7ed1d80dd4cfa45565584ec1c24cfd5e10a32fc026b92f0ce27ff224'
+            'ded69ccf2baea82b7baf9050c64160733ff45c10c0a363de80d795618c494707'
+            'ae63f88590d4aa82de82322e6bb61b31157e49617a4f8c310fc4c4ab4690f528'
+            '25733b44590c950adc42a2e9c366b8a3992803c06dedcc16d2bf0d50fed54844'
             '9ad943ceb3dbcdf45d72974fc3667886a7ed65c69ab9abc17be5412827551a7f'
             '7b2db65bfb9d5014e1522178d65cabf05dfa85e0926cde5648b5a338db376479'
             'bd19edc12831b09834fbdbe60fd65577884a6bd9f175d21228ae75a84bd88f3a'
@@ -70,7 +69,7 @@ build() {
 
   # Prepare the patches
   cp *.diff "${srcdir}/icedtea-${_icedtea_release}/patches"
-  export DISTRIBUTION_PATCHES="patches/archlinux-disable_Werror.diff patches/archlinux-fontconfig-paths.diff patches/archlinux-fix_corba_cmds_path.diff patches/archlinux-openjdk7_fix_jdk_cmds_path.diff patches/archlinux-openjdk7_nonreparenting-wm.diff"
+  export DISTRIBUTION_PATCHES="patches/archlinux-fontconfig-paths.diff patches/archlinux-fix_corba_cmds_path.diff patches/archlinux-openjdk7_fix_jdk_cmds_path.diff patches/archlinux-openjdk7_nonreparenting-wm.diff"
 
   rm -rf build
   cp -r "icedtea-${_icedtea_release}" \
@@ -89,6 +88,7 @@ build() {
   export ALT_BOOTDIR="${_java_home}"
   export ALT_PARALLEL_COMPILE_JOBS="${MAKEFLAGS/-j}"
   export HOTSPOT_BUILD_JOBS="${ALT_PARALLEL_COMPILE_JOBS}"
+  export COMPILER_WARNINGS_FATAL="false"
 
   # Unset harmful variables
   unset JAVA_HOME JDK_HOME CLASSPATH JAVAC JAVACFLAGS
@@ -131,8 +131,8 @@ install="openjdk.install"
 conflicts=('java-environment' 'java-runtime' 'openjdk6' 'openjdk7')
 provides=("java-environment=${_icedtea_jdkver}" "java-runtime=${_icedtea_jdkver}")
 replaces=('openjdk6' 'openjdk7')
-depends=('alsa-lib' 'libpulse' 'giflib' 'libjpeg' 'libpng' 'freetype2'
-         'libpulse>=0.9.11' 'ca-certificates-java')
+depends=('alsa-lib' 'pulseaudio' 'giflib' 'libjpeg-turbo' 'libpng' 'freetype2'
+         'ca-certificates-java')
 optdepends=('icedtea-web: web browser plugin and Java Web Start support'
             'gtk2: for the GTK+ Look And Feel')
 
@@ -188,9 +188,11 @@ depends=("openjdk=${pkgver}")
   install -D -m644 "openjdk.build/j2sdk-image/src.zip" \
                    "${pkgdir}/${_jvmdir#/}/src.zip"
 
-  # Install the license file
-  install -D -m644 "openjdk/LICENSE" \
-                   "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+  # Not installing the license file anymore, since we depend on openjdk,
+  # which already provides it.
+  #
+  # install -D -m644 "openjdk/LICENSE" \
+  #                  "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
 }
 
 # vim:set ts=2 sw=2 et:

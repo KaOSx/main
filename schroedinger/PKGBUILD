@@ -1,28 +1,31 @@
-# $Id: PKGBUILD 79531 2010-05-04 09:01:27Z ibiru $
-# Maintainer: Ionut Biru <ibiru@archlinux.org>
-# Contributor: Timm Preetz <timm@preetz.us>
-# Contributor: rabyte <rabyte__gmail>
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer abveritas@chakra-project.org
+
 pkgname=schroedinger
-pkgver=1.0.9
-pkgrel=2
+pkgver=1.0.11
+pkgrel=1
 pkgdesc="An implemenation of the Dirac video codec in ANSI C code"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://www.diracvideo.org/"
 license=('GPL2' 'LGPL2' 'MPL' 'MIT')
-depends=('orc>=0.4.3')
+depends=('orc')
 makedepends=('pkgconfig')
 options=(!libtool)
-source=(http://www.diracvideo.org/download/schroedinger/$pkgname-$pkgver.tar.gz)
-md5sums=('d67ec48b7c506db8c8b49156bf409e60')
+source=("http://www.diracvideo.org/download/schroedinger/$pkgname-$pkgver.tar.gz")
+md5sums=('da6af08e564ca1157348fb8d92efc891')
 
 build() {
-  cd $srcdir/$pkgname-$pkgver
-
-  export LDFLAGS="${LDFLAGS//-Wl,--as-needed}"
+  cd "$srcdir/$pkgname-$pkgver"
+  
   ./configure --prefix=/usr
+  make
+}
 
-  make || return 1
-  make DESTDIR=$pkgdir install
+package() {
+  cd "$srcdir/$pkgname-$pkgver"
 
-  install -m644 -D COPYING.MIT $pkgdir/usr/share/licenses/$pkgname/COPYING.MIT
+  make DESTDIR="$pkgdir" install
+  install -m644 -D COPYING.MIT "$pkgdir/usr/share/licenses/$pkgname/COPYING.MIT"
 }

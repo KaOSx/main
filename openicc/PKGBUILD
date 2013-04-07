@@ -1,28 +1,28 @@
 # Platform Packages for Chakra, part of chakra-project.org
 #
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+# maintainer abveritas[at]chakra-project[dot]org>
 
 pkgname=openicc
-pkgver=1.0.1
+pkgver=1.3.1
 pkgrel=1
 pkgdesc="Colour management projects to share ICC related implementation details and data among graphics applications, libraries and color management services."
 url="http://www.freedesktop.org/wiki/OpenIcc"
-arch=('i686' 'x86_64')   
-makedepends=(make)
-depends=(xorg-server)
-source=("http://prdownloads.sourceforge.net/openicc/$pkgname-data-$pkgver.tar.gz")
-md5sums=('c2c956ad917c8bce8d9e98fb17724260')
-license=('GPL')
+arch=('x86_64') 
+license=('GPL')  
+depends=('xorg-server')
+source=("http://downloads.sourceforge.net/project/$pkgname/OpenICC-Profiles/icc-profiles-$pkgname-$pkgver.tar.bz2")
+md5sums=('d18ed8dc5e3f6792d445af67d5f3b0d6')
 
 build() {
-    cd $srcdir/$pkgname-data-$pkgver
-    ./configure --prefix=/usr  || return 1
-    make || return 1
+    cd $srcdir/icc-profiles-$pkgname-$pkgver
+    
+    ./configure --prefix=/usr 
+    make 
 }
 
 package() {
-    cd $srcdir/$pkgname-data-$pkgver
+    cd $srcdir/icc-profiles-$pkgname-$pkgver
+    
     make DESTDIR=$pkgdir install
 
 }

@@ -5,7 +5,7 @@
 # maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
 
 pkgname=xkeyboard-config
-pkgver=2.4.1
+pkgver=2.7
 pkgrel=1
 pkgdesc="X keyboard configuration files"
 arch=(any)
@@ -16,8 +16,8 @@ makedepends=('intltool')
 provides=('xkbdata')
 replaces=('xkbdata')
 conflicts=('xkbdata')
-source=(http://xorg.freedesktop.org/releases/individual/data/${pkgname}-${pkgver}.tar.bz2)
-sha1sums=('0596017597a6ead04ada1dda7e0b2de2ce597adb')
+source=(http://www.x.org/releases/individual/data/${pkgname}/${pkgname}-${pkgver}.tar.bz2)
+sha1sums=('e5db0175511103fdf360c45b958f79967e665693')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"

@@ -6,15 +6,16 @@
 pkgbase=gstreamer0.10-good
 pkgname=('gstreamer0.10-good' 'gstreamer0.10-good-plugins')
 pkgver=0.10.31
-pkgrel=2
-arch=('i686' 'x86_64')
+pkgrel=6
+arch=('x86_64')
 license=('LGPL')
-makedepends=('intltool' 'pkgconfig' 'gstreamer0.10-base>=0.10.36' 'libavc1394' 'libiec61883' 'aalib' 'libshout' 'libdv' 
-	     'flac' 'wavpack' 'taglib' 'libsoup' 'v4l-utils' 'libcaca' 'bzip2' 'gdk-pixbuf2' 'libpulse' 'jack' 'systemd')
+makedepends=('intltool' 'pkgconfig' 'gstreamer0.10-base>=0.10.36' 'libavc1394' 'libiec61883'
+             'aalib' 'libshout' 'libdv' 'flac' 'wavpack' 'taglib' 'libsoup' 'v4l-utils'
+             'libcaca' 'bzip2' 'gdk-pixbuf2' 'pulseaudio' 'jack' 'systemd')
 url="http://gstreamer.freedesktop.org/"
 options=(!libtool !emptydirs)
 source=(${url}/src/gst-plugins-good/gst-plugins-good-${pkgver}.tar.xz)
-md5sums=('555845ceab722e517040bab57f9ace95')
+sha256sums=('77a8436a7c0a15f876bad29616835046890df2bcaf72da02151bd91e3d292b64')
 
 build() {
   cd "${srcdir}/gst-plugins-good-${pkgver}"
@@ -40,6 +41,7 @@ package_gstreamer0.10-good() {
   conflicts=('gstreamer0.10-bad<=0.10.17')
 
   cd "${srcdir}/gst-plugins-good-${pkgver}"
+
   make GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1 DESTDIR="${pkgdir}" install 
   rm -rf "${pkgdir}/etc/gconf"
 }
@@ -54,6 +56,7 @@ package_gstreamer0.10-good-plugins() {
   provides=('gstreamer0.10-pulse')
 
   cd "${srcdir}/gst-plugins-good-${pkgver}"
+
   make -C sys DESTDIR="${pkgdir}" install 
   make -C ext GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1 DESTDIR="${pkgdir}" install 
   install -m755 -d "${pkgdir}/usr/share/gconf/schemas"

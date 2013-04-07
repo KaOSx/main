@@ -1,23 +1,19 @@
 #
 # Platform Packages for Chakra, part of chakra-project.org
 #
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
-
-# include global config
-source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+# maintainer abveritas@chakra-project.org
 
 pkgname=hdf5
-pkgver=1.8.5_patch1
+pkgver=1.8.9
 pkgrel=1
-arch=('i686' 'x86_64')
+arch=('x86_64')
 pkgdesc="General purpose library and file format for storing scientific data"
 url="http://www.hdfgroup.org/HDF5/"
 license=('custom')
 depends=('zlib' 'sh')
-source=(ftp://ftp.hdfgroup.org/HDF5/current/src/${pkgname}-${pkgver/_/-}.tar.bz2)
+source=("ftp://ftp.hdfgroup.org/HDF5/current/src/${pkgname}-${pkgver/_/-}.tar.bz2")
 options=('!libtool')
-md5sums=('27308a145e6c208d57db3f6f2634a0f6')
+md5sums=('33e105583417eff1c57fff910a53cd6f')
 
 build() {
   cd $srcdir/${pkgname}-${pkgver/_/-}
@@ -32,7 +28,7 @@ build() {
     --docdir=/usr/share/doc/hdf5/ \
     --with-pthread=/usr/lib/ \
     --disable-sharedlib-rpath
-  make || return 1
+  make 
 }
 
 package() {

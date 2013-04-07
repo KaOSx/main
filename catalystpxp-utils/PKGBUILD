@@ -4,38 +4,30 @@
 # maintainer abveritas@chakra-project.org
 
 pkgname=catalystpxp-utils
-pkgver=12.6
+pkgver=13.1
 pkgrel=1
 pkgdesc="AMD/ATI Catalyst drivers utilities and libraries. (with powerXpress support - experimental)"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://www.ati.amd.com"
 license=('custom')
 depends=('xorg-server>=1.11.0' 'xorg-server<1.13.0' 'netkit-bsd-finger' 'libxrandr' 'libsm' 'fontconfig' 'libxcursor' 'libxi' 'gcc-libs')
 optdepends=('qt: to run ATi Catalyst Control Center (amdcccle)'
             'libxxf86vm: to run ATi Catalyst Control Center (amdcccle)')
-if [ "${CARCH}" = "x86_64" ]; then
-    conflicts=('catalyst-testing' 'nvidia-utils' 'catalyst-utils' 'lib32-catalyst-utils' 'lib32-catalystpxp-utils')
-    provides=('libgl' "libatical=${pkgver}" "catalyst-utils=${pkgver}" "lib32-catalystpxp-utils=${pkgver}")
-else
-    conflicts=('catalyst-testing' 'nvidia-utils' 'catalyst-utils')
-    provides=('libgl' "libatical=${pkgver}" "catalyst-utils=${pkgver}")
-fi
+conflicts=('catalyst-testing' 'nvidia-utils' 'catalyst-utils' 'lib32-catalyst-utils' 'lib32-catalystpxp-utils')
+provides=('libgl' "libatical=${pkgver}" "catalyst-utils=${pkgver}" "lib32-catalystpxp-utils=${pkgver}")
 install=catalyst-utils.install
-
-source=(
-    http://www2.amd.com/drivers/linux/amd-driver-installer-${pkgver/./-}-x86.x86_64.run
-    lib32-catalyst.sh
-    lib32-catalystpxp.sh
-    catalyst.sh
-    amdcccle.desktop
-    atieventsd.sh
-    switchlibGL
-    switchlibglx
-    catalystpxp.sh
-    20-catalystpxp.conf
-    pxp_switch_catalyst)
-
-md5sums=('6bd4f0875202390ed7122696db29be77'
+source=(http://www2.amd.com/drivers/linux/amd-driver-installer-${pkgver/./-}-x86.x86_64.run
+        'lib32-catalyst.sh'
+        'lib32-catalystpxp.sh'
+        'catalyst.sh'
+        'amdcccle.desktop'
+        'atieventsd.sh'
+        'switchlibGL'
+        'switchlibglx'
+        'catalystpxp.sh'
+        '20-catalystpxp.conf'
+        'pxp_switch_catalyst')
+md5sums=('2bd5e4789a16b0fc857e68d10478c598'
          'af7fb8ee4fc96fd54c5b483e33dc71c4'
          'a6f2f8c17484624ab36fc3c820bbcb4f'
          'bdafe749e046bfddee2d1c5e90eabd83'
@@ -55,7 +47,7 @@ build() {
 package() {
 ##catalyst-utils section
   ## Install userspace tools and libraries
-    # Create directories
+      # Create directories
       install -m755 -d "${pkgdir}/etc/ati"
       install -m755 -d "${pkgdir}/etc/rc.d"
       install -m755 -d "${pkgdir}/etc/profile.d"
@@ -81,26 +73,17 @@ package() {
       install -m755 -d "${pkgdir}/usr/share/man/man8"
       install -m755 -d "${pkgdir}/usr/share/pixmaps"
 
-    # X.org driver
-      if [ "${CARCH}" = "i686" ]; then
-      cd "${srcdir}/archive_files/xpic/usr/X11R6/lib/modules" || return 1
-      elif [ "${CARCH}" = "x86_64" ]; then
+      # X.org driver
       cd "${srcdir}/archive_files/xpic_64a/usr/X11R6/lib64/modules" || return 1
-      fi
 
       install -m755 *.so "${pkgdir}/usr/lib/xorg/modules/" || return 1 # since 11.5
       install -m755 drivers/*.so "${pkgdir}/usr/lib/xorg/modules/drivers/" || return 1 # since 11.5
       install -m755 linux/*.so "${pkgdir}/usr/lib/xorg/modules/linux/" || return 1 # since 11.5
       install -m755 extensions/fglrx/fglrx-libglx.so "${pkgdir}/usr/lib/xorg/modules/updates/extensions/fglrx/fglrx-libglx.so" || return 1 # since 11.5
 
-    # Controlcenter / libraries
-      if [ "${CARCH}" = "i686" ]; then
-      cd "${srcdir}/archive_files/arch/x86/usr" || return 1
-      _lib=lib
-      elif [ "${CARCH}" = "x86_64" ]; then
+      # Controlcenter / libraries
       cd "${srcdir}/archive_files/arch/x86_64/usr" || return 1
       _lib=lib64
-      fi
 
       install -m755 X11R6/bin/* "${pkgdir}/usr/bin/" || return 1
       install -m755 sbin/* "${pkgdir}/usr/sbin/" || return 1
@@ -143,21 +126,21 @@ package() {
       install -m644 usr/share/man/man8/*.8 "${pkgdir}/usr/share/man/man8/" || return 1
       install -m644 "${srcdir}/amdcccle.desktop" "${pkgdir}/usr/share/applications/" || return 1
 
-    # ACPI example files
+      # ACPI example files
       install -m755 usr/share/doc/fglrx/examples/etc/acpi/*.sh "${pkgdir}/etc/acpi/" || return 1
       sed -i -e 's/usr\/X11R6/usr/g' "${pkgdir}/etc/acpi/ati-powermode.sh" || return 1
       install -m644 usr/share/doc/fglrx/examples/etc/acpi/events/* "${pkgdir}/etc/acpi/events/" || return 1
 
-    # Add ATI Events Daemon launcher
+      # Add ATI Events Daemon launcher
       install -m755 "${srcdir}/atieventsd.sh" "${pkgdir}/etc/rc.d/atieventsd" || return 1
 
-    # thanks to cerebral, we dont need that damned symlink
+      # thanks to cerebral, we dont need that damned symlink
       install -m755 "${srcdir}/catalyst.sh" "${pkgdir}/etc/profile.d/" || return 1
 
-    # License
+      # License
       install -m644 "${srcdir}/archive_files/LICENSE.TXT" "${pkgdir}/usr/share/licenses/${pkgname}/" || return 1
 
-    # powerXpress
+      # powerXpress
       install -m755 -d "${pkgdir}/usr/${_lib}/fglrx/"
       install -m755 "${srcdir}/switchlibGL" "${pkgdir}/usr/${_lib}/fglrx/" || return 1
       install -m755 "${srcdir}/switchlibglx" "${pkgdir}/usr/${_lib}/fglrx/" || return 1
@@ -169,8 +152,7 @@ package() {
       # switching script: switch xorg.conf + aticonfig --px-Xgpu + switchlibGL + add/remove fglrx into MODULES
       install -m755 "${srcdir}/pxp_switch_catalyst" "${pkgdir}/usr/bin" || return 1
       ##lib32-catalystpxp-utils section
-      if [ "${CARCH}" = "x86_64" ]; then
-      cd ${srcdir}
+         cd ${srcdir}
          install -D -m755 lib32-catalyst.sh ${pkgdir}/etc/profile.d/lib32-catalyst.sh || return 1
          install -D -m755 lib32-catalystpxp.sh ${pkgdir}/etc/profile.d/lib32-catalystpxp.sh || return 1
          # Install lib32 libraries
@@ -194,5 +176,4 @@ package() {
          ln -sf libXvBAW.so.1.0 libXvBAW.so.1 || return 1
          ln -sf libatiuki.so.1.0 libatiuki.so.1 || return 1
          ln -sf libatiuki.so.1.0 libatiuki.so || return 1
-      fi
 }

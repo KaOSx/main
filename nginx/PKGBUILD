@@ -1,4 +1,7 @@
-# Moved from the CCR
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer abveritas[at]chakra-project[dot]org
 # Contributor: <Yeking@Red54.com>
 
 _doc_root=/srv/http
@@ -10,10 +13,10 @@ _user=http
 _group=http
 
 pkgname=nginx
-pkgver=1.2.0
-pkgrel=2
+pkgver=1.2.6
+pkgrel=1
 pkgdesc="small, but very powerful and efficient web server and mail proxy"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 depends=('pcre' 'zlib' 'openssl')
 url="http://nginx.org"
 screenshot="http://wiki.nginx.org/local/nginx-logo.png"
@@ -29,12 +32,10 @@ backup=("etc/nginx/conf/fastcgi.conf"
 	"etc/nginx/conf/win-utf"
 	"etc/logrotate.d/nginx"
 	"etc/conf.d/nginx")
-source=(http://nginx.org/download/nginx-$pkgver.tar.gz
-	nginx
-	nginx.service)
-md5sums=('a02ef93d65a7031a1ea3256ad5eba626'
-         '0e8032d3ba26c3276e8c7c30588d375f'
-         '16c6b4cbe24001a3f4f58b9d5f4e3d4c')
+source=("http://nginx.org/download/nginx-$pkgver.tar.gz"
+	'nginx.service')
+md5sums=('1350d26eb9b66364d9143fb3c4366ab6'
+         '62d494d23aef31d0b867161f9fffa6eb')
 
 build() {
 	cd $srcdir/nginx-${pkgver}
@@ -103,7 +104,6 @@ EOF
 	ln -s $_log_path $pkgdir/$_server_root/logs
 	ln -s $_doc_root $pkgdir/$_server_root/html
 
-	install -D -m755 $srcdir/nginx $pkgdir/etc/rc.d/nginx
 	install -D -m644 LICENSE $pkgdir/usr/share/licenses/nginx/LICENSE
 	mkdir -p $pkgdir/etc/conf.d
 	echo "NGINX_CONFIG=/etc/nginx/conf/nginx.conf" >$pkgdir/etc/conf.d/nginx

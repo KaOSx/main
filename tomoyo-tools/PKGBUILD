@@ -5,12 +5,12 @@
 
 pkgname=tomoyo-tools
 _basever=2.5.0
-_timestamp=20120414
+_timestamp=20130214
 _file=53357
 pkgver=${_basever}.${_timestamp}
 pkgrel=1
 pkgdesc='TOMOYO Linux 2.5.x userspace tools for Linux kernel 2.6.35 LTS and 3.1'
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url='http://tomoyo.sourceforge.jp'
 license=('GPL')
 depends=('ncurses')
@@ -18,7 +18,7 @@ makedepends=('help2man')
 conflicts=('ccs-tools')
 install=tomoyo-tools.install
 source=("http://sourceforge.jp/frs/redir.php?f=/tomoyo/${_file}/${pkgname}-${_basever}-${_timestamp}.tar.gz")
-md5sums=('bbbb05db02d051f138be9983d6dfeedf')
+md5sums=('ffff6b531ed9ac32b01722a9cd749a2f')
 
 build() {
     cd "${srcdir}/${pkgname}"

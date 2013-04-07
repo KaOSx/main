@@ -4,41 +4,31 @@
 # maintainer abveritas@chakra-project.org
 
 pkgname=('phonon-backend-vlc')
-pkgver=0.5.0
-pkgrel=4
+pkgver=0.6.2
+pkgrel=1
 pkgdesc='Phonon VLC backend'
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url='http://phonon.kde.org'
 license=('LGPL')
 depends=('vlc' "phonon")
-makedepends=('qt' 'pkgconfig' 'cmake' 'automoc4' 'git' 'mesa')
+makedepends=('qt' 'pkgconfig' 'cmake' 'automoc4' 'mesa')
 groups=("kde-complete" "kde-uninstall")
 replaces=('phonon-vlc-svn' 'phonon-vlc')
 conflicts=('phonon-vlc-svn' 'phonon-vlc')
-source=("http://download.kde.org/stable/phonon/${pkgname}/$pkgver/src/${pkgname}-$pkgver.tar.xz")
-md5sums=('fc5dc2b353fa0d9e428ecfc3c485eb66')
-
-# create tarball: source PKGBUILD && mksource
-
-mksource() {
-        git clone git://anongit.kde.org/${_pkgname}
-        pushd ${_pkgname}
-        popd
-        tar -cvJf ${_pkgname}-${pkgver}.tar.xz ${_pkgname}/*
-        md5sum ${_pkgname}-${pkgver}.tar.xz
-}
+source=("http://download.kde.org/stable/phonon/${pkgname}/$pkgver/${pkgname}-$pkgver.tar.xz")
+md5sums=('1ae8b15594714841d2bcf8c72813a176')
 
 build() {
-	cd ${srcdir}
+	cd "${srcdir}"
 	mkdir -p build
 	cd build
-	cmake ../${pkgname}-$pkgver \
+	cmake "../${pkgname}-$pkgver" \
 		 -DCMAKE_BUILD_TYPE=Release \
 		 -DCMAKE_INSTALL_PREFIX=/usr
 	make
 }
 
 package() {
-	cd ${srcdir}/build
-	make DESTDIR=${pkgdir} install
+	cd "${srcdir}/build"
+	make DESTDIR="${pkgdir}" install
 } 

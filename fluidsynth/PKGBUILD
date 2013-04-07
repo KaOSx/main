@@ -1,26 +1,23 @@
 #
 # Platform Packages for Chakra, part of chakra-project.org
 #
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+# maintainer abveritas[at]chakra-project[dot]org>
 
 pkgname=fluidsynth
-pkgver=1.1.4
+pkgver=1.1.6
 pkgrel=2
 pkgdesc="A real-time software synthesizer based on the SoundFont 2 specifications"
-arch=("i686" "x86_64")
+arch=('x86_64')
 url="http://www.fluidsynth.org/"
-depends=('glib2' 'jack' 'dbus-core' 'libpulse')
+depends=('glib2' 'jack' 'dbus-core' 'pulseaudio')
 makedepends=('cmake' 'ladspa' 'doxygen')
-optdepends=('pulseaudio'
-            'bash: init script')
 license=('LGPL')
 backup=('etc/conf.d/fluidsynth')
 source=("http://downloads.sourceforge.net/$pkgname/$pkgname-$pkgver.tar.gz"
-	'fluidsynth.conf' 'fluidsynthd')
-md5sums=('71f297a90d00a253f0f12ceb5d3d661d'
+	'fluidsynth.conf' 'fluidsynth.service')
+md5sums=('ae5aca6de824b4173667cbd3a310b263'
          '16c5f4d4cbdddc6c5fcbd4fd4cc142f1'
-         'b296dbfb524c2164f552f68bd9abe2ec')
+         'e0406748a154409907df62292be32e8a')
 
 build() {
   cd "$srcdir/$pkgname-$pkgver"
@@ -40,6 +37,6 @@ package() {
   install -Dm644 "$srcdir/fluidsynth.conf" \
     "$pkgdir/etc/conf.d/fluidsynth"
 
-  install -Dm755 "$srcdir/fluidsynthd" \
-    "$pkgdir/etc/rc.d/fluidsynth"
+  install -Dm644 "$srcdir/fluidsynth.service" \
+    "$pkgdir/usr/lib/systemd/system/fluidsynth.service"
 }

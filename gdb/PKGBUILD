@@ -1,10 +1,10 @@
-# Platform packages for Chakra
+# Maintainer: abveritas@chakra-project.org
 
 pkgname=gdb
-pkgver=7.3.1
+pkgver=7.5.1
 pkgrel=1
 pkgdesc="The GNU Debugger"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://www.gnu.org/software/gdb/"
 license=('GPL3')
 depends=('ncurses' 'expat' 'python')
@@ -12,15 +12,15 @@ makedepends=('texinfo')
 backup=('etc/gdb/gdbinit')
 options=('!libtool')
 install=gdb.install
-source=(http://ftp.gnu.org/gnu/gdb/${pkgname}-${pkgver}.tar.bz2)
-md5sums=('b89a5fac359c618dda97b88645ceab47')
+source=("http://ftp.gnu.org/gnu/gdb/${pkgname}-${pkgver}.tar.bz2")
+md5sums=('3f48f468b24447cf24820054ff6e85b1')
 
 build() {
   cd ${srcdir}/${pkgname}-${pkgver}
   
   ./configure --prefix=/usr --disable-nls \
     --with-system-readline \
-    --with-python=/usr/bin/python \
+    --with-python=/usr/bin/python2 \
     --with-system-gdbinit=/etc/gdb/gdbinit
   make
 }

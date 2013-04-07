@@ -1,11 +1,14 @@
-# $Id: PKGBUILD 27265 2009-02-18 03:08:16Z eric $ 
-# Maintainer: Dorphell
-# Maintainer: Travis Willard <travisw@wmpub.ca> 
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# Maintainer: Adrian Chaves Fernandez (Gallaecio) <adriyetichaves@gmail.com>
+# Contributor: Dorphell
+# Contributor: Travis Willard <travisw@wmpub.ca> 
 # Contributor: Arkamririon <Arkamririon@gmx.net>
 
 pkgname=freealut
 pkgver=1.1.0
-pkgrel=3
+pkgrel=4
 pkgdesc="OpenAL Utility Toolkit (ALUT)"
 arch=('i686' 'x86_64')
 url="http://www.openal.org"
@@ -17,7 +20,12 @@ md5sums=('e089b28a0267faabdb6c079ee173664a')
 
 build() {
   cd $srcdir/$pkgname-$pkgver
-  ./configure --prefix=/usr 
-  make || return 1
+  ./configure \
+    --prefix=/usr 
+  make
+}
+
+package() {
+  cd $srcdir/$pkgname-$pkgver
   make DESTDIR=$pkgdir install
 }

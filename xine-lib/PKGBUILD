@@ -4,10 +4,10 @@
 # maintainer abveritas@chakra-project.org
 
 pkgname=xine-lib
-pkgver=1.2.1
-pkgrel=6
+pkgver=1.2.2
+pkgrel=4
 pkgdesc="A multimedia playback engine"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://www.xine-project.org"
 license=('LGPL' 'GPL')
 depends=('libxvmc' 'ffmpeg' 'libxinerama')
@@ -30,14 +30,18 @@ optdepends=('imagemagick: for using the imagemagick plugin' \
             'libcaca: for using the caca plugin' \
             'libbluray: for using the bluray plugin' \
             'libvdpau: for using the VDPAU plugin'
-            'libpulse: for using the pulse plugin')
+            'pulseaudio: for using the pulse plugin')
 options=('!libtool')
-source=(http://downloads.sourceforge.net/sourceforge/xine/${pkgname}-${pkgver}.tar.xz)
-sha1sums=('ebb2648456504ff4ce08c34de258d3125832bb94')
+source=("http://downloads.sourceforge.net/sourceforge/xine/${pkgname}-${pkgver}.tar.xz")
+sha1sums=('a349cbb0b72256bb262377796a022dcf63829b4c')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
-  ./configure --prefix=/usr --with-wavpack --enable-vdpau --disable-optimizations --disable-gnomevfs
+  ./configure --prefix=/usr \
+              --with-wavpack \
+              --enable-vdpau \
+              --disable-optimizations \
+              --disable-gnomevfs
   make
 }
 

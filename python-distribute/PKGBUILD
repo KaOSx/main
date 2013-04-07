@@ -3,22 +3,53 @@
 #
 # contributor (x86_64): Giuseppe Calà <jiveaxe@gmail.com>
 
-pkgname=python-distribute
-pkgver=0.6.25
-pkgrel=2
-pkgdesc="A collection of extensions to the Python 2 distutils"
+pkgbase=distribute
+pkgname=("python2-${pkgbase}" "python3-${pkgbase}")
+pkgver=0.6.35
+pkgrel=1
+pkgdesc="Easily download, build, install, upgrade, and uninstall Python packages"
 arch=('any')
 license=('PSF')
 url="http://packages.python.org/distribute"
+makedepends=('python2' 'python3')
+source=("https://pypi.python.org/packages/source/d/distribute/${pkgbase}-${pkgver}.tar.gz")
+md5sums=('e55298c7e3a233df1a47a4881a0c9800')
+
+build() {
+  msg2 "Starting the Python 2.x build"
+  cd "${srcdir}"
+  rm -rf "python2-${pkgbase}"
+  cp -r "${pkgbase}-${pkgver}" "python2-${pkgbase}"
+
+  cd "python2-${pkgbase}"
+  python2 setup.py build
+
+  msg2 "Starting the Python 3.x build"
+  cd "${srcdir}"
+  rm -rf "python3-${pkgbase}"
+  cp -r "${pkgbase}-${pkgver}" "python3-${pkgbase}"
+
+  cd "python3-${pkgbase}"
+  python3 setup.py build
+}
+
+package_python2-distribute() {
 depends=('python2')
 conflicts=('setuptools')
-replaces=('setuptools')
-provides=('setuptools=0.6c11')
-source=(http://pypi.python.org/packages/source/d/distribute/distribute-${pkgver}.tar.gz)
+replaces=('setuptools' 'python-distribute')
+provides=('setuptools=0.6c11' "python-distribute=${pkgver}")
 
-sha1sums=('6f402212f294840468d80dc154ebd454e76eba4b')
-
-package() {
-   cd ${srcdir}/distribute-${pkgver}
-   python2 setup.py install --prefix=/usr --root=${pkgdir}
+  cd "${srcdir}/python2-${pkgbase}"
+  python2 setup.py install --prefix=/usr --root="${pkgdir}"
+  rm "${pkgdir}/usr/bin/easy_install"
 }
+
+package_python3-distribute() {
+depends=('python3')
+
+  cd "${srcdir}/python3-${pkgbase}"
+  python3 setup.py install --prefix=/usr --root="${pkgdir}"
+  rm "${pkgdir}/usr/bin/easy_install"
+}
+
+# vim:set ts=2 sw=2 et:

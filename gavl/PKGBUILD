@@ -1,31 +1,30 @@
-#
-# Chakra Packages for Chakra, part of chakra-project.org
-#
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
-
-# include global config
-source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+# Maintainer: Neophytos Kolokotronis <tetris4@gmail.com>
+# Contributors from Arch: Lukas Fleischer <archlinux at cryptocrack dot de>
+#                         Robert Emil Berge <filoktetes@linuxophic.org>
+#                         Mateusz Herych <heniekk@gmail.com>
 
 pkgname=gavl
-pkgver=1.1.2
-pkgrel=1
+pkgver=1.4.0
+pkgrel=2
 pkgdesc="A low level library, upon which multimedia APIs can be built."
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://gmerlin.sourceforge.net/"
 license=('GPL')
 depends=('glibc' 'libpng')
 optios=(!libtool)
-source=(http://downloads.sourceforge.net/sourceforge/gmerlin/$pkgname-$pkgver.tar.gz libpng-1.4.patch)
-md5sums=('4a4e8b661a053c70f6842dc7a80f3d05'
-	 'd50270611b9f8cc7423bb685ed60c415')
+source=(http://downloads.sourceforge.net/sourceforge/gmerlin/$pkgname-$pkgver.tar.gz)
+md5sums=('2752013a817fbc43ddf13552215ec2c0')
 
 build() {
   cd $srcdir/$pkgname-$pkgver
-  patch -p0 -i ${srcdir}/libpng-1.4.patch || return 1
+
   ./configure --prefix=/usr \
         --without-doxygen \
         --with-cpuflags=none
-  make || return 1
+  make
+}
+
+package() {
+  cd $srcdir/$pkgname-$pkgver
   make DESTDIR=$pkgdir install
 }

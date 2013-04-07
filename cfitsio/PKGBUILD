@@ -1,23 +1,19 @@
 # Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
 # maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
-
-# include global config
-source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+# contributor: Phil Miller <philm[at]chakra-project[dog]org>
 
 pkgname=cfitsio
-pkgver=3280
+pkgver=3310
 pkgrel=1
 pkgdesc="A library of C and Fortran subroutines for reading and writing data files in FITS (Flexible Image Transport System) data format."
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://heasarc.gsfc.nasa.gov/docs/software/fitsio/fitsio.html"
 license=('GPL2')
 depends=('glibc')
 makedepends=('pkgconfig')
 options=('!libtool')
 source=(ftp://heasarc.gsfc.nasa.gov/software/fitsio/c/${pkgname}${pkgver}.tar.gz)
-md5sums=('fdb9c0f51678b47e78592c70fb5dc793')
+md5sums=('75b6411751c7f308d45b281b7beb92d6')
 
 build() {
   cd "${srcdir}"/${pkgname}
