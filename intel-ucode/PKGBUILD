@@ -1,0 +1,33 @@
+#
+# Platform packages for Chakra, part of chakra-project.org
+#
+# maintainer abveritas@chakra-project.org
+# contributor Thomas Bächler <thomas@archlinux.org>
+
+pkgname=intel-ucode
+pkgver=20120606
+pkgrel=1
+pkgdesc="Microcode update files for Intel CPUs"
+arch=('any')
+url="http://downloadcenter.intel.com/SearchResult.aspx?lang=eng&keyword=%22microcode%22"
+replaces=('microcode_ctl')
+license=('custom')
+source=(http://downloadmirror.intel.com/21385/eng/microcode-${pkgver}.tgz
+        LICENSE
+        intel-microcode2ucode.c)
+md5sums=('f1e57224265ff498971f50fe6824ba0a'
+         'b0f489ae4b3e36dc8827dc53a76047aa'
+         '0efc5f6c74a4d7e61ca22683c93c98cf')
+
+build() {
+  cd "$srcdir"
+  gcc -Wall ${CFLAGS} -o intel-microcode2ucode intel-microcode2ucode.c
+  ./intel-microcode2ucode ./microcode.dat
+}
+
+package() {
+  cd "$srcdir"
+  install -d -m755 "${pkgdir}"/usr/lib/firmware/intel-ucode/
+  cp intel-ucode/* "${pkgdir}"/usr/lib/firmware/intel-ucode/
+  install -D -m644 LICENSE "${pkgdir}"/usr/share/licenses/${pkgname}/LICENSE
+}
