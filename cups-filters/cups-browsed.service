@@ -1,0 +1,10 @@
+[Unit]
+Description=A daemon to browse remote Cups printers
+After=cups.service avahi-daemon.service
+Wants=cups.service avahi-daemon.service
+
+[Service]
+ExecStart=/usr/sbin/cups-browsed
+
+[Install]
+WantedBy=multi-user.target
