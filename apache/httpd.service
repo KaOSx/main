@@ -1,0 +1,14 @@
+[Unit]
+Description=Apache Webserver
+After=network.target
+
+[Service]
+Type=forking
+EnvironmentFile=/etc/conf.d/apache
+ExecStart=/usr/sbin/httpd -k start $OPTIONS
+ExecStop=/usr/sbin/httpd -k graceful-stop $OPTIONS
+ExecReload=/usr/sbin/httpd -k graceful $OPTIONS
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,22 @@
+---
+ configure | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/configure b/configure
+index a50d073..f4da5bf 100755
+--- a/configure
++++ b/configure
+@@ -3837,7 +3837,10 @@ enabled libnut     && require  libnut libnut.h nut_demuxer_init -lnut
+ enabled libopencore_amrnb  && require libopencore_amrnb opencore-amrnb/interf_dec.h Decoder_Interface_init -lopencore-amrnb
+ enabled libopencore_amrwb  && require libopencore_amrwb opencore-amrwb/dec_if.h D_IF_init -lopencore-amrwb
+ enabled libopencv  && require_pkg_config opencv opencv/cxcore.h cvCreateImageHeader
+-enabled libopenjpeg && require libopenjpeg openjpeg.h opj_version -lopenjpeg
++enabled libopenjpeg && { { check_lib openjpeg-1.5/openjpeg.h opj_version -lopenjpeg &&
++                           add_cflags -I"$sysinclude"/openjpeg-1.5; } ||
++                         check_lib openjpeg.h opj_version -lopenjpeg ||
++                         die "ERROR: libopenjpeg not found"; }
+ enabled libopus    && require_pkg_config opus opus_multistream.h opus_multistream_decoder_create
+ enabled libpulse && require_pkg_config libpulse-simple pulse/simple.h pa_simple_new
+ enabled librtmp    && require_pkg_config librtmp librtmp/rtmp.h RTMP_Socket
+-- 
+1.8.0.1
