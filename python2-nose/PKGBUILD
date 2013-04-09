@@ -1,0 +1,32 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# Maintainer:  Adrian Chaves Fernandez (Gallaecio) <adriyetichaves@gmail.com>
+# Contributor: Douglas Soares de Andrade <douglas@archlinux.org>
+# Contributor: Cilyan Olowen <gaknar@gmail.com>
+
+pkgname=python2-nose
+_pkgname=nose
+pkgver=1.2.1
+pkgrel=2
+pkgdesc="A discovery-based unittest extension"
+arch=('x86_64')
+url="http://www.somethingaboutorange.com/mrl/projects/nose/"
+license=('LGPL2')
+depends=('python-distribute')
+provides=('python-nose')
+conflicts=('python-nose')
+replaces=('python-nose')
+source=("http://pypi.python.org/packages/source/n/${_pkgname}/${_pkgname}-${pkgver}.tar.gz")
+md5sums=('735e3f1ce8b07e70ee1b742a8a53585a')
+
+build() {
+  cd "$srcdir/${_pkgname}-$pkgver"
+  sed -i -e "s:man/man1:share/man/man1:g" setup.py
+}
+
+package() {
+  cd "$srcdir/${_pkgname}-$pkgver"
+  python setup.py install --prefix=/usr --root=${pkgdir}
+}
+

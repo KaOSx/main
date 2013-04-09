@@ -1,0 +1,46 @@
+#
+# Apps Packages for Chakra, part of chakra-project.org
+#
+# maintainer (x86_64): Giuseppe calà <jiveaxe@gmail.com>
+
+_pkgbase='pidgin'
+pkgname='libpurple'
+pkgver=2.10.6
+pkgrel=1
+pkgdesc="IM library extracted from Pidgin"
+arch=('i686' 'x86_64')
+url="http://pidgin.im/"
+license=('GPL')
+makedepends=('startup-notification' 'libxss' 'nss' 'libsasl' 'python2' 'silc-toolkit' 'gstreamer0.10'
+             'farstream' 'avahi' 'tk' 'ca-certificates' 'intltool')
+depends=('farstream' 'libsasl' 'dbus-glib' 'silc-toolkit' 'nss' 'cyrus-sasl-plugins')
+optdepends=('dbus-python: for purple-remote and purple-url-handler')
+options=('!libtool')
+source=(http://downloads.sourceforge.net/${_pkgbase}/${_pkgbase}-${pkgver}.tar.bz2)
+md5sums=('a0ebb55083e2dfc22a75c504acde6a07')
+
+build() {
+    cd "${srcdir}/${_pkgbase}-${pkgver}"
+    sed -i "s#env python#env python2#" */plugins/*.py
+    sed -i "s#env python#env python2#" libpurple/purple-{remote,notifications-example,url-handler}
+    ./configure --prefix=/usr \
+                --sysconfdir=/etc \
+                --disable-schemas-install \
+                --disable-meanwhile \
+                --disable-gnutls \
+                --disable-gtkui \
+                --disable-screensaver \
+                --disable-sm \
+                --disable-nm \
+                --disable-gtkspell \
+                --enable-cyrus-sasl \
+                --disable-doxygen \
+                --with-python=/usr/bin/python2 \
+                --with-system-ssl-certs=/etc/ssl/certs
+    make
+
+	for dir in libpurple share/sounds share/ca-certs m4macros po
+    do
+        make -C "${dir}" DESTDIR="${pkgdir}" install
+    done
+}

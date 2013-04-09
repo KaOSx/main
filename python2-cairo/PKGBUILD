@@ -1,0 +1,31 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# Maintainer: Adrian Chaves Fernandez (Gallaecio) <adriyetichaves@gmail.com>
+
+pkgname=python2-cairo
+_pkgname=py2cairo
+pkgver=1.10.0
+pkgrel=2
+pkgdesc="Python bindings for the cairo graphics library"
+arch=('x86_64')
+license=('LGPL' 'MPL')
+depends=('python2' 'cairo>=1.10.0')
+conflicts=('pycairo')
+provides=('pycairo')
+replaces=('pycairo')
+options=('!libtool')
+source=("http://cairographics.org/releases/${_pkgname}-${pkgver}.tar.bz2")
+url="http://www.cairographics.org/pycairo"
+md5sums=('20337132c4ab06c1146ad384d55372c5')
+
+build() {
+  cd "${srcdir}/${_pkgname}-${pkgver}"
+  ./waf configure --prefix=/usr
+   ./waf build $MAKEFLAGS
+}
+
+package_python2-cairo() {
+    cd "${srcdir}/${_pkgname}-${pkgver}"
+    ./waf install --destdir="$pkgdir/"
+}

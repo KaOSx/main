@@ -1,0 +1,42 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# Maintainer: Adrian Chaves Fernandez (Gallaecio) <adriyetichaves@gmail.com>
+
+pkgname=python2-gobject
+_pkgname=pygobject
+pkgver=2.28.6
+pkgrel=3
+pkgdesc="Python bindings for GObject"
+arch=('x86_64')
+license=('LGPL')
+depends=('python2' 'glib2>=2.26.0' 'python2-cairo>=1.10.0' 'gobject-introspection>=0.9.6')
+provides=('pygobject')
+conflicts=('pygobject')
+replaces=('pygobject')
+source=("http://ftp.gnome.org/pub/gnome/sources/pygobject/2.28/${_pkgname}-${pkgver}.tar.bz2"
+        "python2-fix-type.patch::https://projects.archlinux.org/svntogit/packages.git/plain/trunk/python2-fix-type.patch?h=packages/pygobject2")
+options=('!libtool')
+url="http://www.pygtk.org/"
+sha256sums=('e4bfe017fa845940184c82a4d8949db3414cb29dfc84815fb763697dc85bdcee'
+            '486a60ae84e64c20ae25201df968074639ae4469fdc527d2e0f1e26f9f19df75')
+
+build() {
+  cd "${srcdir}/${_pkgname}-${pkgver}"
+  
+  patch -p1 -i "${srcdir}/python2-fix-type.patch"
+  
+  export PYTHON=/usr/bin/python2
+  ./configure \
+     --disable-introspection \
+    --prefix=/usr 
+  make
+}
+
+package() {
+  cd "${srcdir}/${_pkgname}-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+
+  find "$pkgdir"/usr/share/pygobject -name '*.py' | \
+    xargs sed -i "s|#![ ]*/usr/bin/env python$|#!/usr/bin/env python2|"
+}

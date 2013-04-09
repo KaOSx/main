@@ -1,0 +1,25 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# Maintainer:  Adrian Chaves Fernandez (Gallaecio) <adriyetichaves@gmail.com>
+
+pkgname=python2-urwid
+_pkgname=urwid
+pkgver=1.1.0
+pkgrel=1
+pkgdesc="Urwid is a curses-based user interface library."
+license=('GPL')
+arch=('i686' 'x86_64')
+depends=('python2')
+provides=('python-urwid')
+conflicts=('python-urwid')
+replaces=('python-urwid')
+url="http://excess.org/urwid/"
+source=(http://excess.org/${_pkgname}/${_pkgname}-$pkgver.tar.gz)
+md5sums=('aa607646b260c4284a0d246abb716f00')
+
+package() {
+  cd $srcdir/${_pkgname}-$pkgver
+  sed -i 's#bin/python#bin/python2#' ${_pkgname}/*.py
+  python2 setup.py install --prefix=/usr --root=$pkgdir
+}

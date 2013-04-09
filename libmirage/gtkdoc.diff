@@ -1,0 +1,16 @@
+--- a/libmirage/CMakeLists.txt	2012-12-09 18:06:35.000000000 -0500
++++ b/libmirage/CMakeLists.txt	2013-01-06 21:05:30.921363544 -0500
+@@ -28,12 +28,11 @@
+ include (GNUInstallDirs)
+ 
+ include (GObjectIntrospection)
+-include (GtkDoc)
+ include (Utilities)
+ include (FileList)
+ 
+ # Options
+-option (GTKDOC_ENABLED "Use gtk-doc to build documentation" on)
++option (GTKDOC_ENABLED "Use gtk-doc to build documentation" off)
+ option (INTROSPECTION_ENABLED "Generate gobject introspection files" on)
+ option (POST_INSTALL_HOOKS "Run post-install hooks" on)
+ 
