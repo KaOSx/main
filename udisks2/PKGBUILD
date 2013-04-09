@@ -1,0 +1,35 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer abveritas@chakra-project.org
+
+pkgname=udisks2
+pkgver=2.0.1
+pkgrel=1
+pkgdesc="Disk Management Service"
+arch=('x86_64')
+url="http://www.freedesktop.org/wiki/Software/udisks"
+license=('GPL')
+depends=('systemd' 'sg3_utils' 'glib2' 'dbus-glib' 'polkit' 'parted' 'device-mapper'
+         'libatasmart' 'lsof' 'lvm2' 'util-linux')
+makedepends=('intltool' 'docbook-xsl' 'python2')
+options=(!libtool)
+source=("http://udisks.freedesktop.org/releases/udisks-$pkgver.tar.bz2")
+md5sums=('c9e3e2031e775d6d7d935efc85c272bb')
+
+build() {
+  cd "${srcdir}/udisks-${pkgver}"
+  
+  ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var \
+      --with-systemdsystemunitdir=/usr/lib/systemd/system --disable-static
+  make
+}
+
+package() {
+  cd "${srcdir}/udisks-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+     bash_completiondir=/usr/share/bash-completion/completions
+  
+  #fix ntfs mounts
+  #sed -i -e 's|<allow_active>auth_admin_keep</allow_active>|<allow_active>yes</allow_active>|' ${pkgdir}/usr/share/polkit-1/actions/org.freedesktop.udisks2.policy
+}

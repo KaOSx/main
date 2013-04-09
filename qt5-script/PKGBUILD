@@ -1,0 +1,32 @@
+#
+# QT Packages for Chakra, part of chakra-project.org
+#
+# maintainer abveritas@chakra-project.org
+
+pkgname=qt5-script
+pkgver=5.0.1
+_pkgver=5.0.1
+pkgrel=1
+pkgdesc=('A cross-platform application and UI framework, QtScripts files')
+arch=('x86_64')
+url='http://qt.nokia.com/'
+license=('GPL3' 'LGPL')
+depends=('qt5-base')
+groups=('qt5')
+options=('!libtool')
+_pkgfqn="qtscript-opensource-src-${_pkgver}"
+source=("http://origin.releases.qt-project.org/qt5/${_pkgver}/submodules_tar/qtscript-opensource-src-${_pkgver}.tar.xz")
+md5sums=('349691431c3cc1b03e2571bac7c6c852')
+
+build() {
+    cd $srcdir/$_pkgfqn
+
+    /usr/lib/qt5/bin/qmake
+    make
+}
+
+package() {
+    cd $srcdir/$_pkgfqn
+    make INSTALL_ROOT=$pkgdir install
+}
+

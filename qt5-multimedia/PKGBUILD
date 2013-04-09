@@ -1,0 +1,31 @@
+# maintainer abveritas@chakra-project.org
+
+pkgname=qt5-multimedia
+pkgver=5.0.1
+_pkgver=5.0.1
+pkgrel=1
+pkgdesc=('A cross-platform application and UI framework, QtMultimedia files')
+arch=('x86_64')
+url='http://qt.nokia.com/'
+license=('GPL3' 'LGPL')
+depends=('qt5-declarative' 'openal' 'libxslt' 'libxcomposite' 'gstreamer0.10' 'gstreamer0.10-base'
+         'gstreamer0.10-base-plugins' 'gstreamer0.10-good-plugins' 'gstreamer0.10-bad-plugins'
+         'gstreamer0.10-ffmpeg' 'gstreamer0.10-ugly-plugins')
+options=('!libtool')
+groups=('qt5')
+_pkgfqn="qtmultimedia-opensource-src-${_pkgver}"
+source=("http://origin.releases.qt-project.org/qt5/${_pkgver}/submodules_tar/qtmultimedia-opensource-src-${_pkgver}.tar.xz")
+md5sums=('aee9c86a7ff64dfc905ccaef33f0a967')
+
+build() {
+    cd $srcdir/$_pkgfqn
+
+    /usr/lib/qt5/bin/qmake
+    make
+}
+
+package() {
+    cd $srcdir/$_pkgfqn
+    make INSTALL_ROOT=$pkgdir install
+}
+

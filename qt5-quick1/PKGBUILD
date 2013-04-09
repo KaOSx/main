@@ -1,0 +1,34 @@
+# maintainer abveritas@chakra-project.org
+
+pkgname=qt5-quick1
+pkgver=5.0.1
+_pkgver=5.0.1
+pkgrel=1
+pkgdesc=('A cross-platform application and UI framework, QtQuick1 files')
+arch=('x86_64')
+url='http://qt.nokia.com/'
+license=('GPL3' 'LGPL')
+depends=('qt5-webkit' 'qt5-script')
+options=('!libtool')
+groups=('qt5')
+_pkgfqn="qtquick1-opensource-src-${_pkgver}"
+source=("http://origin.releases.qt-project.org/qt5/${_pkgver}/submodules_tar/qtquick1-opensource-src-${_pkgver}.tar.xz")
+md5sums=('27820e2447e4c3b7ea75f5d4a16b9149')
+
+build() {
+    cd $srcdir/$_pkgfqn
+
+    /usr/lib/qt5/bin/qmake
+    make
+}
+
+package() {
+    cd $srcdir/$_pkgfqn
+    make INSTALL_ROOT=$pkgdir install
+    
+    mkdir -p ${pkgdir}/usr/bin
+    for i in $(ls ${pkgdir}/usr/lib/qt5/bin); do
+        ln -s /usr/lib/qt5/bin/${i} ${pkgdir}/usr/bin/${i}-qt5
+    done
+}
+

@@ -1,0 +1,44 @@
+# maintainer abveritas@chakra-project.org
+
+pkgname=qt5-tools
+pkgver=5.0.1
+_pkgver=5.0.1
+pkgrel=1
+pkgdesc=('A cross-platform application and UI framework, development tools and help files')
+arch=('x86_64')
+url='http://qt.nokia.com/'
+license=('GPL3' 'LGPL')
+depends=('qt5-webkit')
+optdepends=('qt5-doc: offline help documentation')
+groups=('qt5')
+options=('!libtool')
+_pkgfqn="qttools-opensource-src-${_pkgver}"
+source=("http://origin.releases.qt-project.org/qt5/${_pkgver}/submodules_tar/qttools-opensource-src-${_pkgver}.tar.xz"
+        'assistant.desktop' 'designer.desktop' 'linguist.desktop')
+md5sums=('f3cc602d4b720a847f4ab0953a82d8ef'
+         'fc211414130ab2764132e7370f8e5caa'
+         '85179f5e0437514f8639957e1d8baf62'
+         'f11852b97583610f3dbb669ebc3e21bc')
+
+build() {
+    cd $srcdir/$_pkgfqn
+
+    /usr/lib/qt5/bin/qmake
+    make
+}
+
+package() {
+    cd $srcdir/$_pkgfqn
+    make INSTALL_ROOT=$pkgdir install
+	
+    install -d ${pkgdir}/usr/share/applications
+    install -m644 ${srcdir}/assistant.desktop ${pkgdir}/usr/share/applications/
+    install -m644 ${srcdir}/designer.desktop ${pkgdir}/usr/share/applications/
+    install -m644 ${srcdir}/linguist.desktop ${pkgdir}/usr/share/applications/
+    
+    mkdir -p ${pkgdir}/usr/bin
+    for i in $(ls ${pkgdir}/usr/lib/qt5/bin); do
+        ln -s /usr/lib/qt5/bin/${i} ${pkgdir}/usr/bin/${i}-qt5
+    done
+}
+

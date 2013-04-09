@@ -1,0 +1,34 @@
+#
+# QT Packages for Chakra, part of chakra-project.org
+#
+# maintainer abveritas@chakra-project.org
+
+pkgname=qt5-doc
+pkgver=5.0.1
+_pkgver=5.0.1
+pkgrel=1
+pkgdesc=('A cross-platform application and UI framework, offline documentation files')
+arch=('x86_64')
+url='http://qt.nokia.com/'
+license=('GPL3' 'LGPL')
+depends=('qt5-base')
+groups=('qt5')
+options=('!libtool')
+_pkgfqn="qtdoc-opensource-src-${_pkgver}"
+source=("http://origin.releases.qt-project.org/qt5/${_pkgver}/submodules_tar/qtdoc-opensource-src-${_pkgver}.tar.xz")
+md5sums=('7dfdca73b57bb70032841ab1563ba605')
+
+build() {
+    cd $srcdir/$_pkgfqn
+    cd doc/qtdoc 
+    /usr/lib/qt5/bin/qmake
+    
+    make docs
+    #/usr/lib/qt5/bin/qdoc /chakra/platform-testing/qt5-doc/src/qtdoc-opensource-src-5.0.1/doc/config/qtdoc.qdocconf -outputdir html
+}
+
+package() {
+    cd $srcdir/$_pkgfqn
+    make INSTALL_ROOT=$pkgdir install_docs
+}
+

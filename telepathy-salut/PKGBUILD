@@ -1,0 +1,35 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# contributor (x86_64): Giuseppe Calà <jiveaxe@gmail.com>
+
+pkgname=telepathy-salut
+pkgver=0.8.0
+pkgrel=2
+pkgdesc="A link-local XMPP connection manager."
+arch=('i686' 'x86_64')
+url="http://telepathy.freedesktop.org/"
+license=('GPL')
+depends=('telepathy-glib' 'avahi' 'libsoup' 'sqlite3')
+makedepends=('libxslt' 'python2' 'xmldiff')
+install=telepathy-salut.install
+source=(http://telepathy.freedesktop.org/releases/$pkgname/$pkgname-$pkgver.tar.gz)
+md5sums=('43639c23de33e8466540de02816d23bf')
+
+build() {
+    cd "${srcdir}/${pkgname}-${pkgver}"
+    ./configure --prefix=/usr \
+    	--libexecdir=/usr/lib/telepathy \
+        --disable-plugins --disable-Werror \
+        --with-tls=openssl \
+        --enable-avahi-tests=no \
+        --enable-static=no
+
+    make
+}
+
+package() {
+    cd "${srcdir}/${pkgname}-${pkgver}"
+    make DESTDIR="${pkgdir}" install
+}
+

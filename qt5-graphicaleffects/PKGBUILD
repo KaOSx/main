@@ -1,0 +1,29 @@
+# maintainer abveritas@chakra-project.org
+
+pkgname=qt5-graphicaleffects
+pkgver=5.0.1
+_pkgver=5.0.1
+pkgrel=1
+pkgdesc=('A cross-platform application and UI framework, QtGraphicaleffects files')
+arch=('x86_64')
+url='http://qt.nokia.com/'
+license=('GPL3' 'LGPL')
+depends=('qt5-declarative')
+options=('!libtool')
+groups=('qt5')
+_pkgfqn="qtgraphicaleffects-opensource-src-${_pkgver}"
+source=("http://origin.releases.qt-project.org/qt5/${_pkgver}/submodules_tar/qtgraphicaleffects-opensource-src-${_pkgver}.tar.xz")
+md5sums=('99b1259b992c31ab4c938a4b69bb8c71')
+
+build() {
+    cd $srcdir/$_pkgfqn
+
+    /usr/lib/qt5/bin/qmake
+    make
+}
+
+package() {
+    cd $srcdir/$_pkgfqn
+    make INSTALL_ROOT=$pkgdir install
+}
+
