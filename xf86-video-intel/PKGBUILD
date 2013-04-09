@@ -1,23 +1,20 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
 
 pkgname=xf86-video-intel
-pkgver=2.21.3
-pkgrel=3
+pkgver=2.21.5
+pkgrel=1
 pkgdesc="X.org Intel i810/i830/i915/945G/G965+ video drivers"
 arch=('x86_64')
 url="http://xorg.freedesktop.org"
 license=('custom')
 depends=('mesa' 'libxvmc' 'libpciaccess' 'libdrm' 'xcb-util' 'libxfixes' 'systemd')
-makedepends=('xorg-server>=1.12.3' 'libx11' 'xf86driproto' 'glproto' 'libxrender')
+makedepends=('xorg-server>=1.12.3' 'libx11' 'xf86driproto' 'glproto' 'libxrender'
+             'resourceproto' 'scrnsaverproto')
 conflicts=('xorg-server<1.12.3' 'xf86-video-i810' 'xf86-video-intel-legacy')
 options=('!libtool')
 groups=('xorg-drivers' 'xorg')
 install=xf86-video-intel.install
 source=(${url}/releases/individual/driver/${pkgname}-${pkgver}.tar.bz2)
-sha1sums=('e09d16c2a3a4501cd9429f15fb9e5e4137870f8f')
+sha1sums=('41aaf6ada255b4094cb6b6cab8f990079d676e29')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"

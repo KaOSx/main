@@ -5,8 +5,8 @@
 
 pkgbase=qt5
 pkgname=('qt5' 'qt5-private-headers')
-pkgver=5.0.1.1
-_pkgver=5.0.1.1
+pkgver=5.1.0
+_pkgver=5.1.0-alpha
 pkgrel=1
 arch=('x86_64')
 url='http://qt.nokia.com/'
@@ -19,14 +19,13 @@ makedepends=('libtiff' 'libpng' 'libmng' 'sqlite3' 'ca-certificates' 'glib2' 'db
     'gstreamer0.10' 'gstreamer0.10-base' 'gstreamer0.10-base-plugins' 'gstreamer0.10-good-plugins'
     'gstreamer0.10-bad-plugins' 'gstreamer0.10-ffmpeg' 'gstreamer0.10-ugly-plugins')
 options=('!libtool')
-#_pkgfqn="qt-everywhere-opensource-src-${_pkgver}"
-_pkgfqn=qt5
-source=("${pkgname}.tar.xz"
-        #"http://origin.releases.qt-project.org/qt5/${_pkgver}/single/qt-everywhere-opensource-src-${_pkgver}.tar.xz"
+_pkgfqn="qt-everywhere-opensource-src-${_pkgver}"
+#_pkgfqn=qt5
+source=("http://download.qt-project.org/development_releases/qt/5.1/${_pkgver}/single/qt-everywhere-opensource-src-${_pkgver}.tar.xz"
         'assistant.desktop' 'designer.desktop' 'linguist.desktop' 'qtconfig.desktop'
         'youtubeview.desktop' 'flickrview.desktop' 'browser.desktop' 'fancybrowser.desktop' 'qmlviewer.desktop'
         'defaultbookmarks_new.diff')
-md5sums=('96a54524c1fa7ecccc114dc6e848717a'
+md5sums=('a532cdcf33c8ac88f7d4c0aa88d36eec'
          'fc211414130ab2764132e7370f8e5caa'
          '85179f5e0437514f8639957e1d8baf62'
          'f11852b97583610f3dbb669ebc3e21bc'

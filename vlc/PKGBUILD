@@ -1,11 +1,8 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
+# Maintainer: abveritas@chakra-project.org
 
 pkgname=vlc
-pkgver=2.0.5
-pkgrel=2
+pkgver=2.0.6
+pkgrel=1
 arch=('x86_64')
 url="http://www.videolan.org/vlc/"
 license=('GPL')
@@ -18,7 +15,7 @@ depends=('a52dec' 'fluidsynth' 'libmtp' 'libdvbpsi' 'libxpm' 'libcdio'
 makedepends=('avahi' 'pkgconfig' 'live-media' 'libnotify' 'libbluray'
              'flac' 'libtheora' 'alsa-lib' 'jack' 'kdelibs' 'systemd'
              'libraw1394' 'libdc1394' 'libavc1394' 'libva' 'pulseaudio'
-             'lirc-utils' 'gnutls' 'libcaca' 'librsvg' 'oss')
+             'lirc-utils' 'gnutls' 'libcaca' 'librsvg')
 optdepends=('avahi: for service discovery using bonjour protocol'
             'libnotify: for notification plugin'
             'ncurses: for ncurses interface support'
@@ -29,8 +26,7 @@ optdepends=('avahi: for service discovery using bonjour protocol'
             'pulseaudio: PulseAudio support'
             'vdpau-video: vdpau back-end for nvidia'
             'libva-driver-intel: back-end for intel cards'
-            'libbluray: for Blu-Ray disks'
-            'oss: for oss sound support')
+            'libbluray: for Blu-Ray disks')
 conflicts=('vlc-plugin')
 replaces=('vlc-plugin')
 backup=('usr/share/vlc/http/.hosts'
@@ -41,7 +37,7 @@ categories=('multimedia')
 options=('!libtool')
 install="vlc.install"
 source=("http://download.videolan.org/pub/videolan/$pkgname/$pkgver/$pkgname-$pkgver.tar.xz")
-sha1sums=('31bd518f4edd03ea394305176e5df3478e251cc0')
+sha1sums=('2ce21c949275702452bb1327febf6e98748a7972')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
@@ -53,6 +49,8 @@ build() {
               --disable-rpath \
               --enable-faad \
               --enable-oss \
+              --disable-rpath \
+              --enable-faad \
               --enable-dbus-control \
               --enable-nls \
               --enable-lirc \
@@ -74,6 +72,5 @@ package() {
     install -D -m644 "${srcdir}/vlc-${pkgver}/share/icons/${res}x${res}/vlc.png" \
         "${pkgdir}/usr/share/icons/hicolor/${res}x${res}/apps/vlc.png"
   done
-  
 }
 

@@ -1,22 +1,18 @@
-#
-# Chakra Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
 
 pkgname=xf86-video-nouveau
-pkgver=1.0.6
+pkgver=1.0.7
 pkgrel=1
 pkgdesc="Open Source 3D acceleration driver for nVidia cards"
 arch=('x86_64')
 url="http://nouveau.freedesktop.org/"
 license=('GPL') #and MIT, not yet a license file, see http://nouveau.freedesktop.org/wiki/FAQ#head-09f75d03eb30011c754038a3893119a70745de4e
 depends=('libdrm' 'systemd' 'mesa')
-makedepends=('xorg-server' 'xf86driproto')
+makedepends=('xorg-server' 'xf86driproto' 'resourceproto' 'scrnsaverproto')
 conflicts=('xorg-server<1.12.3')
 options=('!libtool') # 'force')
 install=${pkgname}.install
 source=("http://xorg.freedesktop.org/archive/individual/driver/$pkgname-$pkgver.tar.bz2")
-md5sums=('140e819c983fc01ed7a52d915dcffd74')
+md5sums=('383e398283e7bae30d6ce1617ccbd3a4')
 
 build() {
   cd ${srcdir}/$pkgname-$pkgver

@@ -1,23 +1,19 @@
-#
-# Chakra Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
 
 pkgname=xorg-server
-pkgver=1.12.3
-pkgrel=3
+pkgver=1.14.0
+pkgrel=1
 pkgdesc="X.Org X servers"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 license=('custom')
 url="http://xorg.freedesktop.org"
 depends=('xproto' 'randrproto' 'renderproto' 'xextproto' 'inputproto' 'kbproto' 'fontsproto'
          'videoproto' 'dri2proto' 'xineramaproto' 'xorg-util-macros' 'pixman' 'libpciaccess'
-         'libxfont' 'libxi' 'mesa' 'libgcrypt' 'libxv' 'libxau' 'libxaw' 'libxrender' 'libdmx'
+         'libxfont' 'libxi' 'mesa-wayland' 'libgcrypt' 'libxv' 'libxau' 'libxaw' 'libxrender' 'libdmx'
          'libdrm' 'libxfixes' 'libxext' 'libxdmcp' 'libxau' 'systemd' 'xf86-input-evdev'
-         'xkeyboard-config' 'xorg-xkb-utils' 'xorg-fonts-misc')
+         'xkeyboard-config' 'xorg-xkb-utils' 'xorg-fonts-misc' 'xf86dgaproto')
 makedepends=('libx11' 'xf86driproto' 'xcmiscproto' 'xtrans' 'bigreqsproto'
              'compositeproto' 'recordproto' 'scrnsaverproto' 'resourceproto' 'libxkbfile'
-             'xf86dgaproto' 'libxmu' 'dmxproto' 'libxtst' 'libxres' 'links')
+             'libxmu' 'dmxproto' 'libxtst' 'libxres' 'links')
 backup=('etc/X11/xorg.conf.d/10-evdev.conf' 'etc/X11/xorg.conf.d/10-quirks.conf')
 options=('!libtool')
 provides=('x-server')
@@ -28,7 +24,7 @@ source=("${url}/releases/individual/xserver/${pkgname}-${pkgver}.tar.bz2"
         'xvfb-run.1'
         '10-quirks.conf'
         'autoconfig-sis.patch')
-sha1sums=('f3f3d59f3c5e15459152987ffc644f06a0d1374f'
+sha1sums=('62b35456ece3e2bb9944b0c1f8b880ec02aab91e'
           '746f0204050ceca7caa111b52a87336b7356dcd2'
           'c94f742d3f9cabf958ae58e4015d9dd185aabedc'
           '6838fc00ef4618c924a77e0fb03c05346080908a'
