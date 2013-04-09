@@ -1,0 +1,52 @@
+# Platform Packages for Chakra
+# Maintainer: Neophytos Kolokotronis <tetris4@gmail.com>
+# Contributions from AUR: https://aur.archlinux.org/packages/primus-git/
+
+pkgname=primus
+pkgver=20130225
+pkgrel=2
+pkgdesc="Faster OpenGL offloading for Bumblebee (git sources)"
+arch=('x86_64')
+url="https://github.com/amonakov/primus"
+license=('custom:ISC')
+depends=('bumblebee' 'mesa' 'nvidia-utils-bumblebee')
+makedepends=('git')
+provides=('primus')
+conflicts=('primus')
+source=("${pkgname}-${pkgver}.tar.xz")
+md5sums=('a14c23f09dcb94265ae5e9379b02d064')
+
+# create tarball: source PKGBUILD && mksource
+
+mksource() {
+    if [ "${1}" = "" ] ; then
+        git clone git://github.com/amonakov/primus.git ${pkgname}
+    else
+        git clone -b "${1}" git://github.com/amonakov/primus.git ${pkgname}
+    fi
+    pushd ${pkgname}
+    popd
+    rm ${pkgname}/PKGBUILD
+    tar -cvJf ${pkgname}-${pkgver}.tar.xz ${pkgname}
+    md5sum ${pkgname}-${pkgver}.tar.xz
+}
+
+build() {
+  cd "${srcdir}/${pkgname}"
+  make
+}
+
+package() {
+  cd "${srcdir}/${pkgname}"
+
+  install -D "lib/libGL.so.1" "$pkgdir/usr/lib/primus/libGL.so.1"
+  sed -e "s#^PRIMUS_libGL=.*#PRIMUS_libGL='/usr/\$LIB/primus'#" primusrun > primusrun.dist
+  install -D "primusrun.dist" "$pkgdir/usr/bin/primusrun"
+  
+  install -D "primus.bash-completion" "$pkgdir/etc/bash_completion.d/primusrun"
+  
+  gzip -9 "primusrun.1"
+  install -D "primusrun.1.gz" "$pkgdir/usr/share/man/man1/primusrun.1.gz"
+
+  install -D -m644 LICENSE.txt "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}

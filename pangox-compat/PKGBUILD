@@ -1,0 +1,32 @@
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer abveritas@chakra-project.org
+# contributor Jan Alexander Steffens (heftig) <jan.steffens@gmail.com>
+
+pkgname=pangox-compat
+pkgver=0.0.2
+pkgrel=1
+pkgdesc="X Window System font support for Pango"
+arch=('x86_64')
+license=('LGPL')
+depends=('pango')
+options=('!libtool')
+source=("http://ftp.gnome.org/pub/gnome/sources/${pkgname}/${pkgver:0:3}/${pkgname}-${pkgver}.tar.xz")
+url="http://www.pango.org/"
+md5sums=('7bcbd0187f03e1e27af9a81e07249c33')
+
+build() {
+  cd ${pkgname}-${pkgver}
+
+  ./configure --prefix=/usr \
+              --sysconfdir=/etc \
+              --localstatedir=/var \
+              --disable-static
+  make
+}
+
+package() {
+  cd ${pkgname}-${pkgver}
+  
+  make -j1 DESTDIR="${pkgdir}" install
+}

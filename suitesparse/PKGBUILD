@@ -1,0 +1,43 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer abveritas@chakra-project.org
+# contributor Ronald van Haren <ronald.archlinux.org>
+
+pkgname=suitesparse
+pkgver=4.0.2
+pkgrel=1
+pkgdesc="A collection of sparse matrix libraries"
+url="http://www.cise.ufl.edu/research/sparse/SuiteSparse/"
+arch=('x86_64')
+conflicts=('umfpack')
+provides=('umfpack')
+replaces=('umfpack')
+depends=('blas' 'lapack')
+makedepends=('gcc-fortran')
+license=('GPL')
+source=("http://www.cise.ufl.edu/research/sparse/SuiteSparse/SuiteSparse-$pkgver.tar.gz")
+md5sums=('efe53b7ef2b529d54727815231a5a6a9')
+
+build() {
+   cd "$srcdir"/SuiteSparse
+   export CFLAGS=" ${CFLAGS} -DNPARTITION"
+   
+   make -C SuiteSparse_config/xerbla
+   make -C SuiteSparse_config
+   for _lib in AMD CAMD COLAMD BTF KLU LDL CCOLAMD UMFPACK CHOLMOD CXSparse SPQR; do
+      make -C ${_lib} library
+   done
+}
+
+
+package() {
+   cd "${srcdir}"/SuiteSparse
+   install -dm755 "${pkgdir}"/usr/{lib,include}
+   
+   for _lib in SuiteSparse_config AMD CAMD COLAMD BTF KLU LDL CCOLAMD UMFPACK CHOLMOD CXSparse SPQR; do
+      make -C ${_lib} INSTALL_LIB="${pkgdir}"/usr/lib INSTALL_INCLUDE="${pkgdir}"/usr/include install
+   done
+
+   chmod 644 "${pkgdir}"/usr/include/*.{h,hpp}
+}

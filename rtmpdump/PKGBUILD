@@ -1,0 +1,27 @@
+#
+# Chakra Packages for Chakra, part of chakra-project.org
+#
+# maintainer abveritas@chakra-project.org
+
+pkgname=rtmpdump
+pkgver=2.4
+pkgrel=2
+pkgdesc="A tool to download rtmp streams"
+arch=('x86_64')
+url="http://rtmpdump.mplayerhq.hu/"
+license=('GPL2' 'LGPL2.1')
+depends=('openssl')
+categories=('network')
+source=("http://rtmpdump.mplayerhq.hu/download/${pkgname}-${pkgver}.tar.gz")
+md5sums=('8241345cf6476c1c1b9689494d6e820f')
+
+build() {
+  cd "${srcdir}/${pkgname}"  
+  make
+}
+
+package() {
+  cd "${srcdir}/${pkgname}"
+  install -d -m755 "${pkgdir}/usr/lib"
+  make prefix=/usr mandir=/usr/share/man DESTDIR="${pkgdir}" install
+}
