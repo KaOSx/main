@@ -15,9 +15,6 @@ post_upgrade() {
   if [ "${postgres_shell}" = "/sbin/nologin" ]; then
     chsh -s /bin/bash postgres
   fi
-  echo ">>> Please edit the file /etc/conf.d/postgresql"
-  echo ">>> and remove the trailing hash sign in front of"
-  echo '>>> PGROOT="/var/lib/postgres"'
 }
 
 post_remove() {

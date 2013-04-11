@@ -1,11 +1,7 @@
-#
-# Chakra Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas[at]chakra-project[dot]org>
 
 pkgbase=postgresql
 pkgname=('postgresql-libs' 'postgresql-docs' 'postgresql')
-pkgver=9.2.3
+pkgver=9.2.4
 _majorver=${pkgver%.*}
 pkgrel=1
 arch=('x86_64')
@@ -18,13 +14,12 @@ source=("ftp://ftp.postgresql.org/pub/source/v${pkgver}/postgresql-${pkgver}.tar
 	'postgresql.logrotate'
 	'postgresql.service'
 	'postgresql-initdb')
-sha256sums=('c4f5a63290c0c32d8d9899edee8188d0c8ab124a7199b154fac75e62eec35f7f'
-            '419550699aae3d19715e87e51f32d1ad50cbb5d3175794f5476697572383b4e3'
-            '57dfd072fd7ef0018c6b0a798367aac1abb5979060ff3f9df22d1048bb71c0d5'
-            '6abb842764bbed74ea4a269d24f1e73d1c0b1d8ecd6e2e6fb5fb10590298605e'
-            '7014ccc8f3bbac8be9473a43fca2ed4037ee04e56d8e07d6027b3b4ef0317c89'
-            'c22f82a3cf5b555935039853fab2d7e5ff6188cdb1fb528fa9171a87b94f42b0')
-
+md5sums=('6ee5bb53b97da7c6ad9cb0825d3300dd'
+         'b183543b09acac8ed11d9edefd36e578'
+         '96f82c38f3f540b53f3e5144900acf17'
+         'd28e443f9f65a5712c52018b84e27137'
+         '1ec1fbf1ce998324248c543e6cc2c5e6'
+         '1488a98a5d5d96a04416e4f5872223bf')
 build() {
   cd "${srcdir}/postgresql-${pkgver}"
 
@@ -41,12 +36,12 @@ build() {
               --with-system-tzdata=/usr/share/zoneinfo \
               --enable-nls \
               --enable-thread-safety
-
   make world
 }
 
 package_postgresql-libs() {
   pkgdesc="Libraries for use with PostgreSQL"
+
   depends=('krb5' 'openssl>=1.0.0' 'readline>=6.0')
   provides=('postgresql-client')
   conflicts=('postgresql-client')
