@@ -1,22 +1,20 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
 
 pkgname=libfontenc
 pkgver=1.1.1
-pkgrel=1
+pkgrel=2
 pkgdesc="X11 font encoding library"
-arch=(x86_64)
+arch=('x86_64')
 url="http://xorg.freedesktop.org/"
 license=('custom')
 depends=('zlib')
 makedepends=('pkgconfig' 'xproto')
 options=('!libtool')
 source=(${url}/releases/individual/lib/${pkgname}-${pkgver}.tar.bz2)
-sha1sums=('90bdd53d75585dd0f06ad7bc23faccd8a01bb733')
+md5sums=('a2a861f142c3b4367f14fc14239fc1f7')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
+  
   ./configure --prefix=/usr --sysconfdir=/etc \
       --localstatedir=/var --disable-static \
       --with-encodingsdir=/usr/share/fonts/encodings
@@ -26,6 +24,7 @@ build() {
 package() {
   cd "${srcdir}/${pkgname}-${pkgver}"
   make DESTDIR="${pkgdir}" install
+  
   install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
   install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
 }

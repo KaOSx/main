@@ -1,21 +1,18 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# Maintainer: Neophytos Kolokotronis <tetris4@gmail.com>
 
 pkgname=xtrans
 pkgver=1.2.7
-pkgrel=1
+pkgrel=2
 pkgdesc="X transport library"
-arch=(any)
+arch=('x86_64')
 license=('custom')
 url="http://xorg.freedesktop.org/"
 options=(!emptydirs)
 source=(${url}/releases/individual/lib/${pkgname}-${pkgver}.tar.bz2)
-sha1sums=('b6ed421edf577816f6e641e1846dc0bff337676c')
+md5sums=('84c66908cf003ad8c272b0eecbdbaee3')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
+  
   ./configure --prefix=/usr
   make
 }
@@ -23,6 +20,7 @@ build() {
 package() {
   cd "${srcdir}/${pkgname}-${pkgver}"
   make DESTDIR="${pkgdir}" install
+  
   install -Dm644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/COPYING"
   install -m755 -d "${pkgdir}/usr/lib"
   mv "${pkgdir}/usr/share/pkgconfig" "${pkgdir}/usr/lib/pkgconfig"
