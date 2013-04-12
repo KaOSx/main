@@ -1,7 +1,3 @@
-#
-# Chakra Packages for Chakra, part of chakra-project.org
-#
-# maintainer: Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
 
 pkgname=valgrind
 pkgver=3.8.1
@@ -10,19 +6,25 @@ pkgdesc="A tool to help find memory-management problems in programs"
 arch=('x86_64')
 license=('GPL')
 url="http://valgrind.org/"
-depends=('glibc>=2.15' 'glibc<2.16' 'perl')
+depends=('glibc>=2.17' 'glibc<2.18' 'perl')
 makedepends=('gdb')
 options=('!emptydirs')
-source=(http://valgrind.org/downloads/${pkgname}-${pkgver}.tar.bz2)
-md5sums=('288758010b271119a0ffc0183f1d6e38')
+source=("http://valgrind.org/downloads/${pkgname}-${pkgver}.tar.bz2"
+        'glibc-2.17.patch')
+md5sums=('288758010b271119a0ffc0183f1d6e38'
+         '0e8e13799eef0c286f0fc976692fa06e')
 
 build() {
   cd ${srcdir}/${pkgname}-${pkgver}
+  
+  patch -p1 -i $srcdir/glibc-2.17.patch
+  
   ./configure --prefix=/usr --mandir=/usr/share/man --enable-only64bit
   make
 }
 
 package() {
   cd ${srcdir}/${pkgname}-${pkgver}
+  
   make DESTDIR=${pkgdir} install
 }

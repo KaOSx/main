@@ -1,64 +1,81 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
 
-pkgname=pulseaudio
+pkgname="pulseaudio-git"
+_pkgname="pulseaudio"
 pkgdesc="A featureful, general-purpose sound server"
-pkgver=3.0
-pkgrel=4
+pkgver=20130214
+pkgrel=1
 arch=('x86_64')
 url="http://pulseaudio.org/"
 license=('GPL' 'LGPL')
 depends=('dbus-core' 'xcb-util' 'libasyncns' 'libcap' 'libxtst' 'libsm'
          'libsamplerate' 'json-c' 'rtkit' 'libltdl' 'speex' 'tdb'
          'fftw' 'orc' 'webrtc-audio-processing' 'systemd>=195' 'sbc')
-makedepends=('attr' 'libltdl' 'avahi' 'bluez' 'intltool' 'jack' 'lirc-utils' 'openssl'
+makedepends=('git' 'attr' 'libltdl' 'avahi' 'bluez' 'intltool' 'jack' 'lirc-utils' 'openssl'
              'libsndfile' 'pkgconfig' 'sh')
 optdepends=('avahi: zeroconf support'
             'bluez: bluetooth support'
             'jack: jack support'
             'lirc-utils: infra-red support'
             'openssl: RAOP support')
-backup=(etc/pulse/{daemon.conf,default.pa,system.pa})
-install="pulseaudio.install"
-provides=("libpulse=${pkgver}")
-replaces=('libpulse')
-conflicts=('libpulse')
+backup=(etc/pulse/{daemon.conf,default.pa,system.pa,client.conf})
+provides=('pulseaudio=3.0' 'libpulse=3.0')
+conflicts=('pulseaudio' 'libpulse')
+replaces=('pulseaudio' 'libpulse')
 options=(!emptydirs !libtool !makeflags)
-#source=("http://freedesktop.org/software/${pkgname}/releases/${pkgname}-${pkgver}.tar.xz")
-source=("http://chakra.sourceforge.net/sources/${pkgname}/${pkgname}.tar.xz")
-md5sums=('10049e1fa0577be38ba04d8bab159fd1')
+
+source=(${_pkgname}.xinit)
+md5sums=('eb1cfae28eb2e4d3fdbe45a90e4318ab')
+
+
+_gitroot="git://anongit.freedesktop.org/pulseaudio/pulseaudio"
+_gitname="pulseaudio"
 
 build() {
-  cd "${srcdir}/${pkgname}"
+  cd "$srcdir"
+  msg "Connecting to GIT server...."
 
-  ./autogen.sh --prefix=/usr \
-               --sysconfdir=/etc \
-               --libexecdir=/usr/lib \
-               --localstatedir=/var \
-               --with-udev-rules-dir=/usr/lib/udev/rules.d \
-               --with-database=tdb \
-               --disable-rpath \
-               --disable-default-build-tests
+  if [ -d $_gitname ] ; then
+    cd $_gitname && git pull origin
+    msg "The local files are updated."
+  else
+    git clone $_gitroot $_gitname
+  fi
+
+  msg "GIT checkout done or server timeout"
+  msg "Starting make..."
+
+  rm -rf "$srcdir/$_gitname-build"
+  git clone "$srcdir/$_gitname" "$srcdir/$_gitname-build"
+  cd "$srcdir/$_gitname-build"
+
+ ./autogen.sh --prefix=/usr \
+              --sysconfdir=/etc \
+              --libexecdir=/usr/lib \
+              --localstatedir=/var \
+              --with-udev-rules-dir=/usr/lib/udev/rules.d \
+              --with-database=tdb \
+              --disable-rpath \
+              --disable-default-build-tests
 
   make
 }
 
 package() {
-  cd "${srcdir}/${pkgname}"
-  make DESTDIR="${pkgdir}" install
+  cd "$srcdir/$_gitname-build"
+  make DESTDIR="$pkgdir" install
+
+  # Lower resample quality
+  sed -e '/resample-method/iresample-method=speex-float-0' \
+      -i "$pkgdir/etc/pulse/daemon.conf"
 
   # Disable cork-request module, can result in e.g. media players unpausing
   # when there's a Skype call incoming
   sed -e 's|/usr/bin/pactl load-module module-x11-cork-request|#&|' \
-      -i "${pkgdir}/usr/bin/start-pulseaudio-x11"
+      -i "$pkgdir/usr/bin/start-${_pkgname}-x11"
 
-  # Python fix
-  sed -i '1s:python$:&2:' "${pkgdir}/usr/bin/qpaeq"
+  install -Dm755 "$srcdir/${_pkgname}.xinit" "$pkgdir/etc/X11/xinit/xinitrc.d/${_pkgname}"
 
-  rm "${pkgdir}/etc/dbus-1/system.d/pulseaudio-system.conf"
+  rm "$pkgdir/etc/dbus-1/system.d/${_pkgname}-system.conf"
   rm "${pkgdir}/etc/xdg/autostart/pulseaudio.desktop"
   rm "${pkgdir}/etc/xdg/autostart/pulseaudio-kde.desktop"
-  
 }
