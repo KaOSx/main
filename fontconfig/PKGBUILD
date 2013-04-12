@@ -1,64 +1,48 @@
-#
-# Chakra Packages for Chakra, part of chakra-project.org
-#
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
-
-# include global config
-source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
 
 pkgname=fontconfig
-pkgver=2.8.0
-pkgrel=3
+pkgver=2.10.92
+pkgrel=1
 pkgdesc="A library for configuring and customizing font access"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://www.fontconfig.org/release/"
 license=('custom')
-depends=('expat>=2.0.1' 'freetype2>=2.3.11')
+depends=('expat' 'freetype2>=2.4.11')
 options=('!libtool')
 install='fontconfig.install'
 source=("http://www.fontconfig.org/release/${pkgname}-${pkgver}.tar.gz"
-        '29-replace-bitmap-fonts.conf'
-        '30-urw-aliases.patch'
-        '60-latin.patch')
-md5sums=('77e15a92006ddc2adbb06f840d591c0e'
-         'f6b67e8cc79197ed6abd4701911e83da'
-         '51bc6cb633b50f3c28793361738aac5b'
-         'ecc708d0aeea85064f738974c1b4e7fd')
+        'git_fixes.diff')
+md5sums=('5738838ef01f4c77fe33eeac2ceafe4d'
+         'dc9b419cc1eaf3b8fb6ade9a9363105a')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
 
-  patch -Np1 -i "${srcdir}/30-urw-aliases.patch"
-  patch -Np1 -i "${srcdir}/60-latin.patch" # prefer DejaVu over Bitstream
+  patch -p1 -i "${srcdir}/git_fixes.diff"
 
-  # enable Position Independent Code for prelinking
-  export CFLAGS="${CFLAGS} -fPIC"
+  libtoolize -f
+  autoreconf -fi
 
   ./configure --prefix=/usr \
-              --sysconfdir=/etc \
-              --localstatedir=/var
-
+    --sysconfdir=/etc \
+    --with-templatedir=/etc/fonts/conf.avail \
+    --with-xmldir=/etc/fonts \
+    --localstatedir=/var \
+    --disable-static \
+    --with-default-fonts=/usr/share/fonts \
+    --with-add-fonts=/usr/share/fonts
   make
 }
 
-package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
-
-  make DESTDIR="${pkgdir}" install
-
-  install -m644 "${srcdir}/29-replace-bitmap-fonts.conf" \
-      "${pkgdir}/etc/fonts/conf.avail"
-
-  # Removing the configuration files, we will symlink those in the .install hook
-  rm -f "${pkgdir}/etc/fonts/conf.d"/*.conf
-
-  # Remove this configuration file, which looks like it's deprecated
-  rm -f "${pkgdir}/etc/fonts/local.conf"
-
-  # Install license
-  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
-  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}"
+check() {
+  cd "$srcdir/$pkgname-$pkgver"
+  make -k check
 }
 
-# vim:set ts=2 sw=2 et:
+package() {
+  cd "$srcdir/$pkgname-$pkgver"
+  make DESTDIR="$pkgdir" install
+
+  #Install license
+  install -m755 -d "$pkgdir/usr/share/licenses/$pkgname"
+  install -m644 COPYING "$pkgdir/usr/share/licenses/$pkgname"
+}
