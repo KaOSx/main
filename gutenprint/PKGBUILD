@@ -1,13 +1,9 @@
-#
-# KDE SC Packages for Chakra, part of chakra-project.org
-#
-# maintainer abevritas@chakra-project.org
 
 pkgname=gutenprint
 pkgver=5.2.9
-pkgrel=1
+pkgrel=2
 pkgdesc="Top quality printer drivers for POSIX systems."
-arch=('i686' 'x86_64')
+arch=('x86_64')
 license=('GPL')
 install=gutenprint.install
 depends=('glibc') 
@@ -17,7 +13,6 @@ optdepends=('cups:		to use cups printer spooler(recommended)'
             'ghostscript:	adds postscript support for ijsgutenprint')
 source=("http://downloads.sourceforge.net/gimp-print/$pkgname-$pkgver.tar.bz2")
 url="http://gimp-print.sourceforge.net/"
-replaces=('gimp-print' 'gutenprint')
 options=('!libtool' '!emptydirs')
 md5sums=('aefbec27b96dd404d9ac9811e17d58ce')
 

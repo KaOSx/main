@@ -1,10 +1,7 @@
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakraproject.org
 
 pkgname=cups-filters
-pkgver=1.0.29
-pkgrel=3
+pkgver=1.0.34
+pkgrel=1
 pkgdesc="OpenPrinting CUPS Filters"
 arch=('x86_64')
 url="http://www.linuxfoundation.org/collaborate/workgroups/openprinting"
@@ -18,15 +15,12 @@ optdepends=('ghostscript: for non-PostScript printers to print with CUPS to conv
 backup=(etc/fonts/conf.d/99pdftoopvp.conf)
 options=(!libtool)
 source=("http://www.openprinting.org/download/cups-filters/$pkgname-$pkgver.tar.gz"
-        'cups-browsed.service'
-        'poppler_buildfix.diff')
-md5sums=('0640a02a3fb88d3dbdb224e3becd400d'
-         'c1101c052abfd93759d4963f6f6c36f0'
-         '8029f71aa240f5ed814bcdc900ec1b27')
+        'cups-browsed.service')
+md5sums=('fea9cad6bbb14ab0635243ed5d1d5c77'
+         'c1101c052abfd93759d4963f6f6c36f0')
 
 build() {
   cd "$srcdir/$pkgname-$pkgver"
-  patch -p0 -i "${srcdir}"/poppler_buildfix.diff
   
   ./configure --prefix=/usr  \
     --sysconfdir=/etc \

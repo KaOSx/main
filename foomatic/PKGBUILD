@@ -1,44 +1,28 @@
-#
-# Chakra Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
  
 pkgbase="foomatic"
 pkgname=('foomatic-db' 'foomatic-filters' 'foomatic-db-engine' 'foomatic-db-nonfree')
-arch=('i686' 'x86_64') # needs to be changed  in the subpackages when makepkg will support it
-_snapdate=20121003
+arch=('x86_64') 
+_snapdate=20130412
 _filtersver=4.0.17
-_relver=4.0.8
+_relver=4.0.9
 pkgver=${_filtersver}_${_snapdate}
 pkgrel=1
 makedepends=('cups' 'perl' 'libxml2' 'enscript' 'perl' 'net-snmp' 'bash')
 source=("http://www.openprinting.org/download/foomatic/${pkgbase}-filters-${_filtersver}.tar.gz"
         "http://www.openprinting.org/download/foomatic/${pkgbase}-db-engine-${_relver}.tar.gz"
-        "http://chakra-linux.org/sources/foomatic/${pkgbase}-db-4.0-${_snapdate}.tar.gz"
-        "http://chakra-linux.org/sources/foomatic/${pkgbase}-db-nonfree-${_snapdate}.tar.gz")
+        "http://www.openprinting.org/download/foomatic/${pkgbase}-db-4.0-${_snapdate}.tar.gz"
+        "http://www.openprinting.org/download/foomatic/${pkgbase}-db-nonfree-${_snapdate}.tar.gz")
 url="http://www.linuxprinting.org/foomatic.html"
 options=('!emptydirs')
-sha256sums=('a2e2e53e502571e88eeb9010c45a0d54671f15707ee104f5c9c22b59ea7a33e3'  #foomatic-filters-4.0.17.tar.gz
-            'f0c4892ae5566ea2efaae8bd58352fd32001d112f2f9dfff63f7de03b46733e1'  #foomatic-db-engine-4.0.8.tar.gz
-            '9fc867ecb126f671876d295369937155ba2ee9b5eed0236aa3f4a6b072c219bd'  #foomatic-db-4.0-20121003.tar.gz
-            'ebb96c815a31bdeb6753d20b0c7d7422a6c7c72df66909b21ea6e6f0e0090138') #foomatic-db-nonfree-20121003.tar.gz
-
-# source PKGBUILD && _get-tarballs
-_get-tarballs() {
-  wget http://www.openprinting.org/download/foomatic/$pkgbase-filters-${_filtersver}.tar.gz
-  wget http://www.openprinting.org/download/foomatic/$pkgbase-db-engine-${_relver}.tar.gz
-  wget http://www.openprinting.org/download/foomatic/$pkgbase-db-4.0-${_snapdate}.tar.gz
-  wget http://www.openprinting.org/download/foomatic/$pkgbase-db-nonfree-${_snapdate}.tar.gz
-  sha256sum $pkgbase-filters-*
-  sha256sum $pkgbase-db-engine-*
-  sha256sum $pkgbase-db-4.0-*
-  sha256sum $pkgbase-db-nonfree-*
-}
+md5sums=('b05f5dcbfe359f198eef3df5b283d896'
+         '5b33c1adb21e7b6f3652e9a18d0e6f4e'
+         '1fe411527aedb6f0445815b2d071c68e'
+         'c2cce1d33e7c0b0ddddcc78ceeeaf8d1') 
 
 package_foomatic-db() {
 
   pkgdesc="Foomatic - The collected knowledge about printers, drivers, and driver options in XML files, used by foomatic-db-engine to generate PPD files."
-  arch=('any')
+  arch=('x86_64')
   license=('GPL' 'custom')
   depends=('perl' 'libxml2')
 
@@ -51,7 +35,7 @@ package_foomatic-db() {
 package_foomatic-filters() {
 
   pkgdesc="Foomatic - Filter scripts used by the printer spoolers to convert the incoming PostScript data into the printer's native format."
-  arch=('i686' 'x86_64')
+  arch=('x86_64')
   license=('GPL')
   backup=(etc/foomatic/filter.conf)
   depends=('glibc' 'dbus-core')
@@ -67,7 +51,7 @@ package_foomatic-filters() {
 package_foomatic-db-engine() {
 
   pkgdesc="Foomatic - Foomatic's database engine generates PPD files from the data in Foomatic's XML database. It also contains scripts to directly generate print queues and handle jobs."
-  arch=(i686 x86_64)
+  arch=('x86_64')
   license=('GPL')
   depends=('perl' 'libxml2' 'foomatic-filters' 'bash')
 
