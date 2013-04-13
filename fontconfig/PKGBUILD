@@ -10,9 +10,11 @@ depends=('expat' 'freetype2>=2.4.11')
 options=('!libtool')
 install='fontconfig.install'
 source=("http://www.fontconfig.org/release/${pkgname}-${pkgver}.tar.gz"
-        'git_fixes.diff')
+        'git_fixes.diff'
+        '29-replace-bitmap-fonts.conf')
 md5sums=('5738838ef01f4c77fe33eeac2ceafe4d'
-         'dc9b419cc1eaf3b8fb6ade9a9363105a')
+         'dc9b419cc1eaf3b8fb6ade9a9363105a'
+         '526b95ebde1b07eb5dbc5d71fb613ed1')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
@@ -41,6 +43,10 @@ check() {
 package() {
   cd "$srcdir/$pkgname-$pkgver"
   make DESTDIR="$pkgdir" install
+  
+  install -m644 "$srcdir/29-replace-bitmap-fonts.conf" "$pkgdir/etc/fonts/conf.avail"
+  ln -s ../conf.avail/29-replace-bitmap-fonts.conf \
+    "$pkgdir/etc/fonts/conf.d/29-replace-bitmap-fonts.conf"
 
   #Install license
   install -m755 -d "$pkgdir/usr/share/licenses/$pkgname"
