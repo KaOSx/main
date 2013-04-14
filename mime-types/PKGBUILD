@@ -1,23 +1,17 @@
-# $Id: PKGBUILD 78058 2010-04-19 08:48:25Z dgriffiths $
-# Contributer: Jan de Groot <jgc@archlinux.org>
-# Maintainer: Daniel J Griffiths <ghost1227@archlinux.us>
 
 pkgname=mime-types
-pkgver=1.0
-pkgrel=3
-pkgdesc="Provides /etc/mime.types"
-arch=('any')
-url="http://www.archlinux.org/"
+pkgver=8
+pkgrel=1
+pkgdesc='Provides /etc/mime.types'
+url='http://www.gentoo.org/'
 license=('GPL2')
+arch=('x86_64')
 backup=('etc/mime.types')
-source=(mime.types)
-md5sums=('aa90248272ba2e9dca0a243746686739')
-
-build() {
-	/bin/true
-}
+source=("http://mirrors.kernel.org/gentoo/distfiles/${pkgname}-${pkgver}.tar.bz2")
+md5sums=('f430547953dcd3e094dd0aa8754488bc')
 
 package() {
-	cd ${srcdir}
-	install -Dm644 mime.types ${pkgdir}/etc/mime.types || return 1
+	cd "${srcdir}/${pkgname}-${pkgver}"
+
+	install -Dm644 mime.types "${pkgdir}"/etc/mime.types
 }
