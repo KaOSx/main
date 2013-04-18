@@ -1,14 +1,9 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
-
 # NOTE: Disabled the gtk2 module so no gtk-preview
 
 pkgbase=mlt
 pkgname=('mlt' 'mlt-python-bindings')
 pkgver=0.8.8
-pkgrel=1
+pkgrel=4
 pkgdesc="An open source multimedia framework"
 arch=('x86_64')
 url="http://www.mltframework.org"
@@ -17,12 +12,16 @@ depends=('sdl_image' 'libsamplerate' 'libdv' 'qt' 'sox' 'libxml2' 'ffmpeg>=0.11'
          'frei0r-plugins' 'swig' 'python2')
 optdepends=('jack')
 makedepends=('subversion')
-source=("http://downloads.sourceforge.net/sourceforge/$pkgname/$pkgname-$pkgver.tar.gz")
-md5sums=('06de4052cffd6760c468d7da9557edae')
+source=("http://downloads.sourceforge.net/sourceforge/$pkgname/$pkgname-$pkgver.tar.gz"
+        'exit_segmentation.patch')
+md5sums=('06de4052cffd6760c468d7da9557edae'
+         '66af1675993ed4e77130e5c16252b808')
 
 build() {
   # mlt
   cd "${srcdir}/mlt-${pkgver}"
+  
+  patch -p1 -i "$srcdir/exit_segmentation.patch"
 
   msg "SSE2=$SSE2"
   ./configure --prefix=/usr \
