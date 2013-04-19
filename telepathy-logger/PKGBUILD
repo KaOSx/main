@@ -1,13 +1,9 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer (x86_64): Giuseppe calà <jiveaxe@gmail.com>
 
 pkgname=telepathy-logger
-pkgver=0.4.0
-pkgrel=4
+pkgver=0.8.0
+pkgrel=1
 pkgdesc="Telepathy framework logging daemon"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://telepathy.freedesktop.org/wiki/Logger"
 license=('LGPL2.1')
 depends=('telepathy-glib' 'sqlite3' 'libxml2' 'dconf')
@@ -15,7 +11,7 @@ makedepends=('intltool' 'gobject-introspection' 'libxslt')
 install=${pkgname}.install
 options=('!libtool')
 source=("http://telepathy.freedesktop.org/releases/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('0b891b860c7f3a01926f5cc22fd26120')
+md5sums=('e513eaa767344821073a0b7bb8b45217')
 
 build() {
   cd "$srcdir/$pkgname-$pkgver"
@@ -30,6 +26,7 @@ build() {
 
 package() {
   cd "$srcdir/$pkgname-$pkgver"
+  
   make DESTDIR="$pkgdir/" install
   rm -r $pkgdir/usr/share/gtk-doc
 }

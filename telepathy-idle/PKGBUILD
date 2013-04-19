@@ -1,11 +1,7 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
 
 pkgname=telepathy-idle
 pkgver=0.1.14
-pkgrel=1
+pkgrel=2
 pkgdesc="An IRC connection manager for Telepathy"
 arch=('x86_64')
 url="http://telepathy.freedesktop.org"
@@ -19,6 +15,7 @@ md5sums=('c292c54aa08f61544ab53fda880d861c')
 
 build() {
     cd "${pkgname}-${pkgver}"
+    
     ./configure --prefix=/usr \
     	--libexecdir=/usr/lib/telepathy
     make
@@ -26,5 +23,6 @@ build() {
 
 package() {
     cd "${pkgname}-${pkgver}"
+    
     make DESTDIR="${pkgdir}" install
 }

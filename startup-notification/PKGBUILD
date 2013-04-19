@@ -1,14 +1,9 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
 
 pkgname=startup-notification
 pkgver=0.12
-pkgrel=1
+pkgrel=2
 pkgdesc="Monitor and display application startup."
-arch=('i686' 'x86_64')
+arch=('x86_64')
 license=('LGPL')
 depends=('libx11' 'libsm' 'xcb-util>=0.3.4')
 options=('!libtool')
@@ -18,13 +13,14 @@ md5sums=('2cd77326d4dcaed9a5a23a1232fb38e9')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
+  
   ./configure --prefix=/usr --localstatedir=/var --sysconfdir=/etc
   make
 }
 
 package() {
   cd "${srcdir}/${pkgname}-${pkgver}"
+  
   make DESTDIR="${pkgdir}" install
 }
 
-# vim:set ts=2 sw=2 et:

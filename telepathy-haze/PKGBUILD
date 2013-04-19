@@ -1,11 +1,7 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
 
 pkgname=telepathy-haze
-pkgver=0.6.0
-pkgrel=3
+pkgver=0.7.0
+pkgrel=1
 pkgdesc="A telepathy-backend to use libpurple (Pidgin) protocols."
 arch=('x86_64')
 url="http://telepathy.freedesktop.org"
@@ -16,10 +12,11 @@ install=telepathy-haze.install
 groups=('telepathy')
 conflicts=('papyon' 'telepathy-butterfly')
 source=("http://telepathy.freedesktop.org/releases/${pkgname}/${pkgname}-${pkgver}.tar.gz")
-md5sums=('622e0b2f7ff4050a29f907f2ef0f039c')
+md5sums=('85ae58b06a3a94ccfab7080a834bc684')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
+  
   ./configure --prefix=/usr --libexecdir=/usr/lib/telepathy
   make
 }

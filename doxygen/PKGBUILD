@@ -1,9 +1,6 @@
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
 
 pkgname=doxygen
-pkgver=1.8.2
+pkgver=1.8.3.1
 pkgrel=1
 pkgdesc="A documentation system for C++, C, Java, IDL and PHP"
 license=('GPL')
@@ -14,15 +11,17 @@ makedepends=('flex')
 optdepends=('graphviz: for caller/callee graph generation'
             'qt: for doxywizard')
 source=("ftp://ftp.stack.nl/pub/users/dimitri/${pkgname}-${pkgver}.src.tar.gz")
-md5sums=('6fa7baf995fa3f71cfc09e264ba88a83')
+md5sums=('31b0aaab51c5cab7db9f0ebbe9f85530')
 
 build() {
   cd ${srcdir}/${pkgname}-${pkgver}
+  
   QTDIR=/usr ./configure --prefix /usr --with-doxywizard
   make 
 }
 
 package() {
   cd ${srcdir}/${pkgname}-${pkgver}
+  
   make INSTALL=${startdir}/pkg/usr MAN1DIR=share/man/man1 install
 }
