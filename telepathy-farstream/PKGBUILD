@@ -1,11 +1,10 @@
-# Maintainer: Neophytos Kolokotronis <tetris4@gmail.com>
-# Contributor: Ionut Biru <ibiru@archlinux.org>
 
+# keep at 0.4.x until ktp is ready
 pkgname=telepathy-farstream
 pkgver=0.4.0
-pkgrel=3
+pkgrel=4
 pkgdesc="A telepathy-backend to use stream engine."
-arch=(i686 x86_64)
+arch=('x86_64')
 url="http://telepathy.freedesktop.org"
 license=('LGPL2.1')
 depends=('telepathy-glib' 'farstream')
@@ -15,7 +14,7 @@ replaces=('telepathy-farsight')
 provides=('telepathy-farsight')
 groups=('telepathy')
 options=('!libtool')
-source=(http://telepathy.freedesktop.org/releases/$pkgname/$pkgname-$pkgver.tar.gz)
+source=("http://telepathy.freedesktop.org/releases/$pkgname/$pkgname-$pkgver.tar.gz")
 md5sums=('52d110f8a9f27bce0a6c2c07e18aee56')
 
 build() {
@@ -30,6 +29,7 @@ build() {
 
 package() {
   cd "$pkgname-$pkgver"
+  
   make DESTDIR="$pkgdir" install
 }
 

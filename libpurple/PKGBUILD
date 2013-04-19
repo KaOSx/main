@@ -1,22 +1,18 @@
-#
-# Apps Packages for Chakra, part of chakra-project.org
-#
-# maintainer (x86_64): Giuseppe calà <jiveaxe@gmail.com>
 
 _pkgbase='pidgin'
 pkgname='libpurple'
-pkgver=2.10.6
+pkgver=2.10.7
 pkgrel=1
 pkgdesc="IM library extracted from Pidgin"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://pidgin.im/"
 license=('GPL')
-makedepends=('startup-notification' 'libxss' 'nss' 'libsasl' 'python2' 'silc-toolkit' 'gstreamer0.10'
-             'farstream' 'avahi' 'tk' 'ca-certificates' 'intltool')
 depends=('farstream' 'libsasl' 'dbus-glib' 'silc-toolkit' 'nss' 'cyrus-sasl-plugins')
+makedepends=('startup-notification' 'libxss' 'nss' 'python2' 'gstreamer0.10'
+             'avahi' 'tk' 'ca-certificates' 'intltool')
 optdepends=('dbus-python: for purple-remote and purple-url-handler')
 options=('!libtool')
-source=(http://downloads.sourceforge.net/${_pkgbase}/${_pkgbase}-${pkgver}.tar.bz2)
+source=("http://downloads.sourceforge.net/${_pkgbase}/${_pkgbase}-${pkgver}.tar.bz2")
 md5sums=('a0ebb55083e2dfc22a75c504acde6a07')
 
 build() {
@@ -38,9 +34,12 @@ build() {
                 --with-python=/usr/bin/python2 \
                 --with-system-ssl-certs=/etc/ssl/certs
     make
+}
 
-	for dir in libpurple share/sounds share/ca-certs m4macros po
-    do
-        make -C "${dir}" DESTDIR="${pkgdir}" install
+package() {
+    cd "${srcdir}/${_pkgbase}-${pkgver}"
+    
+    for dir in libpurple share/sounds share/ca-certs m4macros po
+    do  make -C "${dir}" DESTDIR="${pkgdir}" install
     done
 }

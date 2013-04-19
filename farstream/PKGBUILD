@@ -1,10 +1,10 @@
-# Maintainer : Anke Boersma <abveritas@chakra-project.org>
 
+# keep at 1.2 until ktp is ready
 pkgname=farstream
 pkgver=0.1.2
-pkgrel=2
+pkgrel=3
 pkgdesc="Farstream (formerly Farsight) - Audio/Video Communications Framework"
-arch=(i686 x86_64)
+arch=('x86_64')
 url="http://www.freedesktop.org/wiki/Software/Farstream"
 license=('LGPL2.1')
 depends=('libnice' 'gstreamer0.10-base' 'gstreamer0.10-bad-plugins' 'gstreamer0.10-good' 'gstreamer0.10-ffmpeg')
@@ -13,22 +13,26 @@ conflicts=('farsight2')
 replaces=('farsight2')
 provides=('farsight2')
 options=(!libtool)
-source=(http://freedesktop.org/software/$pkgname/releases/$pkgname/$pkgname-$pkgver.tar.gz
-        vp8.patch)
+source=("http://freedesktop.org/software/$pkgname/releases/$pkgname/$pkgname-$pkgver.tar.gz"
+        'vp8.patch'
+        'introspection.patch')
 md5sums=('5d6e561b3688d0d0c8906fec4f356df3'
-         'afc478a071ed347e1e1ab39aced14cdb')
+         'afc478a071ed347e1e1ab39aced14cdb'
+         '7753d85c01fcd4a83968ab2d6fc4f82d')
 
 build() {
   cd  "$pkgname-$pkgver"
-  patch -Np1 -i "$srcdir/vp8.patch"
+  patch -p1 -i "$srcdir/vp8.patch"
+  patch -p1 -i "$srcdir/introspection.patch"
+  
   ./configure --prefix=/usr \
-    --with-package-name='Chakra-Project farstream package' \
-    --with-package-origin='http://www.chakra-project.org' \
+    --with-package-name='Farstream package' \
     --disable-static
   make
 }
 
 package() {
   cd "$pkgname-$pkgver"
+  
   make DESTDIR="$pkgdir" install
 }

@@ -1,26 +1,26 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
 
 pkgname=libsm
-pkgver=1.2.0
+pkgver=1.2.1
 pkgrel=1
 pkgdesc="X11 Session Management library"
-arch=(i686 x86_64)
+arch=('x86_64')
 license=('custom')
 url="http://xorg.freedesktop.org/"
-depends=('libice' 'util-linux-ng')
+depends=('libice' 'util-linux')
 makedepends=('xorg-util-macros' 'xtrans')
 options=('!libtool')
 source=(${url}/releases/individual/lib/libSM-${pkgver}.tar.bz2)
-sha1sums=('f78bc72f0b3ec26cbf980f84f014422ba854544d')
+md5sums=('766de9d1e1ecf8bf74cebe2111d8e2bd')
 
 build() {
   cd "${srcdir}/libSM-${pkgver}"
+  
   ./configure --prefix=/usr --sysconfdir=/etc
   make
+}
+
+package() {
+  cd "${srcdir}/libSM-${pkgver}"
   make DESTDIR="${pkgdir}" install
 
   install -d -m755 "${pkgdir}/usr/share/licenses/${pkgname}"
