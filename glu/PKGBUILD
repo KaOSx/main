@@ -1,20 +1,14 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
-# contributor Andreas Radke <andyrtr@archlinux.org>
 
 pkgname=glu
 pkgver=9.0.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Mesa OpenGL Utility library"
 arch=('x86_64')
 url="http://cgit.freedesktop.org/mesa/glu/"
 license=('LGPL')
 depends=('libgl')
-makedepends=('mesa')
 options=('!libtool')
-source=(ftp://ftp.freedesktop.org/pub/mesa/$pkgname/$pkgname-$pkgver.tar.bz2)
+source=("ftp://ftp.freedesktop.org/pub/mesa/$pkgname/$pkgname-$pkgver.tar.bz2")
 md5sums=('be9249132ff49275461cf92039083030')
 
 build() {
