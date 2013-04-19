@@ -1,0 +1,39 @@
+
+_extramodules=extramodules-3.9-rc7-next
+_kver=$(cat /lib/modules/${_extramodules}/version)
+
+pkgname=nvidia-next
+pkgdesc="NVIDIA drivers for linux."
+pkgver=319.12
+pkgrel=1
+arch=('x86_64')
+url="http://www.nvidia.com/"
+depends=('linux-next>=3.9rc7' 'linux-next<3.10' "nvidia-utils=${pkgver}")
+makedepends=('linux-next-headers')
+license=('custom')
+install=nvidia-next.install
+source=("https://gitorious.org/chakra/chakra-hardware-detection/blobs/raw/master/hwdb/nvidia_supported")
+md5sums=('62d0cdb856cfae64753c0f3acf729d47')
+
+    _ARCH='x86_64'
+    _pkg="NVIDIA-Linux-${_ARCH}-${pkgver}-no-compat32"
+    source+=("ftp://download.nvidia.com/XFree86/Linux-${_ARCH}/${pkgver}/${_pkg}.run")
+    md5sums+=('f662eff5946a27d3dd02e9d878342c38')
+
+build() {
+    cd "${srcdir}"
+    sh "${_pkg}.run" --extract-only
+
+    cd "${_pkg}/kernel"
+    make SYSSRC=/lib/modules/"${_kver}/build" module
+}
+
+package() {
+    
+    install -D -m644 "${srcdir}/${_pkg}/kernel/nvidia.ko" \
+        "${pkgdir}/lib/modules/${_extramodules}/nvidia.ko"
+    install -d -m755 "${pkgdir}/etc/modprobe.d"
+    sed -i -e "s/EXTRAMODULES='.*'/EXTRAMODULES='${_extramodules}'/" "${startdir}/nvidia-next.install"
+    gzip "${pkgdir}/lib/modules/${_extramodules}/nvidia.ko"
+}
+
