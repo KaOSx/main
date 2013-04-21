@@ -1,7 +1,7 @@
 
 pkgname=xf86-video-nouveau
 pkgver=1.0.7
-pkgrel=1
+pkgrel=2
 pkgdesc="Open Source 3D acceleration driver for nVidia cards"
 arch=('x86_64')
 url="http://nouveau.freedesktop.org/"
@@ -16,11 +16,13 @@ md5sums=('383e398283e7bae30d6ce1617ccbd3a4')
 
 build() {
   cd ${srcdir}/$pkgname-$pkgver
+  
   ./configure --prefix=/usr
   make
 }
 
 package() {
   cd ${srcdir}/$pkgname-$pkgver
+  
   make DESTDIR=${pkgdir} install
 }
