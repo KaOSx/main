@@ -1,14 +1,10 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas[at]chakra-project[dot]org>
 
 pkgname=ntfs-3g
 _realname=ntfs-3g_ntfsprogs
-pkgver=2012.1.15
-pkgrel=5
+pkgver=2013.1.13
+pkgrel=1
 pkgdesc="Stable read and write NTFS driver"
-url="http://www.tuxera.com"
+url="http://www.tuxera.com/community/ntfs-3g-download/"
 arch=('x86_64')
 license=('GPL2')
 depends=('glibc' 'fuse' 'util-linux')
@@ -17,10 +13,11 @@ options=('!libtool')
 conflicts=('ntfsprogs')
 provides=("ntfsprogs=${pkgver}")
 source=("http://www.tuxera.com/opensource/${_realname}-${pkgver}.tgz")
-sha1sums=('8d55cf49afde172fefa369a0a85289e09c4d7bbb')
+md5sums=('2d6fb47ddf62b51733227126fe9227fe')
 
 build() {
   cd "${srcdir}/${_realname}-${pkgver}"
+  
   ./configure --prefix=/usr \
     --with-fuse=external --disable-static \
     --enable-posix-acls --disable-ldconfig \
