@@ -1,19 +1,15 @@
-#
-# Chakra Packages for Chakra, part of chakra-project.org
-#
-# contributor (x86_64): Giuseppe Calà <jiveaxe@gmail.com>
 
 pkgbase=distribute
-pkgname=("python2-${pkgbase}" "python3-${pkgbase}")
-pkgver=0.6.35
+pkgname=('python2-distribute' 'python3-distribute')
+pkgver=0.6.36
 pkgrel=1
 pkgdesc="Easily download, build, install, upgrade, and uninstall Python packages"
-arch=('any')
+arch=('x86_64')
 license=('PSF')
 url="http://packages.python.org/distribute"
 makedepends=('python2' 'python3')
 source=("https://pypi.python.org/packages/source/d/distribute/${pkgbase}-${pkgver}.tar.gz")
-md5sums=('e55298c7e3a233df1a47a4881a0c9800')
+md5sums=('a923385de72dcdca68cd4ac2b9dc1148')
 
 build() {
   msg2 "Starting the Python 2.x build"
@@ -35,8 +31,6 @@ build() {
 
 package_python2-distribute() {
 depends=('python2')
-conflicts=('setuptools')
-replaces=('setuptools' 'python-distribute')
 provides=('setuptools=0.6c11' "python-distribute=${pkgver}")
 
   cd "${srcdir}/python2-${pkgbase}"
@@ -52,4 +46,3 @@ depends=('python3')
   rm "${pkgdir}/usr/bin/easy_install"
 }
 
-# vim:set ts=2 sw=2 et:

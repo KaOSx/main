@@ -1,11 +1,7 @@
-#
-# Chakra Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas[at]chakra-project[dot]org>
 
 pkgbase=qscintilla
-pkgname=(qscintilla python-qscintilla)
-pkgver=2.7
+pkgname=('qscintilla' 'python2-qscintilla')
+pkgver=2.7.1
 pkgrel=1
 license=('GPL')
 arch=('x86_64')
@@ -35,9 +31,6 @@ build() {
 
 package_qscintilla() {
     pkgdesc="A port to Qt of Neil Hodgson's Scintilla C++ editor class"
-    provides=('qscintilla2')
-    conflicts=('qscintilla2')
-    replaces=('qscintilla2')
     depends=('qt')
 
     cd ${srcdir}/QScintilla-gpl-${pkgver}/Qt4Qt5
@@ -47,10 +40,11 @@ package_qscintilla() {
     make DESTDIR="${pkgdir}" INSTALL_ROOT="${pkgdir}" install
 }
 
-package_python-qscintilla() {
+package_python2-qscintilla() {
     pkgdesc="Python bindings for QScintilla2"
-    conflicts=('python-qscintilla2')
-    replaces=('python-qscintilla2')
+    conflicts=('python-qscintilla')
+    replaces=('python-qscintilla')
+    provides=('python-qscintilla')
     depends=('qscintilla' 'pyqt')
 
     cd "${srcdir}/QScintilla-gpl-${pkgver}/Python"
