@@ -1,10 +1,6 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
 
 pkgname=cpupower
-pkgver=3.7
+pkgver=3.8
 pkgrel=1
 pkgdesc='Linux kernel tool to examine and tune power saving related features of your processor'
 license=('GPL2')
@@ -12,17 +8,15 @@ arch=('x86_64')
 url='http://www.kernel.org'
 depends=('pciutils')
 makedepends=('asciidoc' 'xmlto')
-conflicts=('cpufrequtils')
-replaces=('cpufrequtils')
 backup=('etc/default/cpupower')
 options=('!strip')
 source=("http://ftp.kernel.org/pub/linux/kernel/v3.x/linux-$pkgver.tar.xz"
-        "http://ftp.kernel.org/pub/linux/kernel/v3.x/patch-$pkgver.1.xz"
+        "http://ftp.kernel.org/pub/linux/kernel/v3.x/patch-$pkgver.8.xz"
         'cpupower.conf'
         'cpupower.service'
         'cpupower.systemd')
-md5sums=('21223369d682bcf44bcdfe1521095983'
-         '48f5f530b048e387e978e3e49de7742a'
+md5sums=('1c738edfc54e7c65faeb90c436104e2f'
+         '08cdcef928c2ca402adf1c444a3c43ac'
          'fb4b3d184850f5972c5a1bba3ead4e05'
          '2450e8ff41b30eb58d43b5fffbfde1f4'
          'e02e88977fbdde29a2ae38aa064a367d')
