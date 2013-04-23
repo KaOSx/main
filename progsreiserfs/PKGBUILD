@@ -1,14 +1,9 @@
-#
-# Chakra Packages for Chakra, part of chakra-project.org
-#
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
 
 pkgname=progsreiserfs
 pkgver=0.3.0.5
-pkgrel=7
+pkgrel=8
 pkgdesc="library for accessing and manipulating reiserfs partitions"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://www.namesys.com"
 license=('GPL')
 depends=('e2fsprogs')
@@ -21,7 +16,7 @@ md5sums=('d822579bbd4a29a1be5e4490869d9bee'
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
 
-  patch -Np1 -i "${srcdir}/fix-underquoted-definition.patch"
+  patch -p1 -i "${srcdir}/fix-underquoted-definition.patch"
 
   ./configure --prefix=/usr \
               --mandir=/usr/share/man
@@ -34,9 +29,7 @@ package() {
   make install DESTDIR="${pkgdir}"
 
   # only provide lib and includes files
-  # https://bugs.archlinux.org/task/22255
   rm -r "${pkgdir}/usr/sbin"
 	rm -r "${pkgdir}/usr/share/man"
 }
 
-# vim:set ts=2 sw=2 et:
