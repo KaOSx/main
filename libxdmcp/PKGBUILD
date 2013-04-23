@@ -1,24 +1,20 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# Maintainer: Neophytos Kolokotronis <tetris4@gmail.com>
-
 
 pkgname=libxdmcp
 pkgver=1.1.1
-pkgrel=1
+pkgrel=2
 pkgdesc="X11 Display Manager Control Protocol library"
-arch=(i686 x86_64)
+arch=('x86_64')
 url="http://xorg.freedesktop.org/"
 license=('custom')
 depends=('xproto' 'glibc')
 makedepends=('pkgconfig')
 options=('!libtool')
 source=(${url}/releases/individual/lib/libXdmcp-${pkgver}.tar.bz2)
-sha1sums=('3b63e8fc1600c51d9897d017da190fc6c16245b6')
+md5sums=('b94af6cef211cf3ee256f7e81f70fcd9')
 
 build() {
   cd "${srcdir}/libXdmcp-${pkgver}"
+  
   ./configure --prefix=/usr --sysconfdir=/etc --disable-static
   make
 }

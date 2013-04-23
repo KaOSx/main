@@ -1,11 +1,6 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
-
 
 pkgname=apache-ant
-pkgver=1.8.4
+pkgver=1.9.0
 pkgrel=1
 pkgdesc="A java-based build tool."
 arch=('x86_64')
@@ -16,7 +11,7 @@ optdepends=('junit: to have junit on the classpath in javac tasks')
 source=("http://archive.apache.org/dist/ant/binaries/${pkgname}-${pkgver}-bin.tar.bz2"
         "${pkgname}.sh"
         "${pkgname}.csh")
-md5sums=('561838e665e5dc185dde9d220fce1336'
+md5sums=('8f881d0be168f582c6d14380517301c7'
          '593ee6ebd9b8ec321534a028e686880f'
          '475b684eb8202c09cbb51496cd8ee1e0')
 
@@ -56,4 +51,3 @@ package() {
   install -m644 LICENSE NOTICE "${pkgdir}/usr/share/licenses/${pkgname}"
 }
 
-# vim:set ts=2 sw=2 et:

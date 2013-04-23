@@ -1,23 +1,20 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# Maintainer: Neophytos Kolokotronis <tetris4@gmail.com>
 
 pkgname=libxext
 pkgver=1.3.1
-pkgrel=1
+pkgrel=2
 pkgdesc="X11 miscellaneous extensions library"
-arch=(i686 x86_64)
+arch=('x86_64')
 url=('http://xorg.freedesktop.org/')
 license=('custom')
 depends=('libx11' 'xextproto')
 makedepends=('pkg-config')
 options=('!libtool')
 source=(${url}/releases/individual/lib/libXext-${pkgver}.tar.bz2)
-sha1sums=('764ac472ae19a0faade193717a9e0938d3430aaa')
+md5sums=('71251a22bc47068d60a95f50ed2ec3cf')
 
 build() {
   cd "${srcdir}/libXext-${pkgver}"
+  
   ./configure --prefix=/usr --sysconfdir=/etc --disable-static
   make
 }

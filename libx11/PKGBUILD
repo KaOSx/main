@@ -1,38 +1,33 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# Maintainer: Neophytos Kolokotronis <tetris4@gmail.com>
 
 pkgname=libx11
 pkgver=1.5.0
-pkgrel=1
+pkgrel=2
 pkgdesc="X11 client-side library"
-arch=(i686 x86_64)
+arch=('x86_64')
 url="http://xorg.freedesktop.org/"
 depends=('libxcb' 'xproto' 'kbproto')
 makedepends=('xorg-util-macros' 'xextproto' 'xtrans' 'inputproto')
 options=('!libtool')
 license=('custom')
-source=(${url}/releases/individual/lib/libX11-${pkgver}.tar.bz2
-        xorg.sh
-        xorg.csh)
-sha1sums=('8177535c9c59d8c3ab98d55ce53520b5737ccd1a'
-          '4b756387426afb2a5bb7a155631ec42348abf5c1'
-          '45b0b310776cf5d9a94b4a18a5c63ddad9de6ba8')
+source=(${url}/releases/individual/lib/libX11-${pkgver}.tar.bz2)
+md5sums=('78b4b3bab4acbdf0abcfca30a8c70cc6')
 
 build() {
   cd "${srcdir}/libX11-${pkgver}"
+  
   ./configure --prefix=/usr --disable-static --disable-xf86bigfont
   make
+}
+
+check() {
+  cd "${srcdir}/libX11-${pkgver}"
+  
   make check
 }
 
 package() {
   cd "${srcdir}/libX11-${pkgver}"
   make DESTDIR="${pkgdir}" install
-
-  install -m755 -d "${pkgdir}/etc/profile.d"
-  install -m755 "${srcdir}/"xorg.{sh,csh} "${pkgdir}/etc/profile.d/"
 
   install -d -m755 "${pkgdir}/usr/share/licenses/${pkgname}"
   install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"

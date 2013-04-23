@@ -1,21 +1,18 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# Maintainer: Neophytos Kolokotronis <tetris4@gmail.com>
 
 pkgname=xcb-proto
-pkgver=1.7.1
+pkgver=1.8
 pkgrel=1
 pkgdesc="XML-XCB protocol descriptions"
-arch=(any)
+arch=('x86_64')
 url="http://xcb.freedesktop.org/"
 license=('custom')
 makedepends=('python2' 'libxml2')
 source=(${url}/dist/${pkgname}-${pkgver}.tar.bz2)
-sha1sums=(''82a568559235fc6e26d0a38911c5ea18f8e8455c)
+md5sums=('a5de3432cc6e43cc6a27f241dbb991b1')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
+  
   ./configure --prefix=/usr
   make
 }
@@ -23,6 +20,7 @@ build() {
 package() {
   cd "$srcdir/${pkgname}-${pkgver}"
   make DESTDIR="${pkgdir}" install
+  
   install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
   install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
 }

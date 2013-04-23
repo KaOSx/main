@@ -1,26 +1,24 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# Maintainer: Neophytos Kolokotronis <tetris4@gmail.com>
 
 pkgname=xextproto
 pkgver=7.2.1
-pkgrel=1
+pkgrel=2
 pkgdesc="X11 various extension wire protocol"
-arch=('any')
+arch=('x86_64')
 license=('custom')
 url="http://xorg.freedesktop.org/"
 source=(${url}/releases/individual/proto/${pkgname}-${pkgver}.tar.bz2)
-sha1sums=('f969e02009adf2d51fd1ba4583a859984728a461')
+md5sums=('eaac343af094e6b608cf15cfba0f77c5')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
+  
   ./configure --prefix=/usr
   make
 }
 
 package() {
   cd "${srcdir}/${pkgname}-${pkgver}"
+  
   make DESTDIR="${pkgdir}" install
   install -Dm644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/COPYING"
 }
