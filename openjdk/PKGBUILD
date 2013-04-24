@@ -4,7 +4,7 @@ pkgbase='openjdk'
 _icedtea_release="2.3.9"
 _icedtea_jdkver="7"
 _openjdk_build="b30"
-_pkgver="7u7"
+_pkgver="7u17"
 pkgver="${_pkgver}_${_openjdk_build}_${_icedtea_release}"
 pkgrel=1
 pkgdesc="An open-source implementation of the seventh edition of the Java SE Platform."
@@ -25,7 +25,7 @@ _jdk_changeset="8e91101e36f0"
 _langtools_changeset="fd956199cb82"
 _openjdk_changeset="12b96a57263c"
 _hotspot_changeset="ad5a321edea2"
-_jvmdir="/usr/lib/jvm/java-${_icedtea_jdkver}-openjdk"
+_jvmdir="/usr/lib/jvm/java-7-openjdk"
 
 source=("http://icedtea.classpath.org/download/source/icedtea-${_icedtea_release}.tar.gz"
         "${_hg_url}/corba/archive/${_corba_changeset}.tar.gz"
@@ -51,7 +51,7 @@ md5sums=('e96e5e578d442d3ae56cd332e8dbc6b6'
          'dc91eab5bae996abb58d338a675479c9'
          'ee1afda124d5927345014ab382ef581e'
          'f198c2ba43d1f4408a948ac95b9a39ba'
-         '625d609c801008390522811c5be03478'
+         '7a8f14be514b40519fcd6780a31d4f79'
          '2f6733af3fea184196a720267b8acaac'
          '64885c74918f07afe88f31692177b0c5'
          '3baf9768e5be92d6fe80641dcc35f017')
@@ -62,6 +62,8 @@ noextract=("${_openjdk_changeset}.tar.gz"
            "${_jdk_changeset}.tar.gz"
            "${_langtools_changeset}.tar.gz"
            "${_hotspot_changeset}.tar.gz")
+           
+  [ "$CARCH" = "x86_64" ] && _JARCH=amd64
 
 build() {
   cd "${srcdir}"
@@ -76,28 +78,18 @@ build() {
 
   cd "${srcdir}/build"
 
-  [ -f /etc/profile.d/openjdk.sh ]    && source /etc/profile.d/openjdk.sh
-  [ -f /etc/profile.d/apache-ant.sh ] && source /etc/profile.d/apache-ant.sh
-
-  # Preserve the value of JAVA_HOME before unsetting it from the environment
-  local _java_home="${JAVA_HOME}"
-
-  # Setup the needed environmental variables
-  export USER="buildbot"
-  export ALT_BOOTDIR="${_java_home}"
   export ALT_PARALLEL_COMPILE_JOBS="${MAKEFLAGS/-j}"
   export HOTSPOT_BUILD_JOBS="${ALT_PARALLEL_COMPILE_JOBS}"
-  export COMPILER_WARNINGS_FATAL="false"
 
-  # Unset harmful variables
-  unset JAVA_HOME JDK_HOME CLASSPATH JAVAC JAVACFLAGS
+  . /etc/profile.d/apache-ant.sh
+
 
   # Start the configuration and build step
   ./configure --prefix=/usr \
               --with-parallel-jobs="${MAKEFLAGS/-j}" \
               --host="${CARCH}-unknown-linux-gnu" \
               --with-rhino \
-              --with-jdk-home="${_java_home}" \
+              --with-jdk-home="${JAVA_HOME}" \
               --with-abs-install-dir="${_jvmdir}" \
               --with-openjdk-src-zip="${srcdir}/${_openjdk_changeset}.tar.gz" \
               --with-hotspot-src-zip="${srcdir}/${_hotspot_changeset}.tar.gz" \
@@ -108,6 +100,8 @@ build() {
               --with-langtools-src-zip="${srcdir}/${_langtools_changeset}.tar.gz" \
               --with-pkgversion="Linux build ${pkgver}-${pkgrel}-${CARCH}" \
               --disable-tests \
+              --disable-downloading \
+              --disable-Werror \
               --disable-bootstrap \
               --disable-system-gtk \
               --enable-nss \
