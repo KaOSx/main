@@ -1,16 +1,9 @@
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
-
-# include global config
-source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
 
 pkgname=opensp
 pkgver=1.5.2
-pkgrel=2
+pkgrel=3
 pkgdesc="A library and a set of tools for validating, parsing and manipulating SGML and XML documents"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://openjade.sourceforge.net/"
 license=('BSD')
 depends=('gcc-libs')
@@ -21,6 +14,7 @@ md5sums=('670b223c5d12cee40c9137be86b6c39b')
 
 build() {
   cd "${srcdir}"/OpenSP-$pkgver
+  
   ./configure --prefix=/usr \
     --mandir=/usr/share/man \
     --disable-nls \
@@ -34,6 +28,7 @@ build() {
 package() {
   cd "${srcdir}"/OpenSP-$pkgver
   make DESTDIR="${pkgdir}" install
+  
   install -D -m644 COPYING "${pkgdir}"/usr/share/licenses/$pkgname/LICENSE
 }
 
