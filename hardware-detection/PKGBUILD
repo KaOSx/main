@@ -1,0 +1,30 @@
+
+pkgname=hardware-detection
+pkgver=20130426
+pkgrel=1
+pkgdesc="Hardware detection scripts"
+arch=('x86_64')
+url="http://www.kde-os.tk"
+depends=('bc' 'util-linux' 'chd-nvidia' 'chd-nvidia-304xx' 'chd-nvidia-173xx'
+         'chd-catalyst' 'chd-catalyst-legacy' 'dmidecode') 
+license=('GPL')
+source=("http://sourceforge.net/projects/kdeos/files/Sources/${pkgname}/${pkgname}-${pkgver}.tar.xz")
+md5sums=('b79db83fcea9c9a4a14ba68098b47465')
+
+# create tarball: source PKGBUILD && mksource
+
+mksource() {
+	  rm -vRf ${pkgname}-${pkgver}
+	  git clone git://github.com/KdeOs/${pkgname}.git ${pkgname}-${pkgver}
+	  rm -vRf ${pkgname}-${pkgver}/.git*
+	  pushd ${pkgname}-${pkgver}
+	  popd
+	  tar -cvJf ${pkgname}-${pkgver}.tar.xz ${pkgname}-${pkgver}/*
+	  md5sum ${pkgname}-${pkgver}.tar.xz
+}
+
+package(){
+	cd "${srcdir}/${pkgname}-${pkgver}"
+
+	make install DESTDIR="${pkgdir}"
+}
