@@ -11,7 +11,7 @@ source=("http://code.compeng.uni-frankfurt.de/attachments/download/158/Vc-${pkgv
 md5sums=('8b92e140e0a8c474f5b7c7c98c175a8c')
  
 build() {
-  #mkdir build 
+  mkdir build 
   cd build
   cmake ../Vc-${pkgver} \
     -DCMAKE_INSTALL_PREFIX=/usr \
