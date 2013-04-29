@@ -1,11 +1,7 @@
-#
-# Chakra Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas[at]chakra-project[dot]org>
 
 pkgname=hwinfo
 pkgver=20.1
-pkgrel=1
+pkgrel=2
 pkgdesc="A simple program that lists results from the hardware detection library."
 arch=('x86_64')
 url="http://www.opensuse.org"
@@ -13,21 +9,19 @@ license=('GPL2')
 depends=('perl' 'libx86emu')
 makedepends=('sysfsutils' 'rpmextract' 'flex')
 options=('!emptydirs')
-source=("http://download.opensuse.org/source/factory/repo/oss/suse/src/${pkgname}-${pkgver}-3.5.src.rpm"
+source=("http://download.opensuse.org/source/factory/repo/oss/suse/src/${pkgname}-${pkgver}-3.10.src.rpm"
         "kbd.patch")
-md5sums=('5343f1f55772d455238eb0e108d1cde8'
+md5sums=('307b5391c64c96c93f9719d2524be113'
          '1500ecfa26f6aaf4d7967eea74e86e5d')
 
 build() {
   cd "${srcdir}"
 
-  msg2 "Extracting source rpm..."
-  rpmextract.sh "${pkgname}-${pkgver}-3.5.src.rpm"
+  rpmextract.sh "${pkgname}-${pkgver}-3.10.src.rpm"
   tar -xjf ${pkgname}-${pkgver}.tar.bz2
   cd "${pkgname}-${pkgver}"
-  msg2 "Patching..."
+
   patch -p0 < ../kbd.patch 
-  msg2 "Compiling..."
   
   make -j1 CFLAGS+="-fPIC -I${srcdir}/${pkgname}-${pkgver}/src/hd" LIBDIR=/usr/lib
 }
@@ -35,8 +29,5 @@ build() {
 package() {
   cd "${srcdir}/${pkgname}-${pkgver}"
 
-  #Added this from ARCH, to fix the same issue as stated earlier:
   make LIBDIR=/usr/lib DESTDIR=${pkgdir} install
-  #  disabled the following line to add the one above
-  #  make DESTDIR=${pkgdir} install
 }
