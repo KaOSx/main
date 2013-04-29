@@ -1,12 +1,7 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer : abveritas[at]chakra-project[dog]org>
-# maintainer : Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
 
 pkgname=apache
-pkgver=2.4.3
-pkgrel=3
+pkgver=2.4.4
+pkgrel=1
 pkgdesc='A high performance Unix-based HTTP server'
 arch=('x86_64')
 options=('!libtool')
@@ -25,16 +20,16 @@ source=("http://www.apache.org/dist/httpd/httpd-${pkgver}.tar.bz2"
         "http://mpm-itk.sesse.net/apache2.4-mpm-itk-2.4.2-01.patch"
         'apache.conf.d'
         'httpd.logrotate'
-        'chakra.layout'
+        'kdeos.layout'
         'httpd.service'
         'httpd-tmpfile.conf')
-md5sums=('87aaf7bc7e8715f0455997bb8c6791aa'
-         'c65a2229a7d15bc6f0e9730fc929a5c7'
+md5sums=('0e712ee2119cd798c8ae39d5f11a9206'
+         'SKIP'
          '7b5fb06ba65d80d40f19e32f95426486'
          '08b3c875f6260644f2f52b4056d656b0'
          '6382331e9700ed9e8cc78ea51887b537'
-         '9404bc261cffce7ad88850f0569e9067'
-         '4af19522704050f98ba13e40d3eaca0b'
+         '03cdd5a148771f47d2210b9f1f0f3bd3'
+         'ed219c8228d4d5ae9b7a55107cf79706'
          '110a056408252de4356be7f53872b11d')
 
 build() {
@@ -49,7 +44,7 @@ build() {
       -e 's#Group daemon#Group http#' \
       -i docs/conf/httpd.conf.in 
 
-  cat "${srcdir}/chakra.layout" >> config.layout
+  cat "${srcdir}/kdeos.layout" >> config.layout
 
   for mpm in prefork worker itk; do
     if [ "${mpm}" = 'itk' ]; then
@@ -63,7 +58,7 @@ build() {
     pushd "build-${mpm}"
 
     "${srcdir}/httpd-${pkgver}/configure" \
-        --enable-layout=Chakra \
+        --enable-layout=KdeOS \
         --enable-modules=all \
         --enable-mods-shared=all \
         --enable-so \

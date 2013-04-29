@@ -1,14 +1,15 @@
 [Unit]
-Description=Apache Webserver
-After=network.target
+Description=Apache Web Server
+After=network.target remote-fs.target nss-lookup.target
 
 [Service]
 Type=forking
-EnvironmentFile=/etc/conf.d/apache
-ExecStart=/usr/sbin/httpd -k start $OPTIONS
-ExecStop=/usr/sbin/httpd -k graceful-stop $OPTIONS
-ExecReload=/usr/sbin/httpd -k graceful $OPTIONS
-Restart=always
+PIDFile=/run/httpd/httpd.pid
+ExecStart=/usr/sbin/apachectl start
+ExecStop=/usr/sbin/apachectl graceful-stop
+ExecReload=/usr/sbin/apachectl graceful
+PrivateTmp=true
+LimitNOFILE=infinity
 
 [Install]
 WantedBy=multi-user.target

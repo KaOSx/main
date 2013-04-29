@@ -1,3 +1,7 @@
-post_install(){
-  usr/bin/systemd-tmpfiles --create httpd.conf
+post_install() {
+  systemd-tmpfiles --create apache.conf
+}
+
+post_upgrade() {
+  systemd-tmpfiles --create apache.conf
 }
