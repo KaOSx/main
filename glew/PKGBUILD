@@ -1,22 +1,19 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
 
 pkgname=glew
 pkgver=1.9.0
-pkgrel=1
+pkgrel=2
 pkgdesc="A cross-platform C/C++ extension loading library"
 arch=('x86_64')
 url="http://glew.sourceforge.net"
 license=('BSD' 'MIT' 'GPL')
-depends=('libxmu' 'libxi' 'mesa')
+depends=('libxmu' 'libxi' 'mesa' 'glu')
 source=("http://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tgz")
-sha1sums=('9291f5c5afefd482c7f3e91ffb3cd4716c6c9ffe')
+md5sums=('69ce911decef6249d24742497e6ad06a')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
   sed -i 's|lib64|lib|' config/Makefile.linux
+  
   make
 }
 
