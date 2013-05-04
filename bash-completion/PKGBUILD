@@ -1,21 +1,19 @@
-# Maintainer: abveritas@chakra-project.org>
 
 pkgname=bash-completion
-pkgver=2.0
-pkgrel=2
+pkgver=2.1
+pkgrel=1
 pkgdesc="Programmable completion for the bash shell"
-arch=('any')
+arch=('x86_64')
 url="http://bash-completion.alioth.debian.org/"
 license=('GPL')
 depends=('bash')
 source=("http://bash-completion.alioth.debian.org/files/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('0d903f398be8c8f24bc5ffa6f86127f8')
-sha1sums=('3011add35574b4042c04b95fc0fd0f14006adc69')
+md5sums=('4e2a9f11a4042a38ee79ddcd048e8b9e')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
 
-  # this should be removed once /lib is a symlink to usr/lib
+  # this should be removed if /lib ever is a symlink to usr/lib
   sed -i '/lib\/modules/ s,/lib/modules,/usr&,' bash_completion
 
   ./configure --prefix=/usr --sysconfdir=/etc
@@ -30,7 +28,22 @@ package() {
   rm -r "${pkgdir}/etc/profile.d"
   # remove Slackware's makepkg completion
   rm "${pkgdir}/usr/share/bash-completion/completions/makepkg"
-  # part of systemd
-  rm "${pkgdir}/usr/share/bash-completion/completions/udevadm"
+  # part of networkmanager
+  rm "${pkgdir}/usr/share/bash-completion/completions/nmcli"
+  # part of util-linux
+  rm "${pkgdir}/usr/share/bash-completion/completions/cal"
+  rm "${pkgdir}/usr/share/bash-completion/completions/chsh"
+  rm "${pkgdir}/usr/share/bash-completion/completions/dmesg"
+  rm "${pkgdir}/usr/share/bash-completion/completions/eject"
+  rm "${pkgdir}/usr/share/bash-completion/completions/hd"
+  rm "${pkgdir}/usr/share/bash-completion/completions/hexdump"
+  rm "${pkgdir}/usr/share/bash-completion/completions/hwclock"
+  rm "${pkgdir}/usr/share/bash-completion/completions/ionice"
+  rm "${pkgdir}/usr/share/bash-completion/completions/look"
+  rm "${pkgdir}/usr/share/bash-completion/completions/ncal"
+  rm "${pkgdir}/usr/share/bash-completion/completions/newgrp"
+  rm "${pkgdir}/usr/share/bash-completion/completions/renice"
+  rm "${pkgdir}/usr/share/bash-completion/completions/rtcwake"
+  rm "${pkgdir}/usr/share/bash-completion/completions/su"
 }
 
