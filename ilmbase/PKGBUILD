@@ -1,26 +1,19 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
 
 pkgname=ilmbase
-pkgver=1.0.2
+pkgver=2.0.0
 pkgrel=1
 depends=('gcc-libs')
 pkgdesc="IlmThread is a thread abstraction library for use with OpenEXR"
-arch=(i686 x86_64)
+url="http://www.openexr.com"
+arch=('x86_64')
 license=('custom')
 options=('!libtool')
-source=(http://savannah.nongnu.org/download/openexr/$pkgname-$pkgver.tar.gz
-        tests-compile-fixes.patch)
-url="http://www.openexr.com"
-md5sums=('26c133ee8ca48e1196fbfb3ffe292ab4'
-         'f9f8efce85c056d9a03b1a45f981dd6a')
+source=("http://download.savannah.nongnu.org/releases/openexr/$pkgname-$pkgver.tar.gz")
+md5sums=('70f1413840c2a228783d1332b8b168e6')
 
 build() {
   cd ${srcdir}/$pkgname-$pkgver
-  patch -Np1 -i ${srcdir}/tests-compile-fixes.patch
+
   ./configure --prefix=/usr
   make
 }
@@ -33,6 +26,7 @@ check() {
 
 package() {
   cd ${srcdir}/$pkgname-$pkgver
+  
   make DESTDIR=${pkgdir} install
   install -D -m644 COPYING $pkgdir/usr/share/licenses/$pkgname/COPYING
 }

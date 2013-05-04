@@ -1,11 +1,7 @@
-#
-# Chakra Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas[at]chakra-project[dot]org>
 
 pkgname=lensfun
 pkgver=0.2.7
-pkgrel=1
+pkgrel=2
 pkgdesc="Database of photographic lenses and a library that allows advanced access to the database"
 arch=('x86_64')
 url="http://lensfun.berlios.de/"
@@ -18,6 +14,7 @@ md5sums=('6061cc2d00a42d3e62512878426fc841')
 build() {
     cd "${srcdir}/${pkgname}-${pkgver}"
     sed -i 's|#!/usr/bin/python|#!/usr/bin/python2|' configure
+    
     ./configure \
         --prefix=/usr \
         --libdir=/usr/lib
@@ -26,5 +23,6 @@ build() {
 
 package() {
     cd "${srcdir}/${pkgname}-${pkgver}"
+    
     make INSTALL_PREFIX="$pkgdir" install
 }
