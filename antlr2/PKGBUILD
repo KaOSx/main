@@ -1,14 +1,9 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
 
 pkgbase=antlr2
-pkgname=('antlr2' 'python-antlr2')
+pkgname=('antlr2' 'python2-antlr2')
 pkgver=2.7.7
-pkgrel=3
-arch=('i686' 'x86_64')
+pkgrel=1
+arch=('x86_64')
 url="http://www.antlr2.org/"
 license=('custom')
 makedepends=('java-environment' 'python2' 'sh')
@@ -22,7 +17,7 @@ md5sums=('01cc9a2a454dd33dcd8c856ec89af090'
 build() {
   cd "${srcdir}/antlr-${pkgver}"
 
-  patch -Np0 -i ${srcdir}/gcc4.4.patch
+  patch -p0 -i ${srcdir}/gcc4.4.patch
 
   ./configure --prefix=/usr \
     --disable-examples \
@@ -33,9 +28,6 @@ build() {
 package_antlr2() {
   pkgdesc="ANother Tool for Language Recognition, (formerly PCCTS) is a language tool that provides a framework for constructing recognizers, compilers, and translators from grammatical descriptions containing C++ or Java actions"
   depends=('sh')
-  replaces=('antlr')
-  conflicts=('antlr')
-  provides=("antlr=${pkgver}")
 
   cd ${srcdir}/antlr-${pkgver}/lib/cpp
   make prefix="${pkgdir}/usr" install
@@ -47,12 +39,9 @@ package_antlr2() {
     "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
 }
 
-package_python-antlr2() {
+package_python2-antlr2() {
   pkgdesc="ANother Tool for Language Recognition, (formerly PCCTS) is a language tool that provides a framework for constructing recognizers, compilers, and translators from grammatical descriptions containing C++ or Java actions (Python version)"
   depends=('antlr2' 'python2')
-  replaces=('python-antlr')
-  conflicts=('python-antlr')
-  provides=("python-antlr=${pkgver}")
 
   cd ${srcdir}/antlr-${pkgver}/lib/python
   python2 setup.py install --root="${pkgdir}" --optimize=1
