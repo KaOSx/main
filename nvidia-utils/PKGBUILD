@@ -1,8 +1,8 @@
 
 pkgbase=nvidia-utils
 pkgname=('nvidia-utils' 'opencl-nvidia' 'libcl' 'nvidia-settings')
-# Edit chakra-hardware-detection/hooks/hwdetect_7_graphics on version jump from 3xx.xx
-pkgver=319.12
+# Edit hardware-detection/hooks/hwdetect_7_graphics on version jump from 3xx.xx
+pkgver=319.17
 pkgrel=1
 arch=('x86_64')
 url="http://www.nvidia.com/"
@@ -12,7 +12,7 @@ options=('!strip')
 [ "$CARCH" = "x86_64" ] && {
   ARCH='x86_64'
   _pkg="NVIDIA-Linux-${ARCH}-${pkgver}-no-compat32"
-  md5sums=('f662eff5946a27d3dd02e9d878342c38')
+  md5sums=('4dda9b3e5c24136bebfaad122715c202')
 }
 
 source=("ftp://download.nvidia.com/XFree86/Linux-${ARCH}/${pkgver}/${_pkg}.run"
@@ -90,8 +90,8 @@ package_nvidia-utils() {
   # CUDA
   install -D -m755 "libcuda.so.${pkgver}" "${pkgdir}/usr/lib/libcuda.so.${pkgver}"
   install -D -m755 "libnvcuvid.so.${pkgver}" "${pkgdir}/usr/lib/libnvcuvid.so.${pkgver}"
-  install -D -m755 nvidia-cuda-proxy-server "${pkgdir}/usr/bin/nvidia-cuda-proxy-server"
-  install -D -m644 nvidia-cuda-proxy-control.1.gz "${pkgdir}/usr/share/man/man1/nvidia-cuda-proxy-control.1.gz"
+  install -D -m644 nvidia-cuda-mps-control "${pkgdir}/usr/share/man/man1/nvidia-cuda-mps-control"
+  install -D -m644 nvidia-cuda-mps-control.1.gz "${pkgdir}/usr/share/man/man1/nvidia-cuda-mps-control.1.gz"
   # DEBUG
   install -D -m755 nvidia-debugdump "${pkgdir}/usr/bin/nvidia-debugdump"
   # nvidia-xconfig
@@ -130,4 +130,3 @@ package_nvidia-settings() {
   install -D -m644 "${srcdir}/nvidia-restore-settings.desktop" "${pkgdir}/usr/share/autostart/nvidia-restore-settings.desktop"
 }
 
-# vim:set ts=2 sw=2 et:
