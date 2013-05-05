@@ -1,18 +1,13 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas[at]chakra-project[dot]org>
-# contributor Michael Haesel <michael[dot]haesel[at]gmail[dot]com>
 
 pkgname=net-snmp
 pkgver=5.7.2
-pkgrel=2
+pkgrel=3
 pkgdesc="A suite of applications used to implement SNMP v1, SNMP v2c and SNMP v3 using both IPv4 and IPv6"
 arch=('x86_64')
 url="http://www.net-snmp.org/"
 license=('BSD')
 depends=('openssl' 'libnl' 'pciutils')
-makedepends=('python-distribute')
+makedepends=('python2-distribute')
 optdepends=('perl-term-readkey: for snmpcheck application' 
             'perl-tk: for snmpcheck application'
             'python2: for the python modules')
@@ -21,12 +16,10 @@ backup=('etc/conf.d/snmpd')
 options=('!libtool' '!makeflags' '!emptydirs')
 source=("http://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}-${pkgver}.tar.gz"
         'snmpd.service'
-        'snmpd.confd'
         'libnl32.patch')
-sha256sums=('09ed31b4cc1f3c0411ef9a16eff79ef3b30d89c32ca46d5a01a41826c4ceb816'
-            '80b0794c9abf1e38935ef0f98a6157ea348893ff088643ef81fdff04c2a5dd6b'
-            'ae07e5123b969ae98529b5fc5ffe01bf82def2fdb3cc7bdcb4cf684c6583c32c'
-            '08b8909deb81daac5ae454dcf0f50ee1d6794aa7dfd9dc6513244f220d69faea')
+md5sums=('5bddd02e2f82b62daa79f82717737a14'
+         '7afa48020f37e4de2b3b8cdf4d7b0e42'
+         '66b5d6e61b80cc19766dd65a9949af28')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
@@ -40,7 +33,6 @@ build() {
     --mandir=/usr/share/man \
     --enable-ucd-snmp-compatibility \
     --enable-ipv6 \
-    --with-libwrap \
     --with-python-modules \
     --with-default-snmp-version="3" \
     --with-sys-contact="root@localhost" \
@@ -54,15 +46,12 @@ build() {
 
 package() {
   cd "${srcdir}/${pkgname}-${pkgver}"
-  sed -i -e "s:\(install --basedir=\$\$dir\):\1 --root='${pkgdir}':" Makefile.in
+  sed -i -e "s:install --basedir=\$\$dir:install --basedir=\$\$dir --root=${pkgdir}:" Makefile
   make DESTDIR="${pkgdir}" INSTALL_PREFIX="${pkgdir}" INSTALLDIRS=vendor install
   
   # install service files
   install -Dm0644 "${srcdir}/snmpd.service" "${pkgdir}/usr/lib/systemd/system/snmpd.service"
   
-  # install config file
-  install -Dm0644 "${srcdir}/snmpd.confd" "${pkgdir}/etc/conf.d/snmpd"
-  
   # install license
-  install -Dm0644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/COPYING"
+  install -Dm0644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
 }
