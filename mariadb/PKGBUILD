@@ -107,8 +107,6 @@ package_mariadb() {
   depends=('mariadb-clients')
   conflicts=('mysql' 'mytop')
   provides=("mysql=$pkgver" 'mytop')
-  optdepends=('perl-dbd-mysql: mytop dependency'
-              'perl-term-readkey: mytop dependency')
   options=('emptydirs')
 
   cd "$srcdir"/build

@@ -1,17 +1,17 @@
 
 pkgname=colord
-pkgver=0.1.32
+pkgver=0.1.34
 pkgrel=1
 pkgdesc="System service easily manage, install and generate color profiles to manage input and output devices"
 arch=('x86_64')
 url="http://www.freedesktop.org/software/colord"
 license=('GPL2')
-depends=('lcms2' 'polkit' 'shared-color-profiles' 'sqlite3' 'systemd' 'libgusb')
-makedepends=('intltool' 'gobject-introspection' 'vala' 'docbook-xsl' 'sane')
+depends=('lcms2' 'polkit' 'shared-color-profiles' 'sqlite3' 'systemd' 'libgusb' 'dbus')
+makedepends=('intltool' 'gobject-introspection' 'vala' 'docbook-xsl' 'sane' 'bash-completion')
 opdepends=('sane')
 source=($url/releases/$pkgname-$pkgver.tar.xz)
 options=('!libtool')
-md5sums=('fecd86425982d48b1545fe30e38a381d')
+md5sums=('a14bea627172cb8d3aed3c3d22dea085')
 
 build() {
   cd "$pkgname-$pkgver"
@@ -20,16 +20,19 @@ build() {
   sed -i "/slashlibdir=/s#/lib#/usr/lib#" configure
   
   ./configure --prefix=/usr \
-    --sysconfdir=/etc --libexecdir=/usr/lib/colord \
-    --localstatedir=/var --disable-static \
+    --sysconfdir=/etc \
+    --libexecdir=/usr/lib/colord \
+    --localstatedir=/var \
+    --disable-static \
     --with-systemdsystemunitdir=/usr/lib/systemd/system \
-    --enable-vala --enable-sane
+    --enable-vala \
+    --enable-sane
   make
 }
 
 package() {
   cd "$pkgname-$pkgver"
-  make DESTDIR="$pkgdir" install \
-    bashcompletiondir=/usr/share/bash-completion/completions
+  
+  make DESTDIR="$pkgdir" install
 }
 
