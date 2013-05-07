@@ -1,38 +1,29 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Drake Justice <djustice[at]chakra-linux[dot]org>
-
 
 pkgname=texlive-core
-pkgver=2012.26892
+pkgver=2012.29661
 _revnr=${pkgver#2012.}
-pkgrel=2
+pkgrel=1
 pkgdesc="TeX Live core distribution"
 license=('GPL')
-arch=(any)
+arch=('x86_64')
 depends=('texlive-bin')
 optdepends=(
   'perl:        for many useful tools'
   'ruby:        for old ConTeXT MkII and epspdf'
   'tk:          for texdoctk'
-  'python:      for dviasm'
+  'python2:      for dviasm'
   'ghostscript: for epstopdf, epspdf and other ConTeXt tools' 
   'psutils:     to manipulate the output of dvips'
   't1utils:     can be useful when installing Type1 fonts'
 )
 groups=('texlive-most')
-conflicts=('tetex' 'texlive-latex3')
-provides=('tetex' 'texlive-latex3')
-replaces=('tetex' 'texlive-latex3')
 url='http://tug.org/texlive/'
-source=("ftp://ftp.archlinux.org/other/texlive/$pkgname-$pkgver-src.zip"
+source=("http://ftp.sjtu.edu.cn/sites/ftp.archlinux.org/other/texlive/$pkgname-$pkgver-src.zip"
         "$pkgname.maps")
 options=(!strip)
 install=texlive.install
-md5sums=('c913b3c01bdcf81da80e4833cd4cc691'
-         '82c03f7226e1df4440f30c89c05ee653')
+md5sums=('4126fad75c577f5b067e612214039c93'
+         '306ab28bb9b070fc3e40d86d28ea7e8e')
 
 build() {
    cd "${srcdir}"
@@ -65,8 +56,8 @@ package() {
      find $pkgdir/usr/share/texmf-dist/scripts -type f -exec chmod a+x '{}' \;
    fi
 
-   # use python for dviasm
-   sed -i 's/env python/env python/' $pkgdir/usr/share/texmf-dist/scripts/dviasm/dviasm.py
+   # use python2 for dviasm
+   sed -i 's/env python/env python2/' $pkgdir/usr/share/texmf-dist/scripts/dviasm/dviasm.py
    
    # remove obsolete stuff (we don't provide the omega and aleph binaries anyway)
    rm -f $pkgdir/usr/share/texmf-dist/tex/plain/config/{omega,aleph}.ini

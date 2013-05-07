@@ -1,27 +1,21 @@
-#
-# Chakra Packages for Chakra, part of chakra-project.org
-#
-# contributor (x86_64): Giuseppe Calà <jiveaxe@gmail.com>
-#                       Drake Justice <djustice@chakra-project.org>
-#
 
 pkgname=zziplib
 pkgver=0.13.62
 pkgrel=1
 pkgdesc="A lightweight library that offers the ability to easily extract data from files archived in a single zip file"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://zziplib.sourceforge.net"
 license=('LGPL' 'MPL')
 depends=('zlib')
-makedepends=('python')
-source=(http://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tar.bz2)
+makedepends=('python2')
+source=("http://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
 md5sums=('5fe874946390f939ee8f4abe9624b96c')
 options=('!libtool')
 
 build() {
 	cd ${srcdir}/${pkgname}-${pkgver}
 
-    export PYTHON=/usr/bin/python2
+        export PYTHON=/usr/bin/python2
 	./configure --prefix=/usr
 	make
 }
