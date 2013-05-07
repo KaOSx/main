@@ -1,9 +1,6 @@
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
 
 pkgname=netpbm
-pkgver=10.57.1
+pkgver=10.61.02
 pkgrel=1
 pkgdesc="A toolkit for manipulation of graphic images"
 arch=('x86_64')
@@ -12,26 +9,29 @@ url="http://netpbm.sourceforge.net/"
 depends=('perl' 'libjpeg-turbo' 'libpng' 'libtiff' 'libxml2')
 makedepends=('python2')
 options=('!makeflags')
-
-source=(ftp://ftp.archlinux.org/other/netpbm/${pkgname}-${pkgver}.tar.gz \
-        ftp://ftp.archlinux.org/other/netpbm/netpbm-doc-22Feb2009.tar.xz \
-        netpbm-CAN-2005-2471.patch netpbm-security-code.patch netpbm-security-scripts.patch)
-sha1sums=('cd0b99333faf994a680d77c5d217034df35ebd4e'
-          'dfeba9f9a5fe987d64db0aadb5ca8c1b20fcead2'
-          'b79cf9d42488fea065ba16262ed97694c47af08d'
-          '4cd5b94a24886ecae3973c5ae104d8298fe5a1f5'
-          '2ac31f714121e08e47af9337c6bbaab3cbfc5c75')
+source=("http://sourceforge.net/projects/kdeos/files/Sources/netpbm/${pkgname}-${pkgver}.tar.gz"
+        "http://sourceforge.net/projects/kdeos/files/Sources/netpbm/netpbm-doc-22Feb2009.tar.xz"
+        'netpbm-CAN-2005-2471.patch'
+        'netpbm-security-code.patch'
+        'netpbm-security-scripts.patch')
+md5sums=('ce4ce28eae1d2bca082701f4b4d891b2'
+         '48efce0093c5f242bce3072958fe88c3'
+         '9ff90a97583299ac1b59eacd527f3a66'
+         '78055dd5e76793bf770b5305e278d6b3'
+         'a7c60e350f7758c16f37ac0781cd68e8')
 
 build() {
   cd "${srcdir}/advanced"
+  
   patch -p1 < ../netpbm-CAN-2005-2471.patch
   patch -p1 < ../netpbm-security-code.patch
   patch -p1 < ../netpbm-security-scripts.patch
+  
   sed -i 's|#!/usr/bin/python|#!/usr/bin/python2|' buildtools/makeman
   sed -i 's|@python|@python2|' buildtools/manpage.mk
 
   cp config.mk.in  config.mk
-  [ "${CARCH}" = 'x86_64' ] && echo 'CFLAGS_SHLIB = -fPIC' >> config.mk
+  echo 'CFLAGS_SHLIB = -fPIC' >> config.mk
   echo "NETPBM_DOCURL = file://${srcdir}/doc" >> config.mk
   echo 'TIFFLIB = libtiff.so' >> config.mk
   echo 'JPEGLIB = libjpeg.so' >> config.mk
