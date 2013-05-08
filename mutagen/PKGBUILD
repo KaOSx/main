@@ -1,26 +1,25 @@
-# Maintainer: Neophytos Kolokotronis <tetris4@gmail.com>
-# Contributor from Arch: Eric Belanger <eric@archlinux.org>
 
 pkgname=mutagen
-pkgver=1.20
+pkgver=1.21
 pkgrel=1
 pkgdesc="An audio metadata tag reader and writer implemented in pure python"
-arch=('any')
+arch=('x86_64')
 url="http://code.google.com/p/mutagen/"
 license=('GPL2')
 depends=('python2')
-source=(http://mutagen.googlecode.com/files/${pkgname}-${pkgver}.tar.gz{,.sig})
-sha1sums=('7a8c1918160e6b5d24acd146f57c08ed942a2fa8'
-          '046c2d763cd59f86ee920a6dc28a32f86b555473')
+source=("http://mutagen.googlecode.com/files/${pkgname}-${pkgver}.tar.gz")
+md5sums=('7491af5d04706b1f60fcab71aadfd27f')
 
 check() {
   cd "${srcdir}/${pkgname}-${pkgver}"
+  
   python2 setup.py test
 }
 
 package() {
   cd "${srcdir}/${pkgname}-${pkgver}"
   python2 setup.py install --root="${pkgdir}"
+  
   install -d "${pkgdir}/usr/bin"
   install -m755 tools/* "${pkgdir}/usr/bin"
   sed -i 's|^#!.*/usr/bin/env.*python|#!/usr/bin/env python2|' "${pkgdir}"/usr/bin/* \
