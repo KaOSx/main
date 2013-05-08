@@ -1,55 +1,58 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas[at]chakra-project[dot]org>
-
 pkgname=usbmuxd
 pkgver=1.0.8
-pkgrel=2
-pkgdesc="USB Multiplex Daemon"
-url="http://marcansoft.com/blog/iphonelinux/usbmuxd/"
-arch=('x86_64')
-license=('GPL2' 'GPL3' 'LGPL2.1')
-depends=('libusb' 'libplist')
-makedepends=('cmake')
-install=usbmuxd.install
-source=("http://cgit.sukimashita.com/${pkgname}.git/snapshot/${pkgname}-${pkgver}.tar.bz2"
-        'usbmuxd.service'
-	'85-usbmuxd.rules')
-md5sums=('87fd27773a84e97ac6e2dc28b08d682e'
-         '099ab951e94be0803f5706f90dc63054'
-         'dc4b2893651149eccbf7b2c8467cd288')
+pkgrel=3
+pkgdesc="A USB multiplexing daemon."
+url="http://sukimashita.com/"
+arch=('i686' 'x86_64')
+license=('GPL')
+depends=('glib2' 'libxml2')
+makedepends=('git' 'cmake')
+provides=('usbmuxd')
+conflicts=('usbmuxd')
+install='usbmuxd.install'
+
+_gitroot="http://cgit.sukimashita.com/usbmuxd.git"
+_gitname="usbmuxd"
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
-  echo "${pkgver}" > version.tag
-  mkdir build
-  cd build
-  cmake ../ -DCMAKE_INSTALL_PREFIX:PATH=/usr -DLIB_SUFFIX=""
-  make
+
+	cd ${srcdir}
+	msg "Connecting to GIT server...."
+
+	if [ -d ${srcdir}/$_gitname ] ; then
+		cd $_gitname && git pull origin
+		msg "Local repository updated."
+	else
+		git clone $_gitroot $_gitname
+	fi
+
+	msg "GIT checkout done or server timeout"
+
+	msg "Removing old build directory..."
+	rm -Irf ${srcdir}/$_gitname-build
+
+	msg "Creating new build directory..."
+	cp -r ${srcdir}/$_gitname ${srcdir}/$_gitname-build
+
+	cd ${srcdir}/$_gitname-build
+
+	msg "Starting make..."
+
+    cmake ./ -DCMAKE_INSTALL_PREFIX:PATH=/usr -DLIB_SUFFIX=""
+
+    make -j2 || return 1
+
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}/build"
-  make DESTDIR="${pkgdir}" install
 
- # Fix dirty versioning
-  if [ -e ${pkgdir}/usr/lib/libusbmuxd.so.-dirty ] ; then
-  sed -i -e "s~-dirty~${pkgver}~g" ${pkgdir}/usr/lib/pkgconfig/libusbmuxd.pc
-  mv ${pkgdir}/usr/lib/libusbmuxd.so.-dirty ${pkgdir}/usr/lib/libusbmuxd.so.${pkgver}
-  elif [ -e ${pkgdir}/usr/lib/libusbmuxd.so.UNKNOWN ] ; then
-  sed -i -e "s~-UNKNOWN~${pkgver}~g" ${pkgdir}/usr/lib/pkgconfig/libusbmuxd.pc
-  mv ${pkgdir}/usr/lib/libusbmuxd.so.UNKNOWN ${pkgdir}/usr/lib/libusbmuxd.so.${pkgver}
-  fi
+	cd ${srcdir}/$_gitname-build
 
- # install systemd service file
-  install -D -m644 ${srcdir}/usbmuxd.service ${pkgdir}/usr/lib/systemd/system/usbmuxd.service
-
-  # udev moved to /usr/lib
-  mv "${pkgdir}/lib/udev" "${pkgdir}/usr/lib/"
-  rmdir "${pkgdir}/lib"
-
-  # use udev rule that works with systemd
-  install -m644 ${srcdir}/85-usbmuxd.rules ${pkgdir}/usr/lib/udev/rules.d/
+	make DESTDIR=${pkgdir} install || return 1   
+	
+	ln -sr $pkgdir/usr/lib/libusbmuxd.so $pkgdir/usr/lib/libusbmuxd.so.1
+	
+	# fix udev dir being hardcoded
+	mv ${pkgdir}/lib/udev ${pkgdir}/usr/lib/
+	rmdir ${pkgdir}/lib
 }
-
