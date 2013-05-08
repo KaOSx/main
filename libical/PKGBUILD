@@ -1,31 +1,29 @@
-# Maintainer: Daniele Cocca <jmc@chakra-project.org>
 
 pkgname=libical
-pkgver=0.48
+pkgver=1.0
 pkgrel=1
 pkgdesc="An open source reference implementation of the icalendar data type and serialization format."
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url='http://sourceforge.net/projects/freeassociation/'
 license=('LGPL' 'MPL')
 depends=('glibc')
+makedepends=('cmake')
 options=('!libtool')
 source=("http://downloads.sourceforge.net/freeassociation/${pkgname}-${pkgver}.tar.gz")
-md5sums=('e549f434d5fbf9cd156c60ed4943618f')
+md5sums=('4438c31d00ec434f02867a267a92f8a1')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
 
-  ./configure --prefix=/usr \
-              --enable-shared \
-              --disable-static \
-  || return 1
-
+  mkdir build
+  cd build
+  cmake .. \
+    -DCMAKE_INSTALL_PREFIX=/usr
   make
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd "${srcdir}/${pkgname}-${pkgver}/build"
+  
   make install DESTDIR="${pkgdir}"
 }
-
-# vim:set ts=2 sw=2 et:
