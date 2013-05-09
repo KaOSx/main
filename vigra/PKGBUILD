@@ -1,44 +1,38 @@
-#
-# Chakra Packages, part of chakra-project.org
-#
-# maintainer abveritas[at]chakra-project[dot]org>
 
 pkgname=vigra
-pkgver=1.8.0
+pkgver=1.9.0
 pkgrel=1
 pkgdesc="Computer vision library"
 arch=('x86_64')
 url="http://hci.iwr.uni-heidelberg.de/vigra/"
 license=('custom:MIT')
 depends=('libpng' 'libtiff' 'gcc-libs' 'sh' 'hdf5' 'fftw')
-makedepends=('cmake' 'python2-nose' 'doxygen' 'python-sphinx' 'boost' 'python-numpy')
+makedepends=('cmake' 'python2-nose' 'doxygen' 'python2-sphinx' 'boost' 'python2-numpy')
 optdepends=('python2: for python bindings'
             'boost-libs: for python bindings')
 options=('!libtool')
-source=("http://kogs-www.informatik.uni-hamburg.de/~koethe/vigra/${pkgname}-${pkgver}-src.tar.gz"
-        'vigra-1.7.1.gcc460.patch')
-md5sums=('15c5544448e529ee60020758ab6be264'
-         '25ef8bc26bc38ee67e5b512d2acd0166')
+source=("http://kogs-www.informatik.uni-hamburg.de/~koethe/vigra/${pkgname}-${pkgver}-src.tar.gz")
+md5sums=('b6155afe1ea967917d2be16d98a85404')
 
 build() {
   cd "${srcdir}"/${pkgname}-${pkgver}
-  patch -p1 -i ${srcdir}/vigra-1.7.1.gcc460.patch
   
   cmake -DCMAKE_INSTALL_PREFIX=/usr \
       -DPYTHON_EXECUTABLE=/usr/bin/python2 \
-      -DWITH_VIGRANUMPY=0 \
+      -DWITH_VIGRANUMPY=1 \
       -DDOCINSTALL=share/doc 
   make
 }
 
 check() {
   cd "${srcdir}"/${pkgname}-${pkgver}
+  
   make -k check || /bin/true 
 }
 
 package() {
   cd "${srcdir}"/${pkgname}-${pkgver}
   make DESTDIR="${pkgdir}" install
-  # license
+
   install -D -m644 LICENSE.txt "${pkgdir}"/usr/share/licenses/${pkgname}/LICENSE
 }
