@@ -1,24 +1,21 @@
-# $Id: PKGBUILD 82 2009-07-17 19:56:55Z aaron $
-# Maintainer: Andrea Scarpino <andrea@archlinux.org>
-# Contributor: Jaroslav Lichtblau <dragonlord@aur.archlinux.org>
-# Contributor: Hugo Doria <hugodoria at gmail.com>
 
 pkgname=translate-toolkit
-pkgver=1.9.0
+pkgver=1.10.0
 pkgrel=1
 pkgdesc="A toolkit to convert between various different translation formats, help process and validate localisations"
-arch=('any')
+arch=('x86_64')
 url="http://translate.sourceforge.net"
 license=('GPL')
-depends=('bash' 'python-lxml')
-source=(http://downloads.sourceforge.net/translate/${pkgname}-${pkgver}.tar.bz2)
-md5sums=('6106bb27887a77c056bfa7d2fd89204d')
-
-build() {
-  /bin/true
-}
+depends=('bash' 'python2-lxml')
+source=("http://downloads.sourceforge.net/translate/${pkgname}-${pkgver}.tar.bz2")
+md5sums=('91ef9ec6e997f8cd5379fb1e44ce2063')
 
 package() {
   cd "${srcdir}/${pkgname}-${pkgver}"
-  python setup.py install --root="${pkgdir}" || return 1
+  sed -i -e "s|#![ ]*/usr/bin/python$|#!/usr/bin/python2|" \
+    -e "s|#![ ]*/usr/bin/env python$|#!/usr/bin/env python2|" \
+    $(find . -name '*.py')
+
+  python2 setup.py install --root="${pkgdir}" --optimize=1
+  mv "${pkgdir}"/usr/lib/python2.7/site-packages/{docs,share} "${pkgdir}"/usr/lib/python2.7/site-packages/translate
 }

@@ -1,8 +1,3 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
-# contributor Jan de Groot <jgc@archlinux.org>
 
 pkgname=gst-plugins-base
 pkgver=1.0.3
@@ -16,11 +11,12 @@ makedepends=('pkgconfig' 'gobject-introspection')
 options=(!libtool !emptydirs)
 url="http://gstreamer.freedesktop.org/"
 source=(${url}/src/$pkgname/$pkgname-${pkgver}.tar.xz)
-sha256sums=('066ba8a7fa709a25ad291f7b21329b73f513637aafceee00396e588e723d7f9e')
+md5sums=('066ba8a7fa709a25ad291f7b21329b73f513637aafceee00396e588e723d7f9e')
 
 build() {
   cd $pkgname-$pkgver
   sed -i '/AC_PATH_XTRA/d' configure.ac
+  
   autoreconf
   ./configure --prefix=/usr \
     --sysconfdir=/etc \

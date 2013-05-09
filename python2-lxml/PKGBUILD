@@ -1,19 +1,15 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
 
-pkgname=python-lxml
-pkgver=2.3.4
+pkgname=python2-lxml
+pkgver=3.1.2
 pkgrel=1
 pkgdesc="Python binding for the libxml2 and libxslt libraries"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 license=('BSD' 'GPL' 'custom')
 url="http://codespeak.net/lxml"
 depends=('python2' 'libxslt')
 optdepends=("beautiful-soup: support for parsing not well formed HTML")
-source=(http://pypi.python.org/packages/source/l/lxml/lxml-${pkgver}.tar.gz)
-md5sums=('61d4ad80726b984b35c9a81aa2510b4d')
+source=("http://pypi.python.org/packages/source/l/lxml/lxml-${pkgver}.tar.gz")
+md5sums=('6f2173f4fd5b13fbc9f8a5096d23d524')
 
 build() {
   /bin/true
