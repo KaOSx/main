@@ -1,6 +1,6 @@
 
 pkgname=gstreamer
-pkgver=1.0.3
+pkgver=1.0.7
 pkgrel=1
 pkgdesc="GStreamer Multimedia Framework"
 arch=('x86_64')
@@ -11,7 +11,7 @@ optdepends=('sh: feedback script')
 makedepends=('intltool' 'pkgconfig' 'gobject-introspection')
 options=('!libtool')
 source=(${url}/src/gstreamer/gstreamer-${pkgver}.tar.xz)
-md5sums=('69ac49e2ae9cd2ea5f789de641aeb338bb8731961acfced08ae1c76a797fe6b1')
+md5sums=('8f6066a37c71a0d0ff5fe5f7687fea12')
 
 build() {
   cd "${srcdir}/gstreamer-${pkgver}"
@@ -20,8 +20,8 @@ build() {
       --sysconfdir=/etc \
       --localstatedir=/var \
       --libexecdir=/usr/lib \
-      --with-package-name="GStreamer (Chakra GNU/Linux)" \
-      --with-package-origin="http://www.chakra-project.org/" \
+      --with-package-name="GStreamer (KdeOS)" \
+      --with-package-origin="http://www.kde-os.tk/" \
       --disable-static
   make
 }

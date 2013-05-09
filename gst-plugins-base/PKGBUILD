@@ -1,6 +1,6 @@
 
 pkgname=gst-plugins-base
-pkgver=1.0.3
+pkgver=1.0.7
 pkgrel=1
 pkgdesc="GStreamer Multimedia Framework Base Plugins"
 arch=('x86_64')
@@ -11,20 +11,22 @@ makedepends=('pkgconfig' 'gobject-introspection')
 options=(!libtool !emptydirs)
 url="http://gstreamer.freedesktop.org/"
 source=(${url}/src/$pkgname/$pkgname-${pkgver}.tar.xz)
-md5sums=('066ba8a7fa709a25ad291f7b21329b73f513637aafceee00396e588e723d7f9e')
+md5sums=('b5b43cfbf82b413ce2e07a190d87e68f')
 
 build() {
   cd $pkgname-$pkgver
-  sed -i '/AC_PATH_XTRA/d' configure.ac
+  sed -i -e '/AC_PATH_XTRA/d' configure.ac
   
-  autoreconf
+  aclocal -I m4 -I common/m4
+  autoconf
+  automake --add-missing
   ./configure --prefix=/usr \
     --sysconfdir=/etc \
     --localstatedir=/var \
     --disable-static \
     --enable-experimental \
-    --with-package-name="GStreamer (Chakra GNU/Linux)" \
-    --with-package-origin="http://www.chakra-project.org/" 
+    --with-package-name="GStreamer (KdeOS)" \
+    --with-package-origin="http://www.kde-os.tk/" 
   make
   sed -e 's/^SUBDIRS_EXT =.*/SUBDIRS_EXT =/' -i Makefile
 }
