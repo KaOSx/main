@@ -1,18 +1,13 @@
-#
-# Chakra Packages, part of chakra-project.org
-#
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
 
 pkgname=lucene
 pkgver=2.9.4 # don't update to 3.x tree - OOo is not yet ready to use it
 pkgrel=1
-arch=('any')
+arch=('x86_64')
 pkgdesc="A high-performance, full-featured text search engine library written entirely in Java"
 url="http://lucene.apache.org/java/docs/index.html"
 license=("APACHE")
 depends=('java-runtime')
-source=(http://www.mirrorservice.org/sites/ftp.apache.org/lucene/java/$pkgver/lucene-${pkgver}.tar.gz)
+source=("http://www.mirrorservice.org/sites/ftp.apache.org/lucene/java/$pkgver/lucene-${pkgver}.tar.gz")
 md5sums=('ffc60c3a163105b22610dec15602329a')
 
 build() {
