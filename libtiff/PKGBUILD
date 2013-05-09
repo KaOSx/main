@@ -1,10 +1,7 @@
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
 
 pkgname=libtiff
 pkgver=4.0.3
-pkgrel=1
+pkgrel=2
 pkgdesc="Library for manipulation of TIFF images"
 arch=('x86_64')
 url="http://www.remotesensing.org/libtiff/"
@@ -18,17 +15,20 @@ sha1sums=('652e97b78f1444237a82cbcfe014310e776eb6f0')
 
 build() {
   cd "${srcdir}/tiff-${pkgver}"
+  
   ./configure --prefix=/usr
   make
 }
 
 check() {
   cd "${srcdir}/tiff-${pkgver}"
-#  make check
+  
+  #make check
 }
 
 package() {
   cd "${srcdir}/tiff-${pkgver}"
   make DESTDIR="${pkgdir}" install
+  
   install -D -m644 COPYRIGHT "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
 }
