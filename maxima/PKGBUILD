@@ -1,30 +1,25 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas[at]chakra-project[dot]org>
 
 pkgname=maxima
-pkgver=5.28.0
-pkgrel=2
+pkgver=5.30.0
+pkgrel=1
 pkgdesc="Maxima - a sophisticated Computer Algebra System."
 arch=('x86_64')
 license=('GPL')
 url="http://maxima.sourceforge.net"
-depends=('sbcl' 'texinfo' 'sh')
+depends=('sbcl=1.1.7' 'texinfo' 'sh')
 optdepends=('gnuplot: plotting capabilities' \
-            'rlwrap: readline support via /usr/bin/rmaxima' \
             'tk: graphical xmaxima interface')
 # needs rebuild when bash changes version
-# needs a rebuild when sbcl changes version
-options=('!makeflags' '!zipman') # don't zip info pages or they won't work inside maxima
+options=('!makeflags' '!zipman') 
 install="maxima.install"
 source=("http://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}-${pkgver}.tar.gz"
         "${pkgname}.desktop")
-md5sums=('de12d5081194325f0336abef263e7263'
+md5sums=('f98925dd1920c074aefae227711ecb69'
          '24aa81126fbb8b726854e5a80d4c2415')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
+  sed -i "s|${PYTHONBIN:-python}|python2|" doc/info/extract_categories.sh
 
   ./configure --prefix=/usr \
               --mandir=/usr/share/man \
@@ -33,18 +28,16 @@ build() {
               --enable-sbcl \
               --with-default-lisp=sbcl
 
+  touch doc/info/maxima.info
   make
 }
 
 package() {
   cd "${srcdir}/${pkgname}-${pkgver}"
-
   make DESTDIR="${pkgdir}" install
 
-  # install some freedesktop.org compatibility
   install -Dm644 "${srcdir}/${pkgname}.desktop" "${pkgdir}/usr/share/applications/${pkgname}.desktop"
 
-  # make sure we have a nice icon for the desktop file at the right place ;)
   install -d "${pkgdir}/usr/share/pixmaps"
   ln -s /usr/share/maxima/${pkgver}/xmaxima/maxima-new.png "${pkgdir}/usr/share/pixmaps/${pkgname}.png"
 }
