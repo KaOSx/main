@@ -9,7 +9,8 @@ license=('CPL')
 depends=('java-runtime')
 makedepends=('apache-ant' 'git')
 #source=("https://github.com/junit-team/${pkgname}.git")
-#md5sums=('b50208610cba54eb98cd4f20d5b51041')
+source=('Manifest.txt')
+md5sums=('165500a4fcda0cdd6cff5256301d3702')
 
 build() {
   cd ${srcdir}
@@ -20,6 +21,13 @@ build() {
   git checkout r${pkgver}
 
   ant dist -Dversion-status=''
+  jar ufm ${pkgname}${pkgver}/${pkgname}-dep-${pkgver}.jar ${srcdir}/Manifest.txt
+}
+
+check() {
+  cd ${srcdir}/${pkgname}
+
+  ant test
 }
 
 package() {
