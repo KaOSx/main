@@ -1,25 +1,20 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
 
 pkgname=openobex
 pkgver=1.5
 pkgrel=3
 pkgdesc="Implementation of the OBject EXchange (OBEX) protocol"
 url="http://dev.zuckschwerdt.org/openobex/"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 license=('GPL' 'LGPL')
-depends=('bluez>=4.55' 'libusb-compat')
+depends=('bluez' 'libusb-compat')
 options=('!libtool')
-source=("http://www.kernel.org/pub/linux/bluetooth/$pkgname-$pkgver.tar.bz2")
-md5sums=('fce1b82eafb74bde54fe117372393ba8')
+source=("http://pkgs.fedoraproject.org/repo/pkgs/openobex/openobex-1.5.tar.gz/0d83dc86445a46a1b9750107ba7ab65c/$pkgname-$pkgver.tar.gz")
+md5sums=('0d83dc86445a46a1b9750107ba7ab65c')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
 
-  [ "${CARCH}" = "x86_64" ] && export CFLAGS="${CFLAGS} -fPIC"
+  export CFLAGS="${CFLAGS} -fPIC"
 
   ./configure --prefix=/usr \
               --enable-apps \
@@ -31,6 +26,7 @@ build() {
 
 package() {
   cd "${srcdir}/${pkgname}-${pkgver}"
+  
   make DESTDIR="${pkgdir}" install
 }
 
