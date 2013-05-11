@@ -1,12 +1,8 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
 
 pkgname=transcode
 _sripver=0.3-4
 pkgver=1.1.7
-pkgrel=9
+pkgrel=11
 pkgdesc="A video/DVD ripper and encoder for the terminal/console"
 arch=('x86_64')
 url="http://tcforge.berlios.de/"
@@ -19,11 +15,11 @@ source=("https://bitbucket.org/france/transcode-tcforge/downloads/${pkgname}-${p
 	"http://downloads.sourceforge.net/sourceforge/subtitleripper/subtitleripper-${_sripver}.tgz"
         'subtitleripper-0.3.4-linkingorder.patch' 'subtitleripper-0.3.4-respect-ldflags.patch'
         'ffmpeg-0.11.patch')
-sha1sums=('e35df68b960eb56ef0a59a4cdbed1491be56aee6'
-          'd93ff3578dd5f722c8f4ef16bc0903eec5781a0d'
-          'fa05aa1770d9350d90b7cf315aa7c4a1fd921ac7'
-          '591943a33235342a66c3df0625a164a1479c09ae'
-          '3d2dcdc23f14938e87d14cfc03000bb3b649b85e')
+md5sums=('9bb25a796a8591fb764de46ee87ce505'
+         'c0bd49a88f667c68c4430ad25bbed510'
+         'a8d4d78e3311f576c7da27f2657358fd'
+         'f9b367044568d0ef4612770969c93e14'
+         '6d4e76a9c90cc35df1cd1df97a4fae12')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
