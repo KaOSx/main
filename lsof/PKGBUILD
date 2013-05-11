@@ -1,23 +1,21 @@
-# Platform packages for Chakra
-# Maintainer: Neophytos Kolokotronis <tetris4@gmail.com>
-# Contributors from Arch: Aaron Griffin <aaron@archlinux.org>
-#                         Jochem Kossen <j.kossen@home.nl>
 
 pkgname=lsof
-pkgver=4.86
+pkgver=4.87
 pkgrel=1
 pkgdesc="Lists open files for running Unix processes"
 arch=('x86_64')
 url="http://people.freebsd.org/~abe/"
 license=('custom')
 depends=('glibc')
-source=(ftp://sunsite.ualberta.ca/pub/Mirror/lsof/${pkgname}_${pkgver}.tar.bz2 license.txt)
-md5sums=('9f1cda41f35add068c7b81f873fa56b5'
+source=("ftp://sunsite.ualberta.ca/pub/Mirror/lsof/${pkgname}_${pkgver}.tar.bz2"
+        'license.txt')
+md5sums=('80e2a76d0e05826db910ec88e631296c'
          '1b63c76bd10437cabf890508c8e58d36')
 
 build() {
    cd "$srcdir/${pkgname}_${pkgver}"
    tar xf ${pkgname}_${pkgver}_src.tar
+   
    cd ${pkgname}_${pkgver}_src
    sed "s|/\* #define\tHASSECURITY\t1 \*/|#define\tHASSECURITY\t1|" -i dialects/linux/machine.h
    ./Configure -n linux

@@ -1,11 +1,7 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
 
 pkgname=udisks
 pkgver=1.0.4
-pkgrel=8
+pkgrel=9
 pkgdesc="Disk Management Service"
 arch=('x86_64')
 url="http://www.freedesktop.org/wiki/Software/udisks"
@@ -29,8 +25,11 @@ build() {
   # fix fail pci-db message, patch thanks to Tom Gundersen <teg@jklm.no>
   patch -p1 -i ${srcdir}/drop-pci-db.patch
   
-  ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var \
-      --libexecdir=/usr/lib/udisks --disable-static
+  ./configure --prefix=/usr \
+      --sysconfdir=/etc \
+      --localstatedir=/var \
+      --libexecdir=/usr/lib/udisks \
+      --disable-static
 
   make
 }
