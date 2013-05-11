@@ -1,11 +1,6 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
-# contributor Jan Alexander Steffens (heftig) <jan.steffens@gmail.com>
 
 pkgname=sbc
-pkgver=1.0
+pkgver=1.1
 pkgrel=1
 pkgdesc="Bluetooth Subband Codec (SBC) library"
 arch=('x86_64')
@@ -13,8 +8,8 @@ url="http://www.bluez.org/"
 license=('GPL' 'LGPL')
 depends=('glibc')
 options=(!libtool)
-source=(http://www.kernel.org/pub/linux/bluetooth/$pkgname-$pkgver.tar.xz)
-md5sums=('aa2bc39c4a09aade064efea4bbbc4b2d')
+source=("http://www.kernel.org/pub/linux/bluetooth/$pkgname-$pkgver.tar.xz")
+md5sums=('ecadadbfd4b1dfe7b98f446c69126b23')
 
 build() {
   cd $pkgname-$pkgver
