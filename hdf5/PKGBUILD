@@ -1,19 +1,15 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
 
 pkgname=hdf5
-pkgver=1.8.9
+pkgver=1.8.10
 pkgrel=1
 arch=('x86_64')
 pkgdesc="General purpose library and file format for storing scientific data"
 url="http://www.hdfgroup.org/HDF5/"
 license=('custom')
 depends=('zlib' 'sh')
-source=("ftp://ftp.hdfgroup.org/HDF5/current/src/${pkgname}-${pkgver/_/-}.tar.bz2")
+source=("ftp://ftp.hdfgroup.org/HDF5/current/src-$pkgver/${pkgname}-${pkgver}.tar.bz2")
 options=('!libtool')
-md5sums=('33e105583417eff1c57fff910a53cd6f')
+md5sums=('8166c0fa3ee34fee6cdef4c5f3cbc94e')
 
 build() {
   cd $srcdir/${pkgname}-${pkgver/_/-}
