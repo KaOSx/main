@@ -34,9 +34,9 @@ package() {
   install -D -m755 newns "${pkgdir}/usr/lib/os-prober/newns"
   install -D -m755 common.sh "${pkgdir}/usr/share/os-prober/common.sh"
   
-  install -d -m755 "${pkgdir}/usr/lib/os-probes/mounted/x86/efi"
-  install -Dm755 os-probes/mounted/x86/efi/10elilo "${pkgdir}/usr/lib/os-probes/mounted/efi/10elilo"
-  install -Dm755 os-probes/mounted/x86/efi/20microsoft "${pkgdir}/usr/lib/os-probes/mounted/efi/20microsoft"
+  install -d -m755 "${pkgdir}/usr/lib/os-probes/mounted"
+  install -Dm755 os-probes/mounted/x86/efi/10elilo "${pkgdir}/usr/lib/os-probes/mounted/10elilo"
+  install -Dm755 os-probes/mounted/x86/efi/20microsoft "${pkgdir}/usr/lib/os-probes/mounted/20microsoft"
   
   rm -r os-probes/mounted/x86/efi/ 
 
