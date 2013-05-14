@@ -1,0 +1,21 @@
+--- ../qca-ossl.cpp.orig	2013-05-13 22:20:48.597518073 -0400
++++ ../qca-ossl.cpp	2013-05-13 22:30:17.499527473 -0400
+@@ -6810,14 +6810,18 @@
+ 		else if ( type == "sha512" )
+ 			return new opensslHashContext( EVP_sha512(), this, type);
+ #endif
++/*
+ #ifdef WHIRLPOOL_DIGEST_LENGTH
+ 		else if ( type == "whirlpool" )
+ 			return new opensslHashContext( EVP_whirlpool(), this, type);
+ #endif
++*/
+ 		else if ( type == "pbkdf1(sha1)" )
+ 			return new opensslPbkdf1Context( EVP_sha1(), this, type );
++#ifdef HAVE_OPENSSL_MD2
+ 		else if ( type == "pbkdf1(md2)" )
+ 			return new opensslPbkdf1Context( EVP_md2(), this, type );
++#endif
+ 		else if ( type == "pbkdf2(sha1)" )
+ 			return new opensslPbkdf2Context( this, type );
+ 		else if ( type == "hmac(md5)" )
