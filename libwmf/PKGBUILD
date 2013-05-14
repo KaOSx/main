@@ -1,11 +1,7 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas[at]chakra-project[dot]org>
 
 pkgname=libwmf
 pkgver=0.2.8.4
-pkgrel=12
+pkgrel=13
 pkgdesc="A library for reading vector images in Microsoft's native Windows Metafile Format (WMF)."
 arch=('x86_64')
 url="http://wvware.sourceforge.net/libwmf.html"
@@ -26,7 +22,7 @@ build() {
   ./configure --prefix=/usr \
               --with-gsfontdir=/usr/share/fonts/Type1 \
 	      --with-fontdir=/usr/share/fonts/Type1 \
-	      --with-gsfontmap=/usr/share/ghostscript/8.15/lib/Fontmap.GS \
+	      --with-gsfontmap=/usr/share/ghostscript/9.07/Resources/Init/Fontmap.GS \
               --disable-gtk2
   make 
 }

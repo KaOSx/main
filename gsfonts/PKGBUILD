@@ -1,30 +1,31 @@
-# $Id: PKGBUILD 73458 2010-03-26 07:43:21Z francois $
-# Maintainer: Firmicus <francois.archlinux.org>
-# Contributor: dorphell <dorphell@archlinux.org>
 
 pkgname=gsfonts
 _realname=urw-fonts
 pkgver=1.0.7pre44
 _fedoraver=2.4
-_fedorarel=12.fc18
-pkgrel=3
+_fedorarel=15.fc19
+pkgrel=4
 pkgdesc="Ghostscript standard Type1 fonts from URW"
-arch=(any)
+arch=('x86_64')
 url="http://sourceforge.net/projects/gs-fonts/"
 license=('GPL2')
 depends=('xorg-font-utils' 'fontconfig')
 makedepends=('rpmextract')
 provides=(${_realname})
 install=xfonts.install
-source=(http://kojipkgs.fedoraproject.org/packages/${_realname}/${_fedoraver}/${_fedorarel}/src/${_realname}-${_fedoraver}-${_fedorarel}.src.rpm)
-options=()
-md5sums=('7bd842c30948a43eaabb107fb5773647')
+source=("http://kojipkgs.fedoraproject.org/packages/${_realname}/${_fedoraver}/${_fedorarel}/src/${_realname}-${_fedoraver}-${_fedorarel}.src.rpm")
+md5sums=('844d009abef21d0632f520132977ea3d')
 
 build() {
-  cd $srcdir || return 1
-  /usr/bin/rpmextract.sh ${_realname}-${_fedoraver}-${_fedorarel}.src.rpm || return 1
-  bsdtar xf *.tar.bz2 || return 1
+  cd $srcdir
+  
+  /usr/bin/rpmextract.sh ${_realname}-${_fedoraver}-${_fedorarel}.src.rpm
+  bsdtar xf *.tar.bz2 
+}
+
+package() {
+  cd $srcdir
+  
   install -d ${pkgdir}/usr/share/fonts/Type1
-  install -m644 *.{pfb,pfm,afm} \
-                ${pkgdir}/usr/share/fonts/Type1/ || return 1
+  install -m644 *.{pfb,pfm,afm} ${pkgdir}/usr/share/fonts/Type1/
 }
