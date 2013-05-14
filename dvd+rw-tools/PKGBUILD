@@ -1,16 +1,12 @@
-#
-# Chakra Package
-#
-#  -- Drake Justice <djustice[at]chakra-linux.org>
 
 pkgname=dvd+rw-tools
 pkgver=7.1
-pkgrel=3
+pkgrel=4
 pkgdesc="dvd burning tools"
-arch=(i686 x86_64)
+arch=('x86_64')
 license=('GPL')
 url="http://fy.chalmers.se/~appro/linux/DVD+RW"
-depends=('cdrkit' 'gcc-libs')
+depends=('cdrtools' 'gcc-libs')
 source=("http://fy.chalmers.se/~appro/linux/DVD+RW/tools/${pkgname}-${pkgver}.tar.gz"
         'dvd+rw-tools-7.0-dvddl.patch'
         'dvd+rw-tools-7.0-glibc2.6.90.patch'
