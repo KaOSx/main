@@ -1,16 +1,16 @@
 
 pkgname=at-spi2-core
-pkgver=2.6.3
+pkgver=2.7.5
 pkgrel=1
 pkgdesc="Protocol definitions and daemon for D-Bus at-spi"
 arch=('x86_64')
 url="http://www.gnome.org"
 license=('GPL2')
-depends=('dbus-core' 'glib2' 'libxtst')
+depends=('dbus' 'glib2' 'libxtst')
 makedepends=('intltool' 'gobject-introspection')
 options=('!libtool')
 source=("http://download.gnome.org/sources/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.xz")
-md5sums=('eb1d3ca3332af8862791d3ff7dcfd20a')
+md5sums=('a22465026f812237f27a7a2b4c98a222')
 
 build() {
   cd $pkgname-$pkgver
@@ -25,6 +25,7 @@ build() {
 
 package() {
   cd $pkgname-$pkgver
+  
   make DESTDIR="$pkgdir" install
 }
 

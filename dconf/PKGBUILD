@@ -1,20 +1,16 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
 
 pkgname=dconf
-pkgver=0.12.0
+pkgver=0.14.0
 pkgrel=1
 pkgdesc="A low-level configuration system."
 arch=('x86_64')
 url="http://live.gnome.org/dconf"
 license=('LGPL2.1')
 depends=('glib2')
-makedepends=('vala' 'gobject-introspection')
+makedepends=('vala' 'gobject-introspection' 'python2' 'intltool' 'docbook-xsl')
 install=dconf.install
 source=("http://download.gnome.org/sources/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
-md5sums=('6aec9d37fca1614cd672bc5b2215c9f3')
+md5sums=('d2d6e49e77d9dba354ef16b8b9fce0d5')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
@@ -26,7 +22,6 @@ build() {
 
 package() {
   cd "${srcdir}/${pkgname}-${pkgver}"
+  
   make DESTDIR="${pkgdir}" install
 }
-
-# vim:set ts=2 sw=2 et:
