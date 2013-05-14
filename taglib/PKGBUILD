@@ -1,14 +1,9 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
 
 pkgname=taglib
 pkgver=1.8
-pkgrel=1
+pkgrel=2
 pkgdesc="A Library for reading and editing the meta-data of several popular audio formats"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://developer.kde.org/~wheeler/taglib.html"
 license=('GPL2')
 depends=('sh' 'zlib' 'gcc-libs')
@@ -33,5 +28,6 @@ build() {
 
 package() {
   cd "${srcdir}"/build
+  
   make DESTDIR="${pkgdir}" install
 }

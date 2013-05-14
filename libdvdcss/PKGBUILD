@@ -1,8 +1,7 @@
-# Maintainer: abveritas@chakra-project.org
 
 pkgname=libdvdcss
 pkgver=1.2.13
-pkgrel=1
+pkgrel=2
 pkgdesc="libdvdcss is a cross-platform library for transparent DVD device access with on-the-fly CSS decryption."
 arch=('x86_64')
 license=('GPL')
@@ -13,11 +12,13 @@ md5sums=('53cfc52a60a156763c425572e5179273')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
+  
   ./configure --prefix=/usr
   make
 }
 
 package() {
   cd "${srcdir}/${pkgname}-${pkgver}"
+  
   make DESTDIR="$pkgdir" install
 }

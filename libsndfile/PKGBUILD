@@ -1,7 +1,3 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
 
 pkgname=libsndfile
 pkgver=1.0.25
@@ -17,11 +13,13 @@ md5sums=('e2b7bb637e01022c7d20f95f9c3990a2')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
+  
   ./configure --prefix=/usr --disable-sqlite
   make
 }
 
 package() {
   cd "${srcdir}/${pkgname}-${pkgver}"
+  
   make DESTDIR="${pkgdir}" install
 }
