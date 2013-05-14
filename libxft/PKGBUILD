@@ -1,27 +1,30 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
 
 pkgname=libxft
-pkgver=2.2.0
+pkgver=2.3.1
 pkgrel=1
 pkgdesc="FreeType-based font drawing library for X"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 license=('custom')
 url="http://xorg.freedesktop.org/"
 depends=('fontconfig' 'libxrender')
 makedepends=('pkgconfig')
 options=('!libtool')
 source=(${url}/releases/individual/lib/libXft-${pkgver}.tar.bz2)
-sha1sums=('ed29784259f4e26df78141035560ae8a7c62e83f')
+md5sums=('78d64dece560c9e8699199f3faa521c0')
 
 build() {
   cd "${srcdir}/libXft-${pkgver}"
-  ./configure --prefix=/usr --sysconfdir=/etc --disable-static
+  
+  ./configure --prefix=/usr \
+        --sysconfdir=/etc \
+        --disable-static
   make
+}
+
+package() {
+  cd "${srcdir}/libXft-${pkgver}"
   make DESTDIR="${pkgdir}" install
+  
   install -d -m755 "${pkgdir}/usr/share/licenses/${pkgname}"
   install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
 

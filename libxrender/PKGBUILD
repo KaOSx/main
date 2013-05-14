@@ -1,30 +1,28 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
-
-# include global config
-source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
 
 pkgname=libxrender
-pkgver=0.9.6
+pkgver=0.9.7
 pkgrel=1
 pkgdesc="X Rendering Extension client library"
-arch=(i686 x86_64)
+arch=('x86_64')
 url="http://xorg.freedesktop.org/"
 license=('custom')
 depends=('libx11' 'renderproto')
 makedepends=('pkgconfig')
 options=('!libtool')
 source=(${url}/releases/individual/lib/libXrender-${pkgver}.tar.bz2)
-md5sums=('3b3b7d076c2384b6c600c0b5f4ba971f')
+md5sums=('ee62f4c7f0f16ced4da63308963ccad2')
 
 build() {
   cd ${srcdir}/libXrender-${pkgver}
-  ./configure --prefix=/usr --disable-static \
-              --build=${CHOST} --host=${CHOST}
-  make || return 1
-  make DESTDIR=${pkgdir} install || return 1
+  
+  ./configure --prefix=/usr \
+              --disable-static 
+  make 
+}
+
+package() {
+  cd ${srcdir}/libXrender-${pkgver}
+  make DESTDIR=${pkgdir} install
+  
   install -D -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }

@@ -1,26 +1,24 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
-
-# include global config
-source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
 
 pkgname=renderproto
 pkgver=0.11.1
-pkgrel=1
+pkgrel=2
 pkgdesc="X11 Render extension wire protocol"
-arch=(any)
+arch=('x86_64')
 url="http://xorg.freedesktop.org/"
 license=('custom')
-source=(http://xorg.freedesktop.org/releases/individual/proto/${pkgname}-${pkgver}.tar.bz2)
-sha1sums=('7ae9868a358859fe539482b02414aa15c2d8b1e4')
+source=("http://xorg.freedesktop.org/releases/individual/proto/${pkgname}-${pkgver}.tar.bz2")
+md5sums=('a914ccc1de66ddeb4b611c6b0686e274')
 
 build() {
   cd ${srcdir}/${pkgname}-${pkgver}
+  
   ./configure --prefix=/usr
-  make || return 1
-  make DESTDIR=${pkgdir} install || return 1
+  make
+}
+
+package() {
+  cd ${srcdir}/${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install
+  
   install -D -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
