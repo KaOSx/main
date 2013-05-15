@@ -1,18 +1,11 @@
-#
-# Apps Packages for Chakra, part of chakra-project.org
-#
-# maintainer (x86_64): Giuseppe Calà <jiveaxe@gmail.com>
-
-# include global config
-source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
 
 pkgname=xerces-c
 pkgver=3.1.1
-pkgrel=1
+pkgrel=2
 pkgdesc="A validating XML parser written in a portable subset of C++."
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://xerces.apache.org/xerces-c"
-license=("APACHE")
+license=('APACHE')
 depends=('gcc-libs' 'curl')
 options=('!libtool')
 source=("http://apache.osuosl.org/xerces/c/3/sources/xerces-c-${pkgver}.tar.gz")
@@ -20,7 +13,13 @@ md5sums=('6a8ec45d83c8cfb1584c5a5345cb51ae')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
-  ./configure --prefix=/usr --sysconfdir=/etc || return 1
-  make || return 1
-  make DESTDIR=${pkgdir}/ install || return 1
+  
+  ./configure --prefix=/usr --sysconfdir=/etc
+  make
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  
+  make DESTDIR=${pkgdir}/ install
 }

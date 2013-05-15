@@ -1,0 +1,29 @@
+
+pkgname=libkolab
+pkgver=0.4.2
+pkgrel=1
+pkgdesc="Advanced Kolab Object Handling Library"
+url='http://git.kolab.org/libkolab/'
+arch=('x86_64')
+license=('GPL')
+depends=('libkolabxml' 'kdepimlibs')
+makedepends=('cmake' 'automoc4' 'boost')
+source=("http://mirror.kolabsys.com/pub/releases/${pkgname}-${pkgver}.tar.gz")
+md5sums=('76c112b18c1c0928af5e6e9733a424d3')
+
+build() {
+  mkdir build
+  cd build
+  
+  cmake ../${pkgname}-${pkgver} \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_SKIP_RPATH=ON \
+    -DCMAKE_INSTALL_PREFIX=/usr
+  make
+}
+
+package() {
+  cd build
+  
+  make DESTDIR="${pkgdir}" install
+}
