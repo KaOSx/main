@@ -60,10 +60,10 @@ build() {
                 -examplesdir /usr/share/qt5/examples \
 		-system-sqlite \
                 -openssl-linked \
-                -nomake demos \
+                -make demos \
                 -nomake tests \
-                -nomake examples \
-                -nomake docs \
+                -make examples \
+                -make docs \
                 -optimized-qmake \
                 -reduce-relocations \
                 -dbus-linked \
@@ -78,6 +78,13 @@ build() {
 	 make
 	 #./configure -prefix $PWD/qtbase -opensource
          #make module-qtwebkit
+         for m in qtbase qtdeclarative qtmultimedia qtquick1 qtscript qtsvg qttools \
+    qtwebkit-examples-and-demos qtxmlpatterns; do
+    cd ${m}/examples
+    ${QTDIR}/qtbase/bin/qmake
+    make
+    cd ../../
+  done
 }
 
 package_qt5() {

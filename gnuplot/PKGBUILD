@@ -10,9 +10,9 @@ depends=('readline' 'gd' 'cairo' 'libjpeg-turbo')
 makedepends=('texinfo' 'texlive-core' 'texlive-latexextra' 'emacs-nox') 
 install=gnuplot.install 
 source=("http://downloads.sourceforge.net/sourceforge/$pkgname/$pkgname-$pkgver.tar.gz"
-        'gnuplot-doc.patch')
+        'gnuplot.texi.patch')
 md5sums=('db7a73d2dddec0149dcec35e30561aa3'
-         '7b5a46850ae5840a92b0e87c67e90b5c')
+         'c47aaaf647d3778533ba85f6331aeb76')
 
 build() {
   cd $srcdir/$pkgname-$pkgver
@@ -23,20 +23,22 @@ build() {
   -e 's|$(X11ROOT)/X11R6/lib/X11/fonts/Type1|$(X11ROOT)/usr/share/fonts/Type1|' \
   src/variable.c
   
-  #(cd docs; patch -p0 -i "$srcdir/gnuplot-doc.patch")
+  patch docs/gnuplot.texi < "$srcdir/gnuplot.texi.patch"
 
   ./configure --prefix=/usr \
               --libexecdir=/usr/bin \
               --with-gihdir=/usr/share/gnuplot \
-              --with-readline=gnu 
-              
-  make 
+              --with-readline=gnu \
+              --datadir=/usr/share \
+              --disable-wxwidgets \
+              --without-lua          
+  make pkglibexecdir=/usr/bin
 }
 
 
 package() {
   cd $srcdir/$pkgname-$pkgver
-  make DESTDIR="$pkgdir" install
+  make pkglibexecdir=/usr/bin DESTDIR="$pkgdir" install
 
   install -Dm644 Copyright $pkgdir/usr/share/licenses/$pkgname/Copyright
   install -Dm644 lisp/dotemacs "$pkgdir/usr/share/emacs/site-lisp/dotemacs"
