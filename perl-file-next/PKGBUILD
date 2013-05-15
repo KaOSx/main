@@ -1,0 +1,28 @@
+
+pkgname=perl-file-next
+_pkgname=File-Next
+pkgver=1.10
+pkgrel=2
+pkgdesc='File::Next - File-finding iterator'
+arch=('x86_64')
+license=('GPL' 'PerlArtistic')
+url="http://search.cpan.org/dist/${_pkgname}"
+depends=('perl')
+options=(!emptydirs)
+source=("http://search.cpan.org/CPAN/authors/id/P/PE/PETDANCE/${_pkgname}-$pkgver.tar.gz")
+md5sums=('dcaade658846c8100b0a5e43fae8920d')
+
+build() {
+  cd "$srcdir/${_pkgname}-$pkgver"
+
+  PERL_MM_USE_DEFAULT=1 perl Makefile.PL INSTALLDIRS=vendor
+  make
+}
+
+package() {
+  cd "$srcdir/${_pkgname}-$pkgver"
+  make DESTDIR="$pkgdir" install 
+
+  find "$pkgdir" -name perllocal.pod -delete
+  find "$pkgdir" -name .packlist -delete
+}
