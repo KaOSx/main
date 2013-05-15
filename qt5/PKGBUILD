@@ -6,8 +6,8 @@
 pkgbase=qt5
 pkgname=('qt5' 'qt5-private-headers')
 pkgver=5.1.0
-_pkgver=5.1.0-alpha
-pkgrel=1
+_pkgver=5.1.0-beta1
+pkgrel=2
 arch=('x86_64')
 url='http://qt.nokia.com/'
 license=('GPL3' 'LGPL')
@@ -25,7 +25,7 @@ source=("http://download.qt-project.org/development_releases/qt/5.1/${_pkgver}/s
         'assistant.desktop' 'designer.desktop' 'linguist.desktop' 'qtconfig.desktop'
         'youtubeview.desktop' 'flickrview.desktop' 'browser.desktop' 'fancybrowser.desktop' 'qmlviewer.desktop'
         'defaultbookmarks_new.diff')
-md5sums=('a532cdcf33c8ac88f7d4c0aa88d36eec'
+md5sums=('7961a21052e14b77bc6b0c0e25091356'
          'fc211414130ab2764132e7370f8e5caa'
          '85179f5e0437514f8639957e1d8baf62'
          'f11852b97583610f3dbb669ebc3e21bc'
@@ -35,11 +35,11 @@ md5sums=('a532cdcf33c8ac88f7d4c0aa88d36eec'
          '3b7ea368a2700dc61bc22fc78e759b1c'
          '188ece1d836c7ad5fd354c72d2f4c424'
          'a43297d33bfd05f8d47ed161254c18f0'
-         'ee9108cd20761a193c0c69d158b091ac')
+         'adc017caa4d03de038022dbe352fb130')
 
 build() {
 	cd $srcdir/$_pkgfqn
-	patch -p1 -i "$srcdir/defaultbookmarks_new.diff"
+	#patch -p1 -i "$srcdir/defaultbookmarks_new.diff"
 
         unset QTDIR
         export PATH="$PWD/qtbase/bin:$PWD/qtrepotools/bin:$PATH"
