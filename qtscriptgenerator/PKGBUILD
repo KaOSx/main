@@ -1,38 +1,25 @@
-#
-# Apps Packages for Chakra, part of chakra-project.org
-#
-# contributor (x86_64): Giuseppe Calà <jiveaxe@gmail.com>
-
-# include global config
-source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
 
 pkgname=qtscriptgenerator
-pkgver=0.1.0
-pkgrel=5
+pkgver=0.2.0
+pkgrel=1
 pkgdesc="Script generator for qt"
-arch=("i686" "x86_64")
+arch=('x86_64')
 url="http://code.google.com/p/qtscriptgenerator/"
 license=('GPL')
-depends=('qt' 'phonon')
+depends=('qtwebkit')
 makedepends=('pkgconfig' 'mesa')
-source=(https://qtscriptgenerator.googlecode.com/files/qtscriptgenerator-src-0.1.0.tar.gz
-        phonon.patch
-        no-phonon.patch
-        qtscriptgenerator-gcc44.patch
-        qt48.patch)
-md5sums=('ca4046ad4bda36cd4e21649d4b98886d'
+source=("https://qtscriptgenerator.googlecode.com/files/qtscriptgenerator-src-0.2.0.tar.gz"
+        'phonon.patch'
+        'no-phonon.patch')
+md5sums=('9f82b0aa212f7938de37df46cd27165c'
          'c0266892ecc645b3407f2203ee11a808'
-         'e47b9c362bc7195a0e0c95faf6e88f23'
-         'a3d48d6a3cfdd9be397bef01d3e4f638'
-         '5802c189ee5d03323abc4c91e210795e')
+         'e47b9c362bc7195a0e0c95faf6e88f23')
 
 build() {
   cd "${srcdir}"/$pkgname-src-$pkgver
   
   patch -p1 -i "${srcdir}"/phonon.patch 
   patch -p1 -i "${srcdir}"/no-phonon.patch
-  patch -p0 -i "${srcdir}"/qtscriptgenerator-gcc44.patch
-  patch -p1 -i "${srcdir}"/qt48.patch
   # prepare plugins
   cd generator
   qmake

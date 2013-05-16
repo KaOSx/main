@@ -1,0 +1,29 @@
+
+pkgname=libmygpo-qt
+pkgver=1.0.7
+pkgrel=1
+pkgdesc="A C++/Qt client library for gpodder.net"
+arch=('x86_64')
+url="http://wiki.gpodder.org/wiki/Libmygpo-qt"
+license=('LGPL2.1')
+depends=('qjson')
+makedepends=('cmake')
+source=("http://stefan.derkits.at/files/${pkgname}/${pkgname}.${pkgver}.tar.gz")
+md5sums=('447e60c8c695b4280a0e20c71abacf49')
+
+build() {
+  cd "${srcdir}"
+  mkdir build
+  
+  cd build
+  cmake "../${pkgname}.${pkgver}"  \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr
+  make
+}
+
+package(){
+  cd "${srcdir}/build"
+  
+  make DESTDIR="${pkgdir}" install
+}

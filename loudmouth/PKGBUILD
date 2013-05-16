@@ -1,7 +1,3 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas[at]chakra-project[dot]org
 
 pkgname=loudmouth
 pkgver=1.5.0
@@ -11,9 +7,9 @@ pkgdesc="A lightweight Jabber client library written in C/Glib"
 arch=('x86_64')
 license=('LGPL')
 url="http://mcabber.com/"
-depends=('glib2>=2.18.3' 'openssl' 'gnutls')
+depends=('glib2' 'openssl' 'gnutls')
 options=('!libtool')
-makedepends=('perlxml' 'pkg-config')
+makedepends=('intltool' 'pkg-config')
 source=("http://mcabber.com/files/loudmouth-${_pkgver}.tar.bz2")
 md5sums=('c03025069d376049eee8af4fbaf4d9cf')
 
