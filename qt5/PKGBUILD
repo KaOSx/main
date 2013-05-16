@@ -78,13 +78,6 @@ build() {
 	 make
 	 #./configure -prefix $PWD/qtbase -opensource
          #make module-qtwebkit
-         for m in qtbase qtdeclarative qtmultimedia qtquick1 qtscript qtsvg qttools \
-    qtwebkit-examples-and-demos qtxmlpatterns; do
-    cd ${m}/examples
-    ${QTDIR}/qtbase/bin/qmake
-    make
-    cd ../../
-  done
 }
 
 package_qt5() {
