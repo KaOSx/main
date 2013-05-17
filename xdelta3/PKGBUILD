@@ -1,34 +1,30 @@
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer: Neophytos Kolokotronis
-# Contributors from Arch: Allan McRae <allan@archlinux.org>
-#                          Eduard "bekks" Warkentin <eduard.warkentin@gmail.com>
-#                         Henning Garus <henning.garus@gmail.com>
 
 pkgname=xdelta3
-pkgver=3.0.4
+pkgver=3.0.7
 pkgrel=1
 pkgdesc="A diff utility which works with binary files"
 arch=('x86_64')
 url="http://xdelta.org/"
 license=('GPL')
-makedepends=('python2')
-optdepends=('python2: for python modules')
+depends=('xz')
 source=("http://xdelta.googlecode.com/files/$pkgname-$pkgver.tar.gz")
-md5sums=('c04f7fd9da45741a0095438cfe527b89')
+md5sums=('ef6631e4f9219a80bcb9e3020962b6ec')
 
 build() {
   cd "$srcdir/$pkgname-$pkgver"
+  
     ./configure --prefix=/usr
   make
 }
 
 check() {
   cd "$srcdir/$pkgname-$pkgver"
+  
   ./xdelta3 test
 }
 
 package() {
   cd "$srcdir/$pkgname-$pkgver"
+  
   make DESTDIR="${pkgdir}" install
 }
