@@ -1,8 +1,8 @@
 
 pkgname=hplip
-pkgver=3.13.4
+pkgver=3.13.5
 # incase a or b is used in hplip rls:
-_pkgver=3.13.4
+_pkgver=3.13.5
 pkgrel=1
 pkgdesc="Drivers for HP DeskJet, OfficeJet, Photosmart, Business Inkjet and some LaserJet."
 arch=('x86_64')
@@ -22,7 +22,7 @@ install=${pkgname}.install
 source=("http://downloads.sourceforge.net/${pkgname}/${pkgname}-${_pkgver}.tar.gz"
 	'cups-1.6-buildfix.diff'
 	'hp-mkuri.patch')
-md5sums=('e5c247161e2fd7685e0520e968393d19'
+md5sums=('f0c406f06f191a120f7d283b69ff10e8'
          '80fe5c3af588f2f75282f0c9dc031769'
          '0bd7779fdbc4d7a9386df04dce2cb8d4')
 
@@ -84,6 +84,4 @@ package() {
   
   # remove rc
   rm -rf "$pkgdir"/etc/init.d
-  
-  sed -i "s:\$attrs:\$attr:g" $pkgdir/usr/lib/udev/rules.d/56-hpmud_support.rules
 }
