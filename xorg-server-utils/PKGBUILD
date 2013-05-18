@@ -7,7 +7,7 @@ arch=('x86_64')
 url="http://xorg.freedesktop.org/"
 license=('custom')
 depends=('libxfontcache' 'libxi' 'libxaw' 'libxrandr' 'libxxf86vm' 'mcpp'
-         'xcb-util' 'libxinerama')
+         'xcb-util' 'libxinerama' 'libxcursor')
 makedepends=('pkgconfig' 'xbitmaps' 'bigreqsproto' 'xtrans' 'xorg-util-macros')
 groups=('xorg')
 source=("${url}/releases/individual/app/iceauth-1.0.5.tar.bz2"
@@ -18,7 +18,7 @@ source=("${url}/releases/individual/app/iceauth-1.0.5.tar.bz2"
         "${url}/releases/individual/app/xgamma-1.0.5.tar.bz2"
         "${url}/releases/individual/app/xhost-1.0.5.tar.bz2"
         "${url}/releases/individual/app/xinput-1.6.0.tar.bz2"
-        #"${url}/releases/individual/app/xmodmap-1.0.7.tar.bz2"
+        "${url}/releases/individual/app/xmodmap-1.0.7.tar.bz2"
         "${url}/releases/individual/app/xrandr-1.4.0.tar.bz2"
         "${url}/releases/individual/app/xrdb-1.0.9.tar.bz2"
         "${url}/releases/individual/app/xrefresh-1.0.4.tar.bz2"
@@ -28,7 +28,8 @@ source=("${url}/releases/individual/app/iceauth-1.0.5.tar.bz2"
         "${url}/releases/individual/app/xvidtune-1.0.3.tar.bz2"
         'LICENSE.iceauth'
         'LICENSE.xcmsdb'
-        'LICENSE.xvidtune')
+        'LICENSE.xvidtune'
+        'xmodmap.patch')
 md5sums=('08e3f6b523da8b0af179f22f339508b2'
          'bcd820d967eaa51bd25b86c0ee682d4e'
          'f548e389ff68424947b87785df6a321b'
@@ -37,7 +38,7 @@ md5sums=('08e3f6b523da8b0af179f22f339508b2'
          'c06067f572bc4a5298f324f27340da95'
          'a0fcd2cb6ddd9f378944cc6f4f83cd7c'
          'd2459d35b4e0b41ded26a1d1159b7ac6'
-         #'d9b65f6881afe0d6d9863b30e1081bde'
+         'd9b65f6881afe0d6d9863b30e1081bde'
          '4d68317238bb14a33c0e419233d57d87'
          'ed2e48cf33584455d74615ad4bbe4246'
          '2f63f88ad0dcecd33c8cf000f38e9250'
@@ -47,7 +48,13 @@ md5sums=('08e3f6b523da8b0af179f22f339508b2'
          '8676c9bb1658fe91de244e850f6c3ca8'
          '65695dc24c24958190724a23655ffda7'
          'b6235416dca2205f0ba83c0c4b3ddeb8'
-         '4e6babde6334e3c5cb4a3136526aa564')
+         '4e6babde6334e3c5cb4a3136526aa564'
+         '6c4879c175848f495cb4297c20a85d16')
+         
+prepare() {
+  cd "${srcdir}"/xmodmap-1.0.7
+  patch -p1 -i "${srcdir}"/xmodmap.patch
+}
 
 build() {
   cd "${srcdir}"
@@ -71,9 +78,16 @@ build() {
 
 package() {
   cd "${srcdir}"
-  make DESTDIR="${pkgdir}" install
-  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
-  install -m644 COPYING "${pkgdir}"/usr/share/licenses/${pkgname}/LICENSE.${i%-*}
+  
+  for i in *; do
+    if [ -d "${i}" ]; then
+      pushd "${i}"
+      make DESTDIR="${pkgdir}" install
+      install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
+      install -m644 COPYING "${pkgdir}"/usr/share/licenses/${pkgname}/LICENSE.${i%-*}
+      popd
+    fi
+  done
 
   # Replacing stub license files
   install -m644 "${srcdir}"/LICENSE.* "${pkgdir}/usr/share/licenses/${pkgname}/"

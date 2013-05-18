@@ -1,19 +1,18 @@
-# Platform Packages for Chakra, part of chakra-project.org
-#
 
 pkgname=xbitmaps
 pkgver=1.1.1
-pkgrel=1
+pkgrel=2
 pkgdesc="X.org Bitmap files"
 arch=('x86_64')
 url="http://xorg.freedesktop.org/"
 license=('custom')
 makedepends=('xorg-util-macros')
-source=(${url}/releases/individual/data/${pkgname}-${pkgver}.tar.bz2)
-sha1sums=('578afff7e4912192b524c25254cf7f54c16e57d8')
+source=("${url}/releases/individual/data/${pkgname}-${pkgver}.tar.bz2")
+md5sums=('7444bbbd999b53bec6a60608a5301f4c')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
+  
   ./configure --prefix=/usr
   make
 }
@@ -21,6 +20,6 @@ build() {
 package() {
   cd "${srcdir}/${pkgname}-${pkgver}"
   make DESTDIR="${pkgdir}" install
-  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
-  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
+  
+  install -Dm644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/COPYING"
 }

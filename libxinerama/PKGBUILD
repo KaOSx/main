@@ -1,27 +1,27 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
 
 pkgname=libxinerama
 pkgver=1.1.2
-pkgrel=1
+pkgrel=2
 pkgdesc="X11 Xinerama extension library"
-arch=(i686 x86_64)
+arch=('x86_64')
 url="http://xorg.freedesktop.org/"
 license=('custom')
 depends=('libxext' 'xineramaproto')
 makedepends=('xorg-util-macros')
 options=(!libtool)
-source=(${url}/releases/individual/lib/libXinerama-${pkgver}.tar.bz2)
-sha1sums=('06a5b636305725ce09f6c3a4d5a15f2f188b5afd')
+source=("${url}/releases/individual/lib/libXinerama-${pkgver}.tar.bz2")
+md5sums=('cb45d6672c93a608f003b6404f1dd462')
 
 build() {
   cd "${srcdir}/libXinerama-${pkgver}"
+  
   ./configure --prefix=/usr
   make
+}
+
+package() {
+  cd "${srcdir}/libXinerama-${pkgver}"
   make DESTDIR="${pkgdir}" install
-  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
-  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
+  
+  install -Dm644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/COPYING"
 }
