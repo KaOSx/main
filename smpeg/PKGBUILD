@@ -1,49 +1,32 @@
-# $Id: PKGBUILD 26434 2009-02-07 23:16:46Z eric $
-# Maintainer: Eric Belanger <eric@archlinux.org>
-# Contributor: Jan de Groot <jgc@archlinux.org>
 
 pkgname=smpeg
-pkgver=0.4.5
-_pkgver=395
-pkgrel=1
+pkgver=0.4.4
+pkgrel=6
 pkgdesc="SDL MPEG Player Library"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://icculus.org/smpeg/"
 license=('LGPL')
 depends=('sdl')
-makedepends=('mesa' 'subversion')
-optdepends=('mesa: to use glmovie')
+makedepends=('glu' 'mesa')
+optdepends=('glu: to use glmovie')
 options=('!libtool' '!makeflags')
-source=("smpeg-0.4.4-gcc41.patch")
-sha1sums=('7d9a2ad7f6b702dfe3adcb87601d9b55022bbd1e')
+source=("http://mirrors.dotsrc.org/lokigames/open-source/smpeg/${pkgname}-${pkgver}.tar.gz"
+        'smpeg-0.4.4-gcc41.patch')
+md5sums=('59c76ac704088ef5539210190c4e1fe3'
+         '8b979a58307d7196655758bd3d2466c4')
 
 build() {
-  cd "${srcdir}"
-
-  if [ -d "${pkgname}/.svn" ] ; then
-    cd "${pkgname}" && svn up -r ${_pkgver}
-  else
-    svn co svn://svn.icculus.org/${pkgname}/trunk --config-dir ./ -r ${_pkgver} ${pkgname}
-  fi
-
-  msg "SVN checkout done or server timeout"
-  msg "Starting make..."
- 
-  rm -rf "${srcdir}/${pkgname}-build"
-  cp -r "${srcdir}/${pkgname}" "${srcdir}/${pkgname}-build"
-  cd "${srcdir}/${pkgname}-build"
-
-  ./autogen.sh
-  ./configure --prefix=/usr \
-              --mandir=/usr/share/man
+  cd ${srcdir}/${pkgname}-${pkgver}
+  patch -p1 -i $srcdir/smpeg-0.4.4-gcc41.patch
+  
+  ./configure --prefix=/usr --mandir=/usr/share/man --disable-static
   make LDFLAGS+=-lstdc++
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-build"
-
-  make DESTDIR="${pkgdir}" install
+  cd ${srcdir}/${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install
   
-  #fix aclocal warnings
-  sed -i "s#(AM_PATH_SMPEG#([AM_PATH_SMPEG]#" "${pkgdir}/usr/share/aclocal/smpeg.m4"
+  # fix aclocal warnings
+  sed -i "s#(AM_PATH_SMPEG#([AM_PATH_SMPEG]#" ${pkgdir}/usr/share/aclocal/smpeg.m4
 }
