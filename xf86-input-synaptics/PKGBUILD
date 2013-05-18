@@ -1,6 +1,6 @@
 
 pkgname=xf86-input-synaptics
-pkgver=1.7.0
+pkgver=1.7.1
 pkgrel=1
 pkgdesc="Synaptics driver for notebook touchpads"
 arch=('x86_64')
@@ -15,9 +15,9 @@ backup=('etc/X11/xorg.conf.d/10-synaptics.conf')
 source=("http://xorg.freedesktop.org/releases/individual/driver/${pkgname}-${pkgver}.tar.bz2"
         '10-synaptics.conf'
         'multitouch.patch')
-sha1sums=('404b649f76b97787d0409299215afef1de8d23d7'
-          '68e1f4ef5e1038231d210eb422fa4d18c5922f0f'
-          '18d2508d5fcfd14951bcd316094187af367c720b')
+md5sums=('6505de717972b6a24b8eb13e69eb996c'
+         '3b81a81b958dfe3cac3cdef7ee85f1ce'
+         'da3e8dbaf5979bf06fee6c4bcb8470b9')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
