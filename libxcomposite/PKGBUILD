@@ -1,28 +1,27 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
 
 pkgname=libxcomposite
-pkgver=0.4.3
+pkgver=0.4.4
 pkgrel=1
 pkgdesc="X11 Composite extension library"
-arch=(i686 x86_64)
+arch=('x86_64')
 url="http://xorg.freedesktop.org/"
 license=('custom')
 depends=('libxfixes' 'compositeproto')
 makedepends=('xorg-util-macros')
-options=(!libtool)
-source=(${url}/releases/individual/lib/libXcomposite-${pkgver}.tar.bz2)
-sha1sums=('081b26b556d55e20d7956c80a2ea2854962aecec')
+options=('!libtool')
+source=("${url}/releases/individual/lib/libXcomposite-${pkgver}.tar.bz2")
+md5sums=('f7a218dcbf6f0848599c6c36fc65c51a')
 
 build() {
   cd "${srcdir}/libXcomposite-${pkgver}"
+  
   ./configure --prefix=/usr --sysconfdir=/etc --disable-static
   make
+}
+
+package() {
+  cd "${srcdir}/libXcomposite-${pkgver}"
   make DESTDIR="${pkgdir}" install
 
   install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
-  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
 }
