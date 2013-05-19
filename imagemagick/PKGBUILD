@@ -1,6 +1,6 @@
 
 pkgname=imagemagick
-pkgver=6.8.5.5
+pkgver=6.8.2.10
 pkgrel=1
 pkgdesc="An image viewing/manipulation program"
 arch=('x86_64')
@@ -12,19 +12,21 @@ makedepends=('ghostscript' 'openexr' 'jasper')
 optdepends=('ghostscript: for Ghostscript support' 
             'openexr: for OpenEXR support'  
             'jasper: for JPEG-2000 support')
-options=('!makeflags' '!docs')
-source=("http://sourceforge.net/projects/imagemagick/files/6.8.5-sources/ImageMagick-6.8.5-5.tar.xz"
+options=('!docs' 'libtool' '!emptydirs')
+source=("http://sourceforge.net/projects/imagemagick/files/old-sources/6.x/6.8/ImageMagick-6.8.2-10.tar.gz"
 	'perlmagick.rpath.patch')
-md5sums=('82b9a9c22847e8ae0a56d5338b7bfff7'
-         '46579145268422317d6a845b83738342')
+md5sums=('780da797aa684a37f7a875f380524067'
+         'ff9974decbfe9846f8e347239d87e4eb')
 
 build() {
 	cd ${srcdir}/ImageMagick-${pkgver%.*}-${pkgver##*.}
+	sed '/AC_PATH_XTRA/d' -i configure.ac
+        autoreconf --force --install
 
 	patch -p0 -i "${srcdir}/perlmagick.rpath.patch" 
 
 	./configure --prefix=/usr --sysconfdir=/etc --with-modules --disable-static \
-	    --enable-openmp --with-x --with-wmf --with-openexr --with-xml \
+	    --disable-openmp --with-wmf --with-openexr --with-xml \
 	    --with-gslib --with-gs-font-dir=/usr/share/fonts/Type1 \
 	    --with-perl --with-perl-options="INSTALLDIRS=vendor" \
 	    --with-lqr --with-rsvg --with-jp2 --with-lcms2 \
@@ -36,12 +38,11 @@ build() {
 package() {
 	cd ${srcdir}/ImageMagick-${pkgver%.*}-${pkgver##*.}
 
-	make DESTDIR=${pkgdir} install 
+	make -j1 DESTDIR=${pkgdir} install 
 
 	install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE 
 	install -Dm644 NOTICE ${pkgdir}/usr/share/licenses/${pkgname}/NOTICE 
 
 	#Cleaning
-	find ${pkgdir} -name '*.bs' -exec rm {} \; 
 	rm -f ${pkgdir}/usr/lib/*.la 
 }
