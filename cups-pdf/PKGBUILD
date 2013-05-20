@@ -1,24 +1,17 @@
-#
-# Chakra Packages for Chakra, part of chakra-project.org
-#
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
-
-# include global config
-source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
 
 pkgname=cups-pdf
-pkgver=2.5.1
+pkgver=2.6.1
 pkgrel=1
 pkgdesc="PDF printer for cups"
-arch=(i686 x86_64)
+url="http://cip.physik.uni-wuerzburg.de/~vrbehr/cups-pdf"
+arch=('x86_64')
 depends=('cups' 'ghostscript')
 install=cups-pdf.install
-url="http://cip.physik.uni-wuerzburg.de/~vrbehr/cups-pdf"
 license=('GPL2')
-source=(http://cip.physik.uni-wuerzburg.de/~vrbehr/cups-pdf/src/cups-pdf_$pkgver.tar.gz)
-backup=(etc/cups/cups-pdf.conf)
-md5sums=('4b4cf1a249d02a38045db74b5f259aac')
+backup=('etc/cups/cups-pdf.conf')
+source=("http://cip.physik.uni-wuerzburg.de/~vrbehr/cups-pdf/src/cups-pdf_$pkgver.tar.gz")
+
+md5sums=('65f3fd525c4a9b1d736b91594b3166d5')
 
 build() {
   cd $srcdir/$pkgname-$pkgver/src
