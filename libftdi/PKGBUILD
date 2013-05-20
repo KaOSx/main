@@ -1,11 +1,7 @@
-#
-# Chakra Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
 
 pkgname=libftdi
 pkgver=0.20
-pkgrel=2
+pkgrel=3
 pkgdesc="A library to talk to FTDI chips"
 arch=('x86_64')
 url="http://www.intra2net.com/en/developer/libftdi/download.php"
@@ -19,11 +15,13 @@ options=('!libtool')
 build() {
   cd $srcdir/$pkgname-$pkgver
   sed -i '/no-install/d' examples/Makefile.in 
+  
   ./configure --prefix=/usr
   make 
 }
 
 package() {
   cd $srcdir/$pkgname-$pkgver
+  
   make DESTDIR=$pkgdir install
 }
