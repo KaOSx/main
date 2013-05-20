@@ -1,7 +1,7 @@
 
 pkgname=cups-filters
 pkgver=1.0.34
-pkgrel=1
+pkgrel=2
 pkgdesc="OpenPrinting CUPS Filters"
 arch=('x86_64')
 url="http://www.linuxfoundation.org/collaborate/workgroups/openprinting"
@@ -32,6 +32,7 @@ build() {
 
 check() {
   cd "$srcdir/$pkgname-$pkgver"
+  
   make -k check
 }
 
