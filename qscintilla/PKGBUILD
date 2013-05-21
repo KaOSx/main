@@ -1,52 +1,42 @@
 
-pkgbase=qscintilla
-pkgname=('qscintilla' 'python2-qscintilla')
-pkgver=2.7
-pkgrel=2
+pkgname=qscintilla
+#pkgname=('qscintilla' 'python2-qscintilla')
+pkgver=2.7.1
+pkgrel=1
 license=('GPL')
 arch=('x86_64')
 url="http://www.riverbankcomputing.co.uk/software/qscintilla/intro"
 makedepends=('pyqt' 'chrpath')
 source=("http://downloads.sourceforge.net/pyqt/QScintilla-gpl-${pkgver}.tar.gz"
-        'configure.py-objdir-support.diff')
-md5sums=('a3857d75a2b332e0460131e0aa4cc4b5'
-         '8cf9c06252e2f11ab00e62848e322fd3')
+        'designer.patch')
+md5sums=('da8939b5679a075e30c6632e54dc5abf'
+         '95dc2978c35cfa94350e3310e1d295ea')
 
 build() {
     cd $srcdir/QScintilla-gpl-$pkgver
-    patch -p1 -i "${srcdir}/configure.py-objdir-support.diff"
+    patch -p0 -i "${srcdir}/designer.patch"
 
     cd Qt4Qt5
     qmake qscintilla.pro
     make
     
-    cd ../designer-Qt4
+    cd ../designer-Qt4Qt5
     qmake designer.pro INCLUDEPATH+=../Qt4Qt5 QMAKE_LIBDIR+=../Qt4Qt5
     make
 
-    cd ../Python
-    python2 configure.py -n ../Qt4Qt5/ -o ../Qt4Qt5 -c -p 4 
-    make
+    #cd ../Python
+    #python2 configure.py -n ../Qt4Qt5/ -o ../Qt4Qt5 -c -p 4 
+    #make
 }
 
-package_qscintilla() {
+package() {
     pkgdesc="A port to Qt of Neil Hodgson's Scintilla C++ editor class"
     depends=('qt')
 
     cd ${srcdir}/QScintilla-gpl-${pkgver}/Qt4Qt5
     make DESTDIR="${pkgdir}" INSTALL_ROOT="${pkgdir}" install
 
-    cd ${srcdir}/QScintilla-gpl-${pkgver}/designer-Qt4
+    cd ${srcdir}/QScintilla-gpl-${pkgver}/designer-Qt4Qt5
     make DESTDIR="${pkgdir}" INSTALL_ROOT="${pkgdir}" install
 }
 
-package_python2-qscintilla() {
-    pkgdesc="Python bindings for QScintilla2"
-    conflicts=('python-qscintilla')
-    replaces=('python-qscintilla')
-    provides=('python-qscintilla')
-    depends=('qscintilla' 'pyqt')
-
-    cd "${srcdir}/QScintilla-gpl-${pkgver}/Python"
-    make DESTDIR="${pkgdir}" INSTALL_ROOT="${pkgdir}" install
-}

@@ -1,6 +1,6 @@
 
 pkgname=python3
-pkgver=3.3.1
+pkgver=3.3.2
 pkgrel=1
 _pybasever=3.3
 pkgdesc="Next generation of the python high-level scripting language"
@@ -11,21 +11,22 @@ depends=('expat' 'bzip2' 'gdbm' 'openssl' 'libffi' 'zlib')
 makedepends=('tk' 'sqlite3' 'valgrind')
 optdepends=('tk: for tkinter')
 options=('!makeflags')
-source=("http://www.python.org/ftp/python/${pkgver}/Python-${pkgver}.tar.bz2")
-md5sums=('fb7147a15359a941e0b048c641fd7123')  
+source=("http://www.python.org/ftp/python/${pkgver}/Python-${pkgver}.tar.bz2"
+        'CVE-2013-2099.patch')
+md5sums=('7dffe775f3bea68a44f762a3490e5e28'
+         '046c164b0a549bdac00bdd28cccd7ba1')  
 
 build() {
   cd "${srcdir}/Python-${pkgver}"
 
   sed -i -e "s|^#.* /usr/local/bin/python|#!/usr/bin/python|" Lib/cgi.py
 
-  # Ensure that we are using the system copy of various libraries (expat, zlib and libffi),
-  # rather than copies shipped in the tarball
-  
+  # Use the system copy of various libraries (expat, zlib and libffi)rather than copies shipped  
   rm -r Modules/expat
   rm -r Modules/zlib
   rm -r Modules/_ctypes/{darwin,libffi}*
-
+  
+  patch -p1 -i ${srcdir}/CVE-2013-2099.patch
 
   ./configure --prefix=/usr \
               --enable-shared \
@@ -43,7 +44,7 @@ build() {
 #check() {
 #  cd "${srcdir}/Python-${pkgver}"
 #  LD_LIBRARY_PATH="${srcdir}/Python-${pkgver}":${LD_LIBRARY_PATH} \
-#     "${srcdir}/Python-${pkgver}/python" -m test.regrtest -x test_distutils test_site
+#     "${srcdir}/Python-${pkgver}/python" -m test.regrtest -x test_posixpath test_logging
 #}
 
 package() {
