@@ -1,26 +1,26 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
 
 pkgname=libxkbfile
-pkgver=1.0.7
+pkgver=1.0.8
 pkgrel=1
 pkgdesc="X11 keyboard file manipulation library"
-arch=(i686 x86_64)
+arch=('x86_64')
 license=('custom')
 url="http://xorg.freedesktop.org/"
 depends=('libx11')
 makedepends=('xorg-util-macros')
 options=('!libtool')
-source=(${url}/releases/individual/lib/${pkgname}-${pkgver}.tar.bz2)
-sha1sums=('0fed539ffbc05859bc666b425fafa42e046bef5f')
+source=("${url}/releases/individual/lib/${pkgname}-${pkgver}.tar.bz2")
+md5sums=('19e6533ae64abba0773816a23f2b9507')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
+  
   ./configure --prefix=/usr --sysconfdir=/etc --disable-static 
   make
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
   make DESTDIR="${pkgdir}" install
 
   install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"

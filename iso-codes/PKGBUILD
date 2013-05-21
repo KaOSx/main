@@ -1,24 +1,23 @@
-# Maintainer: Neophytos Kolokotronis <tetris4@gmail.com>
-# Contributor from Arch: Jan de Groot <jgc@archlinux.org>
 
 pkgname=iso-codes
-pkgver=3.38
+pkgver=3.42
 pkgrel=1
-arch=(any)
+arch=('x86_64')
+url="http://pkg-isocodes.alioth.debian.org/"
 license=('LGPL')
 pkgdesc="Lists of the country, language, and currency names"
-url="http://pkg-isocodes.alioth.debian.org/"
-source=(http://pkg-isocodes.alioth.debian.org/downloads/$pkgname-$pkgver.tar.xz{,.sig})
-md5sums=('df8dacc718116dae3db453a4d85c018a'
-         '5cc8ca3eec407a318fda79043de28569')
+source=("http://pkg-isocodes.alioth.debian.org/downloads/$pkgname-$pkgver.tar.xz")
+md5sums=('35c6089108410dcfe03b420b57af0dde')
 
 build() {
   cd "$srcdir/$pkgname-$pkgver"
+  
   ./configure --prefix=/usr
   make
 }
 
 package() {
   cd "$srcdir/$pkgname-$pkgver"
+  
   make DESTDIR="$pkgdir" pkgconfigdir=/usr/lib/pkgconfig install
 }
