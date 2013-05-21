@@ -1,6 +1,6 @@
 
 pkgname=fontconfig
-pkgver=2.10.92
+pkgver=2.10.93
 pkgrel=1
 pkgdesc="A library for configuring and customizing font access"
 arch=('x86_64')
@@ -10,16 +10,12 @@ depends=('expat' 'freetype2>=2.4.11')
 options=('!libtool')
 install='fontconfig.install'
 source=("http://www.fontconfig.org/release/${pkgname}-${pkgver}.tar.gz"
-        'git_fixes.diff'
         '29-replace-bitmap-fonts.conf')
-md5sums=('5738838ef01f4c77fe33eeac2ceafe4d'
-         'dc9b419cc1eaf3b8fb6ade9a9363105a'
+md5sums=('7772133ecce109f805ad8a2c1cce1dc7'
          '526b95ebde1b07eb5dbc5d71fb613ed1')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
-
-  patch -p1 -i "${srcdir}/git_fixes.diff"
 
   libtoolize -f
   autoreconf -fi
