@@ -1,29 +1,24 @@
-#
-# Apps Packages for Chakra, part of chakra-project.org
-#
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
 
 pkgname=jshon
-pkgver=20110803
+pkgver=20121122
 pkgrel=1
 pkgdesc="A json parser for the shell."
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://kmkeen.com/jshon/"
 license=('MIT')
 depends=('jansson')
-makedepends=()
-optdepends=()
-source=(http://kmkeen.com/$pkgname/$pkgname-$pkgver.tar.gz)
-md5sums=('d14f012d6e9acf2c0ccc355fcd53c6fd')
+source=("http://kmkeen.com/$pkgname/$pkgname-$pkgver.tar.gz")
+md5sums=('b66f6b23b510fc2cb571dcb69121b24c')
 
 build() {
-  cd "$srcdir/$pkgname"
+  cd "$srcdir/$pkgname-$pkgver"
+  
   make
 }
 
 package() {
-  cd "$srcdir/$pkgname"
+  cd "$srcdir/$pkgname-$pkgver"
+  
   install -Dm755 $pkgname "$pkgdir/usr/bin/$pkgname"
   install -Dm644 $pkgname.1 "$pkgdir/usr/share/man/man1/$pkgname.1"
 }
