@@ -1,26 +1,19 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
-
-# include global config
-source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
 
 pkgname=python2-rdflib
-pkgver=3.1.0
+pkgver=3.4.0
 pkgrel=1
 pkgdesc="A Python library for working with RDF, a simple yet powerful language for representing information"
 url="http://rdflib.net/"
 license=('BSD')
-depends=('python2')
-makedepends=('python-distribute')
-arch=('any')
-source=("http://rdflib.googlecode.com/files/rdflib-$pkgver.tar.gz")
-sha1sums=('bbef5011fcd9cfa296a8ef33ac2885416b97da2d')
+depends=('python2' 'python2-isodate')
+makedepends=('python2-distribute')
+arch=('x86_64')
+source=("rdflib-$pkgver.tar.gz::https://github.com/RDFLib/rdflib/tarball/$pkgver")
+md5sums=('783a98f221bcfe0433ee0e3ed1011237')
 
 package() {
-  cd "$srcdir/rdflib-$pkgver"
-  python2 setup.py install --root="$pkgdir" --optimize=1 
+  cd $srcdir/RDFLib-rdflib-*
+  python2 setup.py install --root=$pkgdir --optimize=1 
+  
   install -D LICENSE $pkgdir/usr/share/licenses/$pkgname/LICENSE
 }

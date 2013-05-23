@@ -1,27 +1,17 @@
-#
-# Chakra Packages for Chakra, part of chakra-project.org
-#
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
-
-# include global config
-source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
 
 pkgname=pyxdg
-pkgver=0.19
-pkgrel=3
+pkgver=0.25
+pkgrel=1
 pkgdesc="Python library to access freedesktop.org standards."
-arch=('any')
+arch=('x86_64')
 url="http://freedesktop.org/Software/pyxdg"
 license=("LGPL")
-depends=('python')
-source=(http://www.freedesktop.org/~lanius/${pkgname}-${pkgver}.tar.gz)
-md5sums=('9f33542e846d0fc1e0bfa992a8555b0a')
+depends=('python2')
+source=("http://www.freedesktop.org/~takluyver/${pkgname}-${pkgver}.tar.gz")
+md5sums=('bedcdb3a0ed85986d40044c87f23477c')
 
-build() {
+package() {
   cd ${srcdir}/${pkgname}-${pkgver}
-  python setup.py install --prefix=/usr --root=${pkgdir} || return 1
+  
+  python setup.py install --prefix=/usr --root=${pkgdir} 
 }
-
-# package() {
-# }
