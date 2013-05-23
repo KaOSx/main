@@ -1,14 +1,14 @@
 
 pkgname=pulseaudio
 pkgdesc="A featureful, general-purpose sound server"
-pkgver=3.99.1
-pkgrel=2
+pkgver=3.99.2
+pkgrel=1
 arch=('x86_64')
 url="http://pulseaudio.org/"
 license=('GPL' 'LGPL')
 depends=('dbus-core' 'xcb-util' 'libasyncns' 'libcap' 'libxtst' 'libsm'
          'libsamplerate' 'json-c' 'rtkit' 'libltdl' 'speex' 'tdb'
-         'fftw' 'orc' 'webrtc-audio-processing' 'systemd>=195' 'sbc')
+         'fftw' 'orc' 'webrtc-audio-processing' 'systemd' 'sbc')
 makedepends=('attr' 'libltdl' 'avahi' 'bluez' 'intltool' 'jack' 'lirc-utils' 'openssl'
              'libsndfile' 'pkgconfig' 'sh')
 optdepends=('avahi: zeroconf support'
@@ -24,7 +24,7 @@ conflicts=('libpulse')
 options=(!emptydirs !libtool !makeflags)
 source=("http://freedesktop.org/software/${pkgname}/releases/${pkgname}-${pkgver}.tar.xz"
         'pulseaudio.xinit')
-md5sums=('86b8f044339f199049b491232901be66'
+md5sums=('48c7fe9fbc23639aebaba448064b6b2e'
          'eb1cfae28eb2e4d3fdbe45a90e4318ab')
 
 build() {

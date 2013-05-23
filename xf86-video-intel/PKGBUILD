@@ -1,6 +1,6 @@
 
 pkgname=xf86-video-intel
-pkgver=2.21.6
+pkgver=2.21.7
 pkgrel=1
 pkgdesc="X.org Intel i810/i830/i915/945G/G965+ video drivers"
 arch=('x86_64')
@@ -13,8 +13,8 @@ conflicts=('xorg-server<1.12.3' 'xf86-video-i810' 'xf86-video-intel-legacy')
 options=('!libtool')
 groups=('xorg-drivers' 'xorg')
 install=xf86-video-intel.install
-source=(${url}/releases/individual/driver/${pkgname}-${pkgver}.tar.bz2)
-sha1sums=('39bb2e6d1721393039047a3b7e0f7c0a3fa71202')
+source=("${url}/releases/individual/driver/${pkgname}-${pkgver}.tar.bz2")
+md5sums=('c3a8b542fc4787ad17a5f0567a3429fd')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
@@ -30,6 +30,7 @@ build() {
 package() {
   cd "${srcdir}/${pkgname}-${pkgver}"
   make DESTDIR="${pkgdir}" install
+  
   install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
   install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
 }
