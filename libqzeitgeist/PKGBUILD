@@ -1,15 +1,10 @@
-#
-# Chakra Packages for Chakra, part of chakra-project.org
-#
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
 
 pkgname=libqzeitgeist
 pkgver=0.8.0
 pkgrel=2
 pkgdesc="A Qt interface to the Zeitgeist event tracking system"
 url="https://projects.kde.org/projects/kdesupport/libqzeitgeist"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 license=('GPL')
 depends=('qt')
 makedepends=('cmake' 'automoc4' 'python2' 'zeitgeist')
@@ -23,15 +18,17 @@ build() {
   patch -p1 -i "${srcdir}"/set-declarative-installation-dir.patch
   cd "${srcdir}"
   mkdir build
+  
   cd build
   cmake ../${pkgname}-${pkgver} \
     -DCMAKE_BUILD_TYPE=Release \
-	-DCMAKE_INSTALL_PREFIX=/usr
+    -DCMAKE_INSTALL_PREFIX=/usr \
     -DDECLARATIVE_IMPORT_PREFIX=/usr/lib/qt/imports/
   make
 }
 
 package() {
   cd "${srcdir}"/build
+  
   make DESTDIR="${pkgdir}" install
 }
