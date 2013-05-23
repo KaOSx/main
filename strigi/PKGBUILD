@@ -28,6 +28,8 @@ build() {
   cd $srcdir/build
   cmake $srcdir/$_gitname -DCMAKE_BUILD_TYPE=debugfull \
 		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DCMAKE_SKIP_RPATH=ON \
+                -DCMAKE_INSTALL_LIBDIR=lib \
 		-DENABLE_INOTIFY=ON \
 		-DENABLE_LOG4CXX=OFF \
 		-DENABLE_FAM=OFF \
