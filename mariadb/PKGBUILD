@@ -1,7 +1,7 @@
 
 pkgbase=mariadb
 pkgname=('libmariadbclient' 'mariadb-clients' 'mariadb')
-pkgver=5.5.30
+pkgver=5.5.31
 pkgrel=1
 arch=('x86_64')
 license=('GPL')
@@ -12,7 +12,7 @@ source=("http://mirrors.supportex.net/$pkgbase/$pkgbase-$pkgver/kvm-tarbake-jaun
         'mariadb.service'
         'mariadb-post.sh'
         'mariadb-tmpfile.conf')
-md5sums=('39d4da4dabc8bda012517b3587dee6f8'
+md5sums=('3fe756bc76f0e7a3af2757e48ce0f3f4'
          'd488fffa9f62f9949c4aa1bb6e6db692'
          'b79e65a5aa536e6b5bc60988eb0b78a2'
          '2fa6e456964d4ff5e6d4f9ff0126aed6')
@@ -104,7 +104,7 @@ package_mariadb() {
   pkgdesc='Fast SQL database server, drop-in replacement for MySQL'
   backup=('etc/mysql/my.cnf')
   install=mariadb.install
-  depends=('mariadb-clients')
+  depends=('mariadb-clients' 'inetutils')
   conflicts=('mysql' 'mytop')
   provides=("mysql=$pkgver" 'mytop')
   options=('emptydirs')
