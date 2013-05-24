@@ -1,36 +1,18 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
 
 pkgname=alsa-firmware
-pkgver=1.0.25
-pkgrel=6
+pkgver=1.0.27
+pkgrel=1
 pkgdesc="ALSA firmware package"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://alsa-project.org/"
 license=('GPL')
 options=(!strip)
-source=(ftp://ftp.alsa-project.org/pub/firmware/$pkgname-$pkgver.tar.bz2)
-md5sums=('f1939da45b162c83a726c54a470ef139')
-
-#source=("http://chakra.sourceforge.net/sources/${pkgname}/${pkgname}-${pkgver}.tar.xz")
-#md5sums=('7890f824992030e3b9616fe6bb671702')
-
-# create tarball: source PKGBUILD && mksource
-
-mksource() {
-	  rm -vRf ${pkgname}-${pkgver}
-	  git clone git://git.alsa-project.org/${pkgname}.git ${pkgname}-${pkgver}
-	  rm -vRf ${pkgname}-${pkgver}/.git
-	  pushd ${pkgname}-${pkgver}
-	  popd
-	  tar -cvJf ${pkgname}-${pkgver}.tar.xz ${pkgname}-${pkgver}/*
-	  md5sum ${pkgname}-${pkgver}.tar.xz
-}
+source=("ftp://ftp.alsa-project.org/pub/firmware/$pkgname-$pkgver.tar.bz2")
+md5sums=('b373b350d5151dd7d64db2fc12936b04')
 
 build() {
   cd $srcdir/$pkgname-$pkgver
+  
   ./configure --prefix=/usr --with-hotplug-dir=/usr/lib/firmware
   make
 }
@@ -38,8 +20,9 @@ build() {
 package() {
   cd $srcdir/$pkgname-$pkgver
   make DESTDIR=$pkgdir install
-  # remove files which conflicts with linux-firmware
-  rm -rf ${pkgdir}/usr/lib/firmware/{ess,korg,sb16,yamaha}
+  
+  # conflicts with linux-firmware
+  rm -rf ${pkgdir}/usr/lib/firmware/{ct{efx,speq}.bin,ess,korg,sb16,yamaha}
   # remove broken symlinks (broken upstream)
   rm -rf ${pkgdir}/usr/lib/firmware/turtlebeach
   # remove empty dir
