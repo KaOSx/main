@@ -1,17 +1,13 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
 
-
-pkgname=('cdrdao')
+pkgname=cdrdao
 pkgver=1.2.3
-pkgrel=9
+pkgrel=11
 arch=('x86_64')
 license=('GPL')
 url="http://cdrdao.sourceforge.net/"
-makedepends=('gcc-libs' 'lame' 'libmad' 'libvorbis' 'libao' \
-             'libsigc++2.0')
+pkgdesc='Records audio/data CD-Rs in disk-at-once (DAO) mode'
+depends=('gcc-libs' 'lame' 'libmad' 'libvorbis' 'libao')
+makedepends=('libsigc++')
 source=("http://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tar.bz2"
 	'cdrdao-1.2.3-autoconf-update.patch'
         'cdrdao-1.2.3-k3b.patch'
@@ -23,7 +19,6 @@ md5sums=('8d15ba6280bb7ba2f4d6be31d28b3c0c'
 
 build() {
 	cd ${srcdir}/${pkgbase}-${pkgver}
-  
 	patch -p1 -i "${srcdir}/cdrdao-1.2.3-autoconf-update.patch"
 	patch -p1 -i "${srcdir}/cdrdao-1.2.3-k3b.patch"
 	patch -p1 -i "${srcdir}/cdrdao-1.2.3-stat.patch"
@@ -37,9 +32,6 @@ build() {
 }
 
 package() {
-	pkgdesc='Records audio/data CD-Rs in disk-at-once (DAO) mode'
-	depends=('gcc-libs' 'lame' 'libmad' 'libvorbis' 'libao')
-
 	cd ${srcdir}/${pkgbase}-${pkgver}
 	for dir in trackdb utils paranoia dao
 	do

@@ -1,13 +1,9 @@
-# Maintainer: Neophytos Kolokotronis <tetris4@gmail.com>
-# Contributors from Arch: Ray Rashif <schiv@archlinux.org>
-# 			  Ionut Biru <ibiru@archlinux.org>
-#			  Hugo Doria <hugo@archlinux.org>
 
 pkgname=lame
 pkgver=3.99.5
-pkgrel=1
+pkgrel=2
 pkgdesc="A high quality MPEG Audio Layer III (MP3) encoder"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://lame.sourceforge.net/"
 depends=('ncurses')
 makedepends=('nasm')
@@ -31,4 +27,3 @@ package() {
   make DESTDIR="$pkgdir" install
 }
 
-# vim:set ts=2 sw=2 et:
