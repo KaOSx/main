@@ -1,29 +1,30 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
 
 pkgbase=gstreamer0.10-ugly
 pkgname=('gstreamer0.10-ugly' 'gstreamer0.10-ugly-plugins')
 pkgver=0.10.19
-pkgrel=5
+pkgrel=7
 arch=('x86_64')
 license=('LGPL')
 makedepends=('pkgconfig' 'gstreamer0.10-base' 'libdvdread' 'lame' 'libmpeg2' 'a52dec'
              'libid3tag' 'libmad' 'libsidplay' 'libcdio' 'x264' 'opencore-amr')
 url="http://gstreamer.freedesktop.org/"
-options=(!libtool)
-source=(${url}/src/gst-plugins-ugly/gst-plugins-ugly-${pkgver}.tar.xz)
-md5sums=('ba26045c8c8c91f0d48d327ccf53ac0c')
+options=('!libtool')
+source=("${url}/src/gst-plugins-ugly/gst-plugins-ugly-${pkgver}.tar.xz"
+        'opencore-amr.patch'
+        'libcdio.patch')
+md5sums=('ba26045c8c8c91f0d48d327ccf53ac0c'
+         'd8feb6c99bfaff8be6b2c48ea4e98e47'
+         '6c1c665f864387f3a77d32231fedeaab')
 
 build() {
   cd "${srcdir}/gst-plugins-ugly-${pkgver}"
+  patch -p0 -i "${srcdir}/opencore-amr.patch"
+  patch -p1 -i "${srcdir}/libcdio.patch"
 
   ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var \
-    --disable-static --enable-experimental \
-    --with-package-name="GStreamer Ugly Plugins (Chakra GNU/Linux)" \
-    --with-package-origin="http://www.chakra-project.org/" 
-
+        --disable-static --enable-experimental \
+        --with-package-name="GStreamer Ugly Plugins (KdeOS)" \
+        --with-package-origin="http://www.kde-os.tk/" 
   make 
   sed -e 's/gst-libs gst ext/gst-libs gst/' -i Makefile 
 }
@@ -38,7 +39,8 @@ package_gstreamer0.10-ugly() {
 
 package_gstreamer0.10-ugly-plugins() {
   pkgdesc="GStreamer Multimedia Framework Ugly Plugins (gst-plugins-ugly)"
-  depends=("gstreamer0.10-ugly=${pkgver}" 'libdvdread' 'lame' 'libmpeg2' 'a52dec' 'libid3tag' 'libmad' 'libsidplay' 'libcdio' 'x264' 'opencore-amr')
+  depends=("gstreamer0.10-ugly=${pkgver}" 'libdvdread' 'lame' 'libmpeg2' 'a52dec' 'libid3tag'
+           'libmad' 'libsidplay' 'libcdio' 'x264' 'opencore-amr')
   groups=('gstreamer0.10-plugins')
 
   cd "${srcdir}/gst-plugins-ugly-${pkgver}"

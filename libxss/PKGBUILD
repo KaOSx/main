@@ -1,28 +1,27 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
 
 pkgname=libxss
-pkgver=1.2.1
+pkgver=1.2.2
 pkgrel=1
 pkgdesc="X11 Screen Saver extension library"
-arch=(i686 x86_64)
+arch=('x86_64')
 license=('custom')
 url="http://xorg.freedesktop.org/"
 depends=('libxext' 'scrnsaverproto')
 makedepends=('xorg-util-macros')
 options=('!libtool')
-source=(${url}/releases/individual/lib/libXScrnSaver-${pkgver}.tar.bz2)
-sha1sums=('3c29e2222fd68e26e408234c51c6d8b2edf6ab19')
+source=("${url}/releases/individual/lib/libXScrnSaver-${pkgver}.tar.bz2")
+md5sums=('7a773b16165e39e938650bcc9027c1d5')
 
 build() {
   cd "${srcdir}/libXScrnSaver-${pkgver}"
+  
   ./configure --prefix=/usr --sysconfdir=/etc
   make
+}
+
+package() {
+  cd "${srcdir}/libXScrnSaver-${pkgver}"
   make DESTDIR="${pkgdir}" install
 
-  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
-  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
+  install -Dm644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/COPYING"
 }

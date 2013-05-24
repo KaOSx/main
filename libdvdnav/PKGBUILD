@@ -1,19 +1,14 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
 
 pkgname=libdvdnav
 pkgver=4.2.0
-pkgrel=1
+pkgrel=2
 pkgdesc="The library for xine-dvdnav plugin."
-arch=(i686 x86_64)
+arch=('x86_64')
 license=('GPL')
 url="http://dvdnav.mplayerhq.hu/"
 depends=('libdvdread')
-options=(!libtool)
-source=(http://dvdnav.mplayerhq.hu/releases/${pkgname}-${pkgver}.tar.bz2)
+options=('!libtool')
+source=("http://dvdnav.mplayerhq.hu/releases/${pkgname}-${pkgver}.tar.bz2")
 md5sums=('53be8903f9802e101929a3451203bbf6')
 
 build() {

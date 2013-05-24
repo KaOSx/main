@@ -1,10 +1,6 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas[at]chakra-project[dot]org>
 
 pkgname=directfb
-pkgver=1.6.2
+pkgver=1.6.3
 pkgrel=1
 pkgdesc="Library that provides hardware graphics acceleration, input device handling and abstraction, integrated windowing system on top of the Linux Framebuffer Device"
 arch=('x86_64')
@@ -13,10 +9,11 @@ license=('LGPL')
 depends=('gcc-libs' 'libjpeg-turbo' 'sdl' 'libpng' 'freetype2')
 options=('!libtool')
 source=("http://www.directfb.org/downloads/Core/DirectFB-${pkgver%.*}/DirectFB-${pkgver}.tar.gz")
-md5sums=('6bebdbf26f03f7114ae17ab86d4d1d27')
+md5sums=('641e8e999c017770da647f9b5b890906')
 
 build() {
   cd "${srcdir}/DirectFB-${pkgver}"
+  
    ./configure --prefix=/usr --sysconfdir=/etc --enable-static --enable-debug \
      --enable-zlib --enable-x11 --enable-sdl --disable-vnc --disable-osx \
      --enable-video4linux2 --enable-voodoo
@@ -25,5 +22,6 @@ build() {
 
 package() {
   cd "${srcdir}/DirectFB-${pkgver}"
+  
   make DESTDIR="${pkgdir}" install
 }

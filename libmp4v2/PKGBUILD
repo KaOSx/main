@@ -1,11 +1,7 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
 
 pkgname=libmp4v2
 pkgver=2.0.0
-pkgrel=1
+pkgrel=2
 pkgdesc="MPEG-4 library"
 arch=('x86_64')
 license=('MPL')
@@ -24,6 +20,7 @@ build() {
 
 package() {
   cd "${srcdir}/mp4v2-${pkgver}"
+  
   make DESTDIR=${pkgdir} install
   make DESTDIR=${pkgdir} install-man
 }
