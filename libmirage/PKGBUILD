@@ -1,11 +1,7 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
 
 pkgname=libmirage
 pkgver=2.0.0
-pkgrel=1
+pkgrel=2
 pkgdesc="CD-ROM image (B6T/CCD/CDI/CUE/ISO/MDS/NRG/TOC) access library"
 arch=('x86_64')
 url="http://cdemu.sourceforge.net/"
@@ -13,17 +9,18 @@ license=('GPL')
 depends=('glib2' 'libsndfile' 'zlib')
 makedepends=('bison' 'flex' 'cmake' 'gobject-introspection')
 source=("http://downloads.sourceforge.net/cdemu/$pkgname-$pkgver.tar.bz2"
-        'soname.diff' 'gtkdoc.diff')
+        'soname.diff'
+        'gtkdoc.diff')
 options=(!libtool)
 md5sums=('72007f3364cbf3aea782aaa1fdade238'
          '72b5af3d5baf8e9b1ec6afa629373799'
          'ef62f551880c83eb9e6149481b97d62a')
 
 build() {
-  cd $srcdir/$pkgname-$pkgver
-  
+  cd $srcdir/$pkgname-$pkgver 
   patch -p2 -i $srcdir/soname.diff 
   patch -p2 -i $srcdir/gtkdoc.diff
+  
   mkdir build
   cd build
   cmake .. \
@@ -36,5 +33,6 @@ build() {
 
 package() {
   cd $srcdir/$pkgname-$pkgver/build
+  
   make DESTDIR=$pkgdir install
 }

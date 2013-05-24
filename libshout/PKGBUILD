@@ -1,11 +1,7 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
 
 pkgname=libshout
 pkgver=2.3.1
-pkgrel=3
+pkgrel=4
 pkgdesc="Library for accessing a shoutcast/icecast server"
 arch=('x86_64')
 depends=('libvorbis' 'libtheora' 'speex')
@@ -17,11 +13,13 @@ md5sums=('11765b2592e7ea623ccd93d3f8df172c')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
+  
   ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var
   make LDFLAGS+=-lspeex
 }
 
 package() {
   cd "${srcdir}/${pkgname}-${pkgver}"
+  
   make DESTDIR="${pkgdir}" install
 }
