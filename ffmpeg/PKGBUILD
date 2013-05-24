@@ -1,33 +1,21 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
 
 pkgname=ffmpeg
-pkgver=1.0.1
-pkgrel=2
+pkgver=1.2.1
+pkgrel=1
 pkgdesc="Complete and free Internet live audio and video broadcasting solution for Linux/Unix"
 arch=('x86_64')
 url="http://ffmpeg.org/"
 license=('GPL')
-depends=('bzip2' 'lame' 'sdl' 'libvorbis' 'xvidcore' 'zlib' 'x264' 'libtheora'
+depends=('bzip2' 'lame' 'sdl' 'libvorbis' 'xvidcore' 'zlib' 'x264' 'libtheora' 'celt'
          'opencore-amr' 'alsa-lib' 'libvdpau' 'libxfixes' 'schroedinger' 'libvpx>=1.1.0'
-         'libva' 'openjpeg' 'rtmpdump' 'speex' 'gsm' 'pulseaudio')
+         'libva' 'openjpeg' 'rtmpdump' 'speex' 'gsm' 'pulseaudio' 'v4l-utils')
 makedepends=('yasm')
-source=("http://${pkgname}.org/releases/${pkgname}-${pkgver}.tar.bz2"
-        "openjpeg1.5.1.patch"
-       )
-md5sums=('dbbb88ce5525dea22b24aaa098a9bcc2'
-         'a4b39642b8885e4cd7d4f30bdc043351')
+source=("http://${pkgname}.org/releases/${pkgname}-${pkgver}.tar.bz2")
+md5sums=('5071a26cc149f380908ce79ec2a677ef')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
 
-   # openjpeg 1.5.1 is installed in a different place than 1.5.0, this patch makes it search there
-   # patch is from http://patches.libav.org/patch/32269/
-   # this patch should be unnecessary with newer versions of ffmpeg
-   mv ../openjpeg1.5.1.patch .
-   patch < openjpeg1.5.1.patch
   ./configure --prefix=/usr \
               --enable-libmp3lame \
               --enable-libvorbis \
@@ -46,9 +34,12 @@ build() {
               --enable-librtmp \
               --enable-libpulse \
               --enable-gpl \
+              --enable-vdpau \
               --enable-version3 \
               --enable-runtime-cpudetect \
               --enable-libspeex \
+              --enable-libv4l2 \
+              --enable-libcelt \
               --disable-debug \
               --disable-static
 

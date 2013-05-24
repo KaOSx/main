@@ -1,12 +1,9 @@
-# $Id: PKGBUILD 60177 2009-12-01 17:36:38Z giovanni $
-# Maintainer: tobias <tobias@archlinux.org>
-# Contributor: Sarah Hay <sarah@archlinux.org>
 
 pkgname=xvidcore
 pkgver=1.3.2
 pkgrel=1
 pkgdesc="XviD is an open source MPEG-4 video codec"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 license=('GPL')
 url="http://www.xvid.org/"
 depends=('glibc')
@@ -16,13 +13,13 @@ md5sums=('34389e980d4f849688f8b1e168f4e2f9')
 
 build() {
   cd "${srcdir}/${pkgname}/build/generic"
+  
   ./configure --prefix=/usr
   make
 }
 
 package() {
   cd "${srcdir}/${pkgname}/build/generic"
-
   make DESTDIR=${pkgdir} install
 
   #Fix dynamic libraries
