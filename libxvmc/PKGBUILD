@@ -1,22 +1,20 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
 
 pkgname=libxvmc
 pkgver=1.0.7
-pkgrel=1
+pkgrel=2
 pkgdesc="X11 Video Motion Compensation extension library"
-arch=(x86_64)
+arch=('x86_64')
 url="http://xorg.freedesktop.org/"
 license=('custom')
 depends=('libxv')
 makedepends=('pkgconfig')
 options=('!libtool')
-source=(${url}/releases/individual/lib/libXvMC-${pkgver}.tar.bz2)
-sha1sums=('b8ee482514dfdf226694c830bdf292cc14e1cb91')
+source=("${url}/releases/individual/lib/libXvMC-${pkgver}.tar.bz2")
+md5sums=('3340c99ff556ea2457b4be47f5cb96fa')
 
 build() {
   cd ${srcdir}/libXvMC-${pkgver}
+  
   ./configure --prefix=/usr --sysconfdir=/etc --disable-static
   make
 }
@@ -24,6 +22,7 @@ build() {
 package() {
   cd ${srcdir}/libXvMC-${pkgver}
   make DESTDIR=${pkgdir} install
+  
   install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
   install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
 }

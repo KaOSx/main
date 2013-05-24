@@ -1,28 +1,31 @@
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
 
 pkgname=libcaca
 pkgver=0.99.beta18
-pkgrel=1
+pkgrel=2
 pkgdesc="Color AsCii Art library"
 arch=('x86_64')
 license=('LGPL')
 url="http://caca.zoy.org/wiki/libcaca"
 depends=('imlib2' 'ncurses')
-options=(!libtool !emptydirs)
+options=('!libtool' '!emptydirs')
 source=("http://libcaca.zoy.org/files/libcaca/${pkgname}-${pkgver}.tar.gz")
 md5sums=('93d35dbdb0527d4c94df3e9a02e865cc')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
-  ./configure --prefix=/usr --mandir=/usr/share/man \
-    --enable-shared --disable-doc \
-    --disable-cxx --disable-gl --disable-csharp
+  
+  ./configure --prefix=/usr \
+        --mandir=/usr/share/man \
+        --enable-shared \
+        --disable-doc \
+        --disable-cxx \
+        --disable-gl \
+        --disable-csharp
   make
 }
 
 package() {
   cd "${srcdir}/${pkgname}-${pkgver}"
+  
   make DESTDIR="${pkgdir}" install
 }

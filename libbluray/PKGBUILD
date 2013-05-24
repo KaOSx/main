@@ -1,28 +1,25 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
 
 pkgname=libbluray
-pkgver=0.2.1
+pkgver=0.3.0
 pkgrel=1
 pkgdesc="Library to access Blu-Ray disks for video playback"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://www.videolan.org/developers/libbluray.html"
 license=('LGPL2.1')
 depends=('libxml2')
-options=(!libtool)
-source=(ftp://ftp.videolan.org/pub/videolan/$pkgname/$pkgver/$pkgname-$pkgver.tar.bz2)
-sha512sums=('b938ca838d6e4ceaac74ca8850efb9d8c312638b70a9b42ebffd63bf703341eab3ce98b6edeea9b3284ba1d0f8b46fe803db1f668e72752e1e23e96435ac77dc')
+options=('!libtool')
+source=("ftp://ftp.videolan.org/pub/videolan/$pkgname/$pkgver/$pkgname-$pkgver.tar.bz2")
+md5sums=('d04a2af21fa154237ea2c693cf05e0ac')
 
 build() {
   cd "$srcdir/$pkgname-$pkgver"
+  
   ./configure --prefix=/usr --disable-static
   make
 }
 
 package() {
   cd "$srcdir/$pkgname-$pkgver"
+  
   make DESTDIR="$pkgdir/" install
 } 
