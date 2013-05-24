@@ -1,10 +1,7 @@
-# Chakra Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas[at]chakra-project[dot]org>
 
 pkgname=gstreamer0.10-ffmpeg
 pkgver=0.10.11
-pkgrel=5
+pkgrel=7
 pkgdesc="Gstreamer FFMpeg Plugin"
 arch=('x86_64')
 license=('GPL')
@@ -19,12 +16,18 @@ build() {
   cd "${srcdir}/gst-ffmpeg-${pkgver}"
   unset CFLAGS
   unset CXXFLAGS
-  ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var --disable-static --with-ffmpeg-extra-configure="--enable-runtime-cpudetect"
+  
+  ./configure --prefix=/usr \
+  --sysconfdir=/etc \
+  --localstatedir=/var \
+  --disable-static \
+  --with-ffmpeg-extra-configure="--enable-runtime-cpudetect"
   make
 }
 
 package() {
   cd "${srcdir}/gst-ffmpeg-${pkgver}"
   make DESTDIR="${pkgdir}" install 
+  
   rm -f ${pkgdir}/usr/lib/gstreamer-0.10/*.{l,}a
 }

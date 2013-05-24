@@ -1,35 +1,36 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
 
 pkgbase=gstreamer0.10-good
 pkgname=('gstreamer0.10-good' 'gstreamer0.10-good-plugins')
 pkgver=0.10.31
-pkgrel=6
+pkgrel=8
 arch=('x86_64')
 license=('LGPL')
 makedepends=('intltool' 'pkgconfig' 'gstreamer0.10-base>=0.10.36' 'libavc1394' 'libiec61883'
              'aalib' 'libshout' 'libdv' 'flac' 'wavpack' 'taglib' 'libsoup' 'v4l-utils'
              'libcaca' 'bzip2' 'gdk-pixbuf2' 'pulseaudio' 'jack' 'systemd')
 url="http://gstreamer.freedesktop.org/"
-options=(!libtool !emptydirs)
-source=(${url}/src/gst-plugins-good/gst-plugins-good-${pkgver}.tar.xz)
-sha256sums=('77a8436a7c0a15f876bad29616835046890df2bcaf72da02151bd91e3d292b64')
+options=('!libtool' '!emptydirs')
+source=("${url}/src/gst-plugins-good/gst-plugins-good-${pkgver}.tar.xz"
+        'linux-3.6.patch')
+md5sums=('555845ceab722e517040bab57f9ace95'
+         '50b1a8403d9a21de7d1978fc7504883c')
 
 build() {
   cd "${srcdir}/gst-plugins-good-${pkgver}"
+  patch -p1 -i "${srcdir}/linux-3.6.patch"
 
   sed -i '/AC_PATH_XTRA/d' configure.ac
-  autoreconf
+  sed -i 's/AM_CONFIG_HEADER/AC_CONFIG_HEADERS/' configure.ac
+  ./autogen.sh --disable-gtk-doc
+  
   ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var \
     --disable-static --enable-experimental \
     --disable-schemas-install \
     --disable-hal \
     --disable-gconf \
     --disable-esd \
-    --with-package-name="GStreamer Good Plugins (Chakra GNU/Linux)" \
-    --with-package-origin="http://www.chakra-project.org/"
+    --with-package-name="GStreamer Good Plugins (KdeOS)" \
+    --with-package-origin="http://www.kde-os.tk/"
 
   make 
   sed -e 's/gst sys ext/gst/' -i Makefile 

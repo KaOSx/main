@@ -1,12 +1,8 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
 
 pkgbase=gstreamer0.10-bad
 pkgname=('gstreamer0.10-bad' 'gstreamer0.10-bad-plugins')
 pkgver=0.10.23
-pkgrel=9
+pkgrel=11
 arch=('x86_64')
 license=('LGPL' 'GPL')
 makedepends=('pkgconfig' 'gstreamer0.10-base>=0.10.36' 'xvidcore' 'libdca' 'bzip2' 'libdc1394' 
@@ -14,8 +10,8 @@ makedepends=('pkgconfig' 'gstreamer0.10-base>=0.10.36' 'xvidcore' 'libdca' 'bzip
 	     'libdvdnav' 'libmodplug' 'jasper' 'liblrdf' 'libofa' 'soundtouch' 'libvdpau' 
 	     'schroedinger' 'libass' 'libvpx' 'gsm' 'libgme' 'rtmpdump' 'libsndfile' 'opus')
 url="http://gstreamer.freedesktop.org/"
-options=(!libtool !emptydirs)
-source=(${url}/src/gst-plugins-bad/gst-plugins-bad-${pkgver}.tar.xz)
+options=('!libtool' '!emptydirs')
+source=("${url}/src/gst-plugins-bad/gst-plugins-bad-${pkgver}.tar.xz")
 md5sums=('e4822fa2cc933768e2998311a1565979')
 
 build() {
@@ -23,8 +19,8 @@ build() {
 
   ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var \
     --disable-static --enable-experimental --disable-celt --disable-rsvg \
-    --with-package-name="GStreamer Bad Plugins (Chakra GNU/Linux)" \
-    --with-package-origin="http://www.chakra-project.org/" 
+    --with-package-name="GStreamer Bad Plugins (KdeOS)" \
+    --with-package-origin="http://www.kde-os.tk/" 
 
   make 
   sed -e 's/gst sys ext/gst/' -i Makefile 

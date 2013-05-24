@@ -1,12 +1,8 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer: abveritas@chakra-project.org
 
 pkgname=python2-gobject3 
 pkgbase=pygobject
-pkgver=3.2.1
-pkgrel=2
+pkgver=3.8.2
+pkgrel=1
 pkgdesc="Python2 bindings for GObject, including all introspection files"
 arch=('x86_64')
 url="https://live.gnome.org/PyGObject"
@@ -14,10 +10,11 @@ license=('LGPL')
 depends=('python2' 'python2-cairo' 'gobject-introspection')
 source=("http://ftp.gnome.org/pub/gnome/sources/$pkgbase/${pkgver::3}/pygobject-$pkgver.tar.xz")
 options=('!libtool')
-md5sums=('3f6e63de5aa422710c268b249e2244bf')
+md5sums=('607976fa21cee004cae12795a88d2675')
 
 build() {
     cd "$pkgbase-$pkgver"
+    sed -i '/Werror=format/d' configure # gcc 4.8
 
     ./configure --prefix=/usr
     make

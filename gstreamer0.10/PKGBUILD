@@ -10,11 +10,15 @@ depends=('libxml2' 'glib2')
 makedepends=('intltool' 'pkgconfig' 'gobject-introspection' 'git')
 options=('!libtool')
 #source=("${url}/src/gstreamer/gstreamer-${pkgver}.tar.xz")
-source=("git://anongit.freedesktop.org/gstreamer-sdk/gstreamer#commit=ce96cff8e2bf1772dc330387fa98e94f187fc2ab")
-md5sums=('SKIP')
+source=("git://anongit.freedesktop.org/gstreamer-sdk/gstreamer#commit=ce96cff8e2bf1772dc330387fa98e94f187fc2ab"
+        'test_check.patch')
+md5sums=('SKIP'
+         '54ca909b522b3626f3a23a8751c0acd7')
 
 build() {
   cd "${srcdir}/gstreamer"
+  patch -p1 -i "${srcdir}/test_check.patch"
+  
   sed -e 's/AM_CONFIG_HEADER/AC_CONFIG_HEADERS/' -i configure.ac
   NOCONFIGURE=1 ./autogen.sh
 

@@ -1,29 +1,27 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
 
 pkgbase=('gstreamer0.10-base')
 pkgname=('gstreamer0.10-base' 'gstreamer0.10-base-plugins')
 pkgver=0.10.36
-pkgrel=5
+pkgrel=7
 arch=('x86_64')
 license=('LGPL')
 makedepends=('pkgconfig' "gstreamer0.10>=${pkgver}" 'orc' 'libxv' 'alsa-lib' 'cdparanoia'
              'libvisual' 'libvorbis' 'libtheora' 'pango' 'gobject-introspection')
-options=(!libtool !emptydirs)
+options=('!libtool' '!emptydirs')
 url="http://gstreamer.freedesktop.org/"
-source=(${url}/src/gst-plugins-base/gst-plugins-base-${pkgver}.tar.xz)
+source=("${url}/src/gst-plugins-base/gst-plugins-base-${pkgver}.tar.xz")
 md5sums=('3d2337841b132fe996e5eb2396ac9438')
 
 build() {
   cd "${srcdir}/gst-plugins-base-${pkgver}"
   sed -i '/AC_PATH_XTRA/d' configure.ac
-  autoreconf
+  sed -i 's/AM_CONFIG_HEADER/AC_CONFIG_HEADERS/' configure.ac
+  ./autogen.sh --disable-gtk-doc
+  
   ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var \
     --disable-static --enable-experimental --disable-gnome_vfs --enable-subparse\
-    --with-package-name="GStreamer Base Plugins (Chakra GNU/Linux)" \
-    --with-package-origin="http://www.chakra-project.org/"
+    --with-package-name="GStreamer Base Plugins (KdeOS)" \
+    --with-package-origin="http://www.kde-os.tk/"
 
   make 
   sed -e 's/^SUBDIRS_EXT =.*/SUBDIRS_EXT =/' -i Makefile
