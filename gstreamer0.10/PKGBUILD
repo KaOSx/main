@@ -1,34 +1,33 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
 
 pkgname=gstreamer0.10
-pkgver=0.10.36
-pkgrel=4
+pkgver=0.10.36.1
+pkgrel=1
 pkgdesc="GStreamer Multimedia Framework"
 arch=('x86_64')
 license=('LGPL')
 url="http://gstreamer.freedesktop.org/"
 depends=('libxml2' 'glib2')
-makedepends=('intltool' 'pkgconfig' 'gobject-introspection')
+makedepends=('intltool' 'pkgconfig' 'gobject-introspection' 'git')
 options=('!libtool')
-source=(${url}/src/gstreamer/gstreamer-${pkgver}.tar.xz)
-md5sums=('15389c73e091b1dda915279c388b9cb2')
+#source=("${url}/src/gstreamer/gstreamer-${pkgver}.tar.xz")
+source=("git://anongit.freedesktop.org/gstreamer-sdk/gstreamer#commit=ce96cff8e2bf1772dc330387fa98e94f187fc2ab")
+md5sums=('SKIP')
 
 build() {
-  cd "${srcdir}/gstreamer-${pkgver}"
+  cd "${srcdir}/gstreamer"
+  sed -e 's/AM_CONFIG_HEADER/AC_CONFIG_HEADERS/' -i configure.ac
+  NOCONFIGURE=1 ./autogen.sh
 
   ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var --libexecdir=/usr/lib \
-	--with-package-name="GStreamer (Chakra GNU/Linux)" \
-	--with-package-origin="http://www.chakra-project.org/" \
+	--with-package-name="GStreamer (KdeOS)" \
+	--with-package-origin="http://www.kde-os.tk/" \
 	--disable-static
 
   make
 }
 
 package() {
-  cd "${srcdir}/gstreamer-${pkgver}"
+  cd "${srcdir}/gstreamer"
   make DESTDIR="${pkgdir}" install
 
   #Remove unversioned gst-* binaries to get rid of conflicts

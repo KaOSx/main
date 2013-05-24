@@ -1,16 +1,12 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
 
 pkgname=sdl_mixer
 pkgver=1.2.12
-pkgrel=6
+pkgrel=8
 pkgdesc="A simple multi-channel audio mixer"
 arch=('x86_64')
 url="http://www.libsdl.org/projects/SDL_mixer/"
 license=('custom')
-depends=('sdl>=1.2.12' 'libvorbis' 'libmikmod' 'smpeg')
+depends=('sdl' 'libvorbis' 'libmikmod' 'smpeg')
 makedepends=('fluidsynth')
 optdepends=('fluidsynth: MIDI software synth, replaces built-in timidity')
 options=('!libtool')
