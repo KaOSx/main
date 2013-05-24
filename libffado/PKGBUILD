@@ -1,21 +1,15 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer: abveritas[at]chakra-project[dot]org>
 
 pkgname=libffado
 pkgver=2.1.0
-pkgrel=3
+pkgrel=5
 pkgdesc="Driver for FireWire audio devices"
 arch=('x86_64')
 url="http://www.ffado.org/"
 license=('GPL')
-depends=('libiec61883' 'libavc1394' 'libsigc++'
-          'libxml++' 'alsa-lib' 'dbus' 'libconfig' 'dbus-c++')
+depends=('libiec61883' 'libavc1394' 'libsigc++' 'libxml++' 'alsa-lib' 'dbus' 'libconfig'
+         'dbus-c++')
 makedepends=('scons' 'pyqt' 'python2')
-optdepends=('pyqt: mixer applet'
-            'python: ffado-diag')
-provides=('ffado')
+optdepends=('python2: ffado-diag')
 source=("http://www.ffado.org/files/libffado-$pkgver.tgz")
 md5sums=('26bce2be0b9c1fa4e614f2f494edf388')
 
