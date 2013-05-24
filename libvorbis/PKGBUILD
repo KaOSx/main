@@ -1,11 +1,7 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
 
 pkgname=libvorbis
 pkgver=1.3.3
-pkgrel=6
+pkgrel=7
 pkgdesc="Vorbis codec library"
 arch=('x86_64')
 license=('custom')
@@ -17,13 +13,14 @@ md5sums=('6b1a36f0d72332fae5130688e65efe1f')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
-  #-march=i686 optimizes too much, strip it out
-  CFLAGS=${CFLAGS/-march=$CARCH} LIBS+="-lm" ./configure --prefix=/usr --disable-static
+
+  LIBS+="-lm" ./configure --prefix=/usr --disable-static
   make
 }
 
 package() {
   cd "${srcdir}/${pkgname}-${pkgver}"
   make DESTDIR="${pkgdir}" install
+  
   install -Dm644 COPYING "${pkgdir}/usr/share/licenses/$pkgname/LICENSE"
 }

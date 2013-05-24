@@ -1,11 +1,7 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
 
 pkgname=flac
 pkgver=1.2.1
-pkgrel=11
+pkgrel=12
 pkgdesc="Free Lossless Audio Codec"
 arch=('x86_64')
 url="http://flac.sourceforge.net/"
@@ -20,23 +16,20 @@ md5sums=('153c8b15a54da428d1f0fadc756c22c7'
 
 build() {
   cd "${srcdir}/${pkgbase}-${pkgver}"
-  patch -Np1 -i "${srcdir}/flac-1.2.1-gcc-4.3-includes.patch"
-  ./configure --prefix=/usr --mandir=/usr/share/man --enable-shared \
-    --disable-sse --disable-rpath --with-pic
+  patch -p1 -i "${srcdir}/flac-1.2.1-gcc-4.3-includes.patch"
+  
+  ./configure --prefix=/usr \
+        --mandir=/usr/share/man \
+        --enable-shared \
+        --disable-sse \
+        --disable-rpath \
+        --with-pic
   make
 }
 
-check() {
-  cd "${srcdir}/${pkgbase}-${pkgver}"
-  make check
-}
-
 package() {
-  pkgdesc="Free Lossless Audio Codec"
-  optdepends=('xmms: for using the xmms plugin')
-  options=('!libtool' '!docs')
-
   cd "${srcdir}/${pkgbase}-${pkgver}"
   make DESTDIR="${pkgdir}" install
+  
   install -D -m644 COPYING.Xiph "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
 }
