@@ -1,11 +1,7 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
 
 pkgname=ladspa
 pkgver=1.13
-pkgrel=9
+pkgrel=11
 pkgdesc="Linux Audio Developer's Simple Plugin API (LADSPA)"
 arch=('x86_64')
 license=('LGPL')
@@ -19,12 +15,14 @@ md5sums=('671be3e1021d0722cadc7fb27054628e'
 build() {
   cd "${srcdir}/${pkgname}_sdk/src"
   patch -p1 -i "${srcdir}/hardcode-path.patch" 
+  
   sed -i -e 's/mkdirhier/mkdir -p/' makefile 
   make targets 
 }
 
 package() {
   cd "${srcdir}/${pkgname}_sdk/src"
+  
   make INSTALL_PLUGINS_DIR="${pkgdir}/usr/lib/ladspa/" \
        INSTALL_INCLUDE_DIR="${pkgdir}/usr/include/" \
        INSTALL_BINARY_DIR="${pkgdir}/usr/bin/" install
