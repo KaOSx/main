@@ -1,30 +1,24 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
 
 pkgname=alsa-utils
-pkgver=1.0.26
+pkgver=1.0.27.1
 pkgrel=1
 pkgdesc="An alternative implementation of Linux sound support"
 arch=('x86_64')
 url="http://www.alsa-project.org"
-#can not use >=$pkgver due to use of letters in alsa-lib update versioning
-depends=("alsa-lib" 'dialog' 'pciutils' 'ncurses' 'psmisc' 'libsamplerate')
+depends=('alsa-lib' 'dialog' 'pciutils' 'ncurses' 'psmisc' 'libsamplerate')
 makedepends=('xmlto' 'docbook-xsl')
 license=('GPL')
 source=("ftp://ftp.alsa-project.org/pub/utils/$pkgname-${pkgver}.tar.bz2"
-        'alsa.conf.d'
         '90alsa')
-md5sums=('4dcf1017fafc91603af96705c073eca9'
-         '4c8ae9f976c7df5e271a4cb91ccc7767'
+md5sums=('3d81357b997744a139881ef72bc6921a'
          '529216f6a46e61a546640e08ea7a0879')
 backup=(etc/conf.d/alsa)
 
 build() {
   cd ${srcdir}/${pkgname}-${pkgver}
 
-  ./configure --prefix=/usr --disable-alsaconf \
+  ./configure --prefix=/usr \
+    --disable-alsaconf \
     --with-udev-rules-dir=/usr/lib/udev/rules.d \
     --with-systemdsystemunitdir=/usr/lib/systemd/system
   make
@@ -33,7 +27,7 @@ build() {
 package() {
   cd ${srcdir}/${pkgname}-${pkgver}
   make DESTDIR=${pkgdir} install
-  install -D -m644 ../alsa.conf.d ${pkgdir}/etc/conf.d/alsa
+
   install -D -m755 ../90alsa ${pkgdir}/etc/pm/sleep.d/90alsa
   # dir where to save ALSA state
   install -d ${pkgdir}/var/lib/alsa

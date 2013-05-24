@@ -1,27 +1,29 @@
-# $Id: PKGBUILD 59903 2009-11-29 16:30:52Z jgc $
-# Maintainer: damir <damir@archlinux.org>
-# Contributor: Tom Newsom <Jeepster@gmx.co.uk>
 
 pkgname=vcdimager
 pkgver=0.7.24
-pkgrel=1
-pkgdesc="GNU VCDImager is a full-featured mastering suite for authoring disassembling and analyzing Video CD's and Super Video CD's"
+pkgrel=2
+pkgdesc="full-featured mastering suite for authoring disassembling and analyzing Video CD's and Super Video CD's"
 arch=('x86_64')
 license=('GPL')
 url="http://www.vcdimager.org/"
 depends=('libcdio' 'libxml2' 'popt')
 options=('!libtool')
 install=vcdimager.install
-source=("ftp://ftp.gnu.org/gnu/vcdimager/${pkgname}-${pkgver}.tar.gz")
-md5sums=('3af22978fd79c79d5fda6513b6811145')
+source=("ftp://ftp.gnu.org/gnu/vcdimager/${pkgname}-${pkgver}.tar.gz"
+        'libcdio.patch')
+md5sums=('3af22978fd79c79d5fda6513b6811145'
+         'dde30a72fb13a825588450aefa3f4b72')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
+  patch -p1 -i "$srcdir"/libcdio.patch
+  
   ./configure --prefix=/usr
   make
 }
 
 package() {
   cd "${srcdir}/${pkgname}-${pkgver}"
+  
   make DESTDIR="${pkgdir}" install
 }

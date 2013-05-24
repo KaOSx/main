@@ -1,42 +1,38 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
-
 
 pkgname=sox
-pkgver=14.4.0
-pkgrel=5
+pkgver=14.4.1
+pkgrel=2
 pkgdesc="The Swiss Army knife of sound processing tools"
 arch=('x86_64')
 url="http://sox.sourceforge.net/"
 license=('GPL' 'LGPL')
-depends=('libltdl' 'file' 'libsndfile' 'libpng' 'lame' 'opencore-amr' 'gsm')
-makedepends=('ffmpeg' 'libao' 'libmad' 'libid3tag' 'wavpack' 'pulseaudio')
+depends=('libltdl' 'file' 'libsndfile' 'libpng' 'lame' 'opencore-amr' 'gsm' 'pulseaudio')
+makedepends=('ffmpeg' 'libao' 'libmad' 'libid3tag' 'wavpack')
 optdepends=('libao: for ao plugin'
             'ffmpeg: for ffmpeg plugin'
             'libmad: for mp3 plugin'
             'libid3tag: for mp3 plugin'
-            'wavpack: for wavpack plugin'
-            'libpulse: for pulse plugin')
+            'wavpack: for wavpack plugin')
 options=('!libtool')
 source=("http://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tar.bz2"
-        'sox.diff')
-md5sums=('813807c6d6fcd4b0af5c995e61f46687'
-         'd91175d132c02364994905808acf04e0')
+        'sox-ffmpeg0.11.patch')
+md5sums=('ff9ca6aca972549de0e80e8e30ed379c'
+         '68421298efb00bc6bda2d118d71ed5f4')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
-  patch -p1 -i "${srcdir}/sox.diff"
+  patch -p1 -i "${srcdir}/sox-ffmpeg0.11.patch"
+
   sed -i 's|man1/sox.1 soxeffect.7|man1/sox.1.gz soxeffect.7.gz|' Makefile.am
   ./configure --prefix=/usr \
     --sysconfdir=/etc \
     --with-dyn-default \
-    --with-distro="Chakra-Linux" 
+    --with-distro="KdeOS" 
   make 
 }
 
 package() {
   cd "${srcdir}/${pkgname}-${pkgver}"
+  
   make DESTDIR="${pkgdir}" install
 }
