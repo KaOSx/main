@@ -1,11 +1,7 @@
-#
-# Phonon Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
 
 pkgname=phonon
 pkgver=4.6.0
-pkgrel=7
+pkgrel=9
 arch=('x86_64')
 url="http://phonon.kde.org"
 license=('LGPL')
@@ -18,6 +14,7 @@ md5sums=('bbe0c1c62ed14c31479c4c1a6cf1e173')
 build() {
   cd "${srcdir}"
   mkdir build
+  
   cd build
   cmake ../${pkgname}-${pkgver} \
     -DCMAKE_BUILD_TYPE=Release \
@@ -30,5 +27,6 @@ build() {
 
 package(){
   cd "${srcdir}"/build
+  
   make DESTDIR="${pkgdir}" install
 }

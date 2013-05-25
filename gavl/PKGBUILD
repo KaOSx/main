@@ -1,18 +1,14 @@
-# Maintainer: Neophytos Kolokotronis <tetris4@gmail.com>
-# Contributors from Arch: Lukas Fleischer <archlinux at cryptocrack dot de>
-#                         Robert Emil Berge <filoktetes@linuxophic.org>
-#                         Mateusz Herych <heniekk@gmail.com>
 
 pkgname=gavl
 pkgver=1.4.0
-pkgrel=2
+pkgrel=3
 pkgdesc="A low level library, upon which multimedia APIs can be built."
 arch=('x86_64')
 url="http://gmerlin.sourceforge.net/"
 license=('GPL')
 depends=('glibc' 'libpng')
-optios=(!libtool)
-source=(http://downloads.sourceforge.net/sourceforge/gmerlin/$pkgname-$pkgver.tar.gz)
+optios=('!libtool')
+source=("http://downloads.sourceforge.net/sourceforge/gmerlin/$pkgname-$pkgver.tar.gz")
 md5sums=('2752013a817fbc43ddf13552215ec2c0')
 
 build() {
@@ -26,5 +22,6 @@ build() {
 
 package() {
   cd $srcdir/$pkgname-$pkgver
+  
   make DESTDIR=$pkgdir install
 }

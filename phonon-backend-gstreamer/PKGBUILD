@@ -1,11 +1,7 @@
-#
-# Phonon Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
 
 pkgname=('phonon-backend-gstreamer')
 pkgver=4.6.3
-pkgrel=1
+pkgrel=3
 pkgdesc="Phonon GStreamer backend"
 arch=('x86_64')
 url='http://phonon.kde.org'
@@ -13,8 +9,6 @@ license=('LGPL')
 depends=('gstreamer0.10-base-plugins' 'phonon')
 makedepends=('pkg-config' 'cmake' 'automoc4' 'mesa')
 groups=("kde-complete" "kde-uninstall")
-conflicts=('phonon-gstreamer')
-replaces=('phonon-gstreamer')
 source=("http://download.kde.org/stable/phonon/phonon-backend-gstreamer/${pkgver}/src/phonon-backend-gstreamer-${pkgver}.tar.xz"
         "fix-double-window.patch")
 md5sums=('d7b0b6245f380347c52c09033a814931'
@@ -36,5 +30,6 @@ build() {
 
 package() {
 	cd ${srcdir}/build
+	
 	make DESTDIR=${pkgdir} install
 }

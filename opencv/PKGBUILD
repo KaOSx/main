@@ -3,7 +3,7 @@ pkgbase=opencv
 pkgname=('opencv' 'opencv-samples')
 _realname=OpenCV
 pkgver=2.4.5
-pkgrel=1
+pkgrel=2
 pkgdesc="Open Source Computer Vision Library"
 arch=('x86_64')
 license=('BSD')
@@ -72,5 +72,7 @@ package_opencv-samples() {
 
   mkdir -p "$pkgdir/usr/share/opencv"
   cp -r opencv-samples "$pkgdir/usr/share/opencv/samples"
+  install -Dm644 "$srcdir/opencv-$pkgver/doc/license.txt" \
+    "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
 }
 
