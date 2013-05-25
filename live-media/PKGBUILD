@@ -1,26 +1,20 @@
-#
-# Chakra Packages for Chakra, part of chakra-project.org
-#
-# maintainer : abveritas[at]chakra-project[dot]org>
 
 pkgname=live-media
-pkgver=2012.04.04
+pkgver=2013.04.30
 pkgrel=1
 pkgdesc="A set of C++ libraries for multimedia streaming"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 license=('LGPL')
 url="http://live555.com/liveMedia"
 depends=('gcc-libs')
 source=("http://live555.com/liveMedia/public/live.${pkgver}.tar.gz")
-md5sums=('25ad098a6e4a2e329ca6295a9ba27074')
+md5sums=('95533d91bd196e42fd748076dc244b09')
 
 build() {
   cd ${srcdir}/live
 
   sed \
       -e 's/$(INCLUDES) -I. -O2 -DSOCKLEN_T/$(INCLUDES) -I. -O2 -I. -fPIC -DRTSPCLIENT_SYNCHRONOUS_INTERFACE=1 -DSOCKLEN_T/g' \
-      -e 's/\(LIBRARY_LINK =\).*/\1 $(LD) -o/g' \
-      -e 's/\(LIBRARY_LINK_OPTS =\).*/\1 $(LINK_OPTS) -r -Bstatic/g' \
       -i config.linux
   ./genMakefiles linux
   make
@@ -29,7 +23,7 @@ build() {
 package() {
   cd ${srcdir}/live
 
-  for dir in BasicUsageEnvironment UsageEnvironment groupsock liveMedia; do
+  for dir in BasicUsageEnvironment groupsock liveMedia UsageEnvironment; do
     install -dm755 ${pkgdir}/usr/{bin,lib,include/${dir}}
     install -m644 ${dir}/*.a "${pkgdir}/usr/lib"
     install -m644 ${dir}/include/*.h* "${pkgdir}/usr/include/${dir}"

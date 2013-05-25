@@ -1,13 +1,9 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# Maintainer: Giuseppe Calà <jiveaxe@gmail.com>
 
 pkgname=nas
 pkgver=1.9.3
 pkgrel=1
 pkgdesc='Network Audio System is a network transparent, client/server audio transport system'
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url='http://radscan.com/nas.html'
 license=('custom')
 depends=('libxaw')
@@ -21,13 +17,11 @@ build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
 
   xmkmf
-
   make World
 }
 
 package() {
   cd "${srcdir}/${pkgname}-${pkgver}"
-
   make DESTDIR="${pkgdir}" USRLIBDIR=/usr/lib install
 
   install -D -m644 "${srcdir}/license.txt" "${pkgdir}/usr/share/licenses/${pkgname}/license"
