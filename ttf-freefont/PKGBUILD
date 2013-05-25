@@ -1,22 +1,17 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
 
 pkgname=ttf-freefont
 pkgver=20120503
-pkgrel=1
+pkgrel=2
 pkgdesc="A set of free high-quality TrueType fonts covering the Unicode character set"
-arch=('any')
+arch=('x86_64')
 url="http://www.nongnu.org/freefont/"
 license=('GPL')
 depends=('fontconfig' 'xorg-font-utils')
 install=$pkgname.install
 source=("http://ftp.gnu.org/gnu/freefont/freefont-ttf-${pkgver}.zip")
-sha256sums=('7c85baf1bf82a1a1845d1322112bc6ca982221b484e3b3925022e25b5cae89af')
+md5sums=('879b76d2e3c8003d567b555743f39154')
 
-build() {
+package() {
   cd "${srcdir}/freefont-${pkgver}"
   install -d "${pkgdir}/usr/share/fonts/TTF"
   install -m0644 *.ttf "${pkgdir}/usr/share/fonts/TTF/"

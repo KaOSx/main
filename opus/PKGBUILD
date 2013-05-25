@@ -1,30 +1,27 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
-# contributor Jan de Groot <jgc@archlinux.org>
 
 pkgname=opus
-pkgver=1.0.1
+pkgver=1.0.2
 pkgrel=1
 pkgdesc="codec designed for interactive speech and audio transmission over the Internet"
 arch=('x86_64')
 url="http://www.opus-codec.org/"
 license=('custom')
 depends=('glibc')
-source=("http://downloads.xiph.org/releases/${pkgname}/${pkgname}-${pkgver}.tar.gz")
 options=('!libtool')
-md5sums=('bbac19996957b404a1139816e2f357f5')
+source=("http://downloads.xiph.org/releases/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+md5sums=('c503ad05a59ddb44deab96204401be03')
 
 build() {
   cd ${srcdir}/${pkgname}-${pkgver}
-  ./configure --prefix=/usr
+  
+  ./configure --prefix=/usr --enable-custom-modes
   make
 }
 
 package() {
   cd ${srcdir}/${pkgname}-${pkgver}
   make DESTDIR=${pkgdir} install
+  
   install -m755 -d "${pkgdir}/usr/share/licenses/opus"
   install -m644 COPYING "${pkgdir}/usr/share/licenses/opus/"
 }

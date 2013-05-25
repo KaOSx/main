@@ -1,26 +1,22 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
 
 pkgname=liblastfm
-pkgver=1.0.6
+pkgver=1.0.7
 _pkgver=5826fe6
-pkgrel=1
+pkgrel=2
 pkgdesc='A Qt C++ library for the Last.fm webservices'
 url="https://github.com/lastfm/liblastfm/"
 license=('GPL3')
 arch=('x86_64')
 depends=('qt')
 makedepends=('lsb-release' 'cmake')
-source=("${pkgname}-${pkgver}.tar.gz::https://github.com/lastfm/${pkgname}/tarball/${pkgver}")
-md5sums=('400dd3c0f7ccb39992678c9dc1a9e48b')
+source=("https://github.com/lastfm/liblastfm/archive/${pkgver}.tar.gz")
+md5sums=('134d03604873ca845e50437a89ed49ee')
 
 build() {
   mkdir build
   cd build
 
-  cmake ../lastfm-${pkgname}-${_pkgver} \
+  cmake ../${pkgname}-${pkgver} \
         -DCMAKE_INSTALL_PREFIX=/usr \
         -DCMAKE_INSTALL_LIBDIR=/usr/lib \
         -DBUILD_FINGERPRINT=off \
@@ -31,6 +27,7 @@ build() {
 
 package() {
   cd build
+  
   make DESTDIR=${pkgdir} install
 }
 

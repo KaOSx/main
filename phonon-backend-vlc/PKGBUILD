@@ -1,7 +1,3 @@
-#
-# Phonon Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
 
 pkgname=('phonon-backend-vlc')
 pkgver=0.6.2
@@ -13,14 +9,13 @@ license=('LGPL')
 depends=('vlc' "phonon")
 makedepends=('qt' 'pkgconfig' 'cmake' 'automoc4' 'mesa')
 groups=("kde-complete" "kde-uninstall")
-replaces=('phonon-vlc-svn' 'phonon-vlc')
-conflicts=('phonon-vlc-svn' 'phonon-vlc')
 source=("http://download.kde.org/stable/phonon/${pkgname}/$pkgver/${pkgname}-$pkgver.tar.xz")
 md5sums=('1ae8b15594714841d2bcf8c72813a176')
 
 build() {
 	cd "${srcdir}"
 	mkdir -p build
+	
 	cd build
 	cmake "../${pkgname}-$pkgver" \
 		 -DCMAKE_BUILD_TYPE=Release \
@@ -30,5 +25,6 @@ build() {
 
 package() {
 	cd "${srcdir}/build"
+	
 	make DESTDIR="${pkgdir}" install
 } 

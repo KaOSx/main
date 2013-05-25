@@ -2,7 +2,7 @@
 pkgname=transcode
 _sripver=0.3-4
 pkgver=1.1.7
-pkgrel=11
+pkgrel=12
 pkgdesc="A video/DVD ripper and encoder for the terminal/console"
 arch=('x86_64')
 url="http://tcforge.berlios.de/"
@@ -13,7 +13,8 @@ makedepends=('nasm')
 options=('!libtool')
 source=("https://bitbucket.org/france/transcode-tcforge/downloads/${pkgname}-${pkgver}.tar.bz2"
 	"http://downloads.sourceforge.net/sourceforge/subtitleripper/subtitleripper-${_sripver}.tgz"
-        'subtitleripper-0.3.4-linkingorder.patch' 'subtitleripper-0.3.4-respect-ldflags.patch'
+        'subtitleripper-0.3.4-linkingorder.patch'
+        'subtitleripper-0.3.4-respect-ldflags.patch'
         'ffmpeg-0.11.patch')
 md5sums=('9bb25a796a8591fb764de46ee87ce505'
          'c0bd49a88f667c68c4430ad25bbed510'

@@ -1,11 +1,7 @@
-#
-# Chakra Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
 
 pkgname=mjpegtools
 pkgver=2.0.0
-pkgrel=6
+pkgrel=7
 pkgdesc="Set of tools that can do recording of videos and playback, simple cut-and-paste editing and the MPEG compression of audio and video"
 arch=('x86_64')
 license=('GPL')
@@ -15,15 +11,14 @@ makedeends=('v4l-utils')
 options=('!makeflags' '!libtool')
 source=("http://downloads.sourceforge.net/sourceforge/mjpeg/${pkgname}-${pkgver}.tar.gz"
         "mjpegtools-v41-2.6.38.patch")
-sha256sums=('bf3541593e71602f7b440c2e7d81b433f53d0511e74642f35bea9b3feded7a97'
-            '66dcf11a9cd325616a74269db6f1f9c542a0fbb02f007f8cd8e4d1206d31d7ed')
+md5sums=('903e1e3b967eebcc5fe5626d7517dc46'
+         '529dc1735c4f1e5b7b61c8e61c716811')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
-
   patch -p0 -i "${srcdir}/mjpegtools-v41-2.6.38.patch"
+  
   sed -i -e '/ARCHFLAGS=/s:=.*:=:' configure
-  # compilation fix, gcc 4.7 related
   sed -i -e '2199s/DeleteRegion (a_pRegion);/this->DeleteRegion (a_pRegion);/' y4mdenoise/MotionSearcher.hh
   ./configure --prefix=/usr --enable-largefile
   make

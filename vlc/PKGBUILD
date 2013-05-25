@@ -1,14 +1,13 @@
-# Maintainer: abveritas@chakra-project.org
 
 pkgname=vlc
 pkgver=2.0.6
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 url="http://www.videolan.org/vlc/"
 license=('GPL')
 depends=('a52dec' 'fluidsynth' 'libmtp' 'libdvbpsi' 'libxpm' 'libcdio'
          'libdca' 'qt' 'libproxy' 'sdl_image' 'libdvdnav' 'mesa'
-         'lua' 'v4l-utils' 'libcddb' 'smbclient' 'libmatroska' 'zvbi'
+         'lua' 'v4l-utils' 'libcddb' 'samba' 'libmatroska' 'zvbi'
          'taglib' 'sysfsutils' 'libmpcdec' 'ffmpeg' 'faad2' 'libupnp'
          'libshout' 'libmad' 'fribidi' 'libmpeg2' 'libmodplug' 'opus'
          'ttf-freefont' 'libxv' 'libass' 'xdg-utils' 'desktop-file-utils' 'xcb-util-keysyms')
@@ -27,17 +26,15 @@ optdepends=('avahi: for service discovery using bonjour protocol'
             'vdpau-video: vdpau back-end for nvidia'
             'libva-driver-intel: back-end for intel cards'
             'libbluray: for Blu-Ray disks')
-conflicts=('vlc-plugin')
-replaces=('vlc-plugin')
 backup=('usr/share/vlc/http/.hosts'
         'usr/share/vlc/http/dialogs/.hosts'
         'usr/share/vlc/lua/http/.hosts'
         'usr/share/vlc/lua/http/dialogs/.hosts')
-categories=('multimedia')
+groups=('multimedia')
 options=('!libtool')
 install="vlc.install"
 source=("http://download.videolan.org/pub/videolan/$pkgname/$pkgver/$pkgname-$pkgver.tar.xz")
-sha1sums=('2ce21c949275702452bb1327febf6e98748a7972')
+md5sums=('b45be633c71dca04ca7d6c3d64dd728b')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"

@@ -1,11 +1,7 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
 
 pkgname=zvbi
 pkgver=0.2.33
-pkgrel=3
+pkgrel=4
 pkgdesc="VBI capture and decoding library"
 url="http://zapping.sourceforge.net/cgi-bin/view/ZVBI/WebHome"
 arch=('x86_64')
@@ -21,7 +17,6 @@ md5sums=('1741a6045c3eedfb611d645f2da69ac8'
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
-
   patch -p1 -i "${srcdir}/fix-includes.patch"
   patch -p0 -i "${srcdir}/zvbi-0.2.33-libpng15.patch"
 
