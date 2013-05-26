@@ -4,8 +4,8 @@ _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=nvidia-next
 pkgdesc="NVIDIA drivers for linux."
-pkgver=319.17
-pkgrel=3
+pkgver=319.23
+pkgrel=1
 arch=('x86_64')
 url="http://www.nvidia.com/"
 depends=('linux-next>=3.9' 'linux-next<3.10' "nvidia-utils=${pkgver}")
@@ -18,7 +18,7 @@ md5sums=('62d0cdb856cfae64753c0f3acf729d47')
     _ARCH='x86_64'
     _pkg="NVIDIA-Linux-${_ARCH}-${pkgver}-no-compat32"
     source+=("ftp://download.nvidia.com/XFree86/Linux-${_ARCH}/${pkgver}/${_pkg}.run")
-    md5sums+=('4dda9b3e5c24136bebfaad122715c202')
+    md5sums+=('74edd76b4bb9229f7d9c00a79f1e3860')
 
 build() {
     cd "${srcdir}"
