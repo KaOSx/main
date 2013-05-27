@@ -1,10 +1,6 @@
-#
-# Chakra Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
 
 pkgname=xf86-input-wacom
-pkgver=0.19.0
+pkgver=0.21.0
 pkgrel=1
 pkgdesc="X.Org Wacom tablet driver."
 arch=('x86_64')
@@ -12,16 +8,17 @@ url="http://linuxwacom.sourceforge.net/"
 license=('GPL')
 backup=('etc/X11/xorg.conf.d/50-wacom.conf')
 depends=('libxi' 'libxrandr' 'libxinerama')
-makedepends=('xorg-server' 'libxext' 'libxi')
+makedepends=('xorg-server' 'libxext' 'resourceproto' 'scrnsaverproto')
 conflicts=('xorg-server<1.12.3')
-options=(!libtool)
+options=('!libtool')
 source=("http://downloads.sourceforge.net/project/linuxwacom/${pkgname}/${pkgname}-${pkgver}.tar.bz2"
         '70-wacom.rules')
-md5sums=('bdc66047bb0afb4ac29882cca16cdfaa'
-         '10db4f8272286690255c1bcc18bfdd92')
+md5sums=('534784a3a776451c2572e2b666266f36'
+         'cc46dcb399d5ee62c9feb610c60d1270')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
+  
   ./configure --prefix=/usr --with-xorg-conf-dir=/etc/X11/xorg.conf.d
   make
 }
@@ -33,4 +30,3 @@ package() {
   install -Dm644 ../70-wacom.rules "$pkgdir/usr/lib/udev/rules.d/70-wacom.rules"
 }
 
-# vim:set ts=2 sw=2 et:
