@@ -1,14 +1,13 @@
 
 pkgname=avahi
 pkgver=0.6.31
-pkgrel=6
+pkgrel=7
 pkgdesc="A multicast/unicast DNS-SD framework"
 arch=('x86_64')
 url="http://www.avahi.org/"
 license=('LGPL')
 depends=('dbus' 'libcap' 'libdaemon' 'gdbm' 'glib2' 'expat')
-optdepends=('qt: qt bindings'
-	    'dbus-python: avahi-discover')
+optdepends=('qt: qt bindings')
 makedepends=('qt' 'dbus-python2' 'gobject-introspection' 'intltool')
 backup=(etc/avahi/avahi-daemon.conf etc/avahi/services/{sftp-,}ssh.service)
 install=avahi.install
