@@ -1,11 +1,7 @@
-#
-# Chakra Packages for Chakra, part of chakra-project.org
-#
-# maintainer: abveritas@chakra-project.org
 
 pkgname=tomoyo-tools
 _basever=2.5.0
-_timestamp=20130214
+_timestamp=20130406
 _file=53357
 pkgver=${_basever}.${_timestamp}
 pkgrel=1
@@ -15,17 +11,14 @@ url='http://tomoyo.sourceforge.jp'
 license=('GPL')
 depends=('ncurses')
 makedepends=('help2man')
-conflicts=('ccs-tools')
 install=tomoyo-tools.install
 source=("http://sourceforge.jp/frs/redir.php?f=/tomoyo/${_file}/${pkgname}-${_basever}-${_timestamp}.tar.gz")
-md5sums=('ffff6b531ed9ac32b01722a9cd749a2f')
+md5sums=('8888f83fcb87823d714ff551e8680d0d')
 
 build() {
-    cd "${srcdir}/${pkgname}"
-    make -j1
+    cd "${srcdir}/${pkgname}"    make -j1
 }
 
 package() {
-    cd "${srcdir}/${pkgname}"
-    make INSTALLDIR="${pkgdir}" install
+    cd "${srcdir}/${pkgname}"    make INSTALLDIR="${pkgdir}" install
 }

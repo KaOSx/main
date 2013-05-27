@@ -1,0 +1,30 @@
+
+pkgname=dbus-python2
+_pkgname=dbus-python
+pkgver=1.1.1
+pkgrel=2
+pkgdesc="Python bindings for DBUS"
+arch=('x86_64')
+license=('GPL' 'LGPL')
+url="http://www.freedesktop.org/wiki/Software/DBusBindings"
+depends=('dbus-glib' 'python2')
+makedepends=('pkg-config' 'python2-docutils')
+provides=('dbus-python')
+replaces=('dbus-python')
+conflict=('dbus-python')
+options=('!libtool')
+source=("http://dbus.freedesktop.org/releases/${_pkgname}/${_pkgname}-${pkgver}.tar.gz")
+md5sums=('742c7432ad0f7c3f98291d58fa2e35dc')
+
+build() {
+  cd "${srcdir}/${_pkgname}-${pkgver}"
+  
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd "${srcdir}/${_pkgname}-${pkgver}"
+  
+  make DESTDIR="${pkgdir}" install
+}
