@@ -6,11 +6,6 @@ post_install() {
          systemctl enable avahi-daemon.service
 }
 
-post_upgrade() {
-  echo "Enabling systemd service"
-         systemctl enable avahi-daemon.service
-}
-
 pre_remove() {
    echo "Disabling systemd service"
          systemctl disable avahi-daemon.service

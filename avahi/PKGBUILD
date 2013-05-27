@@ -1,38 +1,26 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
 
 pkgname=avahi
 pkgver=0.6.31
-pkgrel=5
+pkgrel=6
 pkgdesc="A multicast/unicast DNS-SD framework"
 arch=('x86_64')
 url="http://www.avahi.org/"
 license=('LGPL')
-depends=('dbus>=1.1.20-1' 'libcap>=2.16' 'libdaemon>=0.11' 'gdbm' 'glib2' 'expat')
+depends=('dbus' 'libcap' 'libdaemon' 'gdbm' 'glib2' 'expat')
 optdepends=('qt: qt bindings'
-	    'nss-mdns: NSS support for mDNS'
-	    'dbus-python: avahi-discover'
-            'twisted: avahi-bookmarks')
-makedepends=('qt' 'dbus-python' 'gobject-introspection' 'pygtk' 'intltool')
+	    'dbus-python: avahi-discover')
+makedepends=('qt' 'dbus-python2' 'gobject-introspection' 'intltool')
 backup=(etc/avahi/avahi-daemon.conf etc/avahi/services/{sftp-,}ssh.service)
 install=avahi.install
 options=('!libtool')
-source=("http://www.avahi.org/download/avahi-${pkgver}.tar.gz"
-        'gnome-nettool.png' 'avahi-daemon-dbus.patch')
-sha1sums=('7e05bd78572c9088b03b1207a0ad5aba38490684'
-          'cf56387c88aed246b9f435efc182ef44de4d52f3'
-          'd81f472ebb5b6635f5b2621933e7eae45878ca14')
+source=("http://www.avahi.org/download/avahi-${pkgver}.tar.gz")
+md5sums=('2f22745b8f7368ad5a0a3fddac343f2d')
 
 build() {
   cd ${srcdir}/${pkgname}-${pkgver}
-
   sed -i 's/netdev/network/g' avahi-daemon/avahi-dbus.conf
-  patch -p1 -i "${srcdir}/avahi-daemon-dbus.patch"
 
-  PYTHON=python2 \
-  PKG_CONFIG_PATH=/opt/qt/lib/pkgconfig \
+  export PYTHON=/usr/bin/python2
     ./configure --prefix=/usr \
     --sysconfdir=/etc \
     --localstatedir=/var \
@@ -45,9 +33,10 @@ build() {
     --disable-xmltoman \
     --disable-gtk \
     --disable-gtk3 \
+    --disable-pygtk \
     --enable-compat-libdns_sd \
     --enable-compat-howl \
-    --with-distro=archlinux \
+    --with-distro=none \
     --with-avahi-priv-access-group=network \
     --with-autoipd-user=avahi \
     --with-autoipd-group=avahi \
@@ -59,10 +48,9 @@ build() {
 package() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 	make DESTDIR="${pkgdir}" install
-	install -D -m 644 ../gnome-nettool.png "${pkgdir}"/usr/share/pixmaps/gnome-nettool.png
 
 	cd "${pkgdir}"
-	sed -i '1c #!/usr/bin/python2' usr/bin/avahi-{bookmarks,discover}
+	sed -i '1c #!/usr/bin/python2' usr/bin/avahi-bookmarks
 	# howl and mdnsresponder compatability
 	(cd usr/include; ln -s avahi-compat-libdns_sd/dns_sd.h dns_sd.h; ln -s avahi-compat-howl howl)
 	(cd usr/lib/pkgconfig; ln -s avahi-compat-howl.pc howl.pc)
