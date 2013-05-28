@@ -1,34 +1,24 @@
-#
-# Chakra Packages for Chakra, part of chakra-project.org
-#
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
-
-# include global config
-source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
 
 pkgname=dosfstools
-pkgver=3.0.12
+pkgver=3.0.16
 pkgrel=1
 pkgdesc="DOS filesystem utilities."
-arch=('i686' 'x86_64')
-depends=('glibc')
+arch=('x86_64')
 url="http://www.daniel-baumann.ch/software/dosfstools/"
 license=('GPL2')
-source=("http://www.daniel-baumann.ch/software/dosfstools/${pkgname}-${pkgver}.tar.bz2"
-        'gentoo-3.0.12-name-ext.patch')
-md5sums=('5c7c2adac9eae4afbe1f16443142b566'
-         'e6fb867c72aa5dffaed0cd62fbaa4c69')
+depends=('glibc')
+source=("http://www.daniel-baumann.ch/files/software/dosfstools/${pkgname}-${pkgver}.tar.xz")
+md5sums=('27aca18aeb8bb0851ccaeb47e7416a6e')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
-  patch -Np0 -i "${srcdir}/gentoo-3.0.12-name-ext.patch"
+
   make
 }
 
 package() {
   cd "${srcdir}/${pkgname}-${pkgver}"
+  
   make PREFIX="${pkgdir}" MANDIR="${pkgdir}/usr/share/man" DOCDIR="${pkgdir}/usr/share/doc" install
 }
 
-# vim:set ts=2 sw=2 et:
