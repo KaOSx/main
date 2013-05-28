@@ -1,19 +1,13 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
 
 pkgname=gptfdisk
 pkgver=0.8.6
-pkgrel=1
+pkgrel=2
 pkgdesc="A text-mode partitioning tool that works on Globally Unique Identifier (GUID) Partition Table (GPT) disks"
 arch=('x86_64')
 url="http://www.rodsbooks.com/gdisk/"
 license=('GPL2')
 depends=('gcc-libs' 'util-linux' 'popt' 'icu')
 provides=("gdisk=$pkgver")
-conflicts=('gdisk')
-replaces=('gdisk')
 source=("http://downloads.sourceforge.net/project/$pkgname/$pkgname/$pkgver/$pkgname-$pkgver.tar.gz")
 md5sums=('f5ec6647d3de43644ad7e99b34f74982')
 
