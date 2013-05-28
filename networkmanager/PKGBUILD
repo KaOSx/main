@@ -2,16 +2,15 @@
 pkgname=networkmanager
 _pkgname=NetworkManager
 pkgver=0.9.8.0
-pkgrel=2
+pkgrel=3
 pkgdesc="Network Management daemon"
 arch=('x86_64')
 license=('GPL')
 url="http://www.gnome.org/projects/$_pkgname/"
 depends=('dbus-glib' 'iproute2' 'libnl' 'nss' 'polkit' 'systemd' 'wpa_supplicant' 'ppp' 'dhcpcd'
-         'libsoup')
+         'modemmanager')
 makedepends=('intltool' 'dhclient' 'iptables' 'gobject-introspection')
-optdepends=('modemmanager: for modem management service'
-            'dhclient: alternative DHCP/DHCPv6 client'
+optdepends=('dhclient: alternative DHCP/DHCPv6 client'
             'iptables: Connection sharing'
             'dnsmasq: Connection sharing'
             'bluez: Bluetooth support'
@@ -19,7 +18,6 @@ optdepends=('modemmanager: for modem management service'
 options=('!libtool')
 backup=('etc/NetworkManager/NetworkManager.conf')
 install=networkmanager.install
-
 source=("http://ftp.gnome.org/pub/gnome/sources/$_pkgname/${pkgver:0:3}/$_pkgname-$pkgver.tar.xz"
         'NetworkManager.conf' 
         'disable_set_hostname.patch' 
@@ -48,6 +46,7 @@ build() {
     --with-udev-dir=/usr/lib/udev \
     --with-resolvconf=/usr/sbin/resolvconf \
     --with-session-tracking=systemd \
+    --with-modem-manager-1 \
     --disable-static \
     --enable-more-warnings=no \
     --disable-wimax \
@@ -61,6 +60,7 @@ package() {
   make DESTDIR="$pkgdir" install
 
   install -m644 ../NetworkManager.conf "$pkgdir/etc/NetworkManager/"
+  install -m755 -d "$pkgdir/etc/NetworkManager/dnsmasq.d"
 
   rm -r "$pkgdir/var/run"  
 }

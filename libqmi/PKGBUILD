@@ -1,0 +1,35 @@
+
+pkgname=libqmi
+pkgver=1.2.0
+pkgrel=1
+pkgdesc="QMI modem protocol helper library"
+arch=('x86_64')
+url="http://cgit.freedesktop.org/libqmi"
+license=('GPL2')
+depends=('glib2' 'bash')
+makedepends=('python2' 'gtk-doc')
+options=('!libtool')
+source=("$url/snapshot/$pkgname-$pkgver.tar.xz")
+md5sums=('e385bc55cb7ddde13e8b1014781aa402')
+
+build() {
+  cd $pkgname-$pkgver
+
+  ./autogen.sh --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --disable-static
+  make
+}
+
+check() {
+  cd $pkgname-$pkgver
+
+  make check
+}
+
+package() {
+  cd $pkgname-$pkgver
+
+  make DESTDIR="$pkgdir" install
+}
