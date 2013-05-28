@@ -1,28 +1,29 @@
-#
-# Chakra Packages for Chakra, part of chakra-project.org
-#
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
 
 pkgname=tdb
-pkgver=1.2.9
+pkgver=1.2.11
 pkgrel=1
-pkgdesc="A Trivia Database similar to GDBM but allows simultaneous commits"
-arch=(i686 x86_64)
+pkgdesc="Trivial Database similar to GDBM but allows simultaneous commits"
+arch=('x86_64')
 license=('GPL3')
 url="http://tdb.samba.org/"
-source=(http://samba.org/ftp/${pkgname}/${pkgname}-${pkgver}.tar.gz)
+source=("http://samba.org/ftp/${pkgname}/${pkgname}-${pkgver}.tar.gz")
 makedepends=('python2' 'libxslt' 'docbook-xsl')
 optdepends=('python2: for python bindings')
-options=(force)
+md5sums=('67dcc5507213ec8c9664234fae095538')
 
 build() {
    cd ${srcdir}/${pkgname}-${pkgver}
+   
    ./configure --prefix=/usr \
                --localstatedir=/var \
                --sysconfdir=/etc/samba
-   make || return 1
+   make
+}
+
+package() {
+   cd ${srcdir}/${pkgname}-${pkgver}
+   
    make DESTDIR=$pkgdir/ install
 }
-md5sums=('4d97d18bbe9040038d4e003495bb8cd1')
+
 
