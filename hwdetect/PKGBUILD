@@ -1,14 +1,9 @@
-#
-# Core Packages for Chakra, part of chakra-project.org
-#
-# maintainer: abveritas@chakra-project.org
-# contributor: Tobias Powalowski <tpowa@archlinux.org>
 
 pkgname=hwdetect
-pkgver=2012.04
+pkgver=2013.02
 pkgrel=1
-pkgdesc="Hardware detection script with loading modules and mkinitcpio.conf / rc.conf support"
-arch=('any')
+pkgdesc="Hardware detection script with loading modules and mkinitcpio.conf"
+arch=('x86_64')
 license=('GPL')
 depends=('sh' 'awk' 'grep' 'coreutils' 'sed' 'e2fsprogs')
 optdepends=('cryptsetup: for encrypt mkinitcpio config support'
@@ -16,8 +11,8 @@ optdepends=('cryptsetup: for encrypt mkinitcpio config support'
             'lvm2:       for lvm2 mkinitcpio config support'
             'mdadm:      for raid mkinitcpio config support')
 source=('hwdetect')
-md5sums=('f641449135d3fb5010e21734f9dd304f')
+md5sums=('5b37937ef3d8deee49eb9a47eebd67ea')
 
-build() {
+package() {
   install -D -m 755 ${srcdir}/hwdetect ${pkgdir}/sbin/hwdetect
 }
