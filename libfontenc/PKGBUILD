@@ -1,7 +1,7 @@
 
 pkgname=libfontenc
-pkgver=1.1.1
-pkgrel=2
+pkgver=1.1.2
+pkgrel=1
 pkgdesc="X11 font encoding library"
 arch=('x86_64')
 url="http://xorg.freedesktop.org/"
@@ -9,8 +9,8 @@ license=('custom')
 depends=('zlib')
 makedepends=('pkgconfig' 'xproto')
 options=('!libtool')
-source=(${url}/releases/individual/lib/${pkgname}-${pkgver}.tar.bz2)
-md5sums=('a2a861f142c3b4367f14fc14239fc1f7')
+source=("${url}/releases/individual/lib/${pkgname}-${pkgver}.tar.bz2")
+md5sums=('ad2919764933e075bb0361ad5caa3d19')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
