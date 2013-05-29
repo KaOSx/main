@@ -1,22 +1,20 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas[at]chakra-project[dog]org>
 
 pkgname=cifs-utils
-pkgver=5.7
-pkgrel=2
+pkgver=6.0
+pkgrel=1
 pkgdesc="CIFS filesystem user-space tools"
 arch=('x86_64')
 url="http://wiki.samba.org/index.php/LinuxCIFS_utils"
 license=('GPL')
 depends=('libcap' 'keyutils' 'krb5' 'talloc')
+makedepends=('samba')
+opdepends=('samba: for cifs.idmap and cifsacl')
 source=("ftp://ftp.samba.org/pub/linux-cifs/cifs-utils/$pkgname-$pkgver.tar.bz2")
-md5sums=('4215f12be8663f65d2c21dbbbafbc7f8')
+md5sums=('371e007a201be90c16497cd9bd5e2553')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
-  # systemd support is broken in mount.cifs
+  # systemd support is broken
   ./configure --prefix=/usr --disable-systemd
   make
 }

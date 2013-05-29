@@ -1,8 +1,8 @@
 
 pkgname=samba
-pkgver=3.6.14
+pkgver=3.6.15
 #In case version contains a or b
-_realver=3.6.14
+_realver=3.6.15
 pkgrel=1
 arch=('x86_64')
 url="http://www.samba.org"
@@ -29,7 +29,7 @@ source=("http://us1.samba.org/samba/ftp/stable/${pkgname}-${_realver}.tar.gz"
         'nmbd.service'
         'winbindd.service'
         'samba.conf')
-md5sums=('ce9bf35ac2a63029ef0bd02291f113df'
+md5sums=('d9424e9badb089bd51e6cfc752b21dfa'
          '5697da77590ec092cc8a883bae06093c'
          'a4bbfa39fee95bba2e7ad6b535fae7e6'
          '6db11f3dd2112a4b7a73007b189bef3f'
@@ -88,6 +88,9 @@ package() {
   sed -i 's|/usr/spool/samba|/var/spool/samba|g' ${pkgdir}/etc/samba/smb.conf.default
   # fix logrotate
   sed -i -e 's|log.%m|%m.log|g' ${pkgdir}/etc/samba/smb.conf.default
+  # move wbclient.h so cifs-utils finds it
+  install -D -m644 pkgconfig/wbclient.pc ${pkgdir}/usr/lib/pkgconfig/wbclient.pc
+  install -D -m644 ../nsswitch/libwbclient/wbclient.h ${pkgdir}/usr/include/wbclient.h
   # nsswitch libraries
   install -D -m755 ${srcdir}/samba-${_realver}/nsswitch/libnss_wins.so ${pkgdir}/usr/lib/libnss_wins.so
   ln -s libnss_wins.so ${pkgdir}/usr/lib/libnss_wins.so.2
