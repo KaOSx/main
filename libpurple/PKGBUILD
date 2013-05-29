@@ -2,15 +2,15 @@
 _pkgbase='pidgin'
 pkgname='libpurple'
 pkgver=2.10.7
-pkgrel=1
+pkgrel=2
 pkgdesc="IM library extracted from Pidgin"
 arch=('x86_64')
 url="http://pidgin.im/"
 license=('GPL')
-depends=('farstream' 'libsasl' 'dbus-glib' 'silc-toolkit' 'nss' 'cyrus-sasl-plugins')
+depends=('farstream' 'libsasl' 'dbus-glib' 'nss' 'cyrus-sasl-plugins' 'libidn')
 makedepends=('startup-notification' 'libxss' 'python2' 'gstreamer0.10' 'avahi' 'tk'
              'ca-certificates' 'intltool')
-optdepends=('dbus-python: for purple-remote and purple-url-handler')
+optdepends=('dbus-python2: for purple-remote and purple-url-handler')
 options=('!libtool')
 source=("http://downloads.sourceforge.net/${_pkgbase}/${_pkgbase}-${pkgver}.tar.bz2")
 md5sums=('ea88976b9952e80b702b030489f94393')
