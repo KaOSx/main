@@ -1,20 +1,16 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas[at]chakra-project[dot]org>
 
 pkgname=xdg-utils
 pkgver=1.1.0.1
 _gitver=050333e34e2fe7430ad2ead37e5a0420ac0c2a3e 
-pkgrel=1
+pkgrel=2
 pkgdesc='Command line tools that assist applications with a variety of desktop integration tasks.'
-arch=('any')
+arch=('x86_64')
 url='http://portland.freedesktop.org/'
 depends=('sh')
-makedepends=('docbook-xsl' 'lynx' 'xmlto')
+makedepends=('docbook-xsl' 'links' 'xmlto')
 license=('MIT')
 source=("http://cgit.freedesktop.org/xdg/xdg-utils/snapshot/xdg-utils-${_gitver}.tar.gz")
-md5sums=('eb6ddcae050ce3ecd2c8433e90f56247')
+md5sums=('546dd99213959ca0ce6c75a2dab7c53b')
 
 build() {
 	cd ${srcdir}/${pkgname}-${_gitver}
@@ -31,17 +27,3 @@ package() {
 	install -D -m644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
 }
 
-_source() {
-
-	# outdated! see now http://cgit.freedesktop.org/xdg/xdg-utils/
-	local _current=$(pwd)
-	local _tmp=$(mktemp -d)
-	cd $_tmp
-
-	cvs -d:pserver:anoncvs@anoncvs.freedesktop.org:/cvs/portland co -d ${pkgname}-${pkgver} portland/xdg-utils
-	find ${pkgname}-${pkgver} -name 'CVS' -type d -exec rm -rf {} \;
-	bsdtar cJf ${pkgname}-${pkgver}.tar.xz ${pkgname}-${pkgver}
-	mv ${pkgname}-${pkgver}.tar.xz $_current
-	cd $_current
-	rm -rf $_tmp
-}
