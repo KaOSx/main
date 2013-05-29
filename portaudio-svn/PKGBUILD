@@ -1,21 +1,13 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-
-# include global config
-source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
 
 pkgname=portaudio-svn
-pkgver=1870
+pkgver=1891
 pkgrel=1
 pkgdesc="PortAudio is a free, cross platform, open-source, audio I/O library."
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://www.portaudio.com"
 license="custom"
 depends=('jack')
 makedepends=('subversion')
-conflicts=('portaudio')
-provides=('portaudio')
 
 _svntrunk=https://subversion.assembla.com/svn/portaudio/portaudio/trunk
 _svnmod=trunk
@@ -44,5 +36,6 @@ build() {
 package() {
   cd $_svnmod-build
   make DESTDIR=$startdir/pkg install
+  
   install -D -m644 LICENSE.txt "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.txt"
 }
