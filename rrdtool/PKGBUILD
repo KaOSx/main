@@ -1,10 +1,7 @@
-# Maintainer: Neophytos Kolokotronis <tetris4@gmail.com>
-# Contributors from Arch: Eric Belanger <eric@archlinux.org>
-#                         Tom K <tom@archlinux.org>
 
 pkgname=rrdtool
-pkgver=1.4.7
-pkgrel=2
+pkgver=1.4.8
+pkgrel=1
 pkgdesc="Data logging and graphing application"
 arch=('x86_64')
 url="http://www.rrdtool.org"
@@ -17,14 +14,13 @@ optdepends=('tcl: to use corresponding binding' \
             'lua: to use corresponding binding')
 options=('!libtool' '!emptydirs' '!makeflags')
 source=("http://oss.oetiker.ch/rrdtool/pub/rrdtool-${pkgver}.tar.gz")
-sha1sums=('faab7df7696b69f85d6f89dd9708d7cf0c9a273b')
+md5sums=('dbe59386db97fd2f2216729facd74ca8')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
-
-  # make ruby install to vendor_ruby instead of site_ruby (reported: https://bugs.archlinux.org/task/28521)
   sed -e 's/$(RUBY) extconf.rb/& --vendor/' -i bindings/Makefile.in
 
+  PYTHON=python2 
   ./configure --prefix=/usr --localstatedir=/var --disable-rpath --enable-perl \
     --enable-perl-site-install --with-perl-options='INSTALLDIRS=vendor' \
     --enable-ruby --enable-ruby-site-install --enable-python \
@@ -35,6 +31,7 @@ build() {
 
 package() {
   cd "${srcdir}/${pkgname}-${pkgver}"
-  make DESTDIR="${pkgdir}" install
+  make DESTDIR="${pkgdir}" includedir=/usr/include install
+  
   install -D -m644 COPYRIGHT "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
 }
