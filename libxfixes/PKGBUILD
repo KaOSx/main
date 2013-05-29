@@ -1,7 +1,7 @@
 
 pkgname=libxfixes
-pkgver=5.0
-pkgrel=2
+pkgver=5.0.1
+pkgrel=1
 pkgdesc="X11 miscellaneous 'fixes' extension library"
 arch=('x86_64')
 url="http://xorg.freedesktop.org/"
@@ -10,7 +10,7 @@ depends=('libx11' 'fixesproto>=5.0')
 makedepends=('xorg-util-macros')
 options=('!libtool')
 source=("${url}/releases/individual/lib/libXfixes-${pkgver}.tar.bz2")
-md5sums=('678071bd7f9f7467e2fc712d81022318')
+md5sums=('b985b85f8b9386c85ddcfe1073906b4d')
 
 build() {
   cd "${srcdir}/libXfixes-${pkgver}"

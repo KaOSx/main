@@ -1,7 +1,7 @@
 
 pkgname=libxau
-pkgver=1.0.7
-pkgrel=2
+pkgver=1.0.8
+pkgrel=1
 pkgdesc="X11 authorisation library"
 arch=('x86_64')
 url="http://xorg.freedesktop.org/"
@@ -9,8 +9,8 @@ depends=('glibc')
 makedepends=('pkgconfig' 'xproto')
 license=('custom')
 options=('!libtool')
-source=(${url}/releases/individual/lib/libXau-${pkgver}.tar.bz2)
-md5sums=('2d241521df40d27034413436d1a1465c')
+source=("${url}/releases/individual/lib/libXau-${pkgver}.tar.bz2")
+md5sums=('685f8abbffa6d145c0f930f00703b21b')
 
 build() {
   cd "${srcdir}/libXau-${pkgver}"
