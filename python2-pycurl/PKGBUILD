@@ -1,0 +1,23 @@
+
+pkgname=python2-pycurl
+_pkgname=pycurl
+pkgver=7.19.0
+pkgrel=1
+pkgdesc="A Python interface to libcurl."
+arch=('x86_64')
+url="http://pycurl.sourceforge.net"
+license=('GPL3')
+depends=('python2' 'curl')
+replaces=('python-pycurl')
+provides=('python-pycurl')
+conflicts=('python-pycurl')
+source=("http://pycurl.sourceforge.net/download/$_pkgname-$pkgver.tar.gz")
+md5sums=('919d58fe37e69fe87ce4534d8b6a1c7b')
+
+package() {
+  cd $srcdir/$_pkgname-$pkgver
+  python2 setup.py install \
+       --curl-config=/usr/bin/curl-config \
+       --prefix $pkgdir/usr \
+       --optimize=1
+}

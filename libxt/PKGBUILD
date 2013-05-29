@@ -1,28 +1,27 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
 
 pkgname=libxt
-pkgver=1.1.1
+pkgver=1.1.3
 pkgrel=1
 pkgdesc="X11 toolkit intrinsics library"
-arch=(i686 x86_64)
+arch=('x86_64')
 url="http://xorg.freedesktop.org/"
 license=('custom')
 depends=('libsm' 'libx11')
 makedepends=('xorg-util-macros')
 options=('!libtool')
-source=(${url}/releases/individual/lib/libXt-${pkgver}.tar.bz2)
-sha1sums=('a29a97f8521bdc7a95364e163f0ce474de572ae5')
+source=("${url}/releases/individual/lib/libXt-${pkgver}.tar.bz2")
+md5sums=('a6f137ae100e74ebe3b71eb4a38c40b3')
 
 build() {
   cd "${srcdir}/libXt-${pkgver}"
+  
   ./configure --prefix=/usr --sysconfdir=/etc --disable-static
   make
+}
+
+package() {
+  cd "${srcdir}/libXt-${pkgver}"
   make DESTDIR="${pkgdir}" install
 
   install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
-  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
 }
