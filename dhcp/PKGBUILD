@@ -1,30 +1,26 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer: Samir Benmendil <ram-z[at]chakra-project[dot]org>
 
 pkgbase=dhcp
-pkgname=('dhcp' 
-	 'dhclient')
+pkgname=('dhcp' 'dhclient')
 # separate patch levels with a period to maintain proper versioning.
-pkgver=4.2.4.2
-_pkgver=4.2.4-P2
+pkgver=4.2.5
+_pkgver=4.2.5
 pkgrel=2
 arch=('x86_64')
 license=('custom:isc-dhcp')
 url="https://www.isc.org/software/dhcp"
-source=(ftp://ftp.isc.org/isc/${pkgbase}/${_pkgver}/${pkgbase}-${_pkgver}.tar.gz
-        dhcp.conf.d 
-        dhcpd4.service
-        dhcpd6.service
-        dhcp-4.2.4-P2-missing-ipv6-not-fatal.patch
-        dhclient-script-pathFixes.patch)
-md5sums=('fe36056f2d274fa4b82a5422f192e65f'
+makedepends=('bash' 'iproute2')
+source=("ftp://ftp.isc.org/isc/${pkgbase}/${_pkgver}/${pkgbase}-${_pkgver}.tar.gz"
+        'dhcp.conf.d' 
+        'dhcpd4.service'
+        'dhcpd6.service'
+        'dhcp-4.2.5-client_script-1.patch'
+        'dhcp-4.2.5-missing_ipv6-1.patch')
+md5sums=('6489e919ac093d17249270ee9be1020e'
          '8f357e46e1efcbb746f38737a3f977a2'
          '7045e63a5d294c761ce306084eec2c67'
          'a2ebf4460c049cbee3e49cb26a475f68'
-         '55967504078bfd7f821d2bd7c2542b29'
-         '0fc1241ef7879d8be0fe140deb8ae48d')
+         '9e4dcf90beec15bfcb6631809cdcc780'
+         'da655f02f1cf4d95b4708e84e69edbc8')
 
 build() {
   cd "${srcdir}/${pkgname}-${_pkgver}"
@@ -32,8 +28,8 @@ build() {
   # Define _GNU_SOURCE to fix IPV6.
   sed '/^CFLAGS="$CFLAGS/ s/INGS"/INGS -D_GNU_SOURCE"/' -i configure
 
-  # Make not having ipv6 non-fatal.
-  patch -p1 -i "${srcdir}/dhcp-4.2.4-P2-missing-ipv6-not-fatal.patch"
+  patch -p1 -i ${srcdir}/dhcp-4.2.5-missing_ipv6-1.patch
+  patch -p1 -i ${srcdir}/dhcp-4.2.5-client_script-1.patch
 
   ./configure --prefix=/usr \
               --sysconfdir=/etc \
@@ -43,13 +39,10 @@ build() {
               --with-cli6-lease-file=/var/state/dhclient/dhclient6.leases
 
   make
-
-  patch -i "${srcdir}/dhclient-script-pathFixes.patch" client/scripts/linux
 }
 
 package_dhcp() {
   pkgdesc="A DHCP server, client, and relay agent"
-  depends=('openssl>=0.9.8a')
   backup=('etc/dhcpd.conf' 'etc/conf.d/dhcp')
   install=dhcp.install
   
@@ -65,6 +58,9 @@ package_dhcp() {
   ln -s dhcpd4.service "${pkgdir}/usr/lib/systemd/system/dhcp4.service"
   ln -s dhcpd6.service "${pkgdir}/usr/lib/systemd/system/dhcp6.service"
   
+  # move back to config. This file is in backup array, so pacman will not overwrite a changed config.
+  mv "${pkgdir}/etc/dhcpd.conf.example" "${pkgdir}/etc/dhcpd.conf"
+  
   # Remove dhclient
   make -C client DESTDIR="${pkgdir}" uninstall 
 
@@ -75,13 +71,13 @@ package_dhcp() {
 package_dhclient() {
   _pkgname=dhcp
   pkgdesc="dhclient is standalone client from the dhcp package"
-  depends=('bash' 'iproute2' 'net-tools')
+  depends=('bash' 'iproute2')
   
   cd "${srcdir}/${_pkgname}-${_pkgver}"
   make -C client DESTDIR="${pkgdir}" install 
 
-  #move dhclient.conf to dhclient.conf.example
-  mv "${pkgdir}"/etc/dhclient.conf{,.example}
+  install -m755 -d "${pkgdir}/usr/share/dhclient"
+  mv "${pkgdir}/etc/dhclient.conf.example" "${pkgdir}/usr/share/dhclient/"
 
   install -d "${pkgdir}/var/state/dhclient"
 

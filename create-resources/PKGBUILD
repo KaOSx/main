@@ -1,23 +1,17 @@
-#
-# Chakra Packages for Chakra, part of chakra-project.org
-#
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
 
 pkgname=create-resources
 pkgver=0.1.3
-pkgrel=2
+pkgrel=3
 pkgdesc="Shared resources for use by creative applications"
-arch=("any")
+arch=('x86_64')
 makedepends=('scons')
 license=('GPL')
 url="http://create.freedesktop.org/"
+source=("http://ftp.de.debian.org/debian/pool/main/c/create-resources/create-resources_$pkgver.orig.tar.gz")
+md5sums=('24e23bb37fc3c91e936042bdea101fcf')
 
-source=("http://chakra-linux.org/sources/create-resources/create-resources-$pkgver.tar.gz")
-md5sums=('ba6b6292c30029a4bbac7876544bec69')
-
-build() {      
-        cd $srcdir/create-resources-$pkgver
+package() {      
+        cd $srcdir/create-resources-$pkgver.orig
         mkdir -p $pkgdir/usr
         scons -Q install PREFIX=$pkgdir/usr
 }

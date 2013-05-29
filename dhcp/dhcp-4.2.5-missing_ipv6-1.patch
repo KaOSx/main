@@ -1,6 +1,14 @@
-diff -Naur dhcp-4.2.4-P2/common/discover.c dhcp-4.2.4-P2.fixed/common/discover.c
---- dhcp-4.2.4-P2/common/discover.c	2012-08-24 19:11:21.000000000 +0000
-+++ dhcp-4.2.4-P2.fixed/common/discover.c	2012-10-02 18:05:29.353084310 +0000
+Submitted By: Ken Moffat <ken at linuxfromscratch dot org>
+Date: 2011-11-23
+Initial Package Version: 4.2.2
+Upstream Status: unknown
+Origin: found at fedora
+Description: Allow dhcp4 to work even if the kernel doesn't support ipv6.
+Fixed up by hand to apply to 4.2.2 (to me, it looks identical to the 4.2.0
+version, but patch failed in one hunk when I tried to apply that one).
+
+--- dhcp-4.2.2/common/discover.c.orig	2011-07-19 23:22:48.000000000 +0100
++++ dhcp-4.2.2/common/discover.c	2011-09-06 01:28:15.000000000 +0100
 @@ -455,7 +455,7 @@
  	}
  
@@ -33,7 +41,7 @@ diff -Naur dhcp-4.2.4-P2/common/discover.c dhcp-4.2.4-P2.fixed/common/discover.c
  #ifdef DHCPv6
  	if (local_family == AF_INET6) {
 -		fclose(ifaces->fp6);
-+		if(ifaces->fp6)
++		if (ifaces->fp6)
 +			fclose(ifaces->fp6);
  		ifaces->fp6 = NULL;
  	}
