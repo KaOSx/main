@@ -1,12 +1,9 @@
-# $Id: PKGBUILD 77727 2010-04-17 15:21:36Z thayer $
-# Maintainer: Thayer Williams <thayer@archlinux.org>
-# Contributor: dale <dale@archlinux.org>
 
 pkgname=ttf-ms-fonts
 pkgver=2.0
 pkgrel=3
 pkgdesc="Core TTF Fonts from Microsoft"
-arch=('any')
+arch=('x86_64')
 url="http://corefonts.sourceforge.net/"
 _sfpath="http://downloads.sourceforge.net/corefonts"
 license=('custom:microsoft')
@@ -23,11 +20,11 @@ md5sums=('cbdc2fdd7d2ed0832795e86a8b9ee19a' '9637df0e91703179f0723ec095a36cb5'
          '0d7ea16cac6261f8513a061fbfcdb2b5' '12d2a75f8156e10607be1eaa8e8ef120'
          '230a1d13a365b22815f502eb24d9149b' '7a760fc266e256421078597e47f1af68')
 
-build() {
+package() {
     mkdir -p $pkgdir/usr/share/licenses/$pkgname
     cp $srcdir/LICENSE $pkgdir/usr/share/licenses/$pkgname
 
-    mkdir -p $pkgdir/tmp/$pkgname || return 1
-    chmod 1777 $pkgdir/tmp || return 1
-    install -m644 $srcdir/*.exe $pkgdir/tmp/$pkgname || return 1
+    mkdir -p $pkgdir/tmp/$pkgname
+    chmod 1777 $pkgdir/tmp 
+    install -m644 $srcdir/*.exe $pkgdir/tmp/$pkgname 
 }

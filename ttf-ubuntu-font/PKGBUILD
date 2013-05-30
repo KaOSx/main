@@ -1,21 +1,16 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
 
 _pkgname=ubuntu-font-family
 pkgname=ttf-ubuntu-font
 pkgver=0.80
 pkgrel=1
 pkgdesc="The default TTF font family used by Ubuntu."
-arch=('any')
+arch=('x86_64')
 license=('custom:ubuntu-font-licence-1.0')
 url="http://font.ubuntu.com/"
 depends=('fontconfig' 'xorg-font-utils')
 source=("http://font.ubuntu.com/download/${_pkgname}-${pkgver}.zip")
 install=$pkgname.install
-sha256sums=('107170099bbc3beae8602b97a5c423525d363106c3c24f787d43e09811298e4c')
+md5sums=('a1fc70f5a5b1d096ab8310886cddaa1c')
 
 package() {
   cd "${srcdir}/${_pkgname}-${pkgver}"

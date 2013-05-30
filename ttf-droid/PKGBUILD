@@ -1,23 +1,20 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
 
 pkgname=ttf-droid
-pkgver=20110417
+_pkgname=google-droid-fonts
+pkgver=20120715
 pkgrel=1
 pkgdesc="A font created by Ascender Corporation for use by the Open Handset Alliance platform, Android."
-arch=('any')
+arch=('x86_64')
 license=('apache')
 url="http://code.google.com/android/"
 depends=('fontconfig' 'xorg-fonts-encodings' 'xorg-font-utils')
 install=$pkgname.install
-source=("ftp://ftp.archlinux.org/other/community/ttf-droid/$pkgname.tar.xz")
-sha256sums=('9fab382f034631a53bf58b00fa882ce5bddab98ee4aff67cc5dc18f131536ca0')
+source=("http://pkgs.fedoraproject.org/repo/pkgs/google-droid-fonts/google-droid-fonts-20120715.tar.xz/b1aef1f9f9bf61f521aeb4efd1239dd8/$_pkgname-$pkgver.tar.xz")
+md5sums=('b1aef1f9f9bf61f521aeb4efd1239dd8')
 
-build() {
-  cd "${srcdir}/${pkgname}"
+package() {
+  cd "${srcdir}/${_pkgname}-${pkgver}"
+  
   install -d "${pkgdir}/usr/share/fonts/TTF/"
   install -m0644 *.ttf "${pkgdir}/usr/share/fonts/TTF/"
 }
