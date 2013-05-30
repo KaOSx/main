@@ -1,27 +1,31 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
-# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
-
-# include global config
-source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
 
 pkgname=terminus-font
-pkgver=4.32
+pkgver=4.38
 pkgrel=1
-pkgdesc="A superb, monospace bitmap font (for X11 and console)"
-depends=(xorg-fonts-encodings xorg-fonts-alias xorg-font-utils fontconfig)
-replaces=(xserver-terminus-fonts)
-arch=(i686 x86_64)
-source=("http://downloads.sourceforge.net/project/${pkgname}/${pkgname}-${pkgver}/${pkgname}-${pkgver}.tar.gz")
+arch=('x86_64')
 url="http://sourceforge.net/projects/terminus-font/"
+pkgdesc="A superb, monospace bitmap font (for X11 and console)"
+license=('GPL2' 'custom:OFL')
+depends=('xorg-fonts-encodings' 'xorg-fonts-alias' 'xorg-font-utils' 'fontconfig')
 install=terminus-font.install
-license=('GPL-2')
+source=("http://downloads.sourceforge.net/project/${pkgname}/${pkgname}-${pkgver}/${pkgname}-${pkgver}.tar.gz")
+md5sums=('a8e792fe6e84c86ed2b6ed3e2a12ba66')
 
 build() { 
-  cd $startdir/src/$pkgname-$pkgver
-  ./configure --prefix=/usr --x11dir=/usr/share/fonts/local/ --psfdir=/usr/share/kbd/consolefonts/
-  make DESTDIR=$startdir/pkg install
+  cd "${srcdir}/$pkgname-$pkgver"
+  
+  sh ./configure --prefix=/usr \
+        --x11dir=/usr/share/fonts/local/ \
+        --psfdir=/usr/share/kbd/consolefonts/ 
+  make 
 }
-md5sums=('9b74047edcc236a7d4af8abf966c3e7c')
+
+package() {
+  cd "${srcdir}/$pkgname-$pkgver"
+  make DESTDIR="${pkgdir}" install
+
+  install -Dm644 "$srcdir/$pkgname-$pkgver/75-yes-terminus.conf" \
+                 "$pkgdir/etc/fonts/conf.avail/75-yes-terminus.conf"
+  install -Dm644 "${srcdir}/${pkgname}-${pkgver}/OFL.TXT" \
+                 "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+}
