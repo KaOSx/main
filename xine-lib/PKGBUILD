@@ -1,7 +1,7 @@
 
 pkgname=xine-lib
-pkgver=1.2.2
-pkgrel=6
+pkgver=1.2.3
+pkgrel=1
 pkgdesc="A multimedia playback engine"
 arch=('x86_64')
 url="http://www.xine-project.org"
@@ -9,7 +9,7 @@ license=('LGPL' 'GPL')
 depends=('libxvmc' 'ffmpeg' 'libxinerama')
 makedepends=('wavpack' 'faad2' 'libmng' 'imagemagick' 'mesa' 'libmodplug'
              'vcdimager' 'jack' 'aalib' 'libdca' 'a52dec' 'libmad'
-             'libmpcdec' 'libcaca' 'libbluray' 'libvdpau' 'pulseaudio')
+             'libmpcdec' 'libcaca' 'libbluray' 'libvdpau' 'pulseaudio' 'glu')
 optdepends=('imagemagick: for using the imagemagick plugin' \
             'jack: for using the jack plugin' \
             'vcdimager: for using the vcd plugin' \
@@ -29,13 +29,13 @@ optdepends=('imagemagick: for using the imagemagick plugin' \
             'pulseaudio: for using the pulse plugin')
 options=('!libtool')
 source=("http://downloads.sourceforge.net/sourceforge/xine/${pkgname}-${pkgver}.tar.xz"
-        'ffmpeg_decoder.patch')
-md5sums=('6fa70fa336f708452ce9bf311b401de2'
-         'de1712b76c32d3ff3da5c645dfd442e0')
+        'accel_vaapi.h')
+md5sums=('011def012e9db3dee06808b4580ccede'
+         'eba8ea7de59c0d5a25e475bbd129341d')
 
 build() {
+  cp accel_vaapi.h ${pkgname}-${pkgver}/src/xine-engine/
   cd "${srcdir}/${pkgname}-${pkgver}"
-  patch -p1 -i "$srcdir/ffmpeg_decoder.patch"
   
   ./configure --prefix=/usr \
               --with-wavpack \
