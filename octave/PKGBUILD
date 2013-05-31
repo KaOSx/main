@@ -1,13 +1,13 @@
 
 pkgname=octave
 pkgver=3.6.4
-pkgrel=2
+pkgrel=3
 pkgdesc="A high-level language, primarily intended for numerical computations."
 arch=('x86_64')
 url="http://www.octave.org"
 license=('GPL')
-depends=('fftw' 'pcre' 'curl' 'libx11' 'graphicsmagick' 'glpk' 'hdf5' 'gcc-libs' 'qhull'
-         'arpack' 'suitesparse' 'gnuplot' 'gperf')
+depends=('fftw' 'curl' 'graphicsmagick' 'glpk' 'hdf5' 'gcc-libs' 'qhull' 'fltk'
+         'arpack' 'suitesparse' 'gperf')
 makedepends=('texlive-core' 'gcc-fortran' 'python2')
 optdepends=('texinfo: for help-support in octave')
 source=("ftp://ftp.gnu.org/gnu/octave/octave-$pkgver.tar.bz2")
@@ -23,9 +23,10 @@ build() {
   # http://www.nabble.com/Random-rounding-errors-td16010966.html
   FFLAGS="-O -ffloat-store" \
 
-  ./configure --prefix=/usr --libexecdir=/usr/lib \
-  --enable-shared --disable-static \
-  --with-umfpack="-lumfpack -lsuitesparseconfig" 
+  ./configure --prefix=/usr \
+       --libexecdir=/usr/lib \
+       --enable-shared --disable-static \
+       --with-umfpack="-lumfpack -lsuitesparseconfig" 
 
   LANG=C make
 }
