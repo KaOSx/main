@@ -1,27 +1,27 @@
-# Platform Packages for Chakra, part of chakra-project.org
-#
 
 pkgname=libqalculate
 pkgver=0.9.7
-pkgrel=3
+pkgrel=5
 pkgdesc="Multi-purpose desktop calculator"
 arch=('x86_64')
 url="http://qalculate.sourceforge.net/"
 license=('GPL')
 depends=('libxml2' 'cln' 'glib2' 'ncurses' 'readline')
-makedepends=('perlxml')
+makedepends=('perl-xml-parser')
 optdepends=('gnuplot: for plotting support' 'wget: for retrieval of exchange rates (not needed if you use one of the GUI)' 'gnome-vfs: for retrieval of exchange rates (not needed if you use one of the GUI)')
 options=('!libtool' '!makeflags')
-source=(http://downloads.sourceforge.net/sourceforge/qalculate/${pkgname}-${pkgver}.tar.gz)
+source=("http://downloads.sourceforge.net/sourceforge/qalculate/${pkgname}-${pkgver}.tar.gz")
 md5sums=('a1507ab862f4ad9852788619aada35cd')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
+  
   ./configure --prefix=/usr
   make
 }
 
 package() {
   cd "${srcdir}/${pkgname}-${pkgver}"
+  
   make DESTDIR="${pkgdir}" install
 }
