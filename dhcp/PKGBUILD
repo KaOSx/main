@@ -1,22 +1,19 @@
 
 pkgbase=dhcp
 pkgname=('dhcp' 'dhclient')
-# separate patch levels with a period to maintain proper versioning.
-pkgver=4.2.5
-_pkgver=4.2.5
-pkgrel=2
+pkgver=4.2.5.1
+_pkgver=4.2.5-P1
+pkgrel=1
 arch=('x86_64')
 license=('custom:isc-dhcp')
 url="https://www.isc.org/software/dhcp"
 makedepends=('bash' 'iproute2')
 source=("ftp://ftp.isc.org/isc/${pkgbase}/${_pkgver}/${pkgbase}-${_pkgver}.tar.gz"
-        'dhcp.conf.d' 
         'dhcpd4.service'
         'dhcpd6.service'
         'dhcp-4.2.5-client_script-1.patch'
         'dhcp-4.2.5-missing_ipv6-1.patch')
-md5sums=('6489e919ac093d17249270ee9be1020e'
-         '8f357e46e1efcbb746f38737a3f977a2'
+md5sums=('f68e3c1f00a9af5742bc5e71d567cf93'
          '7045e63a5d294c761ce306084eec2c67'
          'a2ebf4460c049cbee3e49cb26a475f68'
          '9e4dcf90beec15bfcb6631809cdcc780'
@@ -43,13 +40,12 @@ build() {
 
 package_dhcp() {
   pkgdesc="A DHCP server, client, and relay agent"
-  backup=('etc/dhcpd.conf' 'etc/conf.d/dhcp')
+  backup=('etc/dhcpd.conf')
   install=dhcp.install
   
   cd "${srcdir}/${pkgname}-${_pkgver}"
   make DESTDIR="${pkgdir}" install
 
-  install -D -m0644 "${srcdir}/dhcp.conf.d" "${pkgdir}/etc/conf.d/${pkgbase}"
   mkdir -p "${pkgdir}/var/state/dhcp"
 
   # Install systemd service files
@@ -64,7 +60,6 @@ package_dhcp() {
   # Remove dhclient
   make -C client DESTDIR="${pkgdir}" uninstall 
 
-  # install licenses
   install -Dm0644 LICENSE "${pkgdir}/usr/share/licenses/dhcp/LICENSE"
 }
 
@@ -81,9 +76,6 @@ package_dhclient() {
 
   install -d "${pkgdir}/var/state/dhclient"
 
-  # install dhclient linux script
   install -Dm0755 client/scripts/linux "${pkgdir}/sbin/dhclient-script"
-
-  # install licenses
   install -Dm0644 LICENSE "${pkgdir}/usr/share/licenses/dhclient/LICENSE"
 }
