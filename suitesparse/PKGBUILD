@@ -1,23 +1,15 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
-# contributor Ronald van Haren <ronald.archlinux.org>
 
 pkgname=suitesparse
-pkgver=4.0.2
+pkgver=4.2.1
 pkgrel=1
 pkgdesc="A collection of sparse matrix libraries"
 url="http://www.cise.ufl.edu/research/sparse/SuiteSparse/"
 arch=('x86_64')
-conflicts=('umfpack')
-provides=('umfpack')
-replaces=('umfpack')
 depends=('blas' 'lapack')
 makedepends=('gcc-fortran')
 license=('GPL')
 source=("http://www.cise.ufl.edu/research/sparse/SuiteSparse/SuiteSparse-$pkgver.tar.gz")
-md5sums=('efe53b7ef2b529d54727815231a5a6a9')
+md5sums=('268134ceaf69a08c27a12777fb9d9798')
 
 build() {
    cd "$srcdir"/SuiteSparse
