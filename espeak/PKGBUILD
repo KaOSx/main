@@ -1,29 +1,27 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# Maintainer: Neophytos Kolokotronis <tetris4@gmail.com>
 
 pkgname=espeak
-pkgver=1.46.02
+pkgver=1.47.11
 pkgrel=1
 pkgdesc="Text to Speech engine for good quality English, with support for other languages"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://espeak.sourceforge.net/"
 license=('GPL')
-depends=('gcc-libs' 'portaudio' 'libpulse')
-source=(http://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}-${pkgver}-source.zip)
-sha256sums=('ef8beba25bd261718582d5cbb1f10293007eb525b705ff79c9fb3f505dd954ba')
+depends=('gcc-libs' 'portaudio-svn' 'pulseaudio')
+options=('!emptydirs')
+source=("http://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}-${pkgver}-source.zip")
+md5sums=('541c1a8f2c198ccda098f53f9f61a66a')
 
 
 build() {
   cd $startdir/src/$pkgname-$pkgver-source/src
   cp portaudio19.h portaudio.h
+  
   make CXXFLAGS="$CXXFLAGS" AUDIO=runtime
 }
 
 package() {
   cd "$srcdir/$pkgname-$pkgver-source/src"
-
   make DESTDIR=$pkgdir install
+  
   chmod 644 "$pkgdir/usr/lib/libespeak.a"
 }
