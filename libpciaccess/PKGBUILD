@@ -1,23 +1,20 @@
 #
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
-
 pkgname=libpciaccess
 pkgver=0.13.1
-pkgrel=1
+pkgrel=2
 pkgdesc="X11 PCI access library"
-arch=(i686 x86_64)
+arch=('x86_64')
 license=('custom')
 url="http://xorg.freedesktop.org/"
 depends=('glibc')
 makedepends=('pkgconfig' 'xorg-util-macros')
 options=('!libtool')
-source=(${url}/releases/individual/lib/${pkgname}-${pkgver}.tar.bz2)
-sha1sums=('ae4dcf27a1b52c6a1fd90b21165fbaecae34e8ac')
+source=("${url}/releases/individual/lib/${pkgname}-${pkgver}.tar.bz2")
+md5sums=('399a419ac6a54f0fc07c69c9bdf452dc')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
+  
   ./configure --prefix=/usr --sysconfdir=/etc
   make
 }
@@ -25,6 +22,7 @@ build() {
 package() {
   cd "${srcdir}/${pkgname}-${pkgver}"
   make DESTDIR="${pkgdir}" install
+  
   install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
   install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
 }
