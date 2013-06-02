@@ -1,48 +1,42 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas[at]chakra-project[dot]org>
 
 pkgname=ntp
 pkgver=4.2.6.p5
 _realver=4.2.6p5
-pkgrel=3
+pkgrel=5
 pkgdesc="NTP (Network Time Protocol) tries to keep servers in sync"
 arch=('x86_64')
 license=('custom')
 url="http://www.ntp.org/"
 depends=('openssl' 'readline' 'libcap')
-makedepends=('perl-html-parser')
-backup=('etc/ntp.conf' 'etc/conf.d/ntpd.conf')
+makedepends=('perl-html-parser' 'libedit')
+optdepends=('libedit: ntpdc, ntpq')
+backup=('etc/ntp.conf')
 install=install
 source=("http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-${_realver}.tar.gz"
         'ntp.conf'
-        'ntpd.conf'
-	'ntpd.service')
+	'ntpd.service'
+	'ntpdate.service')
 md5sums=('00df80a84ec9528fcfb09498075525bc'
          'ac884ad959850731d8f27667681bbdf8'
-         '41d077a48d06e66678b52abbc56af142'
-         '06ae4a88dd7b9e0bc9679aebf2241167')
+         '06ae4a88dd7b9e0bc9679aebf2241167'
+         'e57a527fb190e6865ff7b836183b845c')
 
 build() {
   cd "${srcdir}/${pkgname}-${_realver}"
   
-  ./configure --prefix=/usr \
-    --mandir=/usr/share/man \
-    --enable-linuxcaps
+  ./configure --prefix=/usr --mandir=/usr/share/man --enable-linuxcaps --enable-ntp-signd
   make
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-$_realver"
-  
+  cd "${srcdir}/${pkgname}-$_realver" 
   make DESTDIR="${pkgdir}" install
   
   rmdir "${pkgdir}"/usr/{lib,sbin}
   install -d -o 87 "${pkgdir}/var/lib/ntp"
   install -Dm644 ../ntp.conf "${pkgdir}"/etc/ntp.conf
-  install -Dm644 ../ntpd.conf "${pkgdir}"/etc/conf.d/ntpd.conf
   install -Dm644 ../ntpd.service "${pkgdir}"/usr/lib/systemd/system/ntpd.service
+  install -Dm644 ../ntpdate.service "${pkgdir}"/usr/lib/systemd/system/ntpdate.service
   install -Dm644 COPYRIGHT "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
   
   cd html
