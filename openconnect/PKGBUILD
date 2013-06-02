@@ -1,29 +1,26 @@
-#
-# Chakra Packages for Chakra, part of chakra-project.org
-#
-# maintainer: abveritas@chakra-project.org
 
 pkgname=openconnect
-pkgver=4.07
+pkgver=5.00
 pkgrel=1
 pkgdesc="Open client for Cisco AnyConnect VPN"
 arch=('x86_64')
 license=('GPL')
 url="http://www.infradead.org/openconnect.html"
-depends=('libxml2' 'openssl' 'libproxy' 'vpnc')
+depends=('libxml2' 'gnutls' 'libproxy' 'vpnc')
+makedepends=('intltool' 'python2')
 options=('!libtool' '!emptydirs')
 source=("ftp://ftp.infradead.org/pub/${pkgname}/${pkgname}-${pkgver}.tar.gz")
-md5sums=('61f26e7936d8b26c0f7e8119b7ef84b2')
+md5sums=('b3677a4b15f8c530615f4c42dadce275')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
+  
   ./configure --prefix=/usr --disable-static
   make
 }
 
 package() {
   cd "${srcdir}/${pkgname}-${pkgver}"
+  
   make DESTDIR="${pkgdir}" install
-
-  install  -Dm0644 openconnect.8 "${pkgdir}"/usr/share/man/man8/openconnect.8
 }
