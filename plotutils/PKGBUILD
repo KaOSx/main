@@ -1,11 +1,7 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
 
 pkgname=plotutils
 pkgver=2.6
-pkgrel=2
+pkgrel=3
 arch=('x86_64')
 pkgdesc="Set of utilities and libraries for plotting."
 url="http://directory.fsf.org/graphics/plotutils.html"
@@ -16,13 +12,13 @@ install=plotutils.install
 source=("http://ftp.gnu.org/pub/gnu/plotutils/$pkgname-$pkgver.tar.gz"
         'plotutils-2.6-libpng-1.5.patch')
 md5sums=('c08a424bd2438c80a786a7f4b5bb6a40'
-         '7e3c9eba3e680f587ca6156f92008599')
+         'a155e64a8b0c74e14b774e19edb4554b')
 
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
-  
   patch -p0 -i ../plotutils-2.6-libpng-1.5.patch
+  
   ./configure --prefix=/usr \
 	--with-gnu-ld \
 	--with-x \

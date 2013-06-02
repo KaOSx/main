@@ -1,11 +1,7 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas[at]chakra-project[dot]org>
 
 pkgname=libpano13
 pkgver=2.9.18
-pkgrel=2
+pkgrel=3
 pkgdesc="Basic library to calculate panoramical pictures - core functions of the panotools"
 arch=('x86_64')
 url="http://panotools.sourceforge.net/"
@@ -18,11 +14,13 @@ md5sums=('9c3a4fce8b6f1d79e395896ce5d8776e')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
+  
   ./configure --prefix=/usr --mandir=/usr/share/man --with-java=${JAVA_HOME}
   make
 }
 
 package() {
   cd "${srcdir}/${pkgname}-${pkgver}"
+  
   make DESTDIR="${pkgdir}" install
 }

@@ -1,31 +1,27 @@
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
 
 pkgname=gd
-pkgver=2.0.36RC1
-pkgrel=4
+pkgver=2.1.0rc1
+_pkgver=2.1.0-rc1
+pkgrel=1
 pkgdesc="Library for the dynamic creation of images by programmers"
 arch=('x86_64')
 url="http://www.libgd.org/"
 license=('custom')
-depends=('perl' 'libpng>=1.4.0' 'fontconfig' 'libjpeg-turbo')
+depends=('libpng' 'fontconfig' 'libjpeg-turbo' 'libtiff')
 options=('!libtool')
-source=("http://www.chakra-linux.org/sources/gd/${pkgname}-${pkgver}.tar.bz2"
-        'libpng14.patch')
-md5sums=('e876979ca3130623a4e7866d9579171a'
-         '7921556f4960e8d66cf4fb67ea7101b5')
+source=("https://bitbucket.org/libgd/gd-libgd/downloads/libgd-$_pkgver.tar.xz")
+md5sums=('5dcd61ada3dea83e59f9fb972bccae55')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
-
-  patch -p1 -i ${srcdir}/libpng14.patch
+  cd "${srcdir}/libgd-${_pkgver}"
+  
   ./configure --prefix=/usr --without-xpm
   make
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd "${srcdir}/libgd-${_pkgver}"
   make DESTDIR="${pkgdir}" install
+  
   install -D -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
 }

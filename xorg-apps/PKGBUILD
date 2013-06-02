@@ -60,7 +60,7 @@ build() {
   for i in *; do
     if [ -d "${i}" ]; then
       pushd "${i}"
-      
+      # remove disable error on luit fix upstream
       ./configure --prefix=/usr --mandir=/usr/share/man --disable-selective-werror
       make
       popd
