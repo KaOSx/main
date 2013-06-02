@@ -1,0 +1,38 @@
+From patchwork Sun Jan 13 23:44:30 2013
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: [luit] configure: define XOPEN_SOURCE to 600 on linux
+Date: Sun, 13 Jan 2013 23:44:30 -0000
+From: Peter Hutterer <peter.hutterer@who-t.net>
+X-Patchwork-Id: 12851
+Message-Id: <20130113234430.GA10267@yabbi.bne.redhat.com>
+To: "X.Org Devel List" <xorg-devel@lists.freedesktop.org>
+
+posix_openpt() is only defined for 600 and higher.
+
+sys.c: In function ‘allocatePty’:
+sys.c:339:5: error: implicit declaration of function ‘posix_openpt’
+[-Werror=implicit-function-declaration]
+sys.c:339:5: warning: nested extern declaration of ‘posix_openpt’
+[-Wnested-externs]
+
+Signed-off-by: Peter Hutterer <peter.hutterer@who-t.net>
+
+---
+configure.ac | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index c214d85..67ef2c4 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -62,7 +62,7 @@ case $host_os in
+     linux*)
+         AC_CHECK_HEADERS([poll.h])
+         AC_CHECK_FUNCS([poll])
+-        OS_CFLAGS="-D_XOPEN_SOURCE=500"
++        OS_CFLAGS="-D_XOPEN_SOURCE=600" # posix_openpt(): _XOPEN_SOURCE >= 600
+         ;;
+     *)
+         AC_CHECK_HEADERS([poll.h])

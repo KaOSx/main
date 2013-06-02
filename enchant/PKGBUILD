@@ -1,12 +1,9 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
 
 pkgname=enchant
 pkgver=1.6.0
-pkgrel=4
+pkgrel=5
 pkgdesc="A wrapper library for generic spell checking"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://www.abisource.com/enchant/"
 license=('LGPL')
 depends=('aspell' 'dbus-glib' 'hunspell' 'hspell')
@@ -16,6 +13,7 @@ md5sums=('de11011aff801dc61042828041fb59c7')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
+  
   ./configure --prefix=/usr \
     --disable-static \
     --disable-ispell \
@@ -25,5 +23,6 @@ build() {
 
 package() {
   cd "${srcdir}/${pkgname}-${pkgver}"
+  
   make DESTDIR="${pkgdir}" install 
 }
