@@ -1,19 +1,16 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
 
 pkgname=netkit-bsd-finger
 pkgver=0.17
-pkgrel=6
+pkgrel=7
 pkgdesc="BSD-finger ported to Linux"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="ftp://ftp.uk.linux.org/pub/linux/Networking/netkit"
 license=('BSD')
 depends=('glibc' 'xinetd')
 backup=('etc/xinetd.d/finger')
-source=("http://www.chakra-linux.org/sources/${pkgname}/bsd-finger-${pkgver}.tar.gz"
-        'finger.xinetd' 'LICENSE'
+source=("http://ftp.de.debian.org/debian/pool/main/b/bsd-finger/bsd-finger_0.17.orig.tar.gz"
+        'finger.xinetd'
+        'LICENSE'
         'fix-manpage-typo.patch')
 md5sums=('52bf281aac8814bf56cdc92f7661ee75'
          'a8682004dc8dee356065162bde892b47'

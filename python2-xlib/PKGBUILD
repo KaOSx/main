@@ -1,0 +1,18 @@
+ 
+pkgname=python2-xlib
+_pkgname=python-xlib
+pkgver=0.15rc1
+pkgrel=2
+pkgdesc='A fully functional X client library for Python programs.'
+url='http://python-xlib.sourceforge.net/'
+arch=('x86_64')
+license=('GPL')
+depends=('python2')
+source=("http://downloads.sourceforge.net/${_pkgname}/${_pkgname}-${pkgver}.tar.gz")
+md5sums=('7941e91bc3e92dc921dfc930cc8f7830')
+
+package() {
+  cd "${srcdir}/${_pkgname}-${pkgver}"
+  
+  python2 setup.py install --root="${pkgdir}"
+}
