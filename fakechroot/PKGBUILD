@@ -1,32 +1,32 @@
-# $Id: PKGBUILD 70344 2010-02-26 04:26:32Z allan $
-# Maintainer : Allan McRae <allan@archlinux.org>
-# Contributor: Aaron Griffin <aaron@archlinux.org>
 
 pkgname=fakechroot
 pkgver=2.16
-pkgrel=1
+pkgrel=2
 pkgdesc="Gives a fake chroot environment"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://fakechroot.alioth.debian.org"
 license=('LGPL')
 options=('!libtool')
 install=fakechroot.install
-source=(http://ftp.debian.org/debian/pool/main/f/${pkgname}/${pkgname}_${pkgver}.orig.tar.gz)
+source=("http://ftp.debian.org/debian/pool/main/f/${pkgname}/${pkgname}_${pkgver}.orig.tar.gz")
 md5sums=('3ea5efb76664e787450e0cfcefc1b807')
 
-build()
-{
+build() {
   cd ${srcdir}/${pkgname}-${pkgver}
   
-  sed -i "s#1.10#1.11#" autogen.sh
-  ./autogen.sh
+  sed -i "s#usr/sbin/chroot#usr/bin/chroot#" test/testtree.sh test/t/chroot.t
   
-  ./configure --prefix=/usr --libdir=/usr/lib/libfakeroot
-  make || return 1
+  ./configure --prefix=/usr --libdir=/usr/lib/libfakeroot --sysconfdir=/etc
+  make 
 }
+
+check() {
+  cd ${srcdir}/${pkgname}-${pkgver}
   
-package()
-{
+  make check
+}
+
+package() {
   cd ${srcdir}/${pkgname}-${pkgver}
   make DESTDIR=${pkgdir} install
   
