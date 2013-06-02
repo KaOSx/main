@@ -22,8 +22,11 @@ build() {
   # fix building with glibc-2.14
   sed -i '1i#define _GNU_SOURCE' util/fusermount.c
 
-  ./configure --prefix=/usr --libdir=/usr/lib --enable-lib \
-              --enable-util --bindir=/bin
+  ./configure --prefix=/usr \
+        --libdir=/usr/lib \
+        --enable-lib \
+        --enable-util \
+        --bindir=/bin
 
   make
 }

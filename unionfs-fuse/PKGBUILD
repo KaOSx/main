@@ -1,29 +1,26 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# Maintainer: Neophytos Kolokotronis <tetris4@gmail.com>
-# Contributors from Arch: Andrzej Giniewicz <gginiu@gmail.com>
-#			  Smith Dhumbumroong <zodmaner at gmail dot com>
 
 pkgname=unionfs-fuse
 pkgver=0.26
-pkgrel=2
+pkgrel=3
 pkgdesc="unionfs-fuse is an effort to create a userland unionfs implementation that is way more flexible than the current in-kernel based unionfs solution."
 arch=('x86_64')
 url="http://podgorny.cz/moin/UnionFsFuse"
 license=('BSD')
 depends=('fuse')
 makedepends=('cmake')
-source=(http://podgorny.cz/unionfs-fuse/releases/$pkgname-$pkgver.tar.xz)
+#source=("http://podgorny.cz/unionfs-fuse/releases/$pkgname-$pkgver.tar.xz")
+source=("ftp://ftp.tku.edu.tw/Linux/Gentoo/distfiles/$pkgname-$pkgver.tar.xz")
 md5sums=('689c636484756f6f7a728ef354cbeac2')
 
 build() {
   cd "$srcdir"/$pkgname-$pkgver
+  
   make
 }
 
 package() {
   cd "$srcdir"/$pkgname-$pkgver
   make DESTDIR="$pkgdir" PREFIX=/usr install
+  
   install -Dm644 "$srcdir"/$pkgname-$pkgver/LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
 }
