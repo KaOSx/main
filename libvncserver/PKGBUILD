@@ -1,27 +1,25 @@
-# Maintainer: Neophytos Kolokotronis <tetris4@gmail.com>
-# Contributors from Arch:
-# Andrea Scarpino <andrea@archlinux.org>
-# Tobias Powalowski <tpowa@archlinux.org>
 
 pkgname=libvncserver
 pkgver=0.9.9
 pkgrel=1
 pkgdesc="The vnc library"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://libvncserver.sourceforge.net/"
 license=('GPL')
-depends=('libjpeg' 'zlib')
+depends=('libjpeg-turbo' 'zlib')
 options=('!libtool')
-source=(http://downloads.sourceforge.net/${pkgname}/LibVNCServer-${pkgver}.tar.gz)
+source=("http://downloads.sourceforge.net/${pkgname}/LibVNCServer-${pkgver}.tar.gz")
 md5sums=('70422169b122765693d2a294d13e3714')
 
 build() {
   cd $srcdir/LibVNCServer-$pkgver
+  
   ./configure --prefix=/usr
   make
 }
 
 package() {
   cd $srcdir/LibVNCServer-$pkgver
+  
   make DESTDIR=$pkgdir install
 }

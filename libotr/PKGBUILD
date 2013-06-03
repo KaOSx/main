@@ -1,30 +1,25 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer <abveritas@chakra-project.org>
-
-# include global config
-source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
 
 pkgname=libotr
-pkgver=3.2.0
-pkgrel=2
+pkgver=3.2.1
+pkgrel=1
 pkgdesc='Off-the-Record Messaging Library and Toolkit.'
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url='http://www.cypherpunks.ca/otr/'
 license=('GPL' 'LGPL')
 depends=('libgcrypt')
 options=('!libtool')
 source=("http://www.cypherpunks.ca/otr/${pkgname}-${pkgver}.tar.gz")
-md5sums=('faba02e60f64e492838929be2272f839')
+md5sums=('974acf937d2ce0ee89b27a9815c17a3f')
 
 build() {
 	cd "$srcdir/$pkgname-$pkgver"
-	./configure --prefix=/usr --mandir=/usr/share/man
+	
+	./configure --prefix=/usr --mandir=/usr/share/man --disable-static
 	make
 }
 
 package() {
 	cd "$srcdir/$pkgname-$pkgver"
+	
 	make DESTDIR="$pkgdir" install
 }
