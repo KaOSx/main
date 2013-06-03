@@ -1,0 +1,45 @@
+
+pkgname=wxgtk
+pkgver=2.8.12.1
+pkgrel=1
+pkgdesc="GTK+ implementation of wxWidgets API for GUI"
+arch=('x86_64')
+url="http://wxwidgets.org"
+license=('custom:wxWindows')
+depends=('gtk2' 'gstreamer0.10-base' 'libgl' 'libxxf86vm' 'sdl')
+makedepends=('gstreamer0.10-base-plugins' 'gconf' 'mesa' 'glu')
+source=("http://downloads.sourceforge.net/wxpython/wxPython-src-${pkgver}.tar.bz2")
+#source=(http://downloads.sourceforge.net/wxwindows/wxGTK-${pkgver}.tar.bz2)
+md5sums=('8c06c5941477beee213b4f2fa78be620')
+
+build() {
+  cd "${srcdir}/wxPython-src-${pkgver}"
+
+  ./configure --prefix=/usr \
+        --libdir=/usr/lib \
+        --with-gtk=2 \
+        --with-opengl \
+        --enable-unicode \
+        --enable-graphics_ctx \
+        --disable-optimize \
+        --enable-mediactrl \
+        --with-regex=builtin \
+        --with-libpng=sys \
+        --with-libxpm=sys \
+        --with-libjpeg=sys \
+        --with-libtiff=sys \
+        --with-sdl \
+        --disable-precomp-headers
+  make
+  make -C locale allmo
+  cd contrib/src
+  make
+}
+
+package() {
+  cd "${srcdir}/wxPython-src-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+  
+  make -C contrib/src DESTDIR="${pkgdir}" install
+  install -D -m644 docs/licence.txt "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+}
