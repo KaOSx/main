@@ -1,0 +1,27 @@
+
+pkgname=vamp-plugin-sdk
+pkgver=2.5
+pkgrel=1
+pkgdesc="The Vamp audio analysis plugin system"
+arch=('x86_64')
+url="http://www.vamp-plugins.org/"
+license=('BSD')
+depends=('gcc-libs' 'libsndfile')
+options=('!libtool')
+source=("http://code.soundsoftware.ac.uk/attachments/download/690/$pkgname-$pkgver.tar.gz")
+md5sums=('199872997f74951f6769b982bf0d0646')
+
+build() {
+  cd "$srcdir/$pkgname-$pkgver"
+
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd "$srcdir/$pkgname-$pkgver"
+  make DESTDIR="$pkgdir" install
+
+  install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
+}
+

@@ -1,0 +1,28 @@
+
+pkgname=sratom
+pkgver=0.4.2
+pkgrel=1
+pkgdesc="An LV2 Atom RDF serialisation library"
+arch=('x86_64')
+url="http://drobilla.net/software/sratom/"
+license=('custom:ISC')
+depends=('lv2' 'sord')
+makedepends=('python2')
+source=("http://download.drobilla.net/$pkgname-$pkgver.tar.bz2")
+md5sums=('5bb7e4bc4198e19f388ac51239007f25')
+
+build() {
+  cd "$srcdir/$pkgname-$pkgver"
+  sed -i '/ldconfig/d' wscript
+
+  python2 waf configure --prefix=/usr
+  python2 waf build $MAKEFLAGS
+}
+
+package() {
+  cd "$srcdir/$pkgname-$pkgver"
+
+  python2 waf install --destdir="$pkgdir"
+
+  install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}

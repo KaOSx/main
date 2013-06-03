@@ -1,0 +1,38 @@
+
+pkgname=lilv
+pkgver=0.16.0
+pkgrel=1
+pkgdesc="A library to make the use of LV2 plugins as simple as possible for applications"
+arch=('x86_64')
+url="http://drobilla.net/software/lilv/"
+license=('custom:ISC')
+depends=('python2' 'sratom' 'jack')
+makedepends=('swig')
+source=("http://download.drobilla.net/$pkgname-$pkgver.tar.bz2"
+        'lilvmm.patch')
+md5sums=('12eb71f2b5b8a68e15c1c816896bcb9f'
+         'd34207f8ca3586650ad7c50284ffb3e0')
+
+build() {
+  cd "$srcdir/$pkgname-$pkgver"
+  patch -p2 -i "$srcdir/lilvmm.patch"
+
+  export PYTHON="/usr/bin/python2"
+  sed -i "/ldconfig/d" wscript
+
+  python2 waf configure --prefix=/usr \
+                        --configdir=/etc \
+                        --dyn-manifest \
+                        --bindings
+
+  python2 waf build $MAKEFLAGS
+}
+
+package() {
+  cd "$srcdir/$pkgname-$pkgver"
+
+  python2 waf install --destdir="$pkgdir"
+
+  install -Dm644 COPYING  "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}
+

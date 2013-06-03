@@ -1,0 +1,28 @@
+pkgname=sord
+pkgver=0.12.0
+pkgrel=1
+pkgdesc="A lightweight C library for storing RDF data in memory"
+arch=('x86_64')
+url="http://drobilla.net/software/sord/"
+license=('custom:ISC')
+depends=('serd' 'pcre')
+makedepends=('python2')
+source=("http://download.drobilla.net/$pkgname-$pkgver.tar.bz2")
+md5sums=('0c045bd0a7a2d70974ed7287bb61f891')
+
+build() {
+  cd "$srcdir/$pkgname-$pkgver"
+  sed -i "/ldconfig/d" wscript
+
+  python2 waf configure --prefix=/usr
+  python2 waf build $MAKEFLAGS
+}
+
+package() {
+  cd "$srcdir/$pkgname-$pkgver"
+
+  python2 waf install --destdir="$pkgdir"
+
+  install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}
+
