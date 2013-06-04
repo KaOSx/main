@@ -1,7 +1,7 @@
 
 pkgname=pulseaudio
 pkgdesc="A featureful, general-purpose sound server"
-pkgver=3.99.2
+pkgver=4.0
 pkgrel=1
 arch=('x86_64')
 url="http://pulseaudio.org/"
@@ -24,7 +24,7 @@ conflicts=('libpulse')
 options=(!emptydirs !libtool !makeflags)
 source=("http://freedesktop.org/software/${pkgname}/releases/${pkgname}-${pkgver}.tar.xz"
         'pulseaudio.xinit')
-md5sums=('48c7fe9fbc23639aebaba448064b6b2e'
+md5sums=('591f211db2790a7e4d222f2dc6858db3'
          'eb1cfae28eb2e4d3fdbe45a90e4318ab')
 
 build() {
@@ -46,8 +46,7 @@ package() {
   cd "${srcdir}/${pkgname}-${pkgver}"
   make DESTDIR="${pkgdir}" install
 
-  # Disable cork-request module, can result in e.g. media players unpausing
-  # when there's a Skype call incoming
+  # Disable cork-request module
   sed -e 's|/usr/bin/pactl load-module module-x11-cork-request|#&|' \
       -i "${pkgdir}/usr/bin/start-pulseaudio-x11"
 
