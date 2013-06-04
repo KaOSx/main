@@ -1,12 +1,8 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
 
 pkgbase=pangomm
 pkgname=('pangomm' 'pangomm-docs')
 pkgver=2.28.4
-pkgrel=3
+pkgrel=1
 arch=('x86_64')
 license=('LGPL')
 makedepends=('pango' 'glibmm' 'glibmm-docs' 'cairomm' 'pkgconfig')
@@ -17,12 +13,14 @@ md5sums=('f4fe0905ee56e1ff0205005e61d2a66f')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
+  
   ./configure --prefix=/usr
   make
 }
 package_pangomm() {
   pkgdesc="C++ bindings for pango"
   depends=('pango' 'glibmm' 'cairomm')
+  
   cd "${srcdir}/${pkgbase}-${pkgver}"
   sed -i -e 's/^doc_subdirs/#doc_subdirs/' Makefile
   make DESTDIR="${pkgdir}" install
@@ -30,6 +28,7 @@ package_pangomm() {
 
 package_pangomm-docs() {
   pkgdesc="Developer documentation for pangomm"
+  
   cd "${srcdir}/${pkgbase}-${pkgver}/docs"
   make DESTDIR="${pkgdir}" install
 }

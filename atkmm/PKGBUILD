@@ -1,14 +1,10 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
 
 pkgbase=atkmm
-pkgname=(atkmm atkmm-docs)
+pkgname=('atkmm' 'atkmm-docs')
 pkgver=2.22.6
-pkgrel=2
+pkgrel=1
 arch=('x86_64')
-makedepends=('atk' 'glibmm' 'glibmm-docs' 'libsigc++2.0')
+makedepends=('atk' 'glibmm' 'glibmm-docs' 'libsigc++')
 license=('LGPL')
 options=('!libtool' '!emptydirs')
 url="http://gtkmm.sourceforge.net/"
@@ -17,13 +13,14 @@ md5sums=('30f8e34c92b14f17ba3029937b2f218a')
 
 build() {
   cd "${srcdir}/${pkgbase}-${pkgver}"
+  
   ./configure --prefix=/usr
   make
 }
 
 package_atkmm() {
   pkgdesc="C++ bindings for atk"
-  depends=('atk' 'glibmm' 'libsigc++2.0')
+  depends=('atk' 'glibmm' 'libsigc++')
 
   cd "${srcdir}/${pkgbase}-${pkgver}"
   sed -i -e 's/^doc_subdirs/#doc_subdirs/' Makefile
