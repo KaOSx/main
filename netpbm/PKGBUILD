@@ -54,17 +54,17 @@ package() {
   cd "${srcdir}/advanced"
   make pkgdir="${pkgdir}/usr" PKGMANDIR=share/man install-run install-dev
 
-# Removing dummy man pages
+  # Removing dummy man pages
   rm "${pkgdir}"/usr/share/man/man{1,3,5}/*
 
   cd  "${srcdir}/doc"
   make MAKEMAN="${srcdir}/advanced/buildtools/makeman" MANDIR="${pkgdir}/usr/share/man" \
     -f "${srcdir}/advanced/buildtools/manpage.mk" installman
 
-# Replace obsolete utility
+  # Replace obsolete utility
   echo -e '#!/bin/sh\npamditherbw $@ | pamtopnm\n' > "${pkgdir}/usr/bin/pgmtopbm"
 
-# Licensing.  Note that each program in the package has a separate license.
+  # Licensing.  Note that each program in the package has a separate license.
   install -D -m644 "${srcdir}/advanced/doc/copyright_summary" \
     "${pkgdir}/usr/share/licenses/${pkgname}/copyright_summary.txt"
 }
