@@ -1,7 +1,7 @@
 
 pkgname=apache
 pkgver=2.4.4
-pkgrel=1
+pkgrel=2
 pkgdesc='A high performance Unix-based HTTP server'
 arch=('x86_64')
 options=('!libtool')
@@ -16,7 +16,6 @@ depends=('openssl' 'zlib' 'apr-util' 'pcre' 'systemd>=189')
 optdepends=('lynx: apachectl status')
 install=${pkgname}.install
 source=("http://www.apache.org/dist/httpd/httpd-${pkgver}.tar.bz2"
-        "http://www.apache.org/dist/httpd/httpd-${pkgver}.tar.bz2.asc"
         "http://mpm-itk.sesse.net/apache2.4-mpm-itk-2.4.2-01.patch"
         'apache.conf.d'
         'httpd.logrotate'
@@ -24,7 +23,6 @@ source=("http://www.apache.org/dist/httpd/httpd-${pkgver}.tar.bz2"
         'httpd.service'
         'httpd-tmpfile.conf')
 md5sums=('0e712ee2119cd798c8ae39d5f11a9206'
-         'SKIP'
          '7b5fb06ba65d80d40f19e32f95426486'
          '08b3c875f6260644f2f52b4056d656b0'
          '6382331e9700ed9e8cc78ea51887b537'
