@@ -1,7 +1,3 @@
-#
-# Chakra Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas[at]chakra-project[dot]org>
 
 pkgname=postfix
 pkgver=2.10.0
@@ -12,9 +8,6 @@ arch=('x86_64')
 license=('custom')
 depends=('pcre' 'libsasl' 'libmariadbclient' 'postgresql-libs' 'sqlite3' 'libldap' 'db')
 backup=('etc/postfix/'{access,aliases,canonical,generic,header_checks,main.cf,master.cf,relocated,transport,virtual})
-provides=('smtp-server' 'smtp-forwarder')
-replaces=('postfix-mysql' 'postfix-pgsql')
-conflicts=('postfix-mysql' 'postfix-pgsql' 'smtp-server' 'smtp-forwarder')
 install=$pkgname.install
 source=("ftp://ftp.porcupine.org/mirrors/postfix-release/official/${pkgname}-${pkgver}.tar.gz"
         'aliases.patch'

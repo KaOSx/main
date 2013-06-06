@@ -1,22 +1,21 @@
-# Maintainer: Michael Haesel <michael[DOT]haesel[at]gmail[dot]com>
 
 pkgname=imap
 pkgver=2007f
-pkgrel=2
+pkgrel=1
 pkgdesc="An IMAP/POP server"
 arch=('x86_64')
 license=('APACHE')
 url="http://www.washington.edu/imap"
 depends=('openssl' 'pam')
-provides=('imap-server' 'pop3-server')
-conflicts=('courier-mta' 'courier-imap')
 source=("ftp://ftp.cac.washington.edu/imap/${pkgname}-${pkgver}.tar.gz"
-        'imap' 'ipop2' 'ipop3')
+        'imap'
+        'ipop2'
+        'ipop3')
 backup=(etc/xinetd.d/{imap,ipop2,ipop3} etc/ssl/certs/{imapd,ipop3d}.pem)
-sha256sums=('53e15a2b5c1bc80161d42e9f69792a3fa18332b7b771910131004eb520004a28'
-            '7a498e4b3fec785676fc545b7c59c7751884103b4c6993119d30ffda2416e613'
-            'cbfbdf787f3380647f9a865b3cd552748520ddbffff2a70652558af22cdfac02'
-            '5ca57c0928c742a2918338cc9cce6f63a18b39362128f1e509b6efa5c3158801')
+md5sums=('2126fd125ea26b73b20f01fcd5940369'
+         'e77dedb80c2fec9bf2ef784ed5f976fb'
+         'cc3eba6453242aa0b1bc8881160b2136'
+         '0a5e27183a9b7e8ec5f6703125371e0a')
 
 build() {
   # fix Makefile
@@ -29,10 +28,7 @@ build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
   # NOTE: if you wish to enforce SSL, use SSLTYPE=unix.nopwd
 
-  if [ "$CARCH" == "x86_64" ]; then
-         yes "y" | make lnp SPECIALAUTHENTICATORS=ssl SSLTYPE=unix EXTRACFLAGS="${CFLAGS} -fPIC" || return 1
-    else yes "y" | make lnp SPECIALAUTHENTICATORS=ssl SSLTYPE=unix || return 1
-  fi
+  make lnp SPECIALAUTHENTICATORS=ssl SSLTYPE=unix EXTRACFLAGS="${CFLAGS} -fPIC"
 
   # create ssl certs for secure imap
   for i in imapd ipop3d; do
