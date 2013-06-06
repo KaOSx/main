@@ -1,7 +1,7 @@
 
 pkgname=octave
 pkgver=3.6.4
-pkgrel=3
+pkgrel=4
 pkgdesc="A high-level language, primarily intended for numerical computations."
 arch=('x86_64')
 url="http://www.octave.org"
@@ -10,22 +10,23 @@ depends=('fftw' 'curl' 'graphicsmagick' 'glpk' 'hdf5' 'gcc-libs' 'qhull' 'fltk'
          'arpack' 'suitesparse' 'gperf')
 makedepends=('texlive-core' 'gcc-fortran' 'python2')
 optdepends=('texinfo: for help-support in octave')
-source=("ftp://ftp.gnu.org/gnu/octave/octave-$pkgver.tar.bz2")
 options=('!emptydirs')
 install='octave.install'
-md5sums=('e0d3e5e3d38a66d3f8593ba065c6e2fd')
+source=("ftp://ftp.gnu.org/gnu/octave/octave-$pkgver.tar.bz2"
+        'gcc4.8.patch')
+md5sums=('e0d3e5e3d38a66d3f8593ba065c6e2fd'
+         '4ba400e7ffd001503beda421348f45bf')
 
 build() {
   cd ${srcdir}/${pkgname}-${pkgver}
+  patch -p1 -i ${srcdir}/gcc4.8.patch
 
   autoreconf -vfi
 
-  # http://www.nabble.com/Random-rounding-errors-td16010966.html
-  FFLAGS="-O -ffloat-store" \
-
   ./configure --prefix=/usr \
        --libexecdir=/usr/lib \
-       --enable-shared --disable-static \
+       --enable-shared \
+       --disable-static \
        --with-umfpack="-lumfpack -lsuitesparseconfig" 
 
   LANG=C make
