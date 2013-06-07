@@ -1,7 +1,7 @@
 
 pkgname=avahi
 pkgver=0.6.31
-pkgrel=7
+pkgrel=8
 pkgdesc="A multicast/unicast DNS-SD framework"
 arch=('x86_64')
 url="http://www.avahi.org/"
@@ -47,6 +47,9 @@ build() {
 package() {
 	cd "${srcdir}/${pkgname}-${pkgver}"
 	make DESTDIR="${pkgdir}" install
+	
+	rm ${pkgdir}/var -rfv
+	rm -fr "${pkgdir}"/etc/rc.d
 
 	cd "${pkgdir}"
 	sed -i '1c #!/usr/bin/python2' usr/bin/avahi-bookmarks
