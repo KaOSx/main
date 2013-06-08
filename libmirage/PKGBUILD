@@ -1,24 +1,21 @@
 
 pkgname=libmirage
-pkgver=2.0.0
-pkgrel=2
+pkgver=2.1.0
+pkgrel=1
 pkgdesc="CD-ROM image (B6T/CCD/CDI/CUE/ISO/MDS/NRG/TOC) access library"
 arch=('x86_64')
 url="http://cdemu.sourceforge.net/"
 license=('GPL')
-depends=('glib2' 'libsndfile' 'zlib')
+depends=('glib2' 'libsamplerate' 'zlib' 'bzip2' 'shared-mime-info')
 makedepends=('bison' 'flex' 'cmake' 'gobject-introspection')
 source=("http://downloads.sourceforge.net/cdemu/$pkgname-$pkgver.tar.bz2"
-        'soname.diff'
         'gtkdoc.diff')
-options=(!libtool)
-md5sums=('72007f3364cbf3aea782aaa1fdade238'
-         '72b5af3d5baf8e9b1ec6afa629373799'
-         'ef62f551880c83eb9e6149481b97d62a')
+options=('!libtool')
+md5sums=('29e1e11958f519395f872c70ccef0984'
+         '736d6fea093d776e0891580c484dd4a7')
 
 build() {
   cd $srcdir/$pkgname-$pkgver 
-  patch -p2 -i $srcdir/soname.diff 
   patch -p2 -i $srcdir/gtkdoc.diff
   
   mkdir build
@@ -27,7 +24,7 @@ build() {
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=lib \
-    -DWITH_GTKDOC=OFF
+    -DWITH_GTKDOC_ENABLED=off
   make
 }
 
