@@ -1,21 +1,22 @@
 
 pkgname=json-c
-pkgver=0.10
-pkgrel=2
+pkgver=0.11
+pkgrel=1
 pkgdesc="JSON-C implements a reference counting object model that allows you to easily construct JSON objects in C, output them as JSON formatted strings and parse JSON formatted strings back into the C representation of JSON objects."
 arch=('x86_64')
 url="https://github.com/json-c/json-c/wiki"
 license=('MIT')
+options=('!libtool' '!makeflags')
 source=("https://s3.amazonaws.com/json-c_releases/releases/$pkgname-$pkgver.tar.gz")
-md5sums=('a4edc79410eb894f08d7d52ca9f88732')
+md5sums=('aa02367d2f7a830bf1e3376f77881e98')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
   # from http://pkgs.fedoraproject.org/cgit/json-c.git/tree/json-c.spec
-  sed -e 's/json_object.c/json_object.c json_object_iterator.c/' \
-      -e 's/json_object.h/json_object.h json_object_iterator.h/' \
-      -e 's/json_object.lo/json_object.lo json_object_iterator.lo/' \
-      -i Makefile.in
+  #sed -e 's/json_object.c/json_object.c json_object_iterator.c/' \
+  #    -e 's/json_object.h/json_object.h json_object_iterator.h/' \
+  #    -e 's/json_object.lo/json_object.lo json_object_iterator.lo/' \
+  #    -i Makefile.in
   
   ./configure --prefix=/usr --disable-static
   make
@@ -25,6 +26,6 @@ package() {
   cd "${srcdir}/${pkgname}-${pkgver}"
   make DESTDIR="${pkgdir}" install
   
-  install -D COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
+  install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
 }
 
