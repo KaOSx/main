@@ -1,7 +1,7 @@
 
 pkgname=fontconfig
 pkgver=2.10.93
-pkgrel=1
+pkgrel=2
 pkgdesc="A library for configuring and customizing font access"
 arch=('x86_64')
 url="http://www.fontconfig.org/release/"
@@ -33,6 +33,7 @@ build() {
 
 check() {
   cd "$srcdir/$pkgname-$pkgver"
+  
   make -k check
 }
 
@@ -44,7 +45,6 @@ package() {
   ln -s ../conf.avail/29-replace-bitmap-fonts.conf \
     "$pkgdir/etc/fonts/conf.d/29-replace-bitmap-fonts.conf"
 
-  #Install license
   install -m755 -d "$pkgdir/usr/share/licenses/$pkgname"
   install -m644 COPYING "$pkgdir/usr/share/licenses/$pkgname"
 }
