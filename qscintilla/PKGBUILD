@@ -1,15 +1,17 @@
 
 pkgname=qscintilla
 #pkgname=('qscintilla' 'python2-qscintilla')
-pkgver=2.7.1
+pkgver=2.7.2
 pkgrel=1
 license=('GPL')
 arch=('x86_64')
 url="http://www.riverbankcomputing.co.uk/software/qscintilla/intro"
+pkgdesc="A port to Qt of Neil Hodgson's Scintilla C++ editor class"
+depends=('qt')
 makedepends=('pyqt' 'chrpath')
 source=("http://downloads.sourceforge.net/pyqt/QScintilla-gpl-${pkgver}.tar.gz"
         'designer.patch')
-md5sums=('da8939b5679a075e30c6632e54dc5abf'
+md5sums=('0fbfb06078f206a241a62c94861cce21'
          '95dc2978c35cfa94350e3310e1d295ea')
 
 build() {
@@ -30,9 +32,6 @@ build() {
 }
 
 package() {
-    pkgdesc="A port to Qt of Neil Hodgson's Scintilla C++ editor class"
-    depends=('qt')
-
     cd ${srcdir}/QScintilla-gpl-${pkgver}/Qt4Qt5
     make DESTDIR="${pkgdir}" INSTALL_ROOT="${pkgdir}" install
 
