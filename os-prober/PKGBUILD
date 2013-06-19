@@ -1,5 +1,5 @@
 pkgname=os-prober
-pkgver=1.57
+pkgver=1.61
 pkgrel=1
 pkgdesc="Utility to detect other operating systems on a set of drives."
 url="http://joey.kitenet.net/code/os-prober/"
@@ -7,22 +7,18 @@ arch=('x86_64')
 license=('GPL')
 depends=('sh')
 makedepends=('gcc' 'sed')
-source=("http://ftp.free.org/pub/frugalware/frugalware-current/source/base/${pkgname}/${pkgname}_${pkgver}.tar.gz"
-        'btrfs-detection.patch')
-md5sums=('67548b17d55cc32c1168bb5a4061170d'
-         'c12d27b045ee044eb57d971ff74aaefe')
+source=("ftp://ftp.us.debian.org/debian/pool/main/o/${pkgname}/${pkgname}_${pkgver}.tar.gz")
+#source=("http://ftp.free.org/pub/frugalware/frugalware-current/source/base/${pkgname}/${pkgname}_${pkgver}.tar.gz")
+md5sums=('67ec16d43792263175bd414692f02a7a')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
 
-  # patch to make it recognize systems on Btrfs volumes
-  patch -p1 -i "${srcdir}/btrfs-detection.patch"
-
   # adjust lib dir to allow detection of 64-bit distros
-  sed -e "s:/lib/ld\*\.so\*:/lib*/ld*.so*:g" \
-      -i os-probes/mounted/common/90linux-distro 
+  sed -e "s:/lib/ld\*\.so\*:/lib*/ld*.so*:g" -i os-probes/mounted/common/90linux-distro 
 
-  make
+  rm -f Makefile
+  make newns
 }
 
 package() {
@@ -36,7 +32,7 @@ package() {
   for dir in os-probes os-probes/mounted os-probes/init linux-boot-probes linux-boot-probes/mounted; do
     install -dm755 "$pkgdir/usr/lib/$dir"
     install -m755 -t "$pkgdir/usr/lib/$dir" "$dir"/common/*
-    [[ -d "$dir"/x86 ]] && install -m755 -t "$pkgdir/usr/lib/$dir" "$dir"/x86/*
+    [[ -d "$dir"/x86 ]] && cp -r "$dir"/x86/* "$pkgdir/usr/lib/$dir"
   done
 
   install -Dm755 os-probes/mounted/powerpc/20macosx "$pkgdir"/usr/lib/os-probes/mounted/20macosx
