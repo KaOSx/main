@@ -2,8 +2,8 @@
 pkgbase=qt5
 pkgname=('qt5' 'qt5-private-headers')
 pkgver=5.1.0
-_pkgver=5.1.0-beta1
-pkgrel=3
+_pkgver=5.1.0-rc1
+pkgrel=4
 arch=('x86_64')
 url='http://qt.nokia.com/'
 license=('GPL3' 'LGPL')
@@ -13,7 +13,7 @@ makedepends=('libtiff' 'libpng' 'libmng' 'sqlite3' 'ca-certificates' 'glib2' 'db
     'mariadb' 'unixodbc' 'cups' 'libxinerama' 'libxcursor' 'python2' 'gperf' 'ruby'
     'xcb-util-image' 'xcb-util-keysyms' 'xcb-util-renderutil' 'xcb-util-wm' 'pulseaudio'
     'gstreamer0.10' 'gstreamer0.10-base' 'gstreamer0.10-base-plugins' 'gstreamer0.10-good-plugins'
-    'gstreamer0.10-bad-plugins' 'gstreamer0.10-ffmpeg' 'gstreamer0.10-ugly-plugins')
+    'gstreamer0.10-bad-plugins' 'gstreamer0.10-ffmpeg' 'gstreamer0.10-ugly-plugins' 'libxkbcommom')
 options=('!libtool')
 _pkgfqn="qt-everywhere-opensource-src-${_pkgver}"
 #_pkgfqn=qt5
@@ -21,7 +21,7 @@ source=("http://download.qt-project.org/development_releases/qt/5.1/${_pkgver}/s
         'assistant.desktop' 'designer.desktop' 'linguist.desktop' 'qtconfig.desktop'
         'youtubeview.desktop' 'flickrview.desktop' 'browser.desktop' 'fancybrowser.desktop' 'qmlviewer.desktop'
         'defaultbookmarks_new.diff')
-md5sums=('bf61b4f05e234b4f59918468aa2725ac'
+md5sums=('6007d5d04ff52b06d513c213b122b1a3'
          'fc211414130ab2764132e7370f8e5caa'
          '85179f5e0437514f8639957e1d8baf62'
          'f11852b97583610f3dbb669ebc3e21bc'
@@ -56,17 +56,15 @@ build() {
                 -examplesdir /usr/share/qt5/examples \
 		-system-sqlite \
                 -openssl-linked \
-                -make demos \
                 -nomake tests \
                 -make examples \
-                -make docs \
                 -optimized-qmake \
                 -reduce-relocations \
                 -dbus-linked \
                 -no-openvg \
                 -no-separate-debug-info \
                 -no-gtkstyle \
-                -opengl \
+                -opengl es2\
                 -feature-menu \
                 -feature-textdate \
                 -feature-ftp \
@@ -84,7 +82,7 @@ package_qt5() {
              'pulseaudio' 'gstreamer0.10' 'gstreamer0.10-base' 'gstreamer0.10-base-plugins'
              'gstreamer0.10-good-plugins' 'gstreamer0.10-bad-plugins' 'gstreamer0.10-ffmpeg'
              'gstreamer0.10-ugly-plugins' 'xcb-util-image' 'xcb-util-keysyms'
-             'xcb-util-renderutil' 'xcb-util-wm')
+             'xcb-util-renderutil' 'xcb-util-wm' 'libxkbcommom')
     optdepends=('postgresql-libs: PostgreSQL driver'
 	  'libmysqlclient: MySQL driver'
 	  'unixodbc: ODBC driver'
