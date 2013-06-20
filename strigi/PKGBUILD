@@ -1,12 +1,12 @@
 pkgname=strigi
 _gitname=strigi
 pkgver=0.7.8
-pkgrel=1
+pkgrel=2
 pkgdesc='Fast crawling desktop search engine with Qt4 GUI'
 arch=('x86_64')
 url='http://www.kde.org'
 license=('LGPL')
-depends=('qt' 'bzip2' 'exiv2' 'libxml2' 'boost-libs')
+depends=('qt' 'bzip2' 'exiv2' 'libxml2' 'boost-libs' 'ffmpeg' 'clucene')
 makedepends=('git' 'cmake' 'boost')
 source=('git://anongit.kde.org/strigi')
 md5sums=('SKIP')
@@ -33,19 +33,14 @@ build() {
 		-DENABLE_INOTIFY=ON \
 		-DENABLE_LOG4CXX=OFF \
 		-DENABLE_FAM=OFF \
-		-DENABLE_CLUCENE=OFF \
-		-DENABLE_CLUCENE_NG=OFF \
-		-DENABLE_FFMPEG=OFF
+		-DENABLE_CLUCENE=ON \
+		-DENABLE_CLUCENE_NG=ON \
+		-DENABLE_FFMPEG=ON
   make
 }
 
 package() {
-  cd "${srcdir}/build/libstreams"
-  make DESTDIR="${pkgdir}" install
-
-  cd "${srcdir}/build/libstreamanalyzer"
-  make DESTDIR="${pkgdir}" install
+  cd ${srcdir}/build
   
-  cd "${srcdir}/build/strigiutils"
-  make DESTDIR="${pkgdir}" install
+  make DESTDIR=${pkgdir} install
 }
