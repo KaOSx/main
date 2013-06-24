@@ -1,28 +1,32 @@
 
 pkgname=man-db
-pkgver=2.6.3
+pkgver=2.6.4
 pkgrel=1
 pkgdesc="A utility for reading man pages"
 arch=('x86_64')
 url="http://www.nongnu.org/man-db/"
 license=('GPL' 'LGPL')
-depends=( 'bash' 'gdbm' 'zlib' 'groff' 'libpipeline')
-optdepends=('less' 'gzip')
+depends=( 'bash' 'gdbm' 'zlib' 'groff' 'less' 'libpipeline')
+optdepends=('gzip')
 backup=('etc/man_db.conf'
 	'etc/cron.daily/man-db')
 install=${pkgname}.install
 source=("http://savannah.nongnu.org/download/man-db/$pkgname-$pkgver.tar.xz"
         'convert-mans'
         'man-db.cron.daily')
-md5sums=('a593a095599ae97bcacf8d038659a146'
+md5sums=('66d9274637841a43374744efb83cc716'
          '2b7662a7d5b33fe91f9f3e034361a2f6'
          'd30c39ae47560304471b5461719e0f03')
                         
 build() {
   cd ${srcdir}/${pkgname}-${pkgver}
 
-  ./configure --prefix=/usr --sysconfdir=/etc --libexecdir=/usr/lib \
-	--with-db=gdbm --disable-setuid --enable-mandirs=GNU \
+  ./configure --prefix=/usr \
+        --sysconfdir=/etc \
+        --libexecdir=/usr/lib \
+	--with-db=gdbm \
+	--disable-setuid \
+	--enable-mandirs=GNU \
 	--with-sections="1 n l 8 3 0 2 5 4 9 6 7"
   make
 }
