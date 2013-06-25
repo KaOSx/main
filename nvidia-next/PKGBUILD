@@ -4,11 +4,11 @@ _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=nvidia-next
 pkgdesc="NVIDIA drivers for linux."
-pkgver=319.23
-pkgrel=2
+pkgver=319.32
+pkgrel=1
 arch=('x86_64')
 url="http://www.nvidia.com/"
-depends=('linux-next>=3.9' 'linux-next<3.10' "nvidia-utils=${pkgver}")
+depends=('linux-next>=3.10' 'linux-next<3.11' "nvidia-utils=${pkgver}")
 makedepends=('linux-next-headers')
 license=('custom')
 install=nvidia-next.install
@@ -18,7 +18,7 @@ md5sums=('62d0cdb856cfae64753c0f3acf729d47')
     _ARCH='x86_64'
     _pkg="NVIDIA-Linux-${_ARCH}-${pkgver}-no-compat32"
     source+=("ftp://download.nvidia.com/XFree86/Linux-${_ARCH}/${pkgver}/${_pkg}.run")
-    md5sums+=('74edd76b4bb9229f7d9c00a79f1e3860')
+    md5sums+=('d181d856768868823df3bda4607a5315')
 
 build() {
     cd "${srcdir}"
