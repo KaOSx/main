@@ -1,7 +1,7 @@
 
 pkgname=xorg-server
-pkgver=1.14.1
-pkgrel=3
+pkgver=1.14.2
+pkgrel=1
 pkgdesc="X.Org X servers"
 arch=('x86_64')
 license=('custom')
@@ -24,12 +24,12 @@ source=("${url}/releases/individual/xserver/${pkgname}-${pkgver}.tar.bz2"
         'xvfb-run.1'
         '10-quirks.conf'
         'autoconfig-sis.patch')
-sha1sums=('f67a3a250216ab40f0e31648151ee1a457b70a3a'
-          '746f0204050ceca7caa111b52a87336b7356dcd2'
-          'c94f742d3f9cabf958ae58e4015d9dd185aabedc'
-          '6838fc00ef4618c924a77e0fb03c05346080908a'
-          '993798f3d22ad672d769dae5f48d1fa068d5578f'
-          '175de5630b43dbc97778adfba5563b7fdd77f11f')
+md5sums=('5d36a6483e8e301875131e8302c67727'
+         '139ae758a1c73081631302c04de24568'
+         '52fd3effd80d7bc6c1660d4ecf23d31c'
+         '376c70308715cd2643f7bff936d9934b'
+         'd4f7dfc6be4ef4e2c6dd7632a9d88abe'
+         '4f3bc572ad32e6ed22efc38d2a5e429a')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
