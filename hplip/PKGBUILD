@@ -1,8 +1,8 @@
 
 pkgname=hplip
-pkgver=3.13.5
+pkgver=3.13.6
 # incase a or b is used in hplip rls:
-_pkgver=3.13.5
+_pkgver=3.13.6
 pkgrel=1
 pkgdesc="Drivers for HP DeskJet, OfficeJet, Photosmart, Business Inkjet and some LaserJet."
 arch=('x86_64')
@@ -20,17 +20,14 @@ optdepends=('cups: for printing support'
 options=('!libtool')
 install=${pkgname}.install
 source=("http://downloads.sourceforge.net/${pkgname}/${pkgname}-${_pkgver}.tar.gz"
-	'cups-1.6-buildfix.diff'
 	'hp-mkuri.patch')
-md5sums=('f0c406f06f191a120f7d283b69ff10e8'
-         '80fe5c3af588f2f75282f0c9dc031769'
+md5sums=('3dd5052864052b8cd4ce013bb71f4d6c'
          '0bd7779fdbc4d7a9386df04dce2cb8d4')
 
 build() {
   cd "${srcdir}/${pkgname}-${_pkgver}"
 
-  # cups 1.6 patch/libnotify patch
-  patch -p1 -i ${srcdir}/cups-1.6-buildfix.diff
+  # libnotify patch
   patch -p0 -i ${srcdir}/hp-mkuri.patch
 
   export PYTHON=python2
