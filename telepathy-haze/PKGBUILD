@@ -1,7 +1,7 @@
 
 pkgname=telepathy-haze
 pkgver=0.7.0
-pkgrel=1
+pkgrel=2
 pkgdesc="A telepathy-backend to use libpurple (Pidgin) protocols."
 arch=('x86_64')
 url="http://telepathy.freedesktop.org"
@@ -23,8 +23,6 @@ build() {
 
 package() {
   cd "${srcdir}/${pkgname}-${pkgver}"
+  
   make DESTDIR="${pkgdir}" install
-
-  #remove manager, upstream suggested and it would be removed in the near future
-  rm -rf "${pkgdir}/usr/share/telepathy/managers"
 }
