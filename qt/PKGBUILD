@@ -3,8 +3,8 @@
 
 pkgbase=qt
 pkgname=('qt' 'qt-private-headers')
-pkgver=4.8.4
-pkgrel=6
+pkgver=4.8.5
+pkgrel=1
 arch=('x86_64')
 url='http://qt.nokia.com/'
 license=('GPL3' 'LGPL')
@@ -16,47 +16,20 @@ options=('!libtool')
 _pkgfqn="qt-everywhere-opensource-src-${pkgver}"
 source=("http://releases.qt-project.org/qt4/source/${_pkgfqn}.tar.gz"
         'assistant.desktop' 'designer.desktop' 'linguist.desktop'
-        'qtconfig.desktop' 'improve-cups-support.patch' 'qt_no_debug.patch' 'qlocale.diff')
-md5sums=('89c5ecba180cae74c66260ac732dc5cb'
+        'qtconfig.desktop' 'improve-cups-support.patch' 'qt_no_debug.patch')
+md5sums=('1864987bdbb2f58f8ae8b350dfdbe133'
          'fc211414130ab2764132e7370f8e5caa'
          '85179f5e0437514f8639957e1d8baf62'
          'f11852b97583610f3dbb669ebc3e21bc'
          '6b771c8a81dd90b45e8a79afa0e5bbfd'
          'b9fb6b953cec428d59c026b1ef370e86'
-         '742bfebaebc44c26f6cabe654f702cc8'
-         '2c018c532ed356c2199018e7987c67d2')
-
-# source PKGBUILD && _create-kdeqt-patch
-_create-kdeqt-patch() {
-          #Create patches
-	  echo "creating kde-qt patches"
-	  local codir=$(mktemp -d)
-	  mkdir -p "${codir}/kde-qt"
-	  git clone git://gitorious.org/+kde-developers/qt/kde-qt.git "${codir}/kde-qt"
-	  pushd "${codir}/kde-qt"
-	  git checkout --track -b ${pkgver}-patched origin/${pkgver}-patched
-	  local kdeqtver=$(git --no-pager show --format='%H' "${pkgver}-patched" | head -1)
-	  git diff "v${pkgver}..${pkgver}-patched" | gzip > "${codir}/kde-qt-${kdeqtver}.patch.gz"
-          popd
-          mv "${codir}/kde-qt-${kdeqtver}.patch.gz" .
-	  rm -rf "${codir}"
-	  md5sum kde-qt-${kdeqtver}.patch.gz
-	  echo "change kdeqtver to $kdeqtver"
-}
+         '742bfebaebc44c26f6cabe654f702cc8')
 
 build() {
 	cd $srcdir/$_pkgfqn
-#       if [ -n "${kdeqtver}" ]; then
-#	  msg "applying kde-qt patches"
-#	  patch -p1 -i $srcdir/kde-qt-${kdeqtver}.patch || return 1
-#	  # editing qt.install
-#	  sed -i -e 's/^.*kde-qt .*/        echo "   kde-qt '${kdeqtver}'"/' $startdir/qt.install
-#	fi
 
         # from Fedora, removing "QDBusConnection:..." message for qt apps
 	patch -p1 -i "${srcdir}"/qt_no_debug.patch
-	# Slovak locale issue bug https://bugreports.qt-project.org/browse/QTBUG-28843
-	patch -p1 -i "${srcdir}"/qlocale.diff
 
         export QT4DIR="${srcdir}"/${_pkgfqn}
         export LD_LIBRARY_PATH=${QT4DIR}/lib:${LD_LIBRARY_PATH}
