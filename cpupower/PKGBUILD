@@ -1,6 +1,6 @@
 
 pkgname=cpupower
-pkgver=3.8
+pkgver=3.10
 pkgrel=1
 pkgdesc='Linux kernel tool to examine and tune power saving related features of your processor'
 license=('GPL2')
@@ -11,12 +11,12 @@ makedepends=('asciidoc' 'xmlto')
 backup=('etc/default/cpupower')
 options=('!strip')
 source=("http://ftp.kernel.org/pub/linux/kernel/v3.x/linux-$pkgver.tar.xz"
-        "http://ftp.kernel.org/pub/linux/kernel/v3.x/patch-$pkgver.8.xz"
+#        "http://ftp.kernel.org/pub/linux/kernel/v3.x/patch-$pkgver.8.xz"
         'cpupower.conf'
         'cpupower.service'
         'cpupower.systemd')
-md5sums=('1c738edfc54e7c65faeb90c436104e2f'
-         '08cdcef928c2ca402adf1c444a3c43ac'
+md5sums=('4f25cd5bec5f8d5a7d935b3f2ccb8481'
+#         '08cdcef928c2ca402adf1c444a3c43ac'
          'fb4b3d184850f5972c5a1bba3ead4e05'
          '2450e8ff41b30eb58d43b5fffbfde1f4'
          'e02e88977fbdde29a2ae38aa064a367d')
