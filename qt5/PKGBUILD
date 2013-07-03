@@ -2,8 +2,8 @@
 pkgbase=qt5
 pkgname=('qt5' 'qt5-private-headers')
 pkgver=5.1.0
-_pkgver=5.1.0-rc1
-pkgrel=4
+_pkgver=5.1.0
+pkgrel=5
 arch=('x86_64')
 url='http://qt.nokia.com/'
 license=('GPL3' 'LGPL')
@@ -13,15 +13,15 @@ makedepends=('libtiff' 'libpng' 'libmng' 'sqlite3' 'ca-certificates' 'glib2' 'db
     'mariadb' 'unixodbc' 'cups' 'libxinerama' 'libxcursor' 'python2' 'gperf' 'ruby'
     'xcb-util-image' 'xcb-util-keysyms' 'xcb-util-renderutil' 'xcb-util-wm' 'pulseaudio'
     'gstreamer0.10' 'gstreamer0.10-base' 'gstreamer0.10-base-plugins' 'gstreamer0.10-good-plugins'
-    'gstreamer0.10-bad-plugins' 'gstreamer0.10-ffmpeg' 'gstreamer0.10-ugly-plugins' 'libxkbcommom')
+    'gstreamer0.10-bad-plugins' 'gstreamer0.10-ffmpeg' 'gstreamer0.10-ugly-plugins' 'libxkbcommon')
 options=('!libtool')
 _pkgfqn="qt-everywhere-opensource-src-${_pkgver}"
 #_pkgfqn=qt5
-source=("http://download.qt-project.org/development_releases/qt/5.1/${_pkgver}/single/qt-everywhere-opensource-src-${_pkgver}.tar.xz"
+source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/single/qt-everywhere-opensource-src-${_pkgver}.tar.xz"
         'assistant.desktop' 'designer.desktop' 'linguist.desktop' 'qtconfig.desktop'
         'youtubeview.desktop' 'flickrview.desktop' 'browser.desktop' 'fancybrowser.desktop' 'qmlviewer.desktop'
         'defaultbookmarks_new.diff')
-md5sums=('6007d5d04ff52b06d513c213b122b1a3'
+md5sums=('44a507beebef73eb364b5a2ec7bbe090'
          'fc211414130ab2764132e7370f8e5caa'
          '85179f5e0437514f8639957e1d8baf62'
          'f11852b97583610f3dbb669ebc3e21bc'
@@ -82,7 +82,7 @@ package_qt5() {
              'pulseaudio' 'gstreamer0.10' 'gstreamer0.10-base' 'gstreamer0.10-base-plugins'
              'gstreamer0.10-good-plugins' 'gstreamer0.10-bad-plugins' 'gstreamer0.10-ffmpeg'
              'gstreamer0.10-ugly-plugins' 'xcb-util-image' 'xcb-util-keysyms'
-             'xcb-util-renderutil' 'xcb-util-wm' 'libxkbcommom')
+             'xcb-util-renderutil' 'xcb-util-wm' 'libxkbcommon')
     optdepends=('postgresql-libs: PostgreSQL driver'
 	  'libmysqlclient: MySQL driver'
 	  'unixodbc: ODBC driver'
@@ -93,8 +93,8 @@ package_qt5() {
 	make INSTALL_ROOT=$pkgdir install
 	
     install -d ${pkgdir}/usr/share/applications
-    install -m644 ${srcdir}/youtubeview.desktop ${pkgdir}/usr/share/applications/
-    install -m644 ${srcdir}/flickrview.desktop ${pkgdir}/usr/share/applications/
+    #install -m644 ${srcdir}/youtubeview.desktop ${pkgdir}/usr/share/applications/
+    #install -m644 ${srcdir}/flickrview.desktop ${pkgdir}/usr/share/applications/
     install -m644 ${srcdir}/qmlviewer.desktop ${pkgdir}/usr/share/applications/
     
     mkdir -p ${pkgdir}/usr/bin
