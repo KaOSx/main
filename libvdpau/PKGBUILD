@@ -1,12 +1,12 @@
 
 pkgname=libvdpau
 pkgver=0.6
-pkgrel=1
+pkgrel=2
 pkgdesc="Nvidia VDPAU library"
 arch=('x86_64')
 url="http://cgit.freedesktop.org/~aplattner/libvdpau"
-depends=('gcc-libs')
-makedepends=('libx11')
+depends=('gcc-libs' 'libxext')
+makedepends=('dri2proto')
 options=('!libtool')
 license=('custom')
 source=("http://people.freedesktop.org/~aplattner/vdpau/${pkgname}-${pkgver}.tar.gz")
