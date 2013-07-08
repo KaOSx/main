@@ -1,7 +1,7 @@
 
 pkgname=gd
-pkgver=2.1.0rc1
-_pkgver=2.1.0-rc1
+pkgver=2.1.0
+_pkgver=2.1.0
 pkgrel=1
 pkgdesc="Library for the dynamic creation of images by programmers"
 arch=('x86_64')
@@ -10,13 +10,19 @@ license=('custom')
 depends=('libpng' 'fontconfig' 'libjpeg-turbo' 'libtiff')
 options=('!libtool')
 source=("https://bitbucket.org/libgd/gd-libgd/downloads/libgd-$_pkgver.tar.xz")
-md5sums=('5dcd61ada3dea83e59f9fb972bccae55')
+md5sums=('03588159bf4faab9079849c8d709acc6')
 
 build() {
   cd "${srcdir}/libgd-${_pkgver}"
   
   ./configure --prefix=/usr --without-xpm
   make
+}
+
+check() {
+  cd "${srcdir}/libgd-${_pkgver}"
+  
+  make check
 }
 
 package() {
