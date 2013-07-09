@@ -1,7 +1,7 @@
 
 pkgname=gptfdisk
-pkgver=0.8.6
-pkgrel=2
+pkgver=0.8.7
+pkgrel=1
 pkgdesc="A text-mode partitioning tool that works on Globally Unique Identifier (GUID) Partition Table (GPT) disks"
 arch=('x86_64')
 url="http://www.rodsbooks.com/gdisk/"
@@ -9,7 +9,7 @@ license=('GPL2')
 depends=('gcc-libs' 'util-linux' 'popt' 'icu')
 provides=("gdisk=$pkgver")
 source=("http://downloads.sourceforge.net/project/$pkgname/$pkgname/$pkgver/$pkgname-$pkgver.tar.gz")
-md5sums=('f5ec6647d3de43644ad7e99b34f74982')
+md5sums=('005b45c0b37c37a99024704fdb2ee610')
 
 build() {
   cd "$srcdir/$pkgname-$pkgver"
