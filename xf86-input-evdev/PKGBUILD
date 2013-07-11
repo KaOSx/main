@@ -1,6 +1,6 @@
 
 pkgname=xf86-input-evdev
-pkgver=2.8.0
+pkgver=2.8.1
 pkgrel=1
 pkgdesc="X.org evdev input driver"
 arch=('x86_64')
@@ -11,11 +11,12 @@ makedepends=('xorg-server>=1.12.0' 'resourceproto' 'scrnsaverproto')
 conflicts=('xorg-server<1.12.0')
 options=('!libtool' '!makeflags')
 groups=('xorg-drivers' 'xorg')
-source=(${url}/releases/individual/driver/${pkgname}-${pkgver}.tar.bz2)
-md5sums=('e9bef0779d364cb588aa93a0ee6736c8')
+source=("${url}/releases/individual/driver/${pkgname}-${pkgver}.tar.bz2")
+md5sums=('cc1f59e22edfbc69daecf01e43a8dba3')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
+  
   ./configure --prefix=/usr
   make
 }
@@ -23,6 +24,7 @@ build() {
 package() {
   cd "${srcdir}/${pkgname}-${pkgver}"
   make DESTDIR="${pkgdir}" install
+  
   install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
   install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
 }
