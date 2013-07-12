@@ -2,7 +2,7 @@
 pkgbase=opencv
 pkgname=('opencv' 'opencv-samples')
 _realname=OpenCV
-pkgver=2.4.6
+pkgver=2.4.6.1
 pkgrel=1
 pkgdesc="Open Source Computer Vision Library"
 arch=('x86_64')
@@ -14,7 +14,7 @@ makedepends=('pkgconfig' 'cmake' 'python2-numpy' 'eigen' 'python2-sphinx' 'mesa'
 optdepends=('python2-numpy: Python 2.x interface' 'eigen')
 options=('!libtool')
 source=("http://downloads.sourceforge.net/opencvlibrary/$pkgname-$pkgver.tar.gz")
-md5sums=('c5e8758a419b4f258611b17fc83aafaf')
+md5sums=('d756bfa460891697571d5c90050e1cfe')
 
 _cmakeopts=('-D CMAKE_BUILD_TYPE=Release'
             '-D CMAKE_INSTALL_PREFIX=/usr'
@@ -27,11 +27,7 @@ _cmakeopts=('-D CMAKE_BUILD_TYPE=Release'
             '-D WITH_XINE=ON'
             '-D WITH_QT=ON'
 	    '-D WITH_OPENGL=ON'
-            '-D WITH_UNICAP=OFF'
-            '-D WITH_PVAPI=OFF'
-            '-D WITH_OPENNI=OFF'
             '-D WITH_TBB=OFF'
-            '-D WITH_IPP=OFF'
             '-D WITH_CUDA=OFF'
             '-D WITH_GTK=OFF'
             '-D ENABLE_FAST_MATH=ON')
