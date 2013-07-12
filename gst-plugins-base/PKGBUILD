@@ -1,6 +1,6 @@
 
 pkgname=gst-plugins-base
-pkgver=1.0.7
+pkgver=1.0.8
 pkgrel=1
 pkgdesc="GStreamer Multimedia Framework Base Plugins"
 arch=('x86_64')
@@ -10,8 +10,8 @@ depends=('gstreamer' 'orc' 'libxv' 'alsa-lib' 'cdparanoia' 'libvisual'
 makedepends=('pkgconfig' 'gobject-introspection')
 options=(!libtool !emptydirs)
 url="http://gstreamer.freedesktop.org/"
-source=(${url}/src/$pkgname/$pkgname-${pkgver}.tar.xz)
-md5sums=('b5b43cfbf82b413ce2e07a190d87e68f')
+source=("${url}/src/$pkgname/$pkgname-${pkgver}.tar.xz")
+md5sums=('c8b36678186e7d4fb1e6395ffcd1abb1')
 
 build() {
   cd $pkgname-$pkgver
@@ -41,5 +41,6 @@ package() {
   cd $pkgname-$pkgver
   
   make DESTDIR="${pkgdir}" install
+  make -C ext DESTDIR="${pkgdir}" install
 }
 
