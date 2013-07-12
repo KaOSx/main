@@ -1,6 +1,6 @@
 
 pkgname=gstreamer
-pkgver=1.0.7
+pkgver=1.0.8
 pkgrel=1
 pkgdesc="GStreamer Multimedia Framework"
 arch=('x86_64')
@@ -10,8 +10,8 @@ depends=('libxml2' 'glib2')
 optdepends=('sh: feedback script')
 makedepends=('intltool' 'pkgconfig' 'gobject-introspection')
 options=('!libtool')
-source=(${url}/src/gstreamer/gstreamer-${pkgver}.tar.xz)
-md5sums=('8f6066a37c71a0d0ff5fe5f7687fea12')
+source=("${url}/src/gstreamer/gstreamer-${pkgver}.tar.xz")
+md5sums=('fb0c73470e8dd5dab01e5e9e62db9db9')
 
 build() {
   cd "${srcdir}/gstreamer-${pkgver}"

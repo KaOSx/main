@@ -5,7 +5,7 @@ pkgrel=1
 pkgdesc="GStreamer Multimedia Framework Base Plugins"
 arch=('x86_64')
 license=('LGPL')
-depends=('gstreamer' 'orc' 'libxv' 'alsa-lib' 'cdparanoia' 'libvisual'
+depends=("gstreamer>=${pkgver}" 'orc' 'libxv' 'alsa-lib' 'cdparanoia' 'libvisual'
          'libvorbis' 'libtheora' 'pango')
 makedepends=('pkgconfig' 'gobject-introspection')
 options=(!libtool !emptydirs)
