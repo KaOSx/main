@@ -1,20 +1,16 @@
-#
-# QT Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
 
 pkgname=qt-docs
-pkgver=4.8.4
+pkgver=4.8.5
 pkgrel=1
 pkgdesc='The Qt gui toolkit documentation'
-arch=('any')
+arch=('x86_64')
 url='http://qt.nokia.com/'
 license=('GPL3' 'LGPL')
 options=('docs')
 depends=('qt')
 replaces=('qt-doc')
 conflicts=("qt-doc=${pkgver}")
-categories=('documentation')
+groups=('documentation')
 _pkgfqn="qt-everywhere-opensource-src-${pkgver}"
 source=("ftp://ftp.qt.nokia.com/qt/source/${_pkgfqn}.tar.gz")
 md5sums=('89c5ecba180cae74c66260ac732dc5cb')
@@ -22,6 +18,7 @@ md5sums=('89c5ecba180cae74c66260ac732dc5cb')
 package(){
   cd ${srcdir}/${_pkgfqn}
   install -d ${pkgdir}/usr/share/doc/qt
+  
   cp -r doc/* ${pkgdir}/usr/share/doc/qt
   cp -r demos ${pkgdir}/usr/share/doc/qt
   cp -r examples ${pkgdir}/usr/share/doc/qt

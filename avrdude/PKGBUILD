@@ -1,12 +1,13 @@
+
 pkgname=avrdude
 pkgver=5.10
 pkgrel=1
 pkgdesc="Download/upload/manipulate the ROM and EEPROM contents of AVR microcontrollers"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="http://www.nongnu.org/avrdude/"
 license=('GPL')
 depends=('libusb-compat' 'readline')
-source=(http://download.savannah.gnu.org/releases/avrdude/${pkgname}-${pkgver}.tar.gz)
+source=("http://download.savannah.gnu.org/releases/avrdude/${pkgname}-${pkgver}.tar.gz")
 md5sums=('69b082683047e054348088fd63bad2ff')
 
 build() {

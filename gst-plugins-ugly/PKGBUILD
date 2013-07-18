@@ -1,8 +1,3 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
-# contributor Jan de Groot <jgc@archlinux.org>
 
 pkgname=gst-plugins-ugly
 pkgver=1.0.3
@@ -15,19 +10,20 @@ depends=('gst-plugins-base' 'libdvdread' 'lame' 'libmpeg2' 'a52dec'
          'libmad' 'libsidplay' 'libcdio' 'x264' 'opencore-amr')
 options=(!libtool !emptydirs)
 source=(${url}/src/$pkgname/$pkgname-$pkgver.tar.xz)
-sha256sums=('b8f4cfef12201f19c53a4cde7bc4fef995740c566ea45921d4473f3714e4d8c0')
+md5sums=('c566ea45921d4473f3714e4d8c0')
 
 build() {
   cd $pkgname-$pkgver
   sed -i '/AC_PATH_XTRA/d' configure.ac
+  
   autoreconf
   ./configure --prefix=/usr \
     --sysconfdir=/etc \
     --localstatedir=/var \
     --disable-static \
     --enable-experimental \
-    --with-package-name="GStreamer (Chakra GNU/Linux)" \
-    --with-package-origin="http://www.chakra-project.org/"
+    --with-package-name="GStreamer (KdeOS)" \
+    --with-package-origin="http://www.kde-os.tk/"
   make
 }
 

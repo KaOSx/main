@@ -1,12 +1,9 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
 
 pkgname=epson-inkjet-printer-escpr
 pkgver=1.2.0
 pkgrel=1
 pkgdesc="Common Linux printer driver for Epson Multifonction Inkjet Printers."
-arch=('i686' 'x86_64')
+arch=('x86_64')
 url="https://www.epson.com"
 license=('GPL')
 depends=('cups' 'gutenprint')
@@ -17,6 +14,7 @@ build() {
   cd "$srcdir"
   tar xzvf "$pkgname-$pkgver-1lsb3.2.tar.gz"
   cd "$pkgname-$pkgver"
+  
   ./configure --prefix=/usr \
               --sysconfdir=/etc \
               --localstatedir=/var \
@@ -26,5 +24,6 @@ build() {
 
 package() {
   cd "$srcdir/$pkgname-$pkgver"
+  
   make DESTDIR="$pkgdir" install
 }

@@ -1,9 +1,5 @@
-#
-# Chakra Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas[at]chakra-project[dot]org>
 
-_kernver="3.7.6-2-CHAKRA"
+_kernver="3.9.8-1"
 
 pkgname=(catalyst chd-catalyst)
 pkgver=13.1
@@ -12,7 +8,7 @@ _amdver=9.01
 arch=('x86_64')
 url="http://www.amd.com/us/Pages/AMDHomePage.aspx"
 license=('custom')
-makedepends=('gcc-libs' 'gcc>4.0.0' 'make' 'linux-headers' 'linux>=3.7' 'linux<=3.8' 'catalyst-utils')
+makedepends=('gcc-libs' 'gcc>4.0.0' 'make' 'linux-headers' 'linux>=3.9' 'linux<=3.10' 'catalyst-utils')
 
 source=(http://www2.ati.com/drivers/linux/amd-driver-installer-catalyst-${pkgver}-linux-x86.x86_64.zip
         ati_make.sh
@@ -112,7 +108,7 @@ package_chd-catalyst() {
 
     cd "${srcdir}/archive_files/common/lib/modules/fglrx/build_mod/"
 
-    install -dm755 "${pkgdir}/opt/chakra/hwdb"
+    install -dm755 "${pkgdir}/opt/live/hwdb"
     sh -e "${srcdir}/fglrx_supported" fglrxko_pci_ids.h \
-        > "${pkgdir}/opt/chakra/hwdb/hw_ati_hwdb"
+        > "${pkgdir}/opt/live/hwdb/hw_ati_hwdb"
 }
