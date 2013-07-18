@@ -1,0 +1,32 @@
+
+pkgname=flac
+pkgver=1.3.0
+pkgrel=1
+pkgdesc="Free Lossless Audio Codec"
+arch=('x86_64')
+url="http://flac.sourceforge.net/"
+license=('custom:Xiph' 'LGPL' 'GPL' 'FDL')
+depends=('libogg')
+makedepends=('nasm') 
+options=('!libtool' '!makeflags')
+source=("http://downloads.xiph.org/releases/$pkgname/$pkgname-$pkgver.tar.xz")
+md5sums=('13b5c214cee8373464d3d65dee362cdd')
+
+build() {
+  cd "${srcdir}/${pkgbase}-${pkgver}"
+  
+  ./configure --prefix=/usr \
+        --mandir=/usr/share/man \
+        --enable-shared \
+        --disable-sse \
+        --disable-rpath \
+        --with-pic
+  make
+}
+
+package() {
+  cd "${srcdir}/${pkgbase}-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+  
+  install -D -m644 COPYING.Xiph "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+}

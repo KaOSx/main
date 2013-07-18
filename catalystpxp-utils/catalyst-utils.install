@@ -1,0 +1,50 @@
+
+whisperer(){
+    echo "Add nomodeset to your kernel line in /boot/grub/grub.cfg , ie.:"
+    echo "ernel /boot/vmlinuz-linux root=/dev/sda1 ro nomodeset"
+    echo "----------------------------------------------------------------"
+    echo "If experiencing problems with white/gray/black_artifacts you can"
+    echo "[as root] kill Xserver and use this command:"
+    echo "# aticonfig --set-pcs-str=DDX,ForceXAA,TRUE"
+    echo "----------------------------------------------------------------"
+    echo "Now you can swítch between xorg-libgl for intel/radeon or fglrx"
+    echo "[as root] use this command:"
+    echo "# pxp_switch_catalyst <amd|intel|query>"
+    echo "----------------------------------------------------------------"
+}
+
+check_libdri_so(){
+    if [ ! -e usr/lib/xorg/modules/extensions/libdri.so ]; then
+        ln -sf usr/lib/xorg/modules/extensions/libdri.xorg usr/lib/xorg/modules/extensions/libdri.so
+    fi
+}
+
+#pXp = powerXpress, set catalyst libs in default
+pXp_set_to_amd(){      
+    usr/lib64/fglrx/switchlibGL amd
+    usr/lib64/fglrx/switchlibglx amd
+}
+
+post_install(){
+    check_libdri_so
+    pXp_set_to_amd
+    whisperer
+}
+
+post_upgrade(){
+    check_libdri_so
+    pXp_set_to_amd
+    whisperer
+}
+
+post_remove(){
+    # If the symlink is dead, remove it
+    check_libdri_so
+    #remove /usr/lib/catalystpxp/libGL.so* symlinks and dir
+    rm usr/lib/catalystpxp/libGL.so* &>/dev/null
+    rmdir -p "usr/lib/catalystpxp/" --ignore-fail-on-non-empty &>/dev/null
+    #remove usr/lib/xorg/modules/updates/extensions/libglx.so symlink and dir
+    rm usr/lib/xorg/modules/updates/extensions/libglx.so &>/dev/null
+    rmdir -p "usr/lib/xorg/modules/updates/extensions" --ignore-fail-on-non-empty &>/dev/null
+    rmdir -p "usr/lib/xorg/modules/updates" --ignore-fail-on-non-empty &>/dev/null
+}

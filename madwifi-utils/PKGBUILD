@@ -1,0 +1,43 @@
+#
+# Chakra Packages for Chakra, part of chakra-project.org
+#
+# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
+# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+
+# include global config
+source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+
+# Find the kernel name inside the chroot
+_kernver=`pacman -Q linux | cut -c7-9 | sed 's/linux //g'`-CHAKRA
+
+pkgname=madwifi-utils
+pkgver=0.9.4.4173
+_ver=0.9.4-r4173-20111008
+pkgrel=1
+pkgdesc="Userspace tools of madwifi drivers for Atheros wireless chipsets."
+arch=(i686 x86_64)
+license=('GPL')
+url="http://madwifi-project.org"
+depends=('wireless_tools')
+makedepends=('sharutils')
+provides=("madwifi-ng-utils")
+conflicts=("madwifi-ng-utils")
+replaces=("madwifi-ng-utils")
+# subversion source: svn checkout http://madwifi-project.org/svn/madwifi/trunk madwifi
+source=(http://chakra.sourceforge.net/sources/madwifi/madwifi-${pkgver}.tar.gz
+	#http://downloads.sourceforge.net/sourceforge/madwifi/madwifi-$pkgver.tar.gz
+	)
+
+build() {
+  [ "${CARCH}" == "i686" ] && export ARCH=i386
+
+  export KERNELPATH=/lib/modules/${_kernver}/build
+  #cd $startdir/src/madwifi-$pkgver
+  cd $startdir/src/madwifi-$_ver
+  make tools|| return 1
+  make DESTDIR=$startdir/pkg \
+       BINDIR=/usr/bin \
+       MANDIR=/usr/share/man \
+       install-tools
+}
+md5sums=('18cd1c574e0fa66eb4396f92f0700a7e')

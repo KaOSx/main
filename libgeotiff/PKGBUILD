@@ -1,0 +1,28 @@
+# PLatform Packages for Chakra, part of chakra-project.org
+# maintainer abveritas@chakra-project.org
+
+pkgname=libgeotiff
+pkgver=1.4.0
+pkgrel=2
+pkgdesc="A TIFF based interchange format for georeferenced raster imagery"
+arch=('x86_64')
+license=('custom')
+url="http://www.remotesensing.org/geotiff"
+depends=('libtiff' 'proj' 'libjpeg-turbo')
+options=('!makeflags' '!libtool')
+source=("ftp://ftp.remotesensing.org/pub/geotiff/libgeotiff/$pkgname-$pkgver.tar.gz")
+md5sums=('efa7b418bc00228fcda4da63557e40c2')
+
+build() {
+        cd "$srcdir/$pkgname-$pkgver"
+
+        ./configure --prefix=/usr
+        make
+}
+
+package() {
+        cd "$srcdir/$pkgname-$pkgver"
+
+        make DESTDIR="$pkgdir" install
+        install -D -m644 LICENSE "$pkgdir/usr/share/licenses/libgeotiff/LICENSE"
+}

@@ -1,0 +1,34 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer (i686): Phil Miller <philm[at]chakra-project[dog]org>
+# maintainer (x86_64): Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
+
+# include global config
+source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+
+pkgname=m17n-lib
+pkgver=1.6.2
+pkgrel=1
+pkgdesc="A multilingual text processing library (runtimes)"
+arch=('i686' 'x86_64')
+url="http://www.m17n.org/m17n-lib/"
+license=('GPL')
+depends=('libxft' 'm17n-db>=1.5.4' 'fribidi' 'libxml2' 'gd' 'ispell' 'anthy' 'libotf')
+options=('!libtool' '!makeflags')
+source=(http://www.m17n.org/m17n-lib-download/$pkgname-$pkgver.tar.gz locale.patch)
+sha1sums=('9b9ada79357dd56c90c64cd36845c5537c363d79'
+          '1aa281bf8074518a98817528478fd88dcb85a991')
+
+build() {
+  cd "$srcdir/$pkgname-$pkgver"
+  patch -p1 -i ../locale.patch # cf. FS#20482
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd "$srcdir/$pkgname-$pkgver"
+  make DESTDIR="$pkgdir" install
+}
+

@@ -1,0 +1,35 @@
+# Maintainer: Neophytos Kolokotronis <tetris4@gmail.com>
+# Contributor from Arch: Jan de Groot <jgc@archlinux.org>
+
+pkgname=libbonobo
+_pkgver=2.32
+pkgver="${_pkgver}.1"
+pkgrel=3
+pkgdesc="A set of language and system independant CORBA interfaces for creating reusable components"
+arch=('x86_64')
+license=('GPL' 'LGPL')
+depends=('orbit2' 'libxml2' 'dbus-glib' 'glib2')
+makedepends=('intltool' 'pkgconfig')
+options=('!libtool')
+backup=('etc/bonobo-activation/bonobo-activation-config.xml')
+replaces=('bonobo-activation')
+url="http://www.gnome.org"
+source=("http://ftp.gnome.org/pub/gnome/sources/libbonobo/${_pkgver}/libbonobo-${pkgver}.tar.bz2"
+	'bonobo-activation-config.xml')
+install=libbonobo.install
+md5sums=('27fa902d4fdf6762ee010e7053aaf77b'
+         '6392efaca30a26f826eafc4b8ccbc01f')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  ./configure --prefix=/usr --sysconfdir=/etc \
+              --localstatedir=/var --disable-static \
+	      --libexecdir=/usr/lib/bonobo
+  make
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+  install -m644 "${srcdir}/bonobo-activation-config.xml" "${pkgdir}/etc/bonobo-activation/"
+}

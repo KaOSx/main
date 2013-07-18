@@ -1,0 +1,31 @@
+# Platform Packages for Chakra, part of chakra-project.org
+
+pkgname=perl-extutils-depends
+_realname=ExtUtils-Depends
+pkgver=0.304
+pkgrel=1
+pkgdesc="The Perl depends module"
+arch=('any')
+license=('PerlArtistic')
+url="http://search.cpan.org/dist/${_realname}/"
+depends=('perl>=5.14.2')
+source=(http://www.cpan.org/authors/id/F/FL/FLORA/${_realname}-${pkgver}.tar.gz)
+replaces=('extutils-depends')
+options=('!emptydirs')
+md5sums=('da66d6cb19e2c76d7f3266846832026c')
+
+build() {
+  cd ${srcdir}/${_realname}-${pkgver}
+  perl Makefile.PL INSTALLDIRS=vendor
+  make
+}
+
+check() {
+  cd ${srcdir}/${_realname}-${pkgver}
+  make test
+}
+
+package() {
+  cd ${srcdir}/${_realname}-${pkgver}
+  make DESTDIR=${pkgdir} install
+}

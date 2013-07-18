@@ -1,3 +1,7 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer abveritas@chakra-project.org
 
 pkgname=dbus-sharp
 pkgver=0.7.0
@@ -9,8 +13,8 @@ license=('custom')
 depends=('mono')
 makedepends=('pkgconfig')
 options=(!makeflags)
-source=("https://github.com/downloads/mono/${pkgname}/${pkgname}-${pkgver}.tar.gz"
-	'dbus-sharp-0.7.0-nogtk.patch')
+source=(https://github.com/downloads/mono/${pkgname}/${pkgname}-${pkgver}.tar.gz
+	dbus-sharp-0.7.0-nogtk.patch)
 md5sums=('1964fc341dcbaeda859c53cee295d042'
 	 '2ac099fbfdbd206d57dd1e5cf3ab4e97')
 
@@ -29,6 +33,5 @@ build() {
 package(){
   cd "${srcdir}/${pkgname}-${pkgver}"
   make DESTDIR="${pkgdir}" install
-  
   install -D COPYING "${pkgdir}/usr/share/licenses/${pkgname}/COPYING"
 }

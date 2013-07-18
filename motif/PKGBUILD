@@ -1,0 +1,44 @@
+# Maintainer: Daniele Cocca <jmc@chakra-project.org>
+
+pkgname=motif
+pkgver=2.3.4
+pkgrel=1
+pkgdesc="Motif is the industry standard toolkit for UNIX systems."
+arch=('x86_64')
+url="http://motif.ics.com/"
+license=('GPL')
+depends=('libpng' 'libjpeg' 'libxt' 'libxext' 'libxft')
+makedepends=('xbitmaps')
+conflicts=('lesstif')
+source=("http://downloads.sourceforge.net/project/motif/Motif ${pkgver} Source Code/${pkgname}-${pkgver}-src.tgz")
+md5sums=('612bb8127d0d31da6e5474edf8a5c247')
+
+build() {
+  # Disable parallel builds, since they seem not to work properly
+  export MAKEFLAGS="${MAKEFLAGS/-j?/}"
+  # Reset LDFLAGS, without this the package won't build
+  export LDFLAGS="-lX11"
+
+  cd "${srcdir}/${pkgname}-${pkgver}"
+
+  ./autogen.sh --prefix=/usr \
+               --enable-xft \
+               --enable-png \
+               --enable-jpeg \
+               --enable-themes
+
+  # Serially build the software
+  make -j1
+}
+
+check() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  make -k check
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  make install DESTDIR="${pkgdir}"
+}
+
+# vim:set ts=2 sw=2 et:

@@ -1,0 +1,28 @@
+#
+# Chakra Packages for Chakra, part of chakra-project.org
+#
+# maintainer abveritas[at]chakra-project[dot]org>
+
+pkgname=oyranos
+pkgver=0.9.4
+pkgrel=1
+pkgdesc="A Colour Management System (CMS) on operating system level."
+url="http://oyranos.org/"
+arch=('x86_64')   
+depends=('libxml2' 'libxinerama' 'libxrandr' 'libxfixes' 'libxxf86vm' 'doxygen' 'qt' 'cups'
+         'graphviz' 'lcms2' 'libxcm' 'openicc' 'cairo' 'yajl' 'exiv2')
+makedepends=('libraw' 'xcalib' 'fltk' 'elektra')
+source=("http://prdownloads.sourceforge.net/oyranos/$pkgname-$pkgver.tar.bz2")
+md5sums=('582ea87d82a42912ddc45937e4f864b4')
+license=('MIT')
+
+build() {
+    cd $srcdir/$pkgname-$pkgver
+    ./configure --prefix=/usr --libdir=/usr/lib --enable-threads --enable-xft --enable-shared
+    make 
+}
+
+package() {
+    cd $srcdir/$pkgname-$pkgver
+    make DESTDIR=$pkgdir install
+}

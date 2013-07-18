@@ -1,0 +1,30 @@
+# Platform packages for Chakra
+#
+# Maintainer: Manuel Tortosa <manutortosa@chakra-project.org>
+
+pkgname=hunspell-sk
+pkgver=20110228
+pkgrel=1
+pkgdesc="Slovak dictionary for Hunspell"
+arch=('any')
+url="http://www.sk-spell.sk.cx/hunspell-sk"
+license=('GPL2' 'LGPL2.1' 'MPL')
+depends=('hunspell')
+source=(http://www.sk-spell.sk.cx/files/hunspell-sk-$pkgver.zip)
+md5sums=('161a9d5cdb49b3e577253e363065898a')
+
+package() {
+    cd $srcdir/hunspell-sk-$pkgver
+
+    install -D -m644 sk_SK.dic $pkgdir/usr/share/hunspell/sk_SK.dic
+    install -D -m644 sk_SK.aff $pkgdir/usr/share/hunspell/sk_SK.aff
+ 
+    # myspell symlinks
+    install -dm755 "${pkgdir}"/usr/share/myspell/dicts
+    pushd "${pkgdir}"/usr/share/myspell/dicts
+    for file in "${pkgdir}"/usr/share/hunspell/*; do
+        ln -sv /usr/share/hunspell/"$(basename "${file}")" .
+    done
+    popd
+
+}

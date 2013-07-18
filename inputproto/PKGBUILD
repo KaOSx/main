@@ -1,0 +1,26 @@
+
+pkgname=inputproto
+pkgver=2.3
+pkgrel=3
+pkgdesc="X11 Input extension wire protocol"
+arch=('x86_64')
+license=('custom')
+url="http://xorg.freedesktop.org/"
+makedepends=('xorg-util-macros' 'asciidoc')
+source=("${url}/releases/individual/proto/${pkgname}-${pkgver}.tar.bz2")
+md5sums=('94db391e60044e140c9854203d080654')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  
+  ./configure --prefix=/usr 
+  make
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}" 
+  make DESTDIR="${pkgdir}" install 
+
+  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
+  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/" 
+}

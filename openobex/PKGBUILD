@@ -1,0 +1,32 @@
+
+pkgname=openobex
+pkgver=1.5
+pkgrel=3
+pkgdesc="Implementation of the OBject EXchange (OBEX) protocol"
+url="http://dev.zuckschwerdt.org/openobex/"
+arch=('x86_64')
+license=('GPL' 'LGPL')
+depends=('bluez' 'libusb-compat')
+options=('!libtool')
+source=("http://pkgs.fedoraproject.org/repo/pkgs/openobex/openobex-1.5.tar.gz/0d83dc86445a46a1b9750107ba7ab65c/$pkgname-$pkgver.tar.gz")
+md5sums=('0d83dc86445a46a1b9750107ba7ab65c')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+
+  export CFLAGS="${CFLAGS} -fPIC"
+
+  ./configure --prefix=/usr \
+              --enable-apps \
+              --enable-irda \
+              --enable-bluetooth \
+              --enable-usb
+  make
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  
+  make DESTDIR="${pkgdir}" install
+}
+

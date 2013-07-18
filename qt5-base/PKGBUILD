@@ -1,0 +1,79 @@
+# maintainer abveritas@chakra-project.org
+
+pkgname=qt5-base
+pkgver=5.0.1
+_pkgver=5.0.1
+pkgrel=1
+pkgdesc=('A cross-platform application and UI framework')
+arch=('x86_64')
+url='http://qt.nokia.com/'
+license=('GPL3' 'LGPL')
+depends=('sqlite3' 'xcb-util-keysyms' 'xcb-util-wm' 'xcb-util-image' 'xcb-util-renderutil'
+         'glib2' 'dbus' 'fontconfig' 'libsm' 'libxrandr' 'libxv' 'libxi' 'unixodbc' 'libjpeg-turbo'
+         'alsa-lib' 'xdg-utils' 'hicolor-icon-theme' 'desktop-file-utils' 'mesa' 'fontconfig' 'systemd'
+         'libxcursor' 'libxrender' 'libxi' 'libpng' 'hicolor-icon-theme' 'xdg-utils' 'libmariadbclient')
+makedepends=('postgresql-libs' 'cups' 'python2' 'gperf' 'ruby' 'pulseaudio'
+             'libxfixes' 'libxinerama')
+optdepends=('postgresql-libs: PostgreSQL driver'
+	    'libxinerama: Xinerama support'
+	    'libxfixes: Xfixes support')
+groups=('qt5')
+options=('!libtool')
+_pkgfqn="qtbase-opensource-src-${_pkgver}"
+source=("http://origin.releases.qt-project.org/qt5/${_pkgver}/submodules_tar/qtbase-opensource-src-${_pkgver}.tar.xz")
+md5sums=('720e5061d75913dfa97bf8bef4a443df')
+
+build() {
+	cd $srcdir/$_pkgfqn
+
+        unset QTDIR
+        export PATH="$PWD/qtbase/bin:$PWD/qtrepotools/bin:$PATH"
+
+	./configure -confirm-license -opensource \
+		-prefix /usr \
+                -bindir /usr/lib/qt5/bin \
+                -headerdir /usr/include/qt5 \
+                -archdatadir /usr/lib/qt5 \
+                -docdir /usr/share/doc/qt5 \
+                -plugindir /usr/lib/qt5/plugins \
+                -importdir /usr/lib/qt5/imports \
+                -qmldir /usr/lib/qt5/qml \
+                -datadir /usr/share/qt5 \
+                -testsdir /usr/share/qt5/tests \
+                -translationdir /usr/share/qt5/translations \
+                -sysconfdir /etc/xdg/qt5 \
+                -examplesdir /usr/share/qt5/examples \
+		-system-sqlite \
+                -openssl-linked \
+                -nomake demos \
+                -nomake tests \
+                -nomake examples \
+                -nomake docs \
+                -optimized-qmake \
+                -reduce-relocations \
+                -dbus-linked \
+                -no-openvg \
+                -no-separate-debug-info \
+                -no-gtkstyle \
+                -opengl \
+                -feature-menu \
+                -feature-textdate \
+                -feature-ftp \
+                -xcursor
+	 make
+}
+
+package() {
+    cd $srcdir/$_pkgfqn
+    make INSTALL_ROOT=$pkgdir install
+	
+    cd "${srcdir}"
+    install -D -m644 ${_pkgfqn}/LGPL_EXCEPTION.txt \
+    ${pkgdir}/usr/share/licenses/qt5/LGPL_EXCEPTION.txt
+    
+    mkdir -p ${pkgdir}/usr/bin
+    for i in $(ls ${pkgdir}/usr/lib/qt5/bin); do
+        ln -s /usr/lib/qt5/bin/${i} ${pkgdir}/usr/bin/${i}-qt5
+    done
+}
+

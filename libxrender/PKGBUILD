@@ -1,0 +1,28 @@
+
+pkgname=libxrender
+pkgver=0.9.8
+pkgrel=1
+pkgdesc="X Rendering Extension client library"
+arch=('x86_64')
+url="http://xorg.freedesktop.org/"
+license=('custom')
+depends=('libx11' 'renderproto')
+makedepends=('pkgconfig')
+options=('!libtool')
+source=("${url}/releases/individual/lib/libXrender-${pkgver}.tar.bz2")
+md5sums=('2bd9a15fcf64d216e63b8d129e4f1f1c')
+
+build() {
+  cd ${srcdir}/libXrender-${pkgver}
+  
+  ./configure --prefix=/usr \
+              --disable-static 
+  make 
+}
+
+package() {
+  cd ${srcdir}/libXrender-${pkgver}
+  make DESTDIR=${pkgdir} install
+  
+  install -D -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}

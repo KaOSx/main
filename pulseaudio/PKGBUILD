@@ -1,0 +1,58 @@
+
+pkgname=pulseaudio
+pkgdesc="A featureful, general-purpose sound server"
+pkgver=4.0
+pkgrel=2
+arch=('x86_64')
+url="http://pulseaudio.org/"
+license=('GPL' 'LGPL')
+depends=('dbus-core' 'xcb-util' 'libasyncns' 'libcap' 'libxtst' 'libsm'
+         'libsamplerate' 'json-c' 'rtkit' 'libltdl' 'speex' 'tdb'
+         'fftw' 'orc' 'webrtc-audio-processing' 'systemd' 'sbc')
+makedepends=('attr' 'libltdl' 'avahi' 'bluez' 'intltool' 'jack' 'lirc-utils' 'openssl'
+             'libsndfile' 'pkgconfig' 'sh')
+optdepends=('avahi: zeroconf support'
+            'bluez: bluetooth support'
+            'jack: jack support'
+            'lirc-utils: infra-red support'
+            'openssl: RAOP support')
+backup=(etc/pulse/{daemon.conf,default.pa,system.pa})
+install="pulseaudio.install"
+provides=("libpulse=${pkgver}")
+options=('!emptydirs' '!libtool' '!makeflags')
+source=("http://freedesktop.org/software/${pkgname}/releases/${pkgname}-${pkgver}.tar.xz"
+        'pulseaudio.xinit')
+md5sums=('591f211db2790a7e4d222f2dc6858db3'
+         'eb1cfae28eb2e4d3fdbe45a90e4318ab')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+
+  ./configure --prefix=/usr \
+               --sysconfdir=/etc \
+               --libexecdir=/usr/lib \
+               --localstatedir=/var \
+               --with-udev-rules-dir=/usr/lib/udev/rules.d \
+               --with-database=tdb \
+               --disable-rpath \
+               --disable-default-build-tests
+
+  make
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+
+  # Disable cork-request module
+  sed -e 's|/usr/bin/pactl load-module module-x11-cork-request|#&|' \
+      -i "${pkgdir}/usr/bin/start-pulseaudio-x11"
+
+  # Python fix
+  sed -i '1s:python$:&2:' "${pkgdir}/usr/bin/qpaeq"
+  
+  install -Dm755 "$srcdir/pulseaudio.xinit" "$pkgdir/etc/X11/xinit/xinitrc.d/pulseaudio"
+
+  rm "${pkgdir}/etc/dbus-1/system.d/pulseaudio-system.conf"
+  rm "${pkgdir}/etc/xdg/autostart/pulseaudio.desktop"
+}

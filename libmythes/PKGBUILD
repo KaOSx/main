@@ -1,0 +1,29 @@
+
+pkgname=libmythes
+pkgver=1.2.3
+pkgrel=1
+pkgdesc="a simple thesaurus"
+arch=('x86_64')
+url="http://hunspell.sourceforge.net/ "
+license=('custom')
+depends=('glibc' 'perl')
+makedepends=('hunspell')
+options=('!libtool')
+source=("http://downloads.sourceforge.net/hunspell/${pkgname/lib/}-${pkgver}.tar.gz")
+md5sums=('46e92b68e31e858512b680b3b61dc4c1')
+
+build() {
+  cd ${srcdir}/${pkgname/lib/}-$pkgver
+  ./configure --prefix=/usr --disable-static
+  make
+
+  ./example th_en_US_new.idx th_en_US_new.dat checkme.lst
+  ./example morph.idx morph.dat morph.lst morph.aff morph.dic
+}
+
+package() {
+  cd ${srcdir}/${pkgname/lib/}-$pkgver
+  make DESTDIR=$pkgdir install
+
+  install -Dm644 ${srcdir}/${pkgname/lib/}-$pkgver/COPYING $pkgdir/usr/share/licenses/$pkgname/COPYING
+}

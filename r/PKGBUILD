@@ -1,7 +1,11 @@
+#
+# Platform packages for Chakra, part of chakra-project.org
+#
+# maintainer: Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
 
 pkgname=r
 pkgver=2.15.2
-pkgrel=1
+pkgrel=2
 pkgdesc="Language and environment for statistical computing and graphics"
 arch=('x86_64')
 license=('GPL')
@@ -15,14 +19,13 @@ options=('!makeflags')
 source=("http://cran.r-project.org/src/base/R-2/R-${pkgver}.tar.gz"
 	'r.desktop'
 	'r.png')
-md5sums=('a687d66ee88d1e34fc1ae5c1bd525f9513dd'
-         '320d7cc49d56408edc756b50a0f9ba98fe43'
-         '07ec363440efc18ce0a7f2af103375dea978')
+sha1sums=('c80da687d66ee88d1e34fc1ae5c1bd525f9513dd'
+          'bcc0320d7cc49d56408edc756b50a0f9ba98fe43'
+          'a69a07ec363440efc18ce0a7f2af103375dea978')
 
 build() {
    cd "${srcdir}/R-${pkgver}"
    sed -i 's|#define NeedFunctionPrototypes 0|#define NeedFunctionPrototypes 1|g' src/modules/X11/dataentry.c
-   
    ./configure  --prefix=/usr \
 		--libdir=/usr/lib \
 		--sysconfdir=/etc/R \

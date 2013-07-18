@@ -1,0 +1,30 @@
+
+pkgname=libfontenc
+pkgver=1.1.2
+pkgrel=1
+pkgdesc="X11 font encoding library"
+arch=('x86_64')
+url="http://xorg.freedesktop.org/"
+license=('custom')
+depends=('zlib')
+makedepends=('pkgconfig' 'xproto')
+options=('!libtool')
+source=("${url}/releases/individual/lib/${pkgname}-${pkgver}.tar.bz2")
+md5sums=('ad2919764933e075bb0361ad5caa3d19')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  
+  ./configure --prefix=/usr --sysconfdir=/etc \
+      --localstatedir=/var --disable-static \
+      --with-encodingsdir=/usr/share/fonts/encodings
+  make
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+  
+  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
+  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
+}

@@ -1,0 +1,24 @@
+#
+# Chakra Packages for Chakra, part of chakra-project.org
+#
+# contributor (x86_64): Giuseppe Calà <jiveaxe@gmail.com>
+
+# include global config
+source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+
+pkgname=pyopenssl
+pkgver=0.10
+pkgrel=2
+pkgdesc="pyOpenSSL is a Python interface to the OpenSSL library"
+arch=('i686' 'x86_64')
+url="http://pyopenssl.sourceforge.net"
+license=('LGPL')
+depends=('python2' 'openssl')
+source=(http://pypi.python.org/packages/source/p/pyOpenSSL/pyOpenSSL-${pkgver}.tar.gz)
+md5sums=('34db8056ec53ce80c7f5fc58bee9f093')
+
+build() {
+    cd "${srcdir}/pyOpenSSL-${pkgver}"
+    python2 setup.py build
+    python2 setup.py install --prefix="$pkgdir/usr" --optimize=1
+}

@@ -1,0 +1,27 @@
+
+pkgname=glpk
+pkgver=4.48
+pkgrel=1
+pkgdesc="GNU Linear Programming Kit : solve LP, MIP and other problems."
+arch=('x86_64')
+url="http://www.gnu.org/software/glpk/glpk.html"
+license=('GPL')
+depends=('glibc')
+options=('!libtool')
+source=("http://ftp.gnu.org/gnu/glpk/${pkgname}-${pkgver}.tar.gz")
+md5sums=('1484ef197444305b2afbc942bf3f0905')
+
+build() {
+  cd ${srcdir}/${pkgname}-${pkgver}
+
+  ./configure --prefix=/usr
+  make CFLAGS="$CFLAGS -fPIC"  
+}
+
+package(){
+  cd ${srcdir}/${pkgname}-${pkgver}
+  
+  make DESTDIR="${pkgdir}" install
+  install -Dm644 doc/glpk.pdf "${pkgdir}/usr/share/doc/glpk/glpk.pdf"
+  install -Dm644 doc/gmpl.pdf "${pkgdir}/usr/share/doc/glpk/gmpl.pdf"
+}

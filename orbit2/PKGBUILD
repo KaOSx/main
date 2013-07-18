@@ -1,0 +1,25 @@
+
+pkgname=orbit2
+pkgver=2.14.19
+pkgrel=3
+pkgdesc="Thin/fast CORBA ORB"
+arch=('x86_64')
+license=('LGPL' 'GPL')
+depends=('libidl2')
+options=('!libtool' '!makeflags')
+url="http://www.gnome.org"
+source=("http://ftp.gnome.org/pub/gnome/sources/ORBit2/2.14/ORBit2-${pkgver}.tar.bz2")
+md5sums=('7082d317a9573ab338302243082d10d1')
+
+build() {
+  cd "${srcdir}/ORBit2-${pkgver}"
+  
+  ./configure --prefix=/usr --disable-static
+  make
+}
+
+package() {
+  cd "${srcdir}/ORBit2-${pkgver}"
+  
+  make DESTDIR="${pkgdir}" install
+}

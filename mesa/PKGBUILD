@@ -1,0 +1,79 @@
+
+pkgbase=mesa
+pkgname=('mesa' 'libgl')
+pkgver=9.1.5
+pkgrel=1
+arch=('x86_64')
+makedepends=('glproto>=1.4.14' 'libdrm>=2.4.44' 'libxxf86vm>=1.1.1' 'libxdamage>=1.1.3' 'expat>=2.0.1' 'llvm'
+             'libx11>=1.4.3' 'libxt>=1.1.1' 'gcc-libs' 'dri2proto>=2.6' 'python2' 'libxml2' 'imake' 'systemd'
+             'libvdpau' 'wayland-git')
+url="http://mesa3d.sourceforge.net"
+license=('custom')
+source=(${source[@]} "ftp://ftp.freedesktop.org/pub/mesa/${pkgver}/MesaLib-${pkgver}.tar.bz2" 
+       'LICENSE')
+md5sums=('4ed2af5943141a85a21869053a2fc2eb'
+         '5c65a0fe315dd347e09b1f2826a1df5a')
+
+build() {
+    cd ${srcdir}/?esa-*
+    
+   autoreconf -vfi
+    ./configure --prefix=/usr \
+    --with-dri-driverdir=/usr/lib/xorg/modules/dri \
+    --with-gallium-drivers=r300,r600,nouveau,svga,swrast \
+    --with-dri-drivers=i915,i965,r200,radeon,nouveau,swrast \
+    --enable-gallium-llvm \
+    --enable-gallium-egl \
+    --with-egl-platforms=x11,drm,wayland \
+    --enable-shared-glapi \
+    --enable-gbm \
+    --enable-glx-tls \
+    --enable-dri \
+    --enable-glx \
+    --enable-osmesa \
+    --enable-gles1 \
+    --enable-gles2 \
+    --enable-egl \
+    --enable-texture-float \
+    --enable-xa \
+    --enable-vdpau
+    
+  make
+}
+
+package_libgl() {
+  depends=("mesa=${pkgver}")
+  pkgdesc="Mesa 3-D graphics library and DRI software rasterizer"
+
+  install -m755 -d "${pkgdir}/usr/lib"
+  install -m755 -d "${pkgdir}/usr/lib/xorg/modules/extensions"
+
+  ln -s libglx.xorg "${pkgdir}/usr/lib/xorg/modules/extensions/libglx.so"
+  
+  ln -s mesa-libGL.so.1.2.0      ${pkgdir}/usr/lib/libGL.so
+  ln -s mesa-libGL.so.1.2.0      ${pkgdir}/usr/lib/libGL.so.1
+  ln -s mesa-libGL.so.1.2.0      ${pkgdir}/usr/lib/libGL.so.1.2.0
+
+  install -m755 -d "${pkgdir}/usr/share/licenses/libgl"
+  install -m644 "${srcdir}/LICENSE" "${pkgdir}/usr/share/licenses/libgl/"
+}
+
+package_mesa() {
+  depends=('libx11' 'libxt' 'gcc-libs' 'dri2proto' 'glproto' 'wayland-git'
+           'libdrm>=2.4.44' 'libxxf86vm>=1.1.1' 'libxdamage>=1.1.3' 'expat>=2.0.1') #dri2proto + glproto needed for gl.pc
+  optdepends=('opengl-man-pages: for the OpenGL API man pages')
+  pkgdesc="Mesa 3-D graphics libraries and include files"
+  provides=('libglapi''libgles' 'libegl' 'khrplatform-devel' 'ati-dri' 'intel-dri' 'svga-dri' 'nouveau-dri')
+  conflicts=('libglapi' 'libgles' 'libegl' 'khrplatform-devel' 'ati-dri' 'intel-dri' 'svga-dri' 'nouveau-dri')
+  replaces=('libglapi' 'libgles' 'libegl' 'khrplatform-devel' 'ati-dri' 'intel-dri' 'svga-dri' 'nouveau-dri')
+
+  cd ${srcdir}/?esa-*   
+  make DESTDIR="${pkgdir}" install
+
+  # rename libgl.so to make it possible to package separately 
+  mv ${pkgdir}/usr/lib/libGL.so.1.2.0 	${pkgdir}/usr/lib/mesa-libGL.so.1.2.0
+  rm ${pkgdir}/usr/lib/libGL.so{,.1}
+
+  install -m755 -d "${pkgdir}/usr/share/licenses/mesa"
+  install -m644 "${srcdir}/LICENSE" "${pkgdir}/usr/share/licenses/mesa/"
+}

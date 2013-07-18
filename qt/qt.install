@@ -1,0 +1,33 @@
+post_install() {
+	xdg-icon-resource forceupdate --theme hicolor &> /dev/null
+    update-desktop-database -q
+
+                 echo " "
+        echo " > Qt 4.8"
+        	echo " "
+		echo "   Prefix: /usr"
+		echo " "
+		echo " > ATTENTION "
+		echo "   This version of qt is no longer a split package:"
+		echo " "
+		echo "   qt-tools is integrated in qt"
+		echo "   qt-doc, qt-demos and qt-examples are one new package"
+                echo "   Please install with sudo pacman -S qt-docs"
+		echo " "
+		echo " > IMPORTANT "
+		echo "   Be sure to install one of the Phonon backends:"
+		echo " "
+		echo "   phonon-backend-gstreamer (default)"
+		echo "   phonon-backend-mplayer"
+		echo "   phonon-backend-vlc"
+		echo "   phonon-backend-xine"
+		echo " "
+}
+
+post_upgrade() {
+	post_install
+}
+
+post_remove() {
+	post_install
+}

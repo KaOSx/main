@@ -1,0 +1,27 @@
+
+pkgname=libdv
+pkgver=1.0.0
+pkgrel=4
+pkgdesc="The Quasar DV codec (libdv) is a software codec for DV video"
+arch=('x86_64')
+url="http://libdv.sourceforge.net/"
+license=('LGPL')
+depends=('popt')
+makedepends=('pkgconfig' 'libxv') 
+options=('!libtool')
+source=("http://downloads.sourceforge.net/$pkgname/$pkgname-$pkgver.tar.gz")
+md5sums=('f895162161cfa4bb4a94c070a7caa6c7')
+
+build() {
+  cd $srcdir/$pkgname-$pkgver
+  
+  ./configure --prefix=/usr 
+  make
+}
+
+package() {
+  cd $srcdir/$pkgname-$pkgver
+  
+  make DESTDIR="$pkgdir" install 
+}
+

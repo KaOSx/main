@@ -1,0 +1,43 @@
+
+pkgname=rtkit
+pkgver=0.11
+pkgrel=2
+pkgdesc="Realtime Policy and Watchdog Daemon"
+arch=('x86_64')
+url="http://git.0pointer.de/?p=rtkit.git"
+license=('GPL' 'custom:BSD')
+depends=('dbus' 'polkit' 'systemd')
+install=rtkit.install
+source=("http://0pointer.de/public/$pkgname-$pkgver.tar.xz"
+        'libsystemd.patch')
+md5sums=('a96c33b9827de66033d2311f82d79a5d'
+         '889636fe576635be98f2fcfa0087309b')
+
+build() {
+  cd "$srcdir/$pkgname-$pkgver"
+  patch -p1 -i $srcdir/libsystemd.patch
+  autoreconf -fi
+
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --libexecdir=/usr/lib/rtkit \
+    --with-systemdsystemunitdir=/usr/lib/systemd/system
+
+  make
+}
+
+package() {
+  cd "$srcdir/$pkgname-$pkgver"
+  make DESTDIR="$pkgdir" install
+
+  # DBus configuration
+  mkdir -p "$pkgdir/usr/share/dbus-1/interfaces"
+  ./rtkit-daemon --introspect >"$pkgdir/usr/share/dbus-1/interfaces/org.freedesktop.RealtimeKit1.xml"
+
+  # Client license
+  install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  sed -ne '4,25p' rtkit.c >"$pkgdir/usr/share/licenses/rtkit/COPYING"
+}
+
+

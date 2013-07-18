@@ -1,0 +1,29 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer: Samir Benmendil <ram-z[at]chakra-project[dot]org>
+
+pkgname=aspell-pt
+pkgver=20090702
+pkgrel=1
+pkgdesc="Portuguese dictionary for aspell"
+arch=('i686' 'x86_64')
+url="http://aspell.net/"
+license=('LGPL' 'GPL')
+depends=('aspell')
+source=(ftp://ftp.gnu.org/gnu/aspell/dict/pt_BR/aspell6-pt_BR-20090702-0.tar.bz2 \
+        ftp://ftp.gnu.org/gnu/aspell/dict/pt_PT/aspell6-pt_PT-20070510-0.tar.bz2)
+md5sums=('e082a8956882eb94a67c12e1b8c4a324'
+         'a54267ce8f91de6e6a1baf1e8048cba0')
+
+build() {
+  cd $srcdir/aspell6-pt_BR-20090702-0
+  ./configure || return 1
+  make || return 1
+  make DESTDIR=$pkgdir install || return 1
+
+  cd $srcdir/aspell6-pt_PT-20070510-0
+  ./configure || return 1
+  make || return 1
+  make DESTDIR=$pkgdir install || return 1
+}

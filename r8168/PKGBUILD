@@ -1,0 +1,37 @@
+#
+# Platform Packages for Chakra, part of chakra-project.org
+#
+# maintainer abveritas@chakra-project.org
+
+pkgname=r8168
+pkgver=8.032.00
+pkgrel=4
+pkgdesc="A kernel module for Realtek 8168 network cards"
+url="http://www.realtek.com.tw"
+license=("GPL")
+arch=('x86_64')
+depends=('glibc' 'linux>=3.7' 'linux<3.8')
+makedepends=('linux-headers')
+source=("http://r8168.googlecode.com/files/$pkgname-$pkgver.tar.bz2")
+install=$pkgname.install
+md5sums=('942ce02459a181093f77bb4d5cc75d45')
+
+_extramodules=extramodules-3.7-CHAKRA
+_kernver="$(cat /lib/modules/$_extramodules/version || true)"
+
+build() {
+	cd "$srcdir/$pkgname-$pkgver"
+	make -C /lib/modules/$_kernver/build \
+			SUBDIRS="$srcdir/$pkgname-$pkgver/src" \
+			EXTRA_CFLAGS="-DCONFIG_R8168_NAPI -DCONFIG_R8168_VLAN" \
+			modules
+}
+
+package() {
+	cd "$srcdir/$pkgname-$pkgver/src"
+	install -D -m644 $pkgname.ko "$pkgdir/lib/modules/$_extramodules/$pkgname.ko"
+	find "$pkgdir" -name '*.ko' -exec gzip -9 {} \;
+}
+
+
+

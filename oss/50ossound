@@ -1,0 +1,24 @@
+#!/bin/sh
+. "${PM_FUNCTIONS}"
+
+suspend_osssound()
+{
+ /usr/lib/oss/scripts/killprocs.sh
+ /usr/sbin/soundoff
+}
+
+resume_osssound()
+{
+ /usr/sbin/soundon
+}
+
+case "$1" in
+ hibernate|suspend)
+ suspend_osssound
+	;;
+ thaw|resume)
+	resume_osssound
+	;;
+ *) exit $NA
+	;;
+esac

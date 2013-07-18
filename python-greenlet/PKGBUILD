@@ -1,0 +1,29 @@
+# Apps Packages for Chakra, part of chakra-project.org
+# Maintainer: Neophytos Kolokotronis <tetris4@gmail.com>
+
+_pkgname=python-greenlet
+pkgname=('python2-greenlet' 'python3-greenlet')
+pkgver=0.4.0
+pkgrel=1
+pkgdesc='The greenlet package is a spin-off of Stackless, a version of CPython that supports micro-threads called "tasklets".'
+arch=('x86_64')
+license=('LGPL')
+makedepends=('python2' 'python3')
+url="http://bitbucket.org/ambroff/greenlet"
+source=("http://pypi.python.org/packages/source/g/greenlet/greenlet-${pkgver}.zip")
+md5sums=('87887570082caadc08fb1f8671dbed71')
+
+package_python2-greenlet() {
+  depends=('python2')
+  replaces=('python-greenlet')
+  conflicts=('python-greenlet')
+  provides=('python-greenlet')
+  cd "${srcdir}/greenlet-${pkgver}"
+  python2 -O setup.py install --prefix=/usr --root="${pkgdir}"
+}
+
+package_python3-greenlet() {
+  depends=('python3')
+  cd "${srcdir}/greenlet-${pkgver}"
+  python3 -O setup.py install --prefix=/usr --root="${pkgdir}"
+}

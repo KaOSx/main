@@ -1,0 +1,45 @@
+# Platform packages for Chakra
+
+pkgname=perl-http-daemon
+pkgver=6.01
+pkgrel=1
+pkgdesc="a simple http server class"
+arch=(any)
+license=(PerlArtistic GPL)
+options=('!emptydirs')
+depends=('perl>=5.8.8' 'perl-http-date>=6' 'perl-http-message'
+	 'perl-lwp-mediatypes>=6')
+makedepends=()
+checkdepends=()
+conflicts=('perl-libwww<6')
+url=http://search.cpan.org/dist/HTTP-Daemon
+source=(http://search.cpan.org/CPAN/authors/id/G/GA/GAAS/HTTP-Daemon-6.01.tar.gz)
+md5sums=('ed0ae02d25d7f1e89456d4d69732adc2')
+sha512sums=('8d2b8cd9c9386defb256457e160492d78cd6a7d962514522c62d6f8d3dd1cb6f7019b7a1a70b13f340ef54538eef02629a13861864f2f79306f1da7255fa887b')
+_distdir="${srcdir}/HTTP-Daemon-6.01"
+
+build() {
+  ( export PERL_MM_USE_DEFAULT=1 PERL5LIB=""                 \
+      PERL_AUTOINSTALL=--skipdeps                            \
+      PERL_MM_OPT="INSTALLDIRS=vendor DESTDIR='$pkgdir'"     \
+      PERL_MB_OPT="--installdirs vendor --destdir '$pkgdir'" \
+      MODULEBUILDRC=/dev/null
+
+    cd "$_distdir"
+    /usr/bin/perl Makefile.PL
+    make
+  )
+}
+
+check() {
+  ( export PERL_MM_USE_DEFAULT=1 PERL5LIB=""
+    cd "$_distdir"
+    make test
+  )
+}
+
+package() {
+    cd "$_distdir"
+    make DESTDIR="$pkgdir" install
+    find "$pkgdir" -name .packlist -o -name perllocal.pod -delete
+}
