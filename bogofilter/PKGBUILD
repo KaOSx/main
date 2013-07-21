@@ -1,14 +1,10 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas[at]chakra-project[dot]org>
 
 pkgname=bogofilter
 pkgver=1.2.3
 pkgrel=1
 pkgdesc="A fast Bayesian spam filtering tool"
 arch=('x86_64')
-license=(GPL3)
+license=('GPL3')
 url="http://bogofilter.sourceforge.net"
 depends=('db' 'perl' 'gsl')
 backup=(etc/bogofilter/bogofilter.cf)
@@ -17,6 +13,7 @@ md5sums=('c3ed7f483b83abcbf6d8c797084bd06e')
 
 build() {
   cd ${srcdir}/${pkgname}-${pkgver}
+  
   ./configure --prefix=/usr \
               --sysconfdir=/etc/bogofilter  \
               --localstatedir=/var \

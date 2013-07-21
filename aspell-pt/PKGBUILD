@@ -1,29 +1,43 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer: Samir Benmendil <ram-z[at]chakra-project[dot]org>
 
 pkgname=aspell-pt
-pkgver=20090702
+_pkgverPT=20130331
+_pkgverBR=20090702
+pkgver=$_pkgverPT
 pkgrel=1
-pkgdesc="Portuguese dictionary for aspell"
-arch=('i686' 'x86_64')
+pkgdesc="Portuguese and Brazilian Portuguese dictionary for aspell"
+arch=('x86_64')
 url="http://aspell.net/"
 license=('LGPL' 'GPL')
 depends=('aspell')
-source=(ftp://ftp.gnu.org/gnu/aspell/dict/pt_BR/aspell6-pt_BR-20090702-0.tar.bz2 \
-        ftp://ftp.gnu.org/gnu/aspell/dict/pt_PT/aspell6-pt_PT-20070510-0.tar.bz2)
+source="ftp://ftp.gnu.org/gnu/aspell/dict/pt_BR/aspell6-pt_BR-$_pkgverBR-0.tar.bz2"
+       "http://natura.di.uminho.pt/download/sources/Dictionaries/aspell6/aspell6.pt-$_pkgverPT.tar.bz2"
+       "http://natura.di.uminho.pt/download/sources/Dictionaries/aspell6/aspell6.pt-preao-$_pkgverPT.tar.bz2")
 md5sums=('e082a8956882eb94a67c12e1b8c4a324'
          'a54267ce8f91de6e6a1baf1e8048cba0')
 
 build() {
-  cd $srcdir/aspell6-pt_BR-20090702-0
-  ./configure || return 1
-  make || return 1
-  make DESTDIR=$pkgdir install || return 1
+  cd aspell6-pt_BR-$_pkgverBR-0
+  ./configure
+  make
 
-  cd $srcdir/aspell6-pt_PT-20070510-0
-  ./configure || return 1
-  make || return 1
-  make DESTDIR=$pkgdir install || return 1
+  cd ../aspell6-pt_PT-$_pkgverPT-0
+  ./configure
+  make
+
+  cd ../aspell6-pt_PT-preao-$_pkgverPT-0
+  ./configure
+  make
+}
+
+package() {
+  cd aspell6-pt_BR-$_pkgverBR-0
+  make DESTDIR="$pkgdir" install
+
+  cd ../aspell6-pt_PT-$_pkgverPT-0
+  make DESTDIR="$pkgdir" install
+
+  cd ../aspell6-pt_PT-preao-$_pkgverPT-0
+  make DESTDIR="$pkgdir" install
+
+  echo "add pt_BR.multi" > "$pkgdir"/usr/lib/aspell-0.60/brasileiro.alias
 }

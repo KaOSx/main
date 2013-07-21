@@ -1,26 +1,22 @@
-#
-# Chakra Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas[at]chakra-project[dot]org>
 
-_kernver="3.7.6-2-CHAKRA"
+_kernver="3.9.8-1"
 
-pkgname=(catalyst chd-catalyst)
+pkgname=('catalyst' 'chd-catalyst')
 pkgver=13.1
-pkgrel=4
+pkgrel=1
 _amdver=9.01
 arch=('x86_64')
 url="http://www.amd.com/us/Pages/AMDHomePage.aspx"
 license=('custom')
 makedepends=('gcc-libs' 'gcc>4.0.0' 'make' 'linux-headers' 'linux>=3.7' 'linux<=3.8' 'catalyst-utils')
 
-source=(http://www2.ati.com/drivers/linux/amd-driver-installer-catalyst-${pkgver}-linux-x86.x86_64.zip
-        ati_make.sh
-        makefile_compat.patch
-	fglrx_supported
-	switchlibglx
-	switchlibGL
-	arch-fglrx-3.7.patch)
+source=("http://www2.ati.com/drivers/linux/amd-driver-installer-catalyst-${pkgver}-linux-x86.x86_64.zip"
+        'ati_make.sh'
+        'makefile_compat.patch'
+	'fglrx_supported'
+	'switchlibglx'
+	'switchlibGL'
+	'arch-fglrx-3.7.patch')
 
 md5sums=('b5d9de9b000448dcc2a9eb74a889116d'
          '660396540b0ceaff71d6155c986734de'
