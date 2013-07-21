@@ -1,20 +1,21 @@
 
 pkgname=hdf5
-pkgver=1.8.10
+pkgver=1.8.11
 pkgrel=1
 arch=('x86_64')
 pkgdesc="General purpose library and file format for storing scientific data"
 url="http://www.hdfgroup.org/HDF5/"
 license=('custom')
 depends=('zlib' 'sh')
-source=("ftp://ftp.hdfgroup.org/HDF5/current/src-$pkgver/${pkgname}-${pkgver}.tar.bz2")
+source=("http://www.hdfgroup.org/ftp/HDF5/current/src/${pkgname}-${pkgver}.tar.bz2")
 options=('!libtool')
-md5sums=('8166c0fa3ee34fee6cdef4c5f3cbc94e')
+md5sums=('3433c1be767d2b8e5b0771a3209b4fcc')
 
 build() {
   cd $srcdir/${pkgname}-${pkgver/_/-}
   export CFLAGS="${CFLAGS/O2/O0}"
   export CXXFLAGS="${CFLAGS}"
+  
   ./configure --prefix=/usr --disable-static \
     --enable-hl \
     --enable-threadsafe \
