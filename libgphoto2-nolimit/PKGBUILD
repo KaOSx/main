@@ -2,13 +2,13 @@
 pkgname=libgphoto2-nolimit
 oldpkgname=libgphoto2
 pkgver=2.5.2
-pkgrel=2
+pkgrel=3
 pkgdesc="The core library of gphoto2.  This variation is only to increase the limit of files!"
 arch=('x86_64')
 url="http://www.gphoto.org"
 license=('LGPL')
 conflicts=('libgphoto2')
-provides=(libgphoto2=${pkgver})
+provides=("libgphoto2=${pkgver}")
 depends=('libexif' 'libjpeg>=8' 'gd' 'libtool>=2.4' 'libusb' 'libusb-compat')
 install=libgphoto2.install
 options=('libtool')
