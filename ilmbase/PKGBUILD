@@ -1,15 +1,15 @@
 
 pkgname=ilmbase
-pkgver=2.0.0
+pkgver=2.0.1
 pkgrel=1
-depends=('gcc-libs')
 pkgdesc="IlmThread is a thread abstraction library for use with OpenEXR"
 url="http://www.openexr.com"
 arch=('x86_64')
 license=('custom')
+depends=('gcc-libs')
 options=('!libtool')
 source=("http://download.savannah.nongnu.org/releases/openexr/$pkgname-$pkgver.tar.gz")
-md5sums=('70f1413840c2a228783d1332b8b168e6')
+md5sums=('74c0d0d2873960bd0dc1993f8e03f0ae')
 
 build() {
   cd ${srcdir}/$pkgname-$pkgver

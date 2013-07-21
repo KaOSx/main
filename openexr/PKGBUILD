@@ -1,15 +1,15 @@
 
 pkgname=openexr
-pkgver=2.0.0
+pkgver=2.0.1
 pkgrel=1
-depends=('zlib' 'ilmbase')
 pkgdesc="openexr library for EXR images"
 url="http://www.openexr.org"
 arch=('x86_64')
-options=('!libtool')
 license=('custom')
+depends=('zlib' 'ilmbase')
+options=('!libtool')
 source=("http://download.savannah.nongnu.org/releases/${pkgname}/${pkgname}-${pkgver}.tar.gz")
-md5sums=('0820e1a8665236cb9e728534ebf8df18')
+md5sums=('4387e6050d2faa65dd5215618ff2ddce')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
