@@ -1,17 +1,16 @@
 
 pkgname=libmicrohttpd
-pkgver=0.9.27
+pkgver=0.9.28
 pkgrel=1
 pkgdesc="a small C library that is supposed to make it easy to run an HTTP server as part of another application."
 arch=('x86_64')
 url="http://www.gnu.org/software/libmicrohttpd/"
 license=('LGPL')
-options=(!libtool)
 depends=('gnutls')
 install=libmicrohttpd.install
-source=(ftp://ftp.gnu.org/gnu/libmicrohttpd/$pkgname-$pkgver.tar.gz)
+options=('!libtool')
 source=("ftp://ftp.gnu.org/gnu/libmicrohttpd/$pkgname-$pkgver.tar.gz")
-md5sums=('a10496b7f1b495aaf6897584da52f51b')
+md5sums=('16c3cb66c839c6f929677471401a5b53')
 
 build() {
   cd ${pkgname}-${pkgver}
