@@ -1,6 +1,6 @@
 
 pkgname=libxfont
-pkgver=1.4.5
+pkgver=1.4.6
 pkgrel=1
 pkgdesc="X11 font rasterisation library"
 arch=('x86_64')
@@ -9,8 +9,8 @@ license=('custom')
 depends=('freetype2' 'libfontenc' 'xproto' 'fontsproto')
 makedepends=('xorg-util-macros' 'xtrans')
 options=('!libtool')
-source=(${url}/archive/individual/lib/libXfont-${pkgver}.tar.bz2)
-md5sums=('6851da5dae0a6cf5f7c9b9e2b05dd3b4')
+source=("${url}/archive/individual/lib/libXfont-${pkgver}.tar.bz2")
+md5sums=('351a9b7348d165029bda52c9fdcb5c7a')
 
 build() {
   cd "${srcdir}/libXfont-${pkgver}"
