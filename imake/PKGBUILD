@@ -1,6 +1,6 @@
 
 pkgname=imake
-pkgver=1.0.5
+pkgver=1.0.6
 pkgrel=1
 pkgdesc="X.Org imake program and related utilities"
 arch=('x86_64')
@@ -12,20 +12,20 @@ optdepends=('perl:	for mkhtmlindex')
 source=("http://xorg.freedesktop.org/releases/individual/util/imake-${pkgver}.tar.bz2"
 	"http://xorg.freedesktop.org/releases/individual/util/gccmakedep-1.0.2.tar.bz2"
 	"http://xorg.freedesktop.org/releases/individual/util/lndir-1.0.3.tar.bz2"
-	"http://xorg.freedesktop.org/releases/individual/util/makedepend-1.0.4.tar.bz2"
-	"http://xorg.freedesktop.org/releases/individual/util/xorg-cf-files-1.0.4.tar.bz2"
+	"http://xorg.freedesktop.org/releases/individual/util/makedepend-1.0.5.tar.bz2"
+	"http://xorg.freedesktop.org/releases/individual/util/xorg-cf-files-1.0.5.tar.bz2"
 	'linuxconfig.patch'
 	'LICENSE')
-md5sums=('797ec5dcad4df56eaafa0c701d6aa5ce'
+md5sums=('d5058b1317a85bedc1dc40c7e85c8d26'
          'b533c0771dbbaf9b041ff35bb941d3a2'
          'a47bcd6cecda1a6ebd3395926ea4f53a'
-         '7acb9a831817fdd11ba7f7aaa3c74fd8'
-         '700c6d040d36a569e657a3ba5e1d8b24'
+         '0475638eb40a3920d0d3f14482c924a4'
+         '4a9cd7fc995ebf8f3cdad5395f9d8eba'
          'b3385d8efbbe7c7fc50ed3a96ce37a16'
          'f5767133ef7a98a0bfa15139e0e3d32e')
 
 build() {
-  cd ${srcdir}/xorg-cf-files-1.0.4
+  cd ${srcdir}/xorg-cf-files-1.0.5
   patch -p1 -i "${srcdir}/linuxconfig.patch"
   cd "${srcdir}"
   for i in *; do
