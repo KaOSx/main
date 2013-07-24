@@ -1,7 +1,7 @@
 
 pkgname=apache
-pkgver=2.4.4
-pkgrel=3
+pkgver=2.4.6
+pkgrel=1
 pkgdesc='A high performance Unix-based HTTP server'
 arch=('x86_64')
 options=('!libtool')
@@ -12,18 +12,16 @@ backup=(etc/conf.d/apache etc/httpd/conf/httpd.conf
         etc/httpd/conf/extra/httpd-{manual,mpm,multilang-errordoc}.conf
         etc/httpd/conf/extra/httpd-{ssl,userdir,vhosts}.conf
         etc/logrotate.d/httpd)
-depends=('openssl' 'zlib' 'apr-util' 'pcre' 'systemd>=189')
+depends=('openssl' 'zlib' 'apr-util' 'pcre' 'systemd')
 optdepends=('lynx: apachectl status')
 install=${pkgname}.install
 source=("http://www.apache.org/dist/httpd/httpd-${pkgver}.tar.bz2"
-        "http://mpm-itk.sesse.net/apache2.4-mpm-itk-2.4.2-01.patch"
         'apache.conf.d'
         'httpd.logrotate'
         'kdeos.layout'
         'httpd.service'
         'httpd-tmpfile.conf')
-md5sums=('0e712ee2119cd798c8ae39d5f11a9206'
-         '7b5fb06ba65d80d40f19e32f95426486'
+md5sums=('ea5e361ca37b8d7853404419dd502efe'
          '08b3c875f6260644f2f52b4056d656b0'
          '6382331e9700ed9e8cc78ea51887b537'
          '03cdd5a148771f47d2210b9f1f0f3bd3'
@@ -33,10 +31,6 @@ md5sums=('0e712ee2119cd798c8ae39d5f11a9206'
 build() {
   cd "${srcdir}/httpd-${pkgver}"
 
-  # apply the monolithic ITK patch
-  # see http://mpm-itk.sesse.net/
-  patch -p1 -i "${srcdir}/apache2.4-mpm-itk-2.4.2-01.patch"
-
   # set default user
   sed -e 's#User daemon#User http#' \
       -e 's#Group daemon#Group http#' \
@@ -44,19 +38,9 @@ build() {
 
   cat "${srcdir}/kdeos.layout" >> config.layout
 
-  for mpm in prefork worker itk; do
-    if [ "${mpm}" = 'itk' ]; then
-      mkdir -p server/mpm/experimental/itk
-      cp -r server/mpm/prefork/* server/mpm/experimental/itk/ 
-      mv server/mpm/experimental/itk/prefork.c server/mpm/experimental/itk/itk.c 
-      autoconf 
-    fi
-
-    mkdir -p "build-${mpm}"
-    pushd "build-${mpm}"
-
-    "${srcdir}/httpd-${pkgver}/configure" \
+  ./configure \
         --enable-layout=KdeOS \
+        --enable-mpms-shared=all \
         --enable-modules=all \
         --enable-mods-shared=all \
         --enable-so \
@@ -75,44 +59,26 @@ build() {
         --enable-dbd \
         --with-apr=/usr/bin/apr-1-config \
         --with-apr-util=/usr/bin/apu-1-config \
-        --with-pcre=/usr \
-        --with-mpm="${mpm}"
+        --with-pcre=/usr 
 
     make
-
-    popd >/dev/null
-  done
 }
 
 package() {
   cd "${srcdir}/httpd-${pkgver}"
 
-  for mpm in prefork worker itk; do
-    pushd "build-${mpm}" >/dev/null
+  make DESTDIR="${pkgdir}" install
+  
+  install -m755 httpd "${pkgdir}/usr/sbin/httpd"
 
-    if [ "${mpm}" = 'prefork' ]; then
-      make DESTDIR="${pkgdir}" install
-    else
-      install -m755 httpd "${pkgdir}/usr/sbin/httpd.${mpm}"
-    fi
-
-    popd >/dev/null
-  done
-
-  install -D -m644 "${srcdir}/httpd.logrotate" \
-                   "${pkgdir}/etc/logrotate.d/httpd" 
-
-  install -D -m644 "${srcdir}/apache.conf.d" \
-                   "${pkgdir}/etc/conf.d/apache" 
+  install -D -m644 "${srcdir}/httpd.logrotate" "${pkgdir}/etc/logrotate.d/httpd" 
+  install -D -m644 "${srcdir}/apache.conf.d" "${pkgdir}/etc/conf.d/apache" 
 
   # systemd
-  install -D -m644 "${srcdir}/httpd-tmpfile.conf" \
-                   "${pkgdir}/usr/lib/tmpfiles.d/httpd.conf"
+  install -D -m644 "${srcdir}/httpd-tmpfile.conf" "${pkgdir}/usr/lib/tmpfiles.d/httpd.conf"
 
   install -d "${pkgdir}"/usr/lib/systemd/system
-
-  install -D -m644 "${srcdir}/httpd.service" \
-                   "${pkgdir}/usr/lib/systemd/system/"
+  install -D -m644 "${srcdir}/httpd.service" "${pkgdir}/usr/lib/systemd/system/"
 
   # symlinks for /etc/httpd
   ln -fs /var/log/httpd "${pkgdir}/etc/httpd/logs"
