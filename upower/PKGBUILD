@@ -1,6 +1,6 @@
 
 pkgname=upower
-pkgver=0.9.20
+pkgver=0.9.21
 pkgrel=1
 pkgdesc="Abstraction for enumerating power devices, listening to device events and querying history and statistics"
 arch=('x86_64')
@@ -11,14 +11,14 @@ makedepends=('pkg-config' 'intltool' 'docbook-xsl')
 replaces=('devicekit-power')
 options=('!libtool')
 install=upower.install
-source=($url/releases/${pkgname}-${pkgver}.tar.xz)
-md5sums=('f175984d142dc8d2353a7da609836b69')
+source=("$url/releases/${pkgname}-${pkgver}.tar.xz")
+md5sums=('1aa2b9e6fd757cd151bbaa4991eacc18')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
 
   # put udev files in /usr/lib
-  sed -i "/slashlibdir=/s#/lib#/usr/lib#" configure
+  #sed -i "/slashlibdir=/s#/lib#/usr/lib#" configure
 
   ./configure --prefix=/usr --sysconfdir=/etc \
       --localstatedir=/var \
