@@ -1,12 +1,12 @@
 
 pkgname=vigra
 pkgver=1.9.0
-pkgrel=3
+pkgrel=4
 pkgdesc="Computer vision library"
 arch=('x86_64')
 url="http://hci.iwr.uni-heidelberg.de/vigra/"
 license=('custom:MIT')
-depends=('libpng' 'libtiff' 'gcc-libs' 'sh' 'hdf5' 'fftw')
+depends=('libpng' 'libtiff' 'gcc-libs' 'sh' 'hdf5' 'fftw' 'openexr')
 makedepends=('cmake' 'python2-nose' 'doxygen' 'python2-sphinx' 'boost' 'python2-numpy')
 optdepends=('python2: for python bindings'
             'boost-libs: for python bindings')
@@ -19,6 +19,7 @@ build() {
   
   cmake -DCMAKE_INSTALL_PREFIX=/usr \
       -DPYTHON_EXECUTABLE=/usr/bin/python2 \
+      -DWITH_OPENEXR=1 \
       -DWITH_VIGRANUMPY=1 \
       -DDOCINSTALL=share/doc 
   make
