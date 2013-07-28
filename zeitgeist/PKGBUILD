@@ -7,9 +7,9 @@ arch=('x86_64')
 url="http://zeitgeist-project.com/"
 license=('GPL')
 depends=('dbus-python' 'python2-gobject' 'pyxdg' 'xapian-core')
-makedepends=('intltool' 'raptor' 'python2-rdflib')
-source=("http://launchpad.net/$pkgname/0.9/$pkgver/+download/$pkgname-$pkgver.tar.bz2")
-md5sums=('5841e4624b07ba74866fb177f1c9aae7')
+makedepends=('intltool' 'raptor' 'python2-rdflib' 'vala')
+source=("http://launchpad.net/$pkgname/0.9/$pkgver/+download/$pkgname-$pkgver.tar.xz")
+md5sums=('92371b864515389ffe7d70569f0bc9ed')
 
 build() {
   cd "$srcdir/$pkgname-$pkgver"
@@ -17,7 +17,8 @@ build() {
   PYTHON=/usr/bin/python2 LIBS+="-lgmodule-2.0" ./configure --prefix=/usr \
     --sysconfdir=/etc \
     --libexecdir=/usr/lib/zeitgeist \
-    --localstatedir=/var
+    --localstatedir=/var \
+    --disable-telepathy 
   make
 }
 
