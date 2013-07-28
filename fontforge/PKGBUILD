@@ -2,15 +2,17 @@
 pkgname=fontforge
 pkgver=20120731
 _pkgver=20120731-b
-pkgrel=1
+pkgrel=2
 pkgdesc="An outline and bitmap font editor"
 arch=('x86_64')
 url="http://fontforge.sourceforge.net"
 license=('BSD')
 depends=('libxkbui' 'libxi' 'libxml2' 'pango' 'giflib' 'libpng' 'libtiff' 'libjpeg-turbo' 'python2')
 options=('!libtool' '!makeflags')
-source=("http://sourceforge.net/projects/fontforge/files/fontforge-source/fontforge_full-${_pkgver}.tar.bz2")
-md5sums=('a8a90473a97da87e45f66d11007b6e7c')
+source=("http://sourceforge.net/projects/fontforge/files/fontforge-source/fontforge_full-${_pkgver}.tar.bz2"
+        'http://fontforge.org/cidmaps.tgz')
+md5sums=('a8a90473a97da87e45f66d11007b6e7c'
+         '063691163e592515b31514515bb3ce8c')
 
 build() {
   cd "${srcdir}/${pkgname}-${_pkgver}"
@@ -20,15 +22,16 @@ build() {
               --enable-type3 \
               --enable-double \
               --enable-devicetables \
-              --with-regular-link \
-              --with-python2 \
-              --enable-pyextensions 
+              --with-regular-link 
   make 
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${_pkgver}"
-  
+  cd "${srcdir}/${pkgname}-${_pkgver}" 
   make DESTDIR="${pkgdir}" install 
+  
+  install -d "${pkgdir}/usr/share/fontforge"
+  install -m644 ../Adobe-* "${pkgdir}/usr/share/fontforge"
+  
   install -D -m644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE" 
 }
