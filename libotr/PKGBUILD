@@ -1,25 +1,35 @@
 
 pkgname=libotr
 pkgver=3.2.1
-pkgrel=1
+pkgrel=2
 pkgdesc='Off-the-Record Messaging Library and Toolkit.'
 arch=('x86_64')
 url='http://www.cypherpunks.ca/otr/'
 license=('GPL' 'LGPL')
 depends=('libgcrypt')
 options=('!libtool')
-source=("http://www.cypherpunks.ca/otr/${pkgname}-${pkgver}.tar.gz")
-md5sums=('974acf937d2ce0ee89b27a9815c17a3f')
+source=("http://www.cypherpunks.ca/otr/${pkgname}-${pkgver}.tar.gz"
+        'libotr3-soname.patch')
+md5sums=('974acf937d2ce0ee89b27a9815c17a3f'
+         '5efed6cf90fe0c24269fe014cb7a4d30')
 
 build() {
 	cd "$srcdir/$pkgname-$pkgver"
+	patch -p1 -i "${srcdir}/libotr3-soname.patch"
 	
-	./configure --prefix=/usr --mandir=/usr/share/man --disable-static
+	./configure --prefix=/usr \
+	      --mandir=/usr/share/man \
+	      --disable-static \
+	      --program-transform-name='s/otr/otr3/'
 	make
 }
 
 package() {
 	cd "$srcdir/$pkgname-$pkgver"
-	
 	make DESTDIR="$pkgdir" install
+	
+	for i in parse sesskeys mackey readforge modify remac; do
+	  rm "${pkgdir}"/usr/share/man/man1/otr_$i.1
+	  ln -sf otr3_toolkit.1 "${pkgdir}"/usr/share/man/man1/otr3_$i.1
+	done
 }
