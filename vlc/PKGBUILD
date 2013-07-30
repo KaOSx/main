@@ -1,16 +1,16 @@
 
 pkgname=vlc
-pkgver=2.0.7
+pkgver=2.0.8
 pkgrel=1
 arch=('x86_64')
 url="http://www.videolan.org/vlc/"
 license=('GPL')
 depends=('a52dec' 'fluidsynth' 'libmtp' 'libdvbpsi' 'libxpm' 'libcdio' 'libdca' 'qt' 'libproxy'
-         'sdl_image' 'libdvdnav' 'mesa' 'lua' 'v4l-utils' 'libcddb' 'samba' 'libmatroska' 'zvbi'
+         'sdl_image' 'libdvdnav' 'mesa' 'v4l-utils' 'libcddb' 'samba' 'libmatroska' 'zvbi'
          'taglib' 'sysfsutils' 'libmpcdec' 'ffmpeg' 'faad2' 'libupnp' 'libshout' 'libmad' 'fribidi'
          'libmpeg2' 'libmodplug' 'opus' 'ttf-freefont' 'libxv' 'libass' 'xdg-utils'
          'desktop-file-utils' 'xcb-util-keysyms')
-makedepends=('avahi' 'pkgconfig' 'live-media' 'libnotify' 'libbluray' 'flac' 'libtheora' 'alsa-lib'
+makedepends=('avahi' 'pkgconfig' 'libnotify' 'libbluray' 'flac' 'libtheora' 'alsa-lib'
              'jack' 'kdelibs' 'systemd' 'libraw1394' 'libdc1394' 'libavc1394' 'libva' 'pulseaudio'
              'lirc-utils' 'gnutls' 'libcaca' 'librsvg')
 optdepends=('avahi: for service discovery using bonjour protocol'
@@ -32,7 +32,7 @@ groups=('multimedia')
 options=('!libtool')
 install="vlc.install"
 source=("http://download.videolan.org/pub/videolan/$pkgname/$pkgver/$pkgname-$pkgver.tar.xz")
-md5sums=('3b0e465b0990097b65abaf3e25589957')
+md5sums=('6445eb55aa087f30abe27423535e1ab8')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
@@ -54,7 +54,8 @@ build() {
               --enable-realrtsp \
               --enable-bluray \
               --enable-opus \
-              --enable-ncurses
+              --enable-ncurses \
+              --disable-lua
   make
 }
 
