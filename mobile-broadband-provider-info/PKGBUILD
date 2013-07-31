@@ -1,23 +1,25 @@
 
 pkgname=mobile-broadband-provider-info
-pkgver=20120614
+pkgver=20130731
 pkgrel=1
 pkgdesc="Network Management daemon"
 arch=('x86_64')
 license=('other')
 url="http://git.gnome.org/browse/mobile-broadband-provider-info/"
-source=("http://ftp.gnome.org/pub/GNOME/sources/mobile-broadband-provider-info/${pkgver}/${pkgname}-${pkgver}.tar.xz")
-md5sums=('dfa66a77ce27071b0882e2f822eecde5')
+makedepends=('git')
+source=("git://git.gnome.org/mobile-broadband-provider-info#branch=master")
+md5sums=('SKIP')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
-
+  cd "${srcdir}/${pkgname}"
+  
+  ./autogen.sh  
   ./configure --prefix=/usr
   make
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd "${srcdir}/${pkgname}"
   
   make DESTDIR="${pkgdir}" install
 }
