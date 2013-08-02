@@ -1,31 +1,31 @@
-#
-# Platform packages for Chakra, part of chakra-project.org
-#
-# maintainer: Manuel Tortosa <manutortosa[at]chakra-project[dot]org>
 
 pkgname=r
-pkgver=2.15.2
-pkgrel=2
+pkgver=3.0.1
+pkgrel=1
 pkgdesc="Language and environment for statistical computing and graphics"
 arch=('x86_64')
 license=('GPL')
 url=('http://www.r-project.org/')
-depends=('atlas-lapack' 'bzip2'  'libpng' 'libjpeg' 'libtiff'
+depends=('lapack' 'blas' 'bzip2'  'libpng' 'libjpeg' 'libtiff'
          'ncurses' 'pcre' 'readline' 'zlib' 'perl' 'gcc-libs'
-         'tk' 'libxt' 'libxmu' 'pango' 'xz')
+         'tk' 'libxt' 'libxmu' 'pango' 'xz' 'desktop-file-utils')
 makedepends=('openjdk' 'gcc-fortran')
 backup=('etc/R/Makeconf' 'etc/R/Renviron' 'etc/R/ldpaths' 'etc/R/repositories')
-options=('!makeflags')
-source=("http://cran.r-project.org/src/base/R-2/R-${pkgver}.tar.gz"
+options=('!makeflags' '!emptydirs')
+source=("http://cran.r-project.org/src/base/R-3/R-${pkgver}.tar.gz"
 	'r.desktop'
-	'r.png')
-sha1sums=('c80da687d66ee88d1e34fc1ae5c1bd525f9513dd'
-          'bcc0320d7cc49d56408edc756b50a0f9ba98fe43'
-          'a69a07ec363440efc18ce0a7f2af103375dea978')
+	'r.png'
+	'R.conf')
+md5sums=('36d51544b007fff26c7fbf36b02ea5ad'
+         'f6d54d32e510d90c748a0d16d2abcbdc'
+         '00659f39e90627fe87f1645df5d4e3a7'
+         '1dfa62c812aed9642f6e4ac34999b9fe')
 
 build() {
    cd "${srcdir}/R-${pkgver}"
-   sed -i 's|#define NeedFunctionPrototypes 0|#define NeedFunctionPrototypes 1|g' src/modules/X11/dataentry.c
+   sed -i 's|$(rsharedir)/texmf|${datarootdir}/texmf|' share/Makefile.in
+   sed -i 's|test ${makeinfo_version_min} -lt 7|test ${makeinfo_version_min} -lt 0|' configure
+   
    ./configure  --prefix=/usr \
 		--libdir=/usr/lib \
 		--sysconfdir=/etc/R \
@@ -40,11 +40,17 @@ build() {
                 F77=gfortran \
 		LIBnn=lib
    make
+   
+   cd src/nmath/standalone
+   make shared
 }
 
 package() {
    cd "${srcdir}/R-${pkgver}"
    make -j1 DESTDIR="${pkgdir}" install
+   
+   cd src/nmath/standalone
+   make DESTDIR="${pkgdir}" install
 
    #  Fixup R wrapper scripts.
    sed -i "s|${pkgdir} ||" "${pkgdir}/usr/bin/R"
@@ -65,4 +71,6 @@ package() {
     mv -f ${i} "${pkgdir}/etc/R"
     ln -s /etc/R/${i} ${i}
   done
+  
+  install -Dm644 "${srcdir}/R.conf" "${pkgdir}/etc/ld.so.conf.d/R.conf"
 }
