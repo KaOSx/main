@@ -1,0 +1,29 @@
+
+pkgname=facile
+pkgver=1.1
+pkgrel=1
+pkgdesc="A Functional Constraint Library"
+arch=('x86_64')
+url="http://www.recherche.enac.fr/opti/facile/"
+license="LGPL"
+makedepends=('ocaml')
+source=("http://www.recherche.enac.fr/opti/facile/distrib/$pkgname-$pkgver.tar.gz"
+        'ocaml4.patch')
+md5sums=('ab673e1fc0859a42bcb639a02c2d7e9e'
+         'a7f3148324992ed364ef11f4a8b924cd')
+
+build() {
+  cd $srcdir/$pkgname-$pkgver
+  patch -p1 -i $srcdir/ocaml4.patch
+  
+  ./configure
+  make
+}
+
+package() {
+  cd "$srcdir/$pkgname-$pkgver/src"
+  
+  install -d "$pkgdir/usr/lib/ocaml/facile"
+  install -D -m 644 facile.cmxa facile.cmi facile.cma facile.a "$pkgdir/usr/lib/ocaml/facile"
+}
+
