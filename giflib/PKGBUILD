@@ -1,6 +1,6 @@
 
 pkgname=giflib
-pkgver=4.2.1
+pkgver=5.0.4
 pkgrel=1
 pkgdesc="A library for reading and writing gif images"
 url="http://sourceforge.net/projects/giflib/"
@@ -9,29 +9,22 @@ license=('MIT')
 depends=('libx11' 'libsm')
 makedepends=('xmlto' 'docbook-xml' 'docbook-xsl')
 options=('!libtool')
-source=("http://downloads.sourceforge.net/sourceforge/giflib/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('bbd3324af24156d5d7e66ab1cee8508d')
+source=("http://downloads.sourceforge.net/sourceforge/giflib/${pkgname}-${pkgver}.tar.bz2"
+        'stdeff.patch')
+md5sums=('da60935d07374de00a78c2f6f720c8f5'
+         '93986c1b831179f4e9ec675bc1cf203d')
 
 build() {
   cd ${srcdir}/${pkgname}-${pkgver}
+  patch -p1 -i $srcdir/stdeff.patch
   
   ./configure --prefix=/usr
   make
-  
-  # libungif compatibility - instructions taken from Redhat specfile
-  MAJOR=`echo ${pkgver} | sed 's/\([0-9]\+\)\..*/\1/'`
-  gcc -shared -Wl,-soname,libungif.so.${MAJOR} -Llib/.libs -lgif -o libungif.so.${pkgver}
 }
 
 package() {
   cd ${srcdir}/${pkgname}-${pkgver}
   make DESTDIR=${pkgdir} install
   
-  install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
-  install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
-
-  
-  install -m755 libungif.so.${pkgver} ${pkgdir}/usr/lib/
-  ln -sf libungif.so.${pkgver} ${pkgdir}/usr/lib/libungif.so.4
-  ln -sf libungif.so.4 ${pkgdir}/usr/lib/libungif.so
+  install -Dm644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/COPYING"
 }

@@ -2,7 +2,7 @@
 pkgname=fontforge
 pkgver=20120731
 _pkgver=20120731-b
-pkgrel=2
+pkgrel=3
 pkgdesc="An outline and bitmap font editor"
 arch=('x86_64')
 url="http://fontforge.sourceforge.net"
@@ -16,6 +16,7 @@ md5sums=('a8a90473a97da87e45f66d11007b6e7c'
 
 build() {
   cd "${srcdir}/${pkgname}-${_pkgver}"
+  sed 's/\(DGifOpenFileName([^)]*\))/\1,NULL)/g' -i gutils/gimagereadgif.c
   
   ./configure --prefix=/usr \
               --mandir=/usr/share/man \
