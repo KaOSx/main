@@ -6,7 +6,8 @@ arch=('x86_64')
 url="http://webkitgtk.org/"
 pkgdesc="GTK+ Web content engine library for GTK+ 2.0"
 license=('custom')
-depends=('libxt' 'libxslt' 'sqlite3' 'libsoup' 'enchant' 'libgl' 'gtk2' 'gstreamer0.10-base' 'icu')
+depends=('libxt' 'libxslt' 'sqlite3' 'libsoup' 'enchant' 'libgl' 'gtk2'
+         'gstreamer0.10-base' 'icu' 'libwebp')
 makedepends=('gperf' 'gobject-introspection' 'python2' 'mesa' 'ruby' 'gtk-doc')
 options=('!libtool' '!emptydirs')
 source=("http://webkitgtk.org/releases/webkitgtk-$pkgver.tar.xz")
@@ -24,7 +25,7 @@ build() {
     --disable-webkit2
     
   sed -i 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
-  make all stamp-po
+  make 
 }
 
 package() {
