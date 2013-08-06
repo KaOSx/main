@@ -1,12 +1,13 @@
 
 pkgname=lirc-utils
 pkgver=0.9.0
-pkgrel=13
+pkgrel=14
 pkgdesc="Linux Infrared Remote Control utils"
 arch=('x86_64')
 url="http://www.lirc.org/"
 license=('GPL')
-_kernver='3.8.13-1'
+_kernver='3.9.8-1'
+_extramodules='extramodules-3.10'
 depends=('alsa-lib' 'libx11' 'libftdi' 'linux')
 makedepends=('help2man' 'linux-headers' 'python2')
 optdepends=('python2: pronto2lirc utility')
@@ -41,8 +42,7 @@ build() {
         patch -p1 -i "${srcdir}"/kernel-2.6.39.patch
         patch -p1 -i "${srcdir}"/linux-3.8.patch
 
-      # Disabling lirc_gpio driver as it does no longer work Kernel 2.6.22+
-	sed -i -e "s:lirc_gpio\.o::" drivers/lirc_gpio/Makefile.am 
+        sed -i 's/AM_CONFIG_HEADER/AC_CONFIG_HEADER/' configure.ac
 
 	autoreconf 
 	libtoolize 
@@ -57,8 +57,6 @@ build() {
             -e "s:lirc_imon::" -e "s:lirc_parallel::" -e "s:lirc_sasem::" \
             -e "s:lirc_serial::" -e "s:lirc_sir::" -e "s:lirc_ttusbir::" \
             -i Makefile drivers/Makefile drivers/*/Makefile tools/Makefile 
-                
-  	# build
 	make 
 }
 
@@ -74,9 +72,15 @@ package() {
 	cp -rp remotes "${pkgdir}"/usr/share/lirc 
 	chmod -R go-w "${pkgdir}"/usr/share/lirc/ 
 
-
 	# install the logrotate config
     	install -D -m644 "${srcdir}"/lirc.logrotate "${pkgdir}"/etc/logrotate.d/lirc 
 
 	install -d -m755 "${pkgdir}"/etc/lirc 
+	
+	cd "${srcdir}/lirc-${pkgver}/drivers"
+        make DESTDIR="${pkgdir}" moduledir="/usr/lib/modules/${_extramodules}" install
+
+        # set the kernel for inside the install script
+        sed -i -e "s/EXTRAMODULES=.*/EXTRAMODULES=${_extramodules}/g" "${startdir}/lirc-utils.install"
+        find "${pkgdir}" -name '*.ko' -exec gzip -9 {} \;
 }
