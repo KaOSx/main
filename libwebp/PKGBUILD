@@ -1,0 +1,34 @@
+
+pkgname=libwebp
+pkgver=0.3.1
+pkgrel=1
+pkgdesc="WebP library and conversion tools"
+arch=('x86_64')
+url="https://developers.google.com/speed/webp/"
+license=('BSD')
+depends=('libpng' 'libjpeg-turbo' 'libtiff' 'giflib')
+makedepends=('freeglut' 'mesa' 'glu')
+optdepends=('freeglut: vwebp viewer')
+options=('!libtool')
+source=("http://webp.googlecode.com/files/$pkgname-$pkgver.tar.gz")
+md5sums=('dc862bb4006d819b7587767a9e83d31f')
+
+build() {
+  cd "$srcdir/$pkgname-$pkgver"
+
+  ./configure --prefix=/usr \
+     --enable-swap-16bit-csp \
+     --enable-experimental \
+     --enable-libwebpmux \
+     --enable-libwebpdemux \
+     --enable-libwebpdecoder \
+     --disable-static
+  make
+}
+
+package() {
+  cd "$srcdir/$pkgname-$pkgver"
+
+  make DESTDIR="$pkgdir/" install
+  install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
+}

@@ -1,8 +1,8 @@
 
 pkgname=samba
-pkgver=3.6.16
+pkgver=3.6.17
 #In case version contains a or b
-_realver=3.6.16
+_realver=3.6.17
 pkgrel=2
 arch=('x86_64')
 url="http://www.samba.org"
@@ -10,7 +10,7 @@ license=('GPL3')
 depends=('readline' 'popt' 'libldap' 'libcap' 'krb5' 'db' 'e2fsprogs' 'tdb' 'talloc'
          'cifs-utils' 'libcups' 'acl' 'pam' 'gamin' 'gnutls')
 provides=('smbclient')
-options=(!makeflags)
+options=('!makeflags')
 backup=(etc/logrotate.d/samba
         etc/pam.d/samba
         etc/xinetd.d/swat)
@@ -27,7 +27,7 @@ source=("http://us1.samba.org/samba/ftp/stable/${pkgname}-${_realver}.tar.gz"
         'nmbd.service'
         'winbindd.service'
         'samba.conf')
-md5sums=('12c6785802813c2c5bf66e5c4c4e1d93'
+md5sums=('c67c3330545c8f1f7ee26e017c28439b'
          '5697da77590ec092cc8a883bae06093c'
          'a4bbfa39fee95bba2e7ad6b535fae7e6'
          '6db11f3dd2112a4b7a73007b189bef3f'
