@@ -4,29 +4,25 @@ _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=nvidia-next
 pkgdesc="NVIDIA drivers for linux."
-pkgver=319.32
-pkgrel=3
+pkgver=325.15
+pkgrel=1
 arch=('x86_64')
 url="http://www.nvidia.com/"
 depends=('linux-next>=3.10' 'linux-next<3.11' "nvidia-utils=${pkgver}")
 makedepends=('linux-next-headers')
 license=('custom')
 install=nvidia-next.install
-source=("https://github.com/KdeOs/hardware-detection/raw/master/hwdb/nvidia_supported"
-        'linux3.10.patch')
-md5sums=('62d0cdb856cfae64753c0f3acf729d47'
-         'a330634d3e44ee3ea3b39e0a49b49dd1')
+source=("https://github.com/KdeOs/hardware-detection/raw/master/hwdb/nvidia_supported")
+md5sums=('62d0cdb856cfae64753c0f3acf729d47')
 
     _ARCH='x86_64'
     _pkg="NVIDIA-Linux-${_ARCH}-${pkgver}-no-compat32"
     source+=("ftp://download.nvidia.com/XFree86/Linux-${_ARCH}/${pkgver}/${_pkg}.run")
-    md5sums+=('d181d856768868823df3bda4607a5315')
+    md5sums+=('63b2caa0cb128efa1a7808d7bddb2074')
 
 build() {
     cd "${srcdir}"
     sh "${_pkg}.run" --extract-only
-    # linux 3.10 patch from https://devtalk.nvidia.com/default/topic/543728/linux/building-nvidia-driver-on-kernel-3-9-0/post/3814531/#3814531
-    patch -p0 -i ${srcdir}/linux3.10.patch 
 
     cd "${_pkg}/kernel"
     make SYSSRC=/lib/modules/"${_kver}/build" module
