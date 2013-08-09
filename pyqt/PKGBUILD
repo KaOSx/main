@@ -15,11 +15,15 @@ optdepends=('phonon: enable audio and video in PyQt applications'
 provides=('pyqt4')
 replaces=('pyqt4')
 conflicts=('pyqt4')
-source=("http://sourceforge.net/projects/pyqt/files/PyQt4/PyQt-${pkgver}/PyQt-x11-gpl-${pkgver}.tar.gz")
-md5sums=('9257e12fec9b1b21e5a0d76d455d1691')
+source=("http://sourceforge.net/projects/pyqt/files/PyQt4/PyQt-${pkgver}/PyQt-x11-gpl-${pkgver}.tar.gz"
+        'yali.patch')
+md5sums=('9257e12fec9b1b21e5a0d76d455d1691'
+         '8eac0cc6cfe118052de3092f85e029a0')
 
 build() {
   cd ${srcdir}/PyQt-x11-gpl-${pkgver}
+  # only for yali builds, needs 4.9.6 to use this patch
+  #patch -p0 -i ${srcdir}/yali.patch
 
   python2 configure.py \
     --confirm-license \
