@@ -4,7 +4,7 @@ _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=('nvidia' 'chd-nvidia')
 pkgver=325.15
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 url="http://www.nvidia.com/"
 makedepends=('linux-headers' 'linux>=3.9' 'linux<3.10' "nvidia-utils=${pkgver}")
@@ -46,7 +46,7 @@ package_chd-nvidia() {
 
     cd "${srcdir}/${_pkg}"
 
-    install -dm755 "${pkgdir}/opt/live/hwdb"
+    install -dm755 "${pkgdir}/opt/kdeos/hwdb"
     sh -e "${srcdir}/nvidia_supported" README.txt kernel/nv-kernel.o \
-        > "${pkgdir}/opt/live/hwdb/hw_nvidia_hwdb"
+        > "${pkgdir}/opt/kdeos/hwdb/hw_nvidia_hwdb"
 }
