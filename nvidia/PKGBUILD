@@ -2,7 +2,7 @@
 _extramodules=extramodules-3.9
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
-pkgname=('nvidia' 'chd-nvidia')
+pkgname=('nvidia' 'khd-nvidia')
 pkgver=325.15
 pkgrel=2
 arch=('x86_64')
@@ -40,9 +40,11 @@ package_nvidia() {
     gzip "${pkgdir}/lib/modules/${_extramodules}/nvidia.ko"
 }
 
-package_chd-nvidia() {
-    pkgdesc="CHD ids for nvidia $pkgver"
+package_khd-nvidia() {
+    pkgdesc="KHD ids for nvidia $pkgver"
     arch=('x86_64')
+    conflicts=('chd-nvidia')
+    replaces=('chd-nvidia')
 
     cd "${srcdir}/${_pkg}"
 
