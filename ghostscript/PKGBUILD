@@ -1,7 +1,7 @@
 
 pkgname=ghostscript
 pkgver=9.07
-pkgrel=1
+pkgrel=2
 pkgdesc="An interpreter for the PostScript language"
 arch=('x86_64')
 license=('GPL3' 'custom')
@@ -66,4 +66,7 @@ package() {
   # install IJS
   cd ${srcdir}/ghostscript-${pkgver}/ijs
   make DESTDIR=${pkgdir} install
+  
+  # cups-filters 1.36 conflict
+  rm -rf $pkgdir/usr/lib/cups/filter/{gstopxl,gstoraster}
 }

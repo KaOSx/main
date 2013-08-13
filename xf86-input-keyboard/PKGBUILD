@@ -1,7 +1,7 @@
 
 pkgname=xf86-input-keyboard
 pkgver=1.7.0
-pkgrel=1
+pkgrel=2
 pkgdesc="X.Org keyboard input driver"
 arch=('x86_64')
 license=('custom')
@@ -16,14 +16,15 @@ sha1sums=('92fabe29afd240464b37bb954f847b073499ea7f')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
+  
   ./configure --prefix=/usr
   make
 }
 
 package() {
   cd "${srcdir}/${pkgname}-${pkgver}"
-  
   make DESTDIR="${pkgdir}" install
+  
   install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
   install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
 }

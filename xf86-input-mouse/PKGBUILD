@@ -1,7 +1,7 @@
 
 pkgname=xf86-input-mouse
 pkgver=1.9.0
-pkgrel=1
+pkgrel=2
 pkgdesc="X.org mouse input driver"
 arch=('x86_64')
 license=('custom')
@@ -16,6 +16,7 @@ md5sums=('36b5b92000c4644f648b58a535e4ee73')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
+  
   ./configure --prefix=/usr
   make
 }
@@ -23,6 +24,7 @@ build() {
 package() {
   cd "${srcdir}/${pkgname}-${pkgver}"
   make DESTDIR="${pkgdir}" install
+  
   install -d -m755 "${pkgdir}/usr/share/licenses/${pkgname}"
   install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
 }
