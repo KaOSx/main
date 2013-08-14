@@ -1,26 +1,14 @@
 
 pkgname=kdeos-hardware-detection
-pkgver=20130811
-pkgrel=3
+pkgver=20130814
+pkgrel=1
 pkgdesc="Hardware detection scripts"
 arch=('x86_64')
 url="http://www.kde-os.tk"
 depends=('bc' 'util-linux' 'khd-nvidia' 'dmidecode') 
 license=('GPL')
-source=("hardware-detection.tar.xz")
-md5sums=('3e52ab735fca3703c3d88bd0c3b61102')
-
-# create tarball: source PKGBUILD && mksource
-
-mksource() {
-	  rm -vRf ${pkgname}-${pkgver}
-	  git clone git://github.com/KdeOs/${pkgname}.git ${pkgname}-${pkgver}
-	  rm -vRf ${pkgname}-${pkgver}/.git*
-	  pushd ${pkgname}-${pkgver}
-	  popd
-	  tar -cvJf ${pkgname}-${pkgver}.tar.xz ${pkgname}-${pkgver}/*
-	  md5sum ${pkgname}-${pkgver}.tar.xz
-}
+source=("git://github.com/KdeOs/hardware-detection.git")
+md5sums=('SKIP')
 
 package(){
 	cd "${srcdir}/hardware-detection"
