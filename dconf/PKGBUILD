@@ -1,16 +1,16 @@
 
 pkgname=dconf
-pkgver=0.14.1
+pkgver=0.16.1
 pkgrel=1
 pkgdesc="A low-level configuration system."
 arch=('x86_64')
 url="http://live.gnome.org/dconf"
 license=('LGPL2.1')
 depends=('glib2')
-makedepends=('vala' 'gobject-introspection' 'python2' 'intltool' 'docbook-xsl')
+makedepends=('vala' 'gobject-introspection' 'python2' 'intltool' 'docbook-xsl' 'python3')
 install=dconf.install
 source=("http://download.gnome.org/sources/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
-md5sums=('eaa62d1a5655e6dd620358d6b1c4f272')
+md5sums=('1f17e92511a21240ab5a56e4523f77da')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
