@@ -1,32 +1,34 @@
 
 pkgname=openobex
-pkgver=1.5
-pkgrel=3
+pkgver=1.7.1
+pkgrel=1
 pkgdesc="Implementation of the OBject EXchange (OBEX) protocol"
 url="http://dev.zuckschwerdt.org/openobex/"
 arch=('x86_64')
 license=('GPL' 'LGPL')
-depends=('bluez' 'libusb-compat')
+depends=('bluez' 'libusbx')
 options=('!libtool')
-source=("http://pkgs.fedoraproject.org/repo/pkgs/openobex/openobex-1.5.tar.gz/0d83dc86445a46a1b9750107ba7ab65c/$pkgname-$pkgver.tar.gz")
-md5sums=('0d83dc86445a46a1b9750107ba7ab65c')
+source=("http://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}-Source.tar.gz")
+md5sums=('3181bfed9cb7db591605391068cb0085')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
-
-  export CFLAGS="${CFLAGS} -fPIC"
-
-  ./configure --prefix=/usr \
-              --enable-apps \
-              --enable-irda \
-              --enable-bluetooth \
-              --enable-usb
-  make
+  cd ${srcdir}/
+  mkdir build
+  
+  cd build
+  cmake ../${pkgname}-${pkgver}-Source \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_SKIP_RPATH=ON \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=/usr/lib \
+    -DCMAKE_INSTALL_SBINDIR=/usr/bin
+  make all openobex-apps
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${srcdir}/build
+  make DESTDIR=${pkgdir} install
   
-  make DESTDIR="${pkgdir}" install
+  cp ../${pkgname}-${pkgver}-Source/apps/lib/*.h  ${pkgdir}/usr/include/openobex/
+  install -m644 apps/lib/libopenobex-apps-common.a ${pkgdir}/usr/lib/libopenobex-apps-common.a
 }
-

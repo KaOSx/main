@@ -1,22 +1,22 @@
 
 pkgname=imagemagick
-pkgver=6.8.2.10
-pkgrel=2
+pkgver=6.8.6.8
+pkgrel=1
 pkgdesc="An image viewing/manipulation program"
 arch=('x86_64')
 url="http://www.imagemagick.org/"
 license=('custom')
 depends=('libltdl' 'lcms' 'lcms2' 'libxt' 'gcc-libs' 'bzip2' 'freetype2' 'fontconfig'
-	 'libxext' 'fftw' 'liblqr' 'libwmf' 'librsvg' 'libxml2' 'perl' )
+	 'libxext' 'fftw' 'liblqr' 'libwmf' 'librsvg' 'libxml2' 'perl' 'libwebp')
 makedepends=('ghostscript' 'openexr' 'jasper')
 optdepends=('ghostscript: for Ghostscript support' 
             'openexr: for OpenEXR support'  
             'jasper: for JPEG-2000 support')
 options=('!docs' 'libtool' '!emptydirs')
-source=("http://sourceforge.net/projects/imagemagick/files/old-sources/6.x/6.8/ImageMagick-6.8.2-10.tar.gz"
+source=("http://sourceforge.net/projects/imagemagick/files/6.8.6-sources/ImageMagick-6.8.6-8.tar.xz"
 	'perlmagick.rpath.patch')
-md5sums=('780da797aa684a37f7a875f380524067'
-         'ff9974decbfe9846f8e347239d87e4eb')
+md5sums=('0f4fb4997f8e8cf0d5b4d4cb3da0e0b4'
+         '0faf7158fd3a0904d9a70dd3e3c1fe9c')
 
 build() {
 	cd ${srcdir}/ImageMagick-${pkgver%.*}-${pkgver##*.}
@@ -26,13 +26,19 @@ build() {
 	patch -p0 -i "${srcdir}/perlmagick.rpath.patch" 
 
 	./configure --prefix=/usr --sysconfdir=/etc --with-modules --disable-static \
-	    --disable-openmp --with-wmf --with-openexr --with-xml \
+	    --enable-hdri --with-wmf --with-openexr --with-xml \
 	    --with-gslib --with-gs-font-dir=/usr/share/fonts/Type1 \
 	    --with-perl --with-perl-options="INSTALLDIRS=vendor" \
-	    --with-lqr --with-rsvg --with-jp2 --with-lcms2 \
-	    --without-gvc --without-djvu --without-autotrace --without-webp \
+	    --with-lqr --with-rsvg --with-jp2 --with-lcms2 --with-webp \
+	    --without-gvc --without-djvu --without-autotrace \
 	    --without-jbig --without-fpx --without-dps --without-fftw 
 	make 
+}
+
+check() {
+  cd ImageMagick-${pkgver%.*}-${pkgver##*.}
+  
+  make check
 }
 
 package() {
