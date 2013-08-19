@@ -9,11 +9,12 @@ arch=('x86_64')
 url="http://aspell.net/"
 license=('LGPL' 'GPL')
 depends=('aspell')
-source="ftp://ftp.gnu.org/gnu/aspell/dict/pt_BR/aspell6-pt_BR-$_pkgverBR-0.tar.bz2"
+source=("ftp://ftp.gnu.org/gnu/aspell/dict/pt_BR/aspell6-pt_BR-$_pkgverBR-0.tar.bz2"
        "http://natura.di.uminho.pt/download/sources/Dictionaries/aspell6/aspell6.pt-$_pkgverPT.tar.bz2"
        "http://natura.di.uminho.pt/download/sources/Dictionaries/aspell6/aspell6.pt-preao-$_pkgverPT.tar.bz2")
 md5sums=('e082a8956882eb94a67c12e1b8c4a324'
-         'a54267ce8f91de6e6a1baf1e8048cba0')
+         'c0bb5c06afb5cbdaf939930a1fef6b2b'
+         '3c4b41f19b9f9f0d8dc2459c23c29774')
 
 build() {
   cd aspell6-pt_BR-$_pkgverBR-0
