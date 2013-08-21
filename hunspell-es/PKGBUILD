@@ -5,33 +5,29 @@ pkgrel=1
 pkgdesc="Spanish hunspell dictionaries"
 arch=('x86_64')
 url="https://forja.rediris.es/projects/rla-es/"
-license=('LGPL3')
+license=('LGPL')
 makedepends=('hunspell')
 optdepends=('hunspell:	the spell checking libraries and apps')
-noextract=(es_ANY.oxt es_AR.oxt es_BO.oxt es_CL.oxt es_CO.oxt 
-           es_CR.oxt es_CU.oxt es_DO.oxt es_EC.oxt es_ES.oxt 
-           es_GT.oxt es_HN.oxt es_MX.oxt es_NI.oxt es_PA.oxt 
-           es_PE.oxt es_PR.oxt es_SV.oxt es_UY.oxt es_VE.oxt)
 source=('http://forja.rediris.es/frs/download.php/2618/es_ANY.oxt'
-        'http://forja.rediris.es/frs/download.php/2619/es_AR.oxt'
-        'http://forja.rediris.es/frs/download.php/2620/es_BO.oxt'
-        'http://forja.rediris.es/frs/download.php/2621/es_CL.oxt'
-        'http://forja.rediris.es/frs/download.php/2622/es_CO.oxt'
-        'http://forja.rediris.es/frs/download.php/2623/es_CR.oxt'
-        'http://forja.rediris.es/frs/download.php/2624/es_CU.oxt'
-        'http://forja.rediris.es/frs/download.php/2625/es_DO.oxt'
-        'http://forja.rediris.es/frs/download.php/2626/es_EC.oxt'
-        'http://forja.rediris.es/frs/download.php/2627/es_ES.oxt'
-        'http://forja.rediris.es/frs/download.php/2628/es_GT.oxt'
-        'http://forja.rediris.es/frs/download.php/2629/es_HN.oxt'
-        'http://forja.rediris.es/frs/download.php/2630/es_MX.oxt'
-        'http://forja.rediris.es/frs/download.php/2631/es_NI.oxt'
-        'http://forja.rediris.es/frs/download.php/2632/es_PA.oxt'
-        'http://forja.rediris.es/frs/download.php/2633/es_PE.oxt'
-        'http://forja.rediris.es/frs/download.php/2634/es_PR.oxt'
-        'http://forja.rediris.es/frs/download.php/2635/es_SV.oxt'
-        'http://forja.rediris.es/frs/download.php/2636/es_UY.oxt'
-        'http://forja.rediris.es/frs/download.php/2637/es_VE.oxt')
+	'http://forja.rediris.es/frs/download.php/2619/es_AR.oxt'
+	'http://forja.rediris.es/frs/download.php/2620/es_BO.oxt'
+	'http://forja.rediris.es/frs/download.php/2621/es_CL.oxt'
+	'http://forja.rediris.es/frs/download.php/2622/es_CO.oxt'
+	'http://forja.rediris.es/frs/download.php/2623/es_CR.oxt'
+	'http://forja.rediris.es/frs/download.php/2624/es_CU.oxt'
+	'http://forja.rediris.es/frs/download.php/2625/es_DO.oxt'
+	'http://forja.rediris.es/frs/download.php/2626/es_EC.oxt'
+	'http://forja.rediris.es/frs/download.php/2627/es_ES.oxt'
+	'http://forja.rediris.es/frs/download.php/2628/es_GT.oxt'
+	'http://forja.rediris.es/frs/download.php/2629/es_HN.oxt'
+	'http://forja.rediris.es/frs/download.php/2630/es_MX.oxt'
+	'http://forja.rediris.es/frs/download.php/2631/es_NI.oxt'
+	'http://forja.rediris.es/frs/download.php/2632/es_PA.oxt'
+	'http://forja.rediris.es/frs/download.php/2633/es_PE.oxt'
+	'http://forja.rediris.es/frs/download.php/2634/es_PR.oxt'
+	'http://forja.rediris.es/frs/download.php/2635/es_SV.oxt'
+	'http://forja.rediris.es/frs/download.php/2636/es_UY.oxt'
+	'http://forja.rediris.es/frs/download.php/2637/es_VE.oxt')
 md5sums=('9676e94487e4a09a1c7adb8e2357774d'
          '15a2bbadfbdaed50a85cee048e0448e1'
          'a946fa01accc85bba4ac4c8a65bda990'
@@ -54,23 +50,18 @@ md5sums=('9676e94487e4a09a1c7adb8e2357774d'
          '2c0312e7100b6a5347f16fa33f1a29ba')
 
 package() {
-  cd "$srcdir"
-  for file in *.oxt; do
-    LANG=en_US.utf8 bsdtar -xf $file
-  done
-
-  install -dm755 "${pkgdir}/usr/share/hunspell"
-  install -m644 es_*.dic es_*.aff "$pkgdir/usr/share/hunspell"
+  install -dm755 ${pkgdir}/usr/share/hunspell
+  cp -p es_*.dic es_*.aff $pkgdir/usr/share/hunspell
 
   # the symlinks
-  install -dm755 "${pkgdir}/usr/share/myspell/dicts"
-  pushd "$pkgdir/usr/share/myspell/dicts"
-    for file in "$pkgdir"/usr/share/hunspell/*; do
+  install -dm755 ${pkgdir}/usr/share/myspell/dicts
+  pushd $pkgdir/usr/share/myspell/dicts
+    for file in $pkgdir/usr/share/hunspell/*; do
       ln -sv /usr/share/hunspell/$(basename $file) .
     done
   popd
   
   # docs
-  install -dm755 "${pkgdir}/usr/share/doc/$pkgname"
-  install -m644 README.txt "$pkgdir/usr/share/doc/$pkgname"
+  install -dm755 ${pkgdir}/usr/share/doc/$pkgname
+  cp -p README.txt $pkgdir/usr/share/doc/$pkgname
 }
