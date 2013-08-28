@@ -6,7 +6,7 @@ _pkgver=5.1.1
 pkgrel=1
 arch=('x86_64')
 url='http://qt.nokia.com/'
-license=('GPL3' 'LGPL')
+license=('GPL3' 'LGPL' 'FDL' 'custom')
 makedepends=('libtiff' 'libpng' 'libmng' 'sqlite3' 'ca-certificates' 'glib2' 'dbus'
     'fontconfig' 'libgl' 'libsm' 'libxrandr' 'libxv' 'libxi' 'alsa-lib' 'icu'
     'xdg-utils' 'hicolor-icon-theme' 'desktop-file-utils' 'mesa' 'postgresql-libs'
@@ -56,7 +56,6 @@ build() {
                 -examplesdir /usr/share/qt5/examples \
 		-system-sqlite \
                 -openssl-linked \
-                -nomake tests \
                 -make examples \
                 -optimized-qmake \
                 -reduce-relocations \
