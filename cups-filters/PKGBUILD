@@ -1,6 +1,6 @@
 
 pkgname=cups-filters
-pkgver=1.0.36
+pkgver=1.0.37
 pkgrel=1
 pkgdesc="OpenPrinting CUPS Filters"
 arch=('x86_64')
@@ -14,10 +14,8 @@ optdepends=('ghostscript: for non-PostScript printers to print with CUPS to conv
 	    'foomatic-db-nonfree: drivers use Ghostscript to convert PostScript to a printable form directly')
 backup=(etc/fonts/conf.d/99pdftoopvp.conf)
 options=(!libtool)
-source=("http://www.openprinting.org/download/cups-filters/$pkgname-$pkgver.tar.gz"
-        'cups-browsed.service')
-md5sums=('c48a991ac408583d33e1d1e84881c470'
-         'c1101c052abfd93759d4963f6f6c36f0')
+source=("http://www.openprinting.org/download/cups-filters/$pkgname-$pkgver.tar.gz")
+md5sums=('42d2dd9745d4d5d626c7b871155cb430')
 
 build() {
   cd "$srcdir/$pkgname-$pkgver"
@@ -42,5 +40,5 @@ package() {
   # drop static lib
   rm -f ${pkgdir}/usr/lib/*.a
   # systemd service
-  install -Dm644 ${srcdir}/cups-browsed.service ${pkgdir}/usr/lib/systemd/system/cups-browsed.service
+  #install -Dm644 ${srcdir}/cups-browsed.service ${pkgdir}/usr/lib/systemd/system/cups-browsed.service
 }
