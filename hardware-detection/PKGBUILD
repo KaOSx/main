@@ -4,17 +4,17 @@ pkgver=1.2
 pkgrel=1
 pkgdesc="Hardware detection scripts"
 arch=('x86_64')
-url="http://www.kde-os.tk"
+url="http://kaosx.us"
 depends=('bc' 'util-linux' 'chd-nvidia' 'dmidecode') 
 license=('GPL')
-source=("https://github.com/KdeOs/hardware-detection/archive/v${pkgver}.tar.gz")
+source=("https://github.com/KaOSx/hardware-detection/archive/v${pkgver}.tar.gz")
 md5sums=('fb952c1f36663d9a4f86a37d23225210')
 
 # create tarball: source PKGBUILD && mksource
 
 mksource() {
 	  rm -vRf ${pkgname}-${pkgver}
-	  git clone git://github.com/KdeOs/${pkgname}.git ${pkgname}-${pkgver}
+	  git clone git://github.com/KaOSx/${pkgname}.git ${pkgname}-${pkgver}
 	  rm -vRf ${pkgname}-${pkgver}/.git*
 	  pushd ${pkgname}-${pkgver}
 	  popd

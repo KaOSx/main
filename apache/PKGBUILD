@@ -19,7 +19,7 @@ source=("http://www.apache.org/dist/httpd/httpd-${pkgver}.tar.bz2"
         "http://mpm-itk.sesse.net/apache2.4-mpm-itk-2.4.2-01.patch"
         'apache.conf.d'
         'httpd.logrotate'
-        'kdeos.layout'
+        'kaos.layout'
         'httpd.service'
         'httpd-tmpfile.conf')
 md5sums=('0e712ee2119cd798c8ae39d5f11a9206'
@@ -42,7 +42,7 @@ build() {
       -e 's#Group daemon#Group http#' \
       -i docs/conf/httpd.conf.in 
 
-  cat "${srcdir}/kdeos.layout" >> config.layout
+  cat "${srcdir}/kaos.layout" >> config.layout
 
   for mpm in prefork worker itk; do
     if [ "${mpm}" = 'itk' ]; then
@@ -56,7 +56,7 @@ build() {
     pushd "build-${mpm}"
 
     "${srcdir}/httpd-${pkgver}/configure" \
-        --enable-layout=KdeOS \
+        --enable-layout=KaOS \
         --enable-modules=all \
         --enable-mods-shared=all \
         --enable-so \
