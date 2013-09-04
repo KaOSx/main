@@ -1,0 +1,30 @@
+
+pkgname=glamor-egl
+pkgver=0.5.1
+pkgrel=1
+pkgdesc='OpenGL based 2D rendering acceleration library'
+arch=('x86_64')
+url="http://xorg.freedesktop.org/"
+license=('custom')
+depends=('libgl')
+makedepends=('xorg-server' 'resourceproto' 'scrnsaverproto')
+source=("http://xorg.freedesktop.org/releases/individual/driver/${pkgname}-${pkgver}.tar.bz2")
+options=('!libtool')
+md5sums=('025c4e64dbc22009a8576f76a6f6eb7c')
+
+build() {
+  cd ${srcdir}/${pkgname}-${pkgver}
+  
+  ./configure --prefix=/usr --disable-static --enable-glx-tls \
+
+  make
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+
+  make "DESTDIR=${pkgdir}" install
+
+  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
+  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
+}

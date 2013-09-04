@@ -1,12 +1,12 @@
 
 pkgname=xf86-video-ati
 pkgver=7.2.0
-pkgrel=1
+pkgrel=2
 pkgdesc="X.org ati video driver"
 arch=('x86_64')
 url="http://xorg.freedesktop.org/"
 license=('custom')
-depends=('libpciaccess' 'libdrm>=2.4.41' 'systemd' 'pixman' 'mesa')
+depends=('libpciaccess' 'libdrm>=2.4.41' 'systemd' 'pixman' 'mesa' 'glamor-egl')
 makedepends=('xorg-server' 'xf86driproto' 'resourceproto' 'scrnsaverproto')
 groups=('xorg-video-drivers')
 options=('!libtool')
@@ -19,7 +19,8 @@ build() {
     ./configure \
             --prefix=/usr \
             --enable-maintainer-mode \
-            --enable-dependency-tracking 
+            --enable-dependency-tracking \
+            --enable-glamor
     make
 }
 
