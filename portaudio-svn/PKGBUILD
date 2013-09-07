@@ -1,6 +1,6 @@
 
 pkgname=portaudio-svn
-pkgver=1891
+pkgver=1910
 pkgrel=1
 pkgdesc="PortAudio is a free, cross platform, open-source, audio I/O library."
 arch=('x86_64')
@@ -29,8 +29,8 @@ build() {
   svn export --quiet "${srcdir}/${_svnmod}" "${srcdir}/${_svnmod}-build"
   cd "${srcdir}/${_svnmod}-build"
 
-  ./configure --prefix=/usr --with-alsa --with-jack
-  make
+  ./configure --prefix=/usr --with-alsa --with-jack --enable-cxx
+  make -j1
 }
 
 package() {
