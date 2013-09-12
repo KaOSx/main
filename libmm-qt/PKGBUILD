@@ -1,0 +1,29 @@
+
+pkgname=libmm-qt
+pkgver=0.5.0
+pkgrel=1
+pkgdesc='Qt-only wrapper for ModemManager DBus API'
+arch=('x86_64')
+url='https://projects.kde.org/projects/extragear/libs/libmm-qt'
+license=('LGPL')
+depends=('qt')
+makedepends=('cmake')
+source=("http://download.kde.org/unstable/modemmanager-qt/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
+md5sums=('c1a24e43f45ca5c1a66f6558f8749621')
+
+build() {
+  cd $pkgname-$pkgver
+  mkdir build
+  
+  cd build
+  cmake .. \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr
+  make
+}
+
+package() {
+  cd $pkgname-$pkgver/build
+  
+  make DESTDIR=${pkgdir} install
+}
