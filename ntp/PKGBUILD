@@ -2,7 +2,7 @@
 pkgname=ntp
 pkgver=4.2.6.p5
 _realver=4.2.6p5
-pkgrel=5
+pkgrel=6
 pkgdesc="NTP (Network Time Protocol) tries to keep servers in sync"
 arch=('x86_64')
 license=('custom')
@@ -17,9 +17,9 @@ source=("http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-${_realver}.tar.gz"
 	'ntpd.service'
 	'ntpdate.service')
 md5sums=('00df80a84ec9528fcfb09498075525bc'
-         'ac884ad959850731d8f27667681bbdf8'
-         '06ae4a88dd7b9e0bc9679aebf2241167'
-         'e57a527fb190e6865ff7b836183b845c')
+         '5d3af0062bdf0494a146850d0319499f'
+         '931559d60027e10f3bc2609f139136bb'
+         'ae1605bf73a961d61294e913e9e5b168')
 
 build() {
   cd "${srcdir}/${pkgname}-${_realver}"
