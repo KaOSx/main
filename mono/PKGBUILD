@@ -1,6 +1,6 @@
 
 pkgname=mono
-pkgver=2.10.8
+pkgver=3.0.12
 pkgrel=1
 pkgdesc="Free implementation of the .NET platform including runtime and compiler"
 arch=('x86_64')
@@ -13,14 +13,13 @@ provides=('monodoc')
 conflicts=('monodoc')
 source=("http://download.mono-project.com/sources/${pkgname}/${pkgname}-${pkgver}.tar.bz2"
         'mono.binfmt.d')
-md5sums=('c012b01ac17bedb0af52b7a16405da84'
+md5sums=('7833809f5ddac1b8c605d4d26789987b'
          '568c72e1b42f089a9fec20dfe4bcc3b4')
 
 build() {
   cd ${srcdir}/${pkgname}-${pkgver}
   # build mono
-  ./configure --prefix=/usr --sysconfdir=/etc \
-              --with-libgdiplus=installed 
+  ./configure --prefix=/usr --sysconfdir=/etc  
   make 
 
   # build jay
