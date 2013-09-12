@@ -1,6 +1,6 @@
 
 pkgname=ocaml	
-pkgver=4.00.1
+pkgver=4.01.0
 pkgrel=1
 pkgdesc="A functional language with OO extensions"
 arch=('x86_64')
@@ -10,14 +10,11 @@ depends=('gdbm')
 makedepends=('tk' 'ncurses>=5.6-7' 'libx11')
 optdepends=('ncurses: advanced ncurses features' 'tk: advanced tk features')
 options=('!makeflags' '!emptydirs')
-source=("http://caml.inria.fr/distrib/ocaml-4.00/$pkgname-$pkgver.tar.gz"
-        'tk8.6.patch')
-md5sums=('91124a8eb12a57f1e56c02fe3db0f9e7'
-         '67b0a8a8885fc1221181b171541cb1b0')
+source=("http://caml.inria.fr/distrib/ocaml-4.01/$pkgname-$pkgver.tar.gz")
+md5sums=('04dfdd7da189462a4f10ec6530359cef')
 
 build() {
   cd $srcdir/$pkgname-$pkgver
-  patch -p2 -i ../tk8.6.patch
   
   ./configure -prefix /usr 
   make world.opt 
