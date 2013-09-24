@@ -1,13 +1,13 @@
 
 pkgname=pango
 pkgver=1.36.0
-pkgrel=1
+pkgrel=2
 pkgdesc="A library for layout and rendering of text"
 arch=('x86_64')
 license=('LGPL')
 depends=('cairo' 'libxft' 'libthai' 'harfbuzz')
 makedepends=('gobject-introspection' 'libxt' 'fontconfig')
-options=('!libtool' '!emptydirs')
+options=('!libtool')
 install=pango.install
 source=("http://ftp.gnome.org/pub/gnome/sources/${pkgname}/1.36/${pkgname}-${pkgver}.tar.xz")
 url="http://www.pango.org/"
@@ -16,8 +16,10 @@ md5sums=('5b50052df366e6d7bf08fdd80d58acce')
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
 
-  ./configure --prefix=/usr --sysconfdir=/etc \
-      --localstatedir=/var --with-included-modules=basic-fc
+  ./configure --prefix=/usr \
+        --sysconfdir=/etc \
+        --localstatedir=/var \
+        --with-included-modules=basic-fc
   make
 }
 
