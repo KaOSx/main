@@ -1,7 +1,7 @@
 
 pkgname=vlc
-pkgver=2.0.8.1
-_pkgver=2.0.8a
+pkgver=2.1.0
+_pkgver=2.1.0
 pkgrel=1
 arch=('x86_64')
 url="http://www.videolan.org/vlc/"
@@ -32,14 +32,11 @@ backup=('usr/share/vlc/http/.hosts'
 groups=('multimedia')
 options=('!libtool')
 install="vlc.install"
-source=("http://download.videolan.org/pub/videolan/$pkgname/${_pkgver/a}/$pkgname-$_pkgver.tar.xz"
-        'live555.patch')
-md5sums=('e5000677181406d026ffe448633d1ca0'
-         '4fc9bf2093a901ef396615fbc451b125')
+source=("http://download.videolan.org/pub/videolan/$pkgname/${_pkgver/a}/$pkgname-$_pkgver.tar.xz")
+md5sums=('8c77bda671821f5b9ede96b6816e2ade')
 
 build() {
   cd "${srcdir}/${pkgname}-${_pkgver/a}"
-  patch -p1 -i "${srcdir}/live555.patch"
 
   sed -i -e 's:truetype/freefont:TTF:g' modules/text_renderer/freetype.c
 
@@ -47,13 +44,10 @@ build() {
               --sysconfdir=/etc \
               --disable-rpath \
               --enable-faad \
-              --enable-oss \
               --disable-rpath \
               --enable-faad \
-              --enable-dbus-control \
               --enable-nls \
               --enable-lirc \
-              --enable-pvr \
               --enable-upnp \
               --enable-realrtsp \
               --enable-bluray \
