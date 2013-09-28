@@ -1,6 +1,6 @@
 
 pkgname=nspr
-pkgver=4.10
+pkgver=4.10.1
 pkgrel=1
 pkgdesc="Netscape Portable Runtime"
 arch=('x86_64')
@@ -9,23 +9,19 @@ license=('MPL' 'GPL')
 depends=('glibc')
 makedepends=('zip')
 options=('!emptydirs')
-source=("https://ftp.mozilla.org/pub/mozilla.org/nspr/releases/v${pkgver}/src/${pkgname}-${pkgver}.tar.gz"
-        'nspr.pc.in')
-md5sums=('f5466def95726b3c900d8a0227bdd034'
-         'bce1611f3117b53fc904cab549c09967')
+source=("https://ftp.mozilla.org/pub/mozilla.org/nspr/releases/v${pkgver}/src/${pkgname}-${pkgver}.tar.gz")
+md5sums=('2e354084ca2bc5fbbb820762597f3890')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
-  confflags="--enable-64bit"
 
-  unset CFLAGS
-  unset CXXFLAGS
   ./nspr/configure \
       --prefix=/usr \
       --libdir=/usr/lib \
       --includedir=/usr/include/nspr \
       --enable-optimize \
-      --disable-debug ${confflags}
+      --disable-debug \
+      --enable-64bit
   make
 }
 
@@ -33,24 +29,9 @@ package() {
   cd "${srcdir}/${pkgname}-${pkgver}"
   make DESTDIR="${pkgdir}" install
 
-  NSPR_LIBS=`./config/nspr-config --libs`
-  NSPR_CFLAGS=`./config/nspr-config --cflags`
-  NSPR_VERSION=`./config/nspr-config --version`
-  install -m755 -d "${pkgdir}/usr/lib/pkgconfig"
-  sed "${srcdir}/nspr.pc.in" -e "s,%libdir%,/usr/lib," \
-  	-e "s,%prefix%,/usr," \
-	-e "s,%exec_prefix%,/usr/bin," \
-	-e "s,%includedir%,/usr/include/nspr," \
-	-e "s,%NSPR_VERSION%,${NSPR_VERSION}," \
-	-e "s,%FULL_NSPR_LIBS%,${NSPR_LIBS}," \
-	-e "s,%FULL_NSPR_CFLAGS%,${NSPR_CFLAGS}," > "${pkgdir}/usr/lib/pkgconfig/nspr.pc"
-  chmod 644 "${pkgdir}/usr/lib/pkgconfig/nspr.pc"
-  ln -sf nspr.pc "${pkgdir}/usr/lib/pkgconfig/mozilla-nspr.pc"
-
   chmod 644 ${pkgdir}/usr/lib/*.a
 
-  rm -rf "${pkgdir}/usr/bin/compile-et.pl" \
-	"${pkgdir}/usr/bin/prerr.properties" \
-	"${pkgdir}/usr/share/aclocal/nspr.m4" \
-	"${pkgdir}/usr/include/nspr/md"
+  ln -s nspr.pc "$pkgdir/usr/lib/pkgconfig/mozilla-nspr.pc"
+  rm -r "$pkgdir"/usr/bin/{compile-et.pl,prerr.properties} \
+         "$pkgdir/usr/include/nspr/md"
 }
