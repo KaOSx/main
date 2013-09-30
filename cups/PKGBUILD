@@ -2,7 +2,7 @@
 pkgbase="cups"
 pkgname=('libcups' 'cups')
 pkgver=1.7rc1
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 license=('GPL')
 url="http://www.cups.org/"
@@ -20,7 +20,7 @@ md5sums=('ee162c4be28043f03059f91ec133917a'
          '3ba9e3410df1dc3015463d615ef91b3b'
          '3733c23e77eb503bd94cc368e02830dc'
          '90c30380d4c8cd48a908cfdadae1ea24'
-         '6a937ec47a0be4187e6f58ce9f759b32'
+         '444a24da48df5e23312cbe5555ad8be5'
          'f861b18f4446c43918c8643dcbbd7f6d'
          '96f82c38f3f540b53f3e5144900acf17')
 
@@ -28,8 +28,8 @@ build() {
   cd ${srcdir}/${pkgbase}-${pkgver}
 
   # add systemd socket support - Fedora patch, also used in Gentoo
-  # modified now to the changes done by Gentoo in their svn ebuild
-  # http://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/net-print/cups/files/cups-1.5.0-systemd-socket.patch?revision=1.1
+  # modified now to the changes done by Gentoo in their svn ebuild, version 2
+  # http://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/net-print/cups/files/cups-1.5.0-systemd-socket-2.patch?revision=1.1
   patch -p1 -i ${srcdir}/cups-systemd-socket2.patch
   
   # Do not export SSL libs in cups-config
