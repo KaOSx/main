@@ -1,22 +1,18 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
 
 pkgname=xf86-video-vmware
-pkgver=12.0.2
-pkgrel=2
+pkgver=13.0.1
+pkgrel=1
 pkgdesc="X.org vmware video driver"
 arch=('i686' 'x86_64')
 url="http://xorg.freedesktop.org/"
 license=('custom')
-depends=('libdrm' 'svga-dri')
-makedepends=('xorg-server'  'libx11' 'libxext')
+depends=('libdrm' 'mesa' 'llvm')
+makedepends=('xorg-server' 'resourceproto' 'scrnsaverproto')
 conflicts=('xorg-server<1.12.3')
 groups=('xorg-video-drivers')
 options=('!libtool' '!emptydirs')
 source=("${url}/releases/individual/driver/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('0743ec7c479603fba60d118858fd5783')
+md5sums=('b08e0195ebf3f88a82129322cb93da08')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
@@ -27,8 +23,8 @@ build() {
 
 package() {
   cd "${srcdir}/${pkgname}-${pkgver}"
-
   make DESTDIR="${pkgdir}" install
+  
   install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
   install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
 }

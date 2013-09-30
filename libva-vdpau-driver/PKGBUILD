@@ -1,0 +1,32 @@
+
+pkgname=libva-vdpau-driver
+pkgver=0.7.4
+pkgrel=1
+pkgdesc="VDPAU backend for VA API"
+arch=('x86_64')
+url="http://freedesktop.org/wiki/Software/vaapi"
+license=('GPL')
+depends=('libva' 'libvdpau')
+makedepends=('mesa')
+options=('!libtool')
+source=("http://www.freedesktop.org/software/vaapi/releases/$pkgname/$pkgname-$pkgver.tar.bz2"
+        'utils_glx.diff')
+md5sums=('5ec6d452d2dd307434ea3d32da49c3e5'
+         '9ecb758ac8e758946400cc3bb7e94a2b')
+
+build() {
+  cd ${srcdir}/${pkgname}-${pkgver}
+  patch -p1 -i ${srcdir}/utils_glx.diff
+  
+  ./configure --prefix=/usr 
+  make
+}
+
+package() {
+  cd ${srcdir}/${pkgname}-${pkgver}
+  
+  make DESTDIR="${pkgdir}" install
+}
+
+
+
