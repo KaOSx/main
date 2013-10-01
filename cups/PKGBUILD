@@ -27,8 +27,7 @@ md5sums=('ee162c4be28043f03059f91ec133917a'
 build() {
   cd ${srcdir}/${pkgbase}-${pkgver}
 
-  # add systemd socket support - Fedora patch, also used in Gentoo
-  # modified now to the changes done by Gentoo in their svn ebuild, version 2
+  # add systemd socket support - Gentoo patch -2 version
   # http://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/net-print/cups/files/cups-1.5.0-systemd-socket-2.patch?revision=1.1
   patch -p1 -i ${srcdir}/cups-systemd-socket2.patch
   
