@@ -1,0 +1,27 @@
+
+pkgname=httplib2
+pkgver=0.8
+pkgrel=1
+pkgdesc='Comprehensive HTTP client library that supports many features left out of other HTTP libraries'
+url='http://code.google.com/p/httplib2/'
+license=('MIT')
+arch=('x86_64')
+depends=('python2')
+source=("http://httplib2.googlecode.com/files/$pkgname-$pkgver.tar.gz"
+        'ssl_hostname.diff')
+md5sums=('a143657998f6752be998e2ec740e7dec'
+         '6de5596aedd196a4db96f83f529e3509')
+
+prepare() {
+  cd "$pkgname-$pkgver"
+  patch -p1 -i "$srcdir/ssl_hostname.diff"
+}
+
+package() {
+  cd "$srcdir/$pkgname-$pkgver"
+  python setup.py install --root="$pkgdir"
+  
+  install -Dm644 README "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}
+
+
