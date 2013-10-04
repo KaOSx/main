@@ -1,0 +1,31 @@
+
+pkgname=pkgfile
+pkgver=10
+pkgrel=1
+pkgdesc="An alpm .files metadata explorer"
+arch=('x86_64')
+url="http://github.com/falconindy/pkgfile"
+license=('MIT')
+depends=('libarchive' 'curl' 'pcre' 'pacman')
+install=pkgfile.install
+options=('!strip')
+source=("http://code.falconindy.com/archive/$pkgname/$pkgname-$pkgver.tar.xz")
+md5sums=('262d7359423dedbf1f7323cc14d4a1e3')
+
+build() {
+  cd "$pkgname-$pkgver"
+
+  ./configure
+  make
+
+  # generate a license file
+  sed '/\*\//q' src/pkgfile.c >LICENSE
+}
+
+package() {
+  cd "$pkgname-$pkgver"
+  make DESTDIR="$pkgdir" install
+  
+  install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}
+
