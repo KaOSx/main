@@ -1,16 +1,16 @@
 
 pkgname=taglib
-pkgver=1.8
-pkgrel=2
+pkgver=1.9
+pkgrel=1
 pkgdesc="A Library for reading and editing the meta-data of several popular audio formats"
 arch=('x86_64')
 url="http://developer.kde.org/~wheeler/taglib.html"
 license=('GPL2')
 depends=('sh' 'zlib' 'gcc-libs')
 makedepends=('cmake' 'pkg-config')
-source=("https://github.com/downloads/$pkgname/$pkgname/$pkgname-$pkgver.tar.gz")
+source=("http://taglib.github.io/releases/$pkgname-$pkgver.tar.gz")
 options=('!libtool')
-md5sums=('dcb8bd1b756f2843e18b1fdf3aaeee15')
+md5sums=('79877ad28cbe353be50395e6514332fd')
 
 build() {
   cd "${srcdir}"/${pkgname}-${pkgver}

@@ -28,12 +28,27 @@ build() {
   sh "$_pkg.run" --extract-only
 }
 
+package_opencl-nvidia() {
+  pkgdesc="OpenCL implemention for NVIDIA"
+  depends=('libcl' 'zlib' 'nvidia-utils')
+
+  cd "${srcdir}/${_pkg}"
+
+  # OpenCL
+  install -D -m644 nvidia.icd "${pkgdir}/etc/OpenCL/vendors/nvidia.icd"
+  install -D -m755 "libnvidia-compiler.so.${pkgver}" "${pkgdir}/usr/lib/libnvidia-compiler.so.${pkgver}"
+  install -D -m755 "libnvidia-opencl.so.${pkgver}" "${pkgdir}/usr/lib/libnvidia-opencl.so.${pkgver}"
+
+  create_links
+}
+
 package_nvidia-utils() {
   pkgdesc="NVIDIA drivers utilities and libraries. Customized to be compatible with libgl."
   depends=('xorg-server' 'libxvmc')
   optdepends=('gtk2: nvidia-settings' 'pkg-config: nvidia-xconfig'
               'opencl-nvidia: OpenCL support'
 	      'nvidia-settings: Gtk GUI')
+	      
   cd "${srcdir}/$_pkg"
   # X driver
   install -D -m755 nvidia_drv.so "${pkgdir}/usr/lib/xorg/modules/drivers/nvidia_drv.so"
@@ -48,9 +63,9 @@ package_nvidia-utils() {
   ##ln -s "libGL.so" "${pkgdir}/usr/lib/nvidia/libGL.so.1.2"
   ##ln -s "libGL.so" "${pkgdir}/usr/lib/nvidia/libGL.so.1"
 
-  ##ln -s "/usr/lib/nvidia/libGL.so" "${pkgdir}/usr/lib/libGL.so.nvidia"
+  ##ln -s "/usr/lib/nvidia/libGL.so" "${pkgdir}/usr/lib/libGL.so.1.1"
   ##mkdir -p "${pkgdir}/usr/lib/xorg/modules/extensions/"
-  ##ln -s "/usr/lib/nvidia/xorg/modules/extensions/libglx.so" "${pkgdir}/usr/lib/xorg/modules/extensions/libglx.so.nvidia"
+  ##ln -s "/usr/lib/nvidia/xorg/modules/extensions/libglx.so" "${pkgdir}/usr/lib/xorg/modules/extensions/libglx.so.1.1"
 
   
   # OpenGL core library
@@ -92,20 +107,6 @@ package_nvidia-utils() {
   install -D -m644 README.txt "${pkgdir}/usr/share/doc/nvidia/README"
   install -D -m644 NVIDIA_Changelog "${pkgdir}/usr/share/doc/nvidia/NVIDIA_Changelog"
   ln -s nvidia "${pkgdir}/usr/share/doc/nvidia-utils"
-
-  create_links
-}
-
-package_opencl-nvidia() {
-  pkgdesc="OpenCL implemention for NVIDIA"
-  depends=('libcl' 'zlib' 'nvidia-utils')
-
-  cd "${srcdir}/${_pkg}"
-
-  # OpenCL
-  install -D -m644 nvidia.icd "${pkgdir}/etc/OpenCL/vendors/nvidia.icd"
-  install -D -m755 "libnvidia-compiler.so.${pkgver}" "${pkgdir}/usr/lib/libnvidia-compiler.so.${pkgver}"
-  install -D -m755 "libnvidia-opencl.so.${pkgver}" "${pkgdir}/usr/lib/libnvidia-opencl.so.${pkgver}"
 
   create_links
 }
