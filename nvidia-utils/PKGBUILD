@@ -37,7 +37,22 @@ package_nvidia-utils() {
   cd "${srcdir}/$_pkg"
   # X driver
   install -D -m755 nvidia_drv.so "${pkgdir}/usr/lib/xorg/modules/drivers/nvidia_drv.so"
+  
+  # GLX extension module for X
+  ##install -D -m755 "libglx.so.${pkgver}" "${pkgdir}/usr/lib/nvidia/xorg/modules/extensions/libglx.so"
+  ##ln -s "libglx.so" "${pkgdir}/usr/lib/nvidia/xorg/modules/extensions/libglx.so.${pkgver}" # X doesn't find glx otherwise
 
+  # OpenGL library
+  ##install -D -m755 "libGL.so.${pkgver}" "${pkgdir}/usr/lib/nvidia/libGL.so"
+  ##ln -s "libGL.so" "${pkgdir}/usr/lib/nvidia/libGL.so.${pkgver}"
+  ##ln -s "libGL.so" "${pkgdir}/usr/lib/nvidia/libGL.so.1.2"
+  ##ln -s "libGL.so" "${pkgdir}/usr/lib/nvidia/libGL.so.1"
+
+  ##ln -s "/usr/lib/nvidia/libGL.so" "${pkgdir}/usr/lib/libGL.so.nvidia"
+  ##mkdir -p "${pkgdir}/usr/lib/xorg/modules/extensions/"
+  ##ln -s "/usr/lib/nvidia/xorg/modules/extensions/libglx.so" "${pkgdir}/usr/lib/xorg/modules/extensions/libglx.so.nvidia"
+
+  
   # OpenGL core library
   install -D -m755 "libnvidia-glcore.so.${pkgver}" "${pkgdir}/usr/lib/libnvidia-glcore.so.${pkgver}"
   
