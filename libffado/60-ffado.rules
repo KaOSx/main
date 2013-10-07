@@ -24,12 +24,12 @@ ATTR{vendor}=="0x000f64", GROUP="audio", ENV{ID_FFADO}="1"
 # addition to their audio interfaces.  They need more specific rules to
 # ensure only audio interfaces are covered here.
 
-ATTR{vendor}=="0x00022e", ATTR{model}=="0x010067", GROUP="audio", ENV{ID_FFADO}="1" # Tascam, a subsiduary of TEAC (the OUI is TEAC's)
+ATTR{vendor}=="0x00022e", ATTR{model}=="0x010067", GROUP="audio", ENV{ID_FFADO}="1" 
 
 # The devices below abuse another Vendor's ID, and therefore we need more advanced rules for those.
 
-ATTR{vendor}=="0x00000a", ATTR{model}=="0x030000", ATTR{units}=="*0x00a02d:0x010001*", GROUP="audio", ENV{ID_FFADO}="1" # CME, Matrix K FW
-ATTR{vendor}=="0x00000f", ATTR{model}=="0x01006?", ATTR{units}=="*0x00a02d:0x010001*", GROUP="audio", ENV{ID_FFADO}="1" # Mackie, Onyx Firewire 
-ATTR{vendor}=="0x000a35", ATTR{units}=="0x000a35:0x00000[12]", GROUP="audio", ENV{ID_FFADO}="1" # RME
+ATTR{vendor}=="0x00000a", ATTR{model}=="0x030000", ATTR{units}=="*0x00a02d:0x010001*", GROUP="audio", ENV{ID_FFADO}="1" 
+ATTR{vendor}=="0x00000f", ATTR{model}=="0x01006?", ATTR{units}=="*0x00a02d:0x010001*", GROUP="audio", ENV{ID_FFADO}="1" 
+ATTR{vendor}=="0x000a35", ATTR{units}=="0x000a35:0x00000[12]", GROUP="audio", ENV{ID_FFADO}="1" 
 
 LABEL="ffado_end"
