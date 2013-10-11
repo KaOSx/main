@@ -1,27 +1,20 @@
 
 pkgname=libmikmod
-pkgver=3.2.0
+pkgver=3.3.2
 pkgrel=1
 pkgdesc="A portable sound library"
 license=('GPL' 'LGPL')
 url="http://mikmod.shlomifish.org/"
 arch=('x86_64')
-depends=('glibc')
+depends=('glibc' 'sh')
+makedepends=('alsa-lib')
 options=('!libtool')
 install=$pkgname.install
-source=("http://mikmod.shlomifish.org/files/${pkgname}-${pkgver}.tar.gz"
-        'libmikmod-3.2.0-64bit-fix.diff'
-	'libmikmod-3.1.12-loopingvolume-fix.diff')
-md5sums=('96e9820d72a41fe27ff304071739696c'
-         '975c7457f67d304b817caafd36faa7ce'
-         'a837fd876cbd2ac27419b802504489db')
+source=("http://mikmod.shlomifish.org/files/${pkgname}-${pkgver}.tar.gz")
+md5sums=('60ac77a804d082230df3009af11ef44f')
 
 build() {
   cd $srcdir/$pkgname-$pkgver
-
-  # patches from sdl_mixer-1.2.11 source
-  patch -p1 -i $srcdir/libmikmod-3.2.0-64bit-fix.diff
-  patch -p1 -i $srcdir/libmikmod-3.1.12-loopingvolume-fix.diff
   
   ./configure --prefix=/usr \
         --mandir=/usr/share/man \
