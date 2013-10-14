@@ -1,6 +1,6 @@
 
 pkgname=fontconfig
-pkgver=2.10.95
+pkgver=2.11.0
 pkgrel=1
 pkgdesc="A library for configuring and customizing font access"
 arch=('x86_64')
@@ -9,10 +9,8 @@ license=('custom')
 depends=('expat' 'freetype2>=2.4.11')
 options=('!libtool')
 install='fontconfig.install'
-source=("http://www.fontconfig.org/release/${pkgname}-${pkgver}.tar.gz"
-        '29-replace-bitmap-fonts.conf')
-md5sums=('09bb3c3469c3453d4d5c39f66f8a8aac'
-         '526b95ebde1b07eb5dbc5d71fb613ed1')
+source=("http://www.fontconfig.org/release/${pkgname}-${pkgver}.tar.gz")
+md5sums=('84278204cd7f36adbea7ad8094e039ac')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
@@ -41,9 +39,9 @@ package() {
   cd "$srcdir/$pkgname-$pkgver"
   make DESTDIR="$pkgdir" install
   
-  install -m644 "$srcdir/29-replace-bitmap-fonts.conf" "$pkgdir/etc/fonts/conf.avail"
-  ln -s ../conf.avail/29-replace-bitmap-fonts.conf \
-    "$pkgdir/etc/fonts/conf.d/29-replace-bitmap-fonts.conf"
+  #install -m644 "$srcdir/29-replace-bitmap-fonts.conf" "$pkgdir/etc/fonts/conf.avail"
+  #ln -s ../conf.avail/29-replace-bitmap-fonts.conf \
+  #  "$pkgdir/etc/fonts/conf.d/29-replace-bitmap-fonts.conf"
 
   install -m755 -d "$pkgdir/usr/share/licenses/$pkgname"
   install -m644 COPYING "$pkgdir/usr/share/licenses/$pkgname"

@@ -3,7 +3,7 @@ pkgname=hplip
 pkgver=3.13.9
 # incase a or b is used in hplip rls:
 _pkgver=3.13.9
-pkgrel=1
+pkgrel=2
 pkgdesc="Drivers for HP DeskJet, OfficeJet, Photosmart, Business Inkjet and some LaserJet."
 arch=('x86_64')
 url="http://hplipopensource.com"
@@ -20,15 +20,19 @@ optdepends=('cups: for printing support'
 options=('!libtool')
 install=${pkgname}.install
 source=("http://downloads.sourceforge.net/${pkgname}/${pkgname}-${_pkgver}.tar.gz"
-	'hp-mkuri.patch')
+	'hp-mkuri.patch'
+	'dbus.patch')
 md5sums=('8fcbbd0d3a0b76550f325bd6cf46d9d9'
-         '0bd7779fdbc4d7a9386df04dce2cb8d4')
+         '0bd7779fdbc4d7a9386df04dce2cb8d4'
+         '665a238354c17334c5969ba0b96e9d16')
 
 build() {
   cd "${srcdir}/${pkgname}-${_pkgver}"
 
   # libnotify patch
   patch -p0 -i ${srcdir}/hp-mkuri.patch
+  
+  patch -p1 -i ${srcdir}/dbus.patch
 
   export PYTHON=python2
   find . -type f -exec sed -i 's~^#.*env python~#!/usr/bin/env python2~' {} +
