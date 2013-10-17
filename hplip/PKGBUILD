@@ -1,9 +1,9 @@
 
 pkgname=hplip
-pkgver=3.13.9
+pkgver=3.13.10
 # incase a or b is used in hplip rls:
-_pkgver=3.13.9
-pkgrel=2
+_pkgver=3.13.10
+pkgrel=1
 pkgdesc="Drivers for HP DeskJet, OfficeJet, Photosmart, Business Inkjet and some LaserJet."
 arch=('x86_64')
 url="http://hplipopensource.com"
@@ -19,20 +19,11 @@ optdepends=('cups: for printing support'
             'python2-gobject: for running hp-toolbox')
 options=('!libtool')
 install=${pkgname}.install
-source=("http://downloads.sourceforge.net/${pkgname}/${pkgname}-${_pkgver}.tar.gz"
-	'hp-mkuri.patch'
-	'dbus.patch')
-md5sums=('8fcbbd0d3a0b76550f325bd6cf46d9d9'
-         '0bd7779fdbc4d7a9386df04dce2cb8d4'
-         '665a238354c17334c5969ba0b96e9d16')
+source=("http://downloads.sourceforge.net/${pkgname}/${pkgname}-${_pkgver}.tar.gz")
+md5sums=('ba729c514a2dc95390b99e9a9d452999')
 
 build() {
   cd "${srcdir}/${pkgname}-${_pkgver}"
-
-  # libnotify patch
-  patch -p0 -i ${srcdir}/hp-mkuri.patch
-  
-  patch -p1 -i ${srcdir}/dbus.patch
 
   export PYTHON=python2
   find . -type f -exec sed -i 's~^#.*env python~#!/usr/bin/env python2~' {} +
@@ -81,8 +72,8 @@ package() {
   rm -rf "${pkgdir}"/etc/{sane.d,xdg}
   
   # remove HAL .fdi file 
-  rm -rf "${pkgdir}"/usr/share/hal
+  rm -vrf "${pkgdir}"/usr/share/hal
   
   # remove rc
-  rm -rf "$pkgdir"/etc/init.d
+  rm -vrf "$pkgdir"/etc/init.d
 }
