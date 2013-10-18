@@ -1,6 +1,6 @@
 
 pkgname=directfb
-pkgver=1.7.0
+pkgver=1.7.1
 pkgrel=1
 pkgdesc="Library that provides hardware graphics acceleration, input device handling and abstraction, integrated windowing system on top of the Linux Framebuffer Device"
 arch=('x86_64')
@@ -9,7 +9,7 @@ license=('LGPL')
 depends=('gcc-libs' 'libjpeg-turbo' 'sdl' 'libpng' 'freetype2' 'mesa' 'libtiff' 'libmad' 'libgl')
 options=('!libtool')
 source=("http://www.directfb.org/downloads/Core/DirectFB-${pkgver%.*}/DirectFB-${pkgver}.tar.gz")
-md5sums=('258d3a5fda5d9af16c5cbdca671638e5')
+md5sums=('0ef44c16a414312fd38d6764e2cb9893')
 
 build() {
   cd "${srcdir}/DirectFB-${pkgver}"
