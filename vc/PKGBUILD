@@ -1,13 +1,13 @@
 pkgname=vc
-pkgver=0.7.2
-pkgrel=2
+pkgver=0.7.3
+pkgrel=1
 pkgdesc="A library to ease explicit vectorization of C++ code"
 url='http://code.compeng.uni-frankfurt.de/projects/vc/'
 arch=('x86_64')
 license=('LGPL3')
 makedepends=('cmake')
-source=("http://code.compeng.uni-frankfurt.de/attachments/download/164/Vc-${pkgver}.tar.gz")
-md5sums=('f54dd2945f9e5a38945e50b4a3f7a901')
+source=("http://code.compeng.uni-frankfurt.de/attachments/download/174/Vc-${pkgver}.tar.gz")
+md5sums=('a55e2871a33dbcbbe444c22ccef47dbd')
  
 build() {
   mkdir build 
@@ -19,11 +19,11 @@ build() {
   make
 }
 
-#check() {
-#  cd build
+check() {
+  cd build
 
-#  make test
-#}
+  make test
+}
 
 package() {
   cd build
