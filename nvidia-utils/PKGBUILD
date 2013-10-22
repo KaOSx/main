@@ -3,7 +3,7 @@ pkgbase=nvidia-utils
 pkgname=('nvidia-utils' 'opencl-nvidia' 'nvidia-settings')
 # Edit hardware-detection/hooks/hwdetect_7_graphics on version jump from 3xx.xx
 pkgver=331.13
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 url="http://www.nvidia.com/"
 license=('custom')
@@ -43,29 +43,31 @@ package_opencl-nvidia() {
 }
 
 package_nvidia-utils() {
-  pkgdesc="NVIDIA drivers utilities and libraries. Customized to be compatible with libgl."
+  pkgdesc="NVIDIA drivers utilities and libraries."
   depends=('xorg-server' 'libxvmc')
   optdepends=('gtk2: nvidia-settings' 'pkg-config: nvidia-xconfig'
               'opencl-nvidia: OpenCL support'
 	      'nvidia-settings: Gtk GUI')
+  conflicts=('libgl')
+  provides=('libgl')
 	      
   cd "${srcdir}/$_pkg"
   # X driver
   install -D -m755 nvidia_drv.so "${pkgdir}/usr/lib/xorg/modules/drivers/nvidia_drv.so"
   
   # GLX extension module for X
-  ##install -D -m755 "libglx.so.${pkgver}" "${pkgdir}/usr/lib/nvidia/xorg/modules/extensions/libglx.so"
-  ##ln -s "libglx.so" "${pkgdir}/usr/lib/nvidia/xorg/modules/extensions/libglx.so.${pkgver}" # X doesn't find glx otherwise
+  install -D -m755 "libglx.so.${pkgver}" "${pkgdir}/usr/lib/nvidia/xorg/modules/extensions/libglx.so"
+  ln -s "libglx.so" "${pkgdir}/usr/lib/nvidia/xorg/modules/extensions/libglx.so.${pkgver}" # X doesn't find glx otherwise
 
   # OpenGL library
-  ##install -D -m755 "libGL.so.${pkgver}" "${pkgdir}/usr/lib/nvidia/libGL.so"
-  ##ln -s "libGL.so" "${pkgdir}/usr/lib/nvidia/libGL.so.${pkgver}"
-  ##ln -s "libGL.so" "${pkgdir}/usr/lib/nvidia/libGL.so.1.2"
-  ##ln -s "libGL.so" "${pkgdir}/usr/lib/nvidia/libGL.so.1"
+  install -D -m755 "libGL.so.${pkgver}" "${pkgdir}/usr/lib/nvidia/libGL.so"
+  ln -s "libGL.so" "${pkgdir}/usr/lib/nvidia/libGL.so.${pkgver}"
+  ln -s "libGL.so" "${pkgdir}/usr/lib/nvidia/libGL.so.1.2"
+  ln -s "libGL.so" "${pkgdir}/usr/lib/nvidia/libGL.so.1"
 
-  ##ln -s "/usr/lib/nvidia/libGL.so" "${pkgdir}/usr/lib/libGL.so.1.1"
-  ##mkdir -p "${pkgdir}/usr/lib/xorg/modules/extensions/"
-  ##ln -s "/usr/lib/nvidia/xorg/modules/extensions/libglx.so" "${pkgdir}/usr/lib/xorg/modules/extensions/libglx.so.1.1"
+  ln -s "/usr/lib/nvidia/libGL.so" "${pkgdir}/usr/lib/libGL.so.1.1"
+  mkdir -p "${pkgdir}/usr/lib/xorg/modules/extensions/"
+  ln -s "/usr/lib/nvidia/xorg/modules/extensions/libglx.so" "${pkgdir}/usr/lib/xorg/modules/extensions/libglx.so.1.1"
 
   
   # OpenGL core library
