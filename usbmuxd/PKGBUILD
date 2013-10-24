@@ -1,58 +1,36 @@
+
 pkgname=usbmuxd
 pkgver=1.0.8
-pkgrel=3
+pkgrel=4
 pkgdesc="A USB multiplexing daemon."
 url="http://sukimashita.com/"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 license=('GPL')
 depends=('glib2' 'libxml2')
 makedepends=('git' 'cmake')
-provides=('usbmuxd')
-conflicts=('usbmuxd')
 install='usbmuxd.install'
-
-_gitroot="http://cgit.sukimashita.com/usbmuxd.git"
-_gitname="usbmuxd"
+source=("git+http://cgit.sukimashita.com/usbmuxd.git"
+	'usbmuxd.service')
+md5sums=('SKIP'
+         'dae0660f972510a6483992b5b81e1b5a')
 
 build() {
+    cd ${srcdir}
 
-	cd ${srcdir}
-	msg "Connecting to GIT server...."
-
-	if [ -d ${srcdir}/$_gitname ] ; then
-		cd $_gitname && git pull origin
-		msg "Local repository updated."
-	else
-		git clone $_gitroot $_gitname
-	fi
-
-	msg "GIT checkout done or server timeout"
-
-	msg "Removing old build directory..."
-	rm -Irf ${srcdir}/$_gitname-build
-
-	msg "Creating new build directory..."
-	cp -r ${srcdir}/$_gitname ${srcdir}/$_gitname-build
-
-	cd ${srcdir}/$_gitname-build
-
-	msg "Starting make..."
+    cp -r ${srcdir}/usbmuxd ${srcdir}/usbmuxd-build
+    cd ${srcdir}/usbmuxd-build
 
     cmake ./ -DCMAKE_INSTALL_PREFIX:PATH=/usr -DLIB_SUFFIX=""
-
-    make -j2 || return 1
+    make -j2 
 
 }
 
 package() {
-
-	cd ${srcdir}/$_gitname-build
-
-	make DESTDIR=${pkgdir} install || return 1   
+    cd ${srcdir}/usbmuxd-build
+    make DESTDIR=${pkgdir} install  
 	
-	ln -sr $pkgdir/usr/lib/libusbmuxd.so $pkgdir/usr/lib/libusbmuxd.so.1
-	
-	# fix udev dir being hardcoded
-	mv ${pkgdir}/lib/udev ${pkgdir}/usr/lib/
-	rmdir ${pkgdir}/lib
+    # fix udev dir being hardcoded
+    mv ${pkgdir}/lib/udev ${pkgdir}/usr/lib/
+    rmdir ${pkgdir}/lib
+    install -D -m644 ${srcdir}/usbmuxd.service ${pkgdir}/usr/lib/systemd/system/usbmuxd.service
 }
