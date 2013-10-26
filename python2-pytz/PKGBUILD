@@ -1,0 +1,26 @@
+
+pkgname=python2-pytz
+pkgver=2013.7
+pkgrel=1
+arch=('x86_64')
+pkgdesc="Cross platform time zone library for Python"
+url="http://pypi.python.org/pypi/pytz"
+license=("MIT")
+depends=('python2')
+source=("http://pypi.python.org/packages/source/p/pytz/pytz-$pkgver.tar.bz2")
+md5sums=('7d3aa4aa2a6307bc3e398331d7ba7415')
+
+check() {
+    cd $srcdir/pytz-$pkgver/pytz/tests
+
+    python2 test_tzinfo.py
+}
+
+package() {
+    cd $srcdir/pytz-$pkgver
+    sed -i 's_#!/usr/bin/env python_#!/usr/bin/env python2_' pytz/tzfile.py
+
+    python2 setup.py install --root="$pkgdir/"
+
+    install -D LICENSE.txt "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}

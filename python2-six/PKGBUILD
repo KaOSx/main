@@ -1,0 +1,30 @@
+
+pkgname=python2-six
+pkgver=1.4.1
+pkgrel=1
+pkgdesc="Python 2 compatibility utilities"
+arch=('x86_64')
+url="http://pypi.python.org/pypi/six/"
+license=('MIT')
+depends=('python2')
+source=("http://pypi.python.org/packages/source/s/six/six-$pkgver.tar.gz")
+md5sums=('bdbb9e12d3336c198695aa4cf3a61d62')
+
+build() {
+  cd $srcdir
+  
+  cp -r six-$pkgver six2-$pkgver
+}
+
+check() {
+  cd $srcdir/six-$pkgver 
+  
+  python2 setup.py check
+}
+
+package() {
+  cd $srcdir/six2-$pkgver 
+  python2 setup.py install --root "${pkgdir}" --optimize=1
+  
+  install -Dm644 "${srcdir}/six-${pkgver}/LICENSE" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+}

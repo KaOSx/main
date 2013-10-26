@@ -1,0 +1,27 @@
+
+pkgname=eigen3
+pkgver=3.2.0
+pkgrel=1
+pkgdesc="Lightweight C++ template library for vector and matrix math, a.k.a. linear algebra."
+arch=('x86_64')
+url='http://eigen.tuxfamily.org'
+license=('MPL2')
+makedepends=('cmake' 'pkg-config')
+source=("${pkgname}-${pkgver}.tar.bz2::http://bitbucket.org/eigen/eigen/get/${pkgver}.tar.bz2")
+md5sums=('894381be5be65bb7099c6fd91d61b357')
+
+build() {
+	mkdir -p build
+	cd build
+	
+	cmake ../eigen-eigen-* \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DCMAKE_INSTALL_PREFIX=/usr
+}
+
+package() {
+	cd build
+	make DESTDIR="$pkgdir" install
+	
+	install -Dm644 ../eigen-eigen-*/COPYING.MPL2 "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}
