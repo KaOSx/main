@@ -1,0 +1,18 @@
+
+pkgname=mysql-python
+pkgver=1.2.4
+pkgrel=1
+pkgdesc="MySQL support for Python"
+arch=('x86_64')
+url="http://mysql-python.sourceforge.net/"
+license=('GPL2')
+depends=('python2' 'libmariadbclient')
+makedepends=('mariadb' 'python2-distribute')
+source=("http://pypi.python.org/packages/source/M/MySQL-python/MySQL-python-${pkgver}.zip")
+md5sums=('ddf2386daf10a97af115ffad2ed4a9a0')
+
+package() {
+  cd ${srcdir}/MySQL-python-${pkgver}
+  
+  python2 setup.py install --root=${pkgdir} --optimize=1
+}
