@@ -1,8 +1,8 @@
 
 pkgname=hugin-tools
 _pkgname=hugin
-pkgver=2012.0.0
-pkgrel=7
+pkgver=2013.0.0
+pkgrel=1
 pkgdesc="Hugin libs and tools to be used by Kipi-plugins"
 arch=('x86_64')
 url="http://hugin.sourceforge.net/"
@@ -13,7 +13,7 @@ makedepends=('zip' 'cmake' 'boost' 'mesa' 'tclap')
 conflict=('hugin')
 provides=('hugin')
 source=("http://downloads.sourceforge.net/${_pkgname}/${_pkgname}-${pkgver}.tar.bz2")
-md5sums=('6a4fb2585eb3539ba6769cf4557f6e88')
+md5sums=('cc6c768df2aedc24a9a081754de05f39')
 
 build() {
   cd "${srcdir}"
@@ -24,14 +24,13 @@ build() {
   # this makes possible to compile all the hugin tools without GUis
   sed -i -e "s~FIND_PACKAGE(wxWidgets REQUIRED)~~g" ${srcdir}/${_pkgname}-${pkgver}/CMakeLists.txt
   # Unicode issue
-  sed 's/Luk.... Jirkovsk../Lukas Jirkovsky/g' -i ${srcdir}/${_pkgname}-${pkgver}/doc/deghosting_mask.pod
+  #sed 's/Luk.... Jirkovsk../Lukas Jirkovsky/g' -i ${srcdir}/${_pkgname}-${pkgver}/doc/deghosting_mask.pod
   mkdir ${srcdir}/${_pkgname}-${pkgver}/src/hugin_base/PT
   cp ${srcdir}/${_pkgname}-${pkgver}/src/hugin1/PT/*.h ${srcdir}/${_pkgname}-${pkgver}/src/hugin_base/PT
 
   cmake "${srcdir}/${_pkgname}-${pkgver}" \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_EXE_LINKER_FLAGS="-lpthread" \
     -DENABLE_LAPACK=yes \
     -DBUILD_HSI=no
   make
