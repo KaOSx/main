@@ -1,7 +1,7 @@
 
 pkgname=sane
 pkgver=1.0.24
-pkgrel=1
+pkgrel=2
 pkgdesc="Scanner Access Now Easy"
 url="http://www.sane-project.org"
 arch=('x86_64')
@@ -17,15 +17,19 @@ source=("https://alioth.debian.org/frs/download.php/file/3958/$pkgname-backends-
         #ftp://ftp2.sane-project.org/pub/sane/$pkgname-backends-$pkgver/$pkgname-backends-$pkgver.tar.gz
         'sane.xinetd'
         'saned.socket'
-        'saned.service')
-options=(!libtool)
+        'saned.service'
+        'avahi.patch')
+options=('!libtool')
 md5sums=('1ca68e536cd7c1852322822f5f6ac3a4'
          '5f519030392d599e2ad348159ec4c96f'
          'e57e9e15528f47f5f1b3f1411135ed5d'
-         'e44bd4c994a52d6f472463d1eb0a03be')
+         'e44bd4c994a52d6f472463d1eb0a03be'
+         '6e00e0a16932c5b4d1020db272b9e577')
 
 build() {
   cd "${srcdir}/${pkgname}-backends-${pkgver}"
+  # http://kaosx.us/phpBB3/viewtopic.php?f=10&t=46&p=210#p208
+  patch -p1 -i ${srcdir}/avahi.patch
 
   ./configure --prefix=/usr \
     --sysconfdir=/etc \
