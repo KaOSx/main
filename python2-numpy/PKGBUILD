@@ -1,6 +1,6 @@
 
 pkgname=python2-numpy
-pkgver=1.7.1
+pkgver=1.8.0
 pkgrel=1
 pkgdesc="Scientific tools for Python"
 arch=('x86_64')
@@ -10,10 +10,8 @@ depends=('blas' 'lapack' 'python2')
 makedepends=('python2-nose' 'gcc-fortran')
 optdepends=('python2-nose: test suite')
 provides=('python-numeric')
-conflicts=('python-numeric')
-replaces=('python-numeric')
 source=("http://downloads.sourceforge.net/numpy/numpy-${pkgver}.tar.gz")
-md5sums=('0ab72b3b83528a7ae79c6df9042d61c6')
+md5sums=('2a4b0423a758706d592abb6721ec8dcd')
 
 build() {
   cd "${srcdir}/numpy-${pkgver}"
