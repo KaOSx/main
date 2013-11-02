@@ -1,6 +1,6 @@
 
 pkgname=x264
-pkgver=20130523
+pkgver=20131101
 pkgrel=1
 pkgdesc="free library for encoding H264/AVC video streams"
 arch=('x86_64')
@@ -9,12 +9,12 @@ license=('GPL')
 depends=('glibc')
 makedepends=('yasm' 'libvpx>=1.1.0')
 source=("ftp://ftp.videolan.org/pub/videolan/x264/snapshots/x264-snapshot-$pkgver-2245-stable.tar.bz2")
-md5sums=('109697a503813e2c0cb0d33cef8ada42')
+md5sums=('b7f2c271ac31c983169156b617d4f600')
 
 build() {
     cd "$srcdir/$pkgname-snapshot-$pkgver-2245-stable"
 
-    ./configure --enable-shared
+    ./configure --enable-shared --enable-pic
 
     make
 }

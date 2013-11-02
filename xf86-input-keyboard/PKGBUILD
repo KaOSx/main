@@ -1,7 +1,7 @@
 
 pkgname=xf86-input-keyboard
-pkgver=1.7.0
-pkgrel=2
+pkgver=1.8.0
+pkgrel=1
 pkgdesc="X.Org keyboard input driver"
 arch=('x86_64')
 license=('custom')
@@ -12,7 +12,7 @@ conflicts=('xorg-server<1.12.3')
 options=('!libtool')
 groups=('xorg-input-drivers')
 source=("${url}/releases/individual/driver/${pkgname}-${pkgver}.tar.bz2")
-sha1sums=('92fabe29afd240464b37bb954f847b073499ea7f')
+md5sums=('ce936e219682bacf5a4a9c4ab940edb8')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
