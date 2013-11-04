@@ -1,33 +1,37 @@
 
-_extramodules=extramodules-3.10
+_extramodules=extramodules-3.11
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=('nvidia' 'khd-nvidia')
-pkgver=331.13
-pkgrel=1
+pkgver=325.15
+pkgrel=2
 arch=('x86_64')
 url="http://www.nvidia.com/"
-makedepends=('linux-headers' 'linux>=3.10' 'linux<3.11' "nvidia-utils=${pkgver}")
+makedepends=('linux-headers' 'linux>=3.11' 'linux<3.12' "nvidia-utils=${pkgver}")
 license=('custom')
 # get from github once hardware-detection is up:
 source=('nvidia_supported')
 md5sums=('62d0cdb856cfae64753c0f3acf729d47')
 
 _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
-source+=("ftp://download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run")
-md5sums+=('08ae6c987c30885b2a9f662df23f061d')
+source+=("ftp://download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
+         'linux3.11.patch')
+md5sums+=('63b2caa0cb128efa1a7808d7bddb2074'
+          '6615840da025708edefb44a98c68f6f7')
 
 build() {
     cd "${srcdir}"
     sh "${_pkg}.run" --extract-only
 
     cd "${_pkg}/kernel"
+    patch -p2 -i ${srcdir}/linux3.11.patch
+    
     make SYSSRC=/lib/modules/"${_kver}/build" module
 }
 
 package_nvidia() {
     pkgdesc="NVIDIA drivers for linux."
-    depends=('linux>=3.10' 'linux<3.11' "nvidia-utils=${pkgver}")
+    depends=('linux>=3.11' 'linux<3.12' "nvidia-utils=${pkgver}")
     conflicts=('nvidia-96xx' 'nvidia-173xx' 'nvidia-304xx')
     install=nvidia.install
     

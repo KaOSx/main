@@ -1,20 +1,16 @@
 post_install() {
-    EXTRAMODULES='extramodules-3.10'
+    EXTRAMODULES='extramodules-3.11'
     depmod $(cat /lib/modules/$EXTRAMODULES/version)
     echo 'In order to use nvidia module, reboot the system.'
 }
 
 post_upgrade() {
-    EXTRAMODULES='extramodules-3.10'
+    EXTRAMODULES='extramodules-3.11'
     depmod $(cat /lib/modules/$EXTRAMODULES/version)
-    echo -e '\e[31;46m WARNING'
-    echo -e '\e[31;46m If your card is from the 7xxx series or earlier,'
-    echo -e '\e[31;46m this driver no longer supports your card'
-    echo -e '\e[0m'
 }
 
 post_remove() {
-    EXTRAMODULES='extramodules-3.10'
+    EXTRAMODULES='extramodules-3.11'
     depmod $(cat /lib/modules/$EXTRAMODULES/version)
     
 }
