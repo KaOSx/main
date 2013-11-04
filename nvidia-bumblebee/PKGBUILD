@@ -1,0 +1,39 @@
+
+
+_extramodules=extramodules-3.10
+_kver=$(cat /lib/modules/${_extramodules}/version)
+
+pkgname=nvidia-bumblebee
+pkgver=331.13
+pkgrel=1
+pkgdesc="NVIDIA drivers for linux. Packaged for Bumblebee"
+arch=('x86_64')
+url="http://www.nvidia.com/"
+depends=('linux>3.10' 'linux<3.11' "nvidia-utils-bumblebee")
+provides=("nvidia=${pkgver}")
+makedepends=('linux-headers>3.10' 'linux-headers<3.11')
+conflicts=('nvidia')
+license=('custom')
+install=nvidia.install
+options=('!strip')
+
+_pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
+source=("ftp://download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}-no-compat32.run")
+md5sums=('08ae6c987c30885b2a9f662df23f061d')
+
+build() {
+    cd "${srcdir}"
+    sh "${_pkg}.run" --extract-only
+
+    cd "${_pkg}/kernel"
+    make SYSSRC=/lib/modules/"${_kver}/build" module
+}
+ 
+package() {
+    install -D -m644 "${srcdir}/NVIDIA-Linux-x86_64-${pkgver}-no-compat32/kernel/nvidia.ko" \
+        "${pkgdir}/lib/modules/${_extramodules}/nvidia.ko"
+    install -d -m755 "${pkgdir}/lib/modprobe.d"
+    echo "blacklist nouveau" >> "${pkgdir}/lib/modprobe.d/nouveau_blacklist.conf"
+    sed -i -e "s/EXTRAMODULES='.*'/EXTRAMODULES='${_extramodules}'/" "${startdir}/nvidia.install"
+    gzip "${pkgdir}/lib/modules/${_extramodules}/nvidia.ko"
+}

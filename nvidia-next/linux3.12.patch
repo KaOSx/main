@@ -1,0 +1,46 @@
+--- a/kernel/nv.c	2013-08-01 04:35:24.000000000 +0200
++++ b/kernel/nv.c	2013-09-17 15:24:03.458564575 +0200
+@@ -17,7 +17,13 @@
+ #include "rmil.h"
+ 
+ #if defined(MODULE_LICENSE)
++
++#if LINUX_VERSION_CODE <= KERNEL_VERSION(3,11,0)
+ MODULE_LICENSE("NVIDIA");
++#else
++MODULE_LICENSE("GPL");
++#endif
++
+ #endif
+ #if defined(MODULE_INFO)
+ MODULE_INFO(supported, "external");
+--- a/kernel/nv-drm.c
++++ b/kernel/nv-drm.c
+@@ -106,7 +106,9 @@ static const struct file_operations nv_d
+     .unlocked_ioctl = drm_ioctl,
+     .mmap = drm_gem_mmap,
+     .poll = drm_poll,
+-    .fasync = drm_fasync,
++#if LINUX_VERSION_CODE <= KERNEL_VERSION(3,11,0)
++     .fasync = drm_fasync,
++#endif
+     .read = drm_read,
+     .llseek = noop_llseek,
+ };
+@@ -202,12 +206,16 @@ RM_STATUS NV_API_CALL nv_alloc_os_descri
+     memset(&nv_obj->base, 0, sizeof(nv_obj->base));
+     nv_obj->pages = pages;
+ 
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(3, 12, 0)
++    drm_gem_private_object_init(nvl->drm, &nv_obj->base, size);
++#else
+     ret = drm_gem_private_object_init(nvl->drm, &nv_obj->base, size);
+     if (ret)
+     {
+         status = RM_ERR_OPERATING_SYSTEM;
+         goto done;
+     }
++#endif
+ 
+     ret = drm_gem_handle_create(file_priv, &nv_obj->base, handle);
+     if (ret)

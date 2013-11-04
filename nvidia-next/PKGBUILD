@@ -1,23 +1,25 @@
 
-_extramodules=extramodules-3.11-next
+_extramodules=extramodules-3.12-next
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=nvidia-next
 pkgver=325.15
-pkgrel=9
+pkgrel=10
 pkgdesc="NVIDIA drivers for linux."
 arch=('x86_64')
 url="http://www.nvidia.com/"
-depends=('linux-next>=3.11' 'linux-next<3.12' "nvidia-utils=${pkgver}")
+depends=('linux-next>=3.12' 'linux-next<3.13' "nvidia-utils=${pkgver}")
 makedepends=('linux-next-headers')
 license=('custom')
 install=nvidia-next.install
 options=('!strip')
 _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 source=("ftp://download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run" \
-        "linux3.11.patch")
+        'linux3.11.patch'
+        'linux3.12.patch')
 md5sums=('63b2caa0cb128efa1a7808d7bddb2074'
-         '6615840da025708edefb44a98c68f6f7')
+         '6615840da025708edefb44a98c68f6f7'
+         '4c8e1cdec972b43529b6064a8995b8f4')
 
 build() {
   cd "${srcdir}"
@@ -25,6 +27,7 @@ build() {
   
   cd "${_pkg}/kernel"
   patch -p2 -i ${srcdir}/linux3.11.patch
+  patch -p2 -i ${srcdir}/linux3.12.patch
   
   make SYSSRC=/lib/modules/"${_kver}/build" module
 }
