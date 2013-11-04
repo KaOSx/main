@@ -1,7 +1,7 @@
 
 pkgname=libmtp
 pkgver=1.1.6
-pkgrel=2
+pkgrel=3
 pkgdesc="Library implementation of the Media Transfer Protocol"
 arch=('x86_64')
 url="http://libmtp.sourceforge.net"
@@ -22,5 +22,7 @@ package() {
   cd "${srcdir}/${pkgname}-${pkgver}"
   
   make DESTDIR="${pkgdir}" install
+  # systemd errors, clean line in udev rules
+  sed -i "/^Unable to open/d" ${pkgdir}/usr/lib/udev/rules.d/69-libmtp.rules
 }
 
