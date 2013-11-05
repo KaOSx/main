@@ -1,16 +1,16 @@
 
-pkgname=('phonon-backend-vlc')
-pkgver=0.6.2
-pkgrel=2
+pkgname=phonon-backend-vlc
+pkgver=0.7.0
+pkgrel=1
 pkgdesc='Phonon VLC backend'
 arch=('x86_64')
 url='http://phonon.kde.org'
 license=('LGPL')
-depends=('vlc' "phonon")
+depends=('vlc' 'phonon')
 makedepends=('qt' 'pkgconfig' 'cmake' 'automoc4' 'mesa')
 groups=("kde-complete" "kde-uninstall")
-source=("http://download.kde.org/stable/phonon/${pkgname}/$pkgver/${pkgname}-$pkgver.tar.xz")
-md5sums=('1ae8b15594714841d2bcf8c72813a176')
+source=("http://download.kde.org/stable/phonon/${pkgname}/$pkgver/src/${pkgname}-$pkgver.tar.xz")
+md5sums=('1a172744eb0fd9cb0dbe0ea8b69e50f1')
 
 build() {
 	cd "${srcdir}"
