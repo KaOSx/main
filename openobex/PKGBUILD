@@ -1,7 +1,7 @@
 
 pkgname=openobex
 pkgver=1.7.1
-pkgrel=2
+pkgrel=3
 pkgdesc="Implementation of the OBject EXchange (OBEX) protocol"
 url="http://dev.zuckschwerdt.org/openobex/"
 arch=('x86_64')
@@ -13,6 +13,8 @@ md5sums=('3181bfed9cb7db591605391068cb0085')
 
 build() {
   cd ${srcdir}/
+  # remove ubuntu only pugdev group
+  sed -i 's|MODE="660", GROUP="plugdev"|TAG+="uaccess"|' ${pkgname}-${pkgver}-Source/udev/openobex.rules.in
   mkdir build
   
   cd build
