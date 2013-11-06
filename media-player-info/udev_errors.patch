@@ -1,0 +1,10 @@
+diff --git a/tools/mpi2udev.py b/tools/mpi2udev.py
+index d33055b..33fdfa2 100755
+--- a/tools/mpi2udev.py
++++ b/tools/mpi2udev.py
+@@ -126,4 +126,4 @@ for f in sys.argv[2:]:
+     parse_mpi(f, hwdb)
+ 
+ # udev rules footer
+-os.write(sys.stdout.fileno(), b'\nLABEL="media_player_end"')
++os.write(sys.stdout.fileno(), b'\nLABEL="media_player_end"\n')
