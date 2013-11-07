@@ -3,8 +3,8 @@ _extramodules=extramodules-3.11
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=('nvidia' 'khd-nvidia')
-pkgver=325.15
-pkgrel=5
+pkgver=331.20
+pkgrel=1
 arch=('x86_64')
 url="http://www.nvidia.com/"
 makedepends=('linux-headers' 'linux>=3.11' 'linux<3.12' "nvidia-utils=${pkgver}")
@@ -14,17 +14,14 @@ source=('nvidia_supported')
 md5sums=('62d0cdb856cfae64753c0f3acf729d47')
 
 _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
-source+=("ftp://download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
-         'linux3.11.patch')
-md5sums+=('63b2caa0cb128efa1a7808d7bddb2074'
-          '6615840da025708edefb44a98c68f6f7')
+source+=("ftp://download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run")
+md5sums+=('28295eed56c2ca996401c0093279620f')
 
 build() {
     cd "${srcdir}"
     sh "${_pkg}.run" --extract-only
 
     cd "${_pkg}/kernel"
-    patch -p2 -i ${srcdir}/linux3.11.patch
     
     make SYSSRC=/lib/modules/"${_kver}/build" module
 }

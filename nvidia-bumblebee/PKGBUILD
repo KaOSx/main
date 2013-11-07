@@ -4,8 +4,8 @@ _extramodules=extramodules-3.11
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=nvidia-bumblebee
-pkgver=331.13
-pkgrel=2
+pkgver=331.20
+pkgrel=1
 pkgdesc="NVIDIA drivers for linux. Packaged for Bumblebee"
 arch=('x86_64')
 url="http://www.nvidia.com/"
@@ -18,17 +18,14 @@ install=nvidia.install
 options=('!strip')
 
 _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
-source=("ftp://download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}-no-compat32.run"
-       'linux3.11.patch')
-md5sums=('08ae6c987c30885b2a9f662df23f061d'
-         '6615840da025708edefb44a98c68f6f7')
+source=("ftp://download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}-no-compat32.run")
+md5sums=('28295eed56c2ca996401c0093279620f')
 
 build() {
     cd "${srcdir}"
     sh "${_pkg}.run" --extract-only
 
     cd "${_pkg}/kernel"
-    patch -p2 -i ${srcdir}/linux3.11.patch
     
     make SYSSRC=/lib/modules/"${_kver}/build" module
 }
