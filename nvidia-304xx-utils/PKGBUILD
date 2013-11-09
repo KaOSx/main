@@ -1,25 +1,17 @@
-#
-# Chakra Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
 
 pkgbase=nvidia-304xx-utils
 pkgname=('nvidia-304xx-utils' 'nvidia-304xx-settings')
-# Edit chakra-hardware-detection/hooks/hwdetect_7_graphics on version jump from 3xx.xx
+# Edit hardware-detection/hooks/hwdetect_7_graphics on version jump from 3xx.xx
 pkgver=304.64
-pkgrel=3
+pkgrel=1
 arch=('x86_64')
 url="http://www.nvidia.com/"
 license=('custom')
 options=('!strip')
+_pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
+md5sums=('76007ed4b72afd334e26377b646f5f7e')
 
-[ "$CARCH" = "x86_64" ] && {
-  ARCH='x86_64'
-  _pkg="NVIDIA-Linux-${ARCH}-${pkgver}-no-compat32"
-  md5sums=('76007ed4b72afd334e26377b646f5f7e')
-}
-
-source=("ftp://download.nvidia.com/XFree86/Linux-${ARCH}/${pkgver}/${_pkg}.run"
+source=("ftp://download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
         'nvidia-restore-settings.desktop')
 md5sums=("${md5sums[@]}"
          '9237516792da7b6df32f8c7e8a98f475')
@@ -108,4 +100,3 @@ package_nvidia-304xx-settings() {
   install -D -m644 "${srcdir}/nvidia-restore-settings.desktop" "${pkgdir}/usr/share/autostart/nvidia-restore-settings.desktop"
 }
 
-# vim:set ts=2 sw=2 et:
