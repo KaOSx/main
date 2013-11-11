@@ -1,7 +1,7 @@
 
 pkgname=valgrind
-pkgver=3.8.1
-pkgrel=2
+pkgver=3.9.0
+pkgrel=1
 pkgdesc="A tool to help find memory-management problems in programs"
 arch=('x86_64')
 license=('GPL')
@@ -9,18 +9,11 @@ url="http://valgrind.org/"
 depends=('glibc>=2.17' 'glibc<2.18' 'perl')
 makedepends=('gdb')
 options=('!emptydirs')
-source=("http://valgrind.org/downloads/${pkgname}-${pkgver}.tar.bz2"
-        'glibc-2.17.patch'
-        'valgrind-3.8.1-xaddb.patch')
-md5sums=('288758010b271119a0ffc0183f1d6e38'
-         '0e8e13799eef0c286f0fc976692fa06e'
-         'aad7751a3e4ee899093dcfa9f70a449b')
+source=("http://valgrind.org/downloads/${pkgname}-${pkgver}.tar.bz2")
+md5sums=('0947de8112f946b9ce64764af7be6df2')
 
 build() {
   cd ${srcdir}/${pkgname}-${pkgver}
-  patch -p1 -i $srcdir/glibc-2.17.patch
-  # https://bugs.kde.org/show_bug.cgi?id=307106
-  patch -p0 -i $srcdir/valgrind-3.8.1-xaddb.patch
   
   ./configure --prefix=/usr --mandir=/usr/share/man --enable-only64bit
   make
