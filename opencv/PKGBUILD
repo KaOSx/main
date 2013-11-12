@@ -1,8 +1,7 @@
 
-pkgbase=opencv
-pkgname=('opencv' 'opencv-samples')
+pkgname=opencv
 _realname=OpenCV
-pkgver=2.4.6.1
+pkgver=2.4.7
 pkgrel=1
 pkgdesc="Open Source Computer Vision Library"
 arch=('x86_64')
@@ -14,61 +13,38 @@ makedepends=('pkgconfig' 'cmake' 'python2-numpy' 'eigen' 'python2-sphinx' 'mesa'
 optdepends=('python2-numpy: Python 2.x interface' 'eigen')
 options=('!libtool')
 source=("http://downloads.sourceforge.net/opencvlibrary/$pkgname-$pkgver.tar.gz")
-md5sums=('d756bfa460891697571d5c90050e1cfe')
-
-_cmakeopts=('-D CMAKE_BUILD_TYPE=Release'
-            '-D CMAKE_INSTALL_PREFIX=/usr'
-            '-D CMAKE_SKIP_RPATH=ON'
-            '-D BUILD_TESTS=OFF'
-            '-D ENABLE_SSE3=OFF'
-            '-D BUILD_EXAMPLES=ON'
-            '-D INSTALL_C_EXAMPLES=ON'
-            '-D INSTALL_PYTHON_EXAMPLES=ON'
-            '-D WITH_XINE=ON'
-            '-D WITH_QT=ON'
-	    '-D WITH_OPENGL=ON'
-            '-D WITH_TBB=OFF'
-            '-D WITH_CUDA=OFF'
-            '-D WITH_GTK=OFF'
-            '-D ENABLE_FAST_MATH=ON')
+md5sums=('33a12a8bba6e6dc32c97298c99b083b2')
 
 build() {
   cd "$srcdir/$pkgname-$pkgver"
  
-  mkdir build && cd build
+  mkdir build 
+  cd build
 
-  cmake ${_cmakeopts[@]} ..
+  cmake .. -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_INSTALL_PREFIX=/usr \
+        -DCMAKE_SKIP_RPATH=ON \
+        -DBUILD_TESTS=OFF \
+        -DENABLE_SSE3=OFF \
+        -DBUILD_EXAMPLES=ON \
+        -DINSTALL_C_EXAMPLES=ON \
+        -DINSTALL_PYTHON_EXAMPLES=ON \
+        -DWITH_XINE=ON \
+        -DWITH_QT=ON \
+	-DWITH_OPENGL=ON \
+        -DWITH_TBB=OFF \
+        -DWITH_CUDA=OFF \
+        -DWITH_GTK=OFF \
+        -DENABLE_FAST_MATH=ON 
   make
 }
 
-package_opencv() {
-  install=$pkgname.install
-
+package() {
   cd "$srcdir/$pkgname-$pkgver/build"
-
   make DESTDIR="$pkgdir" install
 
-  # install license file
   install -Dm644 "$srcdir/$pkgname-$pkgver/doc/license.txt" \
     "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
-
-  cd "$pkgdir/usr/share"
-
-  # separate samples package
-  [ -d $pkgname/samples ] && mv $pkgname/samples "$srcdir/opencv-samples"
 }
 
-package_opencv-samples() {
-  pkgdesc+=" (samples)"
-  depends=('bash')
-  optdepends=()
-  options=()
-
-  cd "$srcdir"
-
-  mkdir -p "$pkgdir/usr/share/opencv"
-  cp -r opencv-samples "$pkgdir/usr/share/opencv/samples"
-  install -Dm644 "$srcdir/opencv-$pkgver/doc/license.txt" \
-    "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
-}
 
