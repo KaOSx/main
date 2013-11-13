@@ -2,7 +2,7 @@
 pkgname=perl-module-build
 _pkgname=Module-Build
 pkgver=0.4200
-pkgrel=1
+pkgrel=2
 pkgdesc="Build and install Perl modules"
 arch=('x86_64')
 license=('PerlArtistic' 'GPL')
@@ -23,4 +23,5 @@ package() {
   cd $_pkgname-$pkgver
 
   perl Build install destdir="$pkgdir"
+  rm -r $pkgdir/usr/share/man
 }
