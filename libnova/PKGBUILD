@@ -1,6 +1,6 @@
 
 pkgname=libnova
-pkgver=0.14.0
+pkgver=0.15.0
 pkgrel=1
 pkgdesc="General purpose, double precision, celestial mechanics, astrometry and astrodynamics library."
 url="http://libnova.sourceforge.net/"
@@ -10,10 +10,11 @@ depends=('glibc')
 makedepends=('pkgconfig')
 options=('!libtool')
 source=("http://downloads.sourceforge.net/sourceforge/libnova/$pkgname-$pkgver.tar.gz")
-md5sums=('e81a00efedfa3043cd6018383e8a0438')
+md5sums=('756fdb55745cb78511f83a62c25f3be4')
 
 build() {
         cd $srcdir/$pkgname-$pkgver
+        autoreconf -i
         
          ./configure --prefix=/usr
         make
