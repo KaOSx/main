@@ -1,6 +1,6 @@
 
 pkgname=pixman
-pkgver=0.32.2
+pkgver=0.32.4
 pkgrel=1
 pkgdesc="Pixman library"
 arch=('x86_64')
@@ -9,7 +9,7 @@ license=('custom')
 depends=('glibc')
 options=('!libtool')
 source=("http://xorg.freedesktop.org/releases/individual/lib/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('1e92d239011ea65826026ac15b372e10')
+md5sums=('cdb566504fe9daf6728c7b03cc7ea228')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
@@ -21,7 +21,7 @@ build() {
 check() {
   cd "${srcdir}/${pkgname}-${pkgver}"
   
-  make -k check || true
+  make check 
 }
 
 package() {

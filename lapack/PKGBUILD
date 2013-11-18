@@ -1,7 +1,7 @@
 
 pkgbase=lapack
 pkgname=('lapack' 'blas')
-pkgver=3.4.2
+pkgver=3.5.0
 pkgrel=1
 arch=('x86_64')
 url="http://www.netlib.org/lapack"
@@ -11,7 +11,7 @@ depends=('gcc-libs')
 license=("custom")
 source=("http://www.netlib.org/${pkgbase}/${pkgbase}-${pkgver}.tgz"
         'LICENSE.blas')
-md5sums=('61bf1a8a4469d4bdb7604f5897179478'
+md5sums=('e7ba742120bd75339ac4c6fbdd8bce92'
          '38b6acb8ed5691d25863319d30a8b365')
 
 build() {
@@ -24,23 +24,25 @@ build() {
     -DCMAKE_SKIP_RPATH=ON \
     -DBUILD_SHARED_LIBS=ON \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_Fortran_COMPILER=gfortran
+    -DCMAKE_Fortran_COMPILER=gfortran \
+    -DLAPACKE=ON
   make
 }
 
 package_lapack() {
   depends=("blas=${pkgver}")
 
-  install -m755 -d ${pkgdir}/usr/{lib,bin}
+  install -m755 -d ${pkgdir}/usr/{lib,bin,include}
   
-  for libname in liblapack libtmglib; do
+  for libname in liblapack libtmglib liblapacke; do
     install -m755 "${srcdir}/build/lib/${libname}.so" \
       "${pkgdir}/usr/lib/"
-    ln -sf liblapack.so "${pkgdir}/usr/lib/${libname}.so.${pkgver}"
-    ln -sf liblapack.so "${pkgdir}/usr/lib/${libname}.so.3"
+    ln -sf {libname}.so "${pkgdir}/usr/lib/${libname}.so.${pkgver}"
+    ln -sf {libname}.so "${pkgdir}/usr/lib/${libname}.so.3"
   done
   
   install -m755 ${srcdir}/build/bin/* ${pkgdir}/usr/bin
+  install -m644 ${srcdir}/build/include/* ${pkgdir}/usr/include
   install -m755 -d "${pkgdir}/usr/share/licenses/lapack"
   install -m644 "${srcdir}/${pkgname}-${pkgver}/LICENSE" \
     "${pkgdir}/usr/share/licenses/lapack/"
