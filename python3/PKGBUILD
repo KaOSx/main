@@ -1,6 +1,6 @@
 
 pkgname=python3
-pkgver=3.3.2
+pkgver=3.3.3
 pkgrel=1
 _pybasever=3.3
 pkgdesc="Next generation of the python high-level scripting language"
@@ -11,10 +11,8 @@ depends=('expat' 'bzip2' 'gdbm' 'openssl' 'libffi' 'zlib')
 makedepends=('tk' 'sqlite3' 'valgrind')
 optdepends=('tk: for tkinter')
 options=('!makeflags')
-source=("http://www.python.org/ftp/python/${pkgver}/Python-${pkgver}.tar.bz2"
-        'CVE-2013-2099.patch')
-md5sums=('7dffe775f3bea68a44f762a3490e5e28'
-         '046c164b0a549bdac00bdd28cccd7ba1')  
+source=("http://www.python.org/ftp/python/${pkgver}/Python-${pkgver}.tar.bz2")
+md5sums=('f3ebe34d4d8695bf889279b54673e10c')  
 
 build() {
   cd "${srcdir}/Python-${pkgver}"
@@ -25,8 +23,6 @@ build() {
   rm -r Modules/expat
   rm -r Modules/zlib
   rm -r Modules/_ctypes/{darwin,libffi}*
-  
-  patch -p1 -i ${srcdir}/CVE-2013-2099.patch
 
   ./configure --prefix=/usr \
               --enable-shared \
