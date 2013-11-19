@@ -1,0 +1,33 @@
+
+pkgname=slang
+pkgver=2.2.4
+pkgrel=1
+pkgdesc="S-Lang is a powerful interpreted language"
+arch=('x86_64')
+url="http://www.s-lang.org/"
+license=('GPL')
+depends=('glibc' 'pcre' 'zlib')
+backup=('etc/slsh.rc')
+options=('!makeflags')
+source=("ftp://ftp.fu-berlin.de/pub/unix/misc/slang/v${pkgver%.*}/${pkgname}-${pkgver}.tar.gz")
+md5sums=('86cd8689cd71e281b4720fef8453ceeb')
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  
+  ./configure --prefix=/usr --sysconfdir=/etc 
+  make
+}
+
+check() {
+  cd ${pkgname}-${pkgver}
+  
+  make check
+}
+
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  
+  make DESTDIR="${pkgdir}" install-all
+}
