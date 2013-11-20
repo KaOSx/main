@@ -1,6 +1,6 @@
 
 pkgname=rdesktop
-pkgver=1.8.0
+pkgver=1.8.1
 pkgrel=1
 pkgdesc="open source client for Windows Remote Desktop Services"
 arch=('x86_64')
@@ -8,16 +8,13 @@ url="http://www.rdesktop.org/"
 license=('GPL')
 depends=('libx11' 'openssl' 'libao' 'libsamplerate' 'xorg-server-utils')
 source=("http://downloads.sourceforge.net/$pkgname/$pkgname-$pkgver.tar.gz"
-	'rdesktop-send_physical_buttons.diff'
-	'rdesktop-libao.patch')
-md5sums=('203d662ac20b22250bbbd525a9f29f3a'
-         'cbfb12729e7f28e497afb883cc42022b'
-         '5dafd24cc766f889866d791f254ff9de')
+	'rdesktop-send_physical_buttons.diff')
+md5sums=('f5382c5c85b0d2cc88b9b1aa9bbf1356'
+         'cbfb12729e7f28e497afb883cc42022b')
 
 build() {
   cd ${srcdir}/${pkgname}-${pkgver}
   patch -i ${srcdir}/rdesktop-send_physical_buttons.diff
-  patch -i ${srcdir}/rdesktop-libao.patch
 
   ./configure --prefix=/usr --disable-smartcard --with-ipv6
   make
