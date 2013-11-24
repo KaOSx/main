@@ -43,5 +43,5 @@ package() {
   sed -e 's#/bin/echo#echo#g' -i "${pkgdir}/usr/lib/ufw/ufw-init-functions"
 
   # Enable by default
-  sed -i -e 's/ENABLED=no/ENABLED=yes/' -i "${pkgdir}/etc/ufw/ufw.conf"
+  sed -e 's/ENABLED=no/ENABLED=yes/' -i "${pkgdir}/etc/ufw/ufw.conf"
 }

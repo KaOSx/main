@@ -1,13 +1,13 @@
 
 pkgname=xproto
-pkgver=7.0.24
+pkgver=7.0.25
 pkgrel=1
 pkgdesc="X11 core wire protocol and auxiliary headers"
 arch=('x86_64')
 license=('custom')
 url="http://xorg.freedesktop.org/"
-source=(${url}/releases/individual/proto/${pkgname}-${pkgver}.tar.bz2)
-md5sums=('9c0203c3bee4bac432ec504dc45712ed')
+source=("${url}/releases/individual/proto/${pkgname}-${pkgver}.tar.bz2")
+md5sums=('28311ef4edbbbf89f617a7f8a2e5648f')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
