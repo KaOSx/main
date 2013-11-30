@@ -2,7 +2,7 @@
 pkgbase="foomatic"
 pkgname=('foomatic-db' 'foomatic-filters' 'foomatic-db-engine' 'foomatic-db-nonfree')
 arch=('x86_64') 
-_snapdate=20130412
+_snapdate=20131130
 _filtersver=4.0.17
 _relver=4.0.9
 pkgver=${_filtersver}_${_snapdate}
@@ -16,8 +16,8 @@ url="http://www.linuxprinting.org/foomatic.html"
 options=('!emptydirs')
 md5sums=('b05f5dcbfe359f198eef3df5b283d896'
          '5b33c1adb21e7b6f3652e9a18d0e6f4e'
-         '1fe411527aedb6f0445815b2d071c68e'
-         'c2cce1d33e7c0b0ddddcc78ceeeaf8d1') 
+         '36d6658172c637dc80fd9b61a3da4e4f'
+         '854ce2a51fee0bf69ac475e7bc2cea2c') 
 
 package_foomatic-db() {
 
@@ -46,6 +46,9 @@ package_foomatic-filters() {
   ./configure --prefix=/usr --sysconfdir=/etc
   make 
   make DESTDIR="${pkgdir}" install 
+  # part of cups-filters
+  rm ${pkgdir}/usr/lib/cups/filter/foomatic-rip
+  rm ${pkgdir}/usr/share/man/man1/foomatic-rip.1
 }
 
 package_foomatic-db-engine() {
