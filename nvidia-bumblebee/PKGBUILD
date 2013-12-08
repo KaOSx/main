@@ -1,17 +1,17 @@
 
 
-_extramodules=extramodules-3.11
+_extramodules=extramodules-3.12
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=nvidia-bumblebee
 pkgver=331.20
-pkgrel=1
+pkgrel=2
 pkgdesc="NVIDIA drivers for linux. Packaged for Bumblebee"
 arch=('x86_64')
 url="http://www.nvidia.com/"
-depends=('linux>3.11' 'linux<3.12' "nvidia-utils-bumblebee")
+depends=('linux>3.12' 'linux<3.13' "nvidia-utils-bumblebee")
+makedepends=('linux-headers>3.12' 'linux-headers<3.13')
 provides=("nvidia=${pkgver}")
-makedepends=('linux-headers>3.11' 'linux-headers<3.12')
 conflicts=('nvidia')
 license=('custom')
 install=nvidia.install
