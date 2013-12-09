@@ -1,6 +1,7 @@
 
 pkgname=imagemagick
-pkgver=6.8.7.7
+pkgver=6.8.7.9
+_pkgver=6.8.7-9
 pkgrel=1
 pkgdesc="An image viewing/manipulation program"
 arch=('x86_64')
@@ -13,13 +14,13 @@ optdepends=('ghostscript: for Ghostscript support'
             'openexr: for OpenEXR support'  
             'jasper: for JPEG-2000 support')
 options=('!docs' 'libtool' '!emptydirs')
-source=("http://www.imagemagick.org/download/ImageMagick-6.8.7-7.tar.xz"
+source=("http://www.imagemagick.org/download/ImageMagick-${_pkgver}.tar.xz"
 	'perlmagick.rpath.patch')
-md5sums=('90204b727714e1d8a4b8230690b912bd'
+md5sums=('9dde48f910fd739b5f4d685f1b96ab55'
          '0faf7158fd3a0904d9a70dd3e3c1fe9c')
 
 build() {
-	cd ${srcdir}/ImageMagick-${pkgver%.*}-${pkgver##*.}
+	cd ${srcdir}/ImageMagick-${_pkgver}
 	sed '/AC_PATH_XTRA/d' -i configure.ac
         autoreconf --force --install
 
@@ -36,13 +37,13 @@ build() {
 }
 
 check() {
-  cd ImageMagick-${pkgver%.*}-${pkgver##*.}
+  cd ImageMagick-${_pkgver}
   
   make check
 }
 
 package() {
-	cd ${srcdir}/ImageMagick-${pkgver%.*}-${pkgver##*.}
+	cd ${srcdir}/ImageMagick-${_pkgver}
 
 	make -j1 DESTDIR=${pkgdir} install 
 

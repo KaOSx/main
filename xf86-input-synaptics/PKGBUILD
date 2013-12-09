@@ -1,6 +1,6 @@
 
 pkgname=xf86-input-synaptics
-pkgver=1.7.1
+pkgver=1.7.2
 pkgrel=1
 pkgdesc="Synaptics driver for notebook touchpads"
 arch=('x86_64')
@@ -8,21 +8,18 @@ license=('custom')
 url="http://xorg.freedesktop.org/"
 depends=('libxtst' 'mtdev')
 makedepends=('xorg-server>=1.14.1' 'libxi' 'libx11' 'resourceproto' 'scrnsaverproto')
-conflicts=('xorg-server<1.12.3')
 groups=('xorg-drivers' 'xorg')
-options=(!libtool)
-backup=('etc/X11/xorg.conf.d/10-synaptics.conf')
+options=('!libtool')
+backup=('etc/X11/xorg.conf.d/50-synaptics.conf')
 source=("http://xorg.freedesktop.org/releases/individual/driver/${pkgname}-${pkgver}.tar.bz2"
-        '10-synaptics.conf'
-        'multitouch.patch')
-md5sums=('6505de717972b6a24b8eb13e69eb996c'
-         '3b81a81b958dfe3cac3cdef7ee85f1ce'
-         'da3e8dbaf5979bf06fee6c4bcb8470b9')
+        'tapbutton.patch')
+md5sums=('c3bb879c8b81c1de3b1bc188da6137ce'
+         '37e93467e7d9b6f67af301ccfd26f961')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
-
-  patch -p1 -i "${srcdir}"/multitouch.patch
+  patch -p1 -i "${srcdir}"/tapbutton.patch
+  
   ./configure --prefix=/usr
   make
 }
@@ -30,8 +27,9 @@ build() {
 package() {
   cd "${srcdir}/${pkgname}-${pkgver}"
   make DESTDIR="${pkgdir}" install
+  
   install -m755 -d "${pkgdir}/etc/X11/xorg.conf.d"
-  install -m644 "${srcdir}/10-synaptics.conf" "${pkgdir}/etc/X11/xorg.conf.d/"
+  install -m644 conf/50-synaptics.conf "${pkgdir}/etc/X11/xorg.conf.d/"
   install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
   install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
 
