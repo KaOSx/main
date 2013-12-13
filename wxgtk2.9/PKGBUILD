@@ -1,0 +1,38 @@
+
+pkgname=wxgtk2.9
+pkgver=2.9.5
+pkgrel=1
+pkgdesc="GTK+ implementation of wxWidgets API for GUI"
+arch=('x86_64')
+url="http://wxwidgets.org"
+license=('custom:wxWindows')
+depends=('gtk2' 'gstreamer0.10-base')
+makedepends=('gstreamer0.10-base-plugins' 'gconf')
+options=('!emptydirs')
+source=("http://downloads.sourceforge.net/wxwindows/wxWidgets-${pkgver}.tar.bz2"
+        "wxGTK-2.9.5-collision.patch")
+md5sums=('e98c5f92805493f150656403ffef3bb0'
+         'a0677c1ae207670c4dc957f583517b14')
+
+prepare() {
+  cd wxWidgets-${pkgver}
+  patch -p1 -i ../wxGTK-2.9.5-collision.patch
+}
+
+build() {
+  cd wxWidgets-${pkgver}
+  
+  ./configure --prefix=/usr --libdir=/usr/lib --with-gtk=2 --with-opengl --enable-unicode \
+    --enable-graphics_ctx --enable-mediactrl --disable-webview --with-regex=builtin \
+    --with-libpng=sys --with-libxpm=sys --with-libjpeg=sys --with-libtiff=sys \
+    --disable-precomp-headers
+  make
+  make -C locale allmo
+}
+
+package() {
+  cd wxWidgets-${pkgver}
+  make DESTDIR="${pkgdir}" install
+  
+  install -D -m644 docs/licence.txt "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+}
