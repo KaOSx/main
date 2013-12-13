@@ -1,7 +1,7 @@
 
 pkgname=x264
 pkgver=20131101
-pkgrel=1
+pkgrel=2
 pkgdesc="free library for encoding H264/AVC video streams"
 arch=('x86_64')
 url="http://www.videolan.org/developers/x264.html"
@@ -14,16 +14,12 @@ md5sums=('b7f2c271ac31c983169156b617d4f600')
 build() {
     cd "$srcdir/$pkgname-snapshot-$pkgver-2245-stable"
 
-    ./configure --enable-shared --enable-pic
+    ./configure --prefix=/usr --enable-shared --enable-pic
 
     make
 }
 package() {
     cd "$srcdir/$pkgname-snapshot-$pkgver-2245-stable"
 
-    make DESTDIR="$pkgdir" \
-      bindir=/usr/bin \
-      libdir=/usr/lib \
-      includedir=/usr/include \
-      install
+    make DESTDIR="$pkgdir" install
 }

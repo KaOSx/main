@@ -14,8 +14,6 @@ md5sums=('3c17eff0c854a77f98b4d0db086bc5bc')
 build() {
   cd ${srcdir}/${pkgname}-${pkgver}
   
-  sed -i "s#usr/sbin/chroot#usr/bin/chroot#" test/testtree.sh test/t/chroot.t
-  
   ./configure --prefix=/usr --libdir=/usr/lib/libfakeroot --sysconfdir=/etc
   make 
 }
@@ -23,7 +21,7 @@ build() {
 check() {
   cd ${srcdir}/${pkgname}-${pkgver}
   
-  make check
+  make -j1 check
 }
 
 package() {
