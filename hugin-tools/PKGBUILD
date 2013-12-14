@@ -2,7 +2,7 @@
 pkgname=hugin-tools
 _pkgname=hugin
 pkgver=2013.0.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Hugin libs and tools to be used by Kipi-plugins"
 arch=('x86_64')
 url="http://hugin.sourceforge.net/"
@@ -21,7 +21,7 @@ build() {
   mkdir build 
   cd build
 
-  # this makes possible to compile all the hugin tools without GUis
+  # make it possible to compile all the hugin tools without GUis
   sed -i -e "s~FIND_PACKAGE(wxWidgets REQUIRED)~~g" ${srcdir}/${_pkgname}-${pkgver}/CMakeLists.txt
   # Unicode issue
   #sed 's/Luk.... Jirkovsk../Lukas Jirkovsky/g' -i ${srcdir}/${_pkgname}-${pkgver}/doc/deghosting_mask.pod
