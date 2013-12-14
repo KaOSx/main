@@ -92,9 +92,9 @@ package_qt5() {
 	make INSTALL_ROOT=$pkgdir install
 	
     install -d ${pkgdir}/usr/share/applications
-    #install -m644 ${srcdir}/youtubeview.desktop ${pkgdir}/usr/share/applications/
-    #install -m644 ${srcdir}/flickrview.desktop ${pkgdir}/usr/share/applications/
-    install -m644 ${srcdir}/qmlviewer.desktop ${pkgdir}/usr/share/applications/
+    install -m644 ${srcdir}/youtubeview.desktop ${pkgdir}/usr/share/applications/
+    install -m644 ${srcdir}/flickrview.desktop ${pkgdir}/usr/share/applications/
+    #install -m644 ${srcdir}/qmlviewer.desktop ${pkgdir}/usr/share/applications/
     
     mkdir -p ${pkgdir}/usr/bin
     for i in $(ls ${pkgdir}/usr/lib/qt5/bin); do
