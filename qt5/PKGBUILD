@@ -3,7 +3,7 @@ pkgbase=qt5
 pkgname=('qt5' 'qt5-private-headers')
 pkgver=5.2.0
 _pkgver=5.2
-pkgrel=2
+pkgrel=3
 arch=('x86_64')
 url='http://qt.nokia.com/'
 license=('GPL3' 'LGPL' 'FDL' 'custom')
@@ -19,8 +19,8 @@ _pkgfqn="qt-everywhere-opensource-src-${pkgver}"
 #_pkgfqn=qt5
 source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/single/${_pkgfqn}.tar.xz"
         'assistant.desktop' 'designer.desktop' 'linguist.desktop' 'qtconfig.desktop'
-        'youtubeview.desktop' 'flickrview.desktop' 'browser.desktop' 'fancybrowser.desktop' 'qmlviewer.desktop'
-        'defaultbookmarks_new.diff')
+        'youtubeview.desktop' 'flickrview.desktop' 'calculator.desktop' 'clocks.desktop'
+        'samegame.desktop' 'snake.desktop' 'tic-tac-toe.desktop')
 md5sums=('8f60b47ca9461831d940f579ee90517e'
          'fc211414130ab2764132e7370f8e5caa'
          '85179f5e0437514f8639957e1d8baf62'
@@ -28,14 +28,14 @@ md5sums=('8f60b47ca9461831d940f579ee90517e'
          '6b771c8a81dd90b45e8a79afa0e5bbfd'
          '85fc45501d232c8104cbff218d88199b'
          'f24376558f74f1f97ab236db4ca5c616'
-         '3b7ea368a2700dc61bc22fc78e759b1c'
-         '188ece1d836c7ad5fd354c72d2f4c424'
-         'a43297d33bfd05f8d47ed161254c18f0'
-         'adc017caa4d03de038022dbe352fb130')
+         '6d493bd132cd20bb108cf938082013d9'
+         'ce9eee942e50391eb1672725298999af'
+         '73204871cc91cfa6e8ce97c07be1e72e'
+         '4655d41e152196ec1ad8e1ebecf7ec08'
+         'f66a2053e8e94dff4be6c7a12ada69da')
 
 build() {
 	cd $srcdir/$_pkgfqn
-	#patch -p1 -i "$srcdir/defaultbookmarks_new.diff"
 
         unset QTDIR
         export PATH="$PWD/qtbase/bin:$PWD/qtrepotools/bin:$PATH"
@@ -67,7 +67,8 @@ build() {
                 -feature-menu \
                 -feature-textdate \
                 -feature-ftp \
-                -xcursor
+                -xcursor \
+                -assistant-webkit
 	 make
 	 #./configure -prefix $PWD/qtbase -opensource
          #make module-qtwebkit
@@ -89,12 +90,16 @@ package_qt5() {
 	  'libxfixes: Xfixes support')
 	
     cd $srcdir/$_pkgfqn
-	make INSTALL_ROOT=$pkgdir install
+    make INSTALL_ROOT=$pkgdir install
 	
     install -d ${pkgdir}/usr/share/applications
     install -m644 ${srcdir}/youtubeview.desktop ${pkgdir}/usr/share/applications/
     install -m644 ${srcdir}/flickrview.desktop ${pkgdir}/usr/share/applications/
-    #install -m644 ${srcdir}/qmlviewer.desktop ${pkgdir}/usr/share/applications/
+    install -m644 ${srcdir}/calculator.desktop ${pkgdir}/usr/share/applications/
+    install -m644 ${srcdir}/clocks.desktop ${pkgdir}/usr/share/applications/
+    install -m644 ${srcdir}/samegame.desktop ${pkgdir}/usr/share/applications/
+    install -m644 ${srcdir}/snake.desktop ${pkgdir}/usr/share/applications/
+    install -m644 ${srcdir}/tic-tac-toe.desktop ${pkgdir}/usr/share/applications/
     
     mkdir -p ${pkgdir}/usr/bin
     for i in $(ls ${pkgdir}/usr/lib/qt5/bin); do
@@ -120,3 +125,4 @@ package_qt5-private-headers() {
     cp -r ${srcdir}/$_pkgfqn/qtscript/src/script ${pkgdir}/usr/src/qt5/
     cp -r ${srcdir}/$_pkgfqn/qtdeclarative/src/qml ${pkgdir}/usr/src/qt5/
 }
+
