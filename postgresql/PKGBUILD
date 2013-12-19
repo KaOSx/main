@@ -1,7 +1,7 @@
 
 pkgbase=postgresql
 pkgname=('postgresql-libs' 'postgresql-docs' 'postgresql')
-pkgver=9.2.4
+pkgver=9.3.2
 _majorver=${pkgver%.*}
 pkgrel=1
 epoch=1
@@ -16,13 +16,13 @@ source=("ftp://ftp.postgresql.org/pub/source/v${pkgver}/postgresql-${pkgver}.tar
         'postgresql.service' 
         'postgresql.tmpfiles.conf' 
         'postgresql-check-db-dir')
-md5sums=('6ee5bb53b97da7c6ad9cb0825d3300dd'
+md5sums=('8c905155e3e9f9367b4299a9acb41d2a'
          '75c579eed03ffb2312631f0b649175b4'
          '96f82c38f3f540b53f3e5144900acf17'
          'd28e443f9f65a5712c52018b84e27137'
          '89b48774b0dae7c37fbb0e907c3c1db8'
          '1c5a1f99e8e93776c593c468e2612985'
-         '0206d1c19ed5f2214689d97fbe41e5d4')
+         '5e0af98b23d473d767fbce3143b3ce53')
 build() {
   cd "${srcdir}/postgresql-${pkgver}"
   patch -p1 -i ${srcdir}/postgresql-run-socket.patch
@@ -53,12 +53,15 @@ package_postgresql-libs() {
   install -Dm0644 COPYRIGHT "${pkgdir}/usr/share/licenses/postgresql-libs/LICENSE"
 
   # install libs
-  for dir in src/interfaces src/bin/pg_config src/bin/psql; do
+  for dir in src/interfaces src/bin/pg_config src/bin/psql src/bin/pg_dump; do
     make -C ${dir} DESTDIR="${pkgdir}" install
   done
 
-  install -D -m0644 doc/src/sgml/man1/pg_config.1 "${pkgdir}/usr/share/man/man1/pg_config.1"
-  install -D -m0644 doc/src/sgml/man1/psql.1 "${pkgdir}/usr/share/man/man1/psql.1"
+  install -D -m644 doc/src/sgml/man1/pg_config.1 "${pkgdir}/usr/share/man/man1/pg_config.1"
+  install -D -m644 doc/src/sgml/man1/pg_dump.1 "${pkgdir}/usr/share/man/man1/pg_dump.1"
+  install -D -m644 doc/src/sgml/man1/pg_dumpall.1 "${pkgdir}/usr/share/man/man1/pg_dumpall.1"
+  install -D -m644 doc/src/sgml/man1/pg_restore.1 "${pkgdir}/usr/share/man/man1/pg_restore.1"
+  install -D -m644 doc/src/sgml/man1/psql.1 "${pkgdir}/usr/share/man/man1/psql.1"
 
   cd src/include
 
@@ -67,6 +70,7 @@ package_postgresql-libs() {
   # these headers are needed by the public headers of the interfaces
   install -m0644 pg_config.h "${pkgdir}/usr/include/"
   install -m0644 pg_config_os.h "${pkgdir}/usr/include/"
+  install -m644 pg_config_ext.h "${pkgdir}/usr/include/"
   install -m0644 postgres_ext.h "${pkgdir}/usr/include/"
   install -m0644 libpq/libpq-fs.h "${pkgdir}/usr/include/libpq/"
   install -m0644 pg_config_manual.h "${pkgdir}/usr/include/"
@@ -111,10 +115,13 @@ package_postgresql() {
   make -C doc/src/sgml DESTDIR="${pkgdir}" install-man
 
   # part of the -libs package
-  for dir in src/interfaces src/bin/pg_config src/bin/psql; do
+  for dir in src/interfaces src/bin/pg_config src/bin/psql src/bin/pg_dump; do
     make -C ${dir} DESTDIR="${pkgdir}" uninstall
   done
   rm "${pkgdir}/usr/share/man/man1/pg_config.1"
+  rm "${pkgdir}/usr/share/man/man1/pg_dump.1"
+  rm "${pkgdir}/usr/share/man/man1/pg_dumpall.1"
+  rm "${pkgdir}/usr/share/man/man1/pg_restore.1"
   rm "${pkgdir}/usr/share/man/man1/psql.1"
 
   install -D -m0644 COPYRIGHT "${pkgdir}/usr/share/licenses/${pkgbase}/LICENSE"
