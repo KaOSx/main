@@ -1,6 +1,6 @@
 
 pkgname=libcdio
-pkgver=0.90
+pkgver=0.92
 pkgrel=1
 pkgdesc="GNU Compact Disc Input and Control Library"
 arch=('x86_64')
@@ -10,17 +10,14 @@ depends=('gcc-libs' 'libcddb' 'ncurses')
 options=('!libtool')
 install=libcdio.install
 source=("http://ftp.gnu.org/gnu/libcdio/${pkgname}-${pkgver}.tar.gz"
-        'libcdio-0.83-linking.patch'
-        'udf_fopen.patch')
-md5sums=('1b245b023fb03a58d030fd2800db3247'
-         '2826f89c78f09b0c0cbaeb47d507a55e'
-         'b7b50c989575e5484d3992b455c9df48')
+        'libcdio-0.83-linking.patch')
+md5sums=('86f3f2869c1d34e4c6e52db77992b918'
+         '2826f89c78f09b0c0cbaeb47d507a55e')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
   
   patch -p1 -i "${srcdir}/libcdio-0.83-linking.patch"
-  patch -p1 -i "${srcdir}/udf_fopen.patch"
   
   ./configure --prefix=/usr \
               --disable-vcd-info \
