@@ -1,7 +1,8 @@
 
 pkgname=vigra
-pkgver=1.9.0
-pkgrel=4
+pkgver=1.10.0
+_pkgver=1-10-0
+pkgrel=1
 pkgdesc="Computer vision library"
 arch=('x86_64')
 url="http://hci.iwr.uni-heidelberg.de/vigra/"
@@ -11,11 +12,11 @@ makedepends=('cmake' 'python2-nose' 'doxygen' 'python2-sphinx' 'boost' 'python2-
 optdepends=('python2: for python bindings'
             'boost-libs: for python bindings')
 options=('!libtool')
-source=("http://kogs-www.informatik.uni-hamburg.de/~koethe/vigra/${pkgname}-${pkgver}-src.tar.gz")
-md5sums=('b6155afe1ea967917d2be16d98a85404')
+source=("https://github.com/ukoethe/vigra/archive/Version-${_pkgver}.tar.gz")
+md5sums=('4f963f0be4fcb8b06271c2aa40baa9be')
 
 build() {
-  cd "${srcdir}"/${pkgname}-${pkgver}
+  cd "${srcdir}"/${pkgname}-Version-${_pkgver}
   
   cmake -DCMAKE_INSTALL_PREFIX=/usr \
       -DPYTHON_EXECUTABLE=/usr/bin/python2 \
@@ -26,13 +27,13 @@ build() {
 }
 
 check() {
-  cd "${srcdir}"/${pkgname}-${pkgver}
+  cd "${srcdir}"/${pkgname}-Version-${_pkgver}
   
   make -k check || /bin/true 
 }
 
 package() {
-  cd "${srcdir}"/${pkgname}-${pkgver}
+  cd "${srcdir}"/${pkgname}-Version-${_pkgver}
   make DESTDIR="${pkgdir}" install
 
   install -D -m644 LICENSE.txt "${pkgdir}"/usr/share/licenses/${pkgname}/LICENSE

@@ -100,10 +100,10 @@ package() {
   install -m 755 bin/winbind_krb5_locator.so ${pkgdir}/usr/lib/krb5/plugins/libkrb5/winbind_krb5_locator.so
   # systemd files
   install -d -m755 ${pkgdir}/usr/lib/systemd/system
-  for i in smbd nmbd swat winbindd; do
+  #for i in smbd nmbd swat winbindd; do
     install -m644 ${srcdir}/*.service ${pkgdir}/usr/lib/systemd/system/
     install -m644 ${srcdir}/*.socket ${pkgdir}/usr/lib/systemd/system/
-  done
+  #done
   # create non-persistent dirs via tmpfiles instead of shipping packaged-in
   install -D -m644 ${srcdir}/samba.conf ${pkgdir}/usr/lib/tmpfiles.d/samba.conf
   rm -rf ${pkgdir}/var/run
