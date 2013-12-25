@@ -1,0 +1,24 @@
+
+pkgname=gloox
+pkgver=1.0.9
+pkgrel=1
+pkgdesc="C++ libraries for development of Jabber client/component/server"
+arch=('x86_64')
+url="http://camaya.net/gloox"
+license=("GPL")
+depends=('libidn' 'gnutls')
+source=("http://camaya.net/download/gloox-$pkgver.tar.bz2")
+md5sums=('48fc9aa5210c2a1ce253751a4d38e19c')
+
+build() {
+  cd $srcdir/gloox-$pkgver
+
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd $srcdir/gloox-$pkgver
+
+  make DESTDIR=$pkgdir install
+}
