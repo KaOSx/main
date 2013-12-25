@@ -1,21 +1,18 @@
 
 pkgname=fakechroot
-pkgver=2.17.1
-pkgrel=2
+pkgver=2.17.2
+pkgrel=1
 pkgdesc="Gives a fake chroot environment"
 arch=('x86_64')
 url="http://fakechroot.alioth.debian.org"
 license=('LGPL')
 options=('!libtool')
 install=fakechroot.install
-source=("http://ftp.debian.org/debian/pool/main/f/${pkgname}/${pkgname}_${pkgver}.orig.tar.gz"
-        'chroot-path.patch')
-md5sums=('3c17eff0c854a77f98b4d0db086bc5bc'
-         'c80473c388bdc1e5d6af5f6485556508')
+source=("http://ftp.debian.org/debian/pool/main/f/${pkgname}/${pkgname}_${pkgver}.orig.tar.gz")
+md5sums=('e614f62972efa4654fc780ae7e4affad')
 
 build() {
   cd ${srcdir}/${pkgname}-${pkgver}
-  patch -p1 -i ${srcdir}/chroot-path.patch
   
   ./configure --prefix=/usr --libdir=/usr/lib/libfakeroot --sysconfdir=/etc
   make 
@@ -24,7 +21,7 @@ build() {
 check() {
   cd ${srcdir}/${pkgname}-${pkgver}
   
-  make -j1 check
+  make check
 }
 
 package() {
