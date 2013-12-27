@@ -3,7 +3,7 @@ pkgbase=qt5
 pkgname=('qt5' 'qt5-private-headers')
 pkgver=5.2.0
 _pkgver=5.2
-pkgrel=3
+pkgrel=4
 arch=('x86_64')
 url='http://qt.nokia.com/'
 license=('GPL3' 'LGPL' 'FDL' 'custom')
@@ -67,8 +67,7 @@ build() {
                 -feature-menu \
                 -feature-textdate \
                 -feature-ftp \
-                -xcursor \
-                -assistant-webkit
+                -xcursor
 	 make
 	 #./configure -prefix $PWD/qtbase -opensource
          #make module-qtwebkit

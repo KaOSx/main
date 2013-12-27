@@ -1,29 +1,29 @@
 
 pkgname=libxcb
-pkgver=1.9.1
+pkgver=1.10
 pkgrel=1
 epoch=1
 pkgdesc="X11 client-side library"
 arch=('x86_64')
 url="http://xcb.freedesktop.org/"
-depends=('xcb-proto>=1.8' 'libxdmcp' 'libxau')
-makedepends=('pkgconfig' 'libxslt' 'python2')
+depends=('xcb-proto>=1.10' 'libxdmcp' 'libxau')
+makedepends=('pkgconfig' 'libxslt' 'python3')
 options=('!libtool')
 license=('custom')
 source=("${url}/dist/${pkgname}-${pkgver}.tar.bz2"
         'libxcb-1.1-no-pthread-stubs.patch')
-md5sums=('ed632cb0dc31b6fbd7ea5c0f931cf5a4'
-         '450e494cb8f980ed956cb4403678e06f')
+md5sums=('074c335cc4453467eeb234e3dadda700'
+         '9494c95ba613315882b8387c86bdf9aa')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
   patch -p1 -i "${srcdir}/libxcb-1.1-no-pthread-stubs.patch"
+  autoreconf -vfi
   
-  export PYTHON=/usr/bin/python2
-  ./autogen.sh --prefix=/usr \
-               --enable-xinput \
-               --enable-xkb \
-               --disable-static
+  ./configure --prefix=/usr \
+              --enable-xinput \
+              --enable-xkb \
+              --disable-static
   make
 }
 
