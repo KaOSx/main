@@ -1,7 +1,7 @@
 
 pkgname=octave
-pkgver=3.6.4
-pkgrel=5
+pkgver=3.8.0
+pkgrel=1
 pkgdesc="A high-level language, primarily intended for numerical computations."
 arch=('x86_64')
 url="http://www.octave.org"
@@ -12,14 +12,11 @@ makedepends=('texlive-core' 'gcc-fortran' 'python2')
 optdepends=('texinfo: for help-support in octave')
 options=('!emptydirs')
 install='octave.install'
-source=("ftp://ftp.gnu.org/gnu/octave/octave-$pkgver.tar.bz2"
-        'gcc4.8.patch')
-md5sums=('e0d3e5e3d38a66d3f8593ba065c6e2fd'
-         '4ba400e7ffd001503beda421348f45bf')
+source=("ftp://ftp.gnu.org/gnu/octave/octave-$pkgver.tar.bz2")
+md5sums=('442fe5205ba6322f7a69145b79fca85e')
 
 build() {
   cd ${srcdir}/${pkgname}-${pkgver}
-  patch -p1 -i ${srcdir}/gcc4.8.patch
 
   autoreconf -vfi
 
