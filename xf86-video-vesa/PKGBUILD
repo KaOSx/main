@@ -1,14 +1,13 @@
 
 pkgname=xf86-video-vesa
 pkgver=2.3.2
-pkgrel=2
+pkgrel=3
 pkgdesc="X.org vesa video driver"
 arch=('x86_64')
 license=('custom')
 url="http://xorg.freedesktop.org/"
 depends=('glibc')
-makedepends=('pkg-config' 'xorg-server>=1.14' 'resourceproto' 'scrnsaverproto')
-conflicts=('xorg-server<1.12.3')
+makedepends=('pkg-config' 'xorg-server>=1.15.0' 'resourceproto' 'scrnsaverproto')
 groups=('xorg' 'xorg-video-drivers')
 options=('!libtool')
 source=("${url}/releases/individual/driver/${pkgname}-${pkgver}.tar.bz2"
