@@ -11,11 +11,14 @@ makedepends=('xorg-server' 'resourceproto' 'scrnsaverproto')
 conflicts=('xorg-server<1.12.3')
 groups=('xorg-video-drivers')
 options=('!libtool' '!emptydirs')
-source=("${url}/releases/individual/driver/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('b08e0195ebf3f88a82129322cb93da08')
+source=("${url}/releases/individual/driver/${pkgname}-${pkgver}.tar.bz2"
+        'mesa10.patch')
+md5sums=('b08e0195ebf3f88a82129322cb93da08'
+         'db4763717d4f5286d6a7661feadcb2ed')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
+  patch -p1 -i "${srcdir}"/mesa10.patch
 
   ./configure --prefix=/usr --enable-vmwarectrl-client
   make
