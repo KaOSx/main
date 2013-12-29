@@ -2,17 +2,20 @@
 pkgbase=nvidia-utils
 pkgname=('nvidia-utils' 'opencl-nvidia' 'nvidia-settings')
 # Edit hardware-detection/hooks/hwdetect_7_graphics on version jump from 3xx.xx
-pkgver=331.20
+pkgver=319.76
 pkgrel=1
+epoch=1
 arch=('x86_64')
 url="http://www.nvidia.com/"
 license=('custom')
 makedepends=('xorg-server' 'libxvmc')
 options=('!strip')
-_pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
-source=("ftp://download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
+#_pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
+_pkg="NVIDIA-Linux-x86_64-${pkgver}"
+#source=("ftp://download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
+source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}.run"
         'nvidia-restore-settings.desktop')
-md5sums=('28295eed56c2ca996401c0093279620f'
+md5sums=('a1cd3a703ca0bc31662ed5616154162c'
          '9237516792da7b6df32f8c7e8a98f475')
 
 create_links() {
