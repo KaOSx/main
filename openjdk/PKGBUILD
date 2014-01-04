@@ -1,10 +1,10 @@
 
 pkgname=('openjdk' 'openjdk-src')
 pkgbase='openjdk'
-_icedtea_release="2.4.2"
+_icedtea_release="2.4.3"
 _icedtea_jdkver="7"
 _openjdk_build="b31"
-_pkgver="7u40"
+_pkgver="7u45"
 pkgver="${_pkgver}_${_openjdk_build}_${_icedtea_release}"
 pkgrel=1
 pkgdesc="An open-source implementation of the seventh edition of the Java SE Platform."
@@ -18,13 +18,13 @@ makedepends=('java-environment=7' 'apache-ant>=1.6.5' 'zip' 'unzip'
              'libxtst' 'libxp' 'libxrender' 'ca-certificates-java')
 
 _hg_url="http://icedtea.classpath.org/hg/release/icedtea7-forest-2.4"
-_corba_changeset="5ea58899ae9f"
-_jaxp_changeset="135f46e0e653"
-_jaxws_changeset="a2ff16e5361f"
-_jdk_changeset="4bf5ac86e0e4"
-_langtools_changeset="06ea051f7ffe"
-_openjdk_changeset="6125b83238df"
-_hotspot_changeset="b732355257e3"
+_corba_changeset="8ed5df839fbc"
+_jaxp_changeset="8f220f7b51c7"
+_jaxws_changeset="652eb396f959"
+_jdk_changeset="7958751eb9ef"
+_langtools_changeset="3c8eb52a32ea"
+_openjdk_changeset="e2f5917da3c1"
+_hotspot_changeset="b59e02d9e72b"
 _jvmdir="/usr/lib/jvm/java-7-openjdk"
 
 source=("http://icedtea.classpath.org/download/source/icedtea-${_icedtea_release}.tar.gz"
@@ -41,18 +41,18 @@ source=("http://icedtea.classpath.org/download/source/icedtea-${_icedtea_release
         'openjdk7_nonreparenting-wm.diff'
         'openjdk.profile.sh'
         'openjdk.profile.csh')
-md5sums=('54a739ba98b9acd439d423f2a5713aa6'
-         'ab73495be841cdc3f18f2478a3401500'
-         '287018ab678bdbcb8addd3d6afbdd018'
-         'eca301049557f504e7349878d2faf70a'
-         '5612ce683b250a8f8d35901efa202591'
-         'ef00d60244156f537d3c5fdf2047dfa3'
-         'd59e1859070bd15462a41372c71cabd1'
-         'aad98f91c9ad9eb5631b9d4e7aab289f'
+md5sums=('3168d6aca14ec8a0905b3a4b95adad76'
+         '90bc51f1137982901325ec040fdcd9db'
+         'b43c0efffbcfccc348f4ee781f23ebcf'
+         'f70b570a0cb47052339139ba6e4e463e'
+         '991c3f6c24478c6c4f83a53fe6407f7f'
+         'ba3a2ab192c22e55184a63fb499d00f8'
+         '8235706f907e9da528921af946d73c57'
+         'de6548eb6664d3bb4d1b64a93fd258e0'
          'ee1afda124d5927345014ab382ef581e'
          'f198c2ba43d1f4408a948ac95b9a39ba'
          '7a8f14be514b40519fcd6780a31d4f79'
-         '2f6733af3fea184196a720267b8acaac'
+         '029383f5aba2121facc19377504be3df'
          '64885c74918f07afe88f31692177b0c5'
          '3baf9768e5be92d6fe80641dcc35f017')
 noextract=("${_openjdk_changeset}.tar.gz"
@@ -71,8 +71,6 @@ build() {
   # Prepare the patches
   cp *.diff "${srcdir}/icedtea-${_icedtea_release}/patches"
   export DISTRIBUTION_PATCHES="patches/fontconfig-paths.diff \
-                               patches/fix_corba_cmds_path.diff \
-                               patches/openjdk7_fix_jdk_cmds_path.diff \
                                patches/openjdk7_nonreparenting-wm.diff"
 
   rm -rf build
