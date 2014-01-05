@@ -1,12 +1,12 @@
 
 pkgname=rdesktop
 pkgver=1.8.1
-pkgrel=1
+pkgrel=2
 pkgdesc="open source client for Windows Remote Desktop Services"
 arch=('x86_64')
 url="http://www.rdesktop.org/"
 license=('GPL')
-depends=('libx11' 'openssl' 'libao' 'libsamplerate' 'xorg-server-utils')
+depends=('libx11' 'openssl' 'libao' 'libsamplerate' 'xorg-server-utils' 'pcsclite')
 source=("http://downloads.sourceforge.net/$pkgname/$pkgname-$pkgver.tar.gz"
 	'rdesktop-send_physical_buttons.diff')
 md5sums=('f5382c5c85b0d2cc88b9b1aa9bbf1356'
@@ -16,7 +16,7 @@ build() {
   cd ${srcdir}/${pkgname}-${pkgver}
   patch -i ${srcdir}/rdesktop-send_physical_buttons.diff
 
-  ./configure --prefix=/usr --disable-smartcard --with-ipv6
+  ./configure --prefix=/usr --enable-smartcard --with-ipv6
   make
 }
 
