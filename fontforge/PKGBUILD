@@ -1,29 +1,27 @@
 
 pkgname=fontforge
-pkgver=20120731
-_pkgver=20120731-b
-pkgrel=3
+pkgver=20140101
+_pkgver=2.0.20140101
+pkgrel=1
 pkgdesc="An outline and bitmap font editor"
 arch=('x86_64')
 url="http://fontforge.sourceforge.net"
 license=('BSD')
-depends=('libxkbui' 'libxi' 'libxml2' 'pango' 'giflib' 'libpng' 'libtiff' 'libjpeg-turbo' 'python2')
+depends=('libxkbui' 'libxi' 'libxml2' 'pango' 'giflib' 'libpng' 'libtiff' 'libjpeg-turbo' 'python2'
+         'libltdl' 'desktop-file-utils' 'hicolor-icon-theme')
 options=('!libtool' '!makeflags')
-source=("http://sourceforge.net/projects/fontforge/files/fontforge-source/fontforge_full-${_pkgver}.tar.bz2"
+source=("https://github.com/fontforge/fontforge/archive/${_pkgver}.tar.gz"
         'http://fontforge.org/cidmaps.tgz')
-md5sums=('a8a90473a97da87e45f66d11007b6e7c'
+md5sums=('9dce2523da76cd9ea609bb7f4357946b'
          '063691163e592515b31514515bb3ce8c')
 
 build() {
   cd "${srcdir}/${pkgname}-${_pkgver}"
-  sed 's/\(DGifOpenFileName([^)]*\))/\1,NULL)/g' -i gutils/gimagereadgif.c
+  sed '/fontforge_package_name/s/^#//' -i configure.ac
   
+  ./autogen.sh
   ./configure --prefix=/usr \
-              --mandir=/usr/share/man \
-              --enable-type3 \
-              --enable-double \
-              --enable-devicetables \
-              --with-regular-link 
+              --mandir=/usr/share/man
   make 
 }
 
