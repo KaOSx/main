@@ -1,7 +1,7 @@
 
 pkgname=opengtl
 pkgver=0.9.18
-pkgrel=3
+pkgrel=4
 pkgdesc="A set of library for using and integrating transformation algorithms (such as filter or color conversion) in graphics applications"
 url="http://www.opengtl.org"
 arch=('x86_64')
@@ -11,12 +11,12 @@ makedepends=('cmake')
 source=("http://download.opengtl.org/OpenGTL-${pkgver}.tar.bz2"
         'opengtl-0.9.18-llvm-3.3.patch')
 md5sums=('8a9673c648ef5af4fcc7f60bb8282811'
-         '3beb55e5bdb99e26ffc42402f06465c8')
+         'c7c950b6a467d1a99ae90262f5647188')
 
 build() {
   cd "${srcdir}"
   mkdir build
-  patch -d OpenGTL-$pkgver -Np1 -i "$srcdir/opengtl-0.9.18-llvm-3.3.patch"
+  patch -d OpenGTL-$pkgver -p1 -i "$srcdir/opengtl-0.9.18-llvm-3.3.patch"
   
   cd build
   cmake ../OpenGTL-${pkgver} \
