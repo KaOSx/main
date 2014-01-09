@@ -1,8 +1,8 @@
 
 pkgbase="cups"
 pkgname=('libcups' 'cups')
-pkgver=1.7.0
-pkgrel=2
+pkgver=1.7.1
+pkgrel=1
 arch=('x86_64')
 license=('GPL')
 url="http://www.cups.org/"
@@ -15,8 +15,7 @@ source=("http://www.cups.org/software/${pkgver}/cups-${pkgver}-source.tar.bz2"
         'cups-systemd-socket2.patch'
         'cups.logrotate'
         'cups.pam')
-#options=('!emptydirs')
-md5sums=('5ab496a2ce27017fcdb3d7ec4818a75a'
+md5sums=('55277c40fd4b7183dc3671d39c5c42b7'
          '3ba9e3410df1dc3015463d615ef91b3b'
          '3733c23e77eb503bd94cc368e02830dc'
          '90c30380d4c8cd48a908cfdadae1ea24'
@@ -66,9 +65,7 @@ build() {
 
 check() {
   cd "$srcdir/$pkgbase-$pkgver"
-  #httpAddrGetList(workstation64): FAIL
-  #1 TESTS FAILED!
-  #make[1]: *** [testhttp] Error 1
+
   make -k check || /bin/true
 }
 
