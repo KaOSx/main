@@ -1,8 +1,9 @@
 
 pkgname=nvidia-utils-bumblebee
 pkgbase=nvidia-utils
-pkgver=331.20
+pkgver=319.82
 pkgrel=1
+epoch=1
 pkgdesc="NVIDIA drivers utilities and libraries. Repacked and installed in different folder to be used simultaneously with libgl."
 arch=('x86_64')
 url="http://www.nvidia.com/"
@@ -14,8 +15,9 @@ conflicts=('nvidia-utils' 'nvidia-settings')
 provides=("nvidia-utils=$pkgver" 'nvidia-settings')
 license=('custom')
 install=nvidia.install
-source=("ftp://download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}-no-compat32.run")
-md5sums=('28295eed56c2ca996401c0093279620f')
+#source=("ftp://download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}-no-compat32.run")
+source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}.run")
+md5sums=('f179094da7fb807ec38c70f2b54607a5')
 
 create_links() {
     # create soname links
@@ -27,12 +29,12 @@ create_links() {
 }
 
 build() {
-    cd "${srcdir}"
-    sh "NVIDIA-Linux-x86_64-${pkgver}-no-compat32.run" --extract-only
-}
+    cd "${srcdir}" 
+    sh "NVIDIA-Linux-x86_64-${pkgver}.run" --extract-only
+}       
 
 package() {
-    cd "${srcdir}/NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
+    cd "${srcdir}/NVIDIA-Linux-x86_64-${pkgver}"
     # X driver
     install -D -m755 nvidia_drv.so "${pkgdir}/usr/lib/xorg/modules/drivers/nvidia_drv.so"
     # GLX extension module for X
