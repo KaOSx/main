@@ -3,21 +3,20 @@ _extramodules=extramodules-3.12
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=('nvidia' 'khd-nvidia')
-pkgver=319.82
+pkgver=331.38
 pkgrel=1
-epoch=1
 arch=('x86_64')
 url="http://www.nvidia.com/"
-makedepends=('linux-headers' 'linux>=3.12' 'linux<3.13' "nvidia-utils=1:${pkgver}")
+makedepends=('linux-headers' 'linux>=3.12' 'linux<3.13' "nvidia-utils=${pkgver}")
 license=('custom')
 # get from github once hardware-detection is up:
 source=('nvidia_supported')
 md5sums=('62d0cdb856cfae64753c0f3acf729d47')
 
-#_pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
-_pkg="NVIDIA-Linux-x86_64-${pkgver}"
+_pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
+#_pkg="NVIDIA-Linux-x86_64-${pkgver}"
 source+=("ftp://download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run")
-md5sums+=('f179094da7fb807ec38c70f2b54607a5')
+md5sums+=('f2059ae373665cb6c8fb826e1173b04d')
 
 build() {
     cd "${srcdir}"
@@ -30,7 +29,7 @@ build() {
 
 package_nvidia() {
     pkgdesc="NVIDIA drivers for linux."
-    depends=('linux>=3.12' 'linux<3.13' "nvidia-utils=1:${pkgver}")
+    depends=('linux>=3.12' 'linux<3.13' "nvidia-utils=${pkgver}")
     conflicts=('nvidia-96xx' 'nvidia-173xx' 'nvidia-304xx')
     install=nvidia.install
     

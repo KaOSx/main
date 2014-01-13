@@ -3,22 +3,21 @@ _extramodules=extramodules-3.13-rc8-next
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=nvidia-next
-pkgver=319.82
-pkgrel=2
-epoch=1
+pkgver=331.38
+pkgrel=1
 pkgdesc="NVIDIA drivers for linux."
 arch=('x86_64')
 url="http://www.nvidia.com/"
-depends=('linux-next>=3.13rc5' 'linux-next<3.13' "nvidia-utils=1:${pkgver}")
+depends=('linux-next>=3.13rc5' 'linux-next<3.13' "nvidia-utils=${pkgver}")
 makedepends=('linux-next-headers')
 license=('custom')
 install=nvidia-next.install
 options=('!strip')
-#_pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
-_pkg="NVIDIA-Linux-x86_64-${pkgver}"
+_pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
+#_pkg="NVIDIA-Linux-x86_64-${pkgver}"
 source=("ftp://download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
         'acpi_os_wait_events_complete.patch')
-md5sums=('f179094da7fb807ec38c70f2b54607a5'
+md5sums=('f2059ae373665cb6c8fb826e1173b04d'
          '7e146069c9f09295581201d987a55efd')
 
 build() {
