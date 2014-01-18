@@ -31,9 +31,6 @@ package() {
   cd "${srcdir}/${oldpkgname}-${pkgver}"
   make DESTDIR="${pkgdir}" install
 
-  # Remove unused udev helper
-  #rm -rf "${pkgdir}/usr/lib/udev"
-
   install -m755 -d "${pkgdir}/usr/lib/udev/rules.d"
   LD_LIBRARY_PATH="${pkgdir}/usr/lib${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" \
   CAMLIBS="${pkgdir}/usr/lib/libgphoto2/${pkgver}" \
