@@ -43,10 +43,10 @@ package() {
   make DESTDIR=${pkgdir} install
   
   install -dm755 ${pkgdir}/etc/bluetooth
-  install -Dm644 ${srcdir}/${pkgbase}-${pkgver}/src/main.conf ${pkgdir}/etc/bluetooth/main.conf
+  install -Dm644 ${srcdir}/${pkname}-${pkgver}/src/main.conf ${pkgdir}/etc/bluetooth/main.conf
 
-  install -dm755 ${pkgdir}/usr/share/doc/${pkgbase}/dbus-apis
-  cp -a doc/*.txt ${pkgdir}/usr/share/doc/${pkgbase}/dbus-apis/
+  install -dm755 ${pkgdir}/usr/share/doc/${pkgname}/dbus-apis
+  cp -a doc/*.txt ${pkgdir}/usr/share/doc/${pkgname}/dbus-apis/
 
   install -dm755 ${pkgdir}/usr/lib/modprobe.d
   install -Dm644 ${srcdir}/bluetooth.modprobe ${pkgdir}/usr/lib/modprobe.d/bluetooth-usb.conf
