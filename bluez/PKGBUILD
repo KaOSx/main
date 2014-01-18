@@ -13,7 +13,8 @@ conflicts=('obexd-client' 'bluez-hcidump')
 provides=('obexd-client' 'bluez-hcidump')
 replaces=('obexd-client' 'bluez-hcidump')
 options=('!libtool')
-backup=('etc/dbus-1/system.d/bluetooth.conf')
+backup=('etc/dbus-1/system.d/bluetooth.conf'
+        'etc/bluetooth/main.conf')
 source=("http://www.kernel.org/pub/linux/bluetooth/${pkgname}-${pkgver}.tar.xz"
         'bluetooth.modprobe')
 md5sums=('c68f8cb270110256a684403ee43b5f79'
