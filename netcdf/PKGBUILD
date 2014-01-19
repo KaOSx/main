@@ -1,23 +1,23 @@
-# Platform Packages for Chakra, part of chakra-project.org
-# maintainer (x86_64): Giuseppe Calà <jiveaxe@gmail.com>
 
 pkgname=netcdf
-pkgver=4.2.1
+pkgver=4.3.0
 pkgrel=1
 pkgdesc="Network Common Data Form interface for array-oriented data access and corresponding library."
 arch=("x86_64")
 url="http://www.unidata.ucar.edu/downloads/netcdf/index.jsp"
-depends=('gcc-libs' 'hdf5' 'gcc-fortran')
-options=('!libtool' '!makeflags')
 license=('custom')
-source=(http://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-${pkgver}.tar.gz)
-sha1sums=('dfb6b10ef8dd20e785efa5e29b448383090f144d')
+depends=('gcc-libs' 'hdf5' 'gcc-fortran' 'curl')
+options=('!libtool' '!makeflags')
+source=("http://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-${pkgver}.tar.gz")
+md5sums=('40c0e53433fc5dc59296ee257ff4a813')
 
 build() {
   cd ${srcdir}/${pkgname}-${pkgver}
-  ./configure --prefix=/usr --enable-shared --enable-netcdf-4
+  
+  ./configure --prefix=/usr \
+        --enable-shared \
+        --enable-netcdf-4 
   make
-#  make check
 }
 
 package() {
@@ -27,6 +27,5 @@ package() {
   install -m755 -d ${pkgdir}/usr/share/man
   make DESTDIR=${pkgdir} install
 
-  install -Dm644 ${srcdir}/${pkgname}-${pkgver}/COPYRIGHT \
-        ${pkgdir}/usr/share/licenses/${pkgname}/COPYRIGHT
+  install -Dm644 ${srcdir}/${pkgname}-${pkgver}/COPYRIGHT ${pkgdir}/usr/share/licenses/${pkgname}/COPYRIGHT
 }

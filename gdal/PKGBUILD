@@ -1,0 +1,48 @@
+
+pkgname=gdal
+pkgver=1.10.1
+pkgrel=1
+pkgdesc="A translator library for raster geospatial data formats"
+arch=('x86_64')
+url="http://www.gdal.org/"
+license=('custom')
+depends=('curl' 'geos' 'giflib' 'hdf5' 'libgeotiff' 'libjpeg-turbo' 'libpng' 'libtiff' 'netcdf'
+         'poppler' 'python2-numpy' 'sqlite3' 'libmariadbclient' 'postgresql-libs' 'cfitsio')
+makedepends=('perl' 'swig')
+options=('!libtool' '!makeflags')
+source=("http://download.osgeo.org/${pkgname}/${pkgver}/${pkgname}-${pkgver}.tar.gz"
+	'gdal-1.5.1-python-install.patch')
+md5sums=('86b2c71a910d826a7fe6ebb43a532fb7'
+         '81afc1c26d29cee84aadb6924fe33861')
+
+build() {
+  export CFLAGS="$CFLAGS -fno-strict-aliasing"
+  export LDFLAGS="$LDFLAGS -Wl,--as-needed"
+
+  cd ${srcdir}/$pkgname-$pkgver
+  patch -p0 -i ${srcdir}/gdal-1.5.1-python-install.patch
+
+  # python2 fixes
+  sed -i 's_python python1.5_python2 python python1.5_' configure
+  for file in swig/python/{,osgeo/,samples/,scripts/}*.py; do
+      sed -i 's_#!/usr/bin/env python_#!/usr/bin/env python2_' $file
+  done
+
+  ./configure --prefix=/usr --with-netcdf --with-libtiff --with-sqlite3 \
+              --with-geotiff --with-mysql --with-python --without-libtool --with-curl \
+              --with-hdf5 --with-perl --with-geos --with-png --with-poppler
+
+  sed -i 's/PY_HAVE_SETUPTOOLS=1/PY_HAVE_SETUPTOOLS=/g' ./GDALmake.opt
+  sed -i 's/EXE_DEP_LIBS/KILL_EXE_DEP_LIBS/' apps/GNUmakefile
+  #install -d ${pkgdir}/usr/lib/python2.7/site-packages/
+
+  make
+}
+
+package () {
+  cd ${srcdir}/$pkgname-$pkgver
+  make DESTDIR=${pkgdir} install
+
+  install -D -m644 LICENSE.TXT ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+  rm -f ${pkgdir}/usr/bin/*.dox
+}
