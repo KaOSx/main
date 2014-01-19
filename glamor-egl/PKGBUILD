@@ -1,27 +1,29 @@
 
 pkgname=glamor-egl
-pkgver=0.5.1
-pkgrel=3
+pkgver=0.5.1.1
+pkgrel=1
 pkgdesc='OpenGL based 2D rendering acceleration library'
 arch=('x86_64')
 url="http://xorg.freedesktop.org/"
 license=('custom')
 depends=('libgl')
-makedepends=('xorg-server' 'resourceproto' 'scrnsaverproto')
-source=("http://xorg.freedesktop.org/releases/individual/driver/${pkgname}-${pkgver}.tar.bz2")
+makedepends=('xorg-server' 'resourceproto' 'scrnsaverproto' 'git')
 options=('!libtool')
-md5sums=('025c4e64dbc22009a8576f76a6f6eb7c')
+#source=("http://xorg.freedesktop.org/releases/individual/driver/${pkgname}-${pkgver}.tar.bz2")
+#md5sums=('025c4e64dbc22009a8576f76a6f6eb7c')
+source=("glamor-egl::git://anongit.freedesktop.org/xorg/driver/glamor")
+md5sums=('SKIP')
 
 build() {
-  cd ${srcdir}/${pkgname}-${pkgver}
+  cd ${srcdir}/${pkgname}
   
-  ./configure --prefix=/usr --disable-static --enable-glx-tls \
+  ./autogen.sh --prefix=/usr --disable-static --enable-glx-tls --enable-xv \
 
   make
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${srcdir}/${pkgname}
 
   make "DESTDIR=${pkgdir}" install
 
