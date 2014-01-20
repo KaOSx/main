@@ -28,7 +28,7 @@ build() {
   patch -p1 -i ${srcdir}/acpi_os_wait_events_complete.patch
   
   cd "${srcdir}/${_pkg}/kernel"
-  make SYSSRC=/lib/modules/3.13.0-1-next/build module
+  make SYSSRC=/lib/modules/"${_kver}/build" module
 }
 
 package() {
