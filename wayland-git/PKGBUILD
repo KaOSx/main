@@ -1,6 +1,6 @@
 
 pkgname=wayland-git
-pkgver=20131101
+pkgver=20140121
 pkgrel=1
 pkgdesc="Wayland the modern display server."
 arch=('x86_64')
@@ -8,7 +8,7 @@ url="http://wayland.freedesktop.org"
 license=('MIT')
 depends=('libffi')
 makedepends=('git' 'expat' 'doxygen')
-options=(!makeflags !libtool)
+options=('!makeflags' '!libtool')
 
 source=("git://anongit.freedesktop.org/wayland/wayland")
 md5sums=('SKIP')
