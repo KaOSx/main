@@ -1,16 +1,16 @@
 
 pkgname=libgpod
-pkgver=0.8.2
-pkgrel=3
+pkgver=0.8.3
+pkgrel=1
 pkgdesc="libgpod is a shared library to access the contents of an iPod"
 arch=('x86_64')
 license=('LGPL')
 depends=('mutagen' 'sg3_utils>=1.27' 'libimobiledevice>=1.1.0' 'gdk-pixbuf2')
-makedepends=('intltool' 'swig' 'docbook-xsl' 'pygobject')
+makedepends=('intltool' 'swig' 'docbook-xsl' 'python2-gobject')
 url="http://www.gtkpod.org/libgpod.html"
 source=("http://downloads.sourceforge.net/sourceforge/gtkpod/${pkgname}-${pkgver}.tar.bz2")
-options=(!libtool)
-md5sums=('ff0fd875fa08f2a6a49dec57ce3367ab')
+options=('!libtool')
+md5sums=('f8a0b7a34e768e33a708e8dd172bd6f8')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
