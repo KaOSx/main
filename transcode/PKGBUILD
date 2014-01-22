@@ -2,7 +2,7 @@
 pkgname=transcode
 _sripver=0.3-4
 pkgver=1.1.7
-pkgrel=13
+pkgrel=14
 pkgdesc="A video/DVD ripper and encoder for the terminal/console"
 arch=('x86_64')
 url="http://tcforge.berlios.de/"
@@ -26,6 +26,7 @@ build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
 
   patch -p1 -i "${srcdir}/ffmpeg-0.11.patch"
+  sed -i 's|freetype/ftglyph.h|freetype2/ftglyph.h|' filter/subtitler/load_font.c
   
   ./configure --prefix=/usr \
     --disable-sse --disable-sse2 --disable-altivec --enable-mmx \

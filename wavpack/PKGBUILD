@@ -1,7 +1,7 @@
 
 pkgname=wavpack
 pkgver=4.70.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Audio compression format with lossless, lossy, and hybrid compression modes"
 arch=('x86_64')
 url="http://www.wavpack.com/"
@@ -14,7 +14,10 @@ md5sums=('4c0186ef0dc8367ce5cd7cc0f398b714')
 build() {
 	cd ${srcdir}/${pkgname}-${pkgver}
 	
-	./configure --prefix=/usr --enable-mmx --disable-static
+	./configure --prefix=/usr \
+	      --libdir=/usr/lib \
+	      --enable-mmx \
+	      --disable-static
 	make
 }
 
