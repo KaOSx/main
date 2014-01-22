@@ -2,12 +2,13 @@
 pkgbase="cups"
 pkgname=('libcups' 'cups')
 pkgver=1.7.1
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 license=('GPL')
 url="http://www.cups.org/"
 makedepends=('libtiff' 'libpng' 'acl' 'pam' 'xdg-utils' 'krb5' 'gnutls>=2.8.3' 'cups-filters' 'bc'
-             'xinetd' 'gzip' 'autoconf' 'libusb' 'dbus-core' 'avahi'  'hicolor-icon-theme' 'systemd' 'colord')
+             'xinetd' 'gzip' 'autoconf' 'libusb' 'dbus-core' 'avahi'  'hicolor-icon-theme' 'systemd'
+             'colord' 'libpaper')
 source=("http://www.cups.org/software/${pkgver}/cups-${pkgver}-source.tar.bz2"
         'cups-no-export-ssllibs.patch'
         'cups-no-gcrypt.patch'
@@ -58,6 +59,7 @@ build() {
      --enable-gnutls \
      --enable-threads \
      --enable-avahi\
+     --enable-libpaper \
      --with-php=/usr/bin/php-cgi \
      --with-optim="$CFLAGS"
   make
@@ -104,7 +106,7 @@ backup=(etc/cups/cupsd.conf
         etc/logrotate.d/cups
         etc/pam.d/cups)
 depends=('acl' 'pam' "libcups>=${pkgver}" 'cups-filters' 'bc' 'colord' 'libusb' 'dbus' 'systemd'
-         'hicolor-icon-theme')
+         'hicolor-icon-theme' 'libpaper')
 optdepends=('xdg-utils: xdg .desktop file support')
 
   cd ${srcdir}/${pkgbase}-${pkgver}
