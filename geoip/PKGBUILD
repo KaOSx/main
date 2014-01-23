@@ -1,6 +1,6 @@
 
 pkgname=geoip
-pkgver=1.5.0
+pkgver=1.5.2
 pkgrel=1
 pkgdesc="Non-DNS IP-to-country resolver C library & utils"
 arch=('x86_64')
@@ -9,13 +9,15 @@ url="http://www.maxmind.com/app/c"
 depends=('zlib' 'geoip-database')
 backup=('etc/geoip/GeoIP.conf')
 options=('!libtool' '!emptydirs')
-source=("http://www.maxmind.com/download/geoip/api/c/GeoIP-${pkgver}.tar.gz")
-md5sums=('57bc400b5c11057a4cab00e1c5cf3f00')
+#source=("http://www.maxmind.com/download/geoip/api/c/GeoIP-${pkgver}.tar.gz")
+source=("https://github.com/maxmind/geoip-api-c/archive/v${pkgver}.tar.gz")
+md5sums=('ce354cf0b73cc847a404bc352f3ee8e1')
 
 build() {
-  cd "${srcdir}/GeoIP-${pkgver}"
+  cd "${srcdir}/${pkgname}-api-c-${pkgver}"
 
-  autoreconf -vi
+  #autoreconf -vi
+  ./bootstrap
   ./configure --prefix=/usr \
               --mandir=/usr/share/man \
               --sysconfdir=/etc/geoip
@@ -24,13 +26,13 @@ build() {
 }
 
 check() {
-  cd "${srcdir}/GeoIP-${pkgver}"
+  cd "${srcdir}/${pkgname}-api-c-${pkgver}"
 
   make check
 }
 
 package() {
-  cd "${startdir}/src/GeoIP-${pkgver}"
+  cd "${startdir}/src/${pkgname}-api-c-${pkgver}"
   make DESTDIR="${pkgdir}" install
 
   rm "${pkgdir}/usr/share/GeoIP/GeoIP.dat"
