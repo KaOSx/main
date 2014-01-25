@@ -1,24 +1,29 @@
 
 pkgname=sip
-pkgver=4.15.4
+pkgver=4.15.4.1
+_pkgver=4.15.5
+_snapshot=0b19f77489ce
 pkgrel=1
 pkgdesc="A tool that makes it easy to create Python bindings for C and C++ libraries"
 arch=('x86_64')
 url="http://www.riverbankcomputing.com/software/sip/"
 license=('custom:"sip"')
 depends=('python2' 'gcc-libs')
-source=("http://sourceforge.net/projects/pyqt/files/sip/sip-${pkgver}/${pkgname}-${pkgver}.tar.gz")
-md5sums=('1d5c9e92bc7fca5ac11e088a4cf6c83d')
+#source=("http://sourceforge.net/projects/pyqt/files/sip/sip-${pkgver}/${pkgname}-${pkgver}.tar.gz")
+source=("http://www.riverbankcomputing.com/static/Downloads/sip4/sip-4.15.5-snapshot-$_snapshot.tar.gz")
+md5sums=('a211bd5fcccb4feff6ff9aa10ee9b5f4')
 
 build() {
-  cd ${srcdir}/${pkgname}-${pkgver}
+  #cd ${srcdir}/${pkgname}-${pkgver}
+  cd ${srcdir}/${pkgname}-4.15.5-snapshot-$_snapshot 
 
   python2 configure.py
   make
 }
 
 package() {
-  cd ${srcdir}/${pkgname}-${pkgver}
+  #cd ${srcdir}/${pkgname}-${pkgver}
+  cd ${srcdir}/${pkgname}-4.15.5-snapshot-$_snapshot
 
   make DESTDIR=${pkgdir} install 
   install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
