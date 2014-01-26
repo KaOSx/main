@@ -1,0 +1,29 @@
+
+pkgname=('python2-qscintilla')
+pkgver=2.8
+pkgrel=1
+license=('GPL')
+arch=('x86_64')
+url="http://www.riverbankcomputing.co.uk/software/qscintilla/intro"
+pkgdesc="A port to Qt of Neil Hodgson's Scintilla C++ editor class"
+depends=('qt')
+makedepends=('pyqt' 'chrpath' 'qscintilla')
+source=("http://downloads.sourceforge.net/pyqt/QScintilla-gpl-${pkgver}.tar.gz"
+        'configure.py-objdir-support.diff')
+md5sums=('02c406d8cd5db661f127303e91775c0b'
+         '94bee4ae0bc908be3f2265cf017d0587')
+
+build() {
+    cd $srcdir/QScintilla-gpl-$pkgver
+    patch -p1 -i "${srcdir}/configure.py-objdir-support.diff"
+
+    cd ${srcdir}/QScintilla-gpl-${pkgver}/Python
+    python2 configure-old.py  
+    make
+}
+
+package() {
+    cd ${srcdir}/QScintilla-gpl-${pkgver}/Python
+
+    make DESTDIR="${pkgdir}" INSTALL_ROOT="${pkgdir}" install
+}
