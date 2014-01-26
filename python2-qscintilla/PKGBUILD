@@ -1,13 +1,13 @@
 
 pkgname=('python2-qscintilla')
 pkgver=2.8
-pkgrel=1
+pkgrel=2
 license=('GPL')
 arch=('x86_64')
 url="http://www.riverbankcomputing.co.uk/software/qscintilla/intro"
 pkgdesc="A port to Qt of Neil Hodgson's Scintilla C++ editor class"
-depends=('qt')
-makedepends=('pyqt' 'chrpath' 'qscintilla')
+depends=('qscintilla')
+makedepends=('pyqt' 'chrpath')
 source=("http://downloads.sourceforge.net/pyqt/QScintilla-gpl-${pkgver}.tar.gz"
         'configure.py-objdir-support.diff')
 md5sums=('02c406d8cd5db661f127303e91775c0b'
