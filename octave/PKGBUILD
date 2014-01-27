@@ -1,15 +1,14 @@
 
 pkgname=octave
 pkgver=3.8.0
-pkgrel=1
+pkgrel=2
 pkgdesc="A high-level language, primarily intended for numerical computations."
 arch=('x86_64')
 url="http://www.octave.org"
 license=('GPL')
 depends=('fftw' 'curl' 'graphicsmagick' 'glpk' 'hdf5' 'gcc-libs' 'qhull' 'fltk'
-         'arpack' 'suitesparse' 'gperf')
+         'arpack' 'suitesparse' 'gperf' 'qt' 'glu' 'gnuplot' 'qscintilla')
 makedepends=('texlive-core' 'gcc-fortran' 'python2')
-optdepends=('texinfo: for help-support in octave')
 options=('!emptydirs')
 install='octave.install'
 source=("ftp://ftp.gnu.org/gnu/octave/octave-$pkgver.tar.bz2")
