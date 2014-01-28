@@ -1,8 +1,8 @@
 
 _pkgbase='pidgin'
 pkgname='libpurple'
-pkgver=2.10.7
-pkgrel=3
+pkgver=2.10.8
+pkgrel=1
 pkgdesc="IM library extracted from Pidgin"
 arch=('x86_64')
 url="http://pidgin.im/"
@@ -13,7 +13,7 @@ makedepends=('startup-notification' 'libxss' 'python2' 'gstreamer0.10' 'avahi' '
 optdepends=('dbus-python2: for purple-remote and purple-url-handler')
 options=('!libtool')
 source=("http://downloads.sourceforge.net/${_pkgbase}/${_pkgbase}-${pkgver}.tar.bz2")
-md5sums=('ea88976b9952e80b702b030489f94393')
+md5sums=('384be5689e62a9d4d42320e4ca90433d')
 
 build() {
     cd "${srcdir}/${_pkgbase}-${pkgver}"
