@@ -1,18 +1,17 @@
 
 pkgname=libao
-pkgver=1.1.0
-pkgrel=11
+pkgver=1.2.0
+pkgrel=1
 pkgdesc="A cross-platform audio output library and plugins"
 url="http://www.xiph.org/ao"
 arch=('x86_64')
 license=('GPL')
-depends=('glibc' 'alsa-lib')
-makedepends=('pulseaudio')
+depends=('glibc' 'alsa-lib' 'pulseaudio')
 backup=('etc/libao.conf')
 options=('!libtool')
 source=("http://downloads.xiph.org/releases/ao/${pkgname}-${pkgver}.tar.gz"
 	'libao.conf')
-md5sums=('2b2508c29bc97e4dc218fa162cf883c8'
+md5sums=('9f5dd20d7e95fd0dd72df5353829f097'
          '9fc7db4ee6d5e9d1747333f7d4cce4a1')
 
 build() {
@@ -29,6 +28,5 @@ package() {
   cd "${srcdir}/${pkgname}-${pkgver}"
   make DESTDIR="${pkgdir}" install 
 
-  # Add conf file
   install -Dm0644 "${srcdir}/libao.conf" "${pkgdir}/etc/libao.conf"
 }
