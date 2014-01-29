@@ -1,12 +1,12 @@
 
 pkgname=maxima
-pkgver=5.32.0
+pkgver=5.32.1
 pkgrel=1
 pkgdesc="Maxima - a sophisticated Computer Algebra System."
 arch=('x86_64')
 license=('GPL')
 url="http://maxima.sourceforge.net"
-depends=('sbcl=1.1.14' 'texinfo' 'sh')
+depends=('sbcl=1.1.15' 'texinfo' 'sh')
 optdepends=('gnuplot: plotting capabilities' \
             'tk: graphical xmaxima interface')
 # needs rebuild when bash changes version
@@ -14,7 +14,7 @@ options=('!makeflags' '!zipman')
 install="maxima.install"
 source=("http://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}-${pkgver}.tar.gz"
         "${pkgname}.desktop")
-md5sums=('699ca8ea2893c71aac4d82735f5a52c7'
+md5sums=('ebc0333a8df3cb5f8401ef2195b9797f'
          '24aa81126fbb8b726854e5a80d4c2415')
 
 build() {
