@@ -12,14 +12,14 @@ source=("gwenhywfar-$pkgver.tar.gz::http://www2.aquamaniac.de/sites/download/dow
 md5sums=('c5b9d52a25960f84f9264a5a5dd484d1')
 
 build() {
-  cd $srcdir/gwenhywfar-4.3.3
+  cd $srcdir/gwenhywfar-$pkgver
   
   ./configure --prefix=/usr --sysconfdir=/etc --enable-ssl --with-guis=qt4 
   make
 }
 
 package() {
-  cd $srcdir/gwenhywfar-4.3.3
+  cd $srcdir/gwenhywfar-$pkgver
   
   make DESTDIR=$pkgdir install
 }

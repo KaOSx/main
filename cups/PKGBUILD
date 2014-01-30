@@ -2,11 +2,11 @@
 pkgbase="cups"
 pkgname=('libcups' 'cups')
 pkgver=1.7.1
-pkgrel=2
+pkgrel=3
 arch=('x86_64')
 license=('GPL')
 url="http://www.cups.org/"
-makedepends=('libtiff' 'libpng' 'acl' 'pam' 'xdg-utils' 'krb5' 'gnutls>=2.8.3' 'cups-filters' 'bc'
+makedepends=('libtiff' 'libpng' 'acl' 'pam' 'xdg-utils' 'krb5' 'openssl' 'cups-filters' 'bc'
              'xinetd' 'gzip' 'autoconf' 'libusb' 'dbus-core' 'avahi'  'hicolor-icon-theme' 'systemd'
              'colord' 'libpaper')
 source=("http://www.cups.org/software/${pkgver}/cups-${pkgver}-source.tar.bz2"
@@ -56,7 +56,7 @@ build() {
      --enable-dbus \
      --with-dbusdir=/etc/dbus-1 \
      --enable-ssl=yes \
-     --enable-gnutls \
+     --enable-openssl \
      --enable-threads \
      --enable-avahi\
      --enable-libpaper \

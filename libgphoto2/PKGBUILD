@@ -1,22 +1,22 @@
 
-pkgname=libgphoto2-nolimit
-oldpkgname=libgphoto2
+pkgname=libgphoto2
 pkgver=2.5.3.1
 pkgrel=1
 pkgdesc="The core library of gphoto2.  This variation is only to increase the limit of files!"
 arch=('x86_64')
 url="http://www.gphoto.org"
 license=('LGPL')
-conflicts=('libgphoto2')
-provides=("libgphoto2=${pkgver}")
+conflicts=('libgphoto2-nolimit')
+provides=('libgphoto2-nolimit')
+replaces=('libgphoto2-nolimit')
 depends=('libexif' 'libjpeg>=8' 'gd' 'libtool>=2.4' 'libusb' 'libusb-compat')
 install=libgphoto2.install
 options=('libtool')
-source=("http://downloads.sourceforge.net/gphoto/${oldpkgname}-${pkgver}.tar.bz2")
+source=("http://downloads.sourceforge.net/gphoto/${pkgname}-${pkgver}.tar.bz2")
 md5sums=('aad2607a84442769c14f6acce2ca1ddf')
 
 build() {
-  cd "${srcdir}/${oldpkgname}-${pkgver}"
+  cd "${srcdir}/${pkgname}-${pkgver}"
 
   #Change the limit which cause "Fixed limit exceeded"
   sed -i "s#MAX_ENTRIES 1024#MAX_ENTRIES 8192#" libgphoto2/gphoto2-list.c
@@ -28,18 +28,15 @@ build() {
 }
 
 package() {
-  cd "${srcdir}/${oldpkgname}-${pkgver}"
+  cd "${srcdir}/${pkgname}-${pkgver}"
   make DESTDIR="${pkgdir}" install
 
-  install -m755 -d "${pkgdir}/usr/lib/udev/rules.d"
+  install -m755 -d "${pkgdir}/usr/lib/udev/hwdb.d"
   LD_LIBRARY_PATH="${pkgdir}/usr/lib${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" \
   CAMLIBS="${pkgdir}/usr/lib/libgphoto2/${pkgver}" \
-      "${pkgdir}/usr/lib/libgphoto2/print-camera-list" udev-rules version 175 > \
-      "${pkgdir}/usr/lib/udev/rules.d/40-gphoto.rules"
       
-  install -m755 -d "${pkgdir}/usr/lib/udev/hwdb.d"
-  install -Dm644 "${srcdir}/${oldpkgname}-${pkgver}/packaging/generic/print-camera-list" \
-      "${pkgdir}/usr/lib/udev/hwdb.d/20-gphoto.hwdb"
+  "${pkgdir}/usr/lib/libgphoto2/print-camera-list" hwdb > \
+  "${pkgdir}/usr/lib/udev/hwdb.d/20-gphoto.conf"
 
   # Remove recursive symlink
   rm -f "${pkgdir}/usr/include/gphoto2/gphoto2"
