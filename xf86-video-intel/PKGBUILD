@@ -1,7 +1,7 @@
 
 pkgname=xf86-video-intel
-pkgver=2.99.908
-pkgrel=2
+pkgver=2.99.909
+pkgrel=1
 pkgdesc="X.org Intel i810/i830/i915/945G/G965+ video drivers"
 arch=('x86_64')
 url="http://xorg.freedesktop.org"
@@ -12,14 +12,11 @@ makedepends=('xorg-server>=1.15.0' 'libx11' 'xf86driproto' 'glproto' 'libxrender
 options=('!libtool')
 groups=('xorg-drivers' 'xorg')
 install=xf86-video-intel.install
-source=("${url}/releases/individual/driver/${pkgname}-${pkgver}.tar.bz2"
-        'sna_cpu.patch')
-md5sums=('602774a8d810d092c75d8eb62d9b63f4'
-         '5a423e124fab47513a678ebb73e66ad6')
+source=("${url}/releases/individual/driver/${pkgname}-${pkgver}.tar.bz2")
+md5sums=('157bcc09a4a51b9212c8f1cbdc0be57d')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
-  patch -p1 -i ${srcdir}/sna_cpu.patch
 
   ./configure --prefix=/usr \
               --enable-dri \
