@@ -1,12 +1,12 @@
 
 pkgname=freetds
 pkgver=0.91
-pkgrel=3
+pkgrel=4
 pkgdesc='Library for accessing Sybase and MS SQL Server databases'
 url='http://www.freetds.org'
 arch=('x86_64')
 license=('LGPL')
-depends=('unixodbc')
+depends=('unixodbc' 'openssl')
 options=('!libtool')
 backup=('etc/freetds/freetds.conf'
         'etc/freetds/locales.conf'
@@ -21,7 +21,8 @@ build() {
 	      --sysconfdir=/etc/freetds \
 	      --mandir=/usr/share/man \
 	      --enable-msdblib \
-	      --with-tdsver=7.0
+	      --with-tdsver=7.0 \
+	      --with-openssl
 	make
 }
 
