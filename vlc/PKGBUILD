@@ -1,8 +1,8 @@
 
 pkgname=vlc
-pkgver=2.1.2
-_pkgver=2.1.2
-pkgrel=2
+pkgver=2.1.3
+_pkgver=2.1.3
+pkgrel=1
 pkgdesc="Free and open source cross-platform multimedia player and framework that plays most multimedia files and various streaming protocols."
 arch=('x86_64')
 url="http://www.videolan.org/vlc/"
@@ -34,7 +34,7 @@ groups=('multimedia')
 options=('!libtool')
 install="vlc.install"
 source=("http://download.videolan.org/pub/videolan/$pkgname/${_pkgver/a}/$pkgname-$_pkgver.tar.xz")
-md5sums=('fb6787ad749aadcfaeab3471939b3426')
+md5sums=('56a489d093ffef9aa29809116985adba')
 
 build() {
   cd "${srcdir}/${pkgname}-${_pkgver/a}"
