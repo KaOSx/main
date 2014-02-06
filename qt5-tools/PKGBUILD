@@ -1,18 +1,18 @@
 
 pkgname=qt5-tools
-pkgver=5.2.0
+pkgver=5.2.1
 _pkgver=5.2
 pkgrel=1
 pkgdesc=('A cross-platform application and UI framework, development tools and help files')
 arch=('x86_64')
 url='http://qt.nokia.com/'
 license=('GPL3' 'LGPL')
-depends=('qt5')
+depends=('qt5-webkit' 'desktop-file-utils' 'qt5-translations' 'hicolor-icon-theme' 'xdg-utils')
 optdepends=('qt5-doc: offline help documentation')
 groups=('qt5')
 options=('!libtool')
 _pkgfqn="qttools-opensource-src-${pkgver}"
-source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/qttools-opensource-src-${pkgver}.tar.xz"
+source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn-${pkgver}.tar.xz"
         'assistant.desktop' 'designer.desktop' 'linguist.desktop')
 md5sums=('76a0992967b6d02220ecb69a5ba04ef1'
          'fc211414130ab2764132e7370f8e5caa'

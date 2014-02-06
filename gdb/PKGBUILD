@@ -1,7 +1,7 @@
 
 pkgname=gdb
-pkgver=7.6.2
-pkgrel=1
+pkgver=7.7
+pkgrel=2
 pkgdesc="The GNU Debugger"
 arch=('x86_64')
 url="http://www.gnu.org/software/gdb/"
@@ -12,7 +12,7 @@ backup=('etc/gdb/gdbinit')
 options=('!libtool')
 install=gdb.install
 source=("http://ftp.gnu.org/gnu/gdb/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('496399e96654fc0f899a5c964bc1f0f8')
+md5sums=('271a18f41858a7e98b28ae4eb91287c9')
 
 build() {
   cd ${srcdir}/${pkgname}-${pkgver}
@@ -35,6 +35,6 @@ package() {
 
   # resolve conflicts with binutils
   rm ${pkgdir}/usr/include/{ansidecl,bfd,bfdlink,dis-asm,symcat}.h
-  rm ${pkgdir}/usr/lib/{libbfd,libiberty,libopcodes}.a
+  rm ${pkgdir}/usr/lib/{libbfd,libopcodes}.a
   rm ${pkgdir}/usr/share/info/{bfd,configure,standards}.info
 }

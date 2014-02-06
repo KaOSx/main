@@ -1,8 +1,7 @@
-# maintainer abveritas@chakra-project.org
 
 pkgname=qt5-base
-pkgver=5.0.1
-_pkgver=5.0.1
+pkgver=5.2.1
+_pkgver=5.2.1
 pkgrel=1
 pkgdesc=('A cross-platform application and UI framework')
 arch=('x86_64')
@@ -20,7 +19,7 @@ optdepends=('postgresql-libs: PostgreSQL driver'
 groups=('qt5')
 options=('!libtool')
 _pkgfqn="qtbase-opensource-src-${_pkgver}"
-source=("http://origin.releases.qt-project.org/qt5/${_pkgver}/submodules_tar/qtbase-opensource-src-${_pkgver}.tar.xz")
+source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn-${pkgver}.tar.xz")
 md5sums=('720e5061d75913dfa97bf8bef4a443df')
 
 build() {
