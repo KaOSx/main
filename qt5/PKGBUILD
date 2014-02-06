@@ -3,14 +3,14 @@ pkgbase=qt5
 pkgname=('qt5' 'qt5-private-headers')
 pkgver=5.2.1
 _pkgver=5.2
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 url='http://qt.nokia.com/'
 license=('GPL3' 'LGPL' 'FDL' 'custom')
-makedepends=('libtiff' 'libpng' 'libmng' 'sqlite3' 'ca-certificates' 'glib2' 'dbus'
-    'fontconfig' 'libgl' 'libsm' 'libxrandr' 'libxv' 'libxi' 'alsa-lib' 'icu'
-    'xdg-utils' 'hicolor-icon-theme' 'desktop-file-utils' 'mesa' 'postgresql-libs'
-    'mariadb' 'unixodbc' 'cups' 'libxinerama' 'libxcursor' 'python2' 'gperf' 'ruby'
+makedepends=('libtiff' 'libpng' 'libmng' 'sqlite' 'ca-certificates' 'glib2' 'dbus'
+    'fontconfig' 'libgl' 'libsm' 'libxrandr' 'libxv' 'libxi' 'alsa-lib' 'icu' 'at-spi2-core'
+    'xdg-utils' 'hicolor-icon-theme' 'desktop-file-utils' 'mesa' 'postgresql-libs' 'openal'
+    'mariadb' 'unixodbc' 'cups' 'libxinerama' 'libxcursor' 'python2' 'gperf' 'ruby' 'libxcomposite'
     'xcb-util-image' 'xcb-util-keysyms' 'xcb-util-renderutil' 'xcb-util-wm' 'pulseaudio'
     'gstreamer0.10' 'gstreamer0.10-base' 'gstreamer0.10-base-plugins' 'gstreamer0.10-good-plugins'
     'gstreamer0.10-bad-plugins' 'gstreamer0.10-ffmpeg' 'gstreamer0.10-ugly-plugins' 'libxkbcommon')
@@ -36,6 +36,10 @@ md5sums=('0c8d2aa45f38be9c3f7c9325eb059d9d'
 
 build() {
 	cd $srcdir/$_pkgfqn
+	
+	sed -i "s|-O2|${CXXFLAGS}|" qtbase/mkspecs/common/{g++,gcc}-base.conf
+        sed -i "/^QMAKE_LFLAGS_RPATH/s| -Wl,-rpath,||g" qtbase/mkspecs/common/gcc-base-unix.conf
+        sed -i "/^QMAKE_LFLAGS\s/s|+=|+= ${LDFLAGS}|g" qtbase/mkspecs/common/gcc-base.conf
 
         unset QTDIR
         export PATH="$PWD/qtbase/bin:$PWD/qtrepotools/bin:$PATH"
@@ -56,18 +60,14 @@ build() {
                 -examplesdir /usr/share/qt5/examples \
 		-system-sqlite \
                 -openssl-linked \
-                -make examples \
+                -nomake examples \
+                -no-rpath \
                 -optimized-qmake \
-                -reduce-relocations \
                 -dbus-linked \
-                -no-openvg \
-                -no-separate-debug-info \
-                -no-gtkstyle \
+                -reduce-relocations \
                 -opengl \
-                -feature-menu \
-                -feature-textdate \
-                -feature-ftp \
                 -xcursor
+                
 	 make
 	 #./configure -prefix $PWD/qtbase -opensource
          #make module-qtwebkit
@@ -80,8 +80,8 @@ package_qt5() {
              'xdg-utils' 'hicolor-icon-theme' 'desktop-file-utils' 'libxinerama' 'libxcursor'
              'pulseaudio' 'gstreamer0.10' 'gstreamer0.10-base' 'gstreamer0.10-base-plugins'
              'gstreamer0.10-good-plugins' 'gstreamer0.10-bad-plugins' 'gstreamer0.10-ffmpeg'
-             'gstreamer0.10-ugly-plugins' 'xcb-util-image' 'xcb-util-keysyms'
-             'xcb-util-renderutil' 'xcb-util-wm' 'libxkbcommon' 'icu')
+             'gstreamer0.10-ugly-plugins' 'xcb-util-image' 'xcb-util-keysyms' 'libxcomposite'
+             'xcb-util-renderutil' 'xcb-util-wm' 'libxkbcommon' 'icu' 'openal')
     optdepends=('postgresql-libs: PostgreSQL driver'
 	  'libmysqlclient: MySQL driver'
 	  'unixodbc: ODBC driver'
@@ -99,14 +99,14 @@ package_qt5() {
     sed -i "s|${srcdir}/${_pkgfqn}/qtbase|/usr|" \
     "${pkgdir}"/usr/lib/qt5/mkspecs/modules/qt_lib_bootstrap_private.pri
 	
-    install -d ${pkgdir}/usr/share/applications
+    #install -d ${pkgdir}/usr/share/applications
     #install -m644 ${srcdir}/youtubeview.desktop ${pkgdir}/usr/share/applications/
-    install -m644 ${srcdir}/flickrview.desktop ${pkgdir}/usr/share/applications/
-    install -m644 ${srcdir}/calculator.desktop ${pkgdir}/usr/share/applications/
-    install -m644 ${srcdir}/clocks.desktop ${pkgdir}/usr/share/applications/
-    install -m644 ${srcdir}/samegame.desktop ${pkgdir}/usr/share/applications/
-    install -m644 ${srcdir}/snake.desktop ${pkgdir}/usr/share/applications/
-    install -m644 ${srcdir}/tic-tac-toe.desktop ${pkgdir}/usr/share/applications/
+    #install -m644 ${srcdir}/flickrview.desktop ${pkgdir}/usr/share/applications/
+    #install -m644 ${srcdir}/calculator.desktop ${pkgdir}/usr/share/applications/
+    #install -m644 ${srcdir}/clocks.desktop ${pkgdir}/usr/share/applications/
+    #install -m644 ${srcdir}/samegame.desktop ${pkgdir}/usr/share/applications/
+    #install -m644 ${srcdir}/snake.desktop ${pkgdir}/usr/share/applications/
+    #install -m644 ${srcdir}/tic-tac-toe.desktop ${pkgdir}/usr/share/applications/
     
     mkdir -p ${pkgdir}/usr/bin
     for i in $(ls ${pkgdir}/usr/lib/qt5/bin); do
