@@ -1,9 +1,9 @@
 
 pkgbase=qt5
 pkgname=('qt5' 'qt5-private-headers')
-pkgver=5.2.0
+pkgver=5.2.1
 _pkgver=5.2
-pkgrel=4
+pkgrel=1
 arch=('x86_64')
 url='http://qt.nokia.com/'
 license=('GPL3' 'LGPL' 'FDL' 'custom')
@@ -21,7 +21,7 @@ source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver
         'assistant.desktop' 'designer.desktop' 'linguist.desktop' 'qtconfig.desktop'
         'youtubeview.desktop' 'flickrview.desktop' 'calculator.desktop' 'clocks.desktop'
         'samegame.desktop' 'snake.desktop' 'tic-tac-toe.desktop')
-md5sums=('8f60b47ca9461831d940f579ee90517e'
+md5sums=('0c8d2aa45f38be9c3f7c9325eb059d9d'
          'fc211414130ab2764132e7370f8e5caa'
          '85179f5e0437514f8639957e1d8baf62'
          'f11852b97583610f3dbb669ebc3e21bc'
@@ -90,9 +90,17 @@ package_qt5() {
 	
     cd $srcdir/$_pkgfqn
     make INSTALL_ROOT=$pkgdir install
+    
+    # Fix wrong path in prl files
+    find "${pkgdir}/usr/lib" -type f -name '*.prl' \
+    -exec sed -i -e '/^QMAKE_PRL_BUILD_DIR/d;s/\(QMAKE_PRL_LIBS =\).*/\1/' {} \;
+
+    # Fix wrong qmake path in pri file
+    sed -i "s|${srcdir}/${_pkgfqn}/qtbase|/usr|" \
+    "${pkgdir}"/usr/lib/qt5/mkspecs/modules/qt_lib_bootstrap_private.pri
 	
     install -d ${pkgdir}/usr/share/applications
-    install -m644 ${srcdir}/youtubeview.desktop ${pkgdir}/usr/share/applications/
+    #install -m644 ${srcdir}/youtubeview.desktop ${pkgdir}/usr/share/applications/
     install -m644 ${srcdir}/flickrview.desktop ${pkgdir}/usr/share/applications/
     install -m644 ${srcdir}/calculator.desktop ${pkgdir}/usr/share/applications/
     install -m644 ${srcdir}/clocks.desktop ${pkgdir}/usr/share/applications/
