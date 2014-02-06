@@ -1,56 +1,46 @@
-#
-# Platform Packages for Chakra, part of chakra-project.org
-#
-# maintainer: abveritas@chakra-project.org
 
 pkgname=mpd
-pkgver=0.16.5
-pkgrel=3
+pkgver=0.18.7
+pkgrel=1
 pkgdesc="Music daemon that plays MP3, FLAC, and Ogg Vorbis files"
-arch=('i686' 'x86_64')
+arch=('x86_64')
 license=('GPL')
 url="http://mpd.wikia.com/wiki/Server"
 depends=('libao' 'ffmpeg' 'libmodplug' 'audiofile' 'libshout' 'libmad' 'curl' 'faad2'
-         'sqlite3' 'jack' 'libmms' 'wavpack' 'libmpcdec' 'avahi' 'libid3tag'
-         'libpulse' 'mpg123')
-makedepends=('pkgconfig' 'doxygen')
+         'sqlite' 'jack' 'libmms' 'wavpack' 'libmpcdec' 'avahi' 'libid3tag' 'libmpdclient'
+         'pulseaudio' 'mpg123' 'yajl')
+makedepends=('doxygen')
 install=${pkgname}.install
-source=("http://downloads.sourceforge.net/musicpd/${pkgname}-${pkgver}.tar.bz2"
-        'mpd')
-md5sums=('f7564cff12035f6a1112cce770655df7'
-         'e5669c2bff4031928531e52475addeb1')
+source=("http://www.musicpd.org/download/mpd/stable/mpd-${pkgver}.tar.xz"
+        'tmpfiles.d'
+        'conf')
+md5sums=('1ef604a6c8d5e73f8314de8cf95ba607'
+         'e5cdccd201610a41e957d684ebc38985'
+         '13902b87d669ca848fecd99c0f39d88f')
 
 build() {
   cd ${srcdir}/${pkgname}-${pkgver}
   ./configure --prefix=/usr \
     --sysconfdir=/etc \
-    --enable-lastfm \
     --enable-jack \
     --enable-pulse \
+    --enable-libmpdclient \
     --enable-documentation \
+    --enable-pipe-output \
     --disable-libwrap \
-    --disable-cue \
     --disable-sidplay \
     --with-systemdsystemunitdir=/usr/lib/systemd/system
   make
 }
 
 package() {
-  cd ${srcdir}/${pkgname}-${pkgver}
-  make DESTDIR=${pkgdir} install
+   cd "${srcdir}/${pkgname}-${pkgver}"
+   make DESTDIR="${pkgdir}" install
+   
+   install -Dm644 ../conf "${pkgdir}"/etc/mpd.conf
+   install -Dm644 ../tmpfiles.d "${pkgdir}"/usr/lib/tmpfiles.d/mpd.conf
+   install -d -g 45 -o 45 "${pkgdir}"/var/lib/mpd/playlists
 
-  # set ours dirs in mpd.conf file
-  sed -i 's|^music_directory.*$|#music_directory "path_to_your_music_collection"|1' doc/mpdconf.example
-  sed -i 's|playlist_directory.*$|playlist_directory "/var/lib/mpd/playlists"|1' doc/mpdconf.example
-  sed -i 's|db_file.*$|db_file "/var/lib/mpd/mpd.db"|1' doc/mpdconf.example
-  sed -i 's|log_file.*$|log_file "/var/log/mpd/mpd.log"|1' doc/mpdconf.example
-  sed -i 's|error_file.*$|error_file "/var/log/mpd/mpd.error"|1' doc/mpdconf.example
-  sed -i 's|#pid_file.*$|pid_file "/var/run/mpd/mpd.pid"|1' doc/mpdconf.example
-  sed -i 's|#state_file.*$|state_file "/var/lib/mpd/mpdstate"|1' doc/mpdconf.example
-  sed -i 's|#user.*$|user "mpd"|1' doc/mpdconf.example
-
-  install -Dm644 doc/mpdconf.example ${pkgdir}/usr/share/mpd/mpd.conf.example
-
-  install -Dm755 ${srcdir}/mpd ${pkgdir}/etc/rc.d/mpd
-  install -d ${pkgdir}/var/{lib/mpd/playlists,log/mpd}
+   install -Dm644 "${pkgdir}"/usr/lib/systemd/{system,user}/mpd.service
+   sed '/WantedBy=/c WantedBy=default.target' -i "${pkgdir}"/usr/lib/systemd/user/mpd.service
 }
