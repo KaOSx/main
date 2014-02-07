@@ -1,6 +1,6 @@
 
 pkgname=mpd
-pkgver=0.18.7
+pkgver=0.18.8
 pkgrel=1
 pkgdesc="Music daemon that plays MP3, FLAC, and Ogg Vorbis files"
 arch=('x86_64')
@@ -8,13 +8,13 @@ license=('GPL')
 url="http://mpd.wikia.com/wiki/Server"
 depends=('libao' 'ffmpeg' 'libmodplug' 'audiofile' 'libshout' 'libmad' 'curl' 'faad2'
          'sqlite' 'jack' 'libmms' 'wavpack' 'libmpcdec' 'avahi' 'libid3tag' 'libmpdclient'
-         'pulseaudio' 'mpg123' 'yajl')
+         'pulseaudio' 'mpg123' 'yajl' 'sdl_sound')
 makedepends=('doxygen')
 install=${pkgname}.install
 source=("http://www.musicpd.org/download/mpd/stable/mpd-${pkgver}.tar.xz"
         'tmpfiles.d'
         'conf')
-md5sums=('1ef604a6c8d5e73f8314de8cf95ba607'
+md5sums=('7bbe1caf5abe404dc985ca4f44984b1f'
          'e5cdccd201610a41e957d684ebc38985'
          '13902b87d669ca848fecd99c0f39d88f')
 
