@@ -1,6 +1,7 @@
 
 pkgname=xdg-utils
-pkgver=1.1.0.3
+pkgver=1.1.0.4
+_pkgver=1.1.0-rc2
 _gitver=768ccceb8ffcfa77550ae9ecd6fea6838bfce706
 pkgrel=1
 pkgdesc='Command line tools that assist applications with a variety of desktop integration tasks.'
@@ -9,11 +10,12 @@ url='http://portland.freedesktop.org/'
 depends=('sh')
 makedepends=('docbook-xsl' 'links' 'xmlto')
 license=('MIT')
-source=("http://cgit.freedesktop.org/xdg/xdg-utils/snapshot/xdg-utils-${_gitver}.tar.gz")
-md5sums=('062d432ef5dcc437634f185e6532c2e0')
+#source=("http://cgit.freedesktop.org/xdg/xdg-utils/snapshot/xdg-utils-${_gitver}.tar.gz")
+source=("http://cgit.freedesktop.org/xdg/xdg-utils/snapshot/xdg-utils-${_pkgver}.tar.gz")
+md5sums=('5a4bef63c10a6e2b597ccc09f6448994')
 
 build() {
-	cd ${srcdir}/${pkgname}-${_gitver}
+	cd ${srcdir}/${pkgname}-${_pkgver}
 	
 	./configure --prefix=/usr --mandir=/usr/share/man
 	make scripts-clean -C scripts 
@@ -21,7 +23,7 @@ build() {
 }
 
 package() {
-	cd ${srcdir}/${pkgname}-${_gitver}
+	cd ${srcdir}/${pkgname}-${_pkgver}
 	
 	make DESTDIR="${pkgdir}" install
 	install -D -m644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
