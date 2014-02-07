@@ -1,11 +1,7 @@
-#
-# QT Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
 
 pkgname=qt5-script
-pkgver=5.0.1
-_pkgver=5.0.1
+pkgver=5.2.1
+_pkgver=5.2
 pkgrel=1
 pkgdesc=('A cross-platform application and UI framework, QtScripts files')
 arch=('x86_64')
@@ -14,9 +10,9 @@ license=('GPL3' 'LGPL')
 depends=('qt5-base')
 groups=('qt5')
 options=('!libtool')
-_pkgfqn="qtscript-opensource-src-${_pkgver}"
-source=("http://origin.releases.qt-project.org/qt5/${_pkgver}/submodules_tar/qtscript-opensource-src-${_pkgver}.tar.xz")
-md5sums=('349691431c3cc1b03e2571bac7c6c852')
+_pkgfqn="qtscript-opensource-src-${pkgver}"
+source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
+md5sums=('b8af09bb297d4c62e64df5418fe99dc9')
 
 build() {
     cd $srcdir/$_pkgfqn
@@ -28,5 +24,13 @@ build() {
 package() {
     cd $srcdir/$_pkgfqn
     make INSTALL_ROOT=$pkgdir install
+    
+    mkdir -p ${pkgdir}/usr/bin
+    for i in $(ls ${pkgdir}/usr/lib/qt5/bin); do
+        ln -s /usr/lib/qt5/bin/${i} ${pkgdir}/usr/bin/${i}-qt5
+    done
+    
+    install -D -m644 LGPL_EXCEPTION.txt \
+    ${pkgdir}/usr/share/licenses/${pkgname}/LGPL_EXCEPTION.txt
 }
 

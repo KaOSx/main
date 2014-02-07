@@ -1,22 +1,18 @@
-#
-# QT Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
 
 pkgname=qt5-svg
-pkgver=5.0.1
-_pkgver=5.0.1
+pkgver=5.2.1
+_pkgver=5.2
 pkgrel=1
 pkgdesc=('A cross-platform application and UI framework, QtSvg files')
 arch=('x86_64')
 url='http://qt.nokia.com/'
 license=('GPL3' 'LGPL')
-depends=('qt5-base')
+depends=('qt5-declarative')
 groups=('qt5')
 options=('!libtool')
-_pkgfqn="qtsvg-opensource-src-${_pkgver}"
-source=("http://origin.releases.qt-project.org/qt5/${_pkgver}/submodules_tar/qtsvg-opensource-src-${_pkgver}.tar.xz")
-md5sums=('00a577bd88e682d1b4d01d41d1d699cf')
+_pkgfqn="qtsvg-opensource-src-${pkgver}"
+source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
+md5sums=('3f5487fe2bd5024f18f63a8d0eb4294d')
 
 build() {
     cd $srcdir/$_pkgfqn
@@ -33,5 +29,8 @@ package() {
     for i in $(ls ${pkgdir}/usr/lib/qt5/bin); do
         ln -s /usr/lib/qt5/bin/${i} ${pkgdir}/usr/bin/${i}-qt5
     done
+    
+    install -D -m644 LGPL_EXCEPTION.txt \
+    ${pkgdir}/usr/share/licenses/${pkgname}/LGPL_EXCEPTION.txt
 }
 

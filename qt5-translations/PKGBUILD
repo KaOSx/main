@@ -1,19 +1,19 @@
-# maintainer abveritas@chakra-project.org
 
 pkgname=qt5-translations
-pkgver=5.0.1
-_pkgver=5.0.1
+pkgver=5.2.1
+_pkgver=5.2
 pkgrel=1
 pkgdesc=('A cross-platform application and UI framework, translations')
 arch=('x86_64')
 url='http://qt.nokia.com/'
-license=('GPL3' 'LGPL')
-depends=('qt5-base')
+license=('GPL3' 'LGPL' 'FDL' 'custom')
+depends=('qt5-declarative' 'libtiff' 'libmng')
+makedepends=('qt5-tools')
 groups=('qt5')
 options=('!libtool')
-_pkgfqn="qttranslations-opensource-src-${_pkgver}"
-source=("http://origin.releases.qt-project.org/qt5/${_pkgver}/submodules_tar/qttranslations-opensource-src-${_pkgver}.tar.xz")
-md5sums=('de27f8384296e366e454754b69197634')
+_pkgfqn="qttranslations-opensource-src-${pkgver}"
+source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
+md5sums=('4adcd85471b39e1680b035f15ec9910b')
 
 build() {
     cd $srcdir/$_pkgfqn

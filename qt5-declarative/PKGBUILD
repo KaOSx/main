@@ -1,22 +1,19 @@
-#
-# QT Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
 
 pkgname=qt5-declarative
-pkgver=5.0.1
-_pkgver=5.0.1
+pkgver=5.2.1
+_pkgver=5.2
 pkgrel=1
 pkgdesc=('A cross-platform application and UI framework, QtDeclarative files')
 arch=('x86_64')
 url='http://qt.nokia.com/'
-license=('GPL3' 'LGPL')
-depends=('qt5-jsbackend' 'qt5-xmlpatterns')
+license=('GPL3' 'LGPL' 'FDL' 'custom')
+depends=('qt5-xmlpatterns' 'mesa')
+makedepends=('python2')
 groups=('qt5')
 options=('!libtool')
-_pkgfqn="qtdeclarative-opensource-src-${_pkgver}"
-source=("http://origin.releases.qt-project.org/qt5/${_pkgver}/submodules_tar/qtdeclarative-opensource-src-${_pkgver}.tar.xz")
-md5sums=('91bb22db9501847e7549e8a431d81b78')
+_pkgfqn="qtdeclarative-opensource-src-${pkgver}"
+source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
+md5sums=('a23fba03a4b48f36fe8b51d326d08acc')
 
 build() {
     cd $srcdir/$_pkgfqn

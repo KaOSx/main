@@ -1,16 +1,16 @@
 
 pkgname=qt5-base
 pkgver=5.2.1
-_pkgver=5.2.1
+_pkgver=5.2
 pkgrel=1
 pkgdesc=('A cross-platform application and UI framework')
 arch=('x86_64')
 url='http://qt.nokia.com/'
-license=('GPL3' 'LGPL')
+license=('GPL3' 'LGPL' 'FDL' 'custom')
 depends=('sqlite3' 'xcb-util-keysyms' 'xcb-util-wm' 'xcb-util-image' 'xcb-util-renderutil'
          'glib2' 'dbus' 'fontconfig' 'libsm' 'libxrandr' 'libxv' 'libxi' 'unixodbc' 'libjpeg-turbo'
-         'alsa-lib' 'xdg-utils' 'hicolor-icon-theme' 'desktop-file-utils' 'mesa' 'fontconfig' 'systemd'
-         'libxcursor' 'libxrender' 'libxi' 'libpng' 'hicolor-icon-theme' 'xdg-utils' 'libmariadbclient')
+         'alsa-lib' 'xdg-utils' 'hicolor-icon-theme' 'desktop-file-utils' 'mesa' 'systemd'
+         'libxcursor' 'libxrender' 'libpng' 'libmariadbclient' 'icu' 'libgl')
 makedepends=('postgresql-libs' 'cups' 'python2' 'gperf' 'ruby' 'pulseaudio'
              'libxfixes' 'libxinerama')
 optdepends=('postgresql-libs: PostgreSQL driver'
@@ -18,9 +18,9 @@ optdepends=('postgresql-libs: PostgreSQL driver'
 	    'libxfixes: Xfixes support')
 groups=('qt5')
 options=('!libtool')
-_pkgfqn="qtbase-opensource-src-${_pkgver}"
-source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn-${pkgver}.tar.xz")
-md5sums=('720e5061d75913dfa97bf8bef4a443df')
+_pkgfqn="qtbase-opensource-src-${pkgver}"
+source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
+md5sums=('fa005301a2000b92b61b63edc042567b')
 
 build() {
 	cd $srcdir/$_pkgfqn
@@ -44,16 +44,11 @@ build() {
                 -examplesdir /usr/share/qt5/examples \
 		-system-sqlite \
                 -openssl-linked \
-                -nomake demos \
                 -nomake tests \
-                -nomake examples \
-                -nomake docs \
+                -make examples \
                 -optimized-qmake \
                 -reduce-relocations \
                 -dbus-linked \
-                -no-openvg \
-                -no-separate-debug-info \
-                -no-gtkstyle \
                 -opengl \
                 -feature-menu \
                 -feature-textdate \

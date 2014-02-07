@@ -1,21 +1,20 @@
-# maintainer abveritas@chakra-project.org
 
 pkgname=qt5-multimedia
-pkgver=5.0.1
-_pkgver=5.0.1
+pkgver=5.2.1
+_pkgver=5.2
 pkgrel=1
 pkgdesc=('A cross-platform application and UI framework, QtMultimedia files')
 arch=('x86_64')
 url='http://qt.nokia.com/'
-license=('GPL3' 'LGPL')
+license=('GPL3' 'LGPL' 'FDL' 'custom')
 depends=('qt5-declarative' 'openal' 'libxslt' 'libxcomposite' 'gstreamer0.10' 'gstreamer0.10-base'
          'gstreamer0.10-base-plugins' 'gstreamer0.10-good-plugins' 'gstreamer0.10-bad-plugins'
-         'gstreamer0.10-ffmpeg' 'gstreamer0.10-ugly-plugins')
+         'gstreamer0.10-ffmpeg' 'gstreamer0.10-ugly-plugins' 'pulseaudio')
 options=('!libtool')
 groups=('qt5')
-_pkgfqn="qtmultimedia-opensource-src-${_pkgver}"
-source=("http://origin.releases.qt-project.org/qt5/${_pkgver}/submodules_tar/qtmultimedia-opensource-src-${_pkgver}.tar.xz")
-md5sums=('aee9c86a7ff64dfc905ccaef33f0a967')
+_pkgfqn="qtmultimedia-opensource-src-${pkgver}"
+source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
+md5sums=('26dc22c59fbbad9fdf0699d5f887166a')
 
 build() {
     cd $srcdir/$_pkgfqn
@@ -27,5 +26,13 @@ build() {
 package() {
     cd $srcdir/$_pkgfqn
     make INSTALL_ROOT=$pkgdir install
+    
+    mkdir -p ${pkgdir}/usr/bin
+    for i in $(ls ${pkgdir}/usr/lib/qt5/bin); do
+        ln -s /usr/lib/qt5/bin/${i} ${pkgdir}/usr/bin/${i}-qt5
+    done
+    
+    install -D -m644 LGPL_EXCEPTION.txt \
+    ${pkgdir}/usr/share/licenses/${pkgname}/LGPL_EXCEPTION.txt
 }
 

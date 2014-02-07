@@ -1,18 +1,18 @@
 
-pkgname=qt5-xmlpatterns
+pkgname=qt5-sensors
 pkgver=5.2.1
 _pkgver=5.2
 pkgrel=1
-pkgdesc=('A cross-platform application and UI framework, QtXmlPatterns files')
+pkgdesc=('A cross-platform application and UI framework, QtScripts files')
 arch=('x86_64')
 url='http://qt.nokia.com/'
 license=('GPL3' 'LGPL')
-depends=('qt5-base')
+depends=('qt5-declarative')
 groups=('qt5')
 options=('!libtool')
-_pkgfqn="qtxmlpatterns-opensource-src-${pkgver}"
+_pkgfqn="qtsensors-opensource-src-${pkgver}"
 source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
-md5sums=('d01c6b837db4a6dee69a3f0352b37e18')
+md5sums=('045f98acba9fba0358a6a50356be0841')
 
 build() {
     cd $srcdir/$_pkgfqn

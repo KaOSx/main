@@ -1,23 +1,19 @@
-#
-# QT Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
 
-pkgname=qt5-jsbackend
-pkgver=5.0.1
-_pkgver=5.0.1
+pkgname=qt5-connectivity
+pkgver=5.2.1
+_pkgver=5.2
 pkgrel=1
 pkgdesc=('A cross-platform application and UI framework, QtJsbackend files')
 arch=('x86_64')
 url='http://qt.nokia.com/'
 license=('GPL3' 'LGPL')
-depends=('qt5-base')
+depends=('qt5-declarative')
 makedepends=('python2')
 groups=('qt5')
 options=('!libtool')
-_pkgfqn="qtjsbackend-opensource-src-${_pkgver}"
-source=("http://origin.releases.qt-project.org/qt5/${_pkgver}/submodules_tar/qtjsbackend-opensource-src-${_pkgver}.tar.xz")
-md5sums=('af5ccb9d5ab589df03eb0b12fb5ab4cd')
+_pkgfqn="qtconnectivity-opensource-src-${pkgver}"
+source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
+md5sums=('cb2ef624b28b6ba61d6a467b8b3c314a')
 
 build() {
     cd $srcdir/$_pkgfqn
