@@ -2,7 +2,7 @@
 pkgname=qt5-base
 pkgver=5.2.1
 _pkgver=5.2
-pkgrel=1
+pkgrel=2
 pkgdesc=('A cross-platform application and UI framework')
 arch=('x86_64')
 url='http://qt.nokia.com/'
@@ -10,12 +10,11 @@ license=('GPL3' 'LGPL' 'FDL' 'custom')
 depends=('sqlite3' 'xcb-util-keysyms' 'xcb-util-wm' 'xcb-util-image' 'xcb-util-renderutil'
          'glib2' 'dbus' 'fontconfig' 'libsm' 'libxrandr' 'libxv' 'libxi' 'unixodbc' 'libjpeg-turbo'
          'alsa-lib' 'xdg-utils' 'hicolor-icon-theme' 'desktop-file-utils' 'mesa' 'systemd'
-         'libxcursor' 'libxrender' 'libpng' 'libmariadbclient' 'icu' 'libgl')
-makedepends=('postgresql-libs' 'cups' 'python2' 'gperf' 'ruby' 'pulseaudio'
-             'libxfixes' 'libxinerama')
-optdepends=('postgresql-libs: PostgreSQL driver'
-	    'libxinerama: Xinerama support'
-	    'libxfixes: Xfixes support')
+         'libxcursor' 'libxrender' 'libpng' 'libmariadbclient' 'icu' 'libgl' 'libxfixes' 'libxinerama')
+makedepends=('postgresql-libs' 'cups' 'python2' 'gperf' 'ruby' 'pulseaudio')
+optdepends=('postgresql-libs: PostgreSQL driver')
+conflict=('qt5')
+replaces=('qt5')
 groups=('qt5')
 options=('!libtool')
 _pkgfqn="qtbase-opensource-src-${pkgver}"

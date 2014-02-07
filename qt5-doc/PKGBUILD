@@ -1,32 +1,23 @@
 
 pkgname=qt5-doc
-pkgver=5.2.0
-_pkgver=5.2.0
+pkgver=5.2.1
+_pkgver=5.2
 pkgrel=1
 pkgdesc=('A cross-platform application and UI framework, offline documentation files')
 arch=('x86_64')
 url='http://qt.nokia.com/'
 license=('GPL3' 'LGPL')
-depends=('qt5')
+depends=('qt5-tools')
 options=('!libtool')
-_pkgfqn="qt-everywhere-opensource-src-${pkgver}"
-source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/single/${_pkgfqn}.tar.xz")
-md5sums=('8f60b47ca9461831d940f579ee90517e')
+_pkgfqn="qtdoc-opensource-src-${pkgver}"
+source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
+md5sums=('1bad40cdc0fa7cebea2b2ae13b645acd')
 
 build() {
     cd $srcdir/$_pkgfqn
-    #cd doc/qtdoc 
-    #/usr/lib/qt5/bin/qmake
-    
-    cd $srcdir/$_pkgfqn/qtbase/src
-         make sub-qdoc      #to build the qdoc binary
-         cd $srcdir/$_pkgfqn/qttools      
-         make               #to build the qhelpgenerator
-         cd $srcdir/$_pkgfqn
-         make docs
-    
+ 
+    /usr/lib/qt5/bin/qmake
     make docs
-    #/usr/lib/qt5/bin/qdoc /qt5-doc/src/qtdoc-opensource-src-5.0.1/doc/config/qtdoc.qdocconf -outputdir html
 }
 
 package() {
