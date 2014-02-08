@@ -1,0 +1,28 @@
+
+pkgname=python2-setuptools
+pkgver=2.1.2
+pkgrel=1
+pkgdesc="Easily download, build, install, upgrade, and uninstall Python packages"
+arch=('x86_64')
+license=('PSF')
+url="http://pypi.python.org/pypi/setuptools"
+depends=('python2')
+provides=('python2-distribute' 'setuptools')
+replaces=('python2-distribute' 'setuptools')
+conflicts=('python2-distribute')
+source=("http://pypi.python.org/packages/source/s/setuptools/setuptools-${pkgver}.tar.gz")
+md5sums=('3fb7b3abb02d1d1eb9dc45e1c53e1539')
+
+build() {
+   cd "${srcdir}"/setuptools-${pkgver}
+   
+   python2 setup.py build
+}
+ 
+package() {
+   cd "${srcdir}/setuptools-${pkgver}"
+   
+   python2 setup.py install --prefix=/usr --root="${pkgdir}" --optimize=1 --skip-build
+}
+ 
+
