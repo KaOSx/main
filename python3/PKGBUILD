@@ -1,6 +1,6 @@
 
 pkgname=python3
-pkgver=3.3.3
+pkgver=3.3.4
 pkgrel=1
 _pybasever=3.3
 pkgdesc="Next generation of the python high-level scripting language"
@@ -11,8 +11,8 @@ depends=('expat' 'bzip2' 'gdbm' 'openssl' 'libffi' 'zlib')
 makedepends=('tk' 'sqlite3' 'valgrind')
 optdepends=('tk: for tkinter')
 options=('!makeflags')
-source=("http://www.python.org/ftp/python/${pkgver}/Python-${pkgver}.tar.bz2")
-md5sums=('f3ebe34d4d8695bf889279b54673e10c')  
+source=("http://www.python.org/ftp/python/${pkgver}/Python-${pkgver}.tar.xz")
+md5sums=('8fb961a20600aafafd249537af3ac637')  
 
 build() {
   cd "${srcdir}/Python-${pkgver}"
