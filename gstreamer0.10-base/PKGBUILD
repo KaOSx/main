@@ -1,22 +1,33 @@
 
 pkgbase=('gstreamer0.10-base')
 pkgname=('gstreamer0.10-base' 'gstreamer0.10-base-plugins')
-pkgver=0.10.36
-pkgrel=7
+pkgver=0.10.36.1
+pkgrel=1
 arch=('x86_64')
 license=('LGPL')
 makedepends=('pkgconfig' "gstreamer0.10>=${pkgver}" 'orc' 'libxv' 'alsa-lib' 'cdparanoia'
              'libvisual' 'libvorbis' 'libtheora' 'pango' 'gobject-introspection')
 options=('!libtool' '!emptydirs')
 url="http://gstreamer.freedesktop.org/"
-source=("${url}/src/gst-plugins-base/gst-plugins-base-${pkgver}.tar.xz")
-md5sums=('3d2337841b132fe996e5eb2396ac9438')
+source=("git://anongit.freedesktop.org/gstreamer-sdk/gst-plugins-base#commit=48d5966f12d4e6b71c96db0600cf76ef0ef14b3a"
+        'fix-crash-0-byte-ogg.patch'
+        'colorbalance-fix-abi.patch'
+        'revert-decodebin-playbin-removal.patch'
+        'videoscale-fix-negotiation.patch'
+        'ayuv64-lanczos.patch'
+        'gstaudio-symbols.patch')
+md5sums=('SKIP'
+         '87b3fe9b5ffdb04fe9d2e7665c901a6b'
+         'babecf0eb6c88cd1f5b684cfa7335117'
+         '9799a2079ac98e3e149fad3196d81bbc'
+         '9c21828265688fd258aa34bb5c1709aa'
+         'a52d29391633eef13c4ea123ffb6ad0e'
+         'c19ff07e8682543374806315fd6613c1')
 
 build() {
-  cd "${srcdir}/gst-plugins-base-${pkgver}"
-  sed -i '/AC_PATH_XTRA/d' configure.ac
-  sed -i 's/AM_CONFIG_HEADER/AC_CONFIG_HEADERS/' configure.ac
-  ./autogen.sh --disable-gtk-doc
+  cd "${srcdir}/gst-plugins-base"
+  
+  NONCONFIGURE=1 ./autogen.sh --disable-gtk-doc
   
   ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var \
     --disable-static --enable-experimental --disable-gnome_vfs --enable-subparse\
@@ -31,7 +42,7 @@ package_gstreamer0.10-base() {
   pkgdesc="GStreamer Multimedia Framework Base plugin libraries"
   depends=('gstreamer0.10>=0.10.36' 'orc' 'libxv')
 
-  cd "${srcdir}/gst-plugins-base-${pkgver}"
+  cd "${srcdir}/gst-plugins-base"
   make DESTDIR="${pkgdir}" install
 }
 
@@ -40,7 +51,7 @@ package_gstreamer0.10-base-plugins() {
   depends=("gstreamer0.10-base=${pkgver}" 'alsa-lib' 'cdparanoia' 'libvisual' 'libvorbis' 'libtheora' 'pango')
   groups=('gstreamer0.10-plugins')
 
-  cd "${srcdir}/gst-plugins-base-${pkgver}"
+  cd "${srcdir}/gst-plugins-base"
   make -C gst-libs DESTDIR="${pkgdir}" install
   make -C ext DESTDIR="${pkgdir}" install
   make -C gst-libs DESTDIR="${pkgdir}" uninstall
