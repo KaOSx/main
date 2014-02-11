@@ -19,12 +19,12 @@ source=("git://gitorious.org/webkit/qtwebkit-23.git"
         'qwebview.patch'
         'bison3.patch')
 md5sums=('SKIP'
-         'a585513a0245a5cf5e88d1c9df019241'
+         '1864987bdbb2f58f8ae8b350dfdbe133'
+         '2293bdde387a27fea3eb011c729269fb'
          '6b162cd2bc104f0ae83ca039401be7bf')
 
 build() {
   cd "${srcdir}"/qtwebkit-${_pkgver}
-  patch -p1 -i "${srcdir}"/qwebview.patch
   patch -p1 -i "${srcdir}"/bison3.patch
 
   export QTDIR=/usr
