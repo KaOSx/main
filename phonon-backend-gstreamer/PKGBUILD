@@ -1,13 +1,14 @@
 
 pkgname=phonon-backend-gstreamer
 pkgver=4.7.1
-pkgrel=1
+pkgrel=2
 pkgdesc="Phonon GStreamer backend"
 arch=('x86_64')
 url='http://phonon.kde.org'
 license=('LGPL')
-depends=('gstreamer0.10-base-plugins' 'phonon')
-makedepends=('pkg-config' 'cmake' 'automoc4' 'mesa')
+depends=('gstreamer0.10-base-plugins')
+makedepends=('pkg-config' 'cmake' 'automoc4' 'mesa' 'phonon')
+provides=('phonon-backend')
 groups=("kde-complete" "kde-uninstall")
 source=("http://download.kde.org/stable/phonon/${pkgname}/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 md5sums=('7c0cfab4ec0bbe1f201503e6ccc7290a')

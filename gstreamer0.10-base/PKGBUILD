@@ -2,7 +2,7 @@
 pkgbase=('gstreamer0.10-base')
 pkgname=('gstreamer0.10-base' 'gstreamer0.10-base-plugins')
 pkgver=0.10.36.1
-pkgrel=2
+pkgrel=3
 arch=('x86_64')
 license=('LGPL')
 makedepends=('pkgconfig' "gstreamer0.10>=${pkgver}" 'orc' 'libxv' 'alsa-lib' 'cdparanoia'
@@ -27,6 +27,12 @@ md5sums=('SKIP'
 build() {
   cd "${srcdir}/gst-plugins-base"
   sed -i -e '/AC_PATH_XTRA/d' -e 's/AM_CONFIG_HEADER/AC_CONFIG_HEADERS/' configure.ac
+  patch -p1 -i ${srcdir}/fix-crash-0-byte-ogg.patch
+  patch -p1 -i ${srcdir}/colorbalance-fix-abi.patch
+  patch -p1 -i ${srcdir}/ayuv64-lanczos.patch
+  patch -p1 -i ${srcdir}/videoscale-fix-negotiation.patch
+  patch -p1 -i ${srcdir}/gstaudio-symbols.patch
+  patch -p1 -R -i ${srcdir}/revert-decodebin-playbin-removal.patch
   
   NONCONFIGURE=1 ./autogen.sh --disable-gtk-doc
   
