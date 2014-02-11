@@ -2,12 +2,13 @@
 pkgname=qt5-tools
 pkgver=5.2.1
 _pkgver=5.2
-pkgrel=1
+pkgrel=2
 pkgdesc=('A cross-platform application and UI framework, development tools and help files')
 arch=('x86_64')
 url='http://qt.nokia.com/'
 license=('GPL3' 'LGPL' 'FDL' 'custom')
-depends=('qt5-declarative' 'desktop-file-utils' 'qt5-location' 'hicolor-icon-theme' 'xdg-utils')
+depends=('qt5-declarative' 'desktop-file-utils' 'qt5-location' 'hicolor-icon-theme' 'xdg-utils'
+         'qt5-translations')
 optdepends=('qt5-doc: offline help documentation')
 groups=('qt5')
 options=('!libtool')
@@ -22,7 +23,8 @@ md5sums=('f56b2e6c537f6853d9bf10380c39418b'
 build() {
     cd $srcdir/$_pkgfqn
 
-    /usr/lib/qt5/bin/qmake
+    /usr/lib/qt5/bin/qmake qttools.pro -r -config release \
+      "CONFIG+=NOMAKE_EXAMPLES" 
     make
 }
 

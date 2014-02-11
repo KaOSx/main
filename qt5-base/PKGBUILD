@@ -2,7 +2,7 @@
 pkgname=qt5-base
 pkgver=5.2.1
 _pkgver=5.2
-pkgrel=2
+pkgrel=3
 pkgdesc=('A cross-platform application and UI framework')
 arch=('x86_64')
 url='http://qt.nokia.com/'
@@ -44,7 +44,7 @@ build() {
 		-system-sqlite \
                 -openssl-linked \
                 -nomake tests \
-                -make examples \
+                -nomake examples \
                 -optimized-qmake \
                 -reduce-relocations \
                 -dbus-linked \
