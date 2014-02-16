@@ -1,7 +1,7 @@
 
 pkgname=webkitgtk2
 pkgver=1.10.2
-pkgrel=2
+pkgrel=3
 arch=('x86_64')
 url="http://webkitgtk.org/"
 pkgdesc="GTK+ Web content engine library for GTK+ 2.0"
@@ -10,11 +10,14 @@ depends=('libxt' 'libxslt' 'sqlite3' 'libsoup' 'enchant' 'libgl' 'gtk2'
          'gstreamer0.10-base' 'icu' 'libwebp')
 makedepends=('gperf' 'gobject-introspection' 'python2' 'mesa' 'ruby' 'gtk-doc')
 options=('!libtool' '!emptydirs')
-source=("http://webkitgtk.org/releases/webkitgtk-$pkgver.tar.xz")
-md5sums=('7b1a652af1eb11bee5bf7209e9ff67e6')
+source=("http://webkitgtk.org/releases/webkitgtk-$pkgver.tar.xz"
+        'bison3.patch')
+md5sums=('7b1a652af1eb11bee5bf7209e9ff67e6'
+         '4bc278e790526da1be2a2199d6f984de')
 
 build() {
   cd "$srcdir/webkitgtk-$pkgver"
+  patch -p1 -i "$srcdir"/bison3.patch
   
   PYTHON=/usr/bin/python2 ./configure --prefix=/usr \
     --enable-introspection \
