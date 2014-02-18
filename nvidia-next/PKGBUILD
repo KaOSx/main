@@ -3,8 +3,8 @@ _extramodules=extramodules-3.13-next
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=nvidia-next
-pkgver=331.38
-pkgrel=3
+pkgver=331.49
+pkgrel=1
 pkgdesc="NVIDIA drivers for linux."
 arch=('x86_64')
 url="http://www.nvidia.com/"
@@ -17,7 +17,7 @@ _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 #_pkg="NVIDIA-Linux-x86_64-${pkgver}"
 source=("ftp://download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
         'acpi_os_wait_events_complete.patch')
-md5sums=('f2059ae373665cb6c8fb826e1173b04d'
+md5sums=('d0c944466a36cae8b1e23330b27a721c'
          '7e146069c9f09295581201d987a55efd')
 
 build() {
@@ -25,7 +25,7 @@ build() {
   sh "${_pkg}.run" --extract-only
   
   cd "${_pkg}"
-  patch -p1 -i ${srcdir}/acpi_os_wait_events_complete.patch
+  #patch -p1 -i ${srcdir}/acpi_os_wait_events_complete.patch
   
   cd "${srcdir}/${_pkg}/kernel"
   make SYSSRC=/lib/modules/"${_kver}/build" module

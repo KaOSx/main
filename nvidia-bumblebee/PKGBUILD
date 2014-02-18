@@ -4,7 +4,7 @@ _extramodules=extramodules-3.12
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=nvidia-bumblebee
-pkgver=331.38
+pkgver=331.49
 pkgrel=1
 pkgdesc="NVIDIA drivers for linux. Packaged for Bumblebee"
 arch=('x86_64')
@@ -21,7 +21,7 @@ _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 #_pkg="NVIDIA-Linux-x86_64-${pkgver}"
 source=("ftp://download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}-no-compat32.run")
 #source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}.run")
-md5sums=('f2059ae373665cb6c8fb826e1173b04d')
+md5sums=('d0c944466a36cae8b1e23330b27a721c')
 
 build() {
     cd "${srcdir}"
