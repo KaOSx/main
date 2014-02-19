@@ -22,6 +22,7 @@ install='samba.install'
 source=("http://us1.samba.org/samba/ftp/stable/${pkgname}-${_realver}.tar.gz"
         'samba.logrotate'
         'samba.pam'
+        'samba.service'
         'smbd.service'
         'smbd.socket'
         'smbd@.service'
@@ -32,6 +33,7 @@ source=("http://us1.samba.org/samba/ftp/stable/${pkgname}-${_realver}.tar.gz"
 md5sums=('c7871012ac40b8c74afff42bbd873bd7'
          '5697da77590ec092cc8a883bae06093c'
          '96f82c38f3f540b53f3e5144900acf17'
+         'ee4763a656cf00d92bfda31b6bb2c5cb'
          '621a3c8ec9f05667c20ab4d5a04a86c9'
          'a78b9aa93eb14b0ac445897395693225'
          '70186fa43510bf99e3afd5951e814fbf'
@@ -90,14 +92,6 @@ package() {
   # fix logrotate
   sed -i -e 's|log.%m|%m.log|g' ${pkgdir}/etc/samba/smb.conf.default
   
-  # move wbclient.h so cifs-utils finds it
-  #install -D -m644 pkgconfig/wbclient.pc ${pkgdir}/usr/lib/pkgconfig/wbclient.pc
-  #install -D -m644 ../nsswitch/libwbclient/wbclient.h ${pkgdir}/usr/include/wbclient.h
-  # nsswitch libraries
-  #install -D -m755 ${srcdir}/samba-${_realver}/nsswitch/libnss_wins.so ${pkgdir}/usr/lib/libnss_wins.so
-  #ln -s libnss_wins.so ${pkgdir}/usr/lib/libnss_wins.so.2
-  #install -D -m755 ${srcdir}/samba-${_realver}/nsswitch/libnss_winbind.so ${pkgdir}/usr/lib/libnss_winbind.so
-  #ln -s libnss_winbind.so ${pkgdir}/usr/lib/libnss_winbind.so.2
   # winbind krb5 locator
   mkdir -p ${pkgdir}/usr/lib/krb5/plugins/libkrb5
   mv  ${pkgdir}/usr/lib/winbind_krb5_locator.so ${pkgdir}/usr/lib/krb5/plugins/libkrb5/
