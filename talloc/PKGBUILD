@@ -1,16 +1,15 @@
 
 pkgname=talloc
-pkgver=2.0.8
-pkgrel=2
+pkgver=2.1.0
+pkgrel=1
 pkgdesc="A hierarchical pool based memory allocator with destructors"
 arch=('x86_64')
 license=('GPL3')
 url="http://tdb.samba.org/"
-depends=('glibc')
-makedepends=('python2' 'docbook-xsl')
-optdepends=('python2: for python bindings')
+depends=('glibc' 'python2')
+makedepends=('docbook-xsl')
 source=("http://samba.org/ftp/${pkgname}/${pkgname}-${pkgver}.tar.gz")
-md5sums=('7857200b58a8617ca18fe2c91296cd93')
+md5sums=('85a69bfb5808fcadf378bd9eadb1f9c2')
 
 build() {
    cd "${srcdir}/${pkgname}-${pkgver}"
@@ -25,7 +24,6 @@ build() {
 
 package() {
    cd ${srcdir}/${pkgname}-${pkgver}
+   
    make DESTDIR=$pkgdir/ install
-   # fix permission
-   #chmod 644 $pkgdir/usr/lib/libtalloc.a
 }
