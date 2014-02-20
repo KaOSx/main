@@ -1,16 +1,16 @@
 
 pkgname=libftdi
-pkgver=1.0
+pkgver=1.1
 pkgrel=1
-pkgdesc="A library to talk to FTDI chips"
+pkgdesc="Open source library to talk to FTDI chips including the popular bitbang mode."
 arch=('x86_64')
 url="http://www.intra2net.com/en/developer/libftdi/download.php"
 license=("GPL2")
-depends=('libusbx' 'gcc-libs')
-makedepends=('boost' 'cmake')
-source=("http://www.intra2net.com/en/developer/libftdi/download/${pkgname}1-$pkgver.tar.bz2")
-md5sums=('e02dd77ee10b82b5edfbb8c199185bbf')
+depends=('libusb' 'gcc-libs' 'python3')
+makedepends=('boost' 'cmake' 'swig')
 options=('!libtool')
+source=("http://www.intra2net.com/en/developer/libftdi/download/${pkgname}1-$pkgver.tar.bz2")
+md5sums=('b79a6356978aa8e69f8eecc3a720ff79')
 
 build() {
   cd $srcdir/${pkgname}1-$pkgver
@@ -18,7 +18,11 @@ build() {
   
   mkdir build
   cd build
-  cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_SKIP_BUILD_RPATH=ON -DCMAKE_BUILD_TYPE=Release
+  cmake .. -DCMAKE_INSTALL_PREFIX=/usr \
+           -DCMAKE_SKIP_BUILD_RPATH=ON \
+           -DCMAKE_BUILD_TYPE=Release \
+           -DEXAMPLES=OFF \
+           -DFTDI_EEPROM=OFF
   make 
 }
 
