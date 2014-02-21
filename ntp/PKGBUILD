@@ -2,14 +2,13 @@
 pkgname=ntp
 pkgver=4.2.6.p5
 _realver=4.2.6p5
-pkgrel=6
+pkgrel=7
 pkgdesc="NTP (Network Time Protocol) tries to keep servers in sync"
 arch=('x86_64')
 license=('custom')
 url="http://www.ntp.org/"
-depends=('openssl' 'readline' 'libcap')
-makedepends=('perl-html-parser' 'libedit')
-optdepends=('libedit: ntpdc, ntpq')
+depends=('openssl' 'readline' 'libcap' 'libedit')
+makedepends=('perl-html-parser')
 backup=('etc/ntp.conf')
 install=install
 source=("http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-${_realver}.tar.gz"
@@ -18,7 +17,7 @@ source=("http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-${_realver}.tar.gz"
 	'ntpdate.service')
 md5sums=('00df80a84ec9528fcfb09498075525bc'
          '5d3af0062bdf0494a146850d0319499f'
-         '931559d60027e10f3bc2609f139136bb'
+         '2495d34480553dbaeab64dba42ddea64'
          'ae1605bf73a961d61294e913e9e5b168')
 
 build() {
