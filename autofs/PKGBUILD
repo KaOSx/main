@@ -1,47 +1,44 @@
-#
-# Chakra Packages for Chakra, part of chakra-project.org
-#
-# maintainer abveritas@chakra-project.org
 
 pkgname=autofs
-pkgver=5.0.7
-pkgrel=2
+pkgver=5.0.8
+pkgrel=1
 pkgdesc='A kernel-based automounter for Linux.'
 arch=('x86_64')
 url='http://freshmeat.net/projects/autofs'
 license=('GPL2')
-depends=('libldap' 'libxml2' 'krb5')
+depends=('libldap' 'libxml2' 'krb5' 'kmod')
 backup=('etc/autofs/auto.master'
-        'etc/autofs/auto.misc')
-options=(!makeflags)
-install='autofs.install'
+        'etc/autofs/auto.misc'
+        'etc/autofs/auto.net'
+        'etc/autofs/auto.smb'
+        'etc/autofs/autofs_ldap_auth.conf'
+        'etc/default/autofs')
+options=('!makeflags')
 source=("http://www.kernel.org/pub/linux/daemons/${pkgname}/v5/${pkgname}-${pkgver}.tar.bz2"
-        'autofs.conf.d'
-        'auto.master'
-        'auto.misc')
-md5sums=('bc46838dece83c02d800ff144ed9f431'
-         '47f597c870410055e0fdb66103daf928'
-         'a6cefb591e77b31b79dbb7243646c96b'
-         'd8a15ec9186c5c0b36e5cea1e2739e8a')
+        'git-fixes.patch')
+md5sums=('31fb22e2981228b80f0d9858faeae0cf'
+         '0ee40b2ed828b173120787083c5eb34c')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
+  patch -p1 -i "${srcdir}/git-fixes.patch"
 
-  sed -i "s:SUBDIRS = lib daemon modules man samples:SUBDIRS = lib daemon modules man:" \
-    Makefile.rules
+  sed -i -e 's|/etc/auto.misc|/etc/autofs/auto.misc|' \
+         -e 's|/etc/auto.master.d|/etc/autofs/auto.master.d|' samples/auto.master
 
-  ./configure --prefix=/usr --sysconfdir=/etc/autofs --with-mapdir=/etc/autofs --without-hesiod \
-    --enable-ignore-busy --with-systemd
+  ./configure --prefix=/usr \
+        --sysconfdir=/etc/autofs \
+        --with-mapdir=/etc/autofs \
+        --without-hesiod \
+        --enable-ignore-busy \
+        --with-systemd
   make
 }
 
 package() {
   cd "${srcdir}/${pkgname}-${pkgver}"
-
   make INSTALLROOT="${pkgdir}" install
-
-  install -Dm0644 "${srcdir}/auto.master" "${pkgdir}/etc/autofs/auto.master"
-  install -Dm0644 "${srcdir}/auto.misc" "${pkgdir}/etc/autofs/auto.misc"
-  install -Dm0644 "${srcdir}/autofs.conf.d" "${pkgdir}/etc/conf.d/autofs"
-  install -Dm0644 "samples/autofs.service" "${pkgdir}/usr/lib/systemd/system/autofs.service"
+  
+  rm -r "$pkgdir/run"
+  install -dm755 "${pkgdir}/etc/autofs/auto.master.d"
 }
