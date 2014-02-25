@@ -1,5 +1,5 @@
---- openjdk/jdk/make/common/shared/Defs-utils.gmk.orig	2013-05-19 20:01:25.676093296 +0000
-+++ openjdk/jdk/make/common/shared/Defs-utils.gmk	2013-05-19 20:01:54.312572109 +0000
+--- openjdk/jdk/make/common/shared/Defs-utils.gmk.orig	2014-01-28 13:02:26.000000000 -0500
++++ openjdk/jdk/make/common/shared/Defs-utils.gmk	2014-02-25 01:39:30.566189907 -0500
 @@ -98,9 +98,9 @@
  CHMOD          = $(UTILS_COMMAND_PATH)chmod
  CMP            = $(UTILS_USR_BIN_PATH)cmp
@@ -28,7 +28,15 @@
  GUNZIP         = $(UTILS_COMMAND_PATH)gunzip
  # GZIP is used for solaris. Linux and windows use tar czf
  GZIP           = $(UTILS_COMMAND_PATH)gzip
-@@ -148,7 +148,7 @@
+@@ -141,14 +141,14 @@
+ RMDIR          = $(UTILS_COMMAND_PATH)rmdir
+ RPM            = $(UTILS_COMMAND_PATH)rpm
+ RPMBUILD       = $(UTILS_COMMAND_PATH)rpmbuild
+-SED            = $(UTILS_COMMAND_PATH)sed
++SED            = $(UTILS_USR_BIN_PATH)sed
+ SH             = $(UTILS_COMMAND_PATH)sh
+ SHOWREV        = $(UTILS_USR_BIN_PATH)showrev
+ SORT           = $(UTILS_COMMAND_PATH)sort
  TAIL           = $(UTILS_USR_BIN_PATH)tail
  TAR            = $(UTILS_COMMAND_PATH)tar
  TEST           = $(UTILS_USR_BIN_PATH)test
@@ -37,4 +45,3 @@
  TR             = $(UTILS_USR_BIN_PATH)tr
  TRUE           = $(UTILS_COMMAND_PATH)true
  UNAME          = $(UTILS_COMMAND_PATH)uname
- 

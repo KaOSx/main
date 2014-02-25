@@ -1,5 +1,5 @@
---- openjdk/corba/make/common/shared/Defs-utils.gmk.orig	2013-05-19 19:57:58.530784147 +0000
-+++ openjdk/corba/make/common/shared/Defs-utils.gmk	2013-05-19 19:58:44.777147938 +0000
+--- openjdk/corba/make/common/shared/Defs-utils.gmk.orig	2014-01-23 18:19:18.000000000 -0500
++++ openjdk/corba/make/common/shared/Defs-utils.gmk	2014-02-25 01:38:58.358663344 -0500
 @@ -83,9 +83,9 @@
  CHMOD          = $(UTILS_COMMAND_PATH)chmod
  CMP            = $(UTILS_USR_BIN_PATH)cmp
@@ -12,6 +12,15 @@
  CUT            = $(UTILS_USR_BIN_PATH)cut
  DATE           = $(UTILS_COMMAND_PATH)date
  DF             = $(UTILS_COMMAND_PATH)df
+@@ -123,7 +123,7 @@
+ RMDIR          = $(UTILS_COMMAND_PATH)rmdir
+ RPM            = $(UTILS_COMMAND_PATH)rpm
+ RPMBUILD       = $(UTILS_COMMAND_PATH)rpmbuild
+-SED            = $(UTILS_COMMAND_PATH)sed
++SED            = $(UTILS_USR_BIN_PATH)sed
+ SH             = $(UTILS_COMMAND_PATH)sh
+ SHOWREV        = $(UTILS_USR_BIN_PATH)showrev
+ SORT           = $(UTILS_COMMAND_PATH)sort
 @@ -131,7 +131,7 @@
  TAIL           = $(UTILS_USR_BIN_PATH)tail
  TAR            = $(UTILS_COMMAND_PATH)tar
@@ -30,4 +39,3 @@
    # Intrinsic unix command, with backslash-escaped character interpretation
    ECHO           = /bin/echo -e
    # These are really in UTILS_USR_BIN_PATH on Linux (only sccs is not)
-   
