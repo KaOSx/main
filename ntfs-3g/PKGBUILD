@@ -1,8 +1,8 @@
 
 pkgname=ntfs-3g
 _realname=ntfs-3g_ntfsprogs
-pkgver=2013.1.13
-pkgrel=2
+pkgver=2014.2.15
+pkgrel=1
 pkgdesc="Stable read and write NTFS driver"
 url="http://www.tuxera.com/community/ntfs-3g-download/"
 arch=('x86_64')
@@ -12,29 +12,26 @@ makedepends=('pkgconfig')
 options=('!libtool')
 conflicts=('ntfsprogs')
 provides=("ntfsprogs=${pkgver}")
-source=("http://www.tuxera.com/opensource/${_realname}-${pkgver}.tgz"
-        'ntfsdecrypt.c.patch')
-md5sums=('2d6fb47ddf62b51733227126fe9227fe'
-         'a6722e468b364bf4ff0c2d0c39443c9e')
+source=("http://www.tuxera.com/opensource/${_realname}-${pkgver}.tgz")
+md5sums=('f11d563816249d730a00498983485f3a')
 
 build() {
   cd "${srcdir}/${_realname}-${pkgver}"
-  patch -p0 -i "${srcdir}/ntfsdecrypt.c.patch"
   
   ./configure --prefix=/usr \
-    --with-fuse=external --disable-static \
-    --enable-posix-acls --disable-ldconfig \
-    --mandir=/usr/share/man
+       --with-fuse=external \
+       --disable-static \
+       --enable-posix-acls \
+       --enable-extras \
+       --disable-ldconfig \
+       --mandir=/usr/share/man
   make
 }
 
 package() {
   cd "${srcdir}/${_realname}-${pkgver}"
-  make DESTDIR="${pkgdir}" install
+  make DESTDIR="${pkgdir}" rootlibdir=/usr/lib install
   
   ln -s /bin/ntfs-3g "${pkgdir}/sbin/mount.ntfs"
-
-  mv "$pkgdir"/lib/* "$pkgdir"/usr/lib/
-  rm -rf "$pkgdir"/lib 
 }
 

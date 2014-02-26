@@ -1,0 +1,36 @@
+
+pkgname=tlp
+pkgver=0.4.1
+pkgrel=1
+pkgdesc='Linux Advanced Power Management'
+arch=('x86_64')
+url='http://linrunner.de/en/tlp/docs/tlp-linux-advanced-power-management.html'
+license=('GPL2')
+depends=('bash' 'hdparm' 'perl' 'rfkill' 'wireless_tools' 'networkmanager' 'smartmontools' 'iw' 'tp_smapi')
+conflicts=('pm-utils')
+backup=('etc/default/tlp')
+source=("https://github.com/linrunner/TLP/archive/${pkgver}.tar.gz"
+        'path.patch')
+md5sums=('43cb7a875e4237cbb1392294585ccc4f'
+         '364b2d126ad0affd7e426de191f519dd')
+
+prepare() {
+    cd TLP-${pkgver}
+
+    patch -p1 -i ${srcdir}/path.patch
+}
+
+package() {
+    cd TLP-${pkgver}
+    make DESTDIR="${pkgdir}" install
+
+
+    install -dm 755 "${pkgdir}"/usr/lib/systemd/system
+    install -m 644 tlp.service "${pkgdir}"/usr/lib/systemd/system/
+    install -m 644 tlp-sleep.service "${pkgdir}"/usr/lib/systemd/system/
+
+    install -dm 755 "${pkgdir}"/usr/share/man/man{1,8}
+    install -m 644 man/*.1 "${pkgdir}"/usr/share/man/man1/
+    install -m 644 man/*.8 "${pkgdir}"/usr/share/man/man8/
+}
+
