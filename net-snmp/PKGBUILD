@@ -1,25 +1,26 @@
 
 pkgname=net-snmp
-pkgver=5.7.2
-pkgrel=4
+pkgver=5.7.2.1
+pkgrel=1
 pkgdesc="A suite of applications used to implement SNMP v1, SNMP v2c and SNMP v3 using both IPv4 and IPv6"
 arch=('x86_64')
 url="http://www.net-snmp.org/"
 license=('BSD')
 depends=('openssl' 'libnl' 'pciutils')
-makedepends=('python2-distribute')
+makedepends=('python2-setuptools')
 optdepends=('python2: for the python modules')
 provides=('ucd-snmp')
 options=('!libtool' '!makeflags' '!emptydirs')
 source=("http://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}-${pkgver}.tar.gz"
         'snmpd.service'
         'libnl32.patch')
-md5sums=('5bddd02e2f82b62daa79f82717737a14'
+md5sums=('d27d2c0f460aae9a876e4baa49ce760d'
          '7afa48020f37e4de2b3b8cdf4d7b0e42'
          '66b5d6e61b80cc19766dd65a9949af28')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
+  make PERL_ARCHLIB=/usr/lib/perl5/core_perl PERL_INC=/usr/lib/perl5/core_perl/CORE distclean
 
   # http://sourceforge.net/tracker/index.php?func=detail&aid=3250304&group_id=12694&atid=112694
   patch -p1 -i "$srcdir/libnl32.patch"
@@ -46,9 +47,6 @@ package() {
   sed -i -e "s:install --basedir=\$\$dir:install --basedir=\$\$dir --root=${pkgdir}:" Makefile
   make DESTDIR="${pkgdir}" INSTALL_PREFIX="${pkgdir}" INSTALLDIRS=vendor install
   
-  # install service files
   install -Dm0644 "${srcdir}/snmpd.service" "${pkgdir}/usr/lib/systemd/system/snmpd.service"
-  
-  # install license
   install -Dm0644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
 }
