@@ -20,7 +20,7 @@ pkgname=('php'
          'php-tidy'
          'php-xsl')
 pkgver=5.4.25
-pkgrel=2
+pkgrel=3
 arch=('x86_64')
 license=('PHP')
 url='http://www.php.net'
@@ -50,6 +50,7 @@ prepare() {
 	patch -p0 -i ${srcdir}/php-fpm.conf.in.patch
 	
 	sed 's#/include/freetype2/freetype/freetype.h#/include/freetype2/freetype.h#g' -i configure
+	sed '/APACHE_THREADED_MPM=/d' -i sapi/apache2handler/config.m4 -i configure
 }
 
 build() {

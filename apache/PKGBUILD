@@ -1,30 +1,26 @@
 
 pkgname=apache
 pkgver=2.4.7
-pkgrel=1
+pkgrel=2
 pkgdesc='A high performance Unix-based HTTP server'
 arch=('x86_64')
 options=('!libtool')
 url='http://www.apache.org/dist/httpd'
 license=('Apache')
-backup=(etc/conf.d/apache etc/httpd/conf/httpd.conf
+backup=(etc/httpd/conf/httpd.conf
         etc/httpd/conf/extra/httpd-{autoindex,dav,default,info,languages}.conf
         etc/httpd/conf/extra/httpd-{manual,mpm,multilang-errordoc}.conf
         etc/httpd/conf/extra/httpd-{ssl,userdir,vhosts}.conf
         etc/logrotate.d/httpd)
-depends=('openssl' 'zlib' 'apr-util' 'pcre' 'systemd>=189')
+depends=('openssl' 'zlib' 'apr-util' 'pcre' 'systemd')
 makedepends=('apr')
 install=${pkgname}.install
 source=("http://www.apache.org/dist/httpd/httpd-${pkgver}.tar.bz2"
-        #"http://mpm-itk.sesse.net/apache2.4-mpm-itk-2.4.2-01.patch"
-        'apache.conf.d'
         'httpd.logrotate'
         'kaos.layout'
         'httpd.service'
         'httpd-tmpfile.conf')
 md5sums=('170d7fb6fe5f28b87d1878020a9ab94e'
-         #'7b5fb06ba65d80d40f19e32f95426486'
-         '08b3c875f6260644f2f52b4056d656b0'
          '13dbaaf949c5bc36cfcf5718b95cb020'
          '94c90f856b77707792848e289ce5a0c6'
          'ed219c8228d4d5ae9b7a55107cf79706'
@@ -87,27 +83,17 @@ build() {
 
 package() {
   cd "${srcdir}/httpd-${pkgver}"
+  make DESTDIR="${pkgdir}" install
 
-  #for mpm in prefork worker itk; do
-   # pushd "build-${mpm}" >/dev/null
-
-    #if [ "${mpm}" = 'prefork' ]; then
-      make DESTDIR="${pkgdir}" install
-    #else
-      install -m755 httpd "${pkgdir}/usr/sbin/httpd.${mpm}"
-    #fi
-
-    #popd >/dev/null
-  #done
-
-  install -D -m644 "${srcdir}/httpd.logrotate" "${pkgdir}/etc/logrotate.d/httpd" 
-  install -D -m644 "${srcdir}/apache.conf.d" "${pkgdir}/etc/conf.d/apache" 
+  install -D -m644 "${srcdir}/httpd.logrotate" "${pkgdir}/etc/logrotate.d/httpd"  
 
   # systemd
   install -D -m644 "${srcdir}/httpd-tmpfile.conf" "${pkgdir}/usr/lib/tmpfiles.d/httpd.conf"
 
   install -d "${pkgdir}"/usr/lib/systemd/system
   install -D -m644 "${srcdir}/httpd.service" "${pkgdir}/usr/lib/systemd/system/"
+  
+  install -D -m644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
 
   # symlinks for /etc/httpd
   ln -fs /var/log/httpd "${pkgdir}/etc/httpd/logs"
