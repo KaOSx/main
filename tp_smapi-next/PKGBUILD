@@ -2,14 +2,14 @@
 pkgname=tp_smapi-next
 _pkgname=tp_smapi
 pkgver=0.41
-pkgrel=1
-_extramodules=/lib/modules/extramodules-3.13-next
+pkgrel=2
+_extramodules=/lib/modules/extramodules-3.14-rc5-next
 pkgdesc="Modules for ThinkPad's SMAPI functionality"
 arch=('x86_64')
 url='https://github.com/evgeni/tp_smapi'
 license=('GPL')
-depends=('linux-next>=3.13' 'linux-next<3.14')
-makedepends=('linux-next-headers>=3.13-next' 'linux-next-headers<3.14-next')
+depends=('linux-next>=3.14rc5' 'linux-next<3.15')
+makedepends=('linux-next-headers>=3.14rc5-next' 'linux-next-headers<3.15-next')
 install="${pkgname}.install"
 source=("https://github.com/downloads/evgeni/${_pkgname}/${_pkgname}-${pkgver}.tar.gz")
 md5sums=('63c683415c764568f6bf17c7eabe4752')
