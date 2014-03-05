@@ -1,19 +1,19 @@
 
 pkgbase=mesa
 pkgname=('mesa' 'libgl')
-pkgver=10.1.0rc3
-_pkgver=10.1.0-rc3
+pkgver=10.1.0
+_pkgver=10.1.0
 pkgrel=1
 arch=('x86_64')
-makedepends=('glproto>=1.4.14' 'libdrm>=2.4.44' 'libxxf86vm>=1.1.1' 'libxdamage>=1.1.3' 'expat>=2.0.1' 'llvm'
-             'libx11>=1.4.3' 'libxt>=1.1.1' 'gcc-libs' 'dri2proto>=2.6' 'python2' 'libxml2' 'imake' 'systemd'
-             'libvdpau' 'wayland-git' 'dri3proto' 'presentproto' 'libxshmfence')
+makedepends=('glproto' 'libdrm' 'libxxf86vm' 'libxdamage' 'expat' 'llvm' 'libx11' 'libxt' 'gcc-libs'
+             'dri2proto' 'python2' 'libxml2' 'imake' 'systemd' 'libvdpau' 'wayland-git' 'dri3proto'
+             'presentproto' 'libxshmfence' 'elfutils')
 url="http://mesa3d.sourceforge.net"
 license=('custom')
 source=(${source[@]} "ftp://ftp.freedesktop.org/pub/mesa/10.1/MesaLib-${_pkgver}.tar.bz2" 
 #source=("mesa::git://anongit.freedesktop.org/mesa/mesa#branch=master"
        'LICENSE')
-md5sums=('7bf41555b6c2387934754e379473f3e3'
+md5sums=('3ec43f79dbcd9aa2a4a27bf1f51655b6'
          '5c65a0fe315dd347e09b1f2826a1df5a')
 
 build() {
@@ -40,7 +40,7 @@ build() {
     --enable-texture-float \
     --enable-xa \
     --enable-vdpau \
-    --disable-dri3
+    --enable-dri3
     
   make
 }
@@ -63,8 +63,8 @@ package_libgl() {
 }
 
 package_mesa() {
-  depends=('libx11' 'libxt' 'gcc-libs' 'dri2proto' 'glproto' 'wayland-git'
-           'libdrm>=2.4.44' 'libxxf86vm>=1.1.1' 'libxdamage>=1.1.3' 'expat>=2.0.1') #dri2proto + glproto needed for gl.pc
+  depends=('libx11' 'libxt' 'gcc-libs' 'libvdpau' 'dri2proto' 'glproto' 'wayland-git' 'elfutils'
+           'libdrm' 'libxxf86vm' 'libxdamage' 'expat' 'libxshmfence') 
   optdepends=('opengl-man-pages: for the OpenGL API man pages')
   pkgdesc="Mesa 3-D graphics libraries and include files"
   provides=('libglapi''libgles' 'libegl' 'khrplatform-devel' 'ati-dri' 'intel-dri' 'svga-dri' 'nouveau-dri')
