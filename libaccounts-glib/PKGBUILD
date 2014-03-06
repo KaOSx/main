@@ -1,0 +1,29 @@
+
+pkgname=libaccounts-glib
+pkgver=1.16
+pkgrel=1
+pkgdesc="Glib-based client library for accessing the online accounts database"
+arch=('x86_64')
+url="http://code.google.com/p/accounts-sso/"
+license=('LGPL')
+depends=('dbus-glib' 'libxml2' 'sqlite')
+makedepends=('python2-gobject' 'docbook-xsl')
+options=('!libtool')
+source=("http://accounts-sso.googlecode.com/files/$pkgname-$pkgver.tar.gz")
+md5sums=('9cdb46354885a8973bccd05090360361')
+
+build() {
+  cd $pkgname-$pkgver
+  
+  HAVE_GCOV_FALSE='#' ./configure \
+    --prefix=/usr \
+    --disable-static \
+    --disable-gtk-doc
+  make
+}
+
+package() {
+  cd $pkgname-$pkgver
+  
+  make DESTDIR="$pkgdir" install
+}
