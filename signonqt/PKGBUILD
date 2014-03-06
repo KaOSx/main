@@ -1,15 +1,15 @@
 
 pkgbase=signon
-pkgname=('signon' 'signon-doc')
-pkgver=8.55
+pkgname=('signonqt' 'signonqt-doc')
+pkgver=8.56
 pkgrel=1
 arch=('x86_64')
 url="http://code.google.com/p/accounts-sso/"
 license=('LGPL')
 makedepends=('qt' 'libproxy' 'doxygen' 'ttf-dejavu')
 options=('!emptydirs')
-source=("http://accounts-sso.googlecode.com/files/$pkgbase-$pkgver.tar.bz2")
-md5sums=('4e6092c2981d55442200cbd9263d49d2')
+source=("http://accounts-sso.googlecode.com/files/signon-$pkgver.tar.bz2")
+md5sums=('85ac10ab581d84ec2344a42349bc693b')
 
 build() {
   cd $pkgbase-$pkgver
@@ -18,7 +18,7 @@ build() {
   make
 }
 
-package_signon() {
+package_signonqt() {
   pkgdesc="Framework to provide credential storage and authentication service"
   depends=('qt' 'libproxy')
   backup=('etc/signond.conf')
@@ -29,7 +29,7 @@ package_signon() {
   mv "$pkgdir/usr/share/doc" "$srcdir"
 }
 
-package_signon-doc() {
+package_signonqt-doc() {
   pkgdesc="Developer documention of signon"
 
   mkdir -p "$pkgdir/usr/share"
