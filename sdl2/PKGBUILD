@@ -1,15 +1,15 @@
 
 pkgname=sdl2
-pkgver=2.0.1
+pkgver=2.0.2
 pkgrel=1
 pkgdesc="Library for portable low-level access to a video framebuffer, audio output, mouse, and keyboard (Version 2)"
 arch=('x86_64')
 url="http://www.libsdl.org"
 license=('MIT')
-depends=('glibc' 'libxext' 'libxrender' 'libx11' 'libgl' 'pulseaudio' 'alsa-lib')
-makedepends=( 'mesa' 'libxrandr' 'libxinerama')
+depends=('glibc' 'libxcursor' 'libxext' 'libxrender' 'libx11' 'libgl' 'pulseaudio' 'alsa-lib')
+makedepends=('mesa' 'libxrandr' 'libxinerama')
 source=("http://www.libsdl.org/release/SDL2-${pkgver}.tar.gz")
-md5sums=('0eb97039488bf463e775295f7b18b227')
+md5sums=('e8070e8b6335def073a80cee78f3a7f0')
 
 prepare() {
   mkdir build
