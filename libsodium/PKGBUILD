@@ -1,0 +1,33 @@
+
+pkgname=libsodium
+pkgver=0.4.5
+pkgrel=1
+pkgdesc="Sodium is a portable, cross-compilable, installable, fork of NaCl with a compatible API."
+arch=('x86_64')
+url="https://github.com/jedisct1/libsodium"
+license=('custom:ISC')
+depends=('glibc')
+options=('!libtool')
+source=("http://download.dnscrypt.org/$pkgname/releases/$pkgname-${pkgver}.tar.gz")
+md5sums=('3a97d2c29ec0133e334036e3f19d0741')
+
+build() {
+  cd "$pkgname-$pkgver"
+
+  ./configure --prefix=/usr
+  make
+}
+
+check() {
+  cd "$pkgname-$pkgver"
+
+  make check
+}
+
+package() {
+  cd "$pkgname-$pkgver"
+  make DESTDIR="$pkgdir" install
+
+  install -d -m 755 "$pkgdir/usr/share/licenses/$pkgname"
+  install -m 644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}
