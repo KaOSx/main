@@ -1,7 +1,7 @@
 
 pkgname=mjpegtools
-pkgver=2.0.0
-pkgrel=7
+pkgver=2.1.0
+pkgrel=1
 pkgdesc="Set of tools that can do recording of videos and playback, simple cut-and-paste editing and the MPEG compression of audio and video"
 arch=('x86_64')
 license=('GPL')
@@ -9,17 +9,13 @@ url="http://mjpeg.sourceforge.net/"
 depends=('libjpeg-turbo' 'libpng>=1.5.0' 'sdl' 'gcc-libs' 'libdv')
 makedeends=('v4l-utils')
 options=('!makeflags' '!libtool')
-source=("http://downloads.sourceforge.net/sourceforge/mjpeg/${pkgname}-${pkgver}.tar.gz"
-        "mjpegtools-v41-2.6.38.patch")
-md5sums=('903e1e3b967eebcc5fe5626d7517dc46'
-         '529dc1735c4f1e5b7b61c8e61c716811')
+source=("http://downloads.sourceforge.net/sourceforge/mjpeg/${pkgname}-${pkgver}.tar.gz")
+md5sums=('57bf5dd78976ca9bac972a6511b236f3')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
-  patch -p0 -i "${srcdir}/mjpegtools-v41-2.6.38.patch"
-  
+  cd "${srcdir}/${pkgname}-${pkgver}" 
   sed -i -e '/ARCHFLAGS=/s:=.*:=:' configure
-  sed -i -e '2199s/DeleteRegion (a_pRegion);/this->DeleteRegion (a_pRegion);/' y4mdenoise/MotionSearcher.hh
+    
   ./configure --prefix=/usr --enable-largefile
   make
 }
