@@ -1,0 +1,36 @@
+
+pkgname=glib-networking
+pkgver=2.38.2
+pkgrel=1
+pkgdesc="Network-related giomodules for glib"
+arch=('x86_64')
+url="http://www.gtk.org/"
+license=('GPL2')
+depends=('glib2' 'libproxy' 'gnutls' 'ca-certificates')
+makedepends=('intltool')
+install=glib-networking.install
+source=("http://download.gnome.org/sources/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.xz")
+md5sums=('99293f58a8256214b2b9b331afeb1aee')
+
+build() {
+  cd $pkgname-$pkgver
+  ./configure --prefix=/usr \
+        --sysconfdir=/etc \
+        --libexecdir=/usr/lib/$pkgname \
+        --disable-static \
+        --disable-installed-tests
+  make
+}
+
+check() {
+  cd $pkgname-$pkgver
+  
+  make -k check
+}
+
+package() {
+  cd $pkgname-$pkgver
+  
+  make DESTDIR="$pkgdir" install testfiles_DATA=
+}
+
