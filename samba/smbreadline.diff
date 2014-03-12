@@ -1,0 +1,11 @@
+--- libcli/smbreadline/smbreadline.c.orig	2013-06-13 05:21:02.000000000 -0400
++++ libcli/smbreadline/smbreadline.c	2014-03-12 17:39:34.687800790 -0400
+@@ -141,7 +141,7 @@
+ 
+ #if HAVE_DECL_RL_EVENT_HOOK
+ 	if (callback)
+-		rl_event_hook = (Function *)callback;
++		rl_event_hook = (rl_command_func_t *)callback;
+ #endif
+ 	ret = readline(prompt);
+ 	if (ret && *ret)
