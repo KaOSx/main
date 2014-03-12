@@ -1,7 +1,7 @@
 
 pkgname=udisks
-pkgver=1.0.4
-pkgrel=9
+pkgver=1.0.5
+pkgrel=2
 pkgdesc="Disk Management Service"
 arch=('x86_64')
 url="http://www.freedesktop.org/wiki/Software/udisks"
@@ -10,13 +10,11 @@ depends=('systemd' 'sg3_utils' 'glib2' 'dbus-glib' 'polkit' 'parted' 'device-map
          'libatasmart' 'lsof' 'lvm2' 'util-linux')
 makedepends=('intltool' 'docbook-xsl')
 options=(!libtool)
-install=udisks.install
+#install=udisks.install
 replaces=('devicekit-disks')
 source=("http://hal.freedesktop.org/releases/${pkgname}-${pkgver}.tar.gz"
-	'udisks.service'
 	'drop-pci-db.patch')
-md5sums=('86c63b2b5484f2060499a052b5b6256b'
-         '5d80832b4d4da72beeb45c15b63a1481'
+md5sums=('70d48dcfe523a74cd7c7fbbc2847fcdd'
          '2746c65d0d12fcc6a550b5a8d9085ab2')
 
 build() {
@@ -44,9 +42,4 @@ package() {
   
   #fix ntfs mounts
   sed -i -e 's|<allow_active>auth_admin_keep</allow_active>|<allow_active>yes</allow_active>|' ${pkgdir}/usr/share/polkit-1/actions/org.freedesktop.udisks.policy
-
-  # install systemd units
-  install -Dm644 "${srcdir}/udisks.service" "${pkgdir}/usr/lib/systemd/system/udisks.service"
-  echo "SystemdService=udisks.service" \
-    >> "$pkgdir/usr/share/dbus-1/system-services/org.freedesktop.UDisks.service"
 }
