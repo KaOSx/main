@@ -2,16 +2,16 @@
 pkgbase=nvidia-304xx-utils
 pkgname=('nvidia-304xx-utils' 'nvidia-304xx-settings')
 # Edit hardware-detection/hooks/hwdetect_7_graphics on version jump from 3xx.xx
-pkgver=304.64
+pkgver=304.121
 pkgrel=1
 arch=('x86_64')
 url="http://www.nvidia.com/"
 license=('custom')
 options=('!strip')
 _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
-md5sums=('76007ed4b72afd334e26377b646f5f7e')
+md5sums=('41e6d2b6325e5b0ae9889cfbd6bec696')
 
-source=("ftp://download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
+source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
         'nvidia-restore-settings.desktop')
 md5sums=("${md5sums[@]}"
          '9237516792da7b6df32f8c7e8a98f475')

@@ -1,16 +1,22 @@
 
-_extramodules=extramodules-3.13
+_extramodules=extramodules-3.2-lts
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
-pkgname=('nvidia-304xx' 'khd-nvidia-304xx')
+pkgname=nvidia-304xx-lts
 pkgver=304.121
 pkgrel=1
 arch=('x86_64')
+pkgdesc="NVIDIA drivers for linux."
 url="http://www.nvidia.com/"
-makedepends=('linux-headers' 'linux>=3.13' 'linux<3.14' "nvidia-304xx-utils=${pkgver}")
 license=('custom')
-source=("https://raw.github.com/KaOSx/hardware-detection/master/hwdb/nvidia_supported")
-md5sums=('62d0cdb856cfae64753c0f3acf729d47')
+install=nvidia.install
+depends=('linux-lts>=3.2' 'linux-lts<3.3' "nvidia-304xx-utils=${pkgver}")
+makedepends=('linux-lts-headers' "nvidia-304xx-utils=${pkgver}")
+conflicts=('nvidia')
+source=('uapi-3.7.patch'
+        'conftest_new.diff')
+md5sums=('42f2ad1cf9b48b1da8ed82200a045a8a'
+         'd33b6506540aa3c52272b6b655d52647')
 
 _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 source+=("ftp://download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run")
@@ -25,12 +31,7 @@ build() {
     make SYSSRC=/lib/modules/"${_kver}/build" module
 }
 
-package_nvidia-304xx() {
-    pkgdesc="NVIDIA drivers for linux."
-    depends=('linux>=3.13' 'linux<3.14' "nvidia-304xx-utils=${pkgver}")
-    conflicts=('nvidia')
-    install=nvidia.install
-    
+package () {
     install -D -m644 "${srcdir}/${_pkg}/kernel/nvidia.ko" \
         "${pkgdir}/lib/modules/${_extramodules}/nvidia.ko"
     install -d -m755 "${pkgdir}/etc/modprobe.d"
@@ -39,13 +40,3 @@ package_nvidia-304xx() {
     gzip "${pkgdir}/lib/modules/${_extramodules}/nvidia.ko"
 }
 
-package_khd-nvidia-304xx() {
-    pkgdesc="KHD ids for nvidia $pkgver"
-    arch=('x86_64')
-
-    cd "${srcdir}/${_pkg}"
-
-    install -dm755 "${pkgdir}/opt/kdeos/hwdb"
-    sh -e "${srcdir}/nvidia_supported" README.txt kernel/nv-kernel.o \
-        > "${pkgdir}/opt/kdeos/hwdb/hw_nvidia304xx_hwdb"
-}
