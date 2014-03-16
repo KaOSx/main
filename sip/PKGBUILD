@@ -1,6 +1,6 @@
 
 pkgname=sip
-pkgver=4.15.4.1
+pkgver=4.15.5
 _pkgver=4.15.5
 _snapshot=0b19f77489ce
 pkgrel=1
@@ -9,21 +9,21 @@ arch=('x86_64')
 url="http://www.riverbankcomputing.com/software/sip/"
 license=('custom:"sip"')
 depends=('python2' 'gcc-libs')
-#source=("http://sourceforge.net/projects/pyqt/files/sip/sip-${pkgver}/${pkgname}-${pkgver}.tar.gz")
-source=("http://www.riverbankcomputing.com/static/Downloads/sip4/sip-4.15.5-snapshot-$_snapshot.tar.gz")
-md5sums=('a211bd5fcccb4feff6ff9aa10ee9b5f4')
+source=("http://sourceforge.net/projects/pyqt/files/sip/sip-${pkgver}/${pkgname}-${pkgver}.tar.gz")
+#source=("http://www.riverbankcomputing.com/static/Downloads/sip4/sip-4.15.5-snapshot-$_snapshot.tar.gz")
+md5sums=('4c95447c7b0391b7f183cf9f92ae9bc6')
 
 build() {
-  #cd ${srcdir}/${pkgname}-${pkgver}
-  cd ${srcdir}/${pkgname}-4.15.5-snapshot-$_snapshot 
+  cd ${srcdir}/${pkgname}-${pkgver}
+  #cd ${srcdir}/${pkgname}-4.15.5-snapshot-$_snapshot 
 
   python2 configure.py
   make
 }
 
 package() {
-  #cd ${srcdir}/${pkgname}-${pkgver}
-  cd ${srcdir}/${pkgname}-4.15.5-snapshot-$_snapshot
+  cd ${srcdir}/${pkgname}-${pkgver}
+  #cd ${srcdir}/${pkgname}-4.15.5-snapshot-$_snapshot
 
   make DESTDIR=${pkgdir} install 
   install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
