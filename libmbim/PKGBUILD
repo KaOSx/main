@@ -1,6 +1,6 @@
 
 pkgname=libmbim
-pkgver=1.4.0
+pkgver=1.8.0
 pkgrel=1
 pkgdesc="Glib-based library for talking to WWAN modems and devices which speak the Mobile Interface Broadband Model"
 arch=('x86_64')
@@ -10,15 +10,18 @@ depends=('glib2' 'bash' 'systemd')
 makedepends=('python2')
 options=('!libtool')
 source=("http://www.freedesktop.org/software/$pkgname/$pkgname-$pkgver.tar.xz")
-md5sums=('b22fa35ce90a43330a8b4ec7cfb4dc6a')
+md5sums=('530826b6f5129b997d9f107892afc200')
 
 build() {
   cd $pkgname-$pkgver
 
   ./configure --prefix=/usr \
         --sysconfdir=/etc \
+        --libexecdir=/usr/lib \
         --localstatedir=/var \
-        --disable-static
+        --disable-static \
+        --with-tests 
+        
   make
 }
 

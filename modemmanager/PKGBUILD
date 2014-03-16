@@ -2,11 +2,11 @@
 pkgname=modemmanager
 _realname=ModemManager
 pkgver=1.2.0
-pkgrel=3
+pkgrel=4
 pkgdesc="Mobile broadband modem management service"
 arch=('x86_64')
 url="http://www.freedesktop.org/wiki/Software/ModemManager/"
-license=('GPL2')
+license=('GPL2' 'LGPL2.1')
 depends=('dbus-glib' 'systemd' 'ppp' 'polkit' 'hicolor-icon-theme' 'libqmi' 'libmbim')
 makedepends=('intltool' 'python2')
 optdepends=('usb_modeswitch: install if your modem shows up as a storage drive')
@@ -24,8 +24,8 @@ build() {
 	--with-udev-base-dir=/usr/lib/udev \
 	--disable-static \
 	--disable-gtk-doc \
-	--with-polkit=strict #default, permissive better?
-	#--with-newest-qmi-commands **not clear what the needed deps are to enable
+	--with-polkit=strict \
+	--with-newest-qmi-commands  #not clear what the needed deps are to enable
   make
 }
 
