@@ -1,7 +1,7 @@
 
 pkgname=xf86-video-intel
 pkgver=2.99.911
-pkgrel=1
+pkgrel=2
 pkgdesc="X.org Intel i810/i830/i915/945G/G965+ video drivers"
 arch=('x86_64')
 url="http://xorg.freedesktop.org"
@@ -19,6 +19,7 @@ build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
 
   ./configure --prefix=/usr \
+              --libexecdir=/usr/lib \
               --enable-dri \
               --enable-glamor \
               --enable-sna \
