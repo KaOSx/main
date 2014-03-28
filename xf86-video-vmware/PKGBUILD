@@ -1,7 +1,7 @@
 
 pkgname=xf86-video-vmware
-pkgver=13.0.1
-pkgrel=3
+pkgver=13.0.2
+pkgrel=1
 pkgdesc="X.org vmware video driver"
 arch=('x86_64')
 url="http://xorg.freedesktop.org/"
@@ -10,14 +10,11 @@ depends=('libdrm' 'mesa' 'llvm')
 makedepends=('xorg-server' 'resourceproto' 'scrnsaverproto')
 groups=('xorg-video-drivers')
 options=('!libtool' '!emptydirs')
-source=("${url}/releases/individual/driver/${pkgname}-${pkgver}.tar.bz2"
-        'mesa10.patch')
-md5sums=('b08e0195ebf3f88a82129322cb93da08'
-         'db4763717d4f5286d6a7661feadcb2ed')
+source=("${url}/releases/individual/driver/${pkgname}-${pkgver}.tar.bz2")
+md5sums=('91d1d7d33181766714405ab013d31244')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
-  patch -p1 -i "${srcdir}"/mesa10.patch
 
   ./configure --prefix=/usr --enable-vmwarectrl-client
   make
