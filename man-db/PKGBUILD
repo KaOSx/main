@@ -1,22 +1,23 @@
 
 pkgname=man-db
 pkgver=2.6.6
-pkgrel=1
+pkgrel=2
 pkgdesc="A utility for reading man pages"
 arch=('x86_64')
 url="http://www.nongnu.org/man-db/"
 license=('GPL' 'LGPL')
 depends=( 'bash' 'gdbm' 'zlib' 'groff' 'less' 'libpipeline')
 optdepends=('gzip')
-backup=('etc/man_db.conf'
-	'etc/cron.daily/man-db')
+backup=('etc/man_db.conf')
 install=${pkgname}.install
 source=("http://savannah.nongnu.org/download/man-db/$pkgname-$pkgver.tar.xz"
         'convert-mans'
-        'man-db.cron.daily')
+        'man-db.service'
+        'man-db.timer')
 md5sums=('5d65d66191080c144437a6c854e17868'
          '2b7662a7d5b33fe91f9f3e034361a2f6'
-         'd30c39ae47560304471b5461719e0f03')
+         '36fb3f616e42a0e23cf7a4d284e640cd'
+         'df6d4f432e3e16c255c785fca1447346')
                         
 build() {
   cd ${srcdir}/${pkgname}-${pkgver}
@@ -48,7 +49,10 @@ package() {
   # http://www.linuxfromscratch.org/lfs/view/6.4/chapter06/man-db.html
   install -D -m755 ${srcdir}/convert-mans  ${pkgdir}/usr/bin/convert-mans 
 
-  #install whatis cron script
-  install -D -m744 ${srcdir}/man-db.cron.daily ${pkgdir}/etc/cron.daily/man-db
+  # install man-db scheduler
+  install -D -m644 ${srcdir}/man-db.timer ${pkgdir}/usr/lib/systemd/system/man-db.timer
+  install -D -m644 ${srcdir}/man-db.service ${pkgdir}/usr/lib/systemd/system/man-db.service
+  install -d -m755 ${pkgdir}/usr/lib/systemd/system/multi-user.target.wants
+  ln -s ../man-db.timer ${pkgdir}//usr/lib/systemd/system/multi-user.target.wants/man-db.timer
 }
 
