@@ -21,15 +21,13 @@ build() {
      cd build
      cmake ../libindi-$_pkgver \
 	-DCMAKE_BUILD_TYPE=Release \
-	-DCMAKE_INSTALL_PREFIX=/usr 
+	-DCMAKE_INSTALL_PREFIX=/usr \
+	-DUDEVRULES_INSTALL_DIR=/usr/lib/udev/rules.d
      make
 }
 
 package() {
      cd $srcdir/build 
+     
      make DESTDIR=$pkgdir install
-
-     install -d "${pkgdir}"/usr/lib/udev/rules.d
-     mv "${pkgdir}"/lib/udev/rules.d/99-gpusb.rules "${pkgdir}"/usr/lib/udev/rules.d/
-     rmdir "${pkgdir}"/lib/udev/rules.d "${pkgdir}"/lib/udev "${pkgdir}"/lib
 }

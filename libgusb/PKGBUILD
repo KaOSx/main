@@ -1,25 +1,27 @@
 
 pkgname=libgusb
-pkgver=0.1.4
+pkgver=0.1.6
 pkgrel=1
 pkgdesc="GLib wrapper around libusb1"
 arch=('x86_64')
 url="https://gitorious.org/gusb/"
 license=('LGPL2.1')
-depends=('systemd' 'libusbx')
+depends=('systemd' 'libusb')
 makedepends=('gobject-introspection')
 source=("http://people.freedesktop.org/~hughsient/releases/$pkgname-$pkgver.tar.xz")
 options=('!libtool')
-md5sums=('e45c8eab3d95264817f4c9a28a608b93')
+md5sums=('672058e7a49a38259ab6ea01470c2fa2')
 
 build() {
   cd "$srcdir/$pkgname-$pkgver"
+  
   ./configure --prefix=/usr --disable-static
   make
 }
 
 package() {
   cd "$srcdir/$pkgname-$pkgver"
+  
   make DESTDIR="$pkgdir" install
 }
 

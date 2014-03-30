@@ -1,19 +1,19 @@
 
 pkgname=gutenprint
 pkgver=5.2.9
-pkgrel=2
+pkgrel=3
 pkgdesc="Top quality printer drivers for POSIX systems."
 arch=('x86_64')
+url="http://gimp-print.sourceforge.net/"
 license=('GPL')
 install=gutenprint.install
 depends=('glibc') 
-makedepends=('cups>=1.4.2' 'foomatic-db-engine' 'ghostscript>=8.71')
+makedepends=('cups' 'foomatic-db-engine' 'ghostscript')
 optdepends=('cups:		to use cups printer spooler(recommended)'
             'foomatic-db-engine:	to use foomatic spooler'
             'ghostscript:	adds postscript support for ijsgutenprint')
-source=("http://downloads.sourceforge.net/gimp-print/$pkgname-$pkgver.tar.bz2")
-url="http://gimp-print.sourceforge.net/"
 options=('!libtool' '!emptydirs')
+source=("http://downloads.sourceforge.net/gimp-print/$pkgname-$pkgver.tar.bz2")
 md5sums=('aefbec27b96dd404d9ac9811e17d58ce')
 
 build() {
@@ -29,6 +29,7 @@ build() {
 
 package() {
   cd ${srcdir}/${pkgname}-${pkgver}
+  
   make DESTDIR=${pkgdir} install
 }
 
