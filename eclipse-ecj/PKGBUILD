@@ -1,0 +1,36 @@
+
+pkgname=eclipse-ecj
+pkgver=4.3.2
+pkgrel=1
+_date=201402211700
+pkgdesc='Eclipse java bytecode compiler'
+arch=('x86_64')
+license=('EPL')
+url='http://www.eclipse.org/'
+depends=('java-runtime')
+makedepends=('apache-ant' 'java-environment')
+source=("http://download.eclipse.org/eclipse/downloads/drops4/R-${pkgver}-${_date}/ecjsrc-${pkgver}.jar"
+        '01-ecj-include-props.patch'
+        '02-buildxml-fix-manifest.patch'
+        'ecj')
+md5sums=('770e95fcd2ba2be0b0ce102bba2ab1f8'
+         '01cb1036969700ebd1b85a417d6d4a0e'
+         'b23452f46edf0b2662b5b5865776d319'
+         '997d67f1d3e97f65e42e8ace7aba7260')
+
+build() {
+  cd ${srcdir}
+  patch -p0 -i "$srcdir/01-ecj-include-props.patch"
+  patch -p0 -i "$srcdir/02-buildxml-fix-manifest.patch"
+  
+  ant build
+}
+
+package() {
+  install -Dm644 ${srcdir}/ecj.jar ${pkgdir}/usr/share/java/eclipse-ecj-${pkgver}.jar
+  
+  ln -s eclipse-ecj-${pkgver}.jar ${pkgdir}/usr/share/java/ecj.jar
+  ln -s eclipse-ecj-${pkgver}.jar ${pkgdir}/usr/share/java/eclipse-ecj.jar
+  
+  install -Dm755 ecj ${pkgdir}/usr/bin/ecj
+}
