@@ -2,13 +2,13 @@
 # keep at 1.2 until ktp is ready
 pkgname=farstream
 pkgver=0.1.2
-pkgrel=3
+pkgrel=4
 pkgdesc="Farstream (formerly Farsight) - Audio/Video Communications Framework"
 arch=('x86_64')
 url="http://www.freedesktop.org/wiki/Software/Farstream"
 license=('LGPL2.1')
 depends=('libnice' 'gstreamer0.10-base' 'gstreamer0.10-bad-plugins' 'gstreamer0.10-good' 'gstreamer0.10-ffmpeg')
-makedepends=('gobject-introspection' 'gstreamer0.10-python' 'pygobject')
+makedepends=('gobject-introspection' 'gstreamer0.10-python' 'python2-gobject')
 options=('!libtool')
 source=("http://freedesktop.org/software/$pkgname/releases/$pkgname/$pkgname-$pkgver.tar.gz"
         'vp8.patch'
