@@ -1,0 +1,9 @@
+post_install() {
+  echo "Enabling systemd service"
+         systemctl enable bluetooth.service
+}
+
+pre_remove() {
+   echo "Disabling systemd service"
+         systemctl disable bluetooth.service
+}
