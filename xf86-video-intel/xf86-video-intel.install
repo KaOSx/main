@@ -1,12 +1,12 @@
 post_install() {
-  echo "sna, uxa and now glamor too, acceleration methods are supported"
-  echo "With sna set as default"
-  echo "Use the uxa method if you run into trouble with sna."
-  echo "Or try the all new glamor method, by creating /etc/X11/xorg.conf.d/20-intel.conf "
+  echo "sna, uxa and glamor acceleration methods are supported"
+  echo "With glamor set as default"
+  echo "Use either sna or uxa method if you run into trouble with glamor."
+  echo "Try by creating /etc/X11/xorg.conf.d/20-intel.conf "
   echo "Section "Device" "
   echo "       Identifier  "Intel Graphics" "
   echo "       Driver      "intel" "
-  echo "       Option      "AccelMethod"  "glamor" "
+  echo "       Option      "AccelMethod"  "sna" "
   echo "EndSection "
 }
 
