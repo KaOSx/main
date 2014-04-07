@@ -1,7 +1,7 @@
 
 pkgname=openmpi
-pkgver=1.6.5
-pkgrel=2
+pkgver=1.8
+pkgrel=1
 pkgdesc="High performance message passing library (MPI)"
 arch=('x86_64')
 url="http://www.open-mpi.org"
@@ -9,8 +9,8 @@ license=('custom')
 depends=('gcc' 'gcc-fortran' 'openssh' 'valgrind' 'libltdl' 'hwloc')
 makedepends=('inetutils')
 options=('!libtool')
-source=("http://www.open-mpi.org/software/ompi/v1.6/downloads/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('03aed2a4aa4d0b27196962a2a65fc475')
+source=("http://www.open-mpi.org/software/ompi/v1.8/downloads/${pkgname}-${pkgver}.tar.bz2")
+md5sums=('5999cfb177a50c480b5d0bced379aff1')
 
 build() {
    cd "${srcdir}/${pkgname}-${pkgver}"
@@ -21,7 +21,7 @@ build() {
    ./configure --prefix=/usr \
                --sysconfdir=/etc/${pkgname} \
                --mandir=/usr/share/man \
-               --enable-mpi-f90 \
+               --enable-mpi-fortran=all \
                --libdir=/usr/lib/${pkgname} \
                --with-threads=posix \
                --enable-smp-locks \
@@ -49,9 +49,6 @@ package() {
 
    # Openmpi's otfinfo conflicts with the one from texlive
    mv "${pkgdir}"/usr/bin/otfinfo{,mpi}
-
-   # Remove dangling symlink
-   rm "${pkgdir}"/usr/share/man/man1/orteCC.1
 
    install -d -m 755 "${pkgdir}"/etc/ld.so.conf.d
    echo "/usr/lib/${pkgname}" > "${pkgdir}"/etc/ld.so.conf.d/${pkgname}.conf
