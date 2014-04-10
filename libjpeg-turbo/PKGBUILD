@@ -1,7 +1,7 @@
 
 pkgname=libjpeg-turbo
-pkgver=1.3.0
-pkgrel=2
+pkgver=1.3.1
+pkgrel=1
 pkgdesc="libjpeg derivative with accelerated baseline JPEG compression and decompression"
 arch=('x86_64')
 url="http://libjpeg-turbo.virtualgl.org/"
@@ -11,15 +11,11 @@ provides=('libjpeg=8.0.2' 'libjpeg6')
 replaces=('libjpeg' 'libjpeg6')
 conflicts=('libjpeg' 'libjpeg6')
 options=('!libtool')
-source=("http://sourceforge.net/projects/$pkgname/files/$pkgver/$pkgname-$pkgver.tar.gz"
-        'cve-2013-6629.patch')
-md5sums=('e1e65cc711a1ade1322c06ad4a647741'
-         '16a4f154584712c201a781350d377ec4')
+source=("http://sourceforge.net/projects/$pkgname/files/$pkgver/$pkgname-$pkgver.tar.gz")
+md5sums=('2c3a68129dac443a72815ff5bb374b05')
 
 build() {
   cd "$srcdir/$pkgname-$pkgver"
-  # Security issue https://bugzilla.redhat.com/show_bug.cgi?id=1031734
-  patch -p0 -i $srcdir/cve-2013-6629.patch
 
   # create libjpeg6
   ./configure --prefix=/usr --with-jpeg6 --mandir=/usr/share/man
