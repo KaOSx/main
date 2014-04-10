@@ -1,7 +1,7 @@
 
 pkgbase=isodate
 pkgname=('python2-isodate' 'python3-isodate')
-pkgver=0.4.9
+pkgver=0.5.0
 pkgrel=1
 pkgdesc="An ISO 8601 date/time/duration parser and formater"
 arch=('x86_64')
@@ -9,13 +9,13 @@ url="http://pypi.python.org/pypi/isodate"
 license=('BSD')
 makedepends=('python2' 'python3')
 source=("http://pypi.python.org/packages/source/i/isodate/$pkgbase-$pkgver.tar.gz")
-md5sums=('dd7399f024637f5e59260f59e6af6af4')
+md5sums=('9a267e9327feb3d021cae26002ba6e0e')
 
 package_python2-isodate() {
   depends=('python2')
 
   cd "$srcdir/$pkgbase-$pkgver"
-  python2 setup.py install --root="$pkgdir/" --optimize=1
+  python2 setup.py install --root="$pkgdir/" --optimize=0
   install -d "${pkgdir}/usr/share/licenses/${pkgname}"
   head -26 src/isodate/isodates.py > "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
 }
@@ -24,7 +24,7 @@ package_python3-isodate() {
   depends=('python3')
 
   cd "$srcdir/$pkgbase-$pkgver"
-  python3 setup.py install --root="$pkgdir/" --optimize=1
+  python3 setup.py install --root="$pkgdir/" --optimize=0
   install -d "${pkgdir}/usr/share/licenses/${pkgname}"
   head -26 src/isodate/isodates.py > "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
 }
