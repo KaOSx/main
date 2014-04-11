@@ -212,15 +212,6 @@ diff -up cups-1.5.0/scheduler/listen.c.systemd-socket cups-1.5.0/scheduler/liste
 diff -up cups-1.5.0/scheduler/main.c.systemd-socket cups-1.5.0/scheduler/main.c
 --- cups-1.5.0/scheduler/main.c.systemd-socket	2011-10-18 15:32:40.802671306 +0100
 +++ cups-1.5.0/scheduler/main.c	2011-10-18 15:32:40.851670379 +0100
-@@ -26,6 +26,8 @@
-  *   launchd_checkin()     - Check-in with launchd and collect the listening
-  *                           fds.
-  *   launchd_checkout()    - Update the launchd KeepAlive file as needed.
-+ *   systemd_checkin()     - Check-in with systemd and collect the
-+ *                           listening fds.
-  *   parent_handler()      - Catch USR1/CHLD signals...
-  *   process_children()    - Process all dead children...
-  *   select_timeout()      - Calculate the select timeout value.
 @@ -62,6 +64,10 @@
  #  endif /* !LAUNCH_JOBKEY_SERVICEIPC */
  #endif /* HAVE_LAUNCH_H */
