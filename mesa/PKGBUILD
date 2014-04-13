@@ -3,7 +3,7 @@ pkgbase=mesa
 pkgname=('mesa' 'libgl')
 pkgver=10.1.0
 _pkgver=10.1.0
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 makedepends=('glproto' 'libdrm' 'libxxf86vm' 'libxdamage' 'expat' 'llvm' 'libx11' 'libxt' 'gcc-libs'
              'dri2proto' 'python2' 'libxml2' 'imake' 'systemd' 'libvdpau' 'wayland-git' 'dri3proto'
@@ -12,13 +12,17 @@ url="http://mesa3d.sourceforge.net"
 license=('custom')
 source=(${source[@]} "ftp://ftp.freedesktop.org/pub/mesa/10.1/MesaLib-${_pkgver}.tar.bz2" 
 #source=("mesa::git://anongit.freedesktop.org/mesa/mesa#branch=master"
-       'LICENSE')
+       'LICENSE'
+       'linux314_intel.patch')
 md5sums=('3ec43f79dbcd9aa2a4a27bf1f51655b6'
-         '5c65a0fe315dd347e09b1f2826a1df5a')
+         '5c65a0fe315dd347e09b1f2826a1df5a'
+         '48882338d0ddcad7b890e233b847b5c3')
 
 build() {
     cd ${srcdir}/?esa-*
     #cd "${srcdir}/mesa"
+    # kwin crashes on intel linux 3.14 - https://bugs.freedesktop.org/show_bug.cgi?id=75723
+    patch -p1 -i ${srcdir}/linux314_intel.patch
     
    #autoreconf -vfi
     ./autogen.sh --prefix=/usr \
