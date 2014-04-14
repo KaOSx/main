@@ -1,36 +1,34 @@
 
 pkgname=usbmuxd
-pkgver=1.0.8
-pkgrel=4
+pkgver=1.0.9
+pkgrel=1
 pkgdesc="A USB multiplexing daemon."
 url="http://sukimashita.com/"
 arch=('x86_64')
-license=('GPL')
-depends=('glib2' 'libxml2')
-makedepends=('git' 'cmake')
+license=('GPL2' 'GPL3')
+depends=('libimobiledevice')
+makedepends=('git')
 install='usbmuxd.install'
 source=("git+http://cgit.sukimashita.com/usbmuxd.git"
-	'usbmuxd.service')
+	'usbmuxd.service'
+	'39-usbmuxd.rules')
 md5sums=('SKIP'
-         'dae0660f972510a6483992b5b81e1b5a')
+         'dae0660f972510a6483992b5b81e1b5a'
+         'dc4b2893651149eccbf7b2c8467cd288')
 
 build() {
-    cd ${srcdir}
+    cd ${srcdir}/${pkgname}
+    sed -i -e 's|udevrulesdir = /lib/udev/rules.d|udevrulesdir = /usr/lib/udev/rules.d|' Makefile.am
 
-    cp -r ${srcdir}/usbmuxd ${srcdir}/usbmuxd-build
-    cd ${srcdir}/usbmuxd-build
-
-    cmake ./ -DCMAKE_INSTALL_PREFIX:PATH=/usr -DLIB_SUFFIX=""
-    make -j2 
-
+    NOCONFIGURE=1 ./autogen.sh
+    ./configure --prefix=/usr --sbindir=/usr/bin
+    make
 }
 
 package() {
-    cd ${srcdir}/usbmuxd-build
+    cd ${srcdir}/${pkgname}
     make DESTDIR=${pkgdir} install  
 	
-    # fix udev dir being hardcoded
-    mv ${pkgdir}/lib/udev ${pkgdir}/usr/lib/
-    rmdir ${pkgdir}/lib
     install -D -m644 ${srcdir}/usbmuxd.service ${pkgdir}/usr/lib/systemd/system/usbmuxd.service
+    install -m644 ${srcdir}/39-usbmuxd.rules ${pkgdir}/usr/lib/udev/rules.d/
 }
