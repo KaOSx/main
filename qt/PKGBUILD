@@ -3,7 +3,7 @@
 
 pkgbase=qt
 pkgname=('qt' 'qt-private-headers')
-pkgver=4.8.6rc1
+pkgver=4.8.6rc2
 _pkgver=4.8.6
 pkgrel=1
 arch=('x86_64')
@@ -15,12 +15,12 @@ makedepends=('libtiff' 'libpng' 'libmng' 'sqlite3' 'ca-certificates' 'glib2' 'db
     'mysql' 'unixodbc' 'cups' 'libxinerama' 'libxcursor')
 options=('!libtool')
 _pkgfqn="qt-everywhere-opensource-src-${_pkgver}"
-source=("http://download.qt-project.org/development_releases/qt/4.8/${_pkgver}/qt-everywhere-opensource-src-4.8.6-rc1.tar.gz"
+source=("http://download.qt-project.org/development_releases/qt/4.8/${_pkgver}-rc2/qt-everywhere-opensource-src-4.8.6-rc2.tar.gz"
         'assistant.desktop' 'designer.desktop' 'linguist.desktop'
         'qtconfig.desktop' 'improve-cups-support.patch' 'qt_no_debug.patch'
         'qkeymapper.patch'
         'glib_event_loop.diff')
-md5sums=('f5a9181d916abf83345915ed31dcaccc'
+md5sums=('2c6700098b6b3a8d4aeadf209ea40092'
          'fc211414130ab2764132e7370f8e5caa'
          '85179f5e0437514f8639957e1d8baf62'
          'f11852b97583610f3dbb669ebc3e21bc'
@@ -39,6 +39,7 @@ build() {
 	# non latin keyboard shortcuts bug 
 	# https://bugreports.qt-project.org/browse/QTBUG-32908
 	#patch -p1 -i "${srcdir}"/qkeymapper.patch
+	# keep kdialogs available in libreoffice
 	patch -p1 -i "${srcdir}"/glib_event_loop.diff
 
         export QT4DIR="${srcdir}"/${_pkgfqn}
