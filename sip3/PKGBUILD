@@ -1,0 +1,30 @@
+
+pkgname=sip3
+_pkgname=sip
+pkgver=4.15.5
+_pkgver=4.15.5
+pkgrel=1
+pkgdesc="Tool that makes it easy to create Python3 bindings for C and C++ libraries"
+arch=('x86_64')
+url="http://www.riverbankcomputing.com/software/sip/"
+license=('custom:"sip"')
+depends=('python3' 'gcc-libs' 'sip')
+source=("http://sourceforge.net/projects/pyqt/files/sip/sip-${pkgver}/${_pkgname}-${pkgver}.tar.gz")
+md5sums=('4c95447c7b0391b7f183cf9f92ae9bc6')
+
+build() {
+  cd ${srcdir}/${_pkgname}-${pkgver} 
+
+  python3 configure.py
+  make
+}
+
+package() {
+  cd ${srcdir}/${_pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install -C siplib
+  
+  install -Dm644 sipconfig.py ${pkgdir}/usr/lib/python3.3/site-packages/sipconfig.py
+  install -Dm644 sipdistutils.py ${pkgdir}/usr/lib/python3.3/site-packages/sipdistutils.py
+  
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
