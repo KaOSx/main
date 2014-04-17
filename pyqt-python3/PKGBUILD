@@ -1,7 +1,7 @@
 
 pkgname=pyqt-python3
 pkgver=4.10.4
-pkgrel=1
+pkgrel=2
 pkgdesc="A set of Python3 bindings for the Qt toolkit"
 arch=('x86_64')
 url="http://riverbankcomputing.co.uk/software/pyqt/intro"
@@ -19,7 +19,6 @@ build() {
 
   python3 configure.py \
     --confirm-license \
-    -v /usr/share/sip \
     --qsci-api
 
   find -name 'Makefile' | xargs sed -i 's|-Wl,-rpath,/usr/lib||g;s|-Wl,-rpath,.* ||g'
