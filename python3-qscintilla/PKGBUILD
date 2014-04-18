@@ -1,14 +1,13 @@
-# build twice on updates, to get correct version for designer plugin
-# todo: no more split package
-pkgname=qscintilla
+
+pkgname=('python3-qscintilla')
 pkgver=2.8.1
-pkgrel=2
+pkgrel=1
 license=('GPL')
 arch=('x86_64')
 url="http://www.riverbankcomputing.co.uk/software/qscintilla/intro"
-pkgdesc="A port to Qt of Neil Hodgson's Scintilla C++ editor class"
-depends=('qt')
-makedepends=('qscintilla' 'chrpath')
+pkgdesc="A port to Qt of Neil Hodgson's Scintilla C++ editor class, python3 bindings"
+depends=('python2-qscintilla' 'pyqt-python3' )
+makedepends=('chrpath')
 source=("http://downloads.sourceforge.net/pyqt/QScintilla-gpl-${pkgver}.tar.gz"
         'configure.py-objdir-support.diff')
 md5sums=('bbf4725583ee9817f89413dca6cd38d2'
@@ -18,20 +17,13 @@ build() {
     cd $srcdir/QScintilla-gpl-$pkgver
     patch -p1 -i "${srcdir}/configure.py-objdir-support.diff"
 
-    cd Qt4Qt5
-    qmake qscintilla.pro
-    make
-    
-    cd ../designer-Qt4Qt5
-    qmake designer.pro 
+    cd ${srcdir}/QScintilla-gpl-${pkgver}/Python
+    python3 configure.py 
     make
 }
 
 package() {
-    cd ${srcdir}/QScintilla-gpl-${pkgver}/Qt4Qt5
-    make DESTDIR="${pkgdir}" INSTALL_ROOT="${pkgdir}" install
+    cd ${srcdir}/QScintilla-gpl-${pkgver}/Python
 
-    cd ${srcdir}/QScintilla-gpl-${pkgver}/designer-Qt4Qt5
     make DESTDIR="${pkgdir}" INSTALL_ROOT="${pkgdir}" install
 }
-
