@@ -1,7 +1,7 @@
 
 pkgname=libdvdread
 pkgver=4.9.9
-pkgrel=1
+pkgrel=2
 pkgdesc="Provides a simple foundation for reading DVD video disks"
 arch=('x86_64')
 url="http://www.mplayerhq.hu/MPlayer/releases/dvdnav/"
@@ -16,7 +16,7 @@ md5sums=('1aa8ad88e462791a8e77d628a63ee788')
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
 
-  ./configure --prefix=/usr --with-libdvdcss --enable-static=no
+  ./configure --prefix=/usr --enable-static=no
   make
 }
 
