@@ -1,23 +1,23 @@
 
 pkgname=colord
-pkgver=1.0.6
+pkgver=1.2.0
 pkgrel=1
 pkgdesc="System service easily manage, install and generate color profiles to manage input and output devices"
 arch=('x86_64')
 url="http://www.freedesktop.org/software/colord"
 license=('GPL2')
-depends=('lcms2' 'polkit' 'shared-color-profiles' 'sqlite3' 'systemd' 'libgusb' 'dbus')
+depends=('lcms2' 'polkit' 'sqlite3' 'systemd' 'libgusb' 'dbus')
 makedepends=('intltool' 'gobject-introspection' 'vala' 'docbook-xsl' 'sane' 'bash-completion')
 opdepends=('sane')
-source=($url/releases/$pkgname-$pkgver.tar.xz)
+replaces=('shared-color-profiles')
+conflicts=('shared-color-profiles')
 options=('!libtool')
-md5sums=('9bd8a1f117742c31d195a09092ca3066')
+install=colord.install
+source=($url/releases/$pkgname-$pkgver.tar.xz)
+md5sums=('740b321a32c6e54d28e6d043007947ea')
 
 build() {
   cd "$pkgname-$pkgver"
-  
-  # put udev files in /usr/lib
-  sed -i "/slashlibdir=/s#/lib#/usr/lib#" configure
   
   ./configure --prefix=/usr \
     --sysconfdir=/etc \
@@ -25,6 +25,7 @@ build() {
     --localstatedir=/var \
     --disable-static \
     --with-systemdsystemunitdir=/usr/lib/systemd/system \
+    --with-daemon-user=colord \
     --enable-vala \
     --enable-sane
   make
