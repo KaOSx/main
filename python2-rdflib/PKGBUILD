@@ -1,15 +1,15 @@
 
 pkgname=python2-rdflib
-pkgver=3.4.0
+pkgver=4.1.1
 pkgrel=1
 pkgdesc="A Python library for working with RDF, a simple yet powerful language for representing information"
 url="http://rdflib.net/"
 license=('BSD')
 depends=('python2' 'python2-isodate')
-makedepends=('python2-distribute')
+makedepends=('python2-setuptools')
 arch=('x86_64')
 source=("rdflib-$pkgver.tar.gz::https://github.com/RDFLib/rdflib/tarball/$pkgver")
-md5sums=('783a98f221bcfe0433ee0e3ed1011237')
+md5sums=('8fed08d5eba84334da9834bf8491b122')
 
 package() {
   cd $srcdir/RDFLib-rdflib-*
