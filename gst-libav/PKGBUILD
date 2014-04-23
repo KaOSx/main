@@ -1,0 +1,41 @@
+
+pkgname=gst-libav
+pkgver=1.2.4
+pkgrel=1
+pkgdesc="Gstreamer libav Plugin"
+arch=('x86_64')
+license=('GPL')
+url="http://gstreamer.freedesktop.org/"
+depends=('gst-plugins-base' 'bzip2')
+makedepends=('yasm' 'python3')
+options=('!emptydirs' '!libtool')
+source=(${url}/src/$pkgname/$pkgname-$pkgver.tar.xz)
+md5sums=('6454f9f22b3aa37694781633e0d20a9c')
+
+build() {
+  cd $pkgname-$pkgver
+
+  ./configure --prefix=/usr \
+      --sysconfdir=/etc \
+      --localstatedir=/var \
+      --disable-static \
+      --with-libav-extra-configure="--enable-runtime-cpudetect" \
+      --with-package-name="GStreamer libav Plugin (KaOS)" \
+      --with-package-origin="http://kaosx.us/"
+
+  sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+
+  make
+}
+
+check() {
+  cd $pkgname-$pkgver
+
+  make check
+}
+
+package() {
+  cd $pkgname-$pkgver
+
+  make DESTDIR="${pkgdir}" install
+}

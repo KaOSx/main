@@ -3,29 +3,30 @@ pkgname=qtwebkit
 pkgver=2.3.3
 rlver=2.3.3
 _pkgver=23
-pkgrel=2
+pkgrel=3
 _qtver=4.8.5
 arch=('x86_64')
 url='http://trac.webkit.org/wiki/QtWebKit'
 pkgdesc='An open source web browser engine (Qt port)'
 license=('LGPL2.1' 'GPL3')
-depends=('qt' 'gstreamer0.10' 'gstreamer0.10-base' 'gstreamer0.10-base-plugins'
-         'gstreamer0.10-good-plugins' 'gstreamer0.10-bad-plugins' 'gstreamer0.10-ffmpeg'
-         'gstreamer0.10-ugly-plugins' 'systemd')
+depends=('qt' 'gst-plugins-good' 'gst-plugins-bad' 'gst-libav' 'systemd')
 makedepends=('gperf' 'sqlite3' 'fontconfig' 'perl' 'python2' 'mesa' 'ruby' 'git')
 #source=("${pkgname}-${pkgver}.tar.gz"::"https://gitorious.org/webkit/qtwebkit-23/archive-tarball/qtwebkit-${rlver}"
 source=("git://gitorious.org/webkit/qtwebkit-23.git"
         "http://download.qt-project.org/official_releases/qt/4.8/${_qtver}/qt-everywhere-opensource-src-${_qtver}.tar.gz"
         'qwebview.patch'
-        'bison3.patch')
+        'bison3.patch'
+        'kubuntu_gstreamer-1.0.diff')
 md5sums=('SKIP'
          '1864987bdbb2f58f8ae8b350dfdbe133'
          '2293bdde387a27fea3eb011c729269fb'
-         '6b162cd2bc104f0ae83ca039401be7bf')
+         '6b162cd2bc104f0ae83ca039401be7bf'
+         'a297d2ec135c69aa42f0b481f8dfa6a9')
 
 build() {
   cd "${srcdir}"/qtwebkit-${_pkgver}
   patch -p1 -i "${srcdir}"/bison3.patch
+  patch -p1 -i "${srcdir}"/kubuntu_gstreamer-1.0.diff
 
   export QTDIR=/usr
   Tools/Scripts/build-webkit --qt \
