@@ -1,19 +1,19 @@
 
 pkgname=opencv
 _realname=OpenCV
-pkgver=2.4.8
+pkgver=2.4.9
 pkgrel=1
 pkgdesc="Open Source Computer Vision Library"
 arch=('x86_64')
 license=('BSD')
 url="http://opencv.willowgarage.com/"
 depends=('jasper' 'gstreamer0.10-base' 'openexr'
-         'xine-lib' 'libdc1394' 'v4l-utils' 'ffmpeg' 'qt')
+         'xine-lib' 'libdc1394' 'v4l-utils' 'ffmpeg' 'qt5-base')
 makedepends=('pkgconfig' 'cmake' 'python2-numpy' 'eigen' 'python2-sphinx' 'mesa')
 optdepends=('python2-numpy: Python 2.x interface' 'eigen')
 options=('!libtool')
-source=("http://downloads.sourceforge.net/opencvlibrary/$pkgname-$pkgver.zip")
-md5sums=('50cc1433b3654074206f5b3dbfd49848')
+source=("http://sourceforge.net/projects/opencvlibrary/files/opencv-unix/$pkgver/$pkgname-$pkgver.zip")
+md5sums=('7f958389e71c77abdf5efe1da988b80c')
 
 build() {
   cd "$srcdir/$pkgname-$pkgver"
@@ -43,7 +43,7 @@ package() {
   cd "$srcdir/$pkgname-$pkgver/build"
   make DESTDIR="$pkgdir" install
 
-  install -Dm644 "$srcdir/$pkgname-$pkgver/doc/license.txt" \
+  install -Dm644 "$srcdir/$pkgname-$pkgver/LICENSE" \
     "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
 }
 
