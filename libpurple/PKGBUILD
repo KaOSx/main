@@ -2,13 +2,13 @@
 _pkgbase='pidgin'
 pkgname='libpurple'
 pkgver=2.10.9
-pkgrel=1
+pkgrel=2
 pkgdesc="IM library extracted from Pidgin"
 arch=('x86_64')
 url="http://pidgin.im/"
 license=('GPL')
-depends=('farstream' 'libsasl' 'dbus-glib' 'nss' 'cyrus-sasl-plugins' 'libidn')
-makedepends=('startup-notification' 'libxss' 'python2' 'gstreamer0.10' 'avahi' 'tk'
+depends=('libsasl' 'dbus-glib' 'nss' 'cyrus-sasl-plugins' 'libidn')
+makedepends=('startup-notification' 'libxss' 'python2' 'avahi' 'tk'
              'ca-certificates' 'intltool')
 optdepends=('dbus-python2: for purple-remote and purple-url-handler')
 options=('!libtool')
@@ -29,6 +29,8 @@ build() {
                 --disable-sm \
                 --disable-nm \
                 --disable-gtkspell \
+                --disable-gstreamer \
+                --disable-vv \
                 --enable-cyrus-sasl \
                 --disable-doxygen \
                 --with-python=/usr/bin/python2 \

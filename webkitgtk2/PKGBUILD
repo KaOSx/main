@@ -1,13 +1,13 @@
 
 pkgname=webkitgtk2
 pkgver=1.10.2
-pkgrel=3
+pkgrel=4
 arch=('x86_64')
 url="http://webkitgtk.org/"
 pkgdesc="GTK+ Web content engine library for GTK+ 2.0"
 license=('custom')
 depends=('libxt' 'libxslt' 'sqlite3' 'libsoup' 'enchant' 'libgl' 'gtk2'
-         'gstreamer0.10-base' 'icu' 'libwebp')
+         'gst-plugins-base' 'icu' 'libwebp')
 makedepends=('gperf' 'gobject-introspection' 'python2' 'mesa' 'ruby' 'gtk-doc')
 options=('!libtool' '!emptydirs')
 source=("http://webkitgtk.org/releases/webkitgtk-$pkgver.tar.xz"
@@ -22,7 +22,7 @@ build() {
   PYTHON=/usr/bin/python2 ./configure --prefix=/usr \
     --enable-introspection \
     --libexecdir=/usr/lib/webkitgtk2 \
-    --with-gstreamer=0.10 \
+    --with-gstreamer=1.0 \
     --with-gtk=2.0 \
     --enable-geolocation=no \
     --disable-webkit2
