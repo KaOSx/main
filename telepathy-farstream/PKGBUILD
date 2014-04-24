@@ -1,21 +1,17 @@
 
-# keep at 0.4.x until ktp is ready
 pkgname=telepathy-farstream
-pkgver=0.4.0
-pkgrel=4
+pkgver=0.6.1
+pkgrel=1
 pkgdesc="A telepathy-backend to use stream engine."
 arch=('x86_64')
 url="http://telepathy.freedesktop.org"
 license=('LGPL2.1')
 depends=('telepathy-glib' 'farstream')
-makedepends=('libxslt' 'gstreamer0.10-python' 'pygobject')
-conflicts=('telepathy-farsight')
-replaces=('telepathy-farsight')
-provides=('telepathy-farsight')
+makedepends=('gobject-introspection' 'dbus-glib')
 groups=('telepathy')
 options=('!libtool')
 source=("http://telepathy.freedesktop.org/releases/$pkgname/$pkgname-$pkgver.tar.gz")
-md5sums=('52d110f8a9f27bce0a6c2c07e18aee56')
+md5sums=('53e3a69bdee7b301e2fdd2f2d254e385')
 
 build() {
   cd "$pkgname-$pkgver"
