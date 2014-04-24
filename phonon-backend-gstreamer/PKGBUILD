@@ -1,27 +1,31 @@
 
 pkgname=phonon-backend-gstreamer
-pkgver=4.7.1
-pkgrel=2
+pkgver=4.7.1.9
+pkgrel=1
 pkgdesc="Phonon GStreamer backend"
 arch=('x86_64')
 url='http://phonon.kde.org'
 license=('LGPL')
-depends=('gstreamer0.10-base-plugins')
+#depends=('gstreamer0.10-base-plugins')
+depends=('gst-plugins-base')
 makedepends=('pkg-config' 'cmake' 'automoc4' 'mesa' 'phonon')
 provides=('phonon-backend')
 groups=("kde-complete" "kde-uninstall")
-source=("http://download.kde.org/stable/phonon/${pkgname}/${pkgver}/${pkgname}-${pkgver}.tar.xz")
-md5sums=('7c0cfab4ec0bbe1f201503e6ccc7290a')
+#source=("http://download.kde.org/stable/phonon/${pkgname}/${pkgver}/${pkgname}-${pkgver}.tar.xz")
+source=("phonon-backend-gstreamer-4.7.2git.tar.gz")
+#md5sums=('7c0cfab4ec0bbe1f201503e6ccc7290a')
+md5sums=('a8c0a6e0cc1004b0a5febf61d87c1545')
 
 build() { 
         cd ${srcdir}
 	mkdir -p build
 	
 	cd build
-	cmake ../${pkgname}-${pkgver} \
+	cmake ../${pkgname}-4.7.2git \
 		 -DCMAKE_BUILD_TYPE=Release \
 		 -DCMAKE_INSTALL_PREFIX=/usr \
-		 -DCMAKE_INSTALL_LIBDIR=lib 
+		 -DCMAKE_INSTALL_LIBDIR=lib \
+		 
 	make
 }
 
