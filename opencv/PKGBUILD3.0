@@ -1,22 +1,24 @@
 
 pkgname=opencv
 _realname=OpenCV
-pkgver=2.4.9
+_commit=32b25de
+pkgver=2.9.9
 pkgrel=2
 pkgdesc="Open Source Computer Vision Library"
 arch=('x86_64')
 license=('BSD')
 url="http://opencv.willowgarage.com/"
-depends=('jasper' 'gstreamer0.10-base' 'openexr'
+depends=('jasper' 'gst-plugins-base' 'openexr'
          'xine-lib' 'libdc1394' 'v4l-utils' 'ffmpeg' 'qt')
 makedepends=('pkgconfig' 'cmake' 'python2-numpy' 'eigen' 'python2-sphinx' 'mesa')
 optdepends=('python2-numpy: Python 2.x interface' 'eigen')
 options=('!libtool')
-source=("http://sourceforge.net/projects/opencvlibrary/files/opencv-unix/$pkgver/$pkgname-$pkgver.zip")
-md5sums=('7f958389e71c77abdf5efe1da988b80c')
+#source=("http://sourceforge.net/projects/opencvlibrary/files/opencv-unix/$pkgver/$pkgname-$pkgver.zip")
+source=("https://github.com/Itseez/opencv/tarball/master/opencv-${pkgver}.tar.gz")
+md5sums=('5606e8992f8d7a3abbd5bc511fbe9a32')
 
 build() {
-  cd "$srcdir/$pkgname-$pkgver"
+  cd "$srcdir/Itseez-$pkgname-${_commit}"
  
   mkdir build 
   cd build
@@ -40,9 +42,11 @@ build() {
 }
 
 package() {
-  cd "$srcdir/$pkgname-$pkgver/build"
+  cd "$srcdir/Itseez-$pkgname-${_commit}/build"
   make DESTDIR="$pkgdir" install
 
-  install -Dm644 "$srcdir/$pkgname-$pkgver/LICENSE" \
+  install -Dm644 "$srcdir/Itseez-$pkgname-${_commit}/LICENSE" \
     "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
 }
+
+
