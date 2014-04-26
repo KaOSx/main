@@ -1,6 +1,6 @@
 
 pkgname=gdal
-pkgver=1.10.1
+pkgver=1.11.0
 pkgrel=1
 pkgdesc="A translator library for raster geospatial data formats"
 arch=('x86_64')
@@ -12,7 +12,7 @@ makedepends=('perl' 'swig')
 options=('!libtool' '!makeflags')
 source=("http://download.osgeo.org/${pkgname}/${pkgver}/${pkgname}-${pkgver}.tar.gz"
 	'gdal-1.5.1-python-install.patch')
-md5sums=('86b2c71a910d826a7fe6ebb43a532fb7'
+md5sums=('9fdf0f2371a3e9863d83e69951c71ec4'
          '81afc1c26d29cee84aadb6924fe33861')
 
 build() {
@@ -29,7 +29,7 @@ build() {
   done
 
   ./configure --prefix=/usr --with-netcdf --with-libtiff --with-sqlite3 \
-              --with-geotiff --with-mysql --with-python --without-libtool --with-curl \
+              --with-geotiff --with-mysql --with-python --with-curl \
               --with-hdf5 --with-perl --with-geos --with-png --with-poppler
 
   sed -i 's/PY_HAVE_SETUPTOOLS=1/PY_HAVE_SETUPTOOLS=/g' ./GDALmake.opt
