@@ -1,8 +1,7 @@
 
 pkgname=opencv
 _realname=OpenCV
-_commit=32b25de
-pkgver=2.9.9
+pkgver=2.4.9
 pkgrel=3
 pkgdesc="Open Source Computer Vision Library"
 arch=('x86_64')
@@ -13,18 +12,17 @@ depends=('jasper' 'gst-plugins-base' 'openexr'
 makedepends=('pkgconfig' 'cmake' 'python2-numpy' 'eigen' 'python2-sphinx' 'mesa')
 optdepends=('python2-numpy: Python 2.x interface' 'eigen')
 options=('!libtool')
-#source=("http://sourceforge.net/projects/opencvlibrary/files/opencv-unix/$pkgver/$pkgname-$pkgver.zip")
-source=("https://github.com/Itseez/opencv/tarball/master/opencv-${pkgver}.tar.gz"
-        'pkgconfig.patch'
-        'fsh.patch')
-md5sums=('5606e8992f8d7a3abbd5bc511fbe9a32'
-         '5034e6b59e9bf1911925b7c40484f8f3'
-         '040ced073323c3be3c0f8653d3fe273e')
+source=("http://sourceforge.net/projects/opencvlibrary/files/opencv-unix/$pkgver/$pkgname-$pkgver.zip"
+        'OpenCVFindLibsVideo.cmake.diff'
+        'CMakeLists.diff')
+md5sums=('7f958389e71c77abdf5efe1da988b80c'
+         '4cf6951adead9d012a6603fdba3a3850'
+         '9241cd6cbecfc70ae4163a6f82aa26b9')
 
 build() {
-  cd "$srcdir/Itseez-$pkgname-${_commit}"
-  patch -p3 -i "${srcdir}/pkgconfig.patch"
-  patch -p3 -i "${srcdir}/fsh.patch"
+  cd "$srcdir/$pkgname-$pkgver"
+  patch -p1 -i "${srcdir}/OpenCVFindLibsVideo.cmake.diff"
+  patch -p1 -i "${srcdir}/CMakeLists.diff"
  
   mkdir build 
   cd build
@@ -39,6 +37,7 @@ build() {
         -DINSTALL_PYTHON_EXAMPLES=ON \
         -DWITH_XINE=ON \
         -DWITH_QT=ON \
+        -DWITH_GSTREAMER=ON \
 	-DWITH_OPENGL=ON \
         -DWITH_TBB=OFF \
         -DWITH_CUDA=OFF \
@@ -48,11 +47,9 @@ build() {
 }
 
 package() {
-  cd "$srcdir/Itseez-$pkgname-${_commit}/build"
+  cd "$srcdir/$pkgname-$pkgver/build"
   make DESTDIR="$pkgdir" install
 
-  install -Dm644 "$srcdir/Itseez-$pkgname-${_commit}/LICENSE" \
+  install -Dm644 "$srcdir/$pkgname-$pkgver/LICENSE" \
     "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
 }
-
-
