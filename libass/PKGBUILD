@@ -1,16 +1,16 @@
 
 pkgname=libass
-pkgver=0.11.0
+pkgver=0.11.2
 pkgrel=1
 pkgdesc="A portable library for SSA/ASS subtitles rendering"
 arch=('x86_64')
-url="http://code.google.com/p/libass/"
+url="https://github.com/libass/libass"
 license=('GPL')
 depends=('enca' 'fontconfig' 'fribidi' 'harfbuzz')
-makedepends=('pkgconfig')
+makedepends=('pkg-config' 'yasm')
 options=('!libtool')
 source=("https://github.com/libass/libass/releases/download/${pkgver}/libass-${pkgver}.tar.xz")
-md5sums=('a0ae0b6a092c2bf6c58f8e3c74b83567')
+md5sums=('701b761934de0eff7d45f58d7d13eaf6')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
