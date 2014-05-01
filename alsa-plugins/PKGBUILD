@@ -1,7 +1,7 @@
 
 pkgname=alsa-plugins
 pkgver=1.0.27
-pkgrel=1
+pkgrel=2
 pkgdesc="Extra alsa plugins"
 arch=('x86_64')
 url="http://www.alsa-project.org"
@@ -18,6 +18,7 @@ md5sums=('ada0163e0e84c787bfc929ad0f3f5cb8')
 
 build() {
   cd "$srcdir/$pkgname-$pkgver"
+  sed -i 's/ && LIBAVCODEC_VERSION_MINOR >= 34//' a52/pcm_a52.c
     
   ./configure --prefix=/usr
   make

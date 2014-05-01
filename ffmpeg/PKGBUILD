@@ -1,17 +1,17 @@
 
 pkgname=ffmpeg
-pkgver=1.2.6
-pkgrel=3
+pkgver=2.2.1
+pkgrel=1
 pkgdesc="Complete and free Internet live audio and video broadcasting solution for Linux/Unix"
 arch=('x86_64')
 url="http://ffmpeg.org/"
 license=('GPL')
 depends=('bzip2' 'lame' 'sdl' 'libvorbis' 'xvidcore' 'zlib' 'x264' 'libtheora' 'celt'
          'opencore-amr' 'alsa-lib' 'libvdpau' 'libxfixes' 'schroedinger' 'libvpx>=1.1.0'
-         'libva' 'openjpeg' 'rtmpdump' 'speex' 'gsm' 'pulseaudio' 'v4l-utils')
+         'libva' 'openjpeg' 'rtmpdump' 'speex' 'gsm' 'pulseaudio' 'v4l-utils' 'gnutls')
 makedepends=('yasm')
 source=("http://${pkgname}.org/releases/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('8f8f243f081de44ca4f0fb1a989875da')
+md5sums=('b8a1ee4964c2638f46fcc803ed453818')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
@@ -34,9 +34,11 @@ build() {
               --enable-librtmp \
               --enable-libpulse \
               --enable-gpl \
+              --enable-gnutls \
               --enable-vdpau \
               --enable-version3 \
               --enable-runtime-cpudetect \
+              --enable-swresample \
               --enable-libspeex \
               --enable-libv4l2 \
               --enable-libcelt \

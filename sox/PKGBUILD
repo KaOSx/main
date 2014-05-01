@@ -1,29 +1,25 @@
 
 pkgname=sox
 pkgver=14.4.1
-pkgrel=2
+pkgrel=3
 pkgdesc="The Swiss Army knife of sound processing tools"
 arch=('x86_64')
 url="http://sox.sourceforge.net/"
 license=('GPL' 'LGPL')
 depends=('libltdl' 'file' 'libsndfile' 'libpng' 'lame' 'opencore-amr' 'gsm' 'pulseaudio')
-makedepends=('ffmpeg' 'libao' 'libmad' 'libid3tag' 'wavpack')
+makedepends=('libao' 'libmad' 'libid3tag' 'wavpack')
 optdepends=('libao: for ao plugin'
-            'ffmpeg: for ffmpeg plugin'
             'libmad: for mp3 plugin'
             'libid3tag: for mp3 plugin'
             'wavpack: for wavpack plugin')
 options=('!libtool')
-source=("http://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tar.bz2"
-        'sox-ffmpeg0.11.patch')
-md5sums=('ff9ca6aca972549de0e80e8e30ed379c'
-         '68421298efb00bc6bda2d118d71ed5f4')
+source=("http://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
+md5sums=('ff9ca6aca972549de0e80e8e30ed379c')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
-  patch -p1 -i "${srcdir}/sox-ffmpeg0.11.patch"
-
   sed -i 's|man1/sox.1 soxeffect.7|man1/sox.1.gz soxeffect.7.gz|' Makefile.am
+  
   ./configure --prefix=/usr \
     --sysconfdir=/etc \
     --with-dyn-default \
