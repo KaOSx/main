@@ -4,12 +4,12 @@
 pkgbase=mlt
 pkgname=('mlt' 'mlt-python-bindings')
 pkgver=0.9.0
-pkgrel=2
+pkgrel=3
 pkgdesc="An open source multimedia framework"
 arch=('x86_64')
 url="http://www.mltframework.org"
 license=('GPL')
-depends=('sdl_image' 'libsamplerate' 'libdv' 'qt' 'sox' 'libxml2' 'ffmpeg>=0.11'
+depends=('sdl_image' 'libsamplerate' 'libdv' 'qt' 'sox' 'libxml2' 'ffmpeg'
          'frei0r-plugins' 'swig' 'python2')
 optdepends=('jack')
 makedepends=('subversion')
@@ -20,7 +20,6 @@ build() {
   # mlt
   cd "${srcdir}/mlt-${pkgver}"
 
-  msg "SSE2=$SSE2"
   ./configure --prefix=/usr \
               --enable-gpl \
               --enable-gpl3 \
@@ -28,7 +27,7 @@ build() {
               --qimage-includedir=/usr/include/Qt \
               --avformat-vdpau \
               --disable-gtk2 \
-              --avformat-swscale $SSE2 
+              --avformat-swscale  
   make
 
   # mlt python bindings

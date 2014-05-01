@@ -2,7 +2,7 @@
 pkgname=transcode
 _sripver=0.3-4
 pkgver=1.1.7
-pkgrel=15
+pkgrel=16
 pkgdesc="A video/DVD ripper and encoder for the terminal/console"
 arch=('x86_64')
 url="http://tcforge.berlios.de/"
@@ -15,17 +15,35 @@ source=("https://bitbucket.org/france/transcode-tcforge/downloads/${pkgname}-${p
 	"http://downloads.sourceforge.net/sourceforge/subtitleripper/subtitleripper-${_sripver}.tgz"
         'subtitleripper-0.3.4-linkingorder.patch'
         'subtitleripper-0.3.4-respect-ldflags.patch'
-        'ffmpeg-0.11.patch')
+        'ffmpeg-0.10.patch'
+        'ffmpeg-0.11.patch'
+        'ffmpeg.patch'
+        'ffmpeg2.patch'
+        'libav-9.patch'
+        'preset-force.patch'
+        'preset-free.patch')
 md5sums=('9bb25a796a8591fb764de46ee87ce505'
          'c0bd49a88f667c68c4430ad25bbed510'
          'a8d4d78e3311f576c7da27f2657358fd'
          'f9b367044568d0ef4612770969c93e14'
-         '6d4e76a9c90cc35df1cd1df97a4fae12')
+         '3cf2826df9a1a238c255a8525a63b435'
+         '63d4e308fae08590cfdfd40e18171694'
+         '69f3db45ae31213ea94a5dc0dda677bd'
+         '951bff4b2dda3c8a5caf24e63c70c1aa'
+         '8bf570239d9aad287f3254d350e1f98a'
+         'db152c456e768b06fec47f0b4b7a60ff'
+         '5fd43f03549c97651dcc38a6f504de1e')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
 
+  patch -p0 -i "${srcdir}/ffmpeg.patch"
+  patch -p0 -i "${srcdir}/ffmpeg-0.10.patch"
   patch -p1 -i "${srcdir}/ffmpeg-0.11.patch"
+  patch -p1 -i "${srcdir}/ffmpeg2.patch"
+  patch -p0 -i "${srcdir}/libav-9.patch"
+  patch -p1 -i "${srcdir}/preset-force.patch"
+  patch -p1 -i "${srcdir}/preset-free.patch"
   sed -i 's|freetype/ftglyph.h|freetype2/ftglyph.h|' filter/subtitler/load_font.c
   
   ./configure --prefix=/usr \
@@ -34,7 +52,7 @@ build() {
     --enable-libdv --enable-libxml2 --enable-v4l \
     --enable-imagemagick --enable-libjpeg --enable-lzo --enable-mjpegtools \
     --enable-sdl --enable-freetype2 --enable-a52 --enable-libpostproc \
-    --enable-xvid --enable-x264 --enable-alsa --enable-libmpeg2 --enable-libmpeg2convert
+    --enable-x264 --enable-alsa --enable-libmpeg2 --enable-libmpeg2convert
   make
 
   cd "${srcdir}/subtitleripper"
