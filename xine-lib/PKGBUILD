@@ -1,19 +1,18 @@
 
 pkgname=xine-lib
 pkgver=1.2.5
-pkgrel=1
+pkgrel=2
 pkgdesc="A multimedia playback engine"
 arch=('x86_64')
 url="http://www.xine-project.org"
 license=('LGPL' 'GPL')
-depends=('libxvmc' 'ffmpeg' 'libxinerama')
-makedepends=('wavpack' 'faad2' 'libmng' 'imagemagick' 'mesa' 'libmodplug'
+depends=('libxvmc' 'ffmpeg' 'libxinerama' 'pulseaudio' 'mesa')
+makedepends=('wavpack' 'faad2' 'libmng' 'imagemagick' 'libmodplug'
              'vcdimager' 'jack' 'aalib' 'libdca' 'a52dec' 'libmad'
-             'libmpcdec' 'libcaca' 'libbluray' 'libvdpau' 'pulseaudio' 'glu')
+             'libmpcdec' 'libcaca' 'libbluray' 'libvdpau' 'glu')
 optdepends=('imagemagick: for using the imagemagick plugin' \
             'jack: for using the jack plugin' \
             'vcdimager: for using the vcd plugin' \
-            'mesa: for using the opengl plugin' \
             'wavpack: for using the wavpack plugin' \
             'faad2: for using the faad plugin' \
             'libmng: for using the mng plugin' \
@@ -25,8 +24,7 @@ optdepends=('imagemagick: for using the imagemagick plugin' \
             'libmpcdec: for using the musepack plugin' \
             'libcaca: for using the caca plugin' \
             'libbluray: for using the bluray plugin' \
-            'libvdpau: for using the VDPAU plugin'
-            'pulseaudio: for using the pulse plugin')
+            'libvdpau: for using the VDPAU plugin')
 options=('!libtool')
 source=("http://downloads.sourceforge.net/sourceforge/xine/${pkgname}-${pkgver}.tar.xz"
         'accel_vaapi.h')
