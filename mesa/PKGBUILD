@@ -1,8 +1,8 @@
 
 pkgbase=mesa
 pkgname=('mesa' 'libgl')
-pkgver=10.1.1
-_pkgver=10.1.1
+pkgver=10.1.2
+_pkgver=10.1.2
 pkgrel=1
 arch=('x86_64')
 makedepends=('glproto' 'libdrm' 'libxxf86vm' 'libxdamage' 'expat' 'llvm' 'libx11' 'libxt' 'gcc-libs'
@@ -10,19 +10,17 @@ makedepends=('glproto' 'libdrm' 'libxxf86vm' 'libxdamage' 'expat' 'llvm' 'libx11
              'presentproto' 'libxshmfence' 'elfutils')
 url="http://mesa3d.sourceforge.net"
 license=('custom')
-source=(${source[@]} "ftp://ftp.freedesktop.org/pub/mesa/10.1.1/MesaLib-${_pkgver}.tar.bz2" 
+source=(${source[@]} "ftp://ftp.freedesktop.org/pub/mesa/${_pkgver}/MesaLib-${_pkgver}.tar.bz2" 
 #source=("mesa::git://anongit.freedesktop.org/mesa/mesa#branch=master"
-       'LICENSE'
-       'linux314_intel.patch')
-md5sums=('1fde7ed079df7aeb9b6a744ca033de8d'
-         '5c65a0fe315dd347e09b1f2826a1df5a'
-         '48882338d0ddcad7b890e233b847b5c3')
+       'LICENSE')
+md5sums=('28b60d15ac9f364da1e0155911eaf44e'
+         '5c65a0fe315dd347e09b1f2826a1df5a')
 
 build() {
     cd ${srcdir}/?esa-*
     #cd "${srcdir}/mesa"
     # kwin crashes on intel linux 3.14 - https://bugs.freedesktop.org/show_bug.cgi?id=75723
-    patch -p1 -i ${srcdir}/linux314_intel.patch
+    #patch -p1 -i ${srcdir}/linux314_intel.patch
     
    autoreconf -vfi
     ./autogen.sh --prefix=/usr \
@@ -30,7 +28,8 @@ build() {
     --with-gallium-drivers=r300,r600,nouveau,svga,swrast \
     --with-dri-drivers=i915,i965,r200,radeon,nouveau,swrast \
     --enable-gallium-llvm \
-    --enable-gallium-egl \
+    --disable-gallium-egl \
+    --enable-gallium-gbm \
     --with-egl-platforms=x11,drm,wayland \
     --enable-shared-glapi \
     --enable-gbm \
