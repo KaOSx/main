@@ -1,40 +1,31 @@
 
 pkgname=perl-file-listing
 pkgver=6.04
-pkgrel=2
+pkgrel=3
 pkgdesc="parse directory listing"
 arch=('x86_64')
 url="http://search.cpan.org/dist/File-Listing"
-license=(PerlArtistic GPL)
-options=(!emptydirs)
-depends=('perl' 'perl-http-date>=6')
+license=('PerlArtistic' 'GPL')
+options=('!emptydirs')
+depends=('perl' 'perl-http-date')
 source=("http://search.cpan.org/CPAN/authors/id/G/GA/GAAS/File-Listing-${pkgver}.tar.gz")
 md5sums=('83f636b477741f3a014585bb9cc079a6')
-_distdir="${srcdir}/File-Listing-${pkgver}"
 
 build() {
-  ( export PERL_MM_USE_DEFAULT=1 PERL5LIB=""                 \
-      PERL_AUTOINSTALL=--skipdeps                            \
-      PERL_MM_OPT="INSTALLDIRS=vendor"     \
-      PERL_MB_OPT="--installdirs vendor" \
-      MODULEBUILDRC=/dev/null
-
-    cd "$_distdir"
-    /usr/bin/perl Makefile.PL
+    cd ${srcdir}/File-Listing-${pkgver}
+    
+    perl Makefile.PL INSTALLDIRS=vendor
     make
-  )
 }
 
 check() {
-  ( export PERL_MM_USE_DEFAULT=1 PERL5LIB=""
-    cd "$_distdir"
+    cd ${srcdir}/File-Listing-${pkgver}
     
     make test
-  )
 }
 
 package() {
-    cd "$_distdir"
+    cd ${srcdir}/File-Listing-${pkgver}
     
     make DESTDIR="$pkgdir" install
 }
