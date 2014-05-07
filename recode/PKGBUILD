@@ -2,7 +2,7 @@
 pkgname=recode
 _pkgname=Recode
 pkgver=3.6
-pkgrel=6
+pkgrel=7
 pkgdesc="Converts files between various character sets and usages"
 arch=('x86_64')
 url="http://www.gnu.org/software/recode/recode.html"
@@ -17,7 +17,7 @@ md5sums=('977d5e836dc6540b120d00ecdf14d25d'
 
 build() {
   cd ${srcdir}/${_pkgname}-${pkgver}
-  patch -p0 < ../recode-3.6-gcc43.patch 
+  patch -p0 -i ${srcdir}/recode-3.6-gcc43.patch 
   
   ./configure --prefix=/usr \
               --mandir=/usr/share/man \
