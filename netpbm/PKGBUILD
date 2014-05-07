@@ -1,35 +1,21 @@
 
 pkgname=netpbm
-pkgver=10.61.02
+pkgver=10.66.02
 pkgrel=1
 pkgdesc="A toolkit for manipulation of graphic images"
 arch=('x86_64')
 license=('custom' 'BSD' 'GPL' 'LGPL')
 url="http://netpbm.sourceforge.net/"
-depends=('perl' 'libjpeg-turbo' 'libpng' 'libtiff' 'libxml2')
-makedepends=('python2')
+depends=('perl' 'libjpeg-turbo' 'libpng' 'libtiff' 'libxml2' 'libx11')
+makedepends=('python2' 'subversion')
 options=('!makeflags')
-source=("http://sourceforge.net/projects/kdeos/files/Sources/netpbm/${pkgname}-${pkgver}.tar.gz"
-        "http://sourceforge.net/projects/kdeos/files/Sources/netpbm/netpbm-doc-22Feb2009.tar.xz"
-        'netpbm-CAN-2005-2471.patch'
-        'netpbm-security-code.patch'
-        'netpbm-security-scripts.patch')
-md5sums=('ce4ce28eae1d2bca082701f4b4d891b2'
-         '48efce0093c5f242bce3072958fe88c3'
-         '9ff90a97583299ac1b59eacd527f3a66'
-         '78055dd5e76793bf770b5305e278d6b3'
-         'a7c60e350f7758c16f37ac0781cd68e8')
 
 build() {
-  cd "${srcdir}/advanced"
+  cd "${srcdir}"
+  svn checkout http://svn.code.sf.net/p/netpbm/code/advanced netpbm
   
-  patch -p1 < ../netpbm-CAN-2005-2471.patch
-  patch -p1 < ../netpbm-security-code.patch
-  patch -p1 < ../netpbm-security-scripts.patch
+  cd "${srcdir}/netpbm"
   
-  sed -i 's|#!/usr/bin/python|#!/usr/bin/python2|' buildtools/makeman
-  sed -i 's|@python|@python2|' buildtools/manpage.mk
-
   cp config.mk.in  config.mk
   echo 'CFLAGS_SHLIB = -fPIC' >> config.mk
   echo "NETPBM_DOCURL = file://${srcdir}/doc" >> config.mk
@@ -40,31 +26,16 @@ build() {
  
   sed -i 's|misc|share/netpbm|' common.mk
   sed -i 's|/link|/lib|' lib/Makefile
-  sed -i 's|install.manweb install.man|install.man|' GNUmakefile
 
   make
-
-  # Generating useful man pages with html doc
-  cd  "${srcdir}/doc"
-  make MAKEMAN="${srcdir}/advanced/buildtools/makeman" USERGUIDE=. \
-    -f "${srcdir}/advanced/buildtools/manpage.mk" manpages
 }
 
 package() {
-  cd "${srcdir}/advanced"
-  make pkgdir="${pkgdir}/usr" PKGMANDIR=share/man install-run install-dev
-
-  # Removing dummy man pages
-  rm "${pkgdir}"/usr/share/man/man{1,3,5}/*
-
-  cd  "${srcdir}/doc"
-  make MAKEMAN="${srcdir}/advanced/buildtools/makeman" MANDIR="${pkgdir}/usr/share/man" \
-    -f "${srcdir}/advanced/buildtools/manpage.mk" installman
-
-  # Replace obsolete utility
-  echo -e '#!/bin/sh\npamditherbw $@ | pamtopnm\n' > "${pkgdir}/usr/bin/pgmtopbm"
-
-  # Licensing.  Note that each program in the package has a separate license.
-  install -D -m644 "${srcdir}/advanced/doc/copyright_summary" \
+  cd "${srcdir}/netpbm"
+  make package pkgdir="${pkgdir}/usr"
+  
+  install -D -m644 "${srcdir}/netpbm/doc/copyright_summary" \
     "${pkgdir}/usr/share/licenses/${pkgname}/copyright_summary.txt"
+    
+  mv -iv "${pkgdir}/usr/man" "${pkgdir}/usr/share/man"
 }
