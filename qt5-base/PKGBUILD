@@ -3,7 +3,7 @@ pkgname=qt5-base
 pkgver=5.3.0RC
 subver=5.3.0-RC
 _pkgver=5.3
-pkgrel=1.1
+pkgrel=1
 pkgdesc=('A cross-platform application and UI framework')
 arch=('x86_64')
 url='http://qt.nokia.com/'
@@ -11,7 +11,8 @@ license=('GPL3' 'LGPL' 'FDL' 'custom')
 depends=('sqlite3' 'xcb-util-keysyms' 'xcb-util-wm' 'xcb-util-image' 'xcb-util-renderutil'
          'glib2' 'dbus' 'fontconfig' 'libsm' 'libxrandr' 'libxv' 'libxi' 'unixodbc' 'libjpeg-turbo'
          'alsa-lib' 'xdg-utils' 'hicolor-icon-theme' 'desktop-file-utils' 'mesa' 'systemd'
-         'libxcursor' 'libxrender' 'libpng' 'libmariadbclient' 'icu' 'libgl' 'libxfixes' 'libxinerama')
+         'libxcursor' 'libxrender' 'libpng' 'libmariadbclient' 'icu' 'libgl' 'libxfixes' 'libxinerama'
+         'libxkbcommon' 'harfbuzz' 'mtdev')
 makedepends=('postgresql-libs' 'cups' 'python2' 'gperf' 'ruby' 'pulseaudio')
 optdepends=('postgresql-libs: PostgreSQL driver')
 conflict=('qt5')
@@ -43,10 +44,11 @@ build() {
                 -translationdir /usr/share/qt5/translations \
                 -sysconfdir /etc/xdg/qt5 \
                 -examplesdir /usr/share/qt5/examples \
+                -harfbuzz \
 		-system-sqlite \
                 -openssl-linked \
                 -nomake tests \
-                -make examples \
+                -nomake examples \
                 -optimized-qmake \
                 -reduce-relocations \
                 -dbus-linked \
