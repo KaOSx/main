@@ -1,7 +1,8 @@
 
 pkgname=qt5-serialport
-pkgver=5.2.1
-_pkgver=5.2
+pkgver=5.3.0RC
+subver=5.3.0-RC
+_pkgver=5.3
 pkgrel=1
 pkgdesc=('A cross-platform application and UI framework, QtSerialport files')
 arch=('x86_64')
@@ -10,9 +11,9 @@ license=('GPL3' 'LGPL')
 depends=('qt5-declarative')
 groups=('qt5')
 options=('!libtool')
-_pkgfqn="qtserialport-opensource-src-${pkgver}"
-source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
-md5sums=('2993ad7e92a0b6b41e3cb0e0e345d251')
+_pkgfqn="qtserialport-opensource-src-${subver}"
+source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/5.3.0-rc/submodules/$_pkgfqn.tar.xz")
+md5sums=('b15b74fcc2d6f641f7dde92a4ca57254')
 
 build() {
     cd $srcdir/$_pkgfqn

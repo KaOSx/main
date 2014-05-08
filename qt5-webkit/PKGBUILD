@@ -1,8 +1,9 @@
 
 pkgname=qt5-webkit
-pkgver=5.2.1
-_pkgver=5.2
-pkgrel=3
+pkgver=5.3.0RC
+subver=5.3.0-RC
+_pkgver=5.3
+pkgrel=1
 pkgdesc=('A cross-platform application and UI framework, QtWebkit files')
 arch=('x86_64')
 url='http://qt.nokia.com/'
@@ -13,9 +14,9 @@ depends=('qt5-sensors' 'qt5-location' 'qt5-quickcontrols' 'icu' 'libxslt' 'libxc
 makedepends=('gperf' 'sqlite' 'fontconfig' 'perl' 'python2' 'ruby')
 options=('!libtool')
 groups=('qt5')
-_pkgfqn="qtwebkit-opensource-src-${pkgver}"
-source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
-md5sums=('a20d99a1c2afbd6a7c6f54e615f1bd63')
+_pkgfqn="qtwebkit-opensource-src-${subver}"
+source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/5.3.0-rc/submodules/$_pkgfqn.tar.xz")
+md5sums=('c9dc2b3542f1daaea5ac3336452dd270')
 
 build() {
    cd $srcdir/$_pkgfqn

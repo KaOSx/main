@@ -1,7 +1,8 @@
 
 pkgname=qt5-imageformats
-pkgver=5.2.1
-_pkgver=5.2
+pkgver=5.3.0RC
+subver=5.3.0-RC
+_pkgver=5.3
 pkgrel=1
 pkgdesc=('A cross-platform application and UI framework, QtImageFormats files')
 arch=('x86_64')
@@ -10,9 +11,9 @@ license=('GPL3' 'LGPL')
 depends=('qt5-base' 'libtiff' 'libmng')
 options=('!libtool')
 groups=('qt5')
-_pkgfqn="qtimageformats-opensource-src-${pkgver}"
-source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
-md5sums=('9b88aa6f3888c7c7f5253c147ae4bf8f')
+_pkgfqn="qtimageformats-opensource-src-${subver}"
+source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/5.3.0-rc/submodules/$_pkgfqn.tar.xz")
+md5sums=('149d1df7e96f3673d9b8c359a099901a')
 
 build() {
     cd $srcdir/$_pkgfqn
