@@ -1,7 +1,8 @@
 
 pkgbase="llvm"
 pkgname=('llvm' 'llvm-ocaml' 'clang' 'clang-analyzer')
-pkgver=3.4
+pkgver=3.4.1
+subver=3.4
 _gcc_ver=4.8.2
 pkgrel=1
 arch=('x86_64')
@@ -9,20 +10,20 @@ url="http://llvm.org/"
 license=('custom:University of Illinois/NCSA Open Source License')
 makedepends=('gcc-libs' 'libffi' 'python2' 'ocaml' "gcc=${_gcc_ver}" 'groff')
 source=("http://llvm.org/releases/${pkgver}/${pkgbase}-${pkgver}.src.tar.gz"
-        "http://llvm.org/releases/$pkgver/clang-$pkgver.src.tar.gz"
-        "http://llvm.org/releases/$pkgver/compiler-rt-$pkgver.src.tar.gz")
-md5sums=('46ed668a1ce38985120dbf6344cf6116'
-         'b378f1e2c424e03289effc75268d3d2c'
+        "http://llvm.org/releases/$pkgver/cfe-$pkgver.src.tar.gz"
+        "http://llvm.org/releases/$subver/compiler-rt-$subver.src.tar.gz")
+md5sums=('b90697f4de35563ad6c35924defa8dd1'
+         'c64fdc567383211c9ac212d6f7b69263'
          '7938353e3a3bda85733a165e7ac4bb84')
 
 build() {
-  cd "${srcdir}/${pkgbase}-${pkgver}"
+  cd "${srcdir}/${pkgbase}-${pkgver}.src"
 
   # At the present, clang must reside inside the LLVM source code tree to build
   # See http://llvm.org/bugs/show_bug.cgi?id=4840
-  mv "${srcdir}/clang-${pkgver}" tools/clang
+  mv "${srcdir}/cfe-${pkgver}.src" tools/clang
 
-  mv "$srcdir/compiler-rt-$pkgver" projects/compiler-rt
+  mv "$srcdir/compiler-rt-$subver" projects/compiler-rt
 
   # Fix doc installation directories
   sed -i 's:\$(PROJ_prefix)/docs/llvm:$(PROJ_prefix)/share/doc/llvm:' \
@@ -60,7 +61,7 @@ package_llvm() {
 pkgdesc="The LLVM Core libraries provide a modern source- and target-independent optimizer, along with code generation support for many popular CPUs."
 depends=('perl' 'libffi')
 
-  cd "${srcdir}/${pkgbase}-${pkgver}"
+  cd "${srcdir}/${pkgbase}-${pkgver}.src"
 
   # The OCaml binding installation is currently broken, let's fix it
   # see https://github.com/mxcl/homebrew/issues/8947#issuecomment-3256464
@@ -98,7 +99,7 @@ package_llvm-ocaml() {
 pkgdesc="OCaml bindings for LLVM."
 depends=("llvm=${pkgver}-${pkgrel}" 'ocaml')
 
-  cd "${srcdir}/${pkgbase}-${pkgver}"
+  cd "${srcdir}/${pkgbase}-${pkgver}.src"
 
   install -d "${pkgdir}"/{usr/lib,usr/share/doc/llvm}
   cp -r "${srcdir}/ocaml" "${pkgdir}/usr/lib"
@@ -119,9 +120,9 @@ depends=("llvm=${pkgver}-${pkgrel}" "gcc=${_gcc_ver}")
 
   # Fix installation path for clang docs
   sed -e 's:$(PROJ_prefix)/share/doc/llvm:$(PROJ_prefix)/share/doc/clang:' \
-      -i "${srcdir}/${pkgbase}-${pkgver}/Makefile.config"
+      -i "${srcdir}/${pkgbase}-${pkgver}.src/Makefile.config"
 
-  cd "${srcdir}/${pkgbase}-${pkgver}/tools/clang"
+  cd "${srcdir}/${pkgbase}-${pkgver}.src/tools/clang"
   make DESTDIR="${pkgdir}" install
 
   # Fix permissions of static libs
@@ -129,7 +130,7 @@ depends=("llvm=${pkgver}-${pkgrel}" "gcc=${_gcc_ver}")
 
   # Revert the path change in case we want to do a repackage later
   sed -e 's:$(PROJ_prefix)/share/doc/clang:$(PROJ_prefix)/share/doc/llvm:' \
-      -i "${srcdir}/${pkgbase}-${pkgver}/Makefile.config"
+      -i "${srcdir}/${pkgbase}-${pkgver}.src/Makefile.config"
 
   # Install old libstdc++ headers. Contains combined headers from
   # gcc 4.5.2-6-i686 and gcc-multilib-4.5.2-6-x86_64
@@ -144,7 +145,7 @@ pkgdesc="The Clang Static Analyzer is a tool that automatically finds bugs in yo
 url="http://clang-analyzer.llvm.org/"
 depends=("clang=${pkgver}-${pkgrel}" 'python2')
 
-  cd "${srcdir}/${pkgbase}-${pkgver}/tools/clang"
+  cd "${srcdir}/${pkgbase}-${pkgver}.src/tools/clang"
 
   install -d "${pkgdir}"/usr/{bin,lib/clang-analyzer}
   for _tool in scan-{build,view}; do
