@@ -1,6 +1,6 @@
 
 pkgname=pkgfile
-pkgver=13
+pkgver=14
 pkgrel=1
 pkgdesc="An alpm .files metadata explorer"
 arch=('x86_64')
@@ -9,12 +9,12 @@ license=('MIT')
 depends=('libarchive' 'curl' 'pcre' 'pacman')
 install=pkgfile.install
 source=("http://code.falconindy.com/archive/$pkgname/$pkgname-$pkgver.tar.xz")
-md5sums=('7b4e20bf3ec6604cd439d5acd6ca871d')
+md5sums=('aae3642bfe379731c7d9819b41bc1ab9')
 
 build() {
   cd "$pkgname-$pkgver"
 
-  ./configure
+  ./configure --with-systemdsystemunitdir=/usr/lib/systemd/system
   make
 
   # generate a license file
