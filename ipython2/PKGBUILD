@@ -1,0 +1,26 @@
+ 
+pkgname=ipython2
+_pkgname=ipython
+pkgver=2.0.0
+pkgrel=1
+pkgdesc="An enhanced Interactive Python shell, python2 version"
+arch=('x86_64')
+url="http://ipython.org"
+license=('BSD')
+depends=('python2' 'sqlite' 'python2-setuptools' 'python2-nose' 'sip' 'pyqt' 'python2-pygments' 
+         'python2-jinja') 
+source=("https://pypi.python.org/packages/source/i/ipython/${_pkgname}-${pkgver}.tar.gz")
+md5sums=('dd209ff8c7b08565478e4fc04bdf33ee')
+
+package() {
+  cd "${srcdir}/${_pkgname}-${pkgver}"
+  python2 setup.py install --prefix=/usr --root="$pkgdir" --optimize=0
+
+  find "${pkgdir}/" -name '*.pyc' -delete
+  install -Dm644 docs/source/about/license_and_copyright.rst "${pkgdir}/usr/share/licenses/ipython2/LICENSE"
+
+  cd "${srcdir}/${_pkgname}-${pkgver}/examples/IPython Kernel/"
+  sed -i 's/ython/ython2/g' *.desktop
+  install -Dm644 ipython.desktop "${pkgdir}/usr/share/applications/ipython2.desktop"
+  install -Dm644 ipython-qtconsole.desktop "${pkgdir}/usr/share/applications/ipython2-qtconsole.desktop"
+}
