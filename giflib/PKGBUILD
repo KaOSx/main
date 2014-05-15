@@ -9,14 +9,11 @@ license=('MIT')
 depends=('libx11' 'libsm')
 makedepends=('xmlto' 'docbook-xml' 'docbook-xsl')
 options=('!libtool')
-source=("http://downloads.sourceforge.net/sourceforge/giflib/${pkgname}-${pkgver}.tar.bz2"
-        'stdeff.patch')
-md5sums=('c7e9f1c10b755ab955156d4c1ac7fc5d'
-         '93986c1b831179f4e9ec675bc1cf203d')
+source=("http://downloads.sourceforge.net/sourceforge/giflib/${pkgname}-${pkgver}.tar.bz2")
+md5sums=('c7e9f1c10b755ab955156d4c1ac7fc5d')
 
 build() {
   cd ${srcdir}/${pkgname}-${pkgver}
-  patch -p1 -i $srcdir/stdeff.patch
   
   ./configure --prefix=/usr
   make
