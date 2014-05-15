@@ -1,7 +1,7 @@
 
 pkgname=qca
 pkgver=2.0.3
-pkgrel=3
+pkgrel=4
 pkgdesc="Qt Cryptographic Architecture"
 arch=('x86_64')
 url="http://delta.affinix.com/qca/"
@@ -14,8 +14,8 @@ md5sums=('fc15bd4da22b8096c51fcfe52d2fa309'
 
 build() {
 	cd $srcdir/${pkgname}-${pkgver}
-	
 	patch -p0 -i ${srcdir}/gcc.patch
+	
 	./configure \
 		--prefix=/usr \
 		--disable-tests \
