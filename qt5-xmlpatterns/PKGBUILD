@@ -1,9 +1,9 @@
 
 pkgname=qt5-xmlpatterns
-pkgver=5.3.0RC
-subver=5.3.0-RC
+pkgver=5.3.0
+subver=5.3.0
 _pkgver=5.3
-pkgrel=2
+pkgrel=1
 pkgdesc=('A cross-platform application and UI framework, QtXmlPatterns files')
 arch=('x86_64')
 url='http://qt.nokia.com/'
@@ -12,8 +12,8 @@ depends=('qt5-base')
 groups=('qt5')
 options=('!libtool')
 _pkgfqn="qtxmlpatterns-opensource-src-${subver}"
-source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/5.3.0-rc/submodules/$_pkgfqn.tar.xz")
-md5sums=('afd3dbe16984c5c6a7676e252811eb50')
+source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
+md5sums=('68c6e1311ecf8727368961739243d3b2')
 
 build() {
     cd $srcdir/$_pkgfqn

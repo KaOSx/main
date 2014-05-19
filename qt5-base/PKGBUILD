@@ -1,9 +1,9 @@
 
 pkgname=qt5-base
-pkgver=5.3.0RC
-subver=5.3.0-RC
+pkgver=5.3.0
+subver=5.3.0
 _pkgver=5.3
-pkgrel=2
+pkgrel=0.9
 pkgdesc=('A cross-platform application and UI framework')
 arch=('x86_64')
 url='http://qt.nokia.com/'
@@ -20,9 +20,9 @@ replaces=('qt5')
 groups=('qt5')
 options=('!libtool')
 _pkgfqn="qtbase-opensource-src-${subver}"
-#source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
-source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/5.3.0-rc/submodules/$_pkgfqn.tar.xz")
-md5sums=('df43986aca4b272fdd09a133b075bfd8')
+source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
+#source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
+md5sums=('4bc43a72e1b3d804171e5b52640e8d96')
 
 build() {
 	cd $srcdir/$_pkgfqn
@@ -49,7 +49,7 @@ build() {
 		-system-sqlite \
                 -openssl-linked \
                 -nomake tests \
-                -nomake examples \
+                -make examples \
                 -optimized-qmake \
                 -reduce-relocations \
                 -dbus-linked \

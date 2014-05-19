@@ -1,9 +1,9 @@
 
 pkgname=qt5-declarative
-pkgver=5.3.0RC
-subver=5.3.0-RC
+pkgver=5.3.0
+subver=5.3.0
 _pkgver=5.3
-pkgrel=3
+pkgrel=
 pkgdesc=('A cross-platform application and UI framework, QtDeclarative files')
 arch=('x86_64')
 url='http://qt.nokia.com/'
@@ -13,8 +13,8 @@ makedepends=('python2')
 groups=('qt5')
 options=('!libtool')
 _pkgfqn="qtdeclarative-opensource-src-${subver}"
-source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/5.3.0-rc/submodules/$_pkgfqn.tar.xz")
-md5sums=('be16e7df3fa57aac4557e0863e2f6ec3')
+source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
+md5sums=('9e29d2b481c771ce5c798a3319835673')
 
 build() {
     cd $srcdir/$_pkgfqn
