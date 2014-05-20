@@ -1,17 +1,17 @@
 
 pkgname=xf86-input-evdev
-pkgver=2.8.4
+pkgver=2.9.0
 pkgrel=1
 pkgdesc="X.org evdev input driver"
 arch=('x86_64')
 url="http://xorg.freedesktop.org/"
 license=('custom')
-depends=('glibc' 'systemd' 'mtdev' 'xf86driproto')
+depends=('glibc' 'systemd' 'mtdev' 'xf86driproto' 'libevdev')
 makedepends=('xorg-server>=1.15.0' 'resourceproto' 'scrnsaverproto')
 options=('!libtool' '!makeflags')
 groups=('xorg-drivers' 'xorg')
 source=("${url}/releases/individual/driver/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('3789fdc273eaf68572ed21236877dc2a')
+md5sums=('9076ae2646f7aeb30963056e0bbfccf0')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"

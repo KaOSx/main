@@ -1,19 +1,19 @@
 
 pkgname=xf86-input-synaptics
-pkgver=1.7.6
+pkgver=1.8.0
 pkgrel=1
 pkgdesc="Synaptics driver for notebook touchpads"
 arch=('x86_64')
 license=('custom')
 url="http://xorg.freedesktop.org/"
-depends=('libxtst' 'mtdev')
+depends=('libxtst' 'mtdev' 'libevdev')
 makedepends=('xorg-server>=1.15.0' 'libxi' 'libx11' 'resourceproto' 'scrnsaverproto')
 groups=('xorg-drivers' 'xorg')
 options=('!libtool')
 backup=('etc/X11/xorg.conf.d/50-synaptics.conf')
 source=("http://xorg.freedesktop.org/releases/individual/driver/${pkgname}-${pkgver}.tar.bz2"
         'tapbutton.patch')
-md5sums=('f1a501caa0da0bf0e78f249c5ed9bd73'
+md5sums=('27a3f2b31606a13dd6b58d419978d64f'
          '37e93467e7d9b6f67af301ccfd26f961')
 
 build() {
