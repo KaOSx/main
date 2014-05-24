@@ -3,8 +3,8 @@ pkgname=gsfonts
 _realname=urw-fonts
 pkgver=1.0.7pre44
 _fedoraver=2.4
-_fedorarel=15.fc19
-pkgrel=4
+_fedorarel=18.fc21
+pkgrel=5
 pkgdesc="Ghostscript standard Type1 fonts from URW"
 arch=('x86_64')
 url="http://sourceforge.net/projects/gs-fonts/"
@@ -14,7 +14,7 @@ makedepends=('rpmextract')
 provides=(${_realname})
 install=xfonts.install
 source=("http://kojipkgs.fedoraproject.org/packages/${_realname}/${_fedoraver}/${_fedorarel}/src/${_realname}-${_fedoraver}-${_fedorarel}.src.rpm")
-md5sums=('844d009abef21d0632f520132977ea3d')
+md5sums=('ceeaa7a6e75af2e966d19c7f5fcc79dd')
 
 build() {
   cd $srcdir
