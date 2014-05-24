@@ -7,18 +7,22 @@ arch=('x86_64')
 url="https://github.com/json-c/json-c/wiki"
 license=('MIT')
 options=('!libtool' '!makeflags')
-source=("https://s3.amazonaws.com/json-c_releases/releases/$pkgname-$pkgver.tar.gz")
-md5sums=('3ca4bbb881dfc4017e8021b5e0a8c491')
+#source=("https://s3.amazonaws.com/json-c_releases/releases/$pkgname-$pkgver.tar.gz"
+source=("git://github.com/json-c/json-c.git"
+        'error_description.patch')
+md5sums=('SKIP'
+         '3291ca5d0a456ece1280984da0d7d46f')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
-  
+  cd "${srcdir}/${pkgname}"
+  #patch -p1 -i ${srcdir}/error_description.patch
+  ./autogen.sh
   ./configure --prefix=/usr --disable-static
   make
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd "${srcdir}/${pkgname}"
   make DESTDIR="${pkgdir}" install
   
   install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"

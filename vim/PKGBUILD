@@ -1,9 +1,9 @@
 
 pkgname=vim
 _topver=7.4
-_patchlevel=205
+_patchlevel=307
 pkgver="${_topver}.${_patchlevel}"
-__hgrev=0ace3a24c2a0
+__hgrev=54d96e3b2eec
 pkgrel=1
 arch=('x86_64')
 pkgdesc='Vi Improved, a highly configurable, improved version of the vi text editor.'
@@ -14,6 +14,7 @@ makedepends=('python2>=2.7.1' 'ruby' 'libxt' 'libxext' 'libxpm' 'libxmu' 'deskto
              'gettext' 'pkgconfig' 'mercurial' 'rsync' 'sed')
 provides=('vim-runtime')
 conflicts=('vim-runtime')
+# check version https://code.google.com/p/vim/source/list
 source=('pythoncomplete.vim'::"http://www.vim.org/scripts/download_script.php?src_id=10872")
 md5sums=('6e7adfbd5d26c1d161030ec203a7f243')
 
