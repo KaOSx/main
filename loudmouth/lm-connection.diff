@@ -1,0 +1,21 @@
+--- loudmouth/lm-connection.c	2012-12-01 13:48:10.000000000 -0500
++++ loudmouth/lm-connection.c	2014-05-23 23:38:58.543814097 -0400
+@@ -1175,7 +1175,7 @@
+     LmConnection *connection;
+     gint          i;
+ 
+-    g_type_init (); /* Ensure that the GLib type library is initialized */
++   /* g_type_init (); Ensure that the GLib type library is initialized */
+     lm_debug_init ();
+     _lm_sock_library_init ();
+     
+--- loudmouth/test-dns.c	2012-12-01 13:48:10.000000000 -0500
++++ loudmouth/test-dns.c	2014-05-23 23:53:59.496255467 -0400
+@@ -40,7 +40,6 @@
+ #endif
+     LmResolver *srv_resolver;
+ 
+-    g_type_init ();
+ #if 0
+     resolver = lm_resolver_new_for_host ("kenny.imendio.com",
+                                          resolver_result_cb,
