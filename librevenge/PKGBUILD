@@ -1,0 +1,26 @@
+
+pkgname=librevenge
+pkgver=0.0.0
+pkgrel=1
+pkgdesc="Base library for writing document import filters. It has interfaces for text documents, 
+         vector graphics, spreadsheets and presentations."
+arch=('x86_64')
+url="http://sf.net/p/libwpd/librevenge/"
+license=('MPL 2.0')
+depends=('boost-libs' 'zlib')
+makedepends=('boost')
+source=("http://sourceforge.net/projects/libwpd/files/librevenge/librevenge-$pkgver/$pkgname-$pkgver.tar.xz")
+md5sums=('a3b3228f347646208813b664cbe332d0')
+
+build() {
+    cd $srcdir/$pkgname-$pkgver
+
+    ./configure --prefix=/usr
+    make
+}
+
+package() {
+    cd $srcdir/$pkgname-$pkgver
+
+    make DESTDIR="$pkgdir/" install
+}

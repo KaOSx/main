@@ -3,10 +3,10 @@ pkgbase=mesa
 pkgname=('mesa' 'libgl')
 pkgver=10.1.4
 _pkgver=10.1.4
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 makedepends=('glproto' 'libdrm' 'libxxf86vm' 'libxdamage' 'expat' 'llvm' 'libx11' 'libxt' 'gcc-libs'
-             'dri2proto' 'python2' 'libxml2' 'imake' 'systemd' 'libvdpau' 'wayland-git' 'dri3proto'
+             'dri2proto' 'python2' 'libxml2' 'imake' 'systemd' 'libvdpau' 'wayland' 'dri3proto'
              'presentproto' 'libxshmfence' 'elfutils')
 url="http://mesa3d.sourceforge.net"
 license=('custom')
@@ -68,7 +68,7 @@ package_libgl() {
 }
 
 package_mesa() {
-  depends=('libx11' 'libxt' 'gcc-libs' 'libvdpau' 'dri2proto' 'glproto' 'wayland-git' 'elfutils'
+  depends=('libx11' 'libxt' 'gcc-libs' 'libvdpau' 'dri2proto' 'glproto' 'wayland' 'elfutils'
            'libdrm' 'libxxf86vm' 'libxdamage' 'expat' 'libxshmfence') 
   optdepends=('opengl-man-pages: for the OpenGL API man pages')
   pkgdesc="Mesa 3-D graphics libraries and include files"
