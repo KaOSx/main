@@ -1,0 +1,30 @@
+
+pkgname=wayland
+pkgver=1.5.0
+pkgrel=1
+pkgdesc="Wayland the modern display server."
+arch=('x86_64')
+url="http://wayland.freedesktop.org"
+license=('MIT')
+depends=('libffi' 'expat')
+makedepends=('doxygen')
+options=('!makeflags' '!libtool')
+replaces=('wayland-git')
+provides=('wayland-git')
+conflicts=('wayland-git')
+source=("http://wayland.freedesktop.org/releases/$pkgname-$pkgver.tar.xz")
+md5sums=('1d882776b27329b91d2d500b6d66dd1d')
+
+build() {
+	cd ${srcdir}/$pkgname-$pkgver
+
+	./configure --prefix=/usr --disable-static 
+	make 
+}
+
+package() {
+     cd ${srcdir}/$pkgname-$pkgver
+     
+     make DESTDIR="${pkgdir}" install
+     install -Dm 644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
+}
