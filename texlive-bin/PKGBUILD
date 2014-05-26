@@ -1,7 +1,7 @@
 
 pkgname=texlive-bin
 pkgver=2013.30973
-pkgrel=4
+pkgrel=5
 pkgdesc="TeX Live binaries"
 url='http://tug.org/texlive/'
 license=('GPL')
@@ -12,8 +12,15 @@ makedepends=('perl' 'clisp' 'ffcall')
 optdepends=('ed: for texconfig')
 options=('!libtool' '!strip')
 install="texlive.install"
-source=("http://mirrors.kernel.org/archlinux/other/texlive/texlive-bin-source-${pkgver}.tar.xz")
-md5sums=('0a8ffd5c0002a080a4202057b1f106c6')
+source=("http://mirrors.kernel.org/archlinux/other/texlive/texlive-bin-source-${pkgver}.tar.xz"
+        'poppler0.26.patch')
+md5sums=('0a8ffd5c0002a080a4202057b1f106c6'
+         'c265671f91890ed442bf76ab74d8c66c')
+
+prepare() {
+   cd source
+   patch -p2 -i "$srcdir"/poppler0.26.patch
+}
 
 build() {
    export CFLAGS="${CFLAGS} -fPIC"

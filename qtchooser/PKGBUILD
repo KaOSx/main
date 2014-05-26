@@ -1,0 +1,30 @@
+
+pkgname=qtchooser
+pkgver=41
+pkgrel=1
+pkgdesc='Wrap the other Qt tools by searching for different instances of Qt on the system'
+arch=('x86_64')
+url='http://qt.gitorious.org/qt/qtchooser'
+license=('GPL')
+backup=('etc/xdg/qtchooser/default.conf')
+depends=('gcc-libs')
+makedepends=('git')
+source=("git://gitorious.org/qt/${pkgname}.git#commit=7985f775fb9cf9b77bbbb394a832f0c5f26de47c"
+        'default.conf')
+md5sums=('SKIP'
+         'c144eb69a3191e7d47d36c18a5b83dcc')
+
+build() {
+  cd ${pkgname}
+
+  make
+}
+
+package() {
+  cd ${pkgname}
+  make INSTALL_ROOT="${pkgdir}" install
+
+  install -d "${pkgdir}"/etc/xdg/qtchooser
+  install -m644 "${srcdir}"/default.conf "${pkgdir}"/etc/xdg/qtchooser/
+}
+

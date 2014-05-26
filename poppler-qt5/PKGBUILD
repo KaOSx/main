@@ -1,0 +1,43 @@
+
+pkgbase=poppler
+pkgname=poppler-qt5
+pkgver=0.26.1
+pkgrel=1
+pkgdesc="Poppler Qt5 bindings"
+arch=('x86_64')
+license=('GPL')
+depends=("poppler=${pkgver}" 'qt5-base')
+makedepends=('pkgconfig' 'icu' 'qtchooser')
+options=('!libtool')
+url="http://poppler.freedesktop.org/"
+source=("http://poppler.freedesktop.org/${pkgbase}-${pkgver}.tar.xz")
+md5sums=('3e864e1e94fc8432e90afe9bab1a5603')
+
+
+build() {
+  cd "${srcdir}/${pkgbase}-${pkgver}"
+  
+  ./configure --prefix=/usr --sysconfdir=/etc \
+      --localstatedir=/var --disable-static \
+      --enable-cairo-output \
+      --enable-xpdf-headers \
+      --enable-libjpeg --enable-zlib \
+      --disable-poppler-qt4 \
+      --enable-poppler-qt5 \
+      --disable-poppler-glib 
+      
+  make
+}
+
+package() {
+  cd "${srcdir}/${pkgbase}-${pkgver}/poppler"
+  make DESTDIR="${pkgdir}" install-libLTLIBRARIES
+
+  cd "${srcdir}/${pkgbase}-${pkgver}/qt5"
+  make DESTDIR="${pkgdir}" install
+
+  install -m755 -d "${pkgdir}/usr/lib/pkgconfig"
+  install -m644 ../poppler-qt5.pc "${pkgdir}/usr/lib/pkgconfig/"
+  rm -f "${pkgdir}"/usr/lib/libpoppler.*
+}
+

@@ -1,36 +1,30 @@
 
 pkgbase=poppler
-pkgname=('poppler' 'poppler-glib' 'poppler-qt' 'poppler-qt5')
-pkgver=0.24.5
-pkgrel=2
+pkgname=('poppler' 'poppler-glib' 'poppler-qt')
+pkgver=0.26.1
+pkgrel=1
 arch=('x86_64')
 license=('GPL')
 makedepends=('libjpeg-turbo' 'gcc-libs' 'cairo' 'libxml2' 'fontconfig' 'openjpeg' 'qt'
-             'pkgconfig' 'lcms2' 'qt5-base')
+             'pkgconfig' 'lcms2' 'fontconfig' 'icu' 'gobject-introspection')
 options=('!libtool')
 url="http://poppler.freedesktop.org/"
-source=("http://poppler.freedesktop.org/${pkgname}-${pkgver}.tar.xz"
-        'mocversiongrep.patch')
-md5sums=('334f2ac95cc8039f2a57fe63e4a81c69'
-         'd5280e4eb6d02660971bdaa45065933f')
+source=("http://poppler.freedesktop.org/${pkgname}-${pkgver}.tar.xz")
+md5sums=('3e864e1e94fc8432e90afe9bab1a5603')
 
 
 build() {
   cd "${srcdir}/${pkgbase}-${pkgver}"
-  patch -p1 -i "${srcdir}"/mocversiongrep.patch
-  sed -i -e '/AC_PATH_XTRA/d' configure.ac
-  sed -i "s:AM_CONFIG_HEADER:AC_CONFIG_HEADERS:" configure.ac
   
-  autoreconf -fi
   ./configure --prefix=/usr --sysconfdir=/etc \
       --localstatedir=/var --disable-static \
       --enable-cairo-output \
       --enable-xpdf-headers \
       --enable-libjpeg --enable-zlib \
       --enable-poppler-qt4 \
-      --enable-poppler-qt5 \
-      --enable-poppler-glib \
-      --disable-gtk
+      --disable-poppler-qt5 \
+      --enable-poppler-glib 
+      
   make
 }
 
@@ -49,7 +43,7 @@ package_poppler() {
 
 package_poppler-glib() {
   pkgdesc="Poppler glib bindings"
-  depends=("poppler=${pkgver}")
+  depends=("poppler=${pkgver}" 'glib2')
 
   cd "${srcdir}/${pkgbase}-${pkgver}/poppler"
   make DESTDIR="${pkgdir}" install-libLTLIBRARIES
@@ -63,7 +57,7 @@ package_poppler-glib() {
 
 package_poppler-qt() {
   pkgdesc="Poppler Qt bindings"
-  depends=("poppler=${pkgver}" 'qt>=4.7.0')
+  depends=("poppler=${pkgver}" 'qt')
 
   cd "${srcdir}/${pkgbase}-${pkgver}/poppler"
   make DESTDIR="${pkgdir}" install-libLTLIBRARIES
@@ -74,15 +68,15 @@ package_poppler-qt() {
   rm -f "${pkgdir}"/usr/lib/libpoppler.*
 }
 
-package_poppler-qt5() {
-  pkgdesc="Poppler Qt5 bindings"
-  depends=("poppler=${pkgver}" 'qt5-base')
+#package_poppler-qt5() {
+#  pkgdesc="Poppler Qt5 bindings"
+#  depends=("poppler=${pkgver}" 'qt5-base')
 
-  cd "${srcdir}/${pkgbase}-${pkgver}/poppler"
-  make DESTDIR="${pkgdir}" install-libLTLIBRARIES
-  cd "${srcdir}/${pkgbase}-${pkgver}/qt5"
-  make DESTDIR="${pkgdir}" install
-  install -m755 -d "${pkgdir}/usr/lib/pkgconfig"
-  install -m644 ../poppler-qt5.pc "${pkgdir}/usr/lib/pkgconfig/"
-  rm -f "${pkgdir}"/usr/lib/libpoppler.*
-}
+#  cd "${srcdir}/${pkgbase}-${pkgver}/poppler"
+#  make DESTDIR="${pkgdir}" install-libLTLIBRARIES
+#  cd "${srcdir}/${pkgbase}-${pkgver}/qt5"
+#  make DESTDIR="${pkgdir}" install
+#  install -m755 -d "${pkgdir}/usr/lib/pkgconfig"
+#  install -m644 ../poppler-qt5.pc "${pkgdir}/usr/lib/pkgconfig/"
+#  rm -f "${pkgdir}"/usr/lib/libpoppler.*
+#}
