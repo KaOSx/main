@@ -1,6 +1,6 @@
 
 pkgname=libtimezonemap
-pkgver=0.4.1
+pkgver=0.4.3
 pkgrel=1
 pkgdesc="GTK+3 timezone map widget"
 arch=('x86_64')
@@ -10,20 +10,20 @@ depends=('gtk3' 'json-glib')
 makedepends=('gobject-introspection' 'intltool')
 options=('!libtool')
 source=("https://launchpad.net/ubuntu/+archive/primary/+files/${pkgname}_${pkgver}.tar.gz")
-md5sums=('8f4fe2b6f4c777c9a999d5eeb8d66b')
+md5sums=('30caa760d9d3e27f7c54e2fe289784d6')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+   cd "${srcdir}/${pkgname}-${pkgver}"
   
-  autoreconf -vfi
-  ./configure --prefix=/usr --enable-introspection --with-gtk=3
-  make
+   autoreconf -vfi
+   ./configure --prefix=/usr --enable-introspection 
+   make
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+   cd "${srcdir}/${pkgname}-${pkgver}"
   
-  make DESTDIR="${pkgdir}/" install
+   make DESTDIR="${pkgdir}/" install
 }
 
 

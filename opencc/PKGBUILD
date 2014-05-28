@@ -1,0 +1,27 @@
+
+pkgname=opencc
+pkgver=0.4.3
+pkgrel=1
+url="http://code.google.com/p/opencc/"
+arch=('x86_64')
+pkgdesc="Library for Open Chinese Convert"
+license=('Apache')
+depends=('glibc')
+makedepends=('cmake' 'doxygen')
+source=("http://opencc.googlecode.com/files/${pkgname}-${pkgver}.tar.gz")
+md5sums=('e803b4419872c97d984d25544eef2951')
+
+build() {
+  cd ${pkgname}-${pkgver}
+
+  cmake -DCMAKE_INSTALL_PREFIX=/usr \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DBUILD_DOCUMENTATION:BOOL=ON
+  make
+}
+
+package() {
+  cd ${pkgname}-${pkgver}
+
+  make DESTDIR="${pkgdir}" install
+}

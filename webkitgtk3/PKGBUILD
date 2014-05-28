@@ -1,0 +1,34 @@
+
+pkgname=webkitgtk3
+_pkgname=webkitgtk
+pkgver=2.4.3
+pkgrel=1
+pkgdesc="GNOME platform port of the WebKit rendering engine, offering WebKit’s full functionality"
+arch=('x86_64')
+url="http://webkitgtk.org/"
+license=('custom')
+depends=('sqlite' 'libsoup' 'libsecret' 'enchant' 'libgl' 'gst-plugins-base' 'gst-plugins-good'
+         'gtk3' 'libwebp' 'libxslt' 'libxt' 'harfbuzz')
+makedepends=('gperf' 'gobject-introspection' 'python3' 'mesa' 'ruby' 'gtk2')
+options=('!emptydirs')
+source=("http://webkitgtk.org/releases/$_pkgname-${pkgver}.tar.xz")
+md5sums=('c5861552d9ecd6d7854a4d462ff25924')
+
+build() {
+   cd "$_pkgname-$pkgver"
+  
+   ./configure --prefix=/usr \
+       --prefix=/usr \
+       --enable-introspection \
+       --disable-geolocation
+   
+   sed -i 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
+   make all stamp-po
+}
+
+package() {
+   cd "$_pkgname-$pkgver"
+   make -j1 DESTDIR="$pkgdir" install
+
+   install -Dm644 $srcdir/$_pkgname-$pkgver/Source/WebKit/LICENSE "$pkgdir/usr/share/licenses/webkitgtk/LICENSE"
+}
