@@ -1,0 +1,21 @@
+
+pkgname=keyboardctl
+pkgver=0.1.5
+pkgrel=1
+arch=('x86_64')
+pkgdesc="Keymap setup program"
+url="https://github.com/manjaro/keyboardctl"
+license=('GPL')
+options=('emptydirs')
+depends=('kbd' 'xkeyboard-config' 'systemd')
+makedepends=('git')
+install=keyboardctl.install
+backup=('etc/keyboard.conf')
+source=("git://github.com/manjaro/keyboardctl.git")
+md5sums=('SKIP')
+
+package() {
+  cd ${srcdir}/${pkgname}
+
+  make DESTDIR="$pkgdir" install
+}
