@@ -1,0 +1,18 @@
+
+pkgname=python3-configobj
+pkgver=5.0.5
+pkgrel=1
+pkgdesc='Simple but powerful config file reader and writer for Python'
+arch=('x86_64')
+url='https://github.com/DiffSK/configobj'
+license=('BSD')
+depends=('python3')
+source=("https://github.com/DiffSK/configobj/archive/v$pkgver.zip")
+md5sums=('7ed10a233425237e028e9305eeb59b03')
+
+package() {
+  cd "configobj-$pkgver"
+  python3 setup.py install --root="$pkgdir" --optimize=1
+
+  install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}
