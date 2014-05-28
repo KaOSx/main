@@ -1,24 +1,24 @@
 
-pkgname=python2-six
+pkgname=python3-six
 pkgver=1.6.1
 pkgrel=1
-pkgdesc="Python 2 compatibility utilities"
+pkgdesc="Python 3 compatibility utilities"
 arch=('x86_64')
 url="http://pypi.python.org/pypi/six/"
 license=('MIT')
-depends=('python2')
+depends=('python3')
 source=("http://pypi.python.org/packages/source/s/six/six-$pkgver.tar.gz")
 md5sums=('07d606ac08595d795bf926cc9985674f')
 
 check() {
   cd $srcdir/six-$pkgver 
   
-  python2 setup.py check
+  python3 setup.py check
 }
 
 package() {
   cd $srcdir/six-$pkgver 
-  python2 setup.py install --root "${pkgdir}" --optimize=1
+  python3 setup.py install --root "${pkgdir}" --optimize=1
   
   install -Dm644 "${srcdir}/six-${pkgver}/LICENSE" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
 }
