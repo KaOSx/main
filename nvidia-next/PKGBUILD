@@ -3,8 +3,8 @@ _extramodules=extramodules-3.15-rc7-next
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=nvidia-next
-pkgver=334.21
-pkgrel=9
+pkgver=337.25
+pkgrel=1
 pkgdesc="NVIDIA drivers for linux."
 arch=('x86_64')
 url="http://www.nvidia.com/"
@@ -16,11 +16,9 @@ options=('!strip')
 _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 #_pkg="NVIDIA-Linux-x86_64-${pkgver}"
 source=("ftp://download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
-        'acpi_os_wait_events_complete.patch'
-        'linux-3.14.patch')
-md5sums=('f96b6708702830fe647a7d11832c514e'
-         '7e146069c9f09295581201d987a55efd'
-         '78fba9b905da1bb0c83cbbc6a09cf9c0')
+        'acpi_os_wait_events_complete.patch')
+md5sums=('66e19d6d621c9e70fbd5374dd8b44341'
+         '7e146069c9f09295581201d987a55efd')
 
 build() {
   cd "${srcdir}" 
@@ -28,7 +26,6 @@ build() {
   
   cd "${_pkg}"
   #patch -p1 -i ${srcdir}/acpi_os_wait_events_complete.patch
-  patch -p1 -i "${srcdir}"/linux-3.14.patch
   
   cd "${srcdir}/${_pkg}/kernel"
   make SYSSRC=/lib/modules/"${_kver}/build" module
