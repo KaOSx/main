@@ -1,13 +1,13 @@
 post_install() {
-    ln -s '/usr/lib/systemd/system/keyboardctl.service' '/etc/systemd/system/sysinit.target.wants/keyboardctl.service'
+    systemctl enable keyboardctl.service 
 }
 
 post_upgrade() {
-    rm '/etc/systemd/system/sysinit.target.wants/keyboardctl.service'
-    ln -s '/usr/lib/systemd/system/keyboardctl.service' '/etc/systemd/system/sysinit.target.wants/keyboardctl.service'
+    systemctl reenable keyboardctl.service 
+    
 }
 
 pre_remove() {
-    rm '/etc/systemd/system/sysinit.target.wants/keyboardctl.service'
+    systemctl disable keyboardctl.service
 }
 

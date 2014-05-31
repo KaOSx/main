@@ -1,7 +1,7 @@
 
 pkgname=pyqt-python2
-pkgver=4.11
-_snapshot=578e568cc881
+pkgver=4.11.1
+_snapshot=9d5a6843b580
 pkgrel=1
 pkgdesc="A set of Python bindings for the Qt toolkit"
 arch=('x86_64')
@@ -16,14 +16,14 @@ optdepends=('phonon: enable audio and video in PyQt applications'
 provides=('pyqt4' 'pyqt')
 replaces=('pyqt4' 'pyqt')
 conflicts=('pyqt4' 'pyqt')
-source=("http://sourceforge.net/projects/pyqt/files/PyQt4/PyQt-${pkgver}/PyQt-x11-gpl-${pkgver}.tar.gz"
-#source=("http://www.riverbankcomputing.com/static/Downloads/PyQt4/PyQt-x11-gpl-4.10.4-snapshot-$_snapshot.tar.gz"
+#source=("http://sourceforge.net/projects/pyqt/files/PyQt4/PyQt-${pkgver}/PyQt-x11-gpl-${pkgver}.tar.gz"
+source=("http://www.riverbankcomputing.com/static/Downloads/PyQt4/PyQt-x11-gpl-${pkgver}-snapshot-$_snapshot.tar.gz"
         'yali.patch')
-md5sums=('8b991f95fec9582cdcc1bf1f4ac02406'
+md5sums=('ee154390402f80a0682a70aacf120d83'
          '8eac0cc6cfe118052de3092f85e029a0')
 
 build() {
-  cd ${srcdir}/PyQt-x11-gpl-${pkgver}
+  cd ${srcdir}/PyQt-x11-gpl-${pkgver}-snapshot-$_snapshot
   # only for yali builds, needs 4.9.6 to use this patch
   #patch -p0 -i ${srcdir}/yali.patch
 
@@ -38,7 +38,7 @@ build() {
 }
 
 package(){
-  cd ${srcdir}/PyQt-x11-gpl-${pkgver}
+  cd ${srcdir}/PyQt-x11-gpl-${pkgver}-snapshot-$_snapshot
   # INSTALL_ROOT is needed for the QtDesigner module, the other Makefiles use DESTDIR
   make DESTDIR="${pkgdir}" INSTALL_ROOT="${pkgdir}" install
 }

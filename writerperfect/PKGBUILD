@@ -1,0 +1,26 @@
+
+pkgname=writerperfect
+pkgver=0.9.0
+pkgrel=1
+pkgdesc="libwpd utilities for converting WordPerfect(tm) and Visio(tm) documents to odt and odg"
+arch=('x86_64')
+url="http://sourceforge.net/projects/libwpd"
+license=('LGPL')
+depends=('libwpd' 'libwpg' 'libwps' 'libvisio' 'libgsf' 'librevenge')
+makedepends=('libtool' 'glib2')
+source=("http://downloads.sourceforge.net/project/libwpd/$pkgname/$pkgname-$pkgver/$pkgname-$pkgver.tar.xz")
+md5sums=('e22f15f92902fbc227e99475852ee3a6')
+
+build() {
+   cd "$srcdir/$pkgname-$pkgver"
+
+   ./autogen.sh
+   ./configure --prefix=/usr --disable-werror
+   make 
+}
+
+package() {
+  cd "$srcdir/$pkgname-$pkgver"
+
+  make DESTDIR="$pkgdir" install
+}
