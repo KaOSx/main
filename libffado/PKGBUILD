@@ -1,7 +1,7 @@
 
 pkgname=libffado
-pkgver=2.1.0
-pkgrel=7
+pkgver=2.2.1
+pkgrel=1
 pkgdesc="Driver for FireWire audio devices"
 arch=('x86_64')
 url="http://www.ffado.org/"
@@ -10,10 +10,8 @@ depends=('libiec61883' 'libavc1394' 'libsigc++' 'libxml++' 'alsa-lib' 'dbus' 'li
          'dbus-c++')
 makedepends=('scons' 'pyqt' 'python2')
 optdepends=('python2: ffado-diag')
-source=("http://www.ffado.org/files/libffado-$pkgver.tgz"
-        '60-ffado.rules')
-md5sums=('26bce2be0b9c1fa4e614f2f494edf388'
-         '9934d85ca2a741e7f8c3a1f4da7c2895')
+source=("http://www.ffado.org/files/libffado-$pkgver.tgz")
+md5sums=('e113d828835051f835fb4a329cb0cbd4')
 
 build() {
   cd "$srcdir/$pkgname-$pkgver"
@@ -40,9 +38,5 @@ package() {
   install -Dm644 support/xdg/ffado.org-ffadomixer.desktop "$pkgdir/usr/share/applications/ffadomixer.desktop"
 
   install -Dm644 support/xdg/hi64-apps-ffado.png "$pkgdir/usr/share/pixmaps/ffado.png"
-    
-  # systemd does not allow midsentence comments, should be fixed upstream soon
-  rm "$pkgdir/usr/lib/udev/rules.d/60-ffado.rules"
-  install -Dm644 "$srcdir/60-ffado.rules" "$pkgdir/usr/lib/udev/rules.d/60-ffado.rules"
 }
 
