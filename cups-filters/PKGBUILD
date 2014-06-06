@@ -1,7 +1,7 @@
 
 pkgname=cups-filters
-pkgver=1.0.53
-pkgrel=2
+pkgver=1.0.54
+pkgrel=1
 pkgdesc="OpenPrinting CUPS Filters"
 arch=('x86_64')
 url="http://www.linuxfoundation.org/collaborate/workgroups/openprinting"
@@ -15,7 +15,7 @@ optdepends=('ghostscript: for non-PostScript printers to print with CUPS to conv
 backup=(etc/fonts/conf.d/99pdftoopvp.conf)
 options=('!libtool')
 source=("http://www.openprinting.org/download/cups-filters/$pkgname-$pkgver.tar.xz")
-md5sums=('85c605f82cddfd9990a17f1ffaf51eec')
+md5sums=('181ee0e6c27cfbb05e241f0267363678')
 
 build() {
   cd "$srcdir/$pkgname-$pkgver"
