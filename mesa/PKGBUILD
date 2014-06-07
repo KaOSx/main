@@ -1,19 +1,19 @@
 
 pkgbase=mesa
 pkgname=('mesa' 'libgl')
-pkgver=10.1.4
-_pkgver=10.1.4
-pkgrel=2
+pkgver=10.2.1
+_pkgver=10.2.1
+pkgrel=1
 arch=('x86_64')
 makedepends=('glproto' 'libdrm' 'libxxf86vm' 'libxdamage' 'expat' 'llvm' 'libx11' 'libxt' 'gcc-libs'
              'dri2proto' 'python2' 'libxml2' 'imake' 'systemd' 'libvdpau' 'wayland' 'dri3proto'
-             'presentproto' 'libxshmfence' 'elfutils')
+             'presentproto' 'libxshmfence' 'elfutils' 'libomxil-bellagio' 'clang')
 url="http://mesa3d.sourceforge.net"
 license=('custom')
 source=(${source[@]} "ftp://ftp.freedesktop.org/pub/mesa/${_pkgver}/MesaLib-${_pkgver}.tar.bz2" 
 #source=("mesa::git://anongit.freedesktop.org/mesa/mesa#branch=master"
        'LICENSE')
-md5sums=('6fddee101f49b7409cd29994c34ddee7'
+md5sums=('093f9b5d077e5f6061dcd7b01b7aa51a'
          '5c65a0fe315dd347e09b1f2826a1df5a')
 
 build() {
@@ -31,7 +31,8 @@ build() {
     --enable-gallium-egl \
     --enable-gallium-gbm \
     --with-egl-platforms=x11,drm,wayland \
-    --with-llvm-shared-libs \
+    --enable-llvm-shared-libs \
+    --with-clang-libdir=/usr/lib \
     --enable-shared-glapi \
     --enable-gbm \
     --enable-glx-tls \
@@ -45,7 +46,8 @@ build() {
     --enable-xa \
     --enable-vdpau \
     --enable-dri3 \
-    --enable-openvg
+    --enable-openvg \
+    --enable-omx 
     
   make
 }
@@ -69,8 +71,7 @@ package_libgl() {
 
 package_mesa() {
   depends=('libx11' 'libxt' 'gcc-libs' 'libvdpau' 'dri2proto' 'glproto' 'wayland' 'elfutils'
-           'libdrm' 'libxxf86vm' 'libxdamage' 'expat' 'libxshmfence') 
-  optdepends=('opengl-man-pages: for the OpenGL API man pages')
+           'libdrm' 'libxxf86vm' 'libxdamage' 'expat' 'libxshmfence' 'libclc' 'libomxil-bellagio') 
   pkgdesc="Mesa 3-D graphics libraries and include files"
   provides=('libglapi''libgles' 'libegl' 'khrplatform-devel' 'ati-dri' 'intel-dri' 'svga-dri' 'nouveau-dri')
   conflicts=('libglapi' 'libgles' 'libegl' 'khrplatform-devel' 'ati-dri' 'intel-dri' 'svga-dri' 'nouveau-dri')
