@@ -1,13 +1,13 @@
 
-_extramodules=extramodules-3.13
+_extramodules=extramodules-3.14
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=('nvidia-304xx' 'khd-nvidia-304xx')
 pkgver=304.121
-pkgrel=2
+pkgrel=3
 arch=('x86_64')
 url="http://www.nvidia.com/"
-makedepends=('linux-headers' 'linux>=3.13' 'linux<3.14' "nvidia-304xx-utils=${pkgver}")
+makedepends=('linux-headers' 'linux>=3.14' 'linux<3.15' "nvidia-304xx-utils=${pkgver}")
 license=('custom')
 source=("https://raw.github.com/KaOSx/hardware-detection/master/hwdb/nvidia_supported")
 md5sums=('62d0cdb856cfae64753c0f3acf729d47')
@@ -27,7 +27,7 @@ build() {
 
 package_nvidia-304xx() {
     pkgdesc="NVIDIA drivers for linux."
-    depends=('linux>=3.13' 'linux<3.14' "nvidia-304xx-utils=${pkgver}")
+    depends=('linux>=3.14' 'linux<3.15' "nvidia-304xx-utils=${pkgver}")
     conflicts=('nvidia')
     install=nvidia.install
     
