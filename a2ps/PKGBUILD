@@ -1,7 +1,7 @@
 
 pkgname=a2ps
 pkgver=4.14
-pkgrel=3
+pkgrel=4
 pkgdesc="An Any to PostScript filter"
 arch=('x86_64')
 url="http://www.gnu.org/software/a2ps/"
@@ -49,7 +49,7 @@ build() {
   libtoolize --force --copy
   autoreconf --force --install -I m4 
   
-  ./configure --prefix=/usr \
+  LIBS+="-lm" ./configure --prefix=/usr \
        --sysconfdir=/etc/a2ps \
        --includedir=/usr/include \
        --enable-shared \
