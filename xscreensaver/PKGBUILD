@@ -1,18 +1,18 @@
 
 pkgname=xscreensaver
-pkgver=5.23
+pkgver=5.29
 pkgrel=1
 pkgdesc="Screen saver and locker for the X Window System"
 arch=('x86_64')
 url="http://www.jwz.org/xscreensaver/"
 license=('BSD')
 depends=('mesa' 'pam' 'xorg-res-utils' 'libxmu' 'libjpeg-turbo' 'libglade' 'glu')
-makedepends=('bc' 'libxpm' 'mesa')
+makedepends=('bc' 'intltool' 'libxpm' 'mesa')
 backup=('etc/pam.d/xscreensaver')
 source=("http://www.jwz.org/xscreensaver/${pkgname}-${pkgver}.tar.gz"
         'add-electricsheep.diff'
         'LICENSE')
-md5sums=('da1fa6978520fc45b87155480ab222c9'
+md5sums=('14f9104fa03f85371f885bdad956764d'
          '259e8bdb61b3a7c6f752c81e72afe4cf'
          '5e7f3f2a63d20a484742f5b4cb5d572c')
 
