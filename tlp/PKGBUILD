@@ -1,27 +1,33 @@
 
 pkgname=tlp
-pkgver=0.4.1
+pkgver=0.5
 pkgrel=1
 pkgdesc='Linux Advanced Power Management'
 arch=('x86_64')
 url='http://linrunner.de/en/tlp/docs/tlp-linux-advanced-power-management.html'
-license=('GPL2')
-depends=('bash' 'hdparm' 'perl' 'rfkill' 'wireless_tools' 'networkmanager' 'smartmontools' 'iw' 'tp_smapi')
+license=('GPL2' 'GPL3')
+depends=('bash' 'hdparm' 'perl' 'rfkill' 'wireless_tools' 'networkmanager' 'smartmontools' 
+         'iw' 'tp_smapi' 'acpi_call')
 conflicts=('pm-utils')
 backup=('etc/default/tlp')
 source=("https://github.com/linrunner/TLP/archive/${pkgver}.tar.gz"
         'path.patch')
-md5sums=('43cb7a875e4237cbb1392294585ccc4f'
+md5sums=('93b2162cb278b3b5757d701edf2e1f7a'
          '364b2d126ad0affd7e426de191f519dd')
 
 prepare() {
     cd TLP-${pkgver}
-
-    patch -p1 -i ${srcdir}/path.patch
+    sed -i -e 's|/lib/udev/tlp-usb-udev|/usr/lib/udev/tlp-usb-udev|' ${srcdir}/TLP-${pkgver}/tlp.rules
+    #patch -p1 -i ${srcdir}/path.patch
 }
 
 package() {
     cd TLP-${pkgver}
+    
+    export TLP_ULIB='/usr/lib/udev'
+    export TLP_NO_INIT='1'
+    export TLP_NO_PMUTILS='1'
+
     make DESTDIR="${pkgdir}" install
 
 
