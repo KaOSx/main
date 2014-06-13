@@ -1,6 +1,6 @@
 
 pkgname=gst-plugins-ugly
-pkgver=1.0.3
+pkgver=1.2.4
 pkgrel=1
 pkgdesc="GStreamer Multimedia Framework Ugly Plugins"
 arch=('x86_64')
@@ -8,15 +8,14 @@ license=('LGPL')
 url="http://gstreamer.freedesktop.org/"
 depends=('gst-plugins-base' 'libdvdread' 'lame' 'libmpeg2' 'a52dec'
          'libmad' 'libsidplay' 'libcdio' 'x264' 'opencore-amr')
-options=(!libtool !emptydirs)
-source=(${url}/src/$pkgname/$pkgname-$pkgver.tar.xz)
-md5sums=('b8f4cfef12201f19c53a4cde7bc4fef995740c566ea45921d4473f3714e4d8c0')
+makedepends=('python3')
+options=('!libtool' '!emptydirs')
+source=("http://gstreamer.freedesktop.org/src/$pkgname/$pkgname-$pkgver.tar.xz")
+md5sums=('c87a27db498bb736f6c266198657ea74')
 
 build() {
   cd $pkgname-$pkgver
-  sed -i '/AC_PATH_XTRA/d' configure.ac
-  
-  autoreconf
+
   ./configure --prefix=/usr \
     --sysconfdir=/etc \
     --localstatedir=/var \
