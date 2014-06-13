@@ -1,14 +1,14 @@
 
 pkgname=mcpp
 pkgver=2.7.2
-pkgrel=3
+pkgrel=4
 pkgdesc="Matsui's CPP implementation precisely conformed to standards"
 arch=('x86_64')
 license=('custom')
 url="http://mcpp.sourceforge.net"
 depends=('glibc')
-options=(!libtool)
-source=("http://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tar.gz"
+options=('!libtool')
+source=("http://downloads.sourceforge.net/mcpp/${pkgname}-${pkgver}.tar.gz"
 	'namlen.patch'
 	'mcpp-comments.patch')
 md5sums=('512de48c87ab023a69250edc7a0c7b05'
