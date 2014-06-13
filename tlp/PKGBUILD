@@ -10,15 +10,12 @@ depends=('bash' 'hdparm' 'perl' 'rfkill' 'wireless_tools' 'networkmanager' 'smar
          'iw' 'tp_smapi' 'acpi_call')
 conflicts=('pm-utils')
 backup=('etc/default/tlp')
-source=("https://github.com/linrunner/TLP/archive/${pkgver}.tar.gz"
-        'path.patch')
-md5sums=('93b2162cb278b3b5757d701edf2e1f7a'
-         '364b2d126ad0affd7e426de191f519dd')
+source=("https://github.com/linrunner/TLP/archive/${pkgver}.tar.gz")
+md5sums=('93b2162cb278b3b5757d701edf2e1f7a')
 
 prepare() {
     cd TLP-${pkgver}
     sed -i -e 's|/lib/udev/tlp-usb-udev|/usr/lib/udev/tlp-usb-udev|' ${srcdir}/TLP-${pkgver}/tlp.rules
-    #patch -p1 -i ${srcdir}/path.patch
 }
 
 package() {
