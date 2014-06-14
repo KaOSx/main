@@ -4,7 +4,7 @@ _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=nvidia-next
 pkgver=337.25
-pkgrel=3
+pkgrel=4
 pkgdesc="NVIDIA drivers for linux."
 arch=('x86_64')
 url="http://www.nvidia.com/"
@@ -29,13 +29,17 @@ build() {
   
   cd "${srcdir}/${_pkg}/kernel"
   make SYSSRC=/lib/modules/"${_kver}/build" module
+  
+  cd uvm
+  make SYSSRC=/lib/modules/"${_kver}/build" module
 }
 
 package() {
   install -D -m644 "${srcdir}/${_pkg}/kernel/nvidia.ko" "${pkgdir}/lib/modules/${_extramodules}/nvidia.ko"
+  install -D -m644 "${srcdir}/${_pkg}/kernel/uvm/nvidia-uvm.ko" "${pkgdir}/lib/modules/${_extramodules}/nvidia-uvm.ko"
+  gzip "${pkgdir}/lib/modules/${_extramodules}/"*.ko
   install -d -m755 "${pkgdir}/lib/modprobe.d"
   
   echo "blacklist nouveau" >> "${pkgdir}/lib/modprobe.d/nvidia.conf"
   sed -i -e "s/EXTRAMODULES='.*'/EXTRAMODULES='${_extramodules}'/" "${startdir}/nvidia-next.install"
-  gzip "${pkgdir}/lib/modules/${_extramodules}/nvidia.ko"
 }

@@ -12,12 +12,12 @@ optdepends=('phonon: enable audio and video in PyQt applications'
             'qscintilla: QScintilla API'
             'qt-assistant-compat: add PyQt online help in Qt Assistant')
 source=("http://sourceforge.net/projects/pyqt/files/PyQt4/PyQt-${pkgver}/PyQt-x11-gpl-${pkgver}.tar.gz")
-md5sums=('20940f6b2c957269cdd02d0efe537515')
+md5sums=('8b991f95fec9582cdcc1bf1f4ac02406')
 
 build() {
   cd ${srcdir}/PyQt-x11-gpl-${pkgver}
 
-  python3 configure.py \
+  python3 configure-ng.py \
     --confirm-license \
     --qsci-api
 
