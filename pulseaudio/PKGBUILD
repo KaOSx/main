@@ -2,7 +2,7 @@
 pkgname=pulseaudio
 pkgdesc="A featureful, general-purpose sound server"
 pkgver=5.0
-pkgrel=2
+pkgrel=3
 arch=('x86_64')
 url="http://pulseaudio.org/"
 license=('GPL' 'LGPL')
@@ -16,7 +16,6 @@ optdepends=('avahi: zeroconf support'
             'jack: jack support'
             'openssl: RAOP support')
 backup=(etc/pulse/{daemon.conf,default.pa,system.pa})
-install="pulseaudio.install"
 provides=("libpulse=${pkgver}")
 options=('!emptydirs' '!libtool' '!makeflags')
 source=("http://freedesktop.org/software/${pkgname}/releases/${pkgname}-${pkgver}.tar.xz")
