@@ -1,15 +1,14 @@
 
 pkgname=libproxy
 pkgver=0.4.11
-pkgrel=2
+pkgrel=3
 pkgdesc="A library that provides automatic proxy configuration management"
 arch=('x86_64')
 url="http://libproxy.googlecode.com"
 license=('LGPL')
 depends=('gcc-libs')
-makedepends=('cmake' 'networkmanager' 'automoc4' 'python2' 'kdelibs' 'perl')
-optdepends=('kdelibs: KDE configuration module'
-            'networkmanager: NetworkManager configuration module'
+makedepends=('cmake' 'networkmanager' 'python2' 'perl')
+optdepends=('networkmanager: NetworkManager configuration module'
             'perl: Perl bindings'
             'python2: Python bindings')
 source=("http://libproxy.googlecode.com/files/${pkgname}-${pkgver}.tar.gz")
