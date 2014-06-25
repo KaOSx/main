@@ -1,9 +1,9 @@
 
 pkgname=qt5-declarative
-pkgver=5.3.0
-subver=5.3.0
+pkgver=5.3.1
+subver=5.3.1
 _pkgver=5.3
-pkgrel=2
+pkgrel=1
 pkgdesc=('A cross-platform application and UI framework, QtDeclarative files')
 arch=('x86_64')
 url='http://qt.nokia.com/'
@@ -13,15 +13,11 @@ makedepends=('python2')
 groups=('qt5')
 options=('!libtool')
 _pkgfqn="qtdeclarative-opensource-src-${subver}"
-source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz"
-        "https://qt.gitorious.org/qt/qtdeclarative/commit/009ad875f89d7d7bc4447e18c2fbbd485a75e0b5.patch")
-md5sums=('9e29d2b481c771ce5c798a3319835673'
-         '819813c53ab11b2341baf54afbc37e37')
+source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
+md5sums=('765579f4f64cb64a812c8a80104eb8ec')
 
 build() {
     cd $srcdir/$_pkgfqn
-    # https://bugreports.qt-project.org/browse/QTBUG-39047
-    patch -p1 -i "${srcdir}"/009ad875f89d7d7bc4447e18c2fbbd485a75e0b5.patch
 
     /usr/lib/qt5/bin/qmake
     make
