@@ -1,6 +1,6 @@
 
 pkgname=xf86-video-ati
-pkgver=7.3.0
+pkgver=7.4.0
 pkgrel=1
 pkgdesc="X.org ati video driver"
 arch=('x86_64')
@@ -10,8 +10,8 @@ depends=('libpciaccess' 'libdrm>=2.4.41' 'systemd' 'pixman' 'mesa' 'glamor-egl')
 makedepends=('xorg-server' 'xf86driproto' 'resourceproto' 'scrnsaverproto')
 groups=('xorg-video-drivers')
 options=('!libtool')
-source=("${url}/releases/individual/driver/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('f36383c590d56a9304e5cab4813a6653')
+source=("http://xorg.freedesktop.org/releases/individual/driver/${pkgname}-${pkgver}.tar.bz2")
+md5sums=('8ee095009e927d61be522f392bdb843e')
 
 build() { 
     cd ${srcdir}/${pkgname}-${pkgver}
