@@ -1,6 +1,6 @@
 
 pkgname=xorg-server
-pkgver=1.15.1
+pkgver=1.15.2
 pkgrel=1
 pkgdesc="X.Org X servers"
 arch=('x86_64')
@@ -20,14 +20,14 @@ backup=('etc/X11/xorg.conf.d/10-evdev.conf' 'etc/X11/xorg.conf.d/10-quirks.conf'
 options=('!libtool')
 provides=('x-server')
 groups=('xorg')
-source=("${url}/releases/individual/xserver/${pkgname}-${pkgver}.tar.bz2"
+source=("http://xorg.freedesktop.org/releases/individual/xserver/${pkgname}-${pkgver}.tar.bz2"
         'autoconfig-nvidia.patch'
         'xvfb-run'
         'xvfb-run.1'
         '10-quirks.conf'
         'autoconfig-sis.patch'
         'exa-only-draw-valid-trapezoids.patch')
-md5sums=('e4c70262ed89764be8f8f5d699ed9227'
+md5sums=('69229fe5cdf3f20f74665d57b7601d26'
          '139ae758a1c73081631302c04de24568'
          '52fd3effd80d7bc6c1660d4ecf23d31c'
          '376c70308715cd2643f7bff936d9934b'
