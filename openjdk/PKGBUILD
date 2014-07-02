@@ -1,10 +1,10 @@
 
 pkgname=('openjdk' 'openjdk-src')
 pkgbase='openjdk'
-_icedtea_release="2.4.6"
+_icedtea_release="2.5.0"
 _icedtea_jdkver="7"
 _openjdk_build="b31"
-_pkgver="7u51"
+_pkgver="7u60"
 pkgver="${_pkgver}_${_openjdk_build}_${_icedtea_release}"
 pkgrel=1
 pkgdesc="An open-source implementation of the seventh edition of the Java SE Platform."
@@ -17,53 +17,44 @@ makedepends=('java-environment=7' 'apache-ant>=1.6.5' 'zip' 'unzip'
              'libpng' 'giflib' 'lcms2' 'freetype2' 'rhino' 'nss' 'libxt'
              'libxtst' 'libxp' 'libxrender' 'ca-certificates-java' 'eclipse-ecj')
 
-_hg_url="http://icedtea.classpath.org/hg/release/icedtea7-forest-2.4"
-_corba_changeset="48ef1bb6d120"
-_jaxp_changeset="e0ba4b9a8b91"
-_jaxws_changeset="4bd947cd146b"
-_jdk_changeset="b5282042aae0"
-_langtools_changeset="06eeb77dac24"
-_openjdk_changeset="b028e58c1b77"
-_hotspot_changeset="172674e0ab65"
+_hg_url="http://icedtea.wildebeest.org/download/drops/icedtea7/2.5"
 _jvmdir="/usr/lib/jvm/java-7-openjdk"
 
 source=("http://icedtea.classpath.org/download/source/icedtea-${_icedtea_release}.tar.gz"
-        "${_hg_url}/corba/archive/${_corba_changeset}.tar.gz"
-        "${_hg_url}/jaxp/archive/${_jaxp_changeset}.tar.gz"
-        "${_hg_url}/jaxws/archive/${_jaxws_changeset}.tar.gz"
-        "${_hg_url}/jdk/archive/${_jdk_changeset}.tar.gz"
-        "${_hg_url}/langtools/archive/${_langtools_changeset}.tar.gz"
-        "${_hg_url}/archive/${_openjdk_changeset}.tar.gz"
-        "${_hg_url}/hotspot/archive/${_hotspot_changeset}.tar.gz"
+        "${_hg_url}/corba.tar.bz2"
+        "${_hg_url}/jaxp.tar.bz2"
+        "${_hg_url}/jaxws.tar.bz2"
+        "${_hg_url}/jdk.tar.bz2"
+        "${_hg_url}/langtools.tar.bz2"
+        "${_hg_url}/openjdk.tar.bz2"
+        "${_hg_url}/hotspot.tar.bz2"
         'fontconfig-paths.diff'
         'corba_path.diff'
         'command_path.diff'
         'openjdk7_nonreparenting-wm.diff'
         'openjdk.profile.sh'
         'openjdk.profile.csh')
-md5sums=('f832ad661d78890c2332ec66c1ea68fe'
-         '8a725ed6fd9cf8d8b4b978e95d990d12'
-         '5c8e75f4e67d60f766d443de210a8710'
-         '7b52ff1abbd5343f95e1ef6de724aabd'
-         '5204915d151730e8345530471dc58e9a'
-         '0a0ca66666dafcd5ad2a856a83ddb6cc'
-         '3d319d270c57fa206475cf713d7fdcb9'
-         '969192666fed1827295aaf2459217a2c'
+md5sums=('62435458bd87b340ae30306e67af8f60'
+         'bfcdcf4d91e511056fc81a0d771fbdff'
+         '34ce2eab91aaba3efb500a3b02051cca'
+         '590460868b1c4911d3f57c4f5a80ecc7'
+         '2f2e28645f2203576d416115d5cdbd85'
+         '83a383d30ebc7edaa857430ec997091b'
+         '5a32302cc14e7bb113d399bc9a017b23'
+         '964b7e610177db849dbe0b2483a564a1'
          'ee1afda124d5927345014ab382ef581e'
          '986131efd2636724ae37870a5cca6d43'
          '05afd9c7fedcc05d4ebbb3427e068dba'
          '029383f5aba2121facc19377504be3df'
          '64885c74918f07afe88f31692177b0c5'
          '3baf9768e5be92d6fe80641dcc35f017')
-noextract=("${_openjdk_changeset}.tar.gz"
-           "${_corba_changeset}.tar.gz"
-           "${_jaxp_changeset}.tar.gz"
-           "${_jaxws_changeset}.tar.gz"
-           "${_jdk_changeset}.tar.gz"
-           "${_langtools_changeset}.tar.gz"
-           "${_hotspot_changeset}.tar.gz")
-           
-  [ "$CARCH" = "x86_64" ] && _JARCH=amd64
+noextract=("openjdk.tar.gz"
+           "corba.tar.gz"
+           "jaxp.tar.gz"
+           "jaxws.tar.gz"
+           "jdk.tar.gz"
+           "langtools.tar.gz"
+           "hotspot.tar.gz")
 
 build() {
   cd "${srcdir}"
@@ -90,25 +81,22 @@ build() {
   # Start the configuration and build step
   ./configure --prefix=/usr \
               --with-parallel-jobs="${MAKEFLAGS/-j}" \
-              --host="${CARCH}-unknown-linux-gnu" \
+              --host="x86_64-unknown-linux-gnu" \
               --with-rhino \
               --with-jdk-home="${JAVA_HOME}" \
-              --with-abs-install-dir="${_jvmdir}" \
-              --with-openjdk-src-zip="${srcdir}/${_openjdk_changeset}.tar.gz" \
-              --with-hotspot-src-zip="${srcdir}/${_hotspot_changeset}.tar.gz" \
-              --with-corba-src-zip="${srcdir}/${_corba_changeset}.tar.gz" \
-              --with-jaxp-src-zip="${srcdir}/${_jaxp_changeset}.tar.gz" \
-              --with-jaxws-src-zip="${srcdir}/${_jaxws_changeset}.tar.gz" \
-              --with-jdk-src-zip="${srcdir}/${_jdk_changeset}.tar.gz" \
-              --with-langtools-src-zip="${srcdir}/${_langtools_changeset}.tar.gz" \
-              --with-pkgversion="Linux build ${pkgver}-${pkgrel}-${CARCH}" \
+              --with-openjdk-src-zip="${srcdir}/openjdk.tar.bz2" \
+              --with-hotspot-src-zip="${srcdir}/hotspot.tar.bz2" \
+              --with-corba-src-zip="${srcdir}/corba.tar.bz2" \
+              --with-jaxp-src-zip="${srcdir}/jaxp.tar.bz2" \
+              --with-jaxws-src-zip="${srcdir}/jaxws.tar.bz2" \
+              --with-jdk-src-zip="${srcdir}/jdk.tar.bz2" \
+              --with-langtools-src-zip="${srcdir}/langtools.tar.bz2" \
+              --with-pkgversion="Linux build ${pkgver}-${pkgrel}-x86_64" \
               --disable-tests \
               --disable-downloading \
               --disable-Werror \
               --disable-bootstrap \
-              --disable-system-gtk \
-              --enable-nss \
-              --enable-pulse-java 
+              --enable-nss 
   make
 }
 
