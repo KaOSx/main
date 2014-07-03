@@ -1,15 +1,15 @@
 
 pkgbase=python-pillow
-pkgname=('python2-pillow')
+pkgname=('python2-pillow' 'python3-pillow')
 _appname=Pillow
-pkgver=2.4.0
+pkgver=2.5.0
 pkgrel=1
 arch=('x86_64')
 url="http://python-imaging.github.io/"
 license=('BSD')
-makedepends=('python2-setuptools' 'lcms' 'libwebp' 'tk' 'sane')
+makedepends=('python2-setuptools' 'python3-setuptools' 'lcms' 'libwebp' 'tk' 'sane')
 source=("http://pypi.python.org/packages/source/P/$_appname/$_appname-$pkgver.zip")
-md5sums=('b46ac9f00580920ffafe518bc765e43c')
+md5sums=('3da46b9a4aeba22e22724ba7a15fe617')
 
 build() {
   cd "$srcdir"
