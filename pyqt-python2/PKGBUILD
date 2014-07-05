@@ -2,7 +2,7 @@
 pkgname=pyqt-python2
 pkgver=4.11.1
 _snapshot=9d5a6843b580
-pkgrel=1
+pkgrel=2
 pkgdesc="A set of Python bindings for the Qt toolkit"
 arch=('x86_64')
 url="http://riverbankcomputing.co.uk/software/pyqt/intro"
@@ -27,7 +27,7 @@ build() {
   # only for yali builds, needs 4.9.6 to use this patch
   #patch -p0 -i ${srcdir}/yali.patch
 
-  python2 configure-ng.py \
+  python2 configure.py \
     --confirm-license \
     -v /usr/share/sip \
     --qsci-api
