@@ -1,7 +1,7 @@
 
 pkgname=libnm-qt
 pkgver=0.9.8.2
-pkgrel=1
+pkgrel=2
 pkgdesc='Qt-only wrapper for NetworkManager DBus API'
 arch=('x86_64')
 url='https://projects.kde.org/projects/extragear/libs/libnm-qt'
@@ -18,7 +18,8 @@ build() {
   cd build
   cmake .. \
     -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_INSTALL_PREFIX=/usr
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib 
   make
 }
 
