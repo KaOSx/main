@@ -3,7 +3,7 @@ pkgbase=mesa
 pkgname=('mesa' 'libgl')
 pkgver=10.2.3
 _pkgver=10.2.3
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 makedepends=('glproto' 'libdrm' 'libxxf86vm' 'libxdamage' 'expat' 'llvm' 'libx11' 'libxt' 'gcc-libs'
              'dri2proto' 'python2' 'libxml2' 'imake' 'systemd' 'libvdpau' 'wayland' 'dri3proto'
@@ -23,7 +23,8 @@ build() {
     #patch -p1 -i ${srcdir}/linux314_intel.patch
     
    autoreconf -vfi
-    ./autogen.sh --prefix=/usr \
+    ./configure --prefix=/usr \
+    --sysconfdir=/etc \
     --with-dri-driverdir=/usr/lib/xorg/modules/dri \
     --with-gallium-drivers=r300,r600,nouveau,radeonsi,svga,swrast \
     --with-dri-drivers=i915,i965,r200,radeon,nouveau,swrast \
