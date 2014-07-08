@@ -1,6 +1,7 @@
 
 pkgname=netpbm
-pkgver=10.66.02
+pkgver=10.66.04
+_rev=2214
 pkgrel=1
 pkgdesc="A toolkit for manipulation of graphic images"
 arch=('x86_64')
@@ -12,19 +13,13 @@ options=('!makeflags')
 
 build() {
   cd "${srcdir}"
-  svn checkout http://svn.code.sf.net/p/netpbm/code/advanced netpbm
+  svn checkout http://svn.code.sf.net/p/netpbm/code/advanced -r ${_rev} netpbm
   
   cd "${srcdir}/netpbm"
   
-  cp config.mk.in  config.mk
-  echo 'CFLAGS_SHLIB = -fPIC' >> config.mk
-  echo "NETPBM_DOCURL = file://${srcdir}/doc" >> config.mk
-  echo 'TIFFLIB = libtiff.so' >> config.mk
-  echo 'JPEGLIB = libjpeg.so' >> config.mk
-  echo 'PNGLIB = libpng.so' >> config.mk
-  echo 'ZLIB = libz.so' >> config.mk
- 
-  sed -i 's|misc|share/netpbm|' common.mk
+  # use the interactive way
+  ./configure
+  
   sed -i 's|/link|/lib|' lib/Makefile
 
   make
