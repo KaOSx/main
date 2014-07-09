@@ -1,0 +1,38 @@
+
+pkgname=libteam
+pkgver=1.11
+pkgrel=1
+pkgdesc="Driver to provide a mechanism to team multiple NICs (ports) into one logical one (teamdev) at L2 layer"
+arch=('x86_64')
+url="http://libteam.org/"
+license=('LGPL2.1')
+depends=('libnl' 'libdaemon' 'jansson' 'dbus' 'bash')
+makedepends=('python2' 'swig')
+source=("http://libteam.org/files/$pkgname-$pkgver.tar.gz")
+md5sums=('21a514f7c206cc0ccc2fd274a32d49fe')
+
+build() {
+  cd $pkgname-$pkgver
+
+  ./configure --prefix=/usr \
+        --sysconfdir=/etc \
+        --localstatedir=/var \
+        --disable-static \
+        --libexecdir=/usr/lib
+  make
+}
+
+check() {
+  cd $pkgname-$pkgver
+
+  make check
+}
+
+package() {
+  cd $pkgname-$pkgver
+  make DESTDIR="$pkgdir" install
+
+  install -Dm644 teamd/redhat/systemd/teamd@.service "$pkgdir/usr/lib/systemd/system/teamd@.service"
+  install -Dm644 teamd/dbus/teamd.conf "$pkgdir/etc/dbus-1/system.d/teamd.conf"
+}
+

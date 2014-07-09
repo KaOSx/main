@@ -2,13 +2,13 @@
 pkgname=networkmanager
 _pkgname=NetworkManager
 pkgver=0.9.10.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Network Management daemon"
 arch=('x86_64')
 license=('GPL')
 url="http://www.gnome.org/projects/$_pkgname/"
 depends=('dbus-glib' 'iproute2' 'libnl' 'nss' 'polkit' 'systemd' 'wpa_supplicant' 'ppp' 'dhcpcd'
-         'modemmanager' 'libndp')
+         'modemmanager' 'libndp' 'libteam')
 makedepends=('intltool' 'dhclient' 'iptables' 'gobject-introspection')
 optdepends=('dhclient: alternative DHCP/DHCPv6 client'
             'iptables: Connection sharing'
@@ -39,6 +39,8 @@ build() {
     --with-crypto=nss \
     --with-dhclient=/usr/sbin/dhclient \
     --with-dhcpcd=/usr/sbin/dhcpcd \
+    --with-pppd=/usr/sbin/pppd \
+    --with-pppoe=/usr/sbin/pppoe \
     --with-iptables=/usr/sbin/iptables \
     --with-systemdsystemunitdir=/usr/lib/systemd/system \
     --with-kernel-firmware-dir=/usr/lib/firmware \
