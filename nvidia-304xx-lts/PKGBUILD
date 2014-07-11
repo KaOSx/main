@@ -3,8 +3,8 @@ _extramodules=extramodules-3.10-lts
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=nvidia-304xx-lts
-pkgver=304.121
-pkgrel=6
+pkgver=304.123
+pkgrel=1
 arch=('x86_64')
 pkgdesc="NVIDIA drivers for linux."
 url="http://www.nvidia.com/"
@@ -20,7 +20,7 @@ md5sums=('42f2ad1cf9b48b1da8ed82200a045a8a'
 
 _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 source+=("ftp://download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run")
-md5sums+=('41e6d2b6325e5b0ae9889cfbd6bec696')
+md5sums+=('9d461e9e00e473f458aee96cd6d85101')
 
 build() {
     cd "${srcdir}"
