@@ -1,7 +1,7 @@
 
 pkgname=udisks2
 pkgver=2.1.3
-pkgrel=1
+pkgrel=2
 pkgdesc="Disk Management Service"
 arch=('x86_64')
 url="http://www.freedesktop.org/wiki/Software/udisks"
@@ -9,9 +9,11 @@ license=('GPL')
 depends=('systemd' 'sg3_utils' 'glib2' 'dbus-glib' 'polkit' 'parted' 'device-mapper'
          'libatasmart' 'lsof' 'lvm2' 'util-linux')
 makedepends=('intltool' 'docbook-xsl' 'python2')
-options=(!libtool)
-source=("http://udisks.freedesktop.org/releases/udisks-$pkgver.tar.bz2")
-md5sums=('f2c793f839058371d1e93a654199438d')
+options=('!libtool')
+source=("http://udisks.freedesktop.org/releases/udisks-$pkgver.tar.bz2"
+        '10-enable-mount.rules')
+md5sums=('f2c793f839058371d1e93a654199438d'
+         '5f6c7dcbc2e98b7814a91fbe7630ecfc')
 
 build() {
   cd "${srcdir}/udisks-${pkgver}"
@@ -29,6 +31,9 @@ package() {
   make DESTDIR="${pkgdir}" install
      bash_completiondir=/usr/share/bash-completion/completions
   
-  #fix ntfs mounts
-  #sed -i -e 's|<allow_active>auth_admin_keep</allow_active>|<allow_active>yes</allow_active>|' ${pkgdir}/usr/share/polkit-1/actions/org.freedesktop.udisks2.policy
+  # allow ntfs mounts
+  sed -i -e 's|<allow_active>auth_admin_keep</allow_active>|<allow_active>yes</allow_active>|' ${pkgdir}/usr/share/polkit-1/actions/org.freedesktop.udisks2.policy
+  # set auto-mounting authorizations 
+  install -dm 700 -o polkitd $pkgdir/etc/polkit-1/rules.d/
+  install -Dm 644 $srcdir/10-enable-mount.rules $pkgdir/etc/polkit-1/rules.d/10-enable-mount.rules
 }
