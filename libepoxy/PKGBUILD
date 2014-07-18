@@ -1,0 +1,32 @@
+
+pkgname=libepoxy
+pkgver=1.2
+pkgrel=1
+pkgdesc="Library for handling OpenGL function pointer management for you"
+url="https://github.com/anholt/libepoxy"
+arch=('x86_64')
+license=('MIT')
+depends=('glibc')
+makedepends=('xorg-util-macros' 'python3' 'libgl')
+options=('!libtool')
+source=("https://github.com/anholt/libepoxy/archive/v${pkgver}.tar.gz")
+md5sums=('12d6b7621f086c0c928887c27d90bc30')
+
+build() {
+   cd "${pkgname}-${pkgver}"
+
+   ./autogen.sh --prefix=/usr
+}
+
+check() {
+   cd "${pkgname}-${pkgver}"
+
+   make -k check
+}
+
+package() {
+   cd "${pkgname}-${pkgver}"
+   make DESTDIR="$pkgdir" install
+
+   install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
+}
