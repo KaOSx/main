@@ -1,6 +1,6 @@
 
 pkgname=opensc
-pkgver=0.13.01
+pkgver=0.14.0
 pkgrel=1
 pkgdesc='Tools and libraries for smart cards'
 arch=('x86_64')
@@ -8,13 +8,14 @@ url='https://github.com/OpenSC/OpenSC/wiki'
 license=('LGPL')
 backup=('etc/opensc.conf')
 depends=('openssl' 'pcsclite' 'libltdl')
-makedepends=('docbook-xsl' 'git')
+makedepends=('docbook-xsl')
 options=('!emptydirs')
-source=("git://github.com/OpenSC/OpenSC.git")
-md5sums=('SKIP')
+#source=("git://github.com/OpenSC/OpenSC.git")
+source=("https://github.com/OpenSC/OpenSC/archive/$pkgver.tar.gz")
+md5sums=('1ee31dc2e89860458fd984e0cac9795e')
 
 build() {
-    cd OpenSC
+    cd OpenSC-$pkgver
     export LIBS=-lltdl
     ./bootstrap
     _sheetdir=(/usr/share/xml/docbook/xsl-stylesheets-*)
@@ -34,7 +35,7 @@ build() {
 }
 
 package(){
-    cd OpenSC
+    cd OpenSC-$pkgver
     make DESTDIR="$pkgdir" install
     
     install -D -m644 etc/opensc.conf "$pkgdir/etc/opensc.conf"
