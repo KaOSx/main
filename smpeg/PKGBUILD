@@ -1,7 +1,8 @@
 
 pkgname=smpeg
-pkgver=0.4.4
-pkgrel=6
+pkgver=0.4.5
+_pkgver=0_4_5
+pkgrel=1
 pkgdesc="SDL MPEG Player Library"
 arch=('x86_64')
 url="http://icculus.org/smpeg/"
@@ -9,24 +10,24 @@ license=('LGPL')
 depends=('sdl')
 makedepends=('glu' 'mesa')
 optdepends=('glu: to use glmovie')
-options=('!libtool' '!makeflags')
-source=("http://mirrors.dotsrc.org/lokigames/open-source/smpeg/${pkgname}-${pkgver}.tar.gz"
-        'smpeg-0.4.4-gcc41.patch')
-md5sums=('59c76ac704088ef5539210190c4e1fe3'
-         '8b979a58307d7196655758bd3d2466c4')
+options=('!libtool')
+source=("https://github.com/Distrotech/smpeg/archive/release_${_pkgver}.tar.gz")
+md5sums=('e33e7f83608830efaa586990ce5e852c')
 
 build() {
-  cd ${srcdir}/${pkgname}-${pkgver}
-  patch -p1 -i $srcdir/smpeg-0.4.4-gcc41.patch
+  cd ${srcdir}/${pkgname}-release_${_pkgver}
   
-  ./configure --prefix=/usr --mandir=/usr/share/man --disable-static
-  make LDFLAGS+=-lstdc++
+  ./autogen.sh
+  ./configure --prefix=/usr \
+         --mandir=/usr/share/man \
+         --disable-gtk-player \
+         --disable-gtktest \
+         --disable-static
+  make 
 }
 
 package() {
-  cd ${srcdir}/${pkgname}-${pkgver}
-  make DESTDIR=${pkgdir} install
+  cd ${srcdir}/${pkgname}-release_${_pkgver}
   
-  # fix aclocal warnings
-  sed -i "s#(AM_PATH_SMPEG#([AM_PATH_SMPEG]#" ${pkgdir}/usr/share/aclocal/smpeg.m4
+  make DESTDIR=${pkgdir} install
 }
