@@ -2,11 +2,11 @@
 pkgbase="foomatic"
 pkgname=('foomatic-db' 'foomatic-filters' 'foomatic-db-engine' 'foomatic-db-nonfree')
 arch=('x86_64') 
-_snapdate=20140330
-_filtersver=4.0.17
+_snapdate=20140720
 _relver=4.0
-pkgver=${_filtersver}_${_snapdate}
+pkgver=${_relver}_${_snapdate}
 pkgrel=1
+epoch=1
 makedepends=('cups' 'perl' 'libxml2' 'enscript' 'perl' 'net-snmp' 'bash')
 source=("http://www.openprinting.org/download/foomatic/${pkgbase}-filters-${_relver}-${_snapdate}.tar.gz"
         "http://www.openprinting.org/download/foomatic/${pkgbase}-db-engine-${_relver}-${_snapdate}.tar.gz"
@@ -14,10 +14,10 @@ source=("http://www.openprinting.org/download/foomatic/${pkgbase}-filters-${_rel
         "http://www.openprinting.org/download/foomatic/${pkgbase}-db-nonfree-${_snapdate}.tar.gz")
 url="http://www.linuxprinting.org/foomatic.html"
 options=('!emptydirs')
-md5sums=('27173d2fde0dcb8ed60f795bc78f6ebc'
-         'a90eab37900a6a523f4f3d6c5360c2a9'
-         'd9f2efdeeb7fd247dcc619b23ae199b6'
-         '21e4b6295744af26a79ceaf1a9c8f3e3') 
+md5sums=('53980245934fbe8e72588c31de8d4e40'
+         'e54860170d6f3037c02912c53317115e'
+         'd91967157a5adeea5e541d411698cbf9'
+         'b8145f107b5809bb05f8d4eda8593dfe') 
 
 package_foomatic-db() {
 

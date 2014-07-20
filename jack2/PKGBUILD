@@ -1,34 +1,39 @@
 
 pkgname=jack2
-pkgver=1.9.9.5
-pkgrel=3
+pkgver=1.9.10
+pkgrel=1
+_commit=ce825c6
 pkgdesc="The next-generation JACK with SMP support"
 arch=('x86_64')
 url="http://jackaudio.org/"
 backup=(etc/security/limits.d/99-audio.conf)
 license=('GPL')
-depends=('libsamplerate' 'celt' 'libffado' 'dbus')
-makedepends=('python2' 'doxygen' 'libsamplerate' 'celt')
+depends=('libsamplerate' 'celt' 'libffado' 'dbus' 'opus' 'dbus-python2' 'portaudio-svn')
+makedepends=('python2' 'doxygen')
 optdepends=('dbus-python2: jack_control')
 provides=('jack' 'jack2-dbus')
 # Build for doxygen fix, commit 95a1162d6aecc91882e4d8b01ba7fb12f6d29d1c Dec 11 2012, remove with 1.9.9.10 or above
-source=("http://sourceforge.net/projects/kdeos/files/Sources/jack/jack2.tar.xz"
-        #"https://dl.dropbox.com/u/28869550/${pkgname}-${pkgver}.tgz"
+#source=("http://sourceforge.net/projects/kdeos/files/Sources/jack/jack2.tar.xz"
+source=("https://github.com/jackaudio/jack2/tarball/master/jack2-${pkgver}.tar.gz"
         '99-audio.conf'
         '40-hpet-permissions.rules')
-md5sums=('dea04856e7483f257da8ef3f1bea01ce'
+md5sums=('SKIP'
          '4d928a76e3f3d77d037c42ab75ac0f0b'
          '23eba69d2dbbb800f68176e5d38b9af5')
 
 build() {
-  cd "${srcdir}/${pkgname}-95a1162d6aecc91882e4d8b01ba7fb12f6d29d1c"
+  cd "${srcdir}/jackaudio-${pkgname}-${_commit}"
+  # fix doxygen dir
+  sed -i 's|build/default/html|html|' ${srcdir}/jackaudio-${pkgname}-${_commit}/wscript
   
   LDFLAGS="$LDFLAGS,--no-as-needed -lm" python2 ./waf configure \
     --prefix=/usr \
     --alsa \
     --classic \
     --dbus \
-    --firewire
+    --firewire \
+    --doxygen \
+    --portaudio
 
   python2 ./waf build
 
@@ -36,7 +41,7 @@ build() {
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-95a1162d6aecc91882e4d8b01ba7fb12f6d29d1c"
+  cd "${srcdir}/jackaudio-${pkgname}-${_commit}"
 
   python2 waf install --destdir="${pkgdir}"
 
