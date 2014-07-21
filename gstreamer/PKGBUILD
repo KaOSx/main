@@ -1,7 +1,7 @@
 
 pkgname=gstreamer
-pkgver=1.2.4
-pkgrel=2
+pkgver=1.4.0
+pkgrel=1
 pkgdesc="GStreamer Multimedia Framework"
 arch=('x86_64')
 license=('LGPL')
@@ -16,8 +16,8 @@ replaces=('gstreamer0.10' 'gstreamer0.10-base' 'gstreamer0.10-base-plugins' 'gst
           'gstreamer0.10-good-plugins' 'gstreamer0.10-bad' 'gstreamer0.10-bad-plugins' 'gstreamer0.10-ffmpeg'
           'gstreamer0.10-ugly' 'gstreamer0.10-ugly-plugins' 'gstreamer0.10-python')
 options=('!libtool')
-source=("${url}/src/gstreamer/gstreamer-${pkgver}.tar.xz")
-md5sums=('74d8f674187a5f0ddf38da594c3998c3')
+source=("http://gstreamer.freedesktop.org/src/gstreamer/gstreamer-${pkgver}.tar.xz")
+md5sums=('594c0c06eaace9b9d3bad010de1bdfae')
 
 build() {
   cd "${srcdir}/gstreamer-${pkgver}"

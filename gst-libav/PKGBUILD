@@ -1,7 +1,7 @@
 
 pkgname=gst-libav
-pkgver=1.2.4
-pkgrel=2
+pkgver=1.4.0
+pkgrel=1
 pkgdesc="Gstreamer libav Plugin"
 arch=('x86_64')
 license=('GPL')
@@ -9,8 +9,8 @@ url="http://gstreamer.freedesktop.org/"
 depends=('gst-plugins-base' 'bzip2')
 makedepends=('yasm' 'python3')
 options=('!emptydirs' '!libtool')
-source=(${url}/src/$pkgname/$pkgname-$pkgver.tar.xz)
-md5sums=('6454f9f22b3aa37694781633e0d20a9c')
+source=("http://gstreamer.freedesktop.org/src/$pkgname/$pkgname-$pkgver.tar.xz")
+md5sums=('60811ae08c26fa093a96996582962c75')
 
 build() {
   cd $pkgname-$pkgver
