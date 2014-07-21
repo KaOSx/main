@@ -1,7 +1,7 @@
 
 pkgname=libart-lgpl
 pkgver=2.3.21
-pkgrel=3
+pkgrel=4
 pkgdesc="A library for high-performance 2D graphics"
 url="http://www.levien.com/libart/"
 arch=('x86_64')
@@ -21,5 +21,5 @@ build() {
 package() {
   cd ${srcdir}/libart_lgpl-${pkgver}
   
-  make DESTDIR=${startdir}/pkg install
+  make DESTDIR="${pkgdir}" install
 }
