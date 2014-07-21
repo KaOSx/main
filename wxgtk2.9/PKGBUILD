@@ -1,7 +1,7 @@
 
 pkgname=wxgtk2.9
-pkgver=2.9.5
-pkgrel=2
+pkgver=3.0.1
+pkgrel=1
 pkgdesc="GTK+ implementation of wxWidgets API for GUI"
 arch=('x86_64')
 url="http://wxwidgets.org"
@@ -11,12 +11,12 @@ makedepends=('gconf')
 options=('!emptydirs')
 source=("http://downloads.sourceforge.net/wxwindows/wxWidgets-${pkgver}.tar.bz2"
         "wxGTK-2.9.5-collision.patch")
-md5sums=('e98c5f92805493f150656403ffef3bb0'
+md5sums=('dad1f1cd9d4c370cbc22700dc492da31'
          'a0677c1ae207670c4dc957f583517b14')
 
 prepare() {
   cd wxWidgets-${pkgver}
-  patch -p1 -i ../wxGTK-2.9.5-collision.patch
+  #patch -p1 -i ../wxGTK-2.9.5-collision.patch
 }
 
 build() {

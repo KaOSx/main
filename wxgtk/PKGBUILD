@@ -1,19 +1,22 @@
 
 pkgname=wxgtk
 pkgver=2.8.12.1
-pkgrel=2
+pkgrel=3
 pkgdesc="GTK+ implementation of wxWidgets API for GUI"
 arch=('x86_64')
 url="http://wxwidgets.org"
 license=('custom:wxWindows')
 depends=('gtk2' 'libgl' 'libxxf86vm' 'sdl')
 makedepends=('gconf' 'mesa' 'glu')
-source=("http://downloads.sourceforge.net/wxpython/wxPython-src-${pkgver}.tar.bz2")
+source=("http://downloads.sourceforge.net/wxpython/wxPython-src-${pkgver}.tar.bz2"
+       'wxGTK-collision.patch')
 #source=(http://downloads.sourceforge.net/wxwindows/wxGTK-${pkgver}.tar.bz2)
-md5sums=('8c06c5941477beee213b4f2fa78be620')
+md5sums=('8c06c5941477beee213b4f2fa78be620'
+         '4f989f5c62bbdaa75c3e9b0da0d636a3')
 
 build() {
   cd "${srcdir}/wxPython-src-${pkgver}"
+  patch -p1 -i ../wxGTK-collision.patch
 
   ./configure --prefix=/usr \
         --libdir=/usr/lib \
