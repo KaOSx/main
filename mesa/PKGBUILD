@@ -3,7 +3,7 @@ pkgbase=mesa
 pkgname=('mesa' 'libgl')
 pkgver=10.2.4
 _pkgver=10.2.4
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 makedepends=('glproto' 'libdrm' 'libxxf86vm' 'libxdamage' 'expat' 'llvm' 'libx11' 'libxt' 'gcc-libs'
              'dri2proto' 'python2' 'libxml2' 'imake' 'systemd' 'libvdpau' 'wayland' 'dri3proto'
@@ -22,7 +22,7 @@ build() {
     cd ${srcdir}/?esa-*
     #cd "${srcdir}/mesa"
     # http://cgit.freedesktop.org/mesa/mesa/commit/?id=b656e3c603da46fe0acd9905dc039c93d76f0b06
-    patch -p1 -i ${srcdir}/dri3_support.patch
+    #patch -p1 -i ${srcdir}/dri3_support.patch
     
    autoreconf -vfi
     ./configure --prefix=/usr \
