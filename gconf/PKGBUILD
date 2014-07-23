@@ -1,16 +1,17 @@
 
 pkgname=gconf
 pkgver=3.2.6
-pkgrel=2
+_pkgver=3.2
+pkgrel=1
 pkgdesc="A configuration database system"
 arch=('x86_64')
 license=('LGPL')
-depends=('orbit2' 'gtk2' 'libxml2' 'polkit' 'libldap' 'dbus-glib')
+depends=('orbit2' 'libxml2' 'polkit' 'libldap' 'dbus-glib')
 makedepends=('pkgconfig' 'intltool' 'gobject-introspection')
 options=('!libtool')
 install=gconf.install
 url="http://www.gnome.org"
-source=("http://ftp.gnome.org/pub/gnome/sources/GConf/3.2/GConf-${pkgver}.tar.xz"
+source=("http://ftp.gnome.org/pub/gnome/sources/GConf/${_pkgver}/GConf-${pkgver}.tar.xz"
         'gconf-merge-schema'
         'gconfpkg'
         'gconf-reload.patch'

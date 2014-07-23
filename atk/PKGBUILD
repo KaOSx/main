@@ -1,16 +1,17 @@
 
 pkgname=atk
-pkgver=2.11.3
-pkgrel=3
+pkgver=2.12.0
+_pkgver=2.12
+pkgrel=1
 pkgdesc="A library providing a set of interfaces for accessibility"
 arch=('x86_64')
 license=('LGPL')
 depends=('glib2')
 makedepends=('gobject-introspection')
 options=('!libtool')
-source=("http://ftp.gnome.org/pub/gnome/sources/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+source=("http://ftp.gnome.org/pub/gnome/sources/${pkgname}/${_pkgver}/${pkgname}-${pkgver}.tar.xz")
 url='http://www.gtk.org/'
-md5sums=('2b4316e69cbe0a1998ba39cdc8c89692')
+md5sums=('930238dec55fdbf8eda9975b44f07b76')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"

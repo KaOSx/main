@@ -1,17 +1,18 @@
 
 pkgname=at-spi2-atk
-pkgver=2.11.2
+pkgver=2.12.1
+_pkgevr=2.12
 pkgrel=1
 pkgdesc="A GTK+ module that bridges ATK to D-Bus at-spi"
 arch=('x86_64')
 url="http://www.gnome.org"
 license=('GPL2')
-depends=('at-spi2-core' 'libx11' 'atk' 'dconf')
+depends=('at-spi2-core' 'libx11' 'atk')
 makedepends=('intltool')
 install=at-spi2-atk.install
 options=('!libtool')
-source=("http://download.gnome.org/sources/$pkgname/${pkgver%.*}/$pkgname-$pkgver.tar.xz")
-md5sums=('481390ffa98cd7751b68114603e6bd0d')
+source=("http://download.gnome.org/sources/$pkgname/${_pkgver}/$pkgname-$pkgver.tar.xz")
+md5sums=('ae11df528f1f038987797f39c8357f81')
 
 build() {
   cd $pkgname-$pkgver

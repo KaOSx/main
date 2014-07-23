@@ -1,7 +1,8 @@
 
 pkgname=dconf
-pkgver=0.18.0
-pkgrel=2
+pkgver=0.20.0
+_pkgver=0.20
+pkgrel=1
 pkgdesc="A low-level configuration system."
 arch=('x86_64')
 url="http://live.gnome.org/dconf"
@@ -9,14 +10,16 @@ license=('LGPL2.1')
 depends=('glib2')
 makedepends=('vala' 'gobject-introspection' 'python2' 'intltool' 'docbook-xsl' 'python3')
 install=dconf.install
-source=("http://download.gnome.org/sources/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
-md5sums=('69a12ed68893f2e1e81ac4e531bc1515')
+source=("http://download.gnome.org/sources/${pkgname}/${_pkgver}/${pkgname}-${pkgver}.tar.xz")
+md5sums=('542db78e4867ac575ec0f69f79b3eebd')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
 
-  ./configure --prefix=/usr --sysconfdir=/etc \
-    --libexecdir=/usr/lib/dconf --disable-editor
+  ./configure --prefix=/usr \
+       --sysconfdir=/etc \
+       --libexecdir=/usr/lib/dconf \
+       --disable-editor
   make
 }
 
