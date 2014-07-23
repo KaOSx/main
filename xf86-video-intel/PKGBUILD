@@ -1,7 +1,7 @@
 
 pkgname=xf86-video-intel
-pkgver=2.99.912
-pkgrel=4
+pkgver=2.99.913
+pkgrel=1
 pkgdesc="X.org Intel i810/i830/i915/945G/G965+ video drivers"
 arch=('x86_64')
 url="http://xorg.freedesktop.org"
@@ -13,15 +13,11 @@ makedepends=('xorg-server>=1.16.0' 'libx11' 'xf86driproto' 'glproto' 'libxrender
 options=('!libtool')
 groups=('xorg-drivers' 'xorg')
 install=xf86-video-intel.install
-source=("http://xorg.freedesktop.org/releases/individual/driver/${pkgname}-${pkgver}.tar.bz2"
-        'dri3.patch')
-md5sums=('88d1a884f9b7bd07bf0755cfa34052d4'
-         'cf597a40ebae80cee4bdb3409e4da284')
+source=("http://xorg.freedesktop.org/releases/individual/driver/${pkgname}-${pkgver}.tar.bz2")
+md5sums=('1fde92068e74b65f2e9156010d3a8438')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
-  # dri3/fencing issue xorg 1.16/mesa/intel https://bugs.freedesktop.org/show_bug.cgi?id=81551#c7
-  patch -p1 -i ${srcdir}/dri3.patch
 
   ./configure --prefix=/usr \
               --libexecdir=/usr/lib \
