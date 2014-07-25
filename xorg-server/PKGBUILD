@@ -2,7 +2,7 @@
 pkgname=xorg-server
 pkgver=1.16.0
 # major updates build xorg-server/xf86-input-evdev/xorg-server again
-pkgrel=2
+pkgrel=3
 pkgdesc="X.Org X servers"
 arch=('x86_64')
 license=('custom')
@@ -24,19 +24,19 @@ conflicts=('glamor-egl')
 replaces=('glamor-egl')
 groups=('xorg')
 source=("http://xorg.freedesktop.org/releases/individual/xserver/${pkgname}-${pkgver}.tar.bz2"
-        'autoconfig-nvidia.patch'
+        'nvidia-drm-outputclass.conf'
         'xvfb-run'
-        'xvfb-run.1')
+        'xvfb-run.1'
+        'glamor.patch')
 md5sums=('8a9ff6ee9907360f09b5bdabb8089502'
-         '139ae758a1c73081631302c04de24568'
+         '1b0626939623e92c04809fb76cb505dd'
          '52fd3effd80d7bc6c1660d4ecf23d31c'
-         '376c70308715cd2643f7bff936d9934b')
+         '376c70308715cd2643f7bff936d9934b'
+         '17193d4cabb94c8e54b178381163db82')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
-
-  # Use nouveau/nv/nvidia drivers for nvidia devices
-  patch -p1 -i "${srcdir}/autoconfig-nvidia.patch"
+  patch -p1 -i "${srcdir}/glamor.patch"
 
   autoreconf -fiv
   ./configure --prefix=/usr \
@@ -56,7 +56,6 @@ build() {
       --enable-kdrive-evdev \
       --enable-kdrive-kbd \
       --enable-kdrive-mouse \
-      --enable-install-setuid \
       --enable-config-udev \
       --enable-systemd-logind \
       --enable-suid-wrapper \
@@ -85,10 +84,10 @@ package() {
 
   install -m755 -d "${pkgdir}/var/lib/xkb"
 
-  # Install sane config files in /etc. 
+  # https://bugs.archlinux.org/task/41259 
   install -m755 -d "${pkgdir}/etc/X11"
   mv "${pkgdir}/usr/share/X11/xorg.conf.d" "${pkgdir}/etc/X11/"
-  #install -m644 "${srcdir}/10-quirks.conf" "${pkgdir}/etc/X11/xorg.conf.d/"
+  install -m644 "${srcdir}/nvidia-drm-outputclass.conf" "${pkgdir}/etc/X11/xorg.conf.d/"
 
   rmdir "${pkgdir}/usr/share/X11"
 
