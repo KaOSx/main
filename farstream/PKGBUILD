@@ -1,16 +1,16 @@
 
 pkgname=farstream
-pkgver=0.2.3
+pkgver=0.2.4
 pkgrel=1
 pkgdesc="Farstream (formerly Farsight) - Audio/Video Communications Framework"
 arch=('x86_64')
 url="http://www.freedesktop.org/wiki/Software/Farstream"
 license=('LGPL')
 depends=('libnice' 'gst-plugins-base' 'gst-plugins-good' 'gst-libav')
-makedepends=('gobject-introspection')
+makedepends=('gobject-introspection' 'farstream')
 options=('!libtool')
-source=("http://freedesktop.org/software/$pkgname/releases/$pkgname/$pkgname-$pkgver.tar.gz")
-md5sums=('a8971167068b69a6933d3eaaeb9ab448')
+source=("http://freedesktop.org/software/farstream/releases/$pkgname/$pkgname-$pkgver.tar.gz")
+md5sums=('edcc75cbf7c811cfe3de9b00b9808682')
 
 build() {
   cd  "$pkgname-$pkgver"
