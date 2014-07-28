@@ -3,12 +3,12 @@
 
 pkgname=mlt
 pkgver=0.9.2
-pkgrel=1
+pkgrel=2
 pkgdesc="An open source multimedia framework"
 arch=('x86_64')
 url="http://www.mltframework.org"
 license=('GPL')
-depends=('sdl_image' 'libsamplerate' 'libdv' 'qt' 'sox' 'libxml2' 'ffmpeg'
+depends=('sdl_image' 'libsamplerate' 'libdv' 'qt5-svg' 'sox' 'libxml2' 'ffmpeg'
          'frei0r-plugins' 'python2' 'jack' 'ladspa')
 makedepends=('swig')
 conflicts=('mlt-python-bindings')
@@ -24,8 +24,8 @@ build() {
   ./configure --prefix=/usr \
               --enable-gpl \
               --enable-gpl3 \
-              --qimage-libdir=/usr/lib/ \
-              --qimage-includedir=/usr/include/Qt \
+              --qt-libdir=/usr/lib/ \
+              --qt-includedir=/usr/include/qt5 \
               --avformat-vdpau \
               --disable-gtk2 \
               --avformat-swscale  
