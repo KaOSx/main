@@ -1,13 +1,14 @@
 
 pkgname=gdal
 pkgver=1.11.0
-pkgrel=3
+pkgrel=4
 pkgdesc="A translator library for raster geospatial data formats"
 arch=('x86_64')
 url="http://www.gdal.org/"
 license=('custom')
 depends=('curl' 'geos' 'giflib' 'hdf5' 'libgeotiff' 'libjpeg-turbo' 'libpng' 'libtiff' 'netcdf'
-         'poppler' 'python2-numpy' 'sqlite3' 'libmariadbclient' 'postgresql-libs' 'cfitsio' 'unixodbc')
+         'poppler' 'python2-numpy' 'sqlite3' 'libmariadbclient' 'postgresql-libs' 'cfitsio'
+         'libspatialite' 'unixodbc')
 makedepends=('perl' 'swig')
 options=('!libtool' '!makeflags')
 source=("http://download.osgeo.org/${pkgname}/${pkgver}/${pkgname}-${pkgver}.tar.gz"
@@ -30,7 +31,8 @@ build() {
 
   ./configure --prefix=/usr --with-netcdf --with-libtiff --with-sqlite3 \
               --with-geotiff --with-mysql --with-python --with-curl \
-              --with-hdf5 --with-perl --with-geos --with-png --with-poppler
+              --with-hdf5 --with-perl --with-geos --with-png \
+              --with-poppler --with-spatialite
 
   sed -i 's/PY_HAVE_SETUPTOOLS=1/PY_HAVE_SETUPTOOLS=/g' ./GDALmake.opt
   sed -i 's/EXE_DEP_LIBS/KILL_EXE_DEP_LIBS/' apps/GNUmakefile
