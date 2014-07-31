@@ -1,0 +1,24 @@
+
+pkgname=aspell-pl
+pkgver=20140731
+pkgrel=1
+pkgdesc="Polish dictionary for aspell"
+arch=('x86_64')
+url="http://www.sjp.pl/slownik/en/"
+license=('GPL' 'LGPL' 'MPL')
+depends=('aspell')
+source=("http://sjp.pl/slownik/ort/sjp-aspell6-pl-6.0_$pkgver-0.tar.bz2")
+md5sums=('6359276a1fe33623387c451bbbe0d462')
+ 
+build() {
+  cd "$srcdir/aspell6-pl-6.0_$pkgver-0"
+ 
+  ./configure
+  make
+}
+
+package() {
+  cd "$srcdir/aspell6-pl-6.0_$pkgver-0"
+  
+  make DESTDIR="$pkgdir" install
+}
