@@ -1,7 +1,7 @@
 
 pkgname=libqmi
 pkgver=1.10.0
-pkgrel=1
+pkgrel=2
 pkgdesc="QMI modem protocol helper library"
 arch=('x86_64')
 url="http://cgit.freedesktop.org/libqmi"
@@ -18,7 +18,8 @@ build() {
   ./configure --prefix=/usr \
     --sysconfdir=/etc \
     --localstatedir=/var \
-    --disable-static 
+    --disable-static \
+    --libexecdir=/usr/lib
   make
 }
 
