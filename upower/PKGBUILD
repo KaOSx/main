@@ -1,7 +1,7 @@
 
 pkgname=upower
-pkgver=0.99.0
-pkgrel=2
+pkgver=0.99.1
+pkgrel=1
 pkgdesc="Abstraction for enumerating power devices, listening to device events and querying history and statistics"
 arch=('x86_64')
 url="http://upower.freedesktop.org"
@@ -10,17 +10,12 @@ depends=('systemd' 'libusb' 'polkit' 'dbus-glib' 'libimobiledevice')
 makedepends=('pkg-config' 'intltool' 'docbook-xsl')
 options=('!libtool')
 install=upower.install
-source=("$url/releases/${pkgname}-${pkgver}.tar.xz"
-        'create-dir-runtime.patch'
-        'fix-segfault.patch')
-md5sums=('14f43bc13353e23e7280863f33ac50d2'
-         '74901767f9c94451083b3d92396454ab'
-         'fa2f37eec44703e4c10edb5d9abb0f6b')
+source=("http://upower.freedesktop.org/releases/${pkgname}-${pkgver}.tar.xz")
+md5sums=('e21ea7875e46142e37695850754a296a')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
-  patch -p1 -i "${srcdir}"/create-dir-runtime.patch
-  patch -p1 -i "${srcdir}"/fix-segfault.patch
+  #patch -p1 -i "${srcdir}"/fix-segfault.patch
 
   ./configure --prefix=/usr \
       --sysconfdir=/etc \
