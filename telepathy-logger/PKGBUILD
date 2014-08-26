@@ -1,7 +1,7 @@
 
 pkgname=telepathy-logger
-pkgver=0.8.0
-pkgrel=2
+pkgver=0.8.1
+pkgrel=1
 pkgdesc="Telepathy framework logging daemon"
 arch=('x86_64')
 url="http://telepathy.freedesktop.org/wiki/Logger"
@@ -10,8 +10,8 @@ depends=('telepathy-glib' 'sqlite3' 'libxml2' 'dconf')
 makedepends=('intltool' 'gobject-introspection' 'libxslt')
 install=${pkgname}.install
 options=('!libtool')
-source=("http://telepathy.freedesktop.org/releases/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('e513eaa767344821073a0b7bb8b45217')
+source=("http://telepathy.freedesktop.org/releases/telepathy-logger/${pkgname}-${pkgver}.tar.bz2")
+md5sums=('88f7dfde882d987b9c93b645efab2f43')
 
 build() {
   cd "$srcdir/$pkgname-$pkgver"
