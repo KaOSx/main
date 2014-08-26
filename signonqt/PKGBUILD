@@ -1,15 +1,17 @@
 
 pkgbase=signon
 pkgname=('signonqt' 'signonqt-doc')
-pkgver=8.56
+pkgver=8.57
 pkgrel=1
 arch=('x86_64')
 url="http://code.google.com/p/accounts-sso/"
 license=('LGPL')
 makedepends=('qt' 'libproxy' 'doxygen' 'ttf-dejavu')
 options=('!emptydirs')
-source=("http://accounts-sso.googlecode.com/files/signon-$pkgver.tar.bz2")
-md5sums=('85ac10ab581d84ec2344a42349bc693b')
+# check source https://groups.google.com/forum/#!forum/accounts-sso-announce
+# latest tars https://drive.google.com/#folders/0B8fX9XOwH_g4alFsYV8tZTI4VjQ
+source=("http://sourceforge.net/projects/kaosx/files/sources/signon/signon-$pkgver.tar.bz2")
+md5sums=('9afb31332df8afffd8923f0079967d31')
 
 build() {
   cd $pkgbase-$pkgver

@@ -1,14 +1,16 @@
 
 pkgbase=accountsqt
 pkgname=('accountsqt' 'accountsqt-doc')
-pkgver=1.11
+pkgver=1.13
 pkgrel=1
 arch=('x86_64')
 url="http://code.google.com/p/accounts-sso/"
 license=('LGPL')
 makedepends=('qt' 'libaccounts-glib' 'doxygen')
-source=("http://accounts-sso.googlecode.com/files/accounts-qt-$pkgver.tar.bz2")
-md5sums=('a76f26849603f229399dc46eb83ed5a8')
+# check source https://groups.google.com/forum/#!forum/accounts-sso-announce
+# latest tars https://drive.google.com/#folders/0B8fX9XOwH_g4alFsYV8tZTI4VjQ
+source=("http://sourceforge.net/projects/kaosx/files/sources/accountsqt/accounts-qt-$pkgver.tar.bz2")
+md5sums=('fac0f97d8eb2501857b77cad7325e6dd')
 
 build() {
   cd accounts-qt-$pkgver
