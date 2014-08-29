@@ -1,6 +1,7 @@
 
 pkgname=ocaml	
-pkgver=4.01.0
+pkgver=4.02.0
+_pkgver=4.02
 pkgrel=1
 pkgdesc="A functional language with OO extensions"
 arch=('x86_64')
@@ -10,8 +11,8 @@ depends=('gdbm')
 makedepends=('tk' 'ncurses>=5.6-7' 'libx11')
 optdepends=('ncurses: advanced ncurses features' 'tk: advanced tk features')
 options=('!makeflags' '!emptydirs')
-source=("http://caml.inria.fr/distrib/ocaml-4.01/$pkgname-$pkgver.tar.gz")
-md5sums=('04dfdd7da189462a4f10ec6530359cef')
+source=("http://caml.inria.fr/distrib/ocaml-$_pkgver/$pkgname-$pkgver.tar.xz")
+md5sums=('98d496f53168343661ed1e16b86e8cc1')
 
 build() {
   cd $srcdir/$pkgname-$pkgver
@@ -23,11 +24,7 @@ build() {
 package_ocaml() {
   cd ${srcdir}/${pkgbase}-${pkgver}
   make PREFIX=$pkgdir/usr MANDIR=$pkgdir/usr/share/man install 
-   
-# Save >10MB with this one, makepkg only strips debug symbols.
-#find ${startdir}/pkg/usr/lib -type f -name '*.so.*' -exec strip --strip-unneeded {} \;
 
-  # install license
   install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
   install -m644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/"
 }
