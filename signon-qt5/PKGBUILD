@@ -1,0 +1,31 @@
+
+pkgname=signon-qt5
+pkgver=8.57
+pkgrel=1
+arch=('x86_64')
+url="http://code.google.com/p/accounts-sso/"
+license=('LGPL')
+pkgdesc="Framework to provide credential storage and authentication service, Qt5 version"
+depends=('qt5-base' 'libproxy')
+backup=('etc/signond.conf')
+makedepends=('doxygen' 'ttf-dejavu')
+options=('!emptydirs')
+conflicts=('signonqt')
+# check source https://groups.google.com/forum/#!forum/accounts-sso-announce
+# latest tars https://drive.google.com/#folders/0B8fX9XOwH_g4alFsYV8tZTI4VjQ
+source=("http://sourceforge.net/projects/kaosx/files/sources/signon/signon-$pkgver.tar.bz2")
+md5sums=('9afb31332df8afffd8923f0079967d31')
+
+build() {
+  cd signon-$pkgver
+  
+  /usr/lib/qt5/bin/qmake PREFIX=/usr LIBDIR=/usr/lib
+  make
+}
+
+package() { 
+  cd signon-$pkgver
+  
+  make INSTALL_ROOT="$pkgdir" install
+}
+

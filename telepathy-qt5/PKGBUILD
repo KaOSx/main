@@ -1,0 +1,40 @@
+
+pkgname=telepathy-qt5
+_pkgname=telepathy-qt
+pkgver=0.9.4
+pkgrel=1
+pkgdesc="A library for Qt-based Telepathy clients."
+arch=('x86_64')
+url="http://telepathy.freedesktop.org"
+groups=('telepathy')
+license=('LGPL')
+options=('!libtool')
+depends=('qt5-base' 'telepathy-farstream' 'dbus-python')
+makedepends=('libxslt' 'python2' 'cmake' 'doxygen' 'git')
+#source=("http://telepathy.freedesktop.org/releases/$_pkgname/$_pkgname-$pkgver.tar.gz")
+source=("git://anongit.freedesktop.org/telepathy/telepathy-qt")
+md5sums=('SKIP')
+
+build() {
+    cd "${srcdir}" 
+    #git clone -b farstream-0.2-port https://github.com/davidedmundson/telepathy-qt.git
+
+    mkdir build
+    cd build
+    cmake ../$_pkgname \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_INSTALL_PREFIX=/usr \
+        -DPKG_CONFIG_PATH=/usr/lib/pkgconfig \
+        -DQT_QMAKE_EXECUTABLE=/usr/lib/qt5/bin/qmake \
+        -DQT_INCLUDES=/usr/include/qt5 \
+        -DQT_LIBRARIES=/usr/lib \
+        -DENABLE_EXAMPLES=OFF \
+        -DENABLE_TESTS=false \
+        -DENABLE_EXPERIMENTAL_SERVICE_SUPPORT=ON
+    make
+}
+
+package() {
+    cd "${srcdir}"/build
+    make DESTDIR="$pkgdir" install
+}
