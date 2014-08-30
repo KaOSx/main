@@ -2,7 +2,7 @@
 pkgname=qca-qt5
 _pkgname=qca
 pkgver=2.0.9
-pkgrel=2
+pkgrel=3
 pkgdesc="Qt Cryptographic Architecture"
 arch=('x86_64')
 url="http://delta.affinix.com/qca/"
@@ -11,7 +11,6 @@ depends=('qt5-base' 'ca-certificates' 'nss')
 makedepends=('cmake' 'git')
 conflicts=('qca')
 provides=('qca')
-replaces=('qca')
 #source=("http://delta.affinix.com/download/qca/2.0/${pkgname}-${pkgver}.tar.bz2"
 source=("git://anongit.kde.org/qca.git")
 md5sums=('SKIP')
@@ -23,9 +22,7 @@ build() {
   
   cmake ../${_pkgname} \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DQCA_SUFFIX=qt5 \
-    -DQCA_INSTALL_IN_QT_PREFIX=ON
+    -DCMAKE_BUILD_TYPE=Release 
   make 
 }
 
