@@ -1,6 +1,6 @@
 
 pkgname=colord
-pkgver=1.2.1
+pkgver=1.2.2
 pkgrel=1
 pkgdesc="System service easily manage, install and generate color profiles to manage input and output devices"
 arch=('x86_64')
@@ -9,12 +9,10 @@ license=('GPL2')
 depends=('lcms2' 'polkit' 'sqlite3' 'systemd' 'libgusb' 'dbus')
 makedepends=('intltool' 'gobject-introspection' 'vala' 'docbook-xsl' 'sane' 'bash-completion')
 opdepends=('sane')
-replaces=('shared-color-profiles')
-conflicts=('shared-color-profiles')
 options=('!libtool')
 install=colord.install
-source=($url/releases/$pkgname-$pkgver.tar.xz)
-md5sums=('452e02b3a7cc3ae5b4fc9bef304a6902')
+source=("http://www.freedesktop.org/software/colord/releases/$pkgname-$pkgver.tar.xz")
+md5sums=('a03f06f20a1c70cbf30fc8bd59b99678')
 
 build() {
   cd "$pkgname-$pkgver"
