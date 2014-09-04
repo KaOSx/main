@@ -1,20 +1,20 @@
 
 pkgbase="llvm"
 pkgname=('llvm' 'llvm-ocaml' 'clang' 'clang-analyzer')
-pkgver=3.4.2
-subver=3.4
+pkgver=3.5.0
+subver=3.5
 _gcc_ver=4.8.3
 pkgrel=1
 arch=('x86_64')
 url="http://llvm.org/"
 license=('custom:University of Illinois/NCSA Open Source License')
 makedepends=('gcc-libs' 'libffi' 'python2' 'ocaml' "gcc=${_gcc_ver}" 'groff')
-source=("http://llvm.org/releases/${pkgver}/${pkgbase}-${pkgver}.src.tar.gz"
-        "http://llvm.org/releases/$pkgver/cfe-$pkgver.src.tar.gz"
-        "http://llvm.org/releases/$subver/compiler-rt-$subver.src.tar.gz")
-md5sums=('a20669f75967440de949ac3b1bad439c'
-         '87945973b7c73038871c5f849a818588'
-         '7938353e3a3bda85733a165e7ac4bb84')
+source=("http://llvm.org/releases/${pkgver}/${pkgbase}-${pkgver}.src.tar.xz"
+        "http://llvm.org/releases/$pkgver/cfe-$pkgver.src.tar.xz"
+        "http://llvm.org/releases/$pkgver/compiler-rt-$pkgver.src.tar.xz")
+md5sums=('d6987305a1a0e58e128c1374cd3b8fef'
+         '27718dd13c7df83e15f997116bbb4aef'
+         '02624d2a9144278c3808c00dbbab56c8')
 
 build() {
   cd "${srcdir}/${pkgbase}-${pkgver}.src"
@@ -23,7 +23,7 @@ build() {
   # See http://llvm.org/bugs/show_bug.cgi?id=4840
   mv "${srcdir}/cfe-${pkgver}.src" tools/clang
 
-  mv "$srcdir/compiler-rt-$subver" projects/compiler-rt
+  mv "$srcdir/compiler-rt-$pkgver.src" projects/compiler-rt
 
   # Fix doc installation directories
   sed -i 's:\$(PROJ_prefix)/docs/llvm:$(PROJ_prefix)/share/doc/llvm:' \
@@ -89,9 +89,6 @@ depends=('perl' 'libffi')
   # Get rid of example Hello transformation
   rm "${pkgdir}"/usr/lib/*LLVMHello.*
 
-  # Symlink the gold plugin where clang expects it
-  #ln -s llvm/LLVMgold.so "${pkgdir}/usr/lib/LLVMgold.so"
-
   install -D -m644 LICENSE.TXT "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
 }
 
@@ -131,11 +128,6 @@ depends=("llvm=${pkgver}-${pkgrel}" "gcc=${_gcc_ver}")
   # Revert the path change in case we want to do a repackage later
   sed -e 's:$(PROJ_prefix)/share/doc/clang:$(PROJ_prefix)/share/doc/llvm:' \
       -i "${srcdir}/${pkgbase}-${pkgver}.src/Makefile.config"
-
-  # Install old libstdc++ headers. Contains combined headers from
-  # gcc 4.5.2-6-i686 and gcc-multilib-4.5.2-6-x86_64
-  # install -d "${pkgdir}/usr/include/c++"
-  # cp -rd "${srcdir}/gcc-headers-${_gcc_ver}" "${pkgdir}/usr/include/c++/clang-${pkgver}"
 
   install -D -m644 LICENSE.TXT "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
 }
