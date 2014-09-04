@@ -12,7 +12,8 @@ options=('!libtool') # 'force')
 install=${pkgname}.install
 source=("http://xorg.freedesktop.org/archive/individual/driver/$pkgname-$pkgver.tar.bz2"
         '50-nouveau-hwmon.rules')
-md5sums=('44fd65897630fdd19c086133cc1bd679')
+md5sums=('a0d2932d84ba10c4933c8332c9afe157'
+         'bc25444cb8b0cffbafcad45d53d42c17')
 
 build() {
   cd ${srcdir}/$pkgname-$pkgver
@@ -25,6 +26,5 @@ package() {
   cd ${srcdir}/$pkgname-$pkgver
   make DESTDIR=${pkgdir} install
   
-  install -Dm644 ${srcdir}/${pkgname}-${pkgver}/50-nouveau-hwmon.rules \
-    ${pkgdir}/etc/udev/rules.d/50-nouveau-hwmon.rules
+  install -Dm644 ${srcdir}/50-nouveau-hwmon.rules ${pkgdir}/etc/udev/rules.d/50-nouveau-hwmon.rules
 }
