@@ -1,0 +1,26 @@
+
+pkgname=libisoburn
+pkgver=1.3.8
+pkgrel=1
+pkgdesc="Frontend for libraries libburn and libisofs which enables creation and expansion of ISO-9660 filesystems"
+url="http://libburnia-project.org"
+arch=('x86_64')
+license=('GPL2')
+depends=('libburn>=1.3.8' 'libisofs>=1.3.8' 'readline')
+optdepends=('tk: for xorriso-tcltk frontend')
+install=${pkgname}.install
+source=("http://files.libburnia-project.org/releases/${pkgname}-${pkgver}.tar.gz")
+md5sums=('4f1c2290a2d02bdb709c3707fd9f1ae6')
+
+build() {
+  cd ${pkgname}-${pkgver/.pl01/}
+  
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd ${pkgname}-${pkgver/.pl01/}
+  
+  make DESTDIR=${pkgdir} install
+}
