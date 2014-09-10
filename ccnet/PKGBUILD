@@ -1,0 +1,30 @@
+
+pkgname=ccnet
+pkgver=3.1.4
+pkgrel=1
+pkgdesc="Ccnet is a framework for writing networked applications in C."
+arch=('x86_64')
+url="https://github.com/haiwen/ccnet/"
+license=('GPLv3')
+depends=('libsearpc' 'libzdb' 'libevent')
+makedepends=('vala' 'python2')
+source=("https://github.com/haiwen/ccnet/archive/v${pkgver}.tar.gz")
+md5sums=('fdc1b986c0ff8fc438c4ffd89ad25539')
+
+prepare() {
+  export PREFIX=${pkgdir}/usr
+  export PKG_CONFIG_PATH=$PREFIX/lib/pkgconfig
+}
+build() {
+  cd ${srcdir}/${pkgname}-${pkgver}
+
+  ./autogen.sh
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd ${srcdir}/${pkgname}-${pkgver}
+
+  make DESTDIR=${pkgdir} install
+}

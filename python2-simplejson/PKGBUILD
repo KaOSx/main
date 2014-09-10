@@ -1,0 +1,19 @@
+
+pkgname=python2-simplejson
+pkgver=3.6.3
+pkgrel=1
+pkgdesc='Simple, fast, extensible JSON encoder/decoder for Python'
+license=('MIT')
+arch=('x86_64')
+url='https://github.com/simplejson/simplejson'
+depends=('python2')
+makedepends=('python2-setuptools' 'git')
+source=("git://github.com/simplejson/simplejson.git#tag=v${pkgver}")
+md5sums=('SKIP')
+
+package() {
+    cd "${srcdir}/simplejson"
+    python2 setup.py install --root="${pkgdir}"
+    
+    install -Dm644 "${srcdir}/simplejson/LICENSE.txt" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+} 

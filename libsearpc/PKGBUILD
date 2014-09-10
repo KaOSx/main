@@ -1,0 +1,26 @@
+
+pkgname=libsearpc
+pkgver=3.0.4
+pkgrel=1
+pkgdesc="A simple and easy-to-use C language RPC framework"
+arch=('x86_64')
+url="https://github.com/haiwen/libsearpc/"
+license=('GPLv3')
+depends=('glib2' 'jansson' 'libtool')
+makedepends=('python2-simplejson')
+source=("https://github.com/haiwen/libsearpc/archive/v${pkgver}.tar.gz")
+md5sums=('c23b781cf0f87fd995091ec215b34d6a')
+
+build() {
+  cd ${srcdir}/libsearpc-${pkgver}
+
+  ./autogen.sh
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd ${srcdir}/libsearpc-${pkgver}
+
+  make DESTDIR=${pkgdir} install
+}
