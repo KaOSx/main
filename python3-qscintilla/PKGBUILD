@@ -1,7 +1,7 @@
 
-pkgname=('python3-qscintilla')
-pkgver=2.8.3
-pkgrel=3
+pkgname=python3-qscintilla
+pkgver=2.8.4
+pkgrel=1
 license=('GPL')
 arch=('x86_64')
 url="http://www.riverbankcomputing.co.uk/software/qscintilla/intro"
@@ -9,18 +9,18 @@ pkgdesc="A port to Qt of Neil Hodgson's Scintilla C++ editor class, python3 bind
 depends=('python2-qscintilla' 'pyqt-python3' )
 makedepends=('chrpath')
 source=("http://downloads.sourceforge.net/pyqt/QScintilla-gpl-${pkgver}.tar.gz")
-md5sums=('bbf6944a9d3b089a79763ca4e6486b9d')
+md5sums=('28aec903ff48ae541295a4fb9c96f8ea')
 
 build() {
     cd $srcdir/QScintilla-gpl-$pkgver
 
     cd ${srcdir}/QScintilla-gpl-${pkgver}/Python
-    python3 configure.py 
+    python3 configure.py --no-qsci-api
     make
 }
 
 package() {
     cd ${srcdir}/QScintilla-gpl-${pkgver}/Python
-
-    make DESTDIR="${pkgdir}" INSTALL_ROOT="${pkgdir}" install
+    
+    make DESTDIR=${pkgdir} INSTALL_ROOT=${pkgdir} install
 }
