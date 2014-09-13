@@ -2,18 +2,22 @@
 pkgname=gd
 pkgver=2.1.0
 _pkgver=2.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Library for the dynamic creation of images by programmers"
 arch=('x86_64')
 url="http://www.libgd.org/"
 license=('custom')
 depends=('libpng' 'fontconfig' 'libjpeg-turbo' 'libtiff')
 options=('!libtool')
-source=("https://bitbucket.org/libgd/gd-libgd/downloads/libgd-$_pkgver.tar.xz")
-md5sums=('03588159bf4faab9079849c8d709acc6')
+source=("https://bitbucket.org/libgd/gd-libgd/downloads/libgd-$_pkgver.tar.xz"
+        'gdxpm.patch')
+md5sums=('03588159bf4faab9079849c8d709acc6'
+         '51f5ff073eabbd7809e0ce438d5bb1c2')
 
 build() {
   cd "${srcdir}/libgd-${_pkgver}"
+  # https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2014-2497
+  patch -p1 -i ${srcdir}/gdxpm.patch
   
   ./configure --prefix=/usr --without-xpm
   make
