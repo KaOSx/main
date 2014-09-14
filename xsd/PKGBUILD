@@ -1,31 +1,30 @@
 
 pkgname=xsd
-pkgver=3.3.0
-_pkgver=3.3.0-2+dep
-pkgrel=3
+pkgver=4.0.0
+_pkgver=4.0.0+dep
+pkgrel=1
 pkgdesc="An open-source, cross-platform W3C XML Schema to C++ data binding compiler"
 arch=('x86_64')
 url="http://www.codesynthesis.com/products/xsd"
 license=('GPL2')
 depends=('boost-libs' 'xerces-c')
-makedepends=('boost')
-source=("http://www.codesynthesis.com/download/${pkgname}/3.3/${pkgname}-${_pkgver}.tar.bz2"
+source=("http://www.codesynthesis.com/download/${pkgname}/4.0/${pkgname}-${_pkgver}.tar.bz2"
         "xsdcxx.patch")
-md5sums=('7ecee5029c119ef678bbe5ca4ef8a288'
-         'ca9c49a202b6f4eed4e578840cab8674')
+md5sums=('ae64d7fcd258addc9b045fe3f96208bb'
+         'd49e0bbd3bae200f2c6bb7e37326a6ef')
 
 build() {
-  cd "${pkgname}-${_pkgver}"
-  patch -p0 -i "${srcdir}/xsdcxx.patch"
+  cd ${pkgname}-${_pkgver}
+  patch -p1 -i ${srcdir}/xsdcxx.patch
 
-  make CXXFLAGS="${CXXFLAGS}"
+  make 
 }
 
 package() {
   cd ${pkgname}-${_pkgver}
-  make install_prefix="$pkgdir/usr" install
+  make install_prefix=${pkgdir}/usr install
 
   # Fix conflicts with mono
-  mv "${pkgdir}"/usr/bin/xsd{,cxx}
-  mv "${pkgdir}"/usr/share/man/man1/xsd{,cxx}.1
+  mv ${pkgdir}/usr/bin/xsd{,cxx}
+  mv ${pkgdir}/usr/share/man/man1/xsd{,cxx}.1
 }
