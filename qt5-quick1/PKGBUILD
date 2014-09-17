@@ -1,8 +1,8 @@
 
 pkgname=qt5-quick1
-pkgver=5.3.2
-subver=5.3.2
-_pkgver=5.3
+pkgver=5.4.0beta
+subver=5.4.0-alpha
+_pkgver=5.4
 pkgrel=1
 pkgdesc=('A cross-platform application and UI framework, QtQuick1 files')
 arch=('x86_64')
@@ -12,8 +12,9 @@ depends=('qt5-webkit' 'qt5-script')
 options=('!libtool')
 groups=('qt5')
 _pkgfqn="qtquick1-opensource-src-${subver}"
-source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
-md5sums=('3a57c52d6d4d6632d67a4ebd35abe0c5')
+#source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
+source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
+md5sums=('4dbc2f8fac11b9231820f8ccc8697df7')
 
 build() {
     cd $srcdir/$_pkgfqn

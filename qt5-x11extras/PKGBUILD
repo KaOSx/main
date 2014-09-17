@@ -1,8 +1,8 @@
 
 pkgname=qt5-x11extras
-pkgver=5.3.2
-subver=5.3.2
-_pkgver=5.3
+pkgver=5.4.0beta
+subver=5.4.0-alpha
+_pkgver=5.4
 pkgrel=1
 pkgdesc=('A cross-platform application and UI framework, Qt11extras')
 arch=('x86_64')
@@ -12,8 +12,9 @@ depends=('qt5-declarative')
 groups=('qt5')
 options=('!libtool')
 _pkgfqn="qtx11extras-opensource-src-${subver}"
-source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
-md5sums=('59f6cbbdf2ad48c6b95b65f8b333df2d')
+#source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
+source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
+md5sums=('de025fcc80b4bf1b7c789ed33d2ce911')
 
 build() {
     cd $srcdir/$_pkgfqn

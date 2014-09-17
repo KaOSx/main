@@ -1,8 +1,8 @@
 
 pkgname=qt5-script
-pkgver=5.3.2
-subver=5.3.2
-_pkgver=5.3
+pkgver=5.4.0beta
+subver=5.4.0-alpha
+_pkgver=5.4
 pkgrel=1
 pkgdesc=('A cross-platform application and UI framework, QtScripts files')
 arch=('x86_64')
@@ -12,8 +12,9 @@ depends=('qt5-base')
 groups=('qt5')
 options=('!libtool')
 _pkgfqn="qtscript-opensource-src-${subver}"
-source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
-md5sums=('d0e70adf7c993f33bad27290dae778d5')
+#source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
+source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
+md5sums=('23b0acc550a194f2005d5853cd49e1f1')
 
 build() {
     cd $srcdir/$_pkgfqn
