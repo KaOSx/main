@@ -1,0 +1,33 @@
+
+pkgname=qtwebengine
+pkgver=5.4.0beta
+subver=5.4.0-alpha
+_pkgver=5.4
+pkgrel=1
+pkgdesc="Chromium-based web engine to replace Qt WebKit"
+url="http://blog.qt.digia.com/blog/2014/01/23/qt-webengine-technology-preview-available/"
+arch=('x86_64')
+license=('GPL3')
+depends=('qt5-declarative' 'python2-jinja' 'mesa' 'systemd' 'pango' 'nss' 'speex' 'libevent' 'libcups'
+         'libxslt' 'libpng' 'libjpeg-turbo' 'libwebp' 'zlib' 'pciutils' 'jsoncpp' 'pulseaudio' 'libxcomposite')
+makedepends=('gperf' 'yasm' 'openssh' 'icu')
+_pkgfqn="qtwebengine-opensource-src-${subver}"
+source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
+md5sums=('0a3aa932ab4f3ac5ab8cc54e06d8247c')
+
+build() {
+   cd "${srcdir}/$_pkgfqn/"   
+   
+   mkdir build   
+   cd build 
+   #export GYP_DEFINES="python_ver=2.7 use_pulseaudio=1 use_pango=1 use_cairo=1 use_cups=1"
+   
+   /usr/lib/qt5/bin/qmake ../qtwebengine.pro
+   make 
+}
+
+package() {
+   cd "${srcdir}/$_pkgfqn/build/"   
+   
+   make INSTALL_ROOT="${pkgdir}" install
+}
