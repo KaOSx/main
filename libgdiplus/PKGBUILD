@@ -1,7 +1,7 @@
 
 pkgname=libgdiplus
 pkgver=2.10.9
-pkgrel=1
+pkgrel=2
 pkgdesc="An Open Source Implementation of the GDI+ API"
 arch=('x86_64')
 license=('MPL' 'LGPL')
@@ -9,20 +9,26 @@ url="http://www.mono-project.com"
 depends=('libtiff' 'cairo' 'giflib' 'glib2' 'libexif')
 makedepends=('pkgconfig')
 options=('!libtool')
-source=("http://download.mono-project.com/sources/${pkgname}/${pkgname}-${pkgver}.tar.bz2"
+source=("http://download.mono-project.com/sources/libgdiplus/${pkgname}-${pkgver}.tar.bz2"
        'libpng15.patch'
        'lx11.patch'
-       'giflib5.patch')
+       'giflib5.patch'
+       'giflib51.patch'
+       'freetype.patch')
 md5sums=('b4615c14584b5d73cbb9757c28887654'
          'a2d143676bbaceeb88b4c34069e93986'
          '251a92021eac4181af6b7f37519d2143'
-         'f21cc0fbef6e6f80ba6137e8d703b254')
+         'f21cc0fbef6e6f80ba6137e8d703b254'
+         '8c0a975b12a011b21e4216c44be1416e'
+         '6ee484dde02ea89aded1287c0a8d4bad')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
   patch -p0 -i "${srcdir}/libpng15.patch"
   patch -p1 -i "${srcdir}/lx11.patch"
   patch -p1 -i "${srcdir}/giflib5.patch"
+  patch -p1 -i "${srcdir}/giflib51.patch"
+  patch -p1 -i "${srcdir}/freetype.patch"
   
   ./configure --prefix=/usr --with-cairo=system
   make 

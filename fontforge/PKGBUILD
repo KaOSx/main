@@ -2,7 +2,7 @@
 pkgname=fontforge
 pkgver=20140101
 _pkgver=2.0.20140101
-pkgrel=1
+pkgrel=2
 pkgdesc="An outline and bitmap font editor"
 arch=('x86_64')
 url="http://fontforge.sourceforge.net"
@@ -11,13 +11,16 @@ depends=('libxkbui' 'libxi' 'libxml2' 'pango' 'giflib' 'libpng' 'libtiff' 'libjp
          'libltdl' 'desktop-file-utils' 'hicolor-icon-theme')
 options=('!libtool' '!makeflags')
 source=("https://github.com/fontforge/fontforge/archive/${_pkgver}.tar.gz"
-        'http://fontforge.org/cidmaps.tgz')
+        'http://fontforge.org/cidmaps.tgz'
+        'giflib.patch')
 md5sums=('9dce2523da76cd9ea609bb7f4357946b'
-         '063691163e592515b31514515bb3ce8c')
+         '063691163e592515b31514515bb3ce8c'
+         '84b86f95f98a56412d37af74d306a764')
 
 build() {
   cd "${srcdir}/${pkgname}-${_pkgver}"
   sed '/fontforge_package_name/s/^#//' -i configure.ac
+  patch -p1 -i ${srcdir}/giflib.patch
   
   ./autogen.sh
   ./configure --prefix=/usr \

@@ -6,7 +6,7 @@ _icedtea_jdkver="7"
 _openjdk_build="b31"
 _pkgver="7u60"
 pkgver="${_pkgver}_${_openjdk_build}_${_icedtea_release}"
-pkgrel=1
+pkgrel=2
 pkgdesc="An open-source implementation of the seventh edition of the Java SE Platform."
 arch=('x86_64')
 url="http://icedtea.classpath.org/"
@@ -32,6 +32,7 @@ source=("http://icedtea.classpath.org/download/source/icedtea-${_icedtea_release
         'corba_path.diff'
         'command_path.diff'
         'openjdk7_nonreparenting-wm.diff'
+        'giflib.diff'
         'openjdk.profile.sh'
         'openjdk.profile.csh')
 md5sums=('62435458bd87b340ae30306e67af8f60'
@@ -46,6 +47,7 @@ md5sums=('62435458bd87b340ae30306e67af8f60'
          '986131efd2636724ae37870a5cca6d43'
          '05afd9c7fedcc05d4ebbb3427e068dba'
          '029383f5aba2121facc19377504be3df'
+         '529dd5e5372112470dacc08c95b0c22a'
          '64885c74918f07afe88f31692177b0c5'
          '3baf9768e5be92d6fe80641dcc35f017')
 noextract=("openjdk.tar.gz"
@@ -64,7 +66,8 @@ build() {
   export DISTRIBUTION_PATCHES="patches/fontconfig-paths.diff \
                                patches/corba_path.diff \
                                patches/command_path.diff \
-                               patches/openjdk7_nonreparenting-wm.diff"
+                               patches/openjdk7_nonreparenting-wm.diff \
+                               patches/giflib.diff"
 
   rm -rf build
   cp -r "icedtea-${_icedtea_release}" \

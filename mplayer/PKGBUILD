@@ -1,7 +1,7 @@
 
 pkgname=mplayer
 pkgver=37249
-pkgrel=1
+pkgrel=2
 pkgdesc="Multimedia player."
 arch=('x86_64')
 depends=('a52dec' 'aalib' 'alsa-lib' 'bzip2' 'directfb' 'enca' 'faac' 'faad2'
@@ -21,11 +21,13 @@ install=mplayer.install
 source=("http://sourceforge.net/projects/kaosx/files/sources/${pkgname}/${pkgname}-${pkgver}.tar.xz"
         'mplayer.desktop'
         'mplayer.png'
-        'cdio-includes.patch')
+        'cdio-includes.patch'
+        'giflib.patch')
 md5sums=('954843973fe90a237f0b74f2adc950a6'
          '62f44a58f072b2b1a3c3d3e4976d64b3'
          'd00874ccc644b7f43d6ef1c942fcef28'
-         '7b5be7191aafbea64218dc4916343bbc')
+         '7b5be7191aafbea64218dc4916343bbc'
+         '14461fb94b7aa5dda091ba4f737df2d9')
 
 # create tarball: source PKGBUILD && mksource
 
@@ -52,6 +54,7 @@ mksource() {
 build() {
     cd ${srcdir}/${pkgname}
     patch -p0 -i ${srcdir}/cdio-includes.patch
+    patch -p0 -i ${srcdir}/giflib.patch
     
     ./configure \
       --confdir=/etc/mplayer \
