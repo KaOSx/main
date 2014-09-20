@@ -1,15 +1,15 @@
 
 pkgname=libmtp
-pkgver=1.1.6
-pkgrel=4
+pkgver=1.1.8
+pkgrel=1
 pkgdesc="Library implementation of the Media Transfer Protocol"
 arch=('x86_64')
 url="http://libmtp.sourceforge.net"
 license=('LGPL')
 depends=('libusb' 'libgcrypt')
 options=('!libtool')
-source=("http://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tar.gz")
-md5sums=('87835626dbcf39e62bfcdd4ae6da2063')
+source=("http://downloads.sourceforge.net/libmtp/${pkgname}-${pkgver}.tar.gz")
+md5sums=('f76abc22fdbe96e96f0066e0f2dc0efd')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
