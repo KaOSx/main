@@ -1,8 +1,8 @@
 
 pkgname=xorg-server
-pkgver=1.16.0
+pkgver=1.16.1
 # major updates build xorg-server/xf86-input-evdev/xorg-server again
-pkgrel=3
+pkgrel=1
 pkgdesc="X.Org X servers"
 arch=('x86_64')
 license=('custom')
@@ -13,10 +13,10 @@ depends=('xproto' 'randrproto' 'renderproto' 'xextproto' 'inputproto' 'kbproto' 
          'libxrender' 'libdmx' 'libdrm' 'libxfixes' 'libxext' 'libxdmcp' 'libxshmfence'
          'presentproto' 'systemd' 'xf86-input-evdev' 'xkeyboard-config' 'xorg-xkb-utils'
          'xorg-fonts-misc' 'xf86dgaproto' 'xcb-util' 'xcb-util-image' 'xcb-util-keysyms'
-         'xcb-util-renderutil' 'xcb-util-wm' 'libepoxy')
+         'xcb-util-renderutil' 'xcb-util-wm' 'libepoxy' 'libgl')
 makedepends=('libx11' 'xf86driproto' 'xcmiscproto' 'xtrans' 'bigreqsproto'
              'compositeproto' 'recordproto' 'scrnsaverproto' 'resourceproto' 'libxkbfile'
-             'libxmu' 'dmxproto' 'libxtst' 'libxres' 'links' 'libgl')
+             'libxmu' 'dmxproto' 'libxtst' 'libxres' 'links')
 #backup=('etc/X11/xorg.conf.d/10-evdev.conf' 'etc/X11/xorg.conf.d/10-quirks.conf')
 options=('!libtool')
 provides=('glamor-egl')
@@ -26,17 +26,14 @@ groups=('xorg')
 source=("http://xorg.freedesktop.org/releases/individual/xserver/${pkgname}-${pkgver}.tar.bz2"
         'nvidia-drm-outputclass.conf'
         'xvfb-run'
-        'xvfb-run.1'
-        'glamor.patch')
-md5sums=('8a9ff6ee9907360f09b5bdabb8089502'
+        'xvfb-run.1')
+md5sums=('b1ff364222e921d32de40c4786e8bc47'
          '1b0626939623e92c04809fb76cb505dd'
          '52fd3effd80d7bc6c1660d4ecf23d31c'
-         '376c70308715cd2643f7bff936d9934b'
-         '17193d4cabb94c8e54b178381163db82')
+         '376c70308715cd2643f7bff936d9934b')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
-  patch -p1 -i "${srcdir}/glamor.patch"
 
   autoreconf -fiv
   ./configure --prefix=/usr \
