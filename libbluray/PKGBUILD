@@ -1,6 +1,6 @@
 
 pkgname=libbluray
-pkgver=0.6.0
+pkgver=0.6.2
 pkgrel=1
 pkgdesc="Library to access Blu-Ray disks for video playback"
 arch=('x86_64')
@@ -8,8 +8,8 @@ url="http://www.videolan.org/developers/libbluray.html"
 license=('LGPL2.1')
 depends=('libxml2' 'freetype2')
 options=('!libtool')
-source=("ftp://ftp.videolan.org/pub/videolan/$pkgname/$pkgver/$pkgname-$pkgver.tar.bz2")
-md5sums=('697886c09ef058bb9a2954ee5ee4f140')
+source=("ftp://ftp.videolan.org/pub/videolan/libbluray/$pkgver/$pkgname-$pkgver.tar.bz2")
+md5sums=('f4d2f2cab53f976cbb22cbae069057bd')
 
 build() {
   cd "$srcdir/$pkgname-$pkgver"
