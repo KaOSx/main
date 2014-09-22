@@ -11,12 +11,12 @@ makedepends=('bash' 'iproute2')
 source=("ftp://ftp.isc.org/isc/${pkgbase}/${_pkgver}/${pkgbase}-${_pkgver}.tar.gz"
         'dhcpd4.service'
         'dhcpd6.service'
-        'dhcp-4.2.5-client_script-1.patch'
-        'dhcp-4.2.5-missing_ipv6-1.patch')
+        "http://www.linuxfromscratch.org/patches/blfs/svn/dhcp-4.3.1-client_script-1.patch"
+        "http://www.linuxfromscratch.org/patches/blfs/svn/dhcp-4.3.1-missing_ipv6-1.patch")
 md5sums=('b3a42ece3c7f2cd2e74a3e12ca881d20'
          '7045e63a5d294c761ce306084eec2c67'
          'a2ebf4460c049cbee3e49cb26a475f68'
-         '9e4dcf90beec15bfcb6631809cdcc780'
+         'c02bddb6c6c33c5885e3dd072ee2ee40'
          'da655f02f1cf4d95b4708e84e69edbc8')
 
 build() {
@@ -24,9 +24,9 @@ build() {
 
   # Define _GNU_SOURCE to fix IPV6.
   sed '/^CFLAGS="$CFLAGS/ s/INGS"/INGS -D_GNU_SOURCE"/' -i configure
-
-  patch -p1 -i ${srcdir}/dhcp-4.2.5-missing_ipv6-1.patch
-  patch -p1 -i ${srcdir}/dhcp-4.2.5-client_script-1.patch
+  # use patches from LFS http://www.linuxfromscratch.org/blfs/view/cvs/basicnet/dhcp.html
+  patch -p1 -i ${srcdir}/dhcp-4.3.1-missing_ipv6-1.patch
+  patch -p1 -i ${srcdir}/dhcp-4.3.1-client_script-1.patch
 
   ./configure --prefix=/usr \
               --sysconfdir=/etc \
