@@ -9,27 +9,25 @@ url="http://webkitgtk.org/"
 license=('custom')
 depends=('sqlite' 'libsoup' 'libsecret' 'enchant' 'libgl' 'gst-plugins-base' 'gst-plugins-good'
          'gtk3' 'libwebp' 'libxslt' 'libxt' 'harfbuzz')
-makedepends=('gperf' 'gobject-introspection' 'python3' 'mesa' 'ruby' 'gtk2')
+makedepends=('gperf' 'gobject-introspection' 'python3' 'mesa' 'ruby' 'gtk2' 'cmake')
 options=('!emptydirs')
 source=("http://webkitgtk.org/releases/$_pkgname-${pkgver}.tar.xz")
 md5sums=('56fa5d14c91ef07e92f6a29469916a12')
 
 build() {
-  #cd $_pkgname-$pkgver
-  
-  mkdir -p build
-  cd build
+  cd $_pkgname-$pkgver
 
-  cmake ../${_pkgname}-$pkgver \
+  cmake \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DLIB_INSTALL_DIR=lib \
+    -DCMAKE_INSTALL_LIBDIR=lib \
     -DPORT=GTK
   make
 }
 
 package() {
-  cd build
-
-  make DESTDIR=${pkgdir} install
+  cd $_pkgname-$pkgver
+  make -j1 DESTDIR=${pkgdir} install
+  
+  install -Dm644 $srcdir/$_pkgname-$pkgver/Source/WebKit/LICENSE "$pkgdir/usr/share/licenses/webkitgtk/LICENSE"
 }
