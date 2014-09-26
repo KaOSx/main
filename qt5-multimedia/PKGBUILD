@@ -3,20 +3,21 @@ pkgname=qt5-multimedia
 pkgver=5.4.0beta
 subver=5.4.0-alpha
 _pkgver=5.4
-pkgrel=1
+pkgrel=2
 pkgdesc=('A cross-platform application and UI framework, QtMultimedia files')
 arch=('x86_64')
 url='http://qt.nokia.com/'
 license=('GPL3' 'LGPL' 'FDL' 'custom')
 depends=('qt5-declarative' 'openal' 'libxslt' 'libxcomposite' 'gst-plugins-base'
-         'gst-plugins-good' 'pulseaudio')
-makedepends=('gstreamer0.10-base-plugins')
+         'gst-plugins-good' 'gst-plugins-bad' 'pulseaudio')
 options=('!libtool')
 groups=('qt5')
-_pkgfqn="qtmultimedia-opensource-src-${subver}"
+#_pkgfqn="qtmultimedia-opensource-src-${subver}"
+_pkgfqn=qt-qtmultimedia
 #source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
-source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
-md5sums=('9f5a347da2ff9428a70a3d3c9d45b491')
+#source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
+source=("qt-qtmultimedia-5e376b135e94dee85787e093d228e59284964ce7.tar.gz")
+md5sums=('69b7df94bcc0e58218e4d63ebb3581ed')
 
 build() {
     cd $srcdir/$_pkgfqn
