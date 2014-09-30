@@ -4,14 +4,14 @@ _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=('nvidia' 'khd-nvidia')
 pkgver=343.22
-pkgrel=2
+pkgrel=3
 arch=('x86_64')
 url="http://www.nvidia.com/"
 makedepends=('linux-headers' 'linux>=3.15' 'linux<3.16' "nvidia-utils=${pkgver}")
 license=('custom')
 # get from github once hardware-detection is up:
 source=('nvidia_supported')
-md5sums=('62d0cdb856cfae64753c0f3acf729d47')
+md5sums=('282f73f1a7326339a7b0e0716eee4f76')
 
 _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 #_pkg="NVIDIA-Linux-x86_64-${pkgver}"
@@ -52,6 +52,6 @@ package_khd-nvidia() {
     cd "${srcdir}/${_pkg}"
 
     install -dm755 "${pkgdir}/opt/kdeos/hwdb"
-    sh -e "${srcdir}/nvidia_supported" README.txt kernel/nv-kernel.o \
+    sh -e "${srcdir}/nvidia_supported" README.txt kernel/nv-xxx.o \
         > "${pkgdir}/opt/kdeos/hwdb/hw_nvidia_hwdb"
 }

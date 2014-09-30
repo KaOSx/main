@@ -1,7 +1,7 @@
 
 pkgname=libva
-pkgver=1.2.1
-pkgrel=2
+pkgver=1.4.0
+pkgrel=1
 pkgdesc="libva with patches to extend VA API with data needed for VDPAU and XvBA backends."
 arch=('x86_64')
 url="http://freedesktop.org/wiki/Software/vaapi"
@@ -10,7 +10,7 @@ depends=('libgl' 'libdrm' 'libxfixes')
 makedepends=('mesa')
 options=('!libtool')
 source=("http://www.freedesktop.org/software/vaapi/releases/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('ca95b343050cf8feaf98dfe08ce0191b')
+md5sums=('566e68d0a5a7758b2147dd3e60905bf3')
 
 build() {
   cd ${srcdir}/${pkgname}-${pkgver}
