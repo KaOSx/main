@@ -1,7 +1,7 @@
 
 pkgname=lensfun
-pkgver=0.2.8
-pkgrel=2
+pkgver=0.3.0
+pkgrel=1
 pkgdesc="Database of photographic lenses and a library that allows advanced access to the database"
 arch=('x86_64')
 url="http://sourceforge.net/projects/lensfun/"
@@ -10,22 +10,19 @@ depends=('glibc' 'glib2')
 makedepends=('python2' 'libpng')
 source=("http://sourceforge.net/projects/lensfun/files/${pkgver}/${pkgname}-${pkgver}.tar.bz2"
         'configure.diff') 
-md5sums=('db2988505e7432c6b331aa597789c639'
+md5sums=('c553cb37f1b781d1af05787beacf0193'
          '9561083206bc343b3f57ac5d34a8fdd9')
 
 build() {
     cd "${srcdir}/${pkgname}-${pkgver}"
-    sed -i 's|#!/usr/bin/python|#!/usr/bin/python2|' configure
-    patch -p1 -i "${srcdir}/configure.diff" 
     
-    ./configure \
-        --prefix=/usr \
-        --libdir=/usr/lib
-    make all
+    cmake -DCMAKE_INSTALL_PREFIX=/usr \
+          -DCMAKE_BUILD_TYPE=Release 
+    make
 }
 
 package() {
     cd "${srcdir}/${pkgname}-${pkgver}"
     
-    make INSTALL_PREFIX="$pkgdir" install
+    make DESTDIR="${pkgdir}" install  
 }
