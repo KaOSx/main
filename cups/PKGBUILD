@@ -8,33 +8,27 @@ license=('GPL')
 url="http://www.cups.org/"
 makedepends=('libtiff' 'libpng' 'acl' 'pam' 'xdg-utils' 'krb5' 'openssl' 'cups-filters' 'bc'
              'xinetd' 'gzip' 'autoconf' 'libusb' 'dbus-core' 'avahi'  'hicolor-icon-theme' 'systemd'
-             'colord' 'libpaper')
+             'colord' 'libpaper' 'gnutls')
 source=("http://www.cups.org/software/${pkgver}/cups-${pkgver}-source.tar.bz2"
         'cups-no-export-ssllibs.patch'
         'cups-no-gcrypt.patch'
         'cups-no-gzip-man.patch'
-        'cups-systemd-socket2.patch'
         'cups.logrotate'
         'cups.pam')
 md5sums=('2cdd81fea23e9e29555c24bdfd0d7c89'
          '3ba9e3410df1dc3015463d615ef91b3b'
-         '3733c23e77eb503bd94cc368e02830dc'
+         '928b4ec806db4170179ad4d1c8074ff9'
          '90c30380d4c8cd48a908cfdadae1ea24'
-         'd081092aebdfe07aced2466808abf966'
          'ec2fdabb60b430ce1fb643078e9fc7c0'
          '96f82c38f3f540b53f3e5144900acf17')
 
 build() {
   cd ${srcdir}/${pkgbase}-${pkgver}
-
-  # add systemd socket support - Gentoo patch -2 version
-  # http://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/net-print/cups/files/cups-1.5.0-systemd-socket-2.patch?revision=1.1
-  #patch -p1 -i ${srcdir}/cups-systemd-socket2.patch
   
   # Do not export SSL libs in cups-config
   patch -p1 -i ${srcdir}/cups-no-export-ssllibs.patch
 
-  ##patch -p1 -i ${srcdir}/cups-no-gcrypt.patch
+  patch -p1 -i ${srcdir}/cups-no-gcrypt.patch
   # don't zip man pages in make install, let makepkg do that / Fedora
   patch -p1 -i ${srcdir}/cups-no-gzip-man.patch
   
@@ -46,7 +40,6 @@ build() {
      --sysconfdir=/etc \
      --localstatedir=/var \
      --libdir=/usr/lib \
-     --with-systemdsystemunitdir=/usr/lib/systemd/system \
      --with-logdir=/var/log/cups \
      --with-docdir=/usr/share/cups/doc \
      --with-cups-user=daemon \
@@ -56,7 +49,6 @@ build() {
      --enable-dbus \
      --with-dbusdir=/etc/dbus-1 \
      --enable-ssl=yes \
-     --enable-openssl \
      --enable-threads \
      --enable-avahi\
      --enable-libpaper \
@@ -89,7 +81,7 @@ backup=(etc/cups/client.conf)
   install -dm755 ${pkgdir}/etc/cups
   touch ${pkgdir}/etc/cups/client.conf
   echo "# see 'man client.conf'" >> ${pkgdir}/etc/cups/client.conf
-  echo "ServerName /var/run/cups/cups.sock #  alternative: ServerName hostname-or-ip-address[:port] of a remote server" >> ${pkgdir}/etc/cups/client.conf
+  echo "ServerName /run/cups/cups.sock #  alternative: ServerName hostname-or-ip-address[:port] of a remote server" >> ${pkgdir}/etc/cups/client.conf
   chgrp lp ${pkgdir}/etc/cups/client.conf
 }
 
@@ -121,8 +113,9 @@ optdepends=('xdg-utils: xdg .desktop file support')
   install -D -m644 ../cups.logrotate ${pkgdir}/etc/logrotate.d/cups
   install -D -m644 ../cups.pam ${pkgdir}/etc/pam.d/cups
   
-  # fix perms on /var/spool and /etc
+  # fix perms 
   chmod 755 ${pkgdir}/var/spool
+  chmod 775 ${pkgdir}/var/cache/cups
   chmod 755 ${pkgdir}/etc
 
   # install ssl directory where to store the certs, solves some samba issues
@@ -148,9 +141,4 @@ optdepends=('xdg-utils: xdg .desktop file support')
   # remove files now part of cups-filters
   rm -v ${pkgdir}/usr/share/cups/banners/*
   rm -v ${pkgdir}/usr/share/cups/data/testprint
-  # comment out all conversion rules which use any of the removed filters
-  #perl -p -i -e 's:^(.*\s+bannertops\s*)$:#\1:' /usr/share/cups/mime/mime.convs
-
-  # Provide native service
-  ln -s cups.service "$pkgdir/usr/lib/systemd/system/cupsd.service"
 }

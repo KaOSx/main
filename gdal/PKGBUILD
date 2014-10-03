@@ -1,7 +1,7 @@
 
 pkgname=gdal
-pkgver=1.11.0
-pkgrel=5
+pkgver=1.11.1
+pkgrel=1
 pkgdesc="A translator library for raster geospatial data formats"
 arch=('x86_64')
 url="http://www.gdal.org/"
@@ -14,7 +14,7 @@ options=('!libtool' '!makeflags')
 source=("http://download.osgeo.org/gdal/${pkgver}/${pkgname}-${pkgver}.tar.gz"
 	'gdal-1.5.1-python-install.patch'
 	'giflib.patch')
-md5sums=('9fdf0f2371a3e9863d83e69951c71ec4'
+md5sums=('7555f55855f613be49e6508eed0ac3fa'
          '81afc1c26d29cee84aadb6924fe33861'
          '2e328b01ee291488189949bb3aa437bc')
 
@@ -23,8 +23,8 @@ build() {
   export LDFLAGS="$LDFLAGS -Wl,--as-needed"
 
   cd ${srcdir}/$pkgname-$pkgver
-  patch -p0 -i ${srcdir}/gdal-1.5.1-python-install.patch
-  patch -p0 -i ${srcdir}/giflib.patch
+  #patch -p0 -i ${srcdir}/gdal-1.5.1-python-install.patch
+  #patch -p0 -i ${srcdir}/giflib.patch
 
   # python2 fixes
   sed -i 's_python python1.5_python2 python python1.5_' configure
