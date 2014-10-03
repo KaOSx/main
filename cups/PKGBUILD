@@ -1,7 +1,7 @@
 
 pkgbase="cups"
 pkgname=('libcups' 'cups')
-pkgver=1.7.5
+pkgver=2.0.0
 pkgrel=1
 arch=('x86_64')
 license=('GPL')
@@ -16,7 +16,7 @@ source=("http://www.cups.org/software/${pkgver}/cups-${pkgver}-source.tar.bz2"
         'cups-systemd-socket2.patch'
         'cups.logrotate'
         'cups.pam')
-md5sums=('5d893edc2957005f78e2b2423fdace2e'
+md5sums=('2cdd81fea23e9e29555c24bdfd0d7c89'
          '3ba9e3410df1dc3015463d615ef91b3b'
          '3733c23e77eb503bd94cc368e02830dc'
          '90c30380d4c8cd48a908cfdadae1ea24'
@@ -29,7 +29,7 @@ build() {
 
   # add systemd socket support - Gentoo patch -2 version
   # http://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/net-print/cups/files/cups-1.5.0-systemd-socket-2.patch?revision=1.1
-  patch -p1 -i ${srcdir}/cups-systemd-socket2.patch
+  #patch -p1 -i ${srcdir}/cups-systemd-socket2.patch
   
   # Do not export SSL libs in cups-config
   patch -p1 -i ${srcdir}/cups-no-export-ssllibs.patch
@@ -68,7 +68,7 @@ build() {
 check() {
   cd "$srcdir/$pkgbase-$pkgver"
 
-  make -k check || /bin/true
+  #make -k check || /bin/true
 }
 
 package_libcups() {
