@@ -17,7 +17,7 @@ post_upgrade() {
     fi
     
    if [ "`vercmp $2 2.0.0-1`" -lt 0 ]; then
-    sudo systemctl disable cups
+    systemctl disable cups
     systemctl enable org.cups.cupsd
   fi
 }
