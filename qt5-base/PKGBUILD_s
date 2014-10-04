@@ -1,8 +1,8 @@
 
 pkgname=qt5-base
-pkgver=5.4.0beta
-subver=5.4.0-alpha
-_pkgver=5.4
+pkgver=5.3.2
+subver=5.3.2
+_pkgver=5.3
 pkgrel=2
 pkgdesc=('A cross-platform application and UI framework')
 arch=('x86_64')
@@ -20,9 +20,9 @@ replaces=('qt5')
 groups=('qt5')
 options=('!libtool')
 _pkgfqn="qtbase-opensource-src-${subver}"
-#source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
-source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
-md5sums=('3f364afadf6d6636ccb863600152b183')
+source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
+#source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
+md5sums=('563e2b10274171f1184b3fd7260b4991')
 
 build() {
 	cd $srcdir/$_pkgfqn
@@ -74,4 +74,3 @@ package() {
         ln -s /usr/lib/qt5/bin/${i} ${pkgdir}/usr/bin/${i}-qt5
     done
 }
-

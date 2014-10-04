@@ -1,8 +1,8 @@
 
 pkgname=qt5-webkit
-pkgver=5.4.0beta
-subver=5.4.0-alpha
-_pkgver=5.4
+pkgver=5.3.2
+subver=5.3.2
+_pkgver=5.3
 pkgrel=2
 pkgdesc=('A cross-platform application and UI framework, QtWebkit files')
 arch=('x86_64')
@@ -15,9 +15,8 @@ makedepends=('gperf' 'sqlite' 'fontconfig' 'perl' 'python2' 'ruby')
 options=('!libtool')
 groups=('qt5')
 _pkgfqn="qtwebkit-opensource-src-${subver}"
-#source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
-source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
-md5sums=('32f62abc0348129097bf387d2633ae5a')
+source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
+md5sums=('0497b5b46540848e0db6a9e219d756fb')
 
 build() {
    cd $srcdir/$_pkgfqn
@@ -35,4 +34,3 @@ package() {
    #    ln -s /usr/lib/qt5/bin/${i} ${pkgdir}/usr/bin/${i}-qt5
    #done
 }
-
