@@ -1,7 +1,7 @@
 
 pkgname=gst-plugins-good
 pkgver=1.4.3
-pkgrel=1
+pkgrel=2
 pkgdesc="GStreamer Multimedia Framework Good Plugins"
 arch=('x86_64')
 license=('LGPL')
@@ -10,11 +10,16 @@ depends=('pulseaudio' 'jack' 'libsoup' 'gst-plugins-base' 'wavpack' 'aalib' 'tag
          'libvpx' 'gdk-pixbuf2' 'libcaca' 'libavc1394' 'libiec61883' 'libxdamage' 'v4l-utils')
 makedepends=('gstreamer' 'speex' 'flac' 'libraw1394' 'python3')
 options=('!libtool' '!emptydirs')
-source=("http://gstreamer.freedesktop.org/src/$pkgname/$pkgname-$pkgver.tar.xz")
-md5sums=('534ca03c00361d940008d36ac5c45966')
+source=("http://gstreamer.freedesktop.org/src/$pkgname/$pkgname-$pkgver.tar.xz"
+        'equalizer.patch')
+md5sums=('534ca03c00361d940008d36ac5c45966'
+         '36a5b58e136f711152b17db3e30f225e')
 
 build() {
   cd $pkgname-$pkgver
+  # https://github.com/clementine-player/Clementine/issues/4541
+  # https://bugzilla.gnome.org/show_bug.cgi?id=737886
+  patch -p1 -i "${srcdir}/equalizer.patch"
  
   ./configure --prefix=/usr \
     --sysconfdir=/etc \

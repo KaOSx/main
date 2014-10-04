@@ -1,0 +1,37 @@
+From 47b091600383cf6b7c201a1c5cb6d5d9a8fcd223 Mon Sep 17 00:00:00 2001
+From: David Sansome <me@davidsansome.com>
+Date: Sat, 4 Oct 2014 23:55:23 +1000
+Subject: [PATCH] Fix a crash when changing equalizer settings during playback.
+
+When a transform is in passthrough mode transform_ip is called with a
+read-only buffer.  When the equalizer plugin switches out of passthrough mode
+it still tries to map the old read-only buffer with GST_MAP_READWRITE and
+crashes.
+---
+ gst/equalizer/gstiirequalizer.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
+
+diff --git a/gst/equalizer/gstiirequalizer.c b/gst/equalizer/gstiirequalizer.c
+index d278c4c..3b8005c 100644
+--- a/gst/equalizer/gstiirequalizer.c
++++ b/gst/equalizer/gstiirequalizer.c
+@@ -858,9 +858,14 @@ gst_iir_equalizer_transform_ip (GstBaseTransform * btrans, GstBuffer * buf)
+   }
+   BANDS_UNLOCK (equ);
+ 
+-  gst_buffer_map (buf, &map, GST_MAP_READWRITE);
+-  equ->process (equ, map.data, map.size, channels);
+-  gst_buffer_unmap (buf, &map);
++  /* the buffer might not be writable if we've just switched from passthrough
++     to non-passthrough - GstBaseTransform would've given us a read-only buffer
++     as an optimisation while we were in passthrough mode. */
++  if (gst_buffer_is_writable(buf)) {
++    gst_buffer_map (buf, &map, GST_MAP_READWRITE);
++    equ->process (equ, map.data, map.size, channels);
++    gst_buffer_unmap (buf, &map);
++  }
+ 
+   return GST_FLOW_OK;
+ }
+-- 
+1.9.1
