@@ -2,7 +2,7 @@
 pkgname=hugin-tools
 _pkgname=hugin
 pkgver=2013.0.0
-pkgrel=6
+pkgrel=7
 pkgdesc="Hugin libs and tools to be used by Kipi-plugins"
 arch=('x86_64')
 url="http://hugin.sourceforge.net/"
@@ -12,8 +12,10 @@ depends=('boost-libs' 'enblend-enfuse' 'exiv2' 'openexr' 'libpano13>=2.9.19'
 makedepends=('zip' 'cmake' 'boost' 'mesa' 'tclap')
 conflict=('hugin')
 provides=('hugin')
-source=("http://downloads.sourceforge.net/hugin/${_pkgname}-${pkgver}.tar.bz2")
-md5sums=('cc6c768df2aedc24a9a081754de05f39')
+source=("http://downloads.sourceforge.net/hugin/${_pkgname}-${pkgver}.tar.bz2"
+        "http://downloads.sourceforge.net/boost/boost_1_55_0.tar.bz2")
+md5sums=('cc6c768df2aedc24a9a081754de05f39'
+         'd6eef4b4cacb2183f2bf265a5a03a354')
 
 build() {
   cd "${srcdir}"
@@ -27,6 +29,9 @@ build() {
   mkdir ${srcdir}/${_pkgname}-${pkgver}/src/hugin_base/PT
   cp ${srcdir}/${_pkgname}-${pkgver}/src/hugin1/PT/*.h ${srcdir}/${_pkgname}-${pkgver}/src/hugin_base/PT
 
+  mkdir -p ${srcdir}/${_pkgname}-${pkgver}/src/boost
+  cp -r ${srcdir}/boost_1_55_0/boost/spirit ${srcdir}/${_pkgname}-${pkgver}/src/boost/
+  
   cmake "${srcdir}/${_pkgname}-${pkgver}" \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
