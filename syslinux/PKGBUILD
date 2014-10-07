@@ -1,6 +1,6 @@
 
 pkgname=syslinux
-pkgver=6.02
+pkgver=6.03
 pkgrel=1
 arch=('x86_64')
 pkgdesc="Collection of boot loaders that boot from FAT, ext2/3/4 and btrfs filesystems, from CDs and via PXE"
@@ -15,10 +15,10 @@ optdepends=('mtools:           For mkdiskimage and syslinux support'
 backup=('boot/syslinux/syslinux.cfg')
 install=syslinux.install
 options=('!makeflags' '!emptydirs')
-source=("http://www.kernel.org/pub/linux/utils/boot/syslinux/$pkgname-${pkgver}.tar.bz2"
+source=("http://www.kernel.org/pub/linux/utils/boot/syslinux/$pkgname-${pkgver}.tar.xz"
         'syslinux.cfg'
         'syslinux-install_update')
-md5sums=('5410b1c2614cc8375bfc92fe308ca5c8'
+md5sums=('92a253df9211e9c20172796ecf388f13'
          '6461abfb17e54dc997cea77c7a312e20'
          '3fcba3efe6beda6fc4935c1914393377')
          

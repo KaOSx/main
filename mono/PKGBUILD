@@ -1,17 +1,17 @@
 
 pkgname=mono
-pkgver=3.8.0
+pkgver=3.10.0
 pkgrel=1
 pkgdesc="Free implementation of the .NET platform including runtime and compiler"
 arch=('x86_64')
 license=('GPL' 'LGPL2' 'MPL' 'custom:MITX11')
 url="http://www.mono-project.com/"
-depends=('zlib' 'libgdiplus>=2.10' 'sh' 'python3')
+depends=('zlib' 'libgdiplus' 'sh' 'python3')
 makedepends=('pkgconfig')
 options=('!libtool' '!makeflags')
 source=("http://download.mono-project.com/sources/mono/${pkgname}-${pkgver}.tar.bz2"
         'mono.binfmt.d')
-md5sums=('f143bc5077fb817c0bedbe2d5bd49035'
+md5sums=('8c79f38bcab3ad0cf65728ca4c76b3c6'
          '568c72e1b42f089a9fec20dfe4bcc3b4')
 
 build() {
@@ -23,7 +23,8 @@ build() {
          --bindir=/usr/bin \
          --disable-static \
          --disable-quiet-build \
-         --disable-system-aot 
+         --disable-system-aot \
+         --with-mcs-docs=no
   make 
 
   # build jay
