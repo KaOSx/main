@@ -1,20 +1,20 @@
 
 pkgname=hugin-tools
 _pkgname=hugin
-pkgver=2013.0.0
-pkgrel=7
+pkgver=2014.0.0
+pkgrel=1
 pkgdesc="Hugin libs and tools to be used by Kipi-plugins"
 arch=('x86_64')
 url="http://hugin.sourceforge.net/"
 license=('LGPL')
 depends=('boost-libs' 'enblend-enfuse' 'exiv2' 'openexr' 'libpano13>=2.9.19'
-         'lapack' 'desktop-file-utils' 'icu' 'libxt' 'lensfun' 'glew')
+         'lapack' 'desktop-file-utils' 'icu' 'libxt' 'lensfun' 'glew' 'image-exiftool')
 makedepends=('zip' 'cmake' 'boost' 'mesa' 'tclap')
 conflict=('hugin')
 provides=('hugin')
 source=("http://downloads.sourceforge.net/hugin/${_pkgname}-${pkgver}.tar.bz2"
         "http://downloads.sourceforge.net/boost/boost_1_55_0.tar.bz2")
-md5sums=('cc6c768df2aedc24a9a081754de05f39'
+md5sums=('711784c27bdb743ddc45dc2c448ac87c'
          'd6eef4b4cacb2183f2bf265a5a03a354')
 
 build() {
