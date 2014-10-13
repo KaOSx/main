@@ -8,7 +8,7 @@ license=('GPL')
 url="http://mpd.wikia.com/wiki/Server"
 depends=('libao' 'ffmpeg' 'libmodplug' 'audiofile' 'libshout' 'libmad' 'curl' 'faad2'
          'sqlite' 'jack' 'libmms' 'wavpack' 'libmpcdec' 'avahi' 'libid3tag' 'libmpdclient'
-         'pulseaudio' 'mpg123' 'yajl' 'sdl_sound' 'libcdio-paranoia' 'fluidsynth')
+         'pulseaudio' 'mpg123' 'yajl' 'sdl_sound' 'libcdio-paranoia' 'fluidsynth' 'boost-libs')
 makedepends=('doxygen' 'boost')
 install=${pkgname}.install
 source=("http://www.musicpd.org/download/mpd/stable/mpd-${pkgver}.tar.xz"
@@ -20,6 +20,7 @@ md5sums=('770261630e6f086bd7d5b374abf521c0'
 
 build() {
   cd ${srcdir}/${pkgname}-${pkgver}
+  touch systemd/mpd.socket
   ./configure --prefix=/usr \
     --sysconfdir=/etc \
     --enable-jack \
