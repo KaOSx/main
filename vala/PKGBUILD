@@ -1,6 +1,6 @@
 
 pkgname=vala
-pkgver=0.25.3
+pkgver=0.26.1
 pkgrel=1
 pkgdesc="Compiler for the GObject type system."
 arch=('x86_64')
@@ -9,8 +9,8 @@ license=('LGPL')
 depends=('glib2')
 makedepends=('libxslt')
 options=('!libtool')
-source=("http://ftp.gnome.org/pub/gnome/sources/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
-md5sums=('e7360be914b04e20468f1987e5535716')
+source=("http://ftp.gnome.org/pub/gnome/sources/vala/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
+md5sums=('723a03b822d4cc47abc4019685970a3e')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
