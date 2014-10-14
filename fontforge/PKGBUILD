@@ -1,28 +1,25 @@
 
 pkgname=fontforge
-pkgver=20140101
-_pkgver=2.0.20140101
-pkgrel=2
+pkgver=20141014
+_pkgver=20141014
+pkgrel=1
 pkgdesc="An outline and bitmap font editor"
 arch=('x86_64')
 url="http://fontforge.sourceforge.net"
 license=('BSD')
-depends=('libxkbui' 'libxi' 'libxml2' 'pango' 'giflib' 'libpng' 'libtiff' 'libjpeg-turbo' 'python2'
+depends=('libxkbui' 'libxi' 'libxml2' 'pango' 'giflib' 'libpng' 'libtiff' 'libjpeg-turbo' 'python3'
          'libltdl' 'desktop-file-utils' 'hicolor-icon-theme')
 options=('!libtool' '!makeflags')
 source=("https://github.com/fontforge/fontforge/archive/${_pkgver}.tar.gz"
-        'http://fontforge.org/cidmaps.tgz'
-        'giflib.patch')
-md5sums=('9dce2523da76cd9ea609bb7f4357946b'
-         '063691163e592515b31514515bb3ce8c'
-         '84b86f95f98a56412d37af74d306a764')
+        'http://fontforge.org/cidmaps.tgz')
+md5sums=('dfeddbd29d44bb1e6f8ae450acc74c29'
+         '063691163e592515b31514515bb3ce8c')
 
 build() {
   cd "${srcdir}/${pkgname}-${_pkgver}"
-  sed '/fontforge_package_name/s/^#//' -i configure.ac
-  patch -p1 -i ${srcdir}/giflib.patch
+  #sed '/fontforge_package_name/s/^#//' -i configure.ac
   
-  ./autogen.sh
+  ./bootstrap
   ./configure --prefix=/usr \
               --mandir=/usr/share/man
   make 
