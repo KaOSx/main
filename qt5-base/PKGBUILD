@@ -1,9 +1,9 @@
 
 pkgname=qt5-base
-pkgver=5.4.0beta
-subver=5.4.0-alpha
+pkgver=5.4.0beta2
+subver=5.4.0-beta
 _pkgver=5.4
-pkgrel=2
+pkgrel=1
 pkgdesc=('A cross-platform application and UI framework')
 arch=('x86_64')
 url='http://qt.nokia.com/'
@@ -22,7 +22,7 @@ options=('!libtool')
 _pkgfqn="qtbase-opensource-src-${subver}"
 #source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
 source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
-md5sums=('3f364afadf6d6636ccb863600152b183')
+md5sums=('bfe2c1d250e4771a55b37eb64edb832a')
 
 build() {
 	cd $srcdir/$_pkgfqn

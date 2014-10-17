@@ -1,7 +1,7 @@
 
 pkgname=qtwebengine
-pkgver=5.4.0beta
-subver=5.4.0-alpha
+pkgver=5.4.0beta2
+subver=5.4.0-beta
 _pkgver=5.4
 pkgrel=1
 pkgdesc="Chromium-based web engine to replace Qt WebKit"
@@ -11,9 +11,10 @@ license=('GPL3')
 depends=('qt5-declarative' 'python2-jinja' 'mesa' 'systemd' 'pango' 'nss' 'speex' 'libevent' 'libcups'
          'libxslt' 'libpng' 'libjpeg-turbo' 'libwebp' 'zlib' 'pciutils' 'jsoncpp' 'pulseaudio' 'libxcomposite')
 makedepends=('gperf' 'yasm' 'openssh' 'icu')
+groups=('qt5')
 _pkgfqn="qtwebengine-opensource-src-${subver}"
 source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
-md5sums=('0a3aa932ab4f3ac5ab8cc54e06d8247c')
+md5sums=('cc56cef8fc8d36b085e8f58a4bad21be')
 
 build() {
    cd "${srcdir}/$_pkgfqn/"   
