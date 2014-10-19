@@ -1,16 +1,16 @@
 
 pkgname=libical
-pkgver=1.0
-pkgrel=2
-pkgdesc="An open source reference implementation of the icalendar data type and serialization format."
+pkgver=1.0.1
+pkgrel=1
+pkgdesc="An Open Source implementation of the iCalendar protocols and protocol data units."
 arch=('x86_64')
-url='http://sourceforge.net/projects/freeassociation/'
+url='https://github.com/libical/libical'
 license=('LGPL' 'MPL')
 depends=('glibc')
 makedepends=('cmake')
 options=('!libtool')
-source=("http://downloads.sourceforge.net/freeassociation/${pkgname}-${pkgver}.tar.gz")
-md5sums=('4438c31d00ec434f02867a267a92f8a1')
+source=("https://github.com/libical/libical/archive/v${pkgver}.tar.gz")
+md5sums=('af91db06b22559f863869c5a382ad08a')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
