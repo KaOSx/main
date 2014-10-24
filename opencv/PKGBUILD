@@ -1,8 +1,8 @@
 
 pkgname=opencv
 _realname=OpenCV
-pkgver=2.4.9
-pkgrel=4
+pkgver=2.4.10
+pkgrel=1
 pkgdesc="Open Source Computer Vision Library"
 arch=('x86_64')
 license=('BSD')
@@ -12,17 +12,11 @@ depends=('jasper' 'gst-plugins-base' 'openexr'
 makedepends=('pkgconfig' 'cmake' 'python2-numpy' 'eigen' 'python2-sphinx' 'mesa')
 optdepends=('python2-numpy: Python 2.x interface' 'eigen')
 options=('!libtool')
-source=("http://sourceforge.net/projects/opencvlibrary/files/opencv-unix/$pkgver/$pkgname-$pkgver.zip"
-        'OpenCVFindLibsVideo.cmake.diff'
-        'CMakeLists.diff')
-md5sums=('7f958389e71c77abdf5efe1da988b80c'
-         '4cf6951adead9d012a6603fdba3a3850'
-         '9241cd6cbecfc70ae4163a6f82aa26b9')
+source=("http://sourceforge.net/projects/opencvlibrary/files/opencv-unix/$pkgver/$pkgname-$pkgver.zip")
+md5sums=('ec63952d3a3dff965d5fdde765926821')
 
 build() {
   cd "$srcdir/$pkgname-$pkgver"
-  patch -p1 -i "${srcdir}/OpenCVFindLibsVideo.cmake.diff"
-  patch -p1 -i "${srcdir}/CMakeLists.diff"
  
   mkdir build 
   cd build
