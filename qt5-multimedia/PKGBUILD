@@ -3,13 +3,14 @@ pkgname=qt5-multimedia
 pkgver=5.4.0beta2
 subver=5.4.0-beta
 _pkgver=5.4
-pkgrel=1
+pkgrel=2
 pkgdesc=('A cross-platform application and UI framework, QtMultimedia files')
 arch=('x86_64')
 url='http://qt.nokia.com/'
 license=('GPL3' 'LGPL' 'FDL' 'custom')
 depends=('qt5-declarative' 'openal' 'libxslt' 'libxcomposite' 'gst-plugins-base'
          'gst-plugins-good' 'gst-plugins-bad' 'pulseaudio')
+makedepends=('gstreamer0.10-base-plugins')
 options=('!libtool')
 groups=('qt5')
 _pkgfqn="qtmultimedia-opensource-src-${subver}"
