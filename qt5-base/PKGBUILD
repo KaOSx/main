@@ -3,7 +3,7 @@ pkgname=qt5-base
 pkgver=5.4.0beta2
 subver=5.4.0-beta
 _pkgver=5.4
-pkgrel=1
+pkgrel=2
 pkgdesc=('A cross-platform application and UI framework')
 arch=('x86_64')
 url='http://qt.nokia.com/'
@@ -21,12 +21,16 @@ groups=('qt5')
 options=('!libtool')
 _pkgfqn="qtbase-opensource-src-${subver}"
 #source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
-source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
-md5sums=('bfe2c1d250e4771a55b37eb64edb832a')
+source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz"
+        "https://qt.gitorious.org/qt/qtbase/commit/d49e7acc2bb98ae9416a532dac1f18e972fffb88.patch")
+md5sums=('bfe2c1d250e4771a55b37eb64edb832a'
+         '4e20570b7aec238bb97a8cd73b7db29f')
 
 build() {
 	cd $srcdir/$_pkgfqn
-
+        # errors on boost/fusion use with moc, extra #
+        patch -p1 -i ${srcdir}/d49e7acc2bb98ae9416a532dac1f18e972fffb88.patch
+        
         unset QTDIR
         export PATH="$PWD/qtbase/bin:$PWD/qtrepotools/bin:$PATH"
 
