@@ -2,7 +2,7 @@
 pkgname=transcode
 _sripver=0.3-4
 pkgver=1.1.7
-pkgrel=17
+pkgrel=18
 pkgdesc="A video/DVD ripper and encoder for the terminal/console"
 arch=('x86_64')
 url="http://tcforge.berlios.de/"
@@ -19,6 +19,7 @@ source=("https://bitbucket.org/france/transcode-tcforge/downloads/${pkgname}-${p
         'ffmpeg-0.11.patch'
         'ffmpeg.patch'
         'ffmpeg2.patch'
+        'ffmpeg-2.4.patch'
         'libav-9.patch'
         'preset-force.patch'
         'preset-free.patch')
@@ -30,6 +31,7 @@ md5sums=('9bb25a796a8591fb764de46ee87ce505'
          '63d4e308fae08590cfdfd40e18171694'
          '69f3db45ae31213ea94a5dc0dda677bd'
          '951bff4b2dda3c8a5caf24e63c70c1aa'
+         '8023132ce6cab995a0409c38e2f0df18'
          '8bf570239d9aad287f3254d350e1f98a'
          'db152c456e768b06fec47f0b4b7a60ff'
          '5fd43f03549c97651dcc38a6f504de1e')
@@ -41,6 +43,7 @@ build() {
   patch -p0 -i "${srcdir}/ffmpeg-0.10.patch"
   patch -p1 -i "${srcdir}/ffmpeg-0.11.patch"
   patch -p1 -i "${srcdir}/ffmpeg2.patch"
+  patch -p1 -i "${srcdir}/ffmpeg-2.4.patch"
   patch -p0 -i "${srcdir}/libav-9.patch"
   patch -p1 -i "${srcdir}/preset-force.patch"
   patch -p1 -i "${srcdir}/preset-free.patch"
