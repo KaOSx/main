@@ -1,5 +1,5 @@
 pkgname=os-prober
-pkgver=1.63
+pkgver=1.64
 pkgrel=1
 pkgdesc="Utility to detect other operating systems on a set of drives."
 url="http://joey.kitenet.net/code/os-prober/"
@@ -7,12 +7,12 @@ arch=('x86_64')
 license=('GPL')
 depends=('sh')
 makedepends=('gcc' 'sed')
-source=("ftp://ftp.us.debian.org/debian/pool/main/o/${pkgname}/${pkgname}_${pkgver}.tar.gz")
+source=("ftp://ftp.us.debian.org/debian/pool/main/o/os-prober/${pkgname}_${pkgver}.tar.xz")
 #source=("http://ftp.free.org/pub/frugalware/frugalware-current/source/base/${pkgname}/${pkgname}_${pkgver}.tar.gz")
-md5sums=('16c999d00a925968c99a8ca8cc9a3c3a')
+md5sums=('b13047131d2b1a924ed97dd0fa0885a7')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd "${srcdir}/${pkgname}"
 
   # adjust lib dir to allow detection of 64-bit distros
   sed -e "s:/lib/ld\*\.so\*:/lib*/ld*.so*:g" -i os-probes/mounted/common/90linux-distro 
@@ -22,7 +22,7 @@ build() {
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd "${srcdir}/${pkgname}"
 
   install -D -m755 linux-boot-prober "${pkgdir}/usr/bin/linux-boot-prober"
   install -D -m755 os-prober "${pkgdir}/usr/bin/os-prober"
