@@ -1,6 +1,6 @@
 
 pkgname=mercurial
-pkgver=3.1.2
+pkgver=3.2
 pkgrel=1
 pkgdesc="A scalable distributed SCM tool"
 arch=('x86_64')
@@ -10,7 +10,7 @@ depends=('python2')
 optdepends=('tk: for the hgk GUI')
 source=("http://www.selenic.com/mercurial/release/${pkgname}-${pkgver}.tar.gz"
         'mercurial.profile')
-md5sums=('72a79798de828d6d6fb055273f91201a'
+md5sums=('d7bcfa3d4d1e786b3c54f1f52fecc9b7'
          '43e1d36564d4c7fbe9a091d3ea370a44')
 
 package() {
@@ -33,6 +33,6 @@ package() {
   install -m755 -d ${pkgdir}/etc/profile.d
   install -m755 ${srcdir}/mercurial.profile "${pkgdir}/etc/profile.d/mercurial.sh" 
   # install configuration file
-  install -m755 -d ${pkgdir}/etc/mercurial
-  install -m644 contrib/sample.hgrc "${pkgdir}/etc/mercurial/hgrc"
+  #install -m755 -d ${pkgdir}/etc/mercurial
+  #install -m644 contrib/sample.hgrc "${pkgdir}/etc/mercurial/hgrc"
 }
