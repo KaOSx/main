@@ -1,7 +1,7 @@
 
 pkgname=gdal
 pkgver=1.11.1
-pkgrel=1
+pkgrel=2
 pkgdesc="A translator library for raster geospatial data formats"
 arch=('x86_64')
 url="http://www.gdal.org/"
@@ -23,7 +23,7 @@ build() {
   export LDFLAGS="$LDFLAGS -Wl,--as-needed"
 
   cd ${srcdir}/$pkgname-$pkgver
-  #patch -p0 -i ${srcdir}/gdal-1.5.1-python-install.patch
+  patch -p0 -i ${srcdir}/gdal-1.5.1-python-install.patch
   #patch -p0 -i ${srcdir}/giflib.patch
 
   # python2 fixes
