@@ -1,6 +1,6 @@
 
 pkgname=pyqt-python2
-pkgver=4.11.2
+pkgver=4.11.3
 _snapshot=9d5a6843b580
 pkgrel=1
 pkgdesc="A set of Python bindings for the Qt toolkit"
@@ -18,12 +18,10 @@ replaces=('pyqt4' 'pyqt')
 conflicts=('pyqt4' 'pyqt')
 source=("http://sourceforge.net/projects/pyqt/files/PyQt4/PyQt-${pkgver}/PyQt-x11-gpl-${pkgver}.tar.gz")
 #source=("http://www.riverbankcomputing.com/static/Downloads/PyQt4/PyQt-x11-gpl-${pkgver}-snapshot-$_snapshot.tar.gz")
-md5sums=('6bbb57f6874701adfc6909702f4a4b02')
+md5sums=('997c3e443165a89a559e0d96b061bf70')
 
 build() {
   cd ${srcdir}/PyQt-x11-gpl-${pkgver}
-  # only for yali builds, needs 4.9.6 to use this patch
-  #patch -p0 -i ${srcdir}/yali.patch
 
   python2 configure.py \
     --confirm-license \
