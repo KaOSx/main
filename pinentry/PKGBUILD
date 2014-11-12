@@ -1,6 +1,6 @@
 
 pkgname=pinentry
-pkgver=0.8.4
+pkgver=0.9.0
 pkgrel=1
 pkgdesc="Collection of dialog programs that allow GnuPG to read passphrases and PIN numbers in a secure manner. "
 arch=('x86_64')
@@ -10,14 +10,11 @@ depends=('ncurses' 'libcap>=2.16')
 makedepends=('qt')
 optdepends=('qt: for qt4 backend')  
 install=pinentry.install
-source=("ftp://ftp.gnupg.org/gcrypt/pinentry/$pkgname-$pkgver.tar.bz2"
-        'window.patch')
-md5sums=('e2b6f94471ba1e978f6e5bf6b275189b'
-         '450b8713fe42f1bd93311ef84767c3d8')
+source=("ftp://ftp.gnupg.org/gcrypt/pinentry/$pkgname-$pkgver.tar.bz2")
+md5sums=('40a05856cb3accf6679987b7899b0f5a')
 
 build() {
   cd $srcdir/$pkgname-$pkgver
-  #patch -p1 -i $srcdir/window.patch
   
   for file in qt4/*.moc; do
        /usr/bin/moc ${file/.moc/.h} > ${file}
