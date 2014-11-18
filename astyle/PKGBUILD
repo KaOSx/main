@@ -1,23 +1,24 @@
 
 pkgname=astyle
-pkgver=2.04
+pkgver=2.05
 pkgrel=1
 pkgdesc="Artistic Style is a source code indenter, formatter, and beautifier for the C, C++, C# and Java programming languages."
 arch=('x86_64')
 url="http://astyle.sourceforge.net/ "
 license=('LGPL')
 source=("http://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}_${pkgver}_linux.tar.gz")
-md5sums=('30b1193a758b0909d06e7ee8dd9627f6')
+md5sums=('3806526408bb08db795f0d4d35ef48e5')
 
 build() {
   cd ${srcdir}/${pkgname}/build/gcc
   
-  make
+  make release shared
 }
 
 package() {
   cd ${srcdir}/${pkgname}/build/gcc/bin
   install -D -m755 -o root -g root astyle ${pkgdir}/usr/bin/astyle
+  install -Dm0755 libastyle-${pkgver}.so "$pkgdir/usr/lib/libastyle.so"
 
   for files in `find ${srcdir}/${pkgname}/doc -name *.html`
 	do
