@@ -11,14 +11,19 @@ makedepends=('netpbm' 'psutils' 'ghostscript')
 optdepends=('netpbm: for use together with man -H command interaction in browsers'
             'psutils: for use together with man -H command interaction in browsers')
 source=("ftp://ftp.gnu.org/gnu/groff/groff-$pkgver.tar.gz"
-        'site.tmac')
+        'site.tmac'
+        'gropdf.patch')
 options=('!docs' '!emptydirs')
 install=groff.install
 md5sums=('cc825fa64bc7306a885f2fb2268d3ec5'
-         'a1fedafd7863b37968d32ad9ae1d8c13')
+         'a1fedafd7863b37968d32ad9ae1d8c13'
+         '96f261605bd4b31c1f0b56cf590cf459')
 
 build() {
   cd $srcdir/$pkgname-$pkgver
+  # https://savannah.gnu.org/bugs/index.php?43581
+  patch -p1 -i "${srcdir}/gropdf.patch"
+  
   
   ./configure --prefix=/usr --without-x
   make

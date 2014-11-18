@@ -1,7 +1,9 @@
 
+#keep at 4.2.1 until octave is at 4.1.x
 pkgname=suitesparse
-pkgver=4.4.1
+pkgver=4.2.1
 pkgrel=1
+epoch=1
 pkgdesc="A collection of sparse matrix libraries"
 url="http://www.cise.ufl.edu/research/sparse/SuiteSparse/"
 arch=('x86_64')
@@ -9,7 +11,7 @@ depends=('blas' 'lapack')
 makedepends=('gcc-fortran')
 license=('GPL')
 source=("http://faculty.cse.tamu.edu/davis/SuiteSparse/SuiteSparse-$pkgver.tar.gz")
-md5sums=('9a9a0093c88f49e56dacb2f6a19b7f80')
+md5sums=('4628df9eeae10ae5f0c486f1ac982fce')
 
 build() {
    cd "$srcdir"/SuiteSparse
