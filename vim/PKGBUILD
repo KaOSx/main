@@ -1,9 +1,7 @@
 
 pkgname=vim
-_topver=7.4
-_patchlevel=465
-pkgver="${_topver}.${_patchlevel}"
-__hgrev=452e8b2a0ab3
+pkgver=7.4.516
+_pkgver=v7-4-516
 pkgrel=1
 arch=('x86_64')
 pkgdesc='Vi Improved, a highly configurable, improved version of the vi text editor.'
@@ -15,52 +13,25 @@ makedepends=('python2>=2.7.1' 'ruby' 'libxt' 'libxext' 'libxpm' 'libxmu' 'deskto
 provides=('vim-runtime')
 conflicts=('vim-runtime')
 # check version https://code.google.com/p/vim/source/list
-source=('pythoncomplete.vim'::"http://www.vim.org/scripts/download_script.php?src_id=10872")
-md5sums=('6e7adfbd5d26c1d161030ec203a7f243')
-
-__hgroot='http://vim.googlecode.com/hg/'
-__hgrepo='vim'
-__hgbranch='default'
-
-_versiondir="vim${_topver//./}"
+source=("https://vim.googlecode.com/archive/${_pkgver}.tar.gz")
+md5sums=('aadf07fbdb38aa0a37571ff73e4ed568')
 
 build() {
   cd "${srcdir}"
-
-  msg2 'Checking out source from Mercurial...'
-
-  if [ -d "${__hgrepo}" ]; then
-    cd "${__hgrepo}"
-    hg pull -b "${__hgbranch}" || warning 'hg pull failed!'
-    hg update -r "${__hgrev}"
-  else
-    hg clone -b "${__hgbranch}" -u "${__hgrev}" "${__hgroot}${__hgrepo}" "${__hgrepo}"
-    cd "${__hgrepo}"
-  fi
-
-  if (( $(hg id -n) < $(hg id -nr ${__hgbranch}) )); then
-    warning 'You are not building the latest revision!'
-    warning "Consider updating __hgrev to $(hg id -r ${__hgbranch})."
-    sleep 1
-  fi
-
-  cd "${srcdir}"
-  rm -rf vim-build 
-  rsync -a --exclude=".hg/" "${__hgrepo}/" vim-build
 
   msg2 'Patching...'
 
   # define the place for the global vimrc file (set to /etc/vimrc)
   sed -e 's|^.*\(#define SYS_.*VIMRC_FILE.*"\) .*$|\1|' \
-      -i vim-build/src/feature.h
+      -i vim-${_pkgver}/src/feature.h
   sed -e 's|^.*\(#define VIMRC_FILE.*"\) .*$|\1|' \
-      -i vim-build/src/feature.h
+      -i vim-${_pkgver}/src/feature.h
   
-  (cd vim-build/src && autoconf)
+  (cd vim-${_pkgver}/src && autoconf)
 
   msg2 'Building...'
 
-  cd "${srcdir}/vim-build"
+  cd "${srcdir}/vim-${_pkgver}"
 
   ./configure --prefix=/usr --localstatedir=/var/lib/vim \
     --mandir=/usr/share/man --with-compiledby=KaOS \
@@ -72,7 +43,7 @@ build() {
 }
 
 package() {
-  cd "${srcdir}/vim-build"
+  cd "${srcdir}/vim-${_pkgver}"
   make -j1 VIMRCLOC=/etc DESTDIR="${pkgdir}" install
 
   # provided by (n)vi in core
