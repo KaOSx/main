@@ -9,17 +9,15 @@ license=('custom:vim')
 url="http://www.vim.org"
 depends=('gpm' 'perl')
 makedepends=('python2>=2.7.1' 'ruby' 'libxt' 'libxext' 'libxpm' 'libxmu' 'desktop-file-utils'
-             'gettext' 'pkgconfig' 'mercurial' 'rsync' 'sed')
+             'gettext' 'pkgconfig')
 provides=('vim-runtime')
 conflicts=('vim-runtime')
-# check version https://code.google.com/p/vim/source/list
+# check version https://code.google.com/p/vim/source/list select correct tag
 source=("https://vim.googlecode.com/archive/${_pkgver}.tar.gz")
 md5sums=('aadf07fbdb38aa0a37571ff73e4ed568')
 
 build() {
   cd "${srcdir}"
-
-  msg2 'Patching...'
 
   # define the place for the global vimrc file (set to /etc/vimrc)
   sed -e 's|^.*\(#define SYS_.*VIMRC_FILE.*"\) .*$|\1|' \
@@ -28,8 +26,6 @@ build() {
       -i vim-${_pkgver}/src/feature.h
   
   (cd vim-${_pkgver}/src && autoconf)
-
-  msg2 'Building...'
 
   cd "${srcdir}/vim-${_pkgver}"
 
