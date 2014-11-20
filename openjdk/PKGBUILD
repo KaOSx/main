@@ -1,12 +1,13 @@
 
 pkgname=('openjdk' 'openjdk-src')
 pkgbase='openjdk'
-_icedtea_release="2.5.0"
+_icedtea_release="2.5.3"
 _icedtea_jdkver="7"
-_openjdk_build="b31"
-_pkgver="7u60"
+# ${srcdir}/build/ChangeLog
+_openjdk_build="b14"
+_pkgver="7u71"
 pkgver="${_pkgver}_${_openjdk_build}_${_icedtea_release}"
-pkgrel=2
+pkgrel=1
 pkgdesc="An open-source implementation of the seventh edition of the Java SE Platform."
 arch=('x86_64')
 url="http://icedtea.classpath.org/"
@@ -17,7 +18,7 @@ makedepends=('java-environment=7' 'apache-ant>=1.6.5' 'zip' 'unzip'
              'libpng' 'giflib' 'lcms2' 'freetype2' 'rhino' 'nss' 'libxt'
              'libxtst' 'libxp' 'libxrender' 'ca-certificates-java' 'eclipse-ecj')
 
-_hg_url="http://icedtea.wildebeest.org/download/drops/icedtea7/2.5"
+_hg_url="http://icedtea.wildebeest.org/download/drops/icedtea7/2.5.3"
 _jvmdir="/usr/lib/jvm/java-7-openjdk"
 
 source=("http://icedtea.classpath.org/download/source/icedtea-${_icedtea_release}.tar.gz"
@@ -35,14 +36,14 @@ source=("http://icedtea.classpath.org/download/source/icedtea-${_icedtea_release
         'giflib.diff'
         'openjdk.profile.sh'
         'openjdk.profile.csh')
-md5sums=('62435458bd87b340ae30306e67af8f60'
-         'bfcdcf4d91e511056fc81a0d771fbdff'
-         '34ce2eab91aaba3efb500a3b02051cca'
-         '590460868b1c4911d3f57c4f5a80ecc7'
-         '2f2e28645f2203576d416115d5cdbd85'
-         '83a383d30ebc7edaa857430ec997091b'
-         '5a32302cc14e7bb113d399bc9a017b23'
-         '964b7e610177db849dbe0b2483a564a1'
+md5sums=('dfd8f5f356a5fc05e63bb38e7c4c030a'
+         'b7dbab5f1ca314d613a9e7cf0a5939e1'
+         '40e6d2e0e6b35a671bf1b0908c63ef9d'
+         '1615b1c82ac6a189d6805eedb8692402'
+         '7cc129b8ff8f195583cf40620588e013'
+         'fd28b781a95a609cd966c7048486e4ca'
+         '730679eec8f645c05c0c518ae73a6f6d'
+         'e58128728b81b99bf94d9cac39015975'
          'ee1afda124d5927345014ab382ef581e'
          '986131efd2636724ae37870a5cca6d43'
          '05afd9c7fedcc05d4ebbb3427e068dba'
@@ -106,7 +107,7 @@ build() {
 package_openjdk() {
 pkgdesc="An open-source implementation of the seventh edition of the Java SE Platform."
 install="openjdk.install"
-conflicts=('java-environment' 'java-runtime' 'openjdk6' 'openjdk7')
+conflicts=('openjdk6' 'openjdk7')
 provides=("java-environment=${_icedtea_jdkver}" "java-runtime=${_icedtea_jdkver}")
 replaces=('openjdk6' 'openjdk7')
 depends=('alsa-lib' 'pulseaudio' 'giflib' 'libjpeg-turbo' 'libpng' 'freetype2'
@@ -133,11 +134,13 @@ optdepends=('icedtea-web: web browser plugin and Java Web Start support'
     done
   popd >/dev/null
 
-  # Move the manual pages in the right place
-  install -d -m755 "${pkgdir}/usr/share"
-  mv "${pkgdir}/${_jvmdir#/}/man" \
-     "${pkgdir}/usr/share/man"
-  rm "${pkgdir}/usr/share/man/ja" # avoid conflicts with man-db
+  # Move the manual pages in the right place, avoid conflicts with jdk8
+  install -d -m755 "${pkgdir}"/usr/share/man/{,ja/}man2/
+  mv "${pkgdir}"/${_jvmdir#/}/man/man1/* \
+     "${pkgdir}"/usr/share/man/man2/
+  mv "${pkgdir}"/${_jvmdir#/}/man/ja_JP.UTF-8/* \
+     "${pkgdir}"/usr/share/man/ja
+  #rm "${pkgdir}/usr/share/man/ja" # avoid conflicts with man-db
 
   # link JKS keystore from ca-certificates-java
   rm -f "${pkgdir}/${_jvmdir#/}/jre/lib/security/cacerts"
