@@ -1,32 +1,28 @@
 
 pkgname=qca
-pkgver=2.0.3
-pkgrel=4
+pkgver=2.1.0
+pkgrel=1
 pkgdesc="Qt Cryptographic Architecture"
 arch=('x86_64')
 url="http://delta.affinix.com/qca/"
 license=('LGPL')
 depends=('qt' 'ca-certificates')
-source=("http://delta.affinix.com/download/qca/2.0/${pkgname}-${pkgver}.tar.bz2"
-        'gcc.patch')
-md5sums=('fc15bd4da22b8096c51fcfe52d2fa309'
-         'dffc7367152d8888c1447253a0387a2a')
+source=("http://delta.affinix.com/download/qca/2.0/${pkgname}-${pkgver}.tar.gz")
+md5sums=('c2b00c732036244701bae4853a2101cf')
 
 build() {
-	cd $srcdir/${pkgname}-${pkgver}
-	patch -p0 -i ${srcdir}/gcc.patch
-	
-	./configure \
-		--prefix=/usr \
-		--disable-tests \
-		--certstore-path=/etc/ssl/certs/ca-certificates.crt \
-		--release \
-		--no-separate-debug-info
-	make
+  cd $srcdir
+  mkdir -p build
+  cd build
+  
+  cmake ..//${pkgname}-${pkgver} \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release 
+  make 
 }
 
 package() {
-	cd $srcdir/${pkgname}-${pkgver}
-	
-	make INSTALL_ROOT=$pkgdir install
+  cd $srcdir/build
+  
+  make DESTDIR=${pkgdir} install 
 }
