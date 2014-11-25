@@ -1,8 +1,9 @@
 
 pkgname=vlc
-pkgver=2.1.95
-_pkgver=2.2.0-rc2
+pkgver=2.1.5
+_pkgver=2.1.5
 pkgrel=1
+epoch=1
 pkgdesc="Free and open source cross-platform multimedia player and framework that plays most multimedia files and various streaming protocols."
 arch=('x86_64')
 url="http://www.videolan.org/vlc/"
@@ -11,9 +12,9 @@ depends=('a52dec' 'fluidsynth' 'libmtp' 'libdvbpsi' 'libxpm' 'libcdio' 'libdca' 
          'sdl_image' 'libdvdnav' 'mesa' 'v4l-utils' 'libcddb' 'samba' 'libmatroska' 'zvbi'
          'taglib' 'sysfsutils' 'libmpcdec' 'ffmpeg' 'faad2' 'libupnp' 'libshout' 'libmad' 'fribidi'
          'libmpeg2' 'libmodplug' 'opus' 'ttf-freefont' 'libxv' 'libass' 'xdg-utils'
-         'desktop-file-utils' 'xcb-util-keysyms')
+         'desktop-file-utils' 'xcb-util-keysyms' 'pulseaudio' 'chromaprint')
 makedepends=('avahi' 'pkgconfig' 'libnotify' 'libbluray' 'flac' 'libtheora' 'alsa-lib'
-             'jack' 'kdelibs' 'systemd' 'libraw1394' 'libdc1394' 'libavc1394' 'libva' 'pulseaudio'
+             'jack' 'kdelibs' 'systemd' 'libraw1394' 'libdc1394' 'libavc1394' 'libva' 
              'gnutls' 'libcaca' 'librsvg' 'live-media')
 optdepends=('avahi: for service discovery using bonjour protocol'
             'libnotify: for notification plugin'
@@ -21,24 +22,34 @@ optdepends=('avahi: for service discovery using bonjour protocol'
             'libdvdcss: for decoding encrypted DVDs'
             'libavc1394: for devices using the 1394ta AV/C'
             'libdc1394: for IEEE 1394 plugin'
-            'pulseaudio: PulseAudio support'
             'vdpau-video: vdpau back-end for nvidia'
-            'libva-driver-intel: back-end for intel cards'
             'libbluray: for Blu-Ray disks')
 backup=('usr/share/vlc/http/.hosts'
         'usr/share/vlc/http/dialogs/.hosts'
         'usr/share/vlc/lua/http/.hosts'
         'usr/share/vlc/lua/http/dialogs/.hosts')
 groups=('multimedia')
-options=('!libtool')
+options=('!libtool' 'debug')
 install="vlc.install"
-#source=("http://download.videolan.org/pub/videolan/vlc/${_pkgver/a}/$pkgname-$_pkgver.tar.xz")
-source=("http://nightlies.videolan.org/build/source/vlc-2.2.0-20141121-0058.tar.xz")
-md5sums=('46515dec3a461e307f10040a7a7098e5')
+source=("http://download.videolan.org/pub/videolan/vlc/${_pkgver/a}/$pkgname-$_pkgver.tar.xz"
+        'avformat.patch'
+        'ffmpeg24.patch')
+#source=("http://nightlies.videolan.org/build/source/vlc-2.2.0-20141121-0058.tar.xz")
+md5sums=('3941b561f590cc95ca5e795213cba2f2'
+         'b6273eb0b98b80944aa00a3a5fff2a45'
+         '068a1b792064bb1aff0765a3ffa8a27a')
+
+prepare() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  
+  patch -p1 -i "${srcdir}/avformat.patch"
+  patch -p1 -i "${srcdir}/ffmpeg24.patch"
+  autoreconf -fi
+}
 
 build() {
-  #cd "${srcdir}/${pkgname}-${_pkgver/a}"
-  cd "${srcdir}/${pkgname}-${_pkgver}"
+  cd "${srcdir}/${pkgname}-${_pkgver/a}"
+  #cd "${srcdir}/${pkgname}-${_pkgver}"
 
   sed -i -e 's:truetype/freefont:TTF:g' modules/text_renderer/freetype.c
 
@@ -46,10 +57,7 @@ build() {
               --sysconfdir=/etc \
               --disable-rpath \
               --enable-faad \
-              --disable-rpath \
-              --enable-faad \
               --enable-nls \
-              --enable-lirc \
               --enable-upnp \
               --enable-realrtsp \
               --enable-bluray \
@@ -60,8 +68,8 @@ build() {
 }
 
 package() {
-  #cd "${srcdir}/${pkgname}-${_pkgver/a}"
-  cd "${srcdir}/${pkgname}-${_pkgver}"
+  cd "${srcdir}/${pkgname}-${_pkgver/a}"
+  #cd "${srcdir}/${pkgname}-${_pkgver}"
 
   make DESTDIR="${pkgdir}" install
 
