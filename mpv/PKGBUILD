@@ -1,0 +1,44 @@
+
+pkgname=mpv
+pkgver=0.7.0
+pkgrel=3
+pkgdesc='Video player based on MPlayer/mplayer2'
+arch=('x86_64')
+license=('GPL')
+url='http://mpv.io'
+depends=('ffmpeg' 'lcms2' 'libdvdread' 'libcdio-paranoia' 'libgl' 'enca'  'libxinerama' 'mpg123'
+         'libxv' 'libxkbcommon' 'libva' 'wayland' 'desktop-file-utils' 'hicolor-icon-theme'
+         'xdg-utils' 'libdvdnav' 'portaudio-svn' 'youtube-dl' 'libass' 'libbluray' 'lua')
+makedepends=('mesa' 'python2-docutils' 'ladspa')
+options=('!emptydirs' '!buildflags')
+install=mpv.install
+source=("https://github.com/mpv-player/mpv/archive/v${pkgver}.tar.gz")
+md5sums=('ddb900d0f4e086734ccf2a775a15c859')
+
+prepare() {
+    cd ${pkgname}-${pkgver}
+
+    ./bootstrap.py
+}
+
+build() {
+    cd ${pkgname}-${pkgver}
+
+    ./waf configure --prefix=/usr \
+	--confdir=/etc/mpv \
+	--enable-joystick \
+	--enable-libmpv-shared \
+	--enable-cdda \
+	--enable-portaudio 
+		
+    ./waf build
+}
+
+package() {
+    cd ${pkgname}-${pkgver}
+    ./waf install --destdir="${pkgdir}"
+
+    install -d "${pkgdir}/usr/share/doc/mpv/examples"
+    install -m644 etc/{input,example}.conf "${pkgdir}/usr/share/doc/mpv/examples"
+    install -m644 DOCS/{encoding.rst,tech-overview.txt} "${pkgdir}/usr/share/doc/mpv"
+}
