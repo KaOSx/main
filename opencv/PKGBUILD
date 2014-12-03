@@ -1,23 +1,23 @@
 
-pkgname=opencv
-_realname=OpenCV
+pkgname=opencv-qt5
 pkgver=2.4.10.1
+_pkgver=2.4.10.1
 pkgrel=1
 pkgdesc="Open Source Computer Vision Library"
 arch=('x86_64')
 license=('BSD')
 url="http://opencv.willowgarage.com/"
-depends=('jasper' 'gst-plugins-base' 'openexr'
-         'xine-lib' 'libdc1394' 'v4l-utils' 'ffmpeg' 'qt')
+depends=('jasper' 'gst-plugins-base' 'openexr' 'xine-lib' 'libdc1394' 'v4l-utils' 'ffmpeg' 'qt5-base')
 makedepends=('pkgconfig' 'cmake' 'python2-numpy' 'eigen' 'python2-sphinx' 'mesa')
-optdepends=('python2-numpy: Python 2.x interface' 'eigen')
+optdepends=('python2-numpy: Python 2.x interface' 'eigen') #eigen3 for 3.0.0
 options=('!libtool')
-#source=("http://sourceforge.net/projects/opencvlibrary/files/opencv-unix/$pkgver/$pkgname-$pkgver.zip")
-source=("https://github.com/Itseez/opencv/archive/$pkgver.tar.gz")
+conflicts=('opencv')
+source=("https://github.com/Itseez/opencv/archive/${_pkgver}.tar.gz")
+#source=("https://github.com/Itseez/opencv/tarball/master/opencv-${pkgver}.tar.gz")
 md5sums=('f84af999f45edc829bfda60a13fedbaa')
 
 build() {
-  cd "$srcdir/$pkgname-$pkgver"
+  cd "$srcdir/opencv-${_pkgver}"
  
   mkdir build 
   cd build
@@ -32,7 +32,6 @@ build() {
         -DINSTALL_PYTHON_EXAMPLES=ON \
         -DWITH_XINE=ON \
         -DWITH_QT=ON \
-        -DWITH_GSTREAMER=ON \
 	-DWITH_OPENGL=ON \
         -DWITH_TBB=OFF \
         -DWITH_CUDA=OFF \
@@ -42,9 +41,11 @@ build() {
 }
 
 package() {
-  cd "$srcdir/$pkgname-$pkgver/build"
+  cd "$srcdir/opencv-${_pkgver}/build"
   make DESTDIR="$pkgdir" install
 
-  install -Dm644 "$srcdir/$pkgname-$pkgver/LICENSE" \
-    "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  cd ..
+  install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
 }
+
+
