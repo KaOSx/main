@@ -2,7 +2,7 @@
 pkgname=telepathy-qt5
 _pkgname=telepathy-qt
 pkgver=0.9.5
-pkgrel=1
+pkgrel=2
 pkgdesc="A library for Qt-based Telepathy clients."
 arch=('x86_64')
 url="http://telepathy.freedesktop.org"
@@ -28,6 +28,7 @@ build() {
         -DQT_QMAKE_EXECUTABLE=/usr/lib/qt5/bin/qmake \
         -DQT_INCLUDES=/usr/include/qt5 \
         -DQT_LIBRARIES=/usr/lib \
+        -DDESIRED_QT_VERSION=5 \
         -DENABLE_EXAMPLES=OFF \
         -DENABLE_TESTS=false \
         -DENABLE_EXPERIMENTAL_SERVICE_SUPPORT=ON

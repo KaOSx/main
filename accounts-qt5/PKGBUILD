@@ -1,7 +1,7 @@
 
 pkgname=accounts-qt5
 pkgver=1.13
-pkgrel=1
+pkgrel=3
 arch=('x86_64')
 pkgdesc="Accounts & SSO framework consists of a set of components and libraries which implement
          an account manager for a user's online accounts and a single-sign-on daemon"
@@ -18,6 +18,7 @@ md5sums=('fac0f97d8eb2501857b77cad7325e6dd')
 build() {
   cd accounts-qt-$pkgver
   sed -i 's|SUBDIRS  += Accounts tests|SUBDIRS += Accounts|' accounts-qt.pro
+  sed -i 's|QHG_LOCATION           = qhelpgenerator|QHG_LOCATION = qhelpgenerator-qt5|' doc/doxy.conf
 
   /usr/lib/qt5/bin/qmake PREFIX=/usr LIBDIR=/usr/lib
   make
