@@ -1,28 +1,30 @@
 
 # Find the kernel name inside the chroot
-_extramodules=extramodules-3.16
+_extramodules=extramodules-3.17
 _kver="$(cat /lib/modules/${_extramodules}/version)"
 
 pkgname=broadcom-wl
 pkgver=6.30.223.248
 _pkgver=6_30_223_248
-pkgrel=4
+pkgrel=5
 pkgdesc='Broadcom 802.11abgn hybrid Linux networking device driver'
 arch=('x86_64')
 url='http://www.broadcom.com/support/802.11/linux_sta.php'
 license=('custom')
-depends=('linux>=3.16' 'linux<3.17')
+depends=('linux>=3.17' 'linux<3.18')
 makedepends=('linux-headers')
 
 source=("http://www.broadcom.com/docs/linux_sta/hybrid-v35_64-nodebug-pcoem-${_pkgver}.tar.gz"
         'modprobe.d'
         'license.patch'
         #'user-ioctl.patch'
-        'linux-recent.patch')
+        'linux-recent.patch'
+        'gcc.patch')
 md5sums=('0237917f75d121589ec16a44eac5f5b0'
          '3600df7db49c759c655bc6a7789b28d4'
          '52f9dcef8112f8e325d9236e5290cb88'
-         '23588645da7762b46aa62d4f2b1053da')
+         '99ba60be4e1ab255286a9c0710cf8fb8'
+         'cded58315b4fde54044a5a0d90ff8148')
 
 backup=('etc/modprobe.d/broadcom-wl.conf')
 install=install
@@ -32,7 +34,7 @@ build() {
 
 	patch -p1 -i license.patch
 	patch -p1 -i linux-recent.patch
-	#patch -p1 -i user-ioctl.patch
+	patch -p1 -i gcc.patch
 
 	make -C /lib/modules/"${_kver}"/build M=`pwd`
 }
