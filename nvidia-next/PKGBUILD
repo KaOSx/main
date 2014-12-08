@@ -1,14 +1,14 @@
 
-_extramodules=extramodules-3.17-next
+_extramodules=extramodules-3.18-next
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=nvidia-next
 pkgver=343.36
-pkgrel=2
+pkgrel=3
 pkgdesc="NVIDIA drivers for linux."
 arch=('x86_64')
 url="http://www.nvidia.com/"
-depends=('linux-next>=3.17' 'linux-next<3.18' "nvidia-utils=${pkgver}")
+depends=('linux-next>=3.18' 'linux-next<3.19' "nvidia-utils=${pkgver}")
 makedepends=('linux-next-headers')
 license=('custom')
 install=nvidia-next.install
