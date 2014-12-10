@@ -1,7 +1,7 @@
 
 pkgname=qt5-translations
-pkgver=5.4.0rc
-subver=5.4.0-rc
+pkgver=5.4.0
+subver=5.4.0
 _pkgver=5.4
 pkgrel=1
 pkgdesc=('A cross-platform application and UI framework, translations')
@@ -13,9 +13,9 @@ makedepends=('qt5-tools')
 groups=('qt5')
 options=('!libtool')
 _pkgfqn="qttranslations-opensource-src-${subver}"
-#source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
-source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
-md5sums=('55e5e10604263557a51f70f0ebcbea08')
+source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
+#source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
+md5sums=('6462eeefae00f048418ed6e4571c4cc9')
 
 build() {
     cd $srcdir/$_pkgfqn
