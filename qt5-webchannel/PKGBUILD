@@ -1,0 +1,37 @@
+
+pkgname=qt5-webchannel
+pkgver=5.4.0
+subver=5.4.0
+_pkgver=5.4
+pkgrel=1
+pkgdesc=('Module being used in e.g. Qt WebKit to provide a seamless integration of QML/C++ 
+         QObjects into JavaScript clients')
+arch=('x86_64')
+url='http://qt.nokia.com/'
+license=('GPL3' 'LGPL')
+depends=('qt5-base')
+makedepends=('python2')
+groups=('qt5')
+options=('!libtool')
+_pkgfqn="qtwebchannel-opensource-src-${subver}"
+source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
+#source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
+md5sums=('d11e86da2f585ea48f38d4107356edd7')
+
+build() {
+    cd $srcdir/$_pkgfqn
+
+    /usr/lib/qt5/bin/qmake
+    make
+}
+
+package() {
+    cd $srcdir/$_pkgfqn
+    make INSTALL_ROOT=$pkgdir install
+    
+    mkdir -p ${pkgdir}/usr/bin
+    for i in $(ls ${pkgdir}/usr/lib/qt5/bin); do
+        ln -s /usr/lib/qt5/bin/${i} ${pkgdir}/usr/bin/${i}-qt5
+    done
+}
+
