@@ -3,7 +3,7 @@ pkgname=qt5-base
 pkgver=5.4.0
 subver=5.4.0
 _pkgver=5.4
-pkgrel=1
+pkgrel=2
 pkgdesc=('A cross-platform application and UI framework')
 arch=('x86_64')
 url='http://qt.nokia.com/'
@@ -44,7 +44,6 @@ build() {
                 -translationdir /usr/share/qt5/translations \
                 -sysconfdir /etc/xdg/qt5 \
                 -examplesdir /usr/share/qt5/examples \
-                -harfbuzz \
                 -system-harfbuzz \
 		-system-sqlite \
                 -openssl-linked \
@@ -53,7 +52,6 @@ build() {
                 -optimized-qmake \
                 -reduce-relocations \
                 -dbus-linked \
-                -opengl es2 \
                 -feature-menu \
                 -feature-textdate \
                 -feature-ftp \
