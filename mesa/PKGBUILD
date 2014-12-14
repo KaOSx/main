@@ -1,11 +1,11 @@
 
 pkgbase=mesa
 pkgname=('mesa' 'libgl')
-pkgver=10.3.5
-_pkgver=10.3.5
-pkgrel=1
+pkgver=10.4.0
+_pkgver=10.4.0
+pkgrel=2
 arch=('x86_64')
-makedepends=('glproto' 'libdrm' 'libxxf86vm' 'libxdamage' 'expat' 'llvm' 'libx11' 'libxt' 'gcc-libs'
+makedepends=('glproto' 'libdrm' 'libxxf86vm' 'libxdamage' 'libva' 'expat' 'llvm' 'libx11' 'libxt' 'gcc-libs'
              'dri2proto' 'python2' 'libxml2' 'imake' 'systemd' 'libvdpau' 'wayland' 'dri3proto'
              'presentproto' 'libxshmfence' 'elfutils' 'libomxil-bellagio' 'clang')
 url="http://mesa3d.sourceforge.net"
@@ -13,7 +13,7 @@ license=('custom')
 source=(${source[@]} "ftp://ftp.freedesktop.org/pub/mesa/${_pkgver}/MesaLib-${pkgver}.tar.bz2" 
 #source=("mesa::git://anongit.freedesktop.org/mesa/mesa#branch=master"
        'LICENSE')
-md5sums=('f404f9ecece1e04f2c99dadc42a7d215'
+md5sums=('b7b37117eecbdfaaf3075acfb063d5a3'
          '5c65a0fe315dd347e09b1f2826a1df5a')
 
 build() {
@@ -26,8 +26,6 @@ build() {
     --with-gallium-drivers=r300,r600,nouveau,radeonsi,svga,swrast \
     --with-dri-drivers=i915,i965,r200,radeon,nouveau,swrast \
     --enable-gallium-llvm \
-    --enable-gallium-egl \
-    --enable-gallium-gbm \
     --with-egl-platforms=x11,drm,wayland \
     --enable-llvm-shared-libs \
     --with-clang-libdir=/usr/lib \
@@ -36,6 +34,7 @@ build() {
     --enable-glx-tls \
     --enable-dri \
     --enable-glx \
+    --enable-nine \
     --enable-osmesa \
     --enable-gles1 \
     --enable-gles2 \
@@ -44,8 +43,8 @@ build() {
     --enable-xa \
     --enable-vdpau \
     --enable-dri3 \
-    --enable-omx \
-    --enable-openvg 
+    --enable-omx 
+    #--enable-openvg currently not ported yet with gallium-egl removal
     
   make
 }
