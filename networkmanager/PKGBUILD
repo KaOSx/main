@@ -2,7 +2,7 @@
 pkgname=networkmanager
 _pkgname=NetworkManager
 pkgver=0.9.10.0
-pkgrel=4
+pkgrel=5
 pkgdesc="Network Management daemon"
 arch=('x86_64')
 license=('GPL')
@@ -43,7 +43,7 @@ build() {
     --with-pppoe=/usr/sbin/pppoe \
     --with-iptables=/usr/sbin/iptables \
     --with-systemdsystemunitdir=/usr/lib/systemd/system \
-    --with-kernel-firmware-dir=/usr/lib/firmware \
+    --with-kernel-firmware-dir=/lib/firmware \
     --with-udev-dir=/usr/lib/udev \
     --with-resolvconf=/usr/sbin/resolvconf \
     --with-session-tracking=systemd \
