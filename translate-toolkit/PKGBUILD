@@ -1,14 +1,14 @@
 
 pkgname=translate-toolkit
-pkgver=1.11.0
+pkgver=1.12.0
 pkgrel=1
 pkgdesc="A toolkit to convert between various different translation formats, help process and validate localisations"
 arch=('x86_64')
 url="http://translate.sourceforge.net"
 license=('GPL')
-depends=('bash' 'python2-lxml')
+depends=('bash' 'python2-lxml' 'python2-setuptools')
 source=("http://downloads.sourceforge.net/translate/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('69c5df09b83fdbf448c3446b6cf22098')
+md5sums=('dfaff8943930b3f856c3abc3d2374a71')
 
 package() {
   cd "${srcdir}/${pkgname}-${pkgver}"
@@ -17,5 +17,4 @@ package() {
     $(find . -name '*.py')
 
   python2 -s setup.py install --root="${pkgdir}" --optimize=1
-  mv "${pkgdir}"/usr/lib/python2.7/site-packages/{docs,share} "${pkgdir}"/usr/lib/python2.7/site-packages/translate
 }
