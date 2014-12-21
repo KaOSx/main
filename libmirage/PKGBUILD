@@ -1,6 +1,6 @@
 
 pkgname=libmirage
-pkgver=3.0.0
+pkgver=3.0.3
 pkgrel=1
 pkgdesc="CD-ROM image (B6T/CCD/CDI/CUE/ISO/MDS/NRG/TOC) access library"
 arch=('x86_64')
@@ -8,15 +8,12 @@ url="http://cdemu.sourceforge.net/"
 license=('GPL')
 depends=('glib2' 'libsamplerate' 'zlib' 'bzip2' 'shared-mime-info')
 makedepends=('bison' 'flex' 'cmake' 'gobject-introspection')
-source=("http://downloads.sourceforge.net/cdemu/$pkgname-$pkgver.tar.bz2"
-        'xml.patch')
+source=("http://downloads.sourceforge.net/cdemu/$pkgname-$pkgver.tar.bz2")
 options=('!libtool')
-md5sums=('3bdb357f12f21ef78b7d96bcb36002d6'
-         '2d621756a55de9e399a5093c246bb6ef')
+md5sums=('fd0009ced98ef47c94d2919eafcaa099')
 
 build() {
-  cd $srcdir/$pkgname-$pkgver 
-  patch -p1 -i $srcdir/xml.patch
+  cd $srcdir/$pkgname-$pkgver
   
   mkdir build
   cd build
