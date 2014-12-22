@@ -1,12 +1,17 @@
+#!/bin/bash
+# tputcolors
+
 post_install() {
-  echo "sna, uxa and glamor acceleration methods are supported"
+  echo -e '\e[1;31m The glamor acceleration method is no longer supported \e[0m'
+  echo "Make sure to remove glamor from your 20-intel.conf if you added it"
+  echo "sna and uxa acceleration methods are the only supported"
   echo "With sna set as default"
-  echo "Use either glamor or uxa method if you run into trouble with sna."
+  echo "Use uxa method if you run into trouble with sna."
   echo "Try by creating /etc/X11/xorg.conf.d/20-intel.conf "
   echo "Section "Device" "
   echo "       Identifier  "Intel Graphics" "
   echo "       Driver      "intel" "
-  echo "       Option      "AccelMethod"  "glamor" "
+  echo "       Option      "AccelMethod"  "uxa" "
   echo "EndSection "
 }
 
