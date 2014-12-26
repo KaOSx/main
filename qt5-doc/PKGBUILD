@@ -3,7 +3,7 @@ pkgname=qt5-doc
 pkgver=5.4.0
 subver=5.4.0
 _pkgver=5.4
-pkgrel=1
+pkgrel=2
 pkgdesc=('A cross-platform application and UI framework, offline documentation files')
 arch=('x86_64')
 url='http://qt.nokia.com/'
@@ -19,12 +19,14 @@ build() {
     cd $srcdir/$_pkgfqn
  
     /usr/lib/qt5/bin/qmake
+    make
     make docs
 }
 
 package() {
     cd $srcdir/$_pkgfqn
     
+    make INSTALL_ROOT=$pkgdir install
     make INSTALL_ROOT=$pkgdir install_docs
 }
 
