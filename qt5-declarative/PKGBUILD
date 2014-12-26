@@ -1,16 +1,14 @@
 
-pkgname=qt5-declarative
+pkgname=('qt5-declarative' 'qt5-declarative-docs')
 pkgver=5.4.0
 subver=5.4.0
 _pkgver=5.4
-pkgrel=3
+pkgrel=4
 pkgdesc=('A cross-platform application and UI framework, QtDeclarative files')
 arch=('x86_64')
 url='http://qt.nokia.com/'
 license=('GPL3' 'LGPL' 'FDL' 'custom')
-depends=('qt5-xmlpatterns' 'mesa')
-makedepends=('python2' 'qt5-tools')
-groups=('qt5')
+makedepends=('qt5-xmlpatterns' 'mesa' 'python2' 'qt5-tools')
 options=('!libtool')
 _pkgfqn="qtdeclarative-opensource-src-${subver}"
 source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
@@ -25,10 +23,13 @@ build() {
     make docs
 }
 
-package() {
+package_qt5-declarative() {
+    pkgdesc=('A cross-platform application and UI framework, QtDeclarative files')
+    depends=('qt5-xmlpatterns' 'mesa')
+    groups=('qt5')
+    
     cd $srcdir/$_pkgfqn
     make INSTALL_ROOT=$pkgdir install
-    make INSTALL_ROOT=$pkgdir install_docs
     
     mkdir -p ${pkgdir}/usr/bin
     for i in $(ls ${pkgdir}/usr/lib/qt5/bin); do
@@ -36,3 +37,11 @@ package() {
     done
 }
 
+package_qt5-declarative-docs() {
+    pkgdesc=('Documentation files for QtDeclarative')
+    depends=('qt5-base')
+    groups=('qt5-docs')
+    
+    cd $srcdir/$_pkgfqn
+    make INSTALL_ROOT=$pkgdir install_docs
+}

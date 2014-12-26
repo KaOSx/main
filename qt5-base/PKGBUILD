@@ -1,23 +1,19 @@
 
-pkgname=qt5-base
+pkgname=('qt5-base' 'qt5-base-docs')
 pkgver=5.4.0
 subver=5.4.0
 _pkgver=5.4
-pkgrel=2
+pkgrel=3
 pkgdesc=('A cross-platform application and UI framework')
 arch=('x86_64')
 url='http://qt.nokia.com/'
 license=('GPL3' 'LGPL' 'FDL' 'custom')
-depends=('sqlite3' 'xcb-util-keysyms' 'xcb-util-wm' 'xcb-util-image' 'xcb-util-renderutil'
+makedepends=('sqlite3' 'xcb-util-keysyms' 'xcb-util-wm' 'xcb-util-image' 'xcb-util-renderutil'
          'glib2' 'dbus' 'fontconfig' 'libsm' 'libxrandr' 'libxv' 'libxi' 'unixodbc' 'libjpeg-turbo'
          'alsa-lib' 'xdg-utils' 'hicolor-icon-theme' 'desktop-file-utils' 'mesa' 'systemd'
          'libxcursor' 'libxrender' 'libpng' 'libmariadbclient' 'icu' 'libgl' 'libxfixes' 'libxinerama'
-         'libxkbcommon' 'harfbuzz' 'mtdev')
-makedepends=('postgresql-libs' 'cups' 'python2' 'gperf' 'ruby' 'pulseaudio')
-optdepends=('postgresql-libs: PostgreSQL driver')
-conflict=('qt5')
-replaces=('qt5')
-groups=('qt5')
+         'libxkbcommon' 'harfbuzz' 'mtdev'
+         'postgresql-libs' 'cups' 'python2' 'gperf' 'ruby' 'pulseaudio' 'qt5-tools')
 options=('!libtool')
 _pkgfqn="qtbase-opensource-src-${subver}"
 source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
@@ -25,12 +21,12 @@ source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver
 md5sums=('eaaa72a5cb25713ca8d17f3a8d149765')
 
 build() {
-	cd $srcdir/$_pkgfqn
+    cd $srcdir/$_pkgfqn
         
-        unset QTDIR
-        export PATH="$PWD/qtbase/bin:$PWD/qtrepotools/bin:$PATH"
+    unset QTDIR
+    export PATH="$PWD/qtbase/bin:$PWD/qtrepotools/bin:$PATH"
 
-	./configure -confirm-license -opensource \
+    ./configure -confirm-license -opensource \
 		-prefix /usr \
                 -bindir /usr/lib/qt5/bin \
                 -headerdir /usr/include/qt5 \
@@ -56,10 +52,20 @@ build() {
                 -feature-textdate \
                 -feature-ftp \
                 -xcursor
-	 make
+     make
+     make docs
 }
 
-package() {
+package_qt5-base() {
+    pkgdesc=('A cross-platform application and UI framework')
+    depends=('sqlite3' 'xcb-util-keysyms' 'xcb-util-wm' 'xcb-util-image' 'xcb-util-renderutil'
+             'glib2' 'dbus' 'fontconfig' 'libsm' 'libxrandr' 'libxv' 'libxi' 'unixodbc' 'libjpeg-turbo'
+             'alsa-lib' 'xdg-utils' 'hicolor-icon-theme' 'desktop-file-utils' 'mesa' 'systemd'
+             'libxcursor' 'libxrender' 'libpng' 'libmariadbclient' 'icu' 'libgl' 'libxfixes' 'libxinerama'
+             'libxkbcommon' 'harfbuzz' 'mtdev')
+    optdepends=('postgresql-libs: PostgreSQL driver')
+    groups=('qt5')
+    
     cd $srcdir/$_pkgfqn
     make INSTALL_ROOT=$pkgdir install
 	
@@ -73,3 +79,11 @@ package() {
     done
 }
 
+package_qt5-base-docs() {
+    pkgdesc="Documentation files for qt5-base"
+    depends=('qt5-base')
+    groups=('qt5-docs')
+    
+    cd $srcdir/$_pkgfqn
+    make INSTALL_ROOT=$pkgdir install_docs
+}
