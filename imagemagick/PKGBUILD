@@ -1,22 +1,22 @@
 
 pkgname=imagemagick
-pkgver=6.9.0.0
-_pkgver=6.9.0-0
+pkgver=6.9.0.2
+_pkgver=6.9.0-2
 pkgrel=1
 pkgdesc="An image viewing/manipulation program"
 arch=('x86_64')
 url="http://www.imagemagick.org/"
 license=('custom')
 depends=('libltdl' 'lcms' 'lcms2' 'libxt' 'gcc-libs' 'bzip2' 'freetype2' 'fontconfig'
-	 'libxext' 'fftw' 'liblqr' 'libwmf' 'librsvg' 'libxml2' 'perl' 'libwebp')
-makedepends=('ghostscript' 'openexr' 'jasper')
+	 'libxext' 'fftw' 'liblqr' 'libwmf' 'librsvg' 'libxml2' 'perl' 'libwebp' 'libcl')
+makedepends=('ghostscript' 'openexr' 'jasper' 'opencl-headers' 'subversion')
 optdepends=('ghostscript: for Ghostscript support' 
             'openexr: for OpenEXR support'  
             'jasper: for JPEG-2000 support')
 options=('!docs' 'libtool' '!emptydirs')
 source=("http://www.imagemagick.org/download/ImageMagick-${_pkgver}.tar.xz"
 	'perlmagick.rpath.patch')
-md5sums=('3714e7d5d248c13aee95a7f54970349f'
+md5sums=('027359e4c55d10405b9a2d24533646b3'
          '0faf7158fd3a0904d9a70dd3e3c1fe9c')
 
 build() {
@@ -27,10 +27,10 @@ build() {
 	patch -p0 -i "${srcdir}/perlmagick.rpath.patch" 
 
 	./configure --prefix=/usr --sysconfdir=/etc --with-modules --disable-static \
-	    --enable-hdri --with-wmf --with-openexr --with-xml \
+	    --enable-hdri --with-wmf --with-openexr --with-xml --enable-opencl \
 	    --with-gslib --with-gs-font-dir=/usr/share/fonts/Type1 \
 	    --with-perl --with-perl-options="INSTALLDIRS=vendor" \
-	    --with-lqr --with-rsvg --with-jp2 --with-lcms2 --with-webp \
+	    --with-lqr --with-rsvg --with-lcms2 --with-webp \
 	    --without-gvc --without-djvu --without-autotrace \
 	    --without-jbig --without-fpx --without-dps --without-fftw --with-gcc-arch=x86-64
 	make 
