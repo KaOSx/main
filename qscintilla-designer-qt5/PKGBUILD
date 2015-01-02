@@ -1,0 +1,26 @@
+
+pkgname=qscintilla-designer-qt5
+pkgver=2.8.4
+pkgrel=1
+license=('GPL')
+arch=('x86_64')
+url="http://www.riverbankcomputing.co.uk/software/qscintilla/intro"
+pkgdesc="A port to Qt of Neil Hodgson's Scintilla C++ editor class"
+depends=('qscintilla-qt5')
+makedepends=('chrpath' 'qt5-tools')
+source=("http://downloads.sourceforge.net/pyqt/QScintilla-gpl-${pkgver}.tar.gz")
+md5sums=('28aec903ff48ae541295a4fb9c96f8ea')
+
+build() {
+    cd $srcdir/QScintilla-gpl-$pkgver/designer-Qt4Qt5
+    
+    /usr/lib/qt5/bin/qmake designer.pro 
+    make
+}
+
+package() {
+    cd ${srcdir}/QScintilla-gpl-${pkgver}/designer-Qt4Qt5
+    
+    make DESTDIR="${pkgdir}" INSTALL_ROOT="${pkgdir}" install
+}
+
