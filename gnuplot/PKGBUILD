@@ -1,16 +1,16 @@
 
 pkgname=gnuplot 
-pkgver=4.6.6
+pkgver=5.0.0
 pkgrel=1
 pkgdesc="Plotting package which outputs to X11, PostScript, PNG, GIF, and others" 
 arch=('x86_64') 
 url="http://www.gnuplot.info" 
 license=('custom') 
-depends=('readline' 'gd' 'pango' 'libjpeg-turbo' 'qt' 'gnutls') 
-makedepends=('texinfo' 'texlive-core' 'texlive-latexextra') 
+depends=('readline' 'gd' 'pango' 'libjpeg-turbo' 'qt5-svg' 'gnutls') 
+makedepends=('texinfo' 'texlive-core' 'texlive-latexextra' 'qtchooser' 'qt5-tools') 
 install=gnuplot.install 
 source=("http://downloads.sourceforge.net/sourceforge/$pkgname/$pkgname-$pkgver.tar.gz")
-md5sums=('02a980b37ba181f7510816ed6440c9c1')
+md5sums=('23628e321ff2428d3f171e1cd4245486')
 
 build() {
   cd $srcdir/$pkgname-$pkgver
@@ -26,19 +26,17 @@ build() {
               --with-gihdir=/usr/share/gnuplot \
               --with-readline=gnu \
               --datadir=/usr/share \
-              --disable-wxwidgets \
               --without-lua \
-              --enable-qt
+              --with-qt=qt5
   make pkglibexecdir=/usr/bin
 }
 
 
 package() {
   cd $srcdir/$pkgname-$pkgver
-  make pkglibexecdir=/usr/bin DESTDIR="$pkgdir" install install-info
+  make pkglibexecdir=/usr/bin DESTDIR=$pkgdir install 
 
   install -Dm644 Copyright $pkgdir/usr/share/licenses/$pkgname/Copyright
-  install -Dm644 lisp/dotemacs "$pkgdir/usr/share/emacs/site-lisp/dotemacs"
 
   rm -f $pkgdir/usr/share/texmf-dist/ls-R
 }
