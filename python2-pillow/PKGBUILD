@@ -1,0 +1,31 @@
+
+pkgname=python2-pillow
+_appname=Pillow
+pkgver=2.7.0
+pkgrel=1
+pkgdesc="Python Imaging Library (PIL) fork. Python2 version."
+arch=('x86_64')
+url="http://python-pillow.github.io/"
+license=('BSD')
+depends=('python2' 'lcms' 'libwebp' 'sane')
+makedepends=('python2-setuptools' 'libwebp' 'tk')
+optdepends=('tk: for the ImageTK module'
+            'pyqt-python2: for the ImageQt module')
+provides=('python2-imaging')
+conflicts=('python2-imaging')
+replaces=('python2-imaging')
+source=("http://pypi.python.org/packages/source/P/Pillow/$_appname-$pkgver.zip")
+md5sums=('da10ee9d0c0712c942224300c2931a1a')
+
+package() { 
+  cd $srcdir/${_appname}-$pkgver
+
+  python2 setup.py install --root=$pkgdir/ --optimize=0
+  install -Dm644 docs/LICENSE $pkgdir/usr/share/licenses/$pkgname/LICENSE
+
+  # avoid python3-pillow conlfict
+  cd "$pkgdir/usr/bin"
+  for f in *.py; do
+    mv "$f" "${f%.py}2"
+  done
+}

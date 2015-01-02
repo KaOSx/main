@@ -1,15 +1,15 @@
 
 pkgname=libvisio
-pkgver=0.1.0
-pkgrel=2
+pkgver=0.1.1
+pkgrel=1
 pkgdesc="Library for importing Visio(tm) documents"
 arch=('x86_64')
 url="http://www.freedesktop.org/wiki/Software/libvisio"
 license=('LGPL')
 depends=('libwpd' 'libwpg' 'gperf' 'librevenge')
-makedepends=('boost')
+makedepends=('boost' 'cppunit')
 source=("http://dev-www.libreoffice.org/src/libvisio/${pkgname}-${pkgver}.tar.xz")
-md5sums=('41e156acfd269dcaf99b37a1d979b746')
+md5sums=('299c02fa08a1b9dc2be8ffa9deb0457a')
 
 build() {
   cd $srcdir/$pkgname-$pkgver

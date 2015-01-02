@@ -1,0 +1,20 @@
+
+pkgname=python3-pillow
+_appname=Pillow
+pkgver=2.7.0
+pkgrel=1
+arch=('x86_64')
+pkgdesc="Python Imaging Library (PIL) fork. Python3 version."
+url="http://python-pillow.github.io/"
+license=('BSD')
+depends=('python3' 'lcms' 'libwebp')
+makedepends=('python3-setuptools' 'libwebp' 'tk' 'sane')
+source=("http://pypi.python.org/packages/source/P/Pillow/$_appname-$pkgver.zip")
+md5sums=('da10ee9d0c0712c942224300c2931a1a')
+
+package() {
+  cd $srcdir/$_appname-$pkgver
+  python3 setup.py install --root="$pkgdir/" --optimize=0
+  
+  install -Dm644 docs/LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}
