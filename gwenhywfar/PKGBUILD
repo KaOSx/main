@@ -1,15 +1,16 @@
 
 pkgname=gwenhywfar
-pkgver=4.3.3
-pkgrel=5
+pkgver=4.13.0
+_dnrel=77
+pkgrel=1
 pkgdesc="OS abstraction functions for various projects"
 arch=('x86_64')
 url="http://www.aquamaniac.de"
 options=('!libtool')
 license=("LGPL")
 depends=('openssl' 'qt' 'gnutls' 'libgcrypt')
-source=("gwenhywfar-$pkgver.tar.gz::http://www2.aquamaniac.de/sites/download/download.php?package=01&release=67&file=01&dummy=gwenhywfar-$pkgver.tar.gz")
-md5sums=('c5b9d52a25960f84f9264a5a5dd484d1')
+source=("gwenhywfar-$pkgver.tar.gz::http://www2.aquamaniac.de/sites/download/download.php?package=01&release=${_dnrel}&file=01&dummy=gwenhywfar-$pkgver.tar.gz")
+md5sums=('c908bbc877e4c61829b3be6fc5b01513')
 
 build() {
   cd $srcdir/gwenhywfar-$pkgver

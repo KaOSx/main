@@ -10,7 +10,7 @@ configs=(90-ttf-bengali-fonts.conf
 post_install() {
   pushd /etc/fonts/conf.d > /dev/null
   for config in "${configs[@]}"; do
-    ln -sf ../conf.avail/${config} .
+    ln -s ../conf.avail/${config} .
   done
   popd > /dev/null
   fc-cache -fs
@@ -31,7 +31,7 @@ post_upgrade() {
       rm -f ${config}
     fi
   done
-  fc-cache -fs
+  fc-cache -s
   mkfontscale usr/share/fonts/TTF
   mkfontdir usr/share/fonts/TTF
 }
@@ -53,7 +53,7 @@ post_remove() {
     rm -f ${config}
   done
   popd > /dev/null
-  fc-cache -fs
+  fc-cache -s
   mkfontscale usr/share/fonts/TTF
   mkfontdir usr/share/fonts/TTF
 }
