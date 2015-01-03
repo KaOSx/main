@@ -21,5 +21,5 @@ package() {
   cd logilab-common-${pkgver}
   python3 setup.py install --optimize=1 --skip-build --prefix=/usr --root="${pkgdir}"
 
-  find "${pkgdir}" -type f -exec chmod +r {} \;
+  find ${pkgdir} -type f -exec chmod +r {} \;
 }
