@@ -1,0 +1,25 @@
+
+pkgname=python3-logilab-common
+pkgver=0.63.2
+pkgrel=1
+pkgdesc="Bunch of modules providing low level functionnalities shared among some python projects devel"
+arch=('x86_64')
+url="http://www.logilab.org/project/logilab-common"
+license=('LGPL')
+depends=('python3-six')
+makedepends=('python3-setuptools')
+source=("https://pypi.python.org/packages/source/l/logilab-common/logilab-common-$pkgver.tar.gz")
+md5sums=('2bf4599ae1f2ccf4603ca02c5d7e798e')
+
+build() {
+  cd logilab-common-${pkgver}
+
+  python3 setup.py build
+}
+
+package() {
+  cd logilab-common-${pkgver}
+  python3 setup.py install --optimize=1 --skip-build --prefix=/usr --root="${pkgdir}"
+
+  find "${pkgdir}" -type f -exec chmod +r {} \;
+}
