@@ -1,7 +1,7 @@
 
 pkgbase="llvm"
 pkgname=('llvm' 'llvm-ocaml' 'clang' 'clang-analyzer')
-pkgver=3.5.0
+pkgver=3.5.1
 subver=3.5
 _gcc_ver=4.9.2
 pkgrel=2
@@ -12,9 +12,9 @@ makedepends=('gcc-libs' 'libffi' 'python2' 'ocaml' "gcc=${_gcc_ver}" 'groff')
 source=("http://llvm.org/releases/${pkgver}/${pkgbase}-${pkgver}.src.tar.xz"
         "http://llvm.org/releases/$pkgver/cfe-$pkgver.src.tar.xz"
         "http://llvm.org/releases/$pkgver/compiler-rt-$pkgver.src.tar.xz")
-md5sums=('d6987305a1a0e58e128c1374cd3b8fef'
-         '27718dd13c7df83e15f997116bbb4aef'
-         '02624d2a9144278c3808c00dbbab56c8')
+md5sums=('2d3d8004f38852aa679e5945b8ce0b14'
+         '93f9532f8f7e6f1d8e5c1116907051cb'
+         'd626cfb8a9712cb92b820798ab5bc1f8')
 
 build() {
   cd "${srcdir}/${pkgbase}-${pkgver}.src"
