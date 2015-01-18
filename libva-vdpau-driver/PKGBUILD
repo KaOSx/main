@@ -10,13 +10,19 @@ depends=('libva' 'libvdpau')
 makedepends=('mesa')
 options=('!libtool')
 source=("http://www.freedesktop.org/software/vaapi/releases/$pkgname/$pkgname-$pkgver.tar.bz2"
-        'utils_glx.diff')
+        'utils_glx.diff'
+        'libvdpau.patch'
+        'vdpau_dump.patch')
 md5sums=('5ec6d452d2dd307434ea3d32da49c3e5'
-         '9ecb758ac8e758946400cc3bb7e94a2b')
+         '9ecb758ac8e758946400cc3bb7e94a2b'
+         '1832517ead98e0e27268fc78594e18ce'
+         '4783c9fb3b1514d7a0903d137fa55428')
 
 build() {
   cd ${srcdir}/${pkgname}-${pkgver}
   patch -p1 -i ${srcdir}/utils_glx.diff
+  patch -p1 -i ${srcdir}/libvdpau.patch
+  patch -p1 -i ${srcdir}/vdpau_dump.patch
   
   ./configure --prefix=/usr 
   make
