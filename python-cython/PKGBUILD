@@ -2,7 +2,7 @@
 pkgname=('python2-cython' 'python3-cython')
 pkgbase=cython
 pkgver=0.21.2
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 url="http://www.cython.org"
 license=('APACHE')
@@ -11,7 +11,7 @@ source=("http://cython.org/release/Cython-$pkgver.tar.gz")
 md5sums=('d21adb870c75680dc857cd05d41046a4')
 
 package_python2-cython() {
-  depends=('python2')
+  depends=('python2' 'python2-setuptools')
   pkgdesc="C-Extensions for Python 2"
   provides=('python2-c')
   
@@ -20,13 +20,12 @@ package_python2-cython() {
 }
 
 package_python3-cython() {
-  depends=('python3')
+  depends=('python3' 'python3-setuptools')
   pkgdesc="C-Extensions for Python 3"
 
   cd $srcdir/Cython-$pkgver
   python3 setup.py install --root=$pkgdir
   
-  sed -i 's|#!.*python|#!/usr/bin/python3|' $pkgdir/usr/bin/*
   mv $pkgdir/usr/bin/cygdb $pkgdir/usr/bin/cygdb3
   mv $pkgdir/usr/bin/cython $pkgdir/usr/bin/cython3
 }
