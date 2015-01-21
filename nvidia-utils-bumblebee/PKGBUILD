@@ -2,7 +2,7 @@
 pkgname=nvidia-utils-bumblebee
 pkgbase=nvidia-utils
 pkgver=346.35
-pkgrel=1
+pkgrel=2
 pkgdesc="NVIDIA drivers utilities and libraries. Repacked and installed in different folder to be used simultaneously with libgl."
 arch=('x86_64')
 url="http://www.nvidia.com/"
@@ -61,6 +61,8 @@ package() {
     install -D -m644 nvidia-settings.1.gz "${pkgdir}/usr/share/man/man1/nvidia-settings.1.gz"
     install -D -m644 nvidia-settings.desktop "${pkgdir}/usr/share/applications/nvidia-settings.desktop"
     install -D -m644 nvidia-settings.png "${pkgdir}/usr/share/pixmaps/nvidia-settings.png"
+    install -D -m755 "libnvidia-gtk2.so.$pkgver" "$pkgdir/usr/lib/libnvidia-gtk2.so.$pkgver"
+    install -D -m755 "libnvidia-gtk3.so.$pkgver" "$pkgdir/usr/lib/libnvidia-gtk3.so.$pkgver"
     sed -e 's:__UTILS_PATH__:/usr/bin:' -e 's:__PIXMAP_PATH__:/usr/share/pixmaps:' -i "${pkgdir}/usr/share/applications/nvidia-settings.desktop"
     # nvidia-bug-report
     install -D -m755 nvidia-bug-report.sh "${pkgdir}/usr/bin/nvidia-bug-report.sh"
