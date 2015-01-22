@@ -1,6 +1,6 @@
 
 pkgname=colord
-pkgver=1.2.7
+pkgver=1.2.8
 pkgrel=1
 pkgdesc="System service easily manage, install and generate color profiles to manage input and output devices"
 arch=('x86_64')
@@ -12,7 +12,7 @@ opdepends=('sane')
 options=('!libtool')
 install=colord.install
 source=("http://www.freedesktop.org/software/colord/releases/$pkgname-$pkgver.tar.xz")
-md5sums=('73d5979385667c5f0d683e7f2b226758')
+md5sums=('f663cb211d1d338b246daf02ed670910')
 
 build() {
   cd "$pkgname-$pkgver"
@@ -34,5 +34,6 @@ package() {
   cd "$pkgname-$pkgver"
   
   make DESTDIR="$pkgdir" install
+  chown -R 124:124 "$pkgdir/var/lib/colord"
 }
 
