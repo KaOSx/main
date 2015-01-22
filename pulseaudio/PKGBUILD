@@ -1,7 +1,7 @@
 
 pkgname=pulseaudio
 pkgdesc="A featureful, general-purpose sound server"
-pkgver=5.99.2
+pkgver=5.99.3
 pkgrel=1
 arch=('x86_64')
 url="http://pulseaudio.org/"
@@ -18,14 +18,14 @@ optdepends=('avahi: zeroconf support'
 backup=(etc/pulse/{daemon.conf,default.pa,system.pa})
 provides=("libpulse=${pkgver}")
 options=('!emptydirs' '!libtool' '!makeflags')
-#source=("http://freedesktop.org/software/${pkgname}/releases/${pkgname}-${pkgver}.tar.xz")
-source=("$pkgname-$pkgver::git://anongit.freedesktop.org/pulseaudio/pulseaudio#commit=50186d7")
-md5sums=('SKIP')
+source=("http://freedesktop.org/software/${pkgname}/releases/${pkgname}-${pkgver}.tar.xz")
+#source=("$pkgname-$pkgver::git://anongit.freedesktop.org/pulseaudio/pulseaudio#commit=50186d7")
+md5sums=('99c461334e4e35398dbaf51d8a5af3b8')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
 
-  ./autogen.sh --prefix=/usr \
+  ./configure --prefix=/usr \
                --sysconfdir=/etc \
                --libexecdir=/usr/lib \
                --localstatedir=/var \
