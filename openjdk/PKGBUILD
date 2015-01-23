@@ -1,11 +1,11 @@
 
 pkgname=('openjdk' 'openjdk-src')
 pkgbase='openjdk'
-_icedtea_release="2.5.3"
+_icedtea_release="2.5.4"
 _icedtea_jdkver="7"
 # ${srcdir}/build/ChangeLog for versions
 _openjdk_build="b14"
-_pkgver="7u71"
+_pkgver="7u75"
 pkgver="${_pkgver}_${_openjdk_build}_${_icedtea_release}"
 pkgrel=1
 pkgdesc="An open-source implementation of the seventh edition of the Java SE Platform."
@@ -18,7 +18,7 @@ makedepends=('java-environment=7' 'apache-ant>=1.6.5' 'zip' 'unzip'
              'libpng' 'giflib' 'lcms2' 'freetype2' 'rhino' 'nss' 'libxt'
              'libxtst' 'libxp' 'libxrender' 'ca-certificates-java' 'eclipse-ecj')
 
-_hg_url="http://icedtea.wildebeest.org/download/drops/icedtea7/2.5.3"
+_hg_url="http://icedtea.wildebeest.org/download/drops/icedtea7/2.5.4"
 _jvmdir="/usr/lib/jvm/java-7-openjdk"
 
 source=("http://icedtea.classpath.org/download/source/icedtea-${_icedtea_release}.tar.gz"
@@ -36,14 +36,14 @@ source=("http://icedtea.classpath.org/download/source/icedtea-${_icedtea_release
         'giflib.diff'
         'openjdk.profile.sh'
         'openjdk.profile.csh')
-md5sums=('dfd8f5f356a5fc05e63bb38e7c4c030a'
-         'b7dbab5f1ca314d613a9e7cf0a5939e1'
-         '40e6d2e0e6b35a671bf1b0908c63ef9d'
-         '1615b1c82ac6a189d6805eedb8692402'
-         '7cc129b8ff8f195583cf40620588e013'
-         'fd28b781a95a609cd966c7048486e4ca'
-         '730679eec8f645c05c0c518ae73a6f6d'
-         'e58128728b81b99bf94d9cac39015975'
+md5sums=('646064d7a8d57c2cae0ef35a05de57c8'
+         '06235b1e4b024402d6ec5cf0672cc353'
+         'd3ffad8f8b415f002fd0f308279accbc'
+         '03bb3aa6f03765816adf3d312feed05e'
+         '4e848b426d98b60523f71e9f35edfff8'
+         'ffc690fecd801662d4b4f8874aecbc68'
+         '90c83c73214a083b24adfee9a1be56a4'
+         'c3bbd2ff7bf67eae93f9c55ad3ff3b91'
          'ee1afda124d5927345014ab382ef581e'
          '986131efd2636724ae37870a5cca6d43'
          '05afd9c7fedcc05d4ebbb3427e068dba'
