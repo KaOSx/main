@@ -1,15 +1,23 @@
 
 pkgname=qscintilla-designer-qt5
 pkgver=2.8.4
-pkgrel=1
+pkgrel=2
 license=('GPL')
 arch=('x86_64')
 url="http://www.riverbankcomputing.co.uk/software/qscintilla/intro"
 pkgdesc="A port to Qt of Neil Hodgson's Scintilla C++ editor class"
 depends=('qscintilla-qt5')
 makedepends=('chrpath' 'qt5-tools')
-source=("http://downloads.sourceforge.net/pyqt/QScintilla-gpl-${pkgver}.tar.gz")
-md5sums=('28aec903ff48ae541295a4fb9c96f8ea')
+source=("http://downloads.sourceforge.net/pyqt/QScintilla-gpl-${pkgver}.tar.gz"
+        'qt5_libname.patch')
+md5sums=('28aec903ff48ae541295a4fb9c96f8ea'
+         'c6945e86d8eaf3b1985974f23dfbf057')
+
+prepare() {
+    cd $srcdir/QScintilla-gpl-${pkgver}
+
+    patch -p1 -i "${srcdir}/qt5_libname.patch"
+}
 
 build() {
     cd $srcdir/QScintilla-gpl-$pkgver/designer-Qt4Qt5
