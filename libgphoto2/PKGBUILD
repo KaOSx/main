@@ -1,19 +1,19 @@
 
 pkgname=libgphoto2
-pkgver=2.5.6
+pkgver=2.5.7
 pkgrel=1
-pkgdesc="The core library of gphoto2.  This variation is only to increase the limit of files!"
+pkgdesc="The core library of gphoto2 with increased file limits"
 arch=('x86_64')
 url="http://www.gphoto.org"
 license=('LGPL')
 conflicts=('libgphoto2-nolimit')
 provides=('libgphoto2-nolimit')
 replaces=('libgphoto2-nolimit')
-depends=('libexif' 'libjpeg>=8' 'gd' 'libtool>=2.4' 'libusb' 'libusb-compat')
+depends=('libexif' 'libjpeg>=8' 'gd' 'libtool' 'libusb' 'libusb-compat')
 install=libgphoto2.install
 options=('libtool')
 source=("http://downloads.sourceforge.net/gphoto/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('8b0cd5e382544202759fc0e1f1bfbd04')
+md5sums=('6b20635dc9120efb3d23c3b5201894a2')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
@@ -38,6 +38,5 @@ package() {
   "${pkgdir}/usr/lib/libgphoto2/print-camera-list" hwdb > \
   "${pkgdir}/usr/lib/udev/hwdb.d/20-gphoto.conf"
 
-  # Remove recursive symlink
   rm -f "${pkgdir}/usr/include/gphoto2/gphoto2"
 }
