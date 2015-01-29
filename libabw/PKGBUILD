@@ -1,6 +1,6 @@
 
 pkgname=libabw
-pkgver=0.1.0
+pkgver=0.1.1
 pkgrel=1
 pkgdesc="Libabw is library providing ability to interpret and import AbiWord documents into various applications."
 arch=('x86_64')
@@ -9,8 +9,8 @@ license=('MPL2')
 options=('!libtool')
 depends=('libwpd' 'libwpg' 'glib2' 'libgsf' 'gperf' 'librevenge')  
 makedepends=('boost')
-source=("http://dev-www.libreoffice.org/src/${pkgname}-${pkgver}.tar.xz")
-md5sums=('f29f5ad99b36635fb566c55327b1905e')
+source=("http://dev-www.libreoffice.org/src/libabw/${pkgname}-${pkgver}.tar.xz")
+md5sums=('6be55a46078b593ec20cad9bb8730c3e')
 
 build() {
   cd "${pkgname}-${pkgver}"
