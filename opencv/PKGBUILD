@@ -1,8 +1,8 @@
 
-pkgname=opencv-qt5
+pkgname=opencv
 pkgver=2.4.10.1
 _pkgver=2.4.10.1
-pkgrel=1
+pkgrel=2
 pkgdesc="Open Source Computer Vision Library"
 arch=('x86_64')
 license=('BSD')
@@ -11,7 +11,9 @@ depends=('jasper' 'gst-plugins-base' 'openexr' 'xine-lib' 'libdc1394' 'v4l-utils
 makedepends=('pkgconfig' 'cmake' 'python2-numpy' 'eigen' 'python2-sphinx' 'mesa')
 optdepends=('python2-numpy: Python 2.x interface' 'eigen') #eigen3 for 3.0.0
 options=('!libtool')
-conflicts=('opencv')
+conflicts=('opencv-qt5')
+replaces=('opencv-qt5')
+provides=('opencv-qt5')
 source=("https://github.com/Itseez/opencv/archive/${_pkgver}.tar.gz")
 #source=("https://github.com/Itseez/opencv/tarball/master/opencv-${pkgver}.tar.gz")
 md5sums=('f84af999f45edc829bfda60a13fedbaa')

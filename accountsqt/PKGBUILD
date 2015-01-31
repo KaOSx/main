@@ -1,37 +1,33 @@
 
-pkgbase=accountsqt
-pkgname=('accountsqt' 'accountsqt-doc')
+pkgname=accountsqt
 pkgver=1.13
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
+pkgdesc="Accounts & SSO framework consists of a set of components and libraries which implement
+         an account manager for a user's online accounts and a single-sign-on daemon"
 url="http://code.google.com/p/accounts-sso/"
 license=('LGPL')
-makedepends=('qt' 'libaccounts-glib' 'doxygen')
+depends=('qt5-base' 'libaccounts-glib')
+makedepends=('doxygen')
+conflicts=('accountsqt-doc' 'accounts-qt5')
+replaces=('accountsqt-doc' 'accounts-qt5')
+provides=('accountsqt-doc' 'accounts-qt5')
 # check source https://groups.google.com/forum/#!forum/accounts-sso-announce
 # latest tars https://drive.google.com/#folders/0B8fX9XOwH_g4alFsYV8tZTI4VjQ
 source=("http://sourceforge.net/projects/kaosx/files/sources/accountsqt/accounts-qt-$pkgver.tar.bz2")
-md5sums=('fac0f97d8eb2501857b77cad7325e6dd')
+md5sums=('fac0f97d8eb2501857b77cad7325e6dd') 
 
 build() {
   cd accounts-qt-$pkgver
   sed -i 's|SUBDIRS  += Accounts tests|SUBDIRS += Accounts|' accounts-qt.pro
-  
-  qmake PREFIX=/usr LIBDIR=/usr/lib
+  sed -i 's|QHG_LOCATION           = qhelpgenerator|QHG_LOCATION = qhelpgenerator-qt5|' doc/doxy.conf
+
+  /usr/lib/qt5/bin/qmake PREFIX=/usr LIBDIR=/usr/lib
   make
 }
 
-package_accountsqt() {
-  pkgdesc="Qt-based client library for accessing the online accounts database"
-  depends=('qt' 'libaccounts-glib')
-
+package() {
   cd accounts-qt-$pkgver
+
   make INSTALL_ROOT="$pkgdir" install_subtargets
-}
-
-package_accountsqt-doc() {
-  pkgdesc="Developer documention of accounts-qt"
-  
-  cd accounts-qt-$pkgver
-  
-  make INSTALL_ROOT="$pkgdir" install_documentation
 }

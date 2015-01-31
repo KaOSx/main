@@ -1,8 +1,8 @@
 
 # NOTE: Disabled the gtk2 module so no gtk-preview
 
-pkgname=mlt-qt5
-_pkgname=mlt
+
+pkgname=mlt
 pkgver=0.9.2
 pkgrel=1
 pkgdesc="An open source multimedia framework"
@@ -11,10 +11,10 @@ url="http://www.mltframework.org"
 license=('GPL')
 depends=('sdl_image' 'libsamplerate' 'libdv' 'sox' 'libxml2' 'ffmpeg' 'python2' 'jack' 'ladspa' 'qt5-svg')
 makedepends=('swig')
-conflicts=('mlt-python-bindings' 'mlt')
-provides=('mlt-python-bindings')
-replaces=('mlt-python-bindings')
-source=("http://downloads.sourceforge.net/sourceforge/mlt/$_pkgname-$pkgver.tar.gz")
+conflicts=('mlt-python-bindings' 'mlt-qt5')
+provides=('mlt-python-bindings' 'mlt-qt5')
+replaces=('mlt-python-bindings' 'mlt-qt5')
+source=("http://downloads.sourceforge.net/sourceforge/mlt/$pkgname-$pkgver.tar.gz")
 md5sums=('f88ead8fcea628a65ebf329cc4470b6d')
 
 build() {
