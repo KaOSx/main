@@ -3,13 +3,14 @@ pkgname=qt5-tools
 pkgver=5.4.0
 subver=5.4.0
 _pkgver=5.4
-pkgrel=1
+pkgrel=2
 pkgdesc=('A cross-platform application and UI framework, development tools and help files')
 arch=('x86_64')
 url='http://qt.nokia.com/'
 license=('GPL3' 'LGPL' 'FDL' 'custom')
 depends=('qt5-declarative' 'desktop-file-utils' 'qt5-location' 'hicolor-icon-theme' 'xdg-utils'
          'qt5-translations' 'qt5-webkit')
+makedepends=('qt5-tools')
 optdepends=('qt5-doc: offline help documentation')
 groups=('qt5')
 options=('!libtool')
@@ -18,25 +19,27 @@ source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver
 #source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz"
         'assistant.desktop' 'designer.desktop' 'linguist.desktop')
 md5sums=('3de5923257b365526856094d7da0ad85'
-         'fc211414130ab2764132e7370f8e5caa'
-         '85179f5e0437514f8639957e1d8baf62'
-         'f11852b97583610f3dbb669ebc3e21bc')
+         '892d3632bdcd9a22f191aa8f28a3c0e1'
+         '208921efc9e4c11fae762e9580ca23aa'
+         '59cbeef3e6090dcb7d2a7d32cd62ea08')
 
 build() {
     cd $srcdir/$_pkgfqn
 
     /usr/lib/qt5/bin/qmake 
     make
+    make docs
 }
 
 package() {
     cd $srcdir/$_pkgfqn
     make INSTALL_ROOT=$pkgdir install
+    make INSTALL_ROOT=$pkgdir install_docs
 	
-    #install -d ${pkgdir}/usr/share/applications
-    #install -m644 ${srcdir}/assistant.desktop ${pkgdir}/usr/share/applications/
-    #install -m644 ${srcdir}/designer.desktop ${pkgdir}/usr/share/applications/
-    #install -m644 ${srcdir}/linguist.desktop ${pkgdir}/usr/share/applications/
+    install -d ${pkgdir}/usr/share/applications
+    install -m644 ${srcdir}/assistant.desktop ${pkgdir}/usr/share/applications/
+    install -m644 ${srcdir}/designer.desktop ${pkgdir}/usr/share/applications/
+    install -m644 ${srcdir}/linguist.desktop ${pkgdir}/usr/share/applications/
     
     mkdir -p ${pkgdir}/usr/bin
     for i in $(ls ${pkgdir}/usr/lib/qt5/bin); do
