@@ -1,6 +1,6 @@
 
 pkgname=libkolab
-pkgver=0.5.3
+pkgver=0.6.0
 pkgrel=1
 pkgdesc="Advanced Kolab Object Handling Library"
 url='http://git.kolab.org/libkolab/'
@@ -8,8 +8,9 @@ arch=('x86_64')
 license=('GPL')
 depends=('libkolabxml' 'kdepimlibs')
 makedepends=('cmake' 'automoc4' 'boost')
-source=("http://mirror.kolabsys.com/pub/releases/${pkgname}-${pkgver}.tar.gz")
-md5sums=('c42b2c8cbd6de81137c3cf5b5e5a4584')
+#source=("http://mirror.kolabsys.com/pub/releases/${pkgname}-${pkgver}.tar.gz")
+source=("http://git.kolab.org/libkolab/snapshot/${pkgname}-${pkgver}.tar.gz")
+md5sums=('410e22a9dc737a8c6f938ae5fda9e3c9')
 
 build() {
   mkdir build
