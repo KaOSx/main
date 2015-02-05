@@ -1,42 +1,30 @@
 
 pkgname=hplip
-pkgver=3.14.10
+pkgver=3.15.2
 # incase a or b is used in hplip rls:
-_pkgver=3.14.10
+_pkgver=3.15.2
 pkgrel=1
 pkgdesc="Drivers for HP DeskJet, OfficeJet, Photosmart, Business Inkjet and some LaserJet."
 arch=('x86_64')
 url="http://hplipopensource.com"
 license=('GPL')
-depends=('python2' 'ghostscript>=8.64-6' 'foomatic-db' 'foomatic-db-engine' 'libcups'
-         'net-snmp>=5.5' 'libusb' 'wget')
-makedepends=('pyqt' 'python2-gobject' 'pkgconfig' 'sane' 'rpcbind' 'dbus-python' 'cups')
-optdepends=('cups: for printing support'
-            'dbus-python: for dbus support'
+depends=('python2' 'ghostscript' 'foomatic-db' 'foomatic-db-engine' 'cups'
+         'net-snmp' 'libusb' 'wget' 'pyqt-python2' 'python2-gobject')
+makedepends=('pkgconfig' 'sane' 'rpcbind' 'dbus-python')
+optdepends=('dbus-python: for dbus support'
             'sane: for scanner support'
-            'rpcbind: for network support'
-            'pyqt: for running hp-toolbox'
-            'python2-gobject: for running hp-toolbox')
+            'rpcbind: for network support')
 options=('!libtool')
 install=${pkgname}.install
 source=("http://downloads.sourceforge.net/${pkgname}/${pkgname}-${_pkgver}.tar.gz")
-md5sums=('7af44ee1c4312b00d2269c1b25008f73')
+md5sums=('bbc55fc0d45e130a24ab042f60f9f888')
 
 build() {
   cd "${srcdir}/${pkgname}-${_pkgver}"
 
-  export PYTHON=python2
-  find . -type f -exec sed -i 's~^#.*env python~#!/usr/bin/env python2~' {} +
-  sed -i '1s|#!/usr/bin/python|#!/usr/bin/python2|' doctor.py setup.py makeuri.py logcapture.py base/magic.py
-  sed -i '1s|#!/usr/bin/python|#!/usr/bin/python2|' ui/upgradeform.py uninstall.py upgrade.py config_usb_printer.py
-  sed -i 's|python ./print.py|python2 ./print.py|' scan.py
-  sed -i 's|python ./testpage.py|python2 ./testpage.py|' setup.py
-  sed -i 's|python ./setup.py|python2 ./setup.py|' ui4/devmgr5.py ui4/nodevicesdialog.py
-  sed -i 's|python %HOME%|python2 %HOME%|' base/utils.py
-  sed -i 's|python ./plugin.py|python2 ./plugin.py|' base/pkit.py
-
   # from Gentoo
   # Use system foomatic-rip for hpijs driver instead of foomatic-rip-hplip
+  # move to cups-filters version asap http://hplipopensource.com/hplip-web/install/manual/distros/lfs.html
   local i
   for i in ppd/hpijs/*.ppd.gz ; do
     rm -f ${i}.temp
@@ -58,8 +46,7 @@ build() {
              --enable-cups-drv-install \
              --enable-hpijs-install \
              --enable-foomatic-drv-install \
-             --enable-pp-build \
-             --enable-udev-acl-rules
+             --enable-pp-build 
   make 
 }
 
@@ -68,12 +55,8 @@ package() {
 
   make rulesdir=/usr/lib/udev/rules.d DESTDIR="${pkgdir}/" install
 
-  # remove config provided by sane and autostart of hp-daemon
+  # remove sane conflicts and obsolete files
   rm -rf "${pkgdir}"/etc/{sane.d,xdg}
-  
-  # remove HAL .fdi file 
   rm -vrf "${pkgdir}"/usr/share/hal
-  
-  # remove rc
   rm -vrf "$pkgdir"/etc/init.d
 }
