@@ -1,5 +1,5 @@
 
-_extramodules=extramodules-3.17
+_extramodules=extramodules-3.18
 _kver="$(cat /lib/modules/${_extramodules}/version)"
 
 pkgname=bbswitch
@@ -10,7 +10,7 @@ arch=('x86_64')
 url=("http://github.com/Bumblebee-Project/bbswitch")
 license=('GPL')
 install=bbswitch.install
-depends=('linux>=3.17' 'linux<3.18')
+depends=('linux>=3.18' 'linux<3.19')
 makedepends=('linux-headers')
 source=("https://github.com/Bumblebee-Project/bbswitch/archive/v${pkgver}.tar.gz")
 md5sums=('5b116b31ace3604ddf9d1fc1f4bc5807')

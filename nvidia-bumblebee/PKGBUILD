@@ -1,15 +1,15 @@
 
 
-_extramodules=extramodules-3.17
+_extramodules=extramodules-3.18
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=nvidia-bumblebee
 pkgver=346.35
-pkgrel=1
+pkgrel=2
 pkgdesc="NVIDIA drivers for linux. Packaged for Bumblebee"
 arch=('x86_64')
 url="http://www.nvidia.com/"
-depends=('linux>=3.17' 'linux<3.18' "nvidia-utils-bumblebee")
+depends=('linux>=3.18' 'linux<3.19' "nvidia-utils-bumblebee")
 makedepends=('linux-headers')
 provides=("nvidia=${pkgver}")
 conflicts=('nvidia')
@@ -19,15 +19,20 @@ options=('!strip')
 
 _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 #_pkg="NVIDIA-Linux-x86_64-${pkgver}"
-source=("ftp://download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}-no-compat32.run")
+source=("ftp://download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}-no-compat32.run"
+        'nv-drm.patch')
 #source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}.run")
-md5sums=('9ca9f07f91361362f304ca8317ddd453')
+md5sums=('9ca9f07f91361362f304ca8317ddd453'
+         '79671a27131da619a33eb02ed0c2c031')
 
 build() {
     cd "${srcdir}"
     sh "${_pkg}.run" --extract-only
-
-    cd "${_pkg}/kernel" 
+    
+    cd "${_pkg}"
+    patch -p0 -i ${srcdir}/nv-drm.patch
+ 
+    cd "${srcdir}/${_pkg}/kernel" 
     make SYSSRC=/lib/modules/"${_kver}/build" module
     
     cd uvm
