@@ -1,36 +1,33 @@
 
 pkgname=gd
-pkgver=2.1.0
-_pkgver=2.1.0
-pkgrel=2
+pkgver=2.1.1
+_pkgver=2.1.1
+pkgrel=1
 pkgdesc="Library for the dynamic creation of images by programmers"
 arch=('x86_64')
 url="http://www.libgd.org/"
 license=('custom')
 depends=('libpng' 'fontconfig' 'libjpeg-turbo' 'libtiff')
+makedepends=('cmake')
 options=('!libtool')
-source=("https://bitbucket.org/libgd/gd-libgd/downloads/libgd-$_pkgver.tar.xz"
+source=("https://github.com/libgd/libgd/archive/gd-$_pkgver.tar.gz"
         'gdxpm.patch')
-md5sums=('03588159bf4faab9079849c8d709acc6'
+md5sums=('e91a1a99903e460e7ba00a794e72cc1e'
          '51f5ff073eabbd7809e0ce438d5bb1c2')
 
 build() {
-  cd "${srcdir}/libgd-${_pkgver}"
+  cd "${srcdir}/libgd-gd-${_pkgver}"
   # https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2014-2497
   patch -p1 -i ${srcdir}/gdxpm.patch
-  
-  ./configure --prefix=/usr --without-xpm
+
+  cmake \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr 
   make
 }
 
-check() {
-  cd "${srcdir}/libgd-${_pkgver}"
-  
-  make check
-}
-
 package() {
-  cd "${srcdir}/libgd-${_pkgver}"
+  cd "${srcdir}/libgd-gd-${_pkgver}"
   make DESTDIR="${pkgdir}" install
   
   install -D -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
