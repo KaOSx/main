@@ -1,6 +1,6 @@
 
 pkgname=postfix
-pkgver=2.11.3
+pkgver=2.11.4
 pkgrel=1
 pkgdesc='Secure, fast, easy to administer alternative to Sendmail'
 url='http://www.postfix.org/'
@@ -12,12 +12,12 @@ install=$pkgname.install
 source=("ftp://ftp.porcupine.org/mirrors/postfix-release/official/${pkgname}-${pkgver}.tar.gz"
         'aliases.patch'
         'postfix.service')
-md5sums=('c3f0f51d8865559b40e9350eb3816011'
+md5sums=('7f1f67b205992f3e8acc98d597a4deef'
          '9cc2ee3c72e134c2da5a895abaa56f30'
          '24af169de13c34dac03d787c3e607ec5')
 
 build() {
-	cd "${srcdir}/${pkgname}-${pkgver}"
+  cd "${srcdir}/${pkgname}-${pkgver}"
 
 	make makefiles DEBUG='' CCARGS=' \
 		-DUSE_SASL_AUTH -DUSE_CYRUS_SASL -I/usr/include/sasl \

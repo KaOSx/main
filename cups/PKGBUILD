@@ -1,7 +1,7 @@
 
 pkgbase="cups"
 pkgname=('libcups' 'cups')
-pkgver=2.0.1
+pkgver=2.0.2
 pkgrel=1
 arch=('x86_64')
 license=('GPL')
@@ -15,7 +15,7 @@ source=("http://www.cups.org/software/${pkgver}/cups-${pkgver}-source.tar.bz2"
         'cups-no-gzip-man.patch'
         'cups.logrotate'
         'cups.pam')
-md5sums=('7f7c33071035fb20d0879929a42da711'
+md5sums=('6e0ea72dbafcf5baaa1cf4178e71096d'
          '3ba9e3410df1dc3015463d615ef91b3b'
          '928b4ec806db4170179ad4d1c8074ff9'
          '90c30380d4c8cd48a908cfdadae1ea24'
@@ -24,15 +24,10 @@ md5sums=('7f7c33071035fb20d0879929a42da711'
 
 build() {
   cd ${srcdir}/${pkgbase}-${pkgver}
-  
-  # Do not export SSL libs in cups-config
   patch -p1 -i ${srcdir}/cups-no-export-ssllibs.patch
-
   patch -p1 -i ${srcdir}/cups-no-gcrypt.patch
-  # don't zip man pages in make install, let makepkg do that / Fedora
   patch -p1 -i ${srcdir}/cups-no-gzip-man.patch
   
-  # Rebuild configure script for not zipping man-pages.
   aclocal -I config-scripts
   autoconf -I config-scripts
 
@@ -60,7 +55,7 @@ build() {
 check() {
   cd "$srcdir/$pkgbase-$pkgver"
 
-  #make -k check || /bin/true
+  make -k check || /bin/true
 }
 
 package_libcups() {
@@ -70,11 +65,10 @@ backup=(etc/cups/client.conf)
 
   cd ${srcdir}/${pkgbase}-${pkgver}
   make BUILDROOT=${pkgdir} install-headers install-libs
-  # put this into the libs pkg to make other software find the libs(no pkg-config file included)
+ 
   mkdir -p ${pkgdir}/usr/bin 
   install -m755 ${srcdir}/${pkgbase}-${pkgver}/cups-config ${pkgdir}/usr/bin/cups-config
   
-  # install client.conf man page and config file
   install -dm755 ${pkgdir}/usr/share/man/man5
   #install -Dm644  ${srcdir}/${pkgbase}-${pkgver}/man/client.conf.5.gz ${pkgdir}/usr/share/man/man5/
   install -Dm644  ${srcdir}/${pkgbase}-${pkgver}/man/client.conf.5 ${pkgdir}/usr/share/man/man5/
@@ -104,41 +98,38 @@ optdepends=('xdg-utils: xdg .desktop file support')
   cd ${srcdir}/${pkgbase}-${pkgver}
   make BUILDROOT=${pkgdir} install-data install-exec
 
-  # this one we ship in the libcups pkg
+  # part of libcups
   rm -f ${pkgdir}/usr/bin/cups-config
 
-  # kill the sysv stuff
   rm -rf ${pkgdir}/etc/rc*.d
   rm -rf ${pkgdir}/etc/init.d
+  
   install -D -m644 ../cups.logrotate ${pkgdir}/etc/logrotate.d/cups
   install -D -m644 ../cups.pam ${pkgdir}/etc/pam.d/cups
   
-  # fix perms 
   chmod 755 ${pkgdir}/var/spool
   chmod 775 ${pkgdir}/var/cache/cups
   chmod 755 ${pkgdir}/etc
 
-  # install ssl directory where to store the certs, solves some samba issues
+  # certs dir
   install -dm700 -g lp ${pkgdir}/etc/cups/ssl
-  # remove directory from package, we create it in cups rc.d file
+  # created with cupsd 
   rm -rf ${pkgdir}/var/run
 
-  # install some more configuration files that will get filled by cupsd
+  # cupsd conf files
   touch ${pkgdir}/etc/cups/printers.conf
   touch ${pkgdir}/etc/cups/classes.conf
   touch ${pkgdir}/etc/cups/subscriptions.conf 
   chgrp lp ${pkgdir}/etc/cups/{printers.conf,classes.conf,subscriptions.conf}
   
-  # fix .desktop file
+  # .desktop file
   sed -i 's|^Exec=htmlview http://localhost:631/|Exec=xdg-open http://localhost:631/|g' ${pkgdir}/usr/share/applications/cups.desktop
   
-  # compress some driver files, adopted from Fedora
   find ${pkgdir}/usr/share/cups/model -name "*.ppd" | xargs gzip -n9f
   
-  # remove client.conf man page
   rm -f ${pkgdir}/usr/share/man/man5/client.conf.5
   
-  # remove files now part of cups-filters
+  # part of cups-filters
   rm -v ${pkgdir}/usr/share/cups/banners/*
   rm -v ${pkgdir}/usr/share/cups/data/testprint
 }
