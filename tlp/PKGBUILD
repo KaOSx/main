@@ -1,13 +1,15 @@
 
 pkgname=tlp
 pkgver=0.7
-pkgrel=1
+pkgrel=2
 pkgdesc='Linux Advanced Power Management'
 arch=('x86_64')
 url='http://linrunner.de/en/tlp/docs/tlp-linux-advanced-power-management.html'
 license=('GPL2' 'GPL3')
 depends=('bash' 'hdparm' 'perl' 'rfkill' 'wireless_tools' 'networkmanager' 'smartmontools' 
-         'iw' 'tp_smapi' 'acpi_call')
+         'iw')
+optdepends=('tp_smapi: extend ThinkPad battery functions, SandyBridge and newer' 
+            'acpi_call: extend ThinkPad battery functions')
 conflicts=('pm-utils')
 backup=('etc/default/tlp')
 source=("https://github.com/linrunner/TLP/archive/${pkgver}.tar.gz")
@@ -24,13 +26,10 @@ package() {
     export TLP_ULIB='/usr/lib/udev'
     export TLP_NO_INIT='1'
     export TLP_NO_PMUTILS='1'
+    export TLP_SYSD='/usr/lib/systemd/system'
+    export TLP_WITH_SYSTEMD='1'
 
     make DESTDIR="${pkgdir}" install
-
-
-    install -dm 755 "${pkgdir}"/usr/lib/systemd/system
-    install -m 644 tlp.service "${pkgdir}"/usr/lib/systemd/system/
-    install -m 644 tlp-sleep.service "${pkgdir}"/usr/lib/systemd/system/
 
     install -dm 755 "${pkgdir}"/usr/share/man/man{1,8}
     install -m 644 man/*.1 "${pkgdir}"/usr/share/man/man1/
