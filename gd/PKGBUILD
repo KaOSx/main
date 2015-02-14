@@ -2,13 +2,13 @@
 pkgname=gd
 pkgver=2.1.1
 _pkgver=2.1.1
-pkgrel=1
+pkgrel=2
 pkgdesc="Library for the dynamic creation of images by programmers"
 arch=('x86_64')
 url="http://www.libgd.org/"
 license=('custom')
 depends=('libpng' 'fontconfig' 'libjpeg-turbo' 'libtiff')
-makedepends=('cmake')
+#makedepends=('cmake')
 options=('!libtool')
 source=("https://github.com/libgd/libgd/archive/gd-$_pkgver.tar.gz"
         'gdxpm.patch')
@@ -20,11 +20,16 @@ build() {
   # https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2014-2497
   patch -p1 -i ${srcdir}/gdxpm.patch
 
-  cmake \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_INSTALL_PREFIX=/usr 
+  ./bootstrap.sh
+  ./configure --prefix=/usr --without-xpm
   make
 }
+
+check() {
+  cd "${srcdir}/libgd-gd-${_pkgver}"
+
+  make check
+ }
 
 package() {
   cd "${srcdir}/libgd-gd-${_pkgver}"

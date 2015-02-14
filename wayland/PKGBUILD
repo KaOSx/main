@@ -1,24 +1,24 @@
 
 pkgname=wayland
-pkgver=1.6.1
+pkgver=1.7.0
 pkgrel=1
 pkgdesc="Wayland the modern display server."
 arch=('x86_64')
 url="http://wayland.freedesktop.org"
 license=('MIT')
 depends=('libffi' 'expat')
-makedepends=('doxygen')
+#makedepends=('doxygen' 'xmlto') requires graphviz for documentation
 options=('!makeflags' '!libtool')
 replaces=('wayland-git')
 provides=('wayland-git')
 conflicts=('wayland-git')
 source=("http://wayland.freedesktop.org/releases/${pkgname}-${pkgver}.tar.xz")
-md5sums=('feaa0754fe49931a3fe5aa98f7d1e0e9')
+md5sums=('6f46ac47c3a18c6503a40b5fa58a1066')
 
 build() {
 	cd ${srcdir}/${pkgname}-${pkgver}
 
-	./configure --prefix=/usr --disable-static 
+	./configure --prefix=/usr --disable-static --disable-documentation
 	make 
 }
 
