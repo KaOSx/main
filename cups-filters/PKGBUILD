@@ -1,6 +1,6 @@
 
 pkgname=cups-filters
-pkgver=1.0.62
+pkgver=1.0.65
 pkgrel=1
 pkgdesc="OpenPrinting CUPS Filters"
 arch=('x86_64')
@@ -12,13 +12,16 @@ optdepends=('ghostscript: for non-PostScript printers to print with CUPS to conv
 	    'foomatic-db: drivers use Ghostscript to convert PostScript to a printable form directly'
 	    'foomatic-db-engine: drivers use Ghostscript to convert PostScript to a printable form directly'
 	    'foomatic-db-nonfree: drivers use Ghostscript to convert PostScript to a printable form directly')
+conflicts=('foomatic-filters')
+provides=('foomatic-filters')
+replaces=('foomatic-filters')
 backup=(etc/fonts/conf.d/99pdftoopvp.conf)
 options=('!libtool')
 source=("http://www.openprinting.org/download/cups-filters/$pkgname-$pkgver.tar.xz")
-md5sums=('6d33aa35f77bc89bec028799bf4d7314')
+md5sums=('20dea125408bfebd25a58a884a78a13c')
 
 build() {
-  cd "$srcdir/$pkgname-$pkgver"
+  cd $srcdir/$pkgname-$pkgver
   
   ./configure --prefix=/usr  \
     --sysconfdir=/etc \
@@ -29,16 +32,17 @@ build() {
 }
 
 check() {
-  cd "$srcdir/$pkgname-$pkgver"
+  cd $srcdir/$pkgname-$pkgver
   
   make -k check
 }
 
 package() {
-  cd "$srcdir/$pkgname-$pkgver"
+  cd $srcdir/$pkgname-$pkgver
   make DESTDIR="$pkgdir/" install
 
   rm -f ${pkgdir}/usr/lib/*.a
   # systemd service
-  #install -Dm644 ${srcdir}/cups-browsed.service ${pkgdir}/usr/lib/systemd/system/cups-browsed.service
+  install -Dm644 utils/cups-browsed.service ${pkgdir}/usr/lib/systemd/system/cups-browsed.service
+  sed -i 's|cups.service|org.cups.cupsd.service|g' ${pkgdir}/usr/lib/systemd/system/cups-browsed.service
 }
