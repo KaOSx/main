@@ -2,7 +2,7 @@
 pkgname=pulseaudio
 pkgdesc="A featureful, general-purpose sound server"
 pkgver=6.0
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 url="http://pulseaudio.org/"
 license=('GPL' 'LGPL')
@@ -47,5 +47,5 @@ package() {
       -i "${pkgdir}/usr/bin/start-pulseaudio-x11"
 
   rm "${pkgdir}/etc/dbus-1/system.d/pulseaudio-system.conf"
-  rm "${pkgdir}/etc/xdg/autostart/pulseaudio.desktop"
+  #rm "${pkgdir}/etc/xdg/autostart/pulseaudio.desktop"
 }
