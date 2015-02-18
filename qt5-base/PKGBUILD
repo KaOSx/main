@@ -6,7 +6,7 @@ _pkgver=5.4
 pkgrel=3
 pkgdesc=('A cross-platform application and UI framework')
 arch=('x86_64')
-url='http://qt.nokia.com/'
+url='http://qt-project.org/'
 license=('GPL3' 'LGPL' 'FDL' 'custom')
 makedepends=('sqlite3' 'xcb-util-keysyms' 'xcb-util-wm' 'xcb-util-image' 'xcb-util-renderutil'
          'glib2' 'dbus' 'fontconfig' 'libsm' 'libxrandr' 'libxv' 'libxi' 'unixodbc' 'libjpeg-turbo'
@@ -14,7 +14,7 @@ makedepends=('sqlite3' 'xcb-util-keysyms' 'xcb-util-wm' 'xcb-util-image' 'xcb-ut
          'libxcursor' 'libxrender' 'libpng' 'libmariadbclient' 'icu' 'libgl' 'libxfixes' 'libxinerama'
          'libxkbcommon' 'harfbuzz' 'mtdev'
          'postgresql-libs' 'cups' 'python2' 'gperf' 'ruby' 'pulseaudio' 'qt5-tools')
-options=('!libtool')
+options=('!libtool' 'debug')
 _pkgfqn="qtbase-opensource-src-${subver}"
 source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
 #source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
@@ -52,6 +52,8 @@ build() {
                 -feature-textdate \
                 -feature-ftp \
                 -xcursor
+                -egl \
+                -eglfs
      make
      make docs
 }

@@ -1,6 +1,6 @@
 
 pkgname=python2-matplotlib
-pkgver=1.4.2
+pkgver=1.4.3
 pkgrel=1
 pkgdesc="Python plotting library, making publication quality plots"
 arch=('x86_64')
@@ -13,8 +13,9 @@ makedepends=('tk' 'python2-gobject3' 'python2-pyparsing' 'python2-six'
 optdepends=('tk: used by the TkAgg backend'
             'ghostscript: usetex dependencies'
             'texlive-bin: usetex dependencies')
-source=("http://sourceforge.net/projects/matplotlib/files/matplotlib/matplotlib-${pkgver}/matplotlib-${pkgver}.tar.gz")
-md5sums=('7d22efb6cce475025733c50487bd8898')
+#source=("https://downloads.sourceforge.net/project/matplotlib/matplotlib/matplotlib-${pkgver}/matplotlib-${pkgver}.tar.gz")
+source=("https://github.com/matplotlib/matplotlib/archive/v${pkgver}.tar.gz")
+md5sums=('f1bb5e2317cceed593119fad2071e236')
 
 build() {
    cd matplotlib-${pkgver}
