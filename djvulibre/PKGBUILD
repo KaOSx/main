@@ -1,6 +1,6 @@
 
 pkgname=djvulibre
-pkgver=3.5.26
+pkgver=3.5.27
 _pkgver=3969bdfd2c904895ce091913feb7e91b2eca54ae
 pkgrel=1
 pkgdesc="Suite to create, manipulate and view DjVu ('déjà vu') documents"
@@ -10,12 +10,12 @@ url="http://djvu.sourceforge.net/"
 depends=('gcc-libs' 'libtiff' 'bash' 'hicolor-icon-theme')
 makedepends=('librsvg')
 options=('!libtool')
-#source=("http://downloads.sourceforge.net/djvu/${pkgname}-${pkgver}.tar.gz")
-source=("http://sourceforge.net/code-snapshots/git/d/dj/djvu/djvulibre-git.git/djvu-djvulibre-git-3969bdfd2c904895ce091913feb7e91b2eca54ae.zip")
-md5sums=('ed813e79b66258cf99ed0256cc725566')
+source=("http://downloads.sourceforge.net/djvu/${pkgname}-${pkgver}.tar.gz")
+#source=("http://sourceforge.net/code-snapshots/git/d/dj/djvu/djvulibre-git.git/djvu-djvulibre-git-3969bdfd2c904895ce091913feb7e91b2eca54ae.zip")
+md5sums=('aa4ed331f669f5a72e3c0d7f9196c4e6')
 
 build() {
-  cd "${srcdir}/djvu-${pkgname}-git-${_pkgver}"
+  cd "${srcdir}/${pkgname}-${pkgver}"
   
   ./autogen.sh
   ./configure --prefix=/usr --disable-desktopfiles
@@ -23,7 +23,7 @@ build() {
 }
 
 package() {
-  cd "${srcdir}/djvu-${pkgname}-git-${_pkgver}"
+  cd "${srcdir}/${pkgname}-${pkgver}"
   make DESTDIR="${pkgdir}" install
 
   #Install icons for mime-types.
