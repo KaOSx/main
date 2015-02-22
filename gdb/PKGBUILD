@@ -1,6 +1,6 @@
 
 pkgname=gdb
-pkgver=7.8.2
+pkgver=7.9
 pkgrel=1
 pkgdesc="The GNU Debugger"
 arch=('x86_64')
@@ -12,7 +12,7 @@ backup=('etc/gdb/gdbinit')
 options=('!libtool' '!buildflags')
 install=gdb.install
 source=("http://ftp.gnu.org/gnu/gdb/${pkgname}-${pkgver}.tar.xz")
-md5sums=('a80cf252ed2e775d4e4533341bbf2459')
+md5sums=('e6279f26559d839f0b4218a482bcb43e')
 
 build() {
   cd ${srcdir}/${pkgname}-${pkgver}
@@ -29,12 +29,11 @@ package() {
   cd ${srcdir}/${pkgname}-${pkgver}
   make DESTDIR=${pkgdir} install
 
-  # install "custom" system gdbinit
   install -dm755 $pkgdir/etc/gdb
   touch $pkgdir/etc/gdb/gdbinit
 
-  # resolve conflicts with binutils
-  rm ${pkgdir}/usr/include/{ansidecl,bfd,bfdlink,dis-asm,symcat}.h
+  # files in binutils
+  rm ${pkgdir}/usr/include/{ansidecl,bfd,bfdlink,dis-asm,symcat,plugin-api}.h
   rm ${pkgdir}/usr/lib/{libbfd,libopcodes}.a
-  rm ${pkgdir}/usr/share/info/{bfd,configure,standards}.info
+  rm ${pkgdir}/usr/share/info/bfd.info
 }

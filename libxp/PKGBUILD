@@ -1,6 +1,6 @@
 
 pkgname=libxp
-pkgver=1.0.2
+pkgver=1.0.3
 pkgrel=1
 pkgdesc="X11 X Print Library"
 arch=('x86_64')
@@ -9,9 +9,9 @@ url="http://xorg.freedesktop.org/"
 depends=('libxext' 'printproto')
 makedepends=('xorg-util-macros')
 options=('!libtool')
-source=("${url}/releases/individual/lib/libXp-${pkgver}.tar.bz2")
+source=("http://xorg.freedesktop.org/releases/individual/lib/libXp-${pkgver}.tar.bz2")
 license=('custom')
-md5sums=('bb038577c7f4e42a1b675fa6451bc4aa')
+md5sums=('df9e6bf0d988de6694f08693b8002079')
 
 build() {
   cd "${srcdir}/libXp-${pkgver}"
