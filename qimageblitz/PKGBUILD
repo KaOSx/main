@@ -1,22 +1,25 @@
 
 pkgname=qimageblitz
-pkgver=0.0.6
-pkgrel=3
-pkgdesc="An interm image effect library"
+pkgver=0.0.6.1
+pkgrel=1
+pkgdesc="An interm image effect library, Qt5 version"
 arch=('x86_64')
 url="http://www.kde-org"
 license=('custom')
-depends=('qt')
-makedepends=('cmake')
-source=("http://download.kde.org/stable/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('0ae2f7d4e0876764a97ca73799f61df4')
+depends=('qt5-base')
+makedepends=('cmake' 'subversion')
+conflicts=('qimageblitz-qt5')
+provides=('qimageblitz-qt5')
+replaces=('qimageblitz-qt5')
+source=("svn://anonsvn.kde.org/home/kde/trunk/kdesupport/qimageblitz")
+md5sums=('SKIP')
 
 build() {
   cd ${srcdir}
   mkdir build
   
   cd build
-  cmake ../${pkgname}-${pkgver} \
+  cmake ../${pkgname} \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr 
   make
