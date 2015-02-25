@@ -1,7 +1,7 @@
 
 pkgname=qt5-location
-pkgver=5.4.0
-subver=5.4.0
+pkgver=5.4.1
+subver=5.4.1
 _pkgver=5.4
 pkgrel=1
 pkgdesc=('A cross-platform application and UI framework (QtLocation, QtPositioning)')
@@ -9,23 +9,26 @@ arch=('x86_64')
 url='http://qt.nokia.com/'
 license=('GPL3' 'LGPL' 'FDL' 'custom')
 depends=('qt5-declarative')
+makedepends=('qt5-tools')
 groups=('qt5')
 options=('!libtool')
 _pkgfqn="qtlocation-opensource-src-${subver}"
 source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
 #source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
-md5sums=('76cbd4d7acf5b319ed1d9454aac0477b')
+md5sums=('f7d693d3f3634da063b61928b502b79d')
 
 build() {
     cd $srcdir/$_pkgfqn
 
     /usr/lib/qt5/bin/qmake
     make
+    make docs
 }
 
 package() {
     cd $srcdir/$_pkgfqn
     make INSTALL_ROOT=$pkgdir install
+    make INSTALL_ROOT=$pkgdir install_docs
     
     mkdir -p ${pkgdir}/usr/bin
     for i in $(ls ${pkgdir}/usr/lib/qt5/bin); do

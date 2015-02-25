@@ -1,31 +1,31 @@
 
 pkgname=qt5-multimedia
-pkgver=5.4.0
-subver=5.4.0
+pkgver=5.4.1
+subver=5.4.1
 _pkgver=5.4
-pkgrel=2
+pkgrel=1
 pkgdesc=('A cross-platform application and UI framework, QtMultimedia files')
 arch=('x86_64')
 url='http://qt.nokia.com/'
 license=('GPL3' 'LGPL' 'FDL' 'custom')
 depends=('qt5-declarative' 'openal' 'libxslt' 'libxcomposite' 'gst-plugins-base'
          'gst-plugins-good' 'gst-plugins-bad' 'pulseaudio')
-#makedepends=('gstreamer0.10-base-plugins')
+makedepends=('gstreamer0.10-base-plugins')
 options=('!libtool')
 groups=('qt5')
 _pkgfqn="qtmultimedia-opensource-src-${subver}"
 #_pkgfqn=qt-qtmultimedia
 source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz"
-        '0001-GStreamer-port-to-1.0.patch')
+        'gstr-1.0.patch')
 #source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
 #source=("qt-qtmultimedia-5e376b135e94dee85787e093d228e59284964ce7.tar.gz")
-md5sums=('3a6a415813b54a54cf283a5e2906e012'
-         '785e97725fe9b0058194419e589d40d7')
+md5sums=('7412a5c62da71b44b9f29e29fdc6af4d'
+         '3086ef01e2e61ef3fc874a48e49fc7f0')
 
 build() {
     cd $srcdir/$_pkgfqn
-    # OpenSuse patch for gst 1 https://build.opensuse.org/package/show/KDE:Qt54/libqt5-qtmultimedia
-    patch -p1 -i ${srcdir}/0001-GStreamer-port-to-1.0.patch
+    # Fedira patch for gst 1 http://pkgs.fedoraproject.org/cgit/qt5-qtmultimedia.git/tree/0006-GStreamer-port-to-1.0.patch
+    #patch -p1 -i ${srcdir}/gstr-1.0.patch
 
     /usr/lib/qt5/bin/qmake GST_VERSION=1.0
     make

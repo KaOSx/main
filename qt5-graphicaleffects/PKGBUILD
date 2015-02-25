@@ -1,7 +1,7 @@
 
 pkgname=qt5-graphicaleffects
-pkgver=5.4.0
-subver=5.4.0
+pkgver=5.4.1
+subver=5.4.1
 _pkgver=5.4
 pkgrel=1
 pkgdesc=('A cross-platform application and UI framework, QtGraphicaleffects files')
@@ -9,23 +9,26 @@ arch=('x86_64')
 url='http://qt.nokia.com/'
 license=('GPL3' 'LGPL')
 depends=('qt5-declarative')
+makedepends=('qt5-tools')
 options=('!libtool')
 groups=('qt5')
 _pkgfqn="qtgraphicaleffects-opensource-src-${subver}"
 source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
 #source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
-md5sums=('4d26d56c55b0117c37d96e85755da6a4')
+md5sums=('02bec01c2af9a7d08582fbffbfa4976a')
 
 build() {
     cd $srcdir/$_pkgfqn
 
     /usr/lib/qt5/bin/qmake
     make
+    make docs
 }
 
 package() {
     cd $srcdir/$_pkgfqn
     make INSTALL_ROOT=$pkgdir install
+    make INSTALL_ROOT=$pkgdir install_docs
     
     install -D -m644 LGPL_EXCEPTION.txt \
     ${pkgdir}/usr/share/licenses/${pkgname}/LGPL_EXCEPTION.txt
