@@ -1,12 +1,12 @@
 
 pkgname=maxima
 pkgver=5.35.1
-pkgrel=3
+pkgrel=4
 pkgdesc="Maxima - a sophisticated Computer Algebra System."
 arch=('x86_64')
 license=('GPL')
 url="http://maxima.sourceforge.net"
-depends=('sbcl=1.2.7' 'texinfo' 'sh')
+depends=('sbcl=1.2.8' 'texinfo' 'sh')
 optdepends=('gnuplot: plotting capabilities' \
             'tk: graphical xmaxima interface')
 # needs rebuild when bash changes version
@@ -19,7 +19,6 @@ md5sums=('4bb0b999645ec2b20b7e301d36f83a4c'
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
-  sed -i "s|${PYTHONBIN:-python}|python2|" doc/info/extract_categories.sh
 
   ./configure --prefix=/usr \
               --mandir=/usr/share/man \
