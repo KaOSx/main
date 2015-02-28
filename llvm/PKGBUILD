@@ -1,10 +1,10 @@
 
 pkgbase="llvm"
-pkgname=('llvm' 'llvm-ocaml' 'clang' 'clang-analyzer')
-pkgver=3.5.1
-subver=3.5
+pkgname=('llvm' 'clang' 'clang-analyzer')
+pkgver=3.6.0
+subver=3.6.0
 _gcc_ver=4.9.2
-pkgrel=2
+pkgrel=1
 arch=('x86_64')
 url="http://llvm.org/"
 license=('custom:University of Illinois/NCSA Open Source License')
@@ -12,35 +12,29 @@ makedepends=('gcc-libs' 'libffi' 'python2' 'ocaml' "gcc=${_gcc_ver}" 'groff')
 source=("http://llvm.org/releases/${pkgver}/${pkgbase}-${pkgver}.src.tar.xz"
         "http://llvm.org/releases/$pkgver/cfe-$pkgver.src.tar.xz"
         "http://llvm.org/releases/$pkgver/compiler-rt-$pkgver.src.tar.xz")
-md5sums=('2d3d8004f38852aa679e5945b8ce0b14'
-         '93f9532f8f7e6f1d8e5c1116907051cb'
-         'd626cfb8a9712cb92b820798ab5bc1f8')
+md5sums=('f1e14e949f8df3047c59816c55278cec'
+         'e3012065543dc6ab8a9842b09616b78d'
+         'cc36dbcafe43406083e98bc9e74f8054')
 
 build() {
   cd "${srcdir}/${pkgbase}-${pkgver}.src"
 
-  # At the present, clang must reside inside the LLVM source code tree to build
-  # See http://llvm.org/bugs/show_bug.cgi?id=4840
+  # http://llvm.org/bugs/show_bug.cgi?id=4840
   mv "${srcdir}/cfe-${pkgver}.src" tools/clang
 
   mv "$srcdir/compiler-rt-$pkgver.src" projects/compiler-rt
 
-  # Fix doc installation directories
+  # doc directories
   sed -i 's:\$(PROJ_prefix)/docs/llvm:$(PROJ_prefix)/share/doc/llvm:' \
       Makefile.config.in
 
-  # Apply strip option to configure
   _optimized_switch="enable"
   [ "$(check_option strip)" == 'n' ] && _optimized_switch="disable"
 
-  # Include location of libffi headers in CPPFLAGS
+  # location libffi headers 
   export CPPFLAGS="${CPPFLAGS} $(pkg-config --cflags libffi)"
 
   _cxx_headers="/usr/include/c++/${_gcc_ver}"
-  if [ ! -d "${_cxx_headers}" ]; then
-    error "Couldn't find the C++ headers, PKGBUILD needs fixing!"
-    return 1
-  fi
   
   CC=gcc CXX=g++ \
   ./configure --prefix=/usr \
@@ -60,50 +54,34 @@ build() {
 package_llvm() {
 pkgdesc="The LLVM Core libraries provide a modern source- and target-independent optimizer, along with code generation support for many popular CPUs."
 depends=('perl' 'libffi')
+conflicts=('llvm-ocaml')
+replaces=('llvm-ocaml')
 
   cd "${srcdir}/${pkgbase}-${pkgver}.src"
 
-  # The OCaml binding installation is currently broken, let's fix it
-  # see https://github.com/mxcl/homebrew/issues/8947#issuecomment-3256464
+  # https://github.com/mxcl/homebrew/issues/8947#issuecomment-3256464
   sed -e 's:\$(ObjDir)/META.llvm:\$(OcamlDir)/META.llvm:' \
       -i bindings/ocaml/llvm/Makefile
 
-  # We move the clang directory out of the tree so it won't get installed and
-  # then we bring it back in for the clang package
+  # Move the clang directory 
   mv tools/clang "${srcdir}"
-  # -j1 is due to race conditions during the installation of the OCaml bindings
+  # -j1, stop race conditions 
   make -j1 DESTDIR="${pkgdir}" install
   mv "${srcdir}/clang" tools
 
-  # OCaml bindings go to a separate package
-  rm -rf "${srcdir}"/{ocaml,ocamldoc}
-  mv "${pkgdir}"/usr/{lib/ocaml,share/doc/llvm/ocamldoc} "${srcdir}"
+  # Move OCaml bindings 
+  #rm -rf "${srcdir}"/{ocaml,ocamldoc}
+  #mv "${pkgdir}"/usr/{lib/ocaml,share/doc/llvm/ocamldoc} "${srcdir}"
 
-  # Remove duplicate files installed by the OCaml bindings
-  rm "${pkgdir}"/usr/{lib/libllvm*,share/doc/llvm/ocamldoc.tar.gz}
+  # Remove duplicate files 
+  #rm "${pkgdir}"/usr/{lib/libllvm*,share/doc/llvm/ocamldoc.tar.gz}
 
   # Fix permissions of static libs
   chmod -x "${pkgdir}"/usr/lib/*.a
-
-
-  # Get rid of example Hello transformation
-  rm "${pkgdir}"/usr/lib/*LLVMHello.*
-
-  install -D -m644 LICENSE.TXT "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
-}
-
-package_llvm-ocaml() {
-pkgdesc="OCaml bindings for LLVM."
-depends=("llvm=${pkgver}-${pkgrel}" 'ocaml')
-
-  cd "${srcdir}/${pkgbase}-${pkgver}.src"
-
-  install -d "${pkgdir}"/{usr/lib,usr/share/doc/llvm}
-  cp -r "${srcdir}/ocaml" "${pkgdir}/usr/lib"
-  cp -r "${srcdir}/ocamldoc" "${pkgdir}/usr/share/doc/llvm"
-
   # Remove execute bit from static libraries
-  chmod -x "${pkgdir}"/usr/lib/ocaml/libllvm*.a
+  #chmod -x "${pkgdir}"/usr/lib/ocaml/libllvm*.a
+
+  rm "${pkgdir}"/usr/lib/*LLVMHello.*
 
   install -D -m644 LICENSE.TXT "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
 }
@@ -111,21 +89,19 @@ depends=("llvm=${pkgver}-${pkgrel}" 'ocaml')
 package_clang() {
 pkgdesc="Clang is an \"LLVM native\" C/C++/Objective-C compiler, which aims to deliver amazingly fast compiles, extremely useful error and warning messages and to provide a platform for building great source level tools."
 url="http://clang.llvm.org/"
-# It looks like clang still needs GCC to assemble and link object files
-# See http://old.nabble.com/%22clang--v%22-shows-a-GCC-call-td28378453.html
+# http://old.nabble.com/%22clang--v%22-shows-a-GCC-call-td28378453.html
 depends=("llvm=${pkgver}-${pkgrel}" "gcc=${_gcc_ver}")
 
-  # Fix installation path for clang docs
+  # Installation path docs
   sed -e 's:$(PROJ_prefix)/share/doc/llvm:$(PROJ_prefix)/share/doc/clang:' \
       -i "${srcdir}/${pkgbase}-${pkgver}.src/Makefile.config"
 
   cd "${srcdir}/${pkgbase}-${pkgver}.src/tools/clang"
   make DESTDIR="${pkgdir}" install
 
-  # Fix permissions of static libs
   chmod -x "${pkgdir}"/usr/lib/*.a
 
-  # Revert the path change in case we want to do a repackage later
+  # Revert the path change in case of repackage
   sed -e 's:$(PROJ_prefix)/share/doc/clang:$(PROJ_prefix)/share/doc/llvm:' \
       -i "${srcdir}/${pkgbase}-${pkgver}.src/Makefile.config"
 
@@ -145,12 +121,7 @@ depends=("clang=${pkgver}-${pkgrel}" 'python2')
     ln -s "/usr/lib/clang-analyzer/${_tool}/${_tool}" "${pkgdir}/usr/bin"
   done
 
-  # Use Python 2
-  sed -e 's/env python$/&2/' \
-      -i "${pkgdir}/usr/lib/clang-analyzer/scan-view/scan-view" \
-      -i "${pkgdir}/usr/lib/clang-analyzer/scan-build/set-xcode-analyzer"
-
-  # Compile Python scripts
+  # Python scripts
   python2 -m compileall "${pkgdir}/usr/lib/clang-analyzer"
   python2 -O -m compileall "${pkgdir}/usr/lib/clang-analyzer"
 
