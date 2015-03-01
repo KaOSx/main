@@ -1,24 +1,24 @@
 
 pkgname=pyalpm
-pkgver=0.6.2.2
-pkgrel=2
+pkgver=0.7
+pkgrel=1
 pkgdesc="Libalpm bindings for Python 3"
 arch=('x86_64')
 url="http://projects.archlinux.org/users/remy/pyalpm.git/"
 license=('GPL')
 depends=('python3' 'pacman')
-source=("ftp://ftp.archlinux.org/other/pyalpm/$pkgname-0.6.2.tar.gz")
-md5sums=('8b573d77ddc189d97e7dde52d97b4f89')
+source=("https://sources.archlinux.org/other/pyalpm/$pkgname-$pkgver.tar.gz")
+md5sums=('35b4d2f3b73b0f2cf49ed436ec8a0568')
 
 build() {
-  cd ${srcdir}/${pkgname}-0.6.2
+  cd ${srcdir}/${pkgname}-$pkgver
   export CFLAGS="$CFLAGS -Wno-format"
 
   python3 setup.py build
 }
 
 package() {
-  cd ${srcdir}/${pkgname}-0.6.2
+  cd ${srcdir}/${pkgname}-$pkgver
 
   python3 setup.py install --root=${pkgdir}
 }
