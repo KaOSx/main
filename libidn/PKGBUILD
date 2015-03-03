@@ -1,6 +1,6 @@
 
 pkgname=libidn
-pkgver=1.29
+pkgver=1.30
 pkgrel=1
 pkgdesc="Implementation of the Stringprep, Punycode and IDNA specifications"
 url="http://www.gnu.org/software/libidn/"
@@ -9,9 +9,9 @@ license=('GPL3' 'LGPL')
 depends=('glibc' 'texinfo')
 makedepends=('pkgconfig')
 options=('!libtool')
-source=("http://ftp.gnu.org/gnu/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+source=("http://ftp.gnu.org/gnu/libidn/${pkgname}-${pkgver}.tar.gz")
 install=libidn.install
-md5sums=('2b67bb507207af379f9461e1307dc84b')
+md5sums=('b17edc8551cd31cc5f14c82a9dabf58e')
 
 build() {
   cd ${srcdir}/${pkgname}-${pkgver}
