@@ -3,29 +3,27 @@ _extramodules=extramodules-3.18
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=('nvidia' 'khd-nvidia')
-pkgver=346.35
-pkgrel=2
+pkgver=346.47
+pkgrel=1
 arch=('x86_64')
 url="http://www.nvidia.com/"
 makedepends=('linux-headers' 'linux>=3.18' 'linux<3.19' "nvidia-utils=${pkgver}")
 license=('custom')
 # get from github once hardware-detection is up:
-source=('nvidia_supported'
-        'nv-drm.patch')
-md5sums=('282f73f1a7326339a7b0e0716eee4f76'
-         '79671a27131da619a33eb02ed0c2c031')
+source=('nvidia_supported')
+md5sums=('282f73f1a7326339a7b0e0716eee4f76')
 
 _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 #_pkg="NVIDIA-Linux-x86_64-${pkgver}"
 source+=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run")
-md5sums+=('9ca9f07f91361362f304ca8317ddd453')
+md5sums+=('115b5b2d136c4b44c658ef823b8a4bab')
 
 build() {
     cd "${srcdir}"
     sh "${_pkg}.run" --extract-only
     
-    cd "${_pkg}"
-    patch -p0 -i ${srcdir}/nv-drm.patch
+    #cd "${_pkg}"
+    #patch -p0 -i ${srcdir}/nv-drm.patch
 
     cd "${srcdir}/${_pkg}/kernel"  
     make SYSSRC=/lib/modules/"${_kver}/build" module
