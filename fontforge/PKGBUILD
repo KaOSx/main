@@ -1,18 +1,18 @@
 
 pkgname=fontforge
-pkgver=20141126
-_pkgver=20141126
+pkgver=20150228
+_pkgver=20150228
 pkgrel=1
 pkgdesc="An outline and bitmap font editor"
 arch=('x86_64')
-url="http://fontforge.sourceforge.net"
+url="http://fontforge.github.io/"
 license=('BSD')
 depends=('libxkbui' 'libxi' 'libxml2' 'pango' 'giflib' 'libpng' 'libtiff' 'libjpeg-turbo' 'python3'
-         'libltdl' 'desktop-file-utils' 'hicolor-icon-theme')
+         'libtool' 'desktop-file-utils' 'hicolor-icon-theme')
 options=('!libtool' '!makeflags')
 source=("https://github.com/fontforge/fontforge/archive/${_pkgver}.tar.gz"
         'http://fontforge.org/cidmaps.tgz')
-md5sums=('0d6f5112c4e5689087339a94aceadf77'
+md5sums=('0634edf5b473cde3c27696541e572b7d'
          '063691163e592515b31514515bb3ce8c')
 
 build() {
