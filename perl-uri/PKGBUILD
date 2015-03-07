@@ -1,0 +1,30 @@
+
+pkgname=perl-uri
+pkgver=1.67
+pkgrel=1
+pkgdesc="Uniform Resource Identifiers (absolute and relative)"
+arch=('x86_64')
+url="http://search.cpan.org/dist/URI/"
+license=('PerlArtistic')
+depends=('perl')
+options=('!emptydirs')
+source=("http://cpan.metacpan.org/authors/id/E/ET/ETHER/URI-${pkgver}.tar.gz")
+md5sums=('d0ef53b6c63bcc02ba55f405c30741e3')
+
+build() {
+  cd ${srcdir}/URI-$pkgver
+
+  perl Makefile.PL INSTALLDIRS=vendor
+  make
+}
+
+check() {
+  cd ${srcdir}/URI-${pkgver}
+
+  make test
+}
+
+package() {
+  cd ${srcdir}/URI-$pkgver
+  make install DESTDIR=${pkgdir}
+}
