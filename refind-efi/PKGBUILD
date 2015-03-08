@@ -2,7 +2,7 @@
 _USE_GNU_EFI="1"
 
 pkgname=refind-efi
-pkgver=0.8.6
+pkgver=0.8.7
 pkgrel=1
 pkgdesc="Rod Smith's fork of rEFIt UEFI Boot Manager"
 url="http://www.rodsbooks.com/refind/index.html"
@@ -15,7 +15,7 @@ options=('!strip' 'docs' '!makeflags')
 install="${pkgname}.install"
 source=("http://downloads.sourceforge.net/refind/refind-src-${pkgver}.zip"
         'refind_linux.conf')
-md5sums=('dd177c7ee660a7bcc2f162da9dcca07c'
+md5sums=('d30fd02a46924a18b316e7f930d6a57c'
          '12ce3e22a216e7b25c253478a34713b4')
 
 
@@ -218,7 +218,7 @@ build() {
 		echo
 	fi
 	
-	cd "${srcdir}/refind-${pkgver}/filesystems/"
+	cd "${srcdir}/refind-${pkgver}/"
 	
 	msg "Unset all compiler FLAGS"
 	unset CFLAGS
@@ -229,47 +229,11 @@ build() {
 	
 	msg "Compile UEFI FS drivers"
 	if [[ "${_USE_GNU_EFI}" == "1" ]]; then
-		make btrfs_gnuefi
+		make fs_gnuefi
 		echo
-		
-		make ext4_gnuefi
-		echo
-		
-		make ext2_gnuefi
-		echo
-		
-		make hfs_gnuefi
-		echo
-		
-		make iso9660_gnuefi
-		echo
-		
-		make reiserfs_gnuefi
-		echo
-		
-		# make xfs_gnuefi
-		# echo
 	else
-		make btrfs
+		make fs
 		echo
-		
-		make ext4
-		echo
-		
-		make ext2
-		echo
-		
-		make hfs
-		echo
-		
-		make iso9660
-		echo
-		
-		make reiserfs
-		echo
-		
-		# make xfs
-		# echo
 	fi
 	
 }
