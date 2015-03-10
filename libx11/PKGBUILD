@@ -1,7 +1,7 @@
 
 pkgname=libx11
-pkgver=1.6.2
-pkgrel=2
+pkgver=1.6.3
+pkgrel=1
 pkgdesc="X11 client-side library"
 arch=('x86_64')
 url="http://xorg.freedesktop.org/"
@@ -9,15 +9,11 @@ depends=('libxcb' 'xproto' 'kbproto')
 makedepends=('xorg-util-macros' 'xextproto' 'xtrans' 'inputproto')
 options=('!libtool')
 license=('custom')
-source=("${url}/releases/individual/lib/libX11-${pkgver}.tar.bz2"
-        'fix_typo.diff')
-md5sums=('c35d6ad95b06635a524579e88622fdb5'
-         '2f4d03f6b049ec880906ab840342c845')
+source=("${url}/releases/individual/lib/libX11-${pkgver}.tar.bz2")
+md5sums=('2e36b73f8a42143142dda8129f02e4e0')
 
 build() {
   cd "${srcdir}/libX11-${pkgver}"
-  # fix for "Qt Warning - invalid keysym: dead_actute"
-  patch -p1 -i "${srcdir}"/fix_typo.diff
   
   ./configure --prefix=/usr --disable-static --disable-xf86bigfont
   make
