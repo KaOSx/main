@@ -1,0 +1,19 @@
+
+pkgname=python3-ly
+_pkgname=python-ly
+pkgver=0.9.1
+pkgrel=1
+pkgdesc="A Python package and commandline tool to manipulate LilyPond files"
+arch=('x86_64')
+url="https://pypi.python.org/pypi/python-ly/"
+license=('LGPL')
+depends=('python3')
+makedepends=('python3')
+source=("https://github.com/wbsoft/python-ly/archive/v${pkgver}.tar.gz")
+md5sums=('d8a490dd650328005785e9fa1d3e1bb2')
+
+package() {
+    cd ${srcdir}/${_pkgname}-${pkgver}
+
+    python3 setup.py install --root=${pkgdir}
+}

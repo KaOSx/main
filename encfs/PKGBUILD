@@ -1,22 +1,22 @@
 
 pkgname=encfs
-pkgver=1.7.4
-pkgrel=3
+pkgver=1.8
+pkgrel=1
 pkgdesc='Encrypted filesystem in user-space'
 arch=('x86_64')
-url='http://www.arg0.net/encfs'
+url='https://vgough.github.io/encfs/'
 license=('GPL')
 depends=('rlog' 'openssl' 'fuse' 'boost-libs')
 makedepends=('boost')
 options=('!libtool')
-source=("http://encfs.googlecode.com/files/${pkgname}-${pkgver}.tgz")
-md5sums=('ac90cc10b2e9fc7e72765de88321d617')
+source=("https://github.com/vgough/encfs/archive/v${pkgver}.tar.gz")
+md5sums=('432c46b4fb3d1ca416fb3cb24889155e')
 
 build(){
   cd ${pkgname}-${pkgver}
 
-  ./configure \
-    --prefix=/usr
+  autoreconf -if
+  ./configure --prefix=/usr
 
   make
 }
