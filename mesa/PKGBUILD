@@ -1,25 +1,24 @@
 
 pkgbase=mesa
 pkgname=('mesa' 'libgl')
-pkgver=10.4.6
-_pkgver=10.4.6
+pkgver=10.5.1
+_pkgver=10.5.1
 pkgrel=1
 arch=('x86_64')
 makedepends=('glproto' 'libdrm' 'libxxf86vm' 'libxdamage' 'libva' 'expat' 'llvm' 'libx11' 'libxt' 'gcc-libs'
              'dri2proto' 'python2' 'libxml2' 'imake' 'systemd' 'libvdpau' 'wayland' 'dri3proto'
-             'presentproto' 'libxshmfence' 'elfutils' 'libomxil-bellagio' 'clang')
+             'presentproto' 'libxshmfence' 'elfutils' 'libomxil-bellagio' 'clang' 'python2-mako')
 url="http://mesa3d.sourceforge.net"
 license=('custom')
-source=(${source[@]} "ftp://ftp.freedesktop.org/pub/mesa/${_pkgver}/MesaLib-${pkgver}.tar.bz2" 
+source=(${source[@]} "ftp://ftp.freedesktop.org/pub/mesa/${_pkgver}/${pkgname}-${pkgver}.tar.xz" 
 #source=("mesa::git://anongit.freedesktop.org/mesa/mesa#branch=master"
        'LICENSE')
-md5sums=('b4f5e94d5d1fd2e4b1f9fd34d3d28595'
+md5sums=('203dba1fb6b503802fa6625181b26d31'
          '5c65a0fe315dd347e09b1f2826a1df5a')
 
 build() {
-    cd ${srcdir}/?esa-*
+    cd ${srcdir}/${pkgname}-${pkgver}
     
-   autoreconf -vfi
     ./configure --prefix=/usr \
     --sysconfdir=/etc \
     --with-dri-driverdir=/usr/lib/xorg/modules/dri \
@@ -74,7 +73,7 @@ package_mesa() {
   conflicts=('libglapi' 'libgles' 'libegl' 'khrplatform-devel' 'ati-dri' 'intel-dri' 'svga-dri' 'nouveau-dri')
   replaces=('libglapi' 'libgles' 'libegl' 'khrplatform-devel' 'ati-dri' 'intel-dri' 'svga-dri' 'nouveau-dri')
 
-  cd ${srcdir}/?esa-*   
+  cd ${srcdir}/${pkgname}-${pkgver}   
   #cd "${srcdir}/mesa"
   make DESTDIR="${pkgdir}" install
 
