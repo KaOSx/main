@@ -1,17 +1,17 @@
 
 pkgname=fontconfig
-pkgver=2.11.1
-pkgrel=2
+pkgver=2.11.93
+pkgrel=1
 pkgdesc="A library for configuring and customizing font access"
 arch=('x86_64')
 url="http://www.fontconfig.org/release/"
 license=('custom')
-depends=('expat' 'freetype2>=2.4.11')
+depends=('expat' 'freetype2' 'python3')
 options=('!libtool')
 install='fontconfig.install'
 source=("http://www.fontconfig.org/release/${pkgname}-${pkgver}.tar.gz"
         '29-replace-bitmap-fonts.conf')
-md5sums=('e75e303b4f7756c2b16203a57ac87eba'
+md5sums=('622f94f0f74e40775ea72d7d5f17a36d'
          '526b95ebde1b07eb5dbc5d71fb613ed1')
 
 build() {
