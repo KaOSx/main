@@ -8,7 +8,7 @@ pkgrel=1
 arch=('x86_64')
 url="http://llvm.org/"
 license=('custom:University of Illinois/NCSA Open Source License')
-makedepends=('gcc-libs' 'libffi' 'python2' 'ocaml' "gcc=${_gcc_ver}" 'groff')
+makedepends=('gcc-libs' 'libffi' 'python2' 'ocaml' "gcc=${_gcc_ver}" 'groff' 'swig')
 source=("http://llvm.org/releases/${pkgver}/${pkgbase}-${pkgver}.src.tar.xz"
         "http://llvm.org/releases/$pkgver/cfe-$pkgver.src.tar.xz"
         "http://llvm.org/releases/$pkgver/compiler-rt-$pkgver.src.tar.xz")
@@ -23,13 +23,13 @@ build() {
   mv "${srcdir}/cfe-${pkgver}.src" tools/clang
 
   mv "$srcdir/compiler-rt-$pkgver.src" projects/compiler-rt
+  
+  # http://llvm.org/bugs/show_bug.cgi?id=22742
+  chmod -R u=rwX,go=rX "$srcdir/llvm-$pkgver.src"
 
   # doc directories
   sed -i 's:\$(PROJ_prefix)/docs/llvm:$(PROJ_prefix)/share/doc/llvm:' \
       Makefile.config.in
-
-  _optimized_switch="enable"
-  [ "$(check_option strip)" == 'n' ] && _optimized_switch="disable"
 
   # location libffi headers 
   export CPPFLAGS="${CPPFLAGS} $(pkg-config --cflags libffi)"
@@ -45,8 +45,7 @@ build() {
               --disable-expensive-checks \
               --disable-debug-runtime \
               --disable-assertions \
-              --with-binutils-include=/usr/include \
-              "--${_optimized_switch}-optimized"
+              --with-binutils-include=/usr/include
 
   make REQUIRES_RTTI=1
 }
