@@ -1,7 +1,7 @@
 
 pkgname=apache
 pkgver=2.4.12
-pkgrel=1
+pkgrel=2
 pkgdesc='A high performance Unix-based HTTP server'
 arch=('x86_64')
 options=('!libtool')
@@ -22,7 +22,7 @@ source=("http://www.apache.org/dist/httpd/httpd-${pkgver}.tar.bz2"
         'httpd-tmpfile.conf')
 md5sums=('b8dc8367a57a8d548a9b4ce16d264a13'
          '13dbaaf949c5bc36cfcf5718b95cb020'
-         '94c90f856b77707792848e289ce5a0c6'
+         '7511248625ccaaf3229a320167cdc5d9'
          'ed219c8228d4d5ae9b7a55107cf79706'
          '110a056408252de4356be7f53872b11d')
 
@@ -96,10 +96,10 @@ package() {
   install -D -m644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
 
   # symlinks for /etc/httpd
-  ln -fs /var/log/httpd "${pkgdir}/etc/httpd/logs"
-  ln -fs /var/run/httpd "${pkgdir}/etc/httpd/run"
+  #ln -fs /var/log/httpd "${pkgdir}/etc/httpd/logs"
+  #ln -fs /var/run/httpd "${pkgdir}/etc/httpd/run"
   ln -fs /usr/lib/httpd/modules "${pkgdir}/etc/httpd/modules"
-  ln -fs /usr/lib/httpd/build "${pkgdir}/etc/httpd/build"
+  #ln -fs /usr/lib/httpd/build "${pkgdir}/etc/httpd/build"
 
   # set sane defaults
   sed -e 's#/usr/lib/httpd/modules/#modules/#' \
