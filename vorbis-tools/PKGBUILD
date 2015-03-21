@@ -1,18 +1,21 @@
 
 pkgname=vorbis-tools
-pkgver=1.4.0
+pkgver=1.4.0.1
 pkgrel=1
 pkgdesc="Extra tools for Ogg-Vorbis"
 arch=('x86_64')
 url='http://www.xiph.org/vorbis/'
 license=('GPL2')
 depends=('libao' 'libvorbis' 'curl' 'flac')
-source=("http://downloads.xiph.org/releases/vorbis/${pkgname}-${pkgver}.tar.gz")
-md5sums=('567e0fb8d321b2cd7124f8208b8b90e6')
+makedepends=('subversion')
+#source=("http://downloads.xiph.org/releases/vorbis/${pkgname}-${pkgver}.tar.gz")
+source=('svn+http://svn.xiph.org/trunk/vorbis-tools/')
+md5sums=('SKIP')
 
 build() {
-  cd ${srcdir}/${pkgname}-${pkgver}
+  cd ${srcdir}/${pkgname}
   
+  ./autogen.sh
   ./configure --prefix=/usr \
     --without-speex \
     --enable-vcut 
@@ -20,7 +23,7 @@ build() {
 }
 
 package() {
-  cd ${srcdir}/${pkgname}-${pkgver}
+  cd ${srcdir}/${pkgname}
   
   make DESTDIR=${pkgdir} install 
 }
