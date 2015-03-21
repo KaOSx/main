@@ -1,7 +1,7 @@
 
 pkgname=libxdmcp
-pkgver=1.1.1
-pkgrel=3
+pkgver=1.1.2
+pkgrel=1
 pkgdesc="X11 Display Manager Control Protocol library"
 arch=('x86_64')
 url="http://xorg.freedesktop.org/"
@@ -9,8 +9,8 @@ license=('custom')
 depends=('xproto' 'glibc')
 makedepends=('pkgconfig')
 options=('!libtool')
-source=(${url}/releases/individual/lib/libXdmcp-${pkgver}.tar.bz2)
-md5sums=('b94af6cef211cf3ee256f7e81f70fcd9')
+source=("http://xorg.freedesktop.org//releases/individual/lib/libXdmcp-${pkgver}.tar.bz2")
+md5sums=('18aa5c1279b01f9d18e3299969665b2e')
 
 build() {
   cd "${srcdir}/libXdmcp-${pkgver}"
