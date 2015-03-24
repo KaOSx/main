@@ -1,19 +1,20 @@
 
 pkgname=openjpeg
-pkgver=1.5.1
-pkgrel=3
+pkgver=1.5.2
+pkgrel=1
 pkgdesc="An open source JPEG 2000 codec"
 arch=('x86_64')
 license=('BSD')
 url="http://www.openjpeg.org"
-depends=('zlib')
-source=("http://openjpeg.googlecode.com/files/${pkgname}-${pkgver}.tar.gz")
-md5sums=('b5f74cec2688fb918331bb014061be6f')
+depends=('zlib' 'libpng' 'libtiff')
+source=("http://sourceforge.net/projects/openjpeg.mirror/files/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+md5sums=('c41772c30fb1c272358b3707233134a1')
 
 options=('!libtool')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
+  autoreconf -fi
   # use system libs, informative output during build
   rm -rf thirdparty
   ./configure --prefix=/usr \
