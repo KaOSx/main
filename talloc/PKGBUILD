@@ -1,6 +1,6 @@
 
 pkgname=talloc
-pkgver=2.1.1
+pkgver=2.1.2
 pkgrel=1
 pkgdesc="A hierarchical pool based memory allocator with destructors"
 arch=('x86_64')
@@ -9,11 +9,10 @@ url="http://tdb.samba.org/"
 depends=('glibc' 'python2')
 makedepends=('docbook-xsl')
 source=("http://samba.org/ftp/${pkgname}/${pkgname}-${pkgver}.tar.gz")
-md5sums=('5dffb86414218a91864ed4453ba9be07')
+md5sums=('6bc6e6ac293e739a902dd73cdc88f664')
 
 build() {
    cd "${srcdir}/${pkgname}-${pkgver}"
-   sed -i -e 's#python#python2#g' buildtools/bin/waf
    
    ./configure --prefix=/usr \
    --sysconfdir=/etc/samba \
