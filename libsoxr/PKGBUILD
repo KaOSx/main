@@ -1,0 +1,31 @@
+
+pkgname=libsoxr
+pkgver=0.1.1
+pkgrel=1
+pkgdesc="SoX Resampler library"
+arch=('x86_64')
+license=('LGPL')
+makedepends=('cmake' 'git')
+url="http://sourceforge.net/projects/soxr/"
+source=("$pkgname::git://git.code.sf.net/p/soxr/code")
+md5sums=('SKIP')
+
+build() {
+  cd $pkgname
+
+  cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr \
+        -DBUILD_TESTS=ON .
+  make
+}
+
+check() {
+  cd $pkgname
+
+  make test
+}
+
+package() {
+  cd $pkgname
+
+  make DESTDIR="$pkgdir" install
+}
