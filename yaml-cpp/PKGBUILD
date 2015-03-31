@@ -1,25 +1,25 @@
 
 pkgname=yaml-cpp
-pkgver=0.5.1
-pkgrel=2
+pkgver=0.5.2
+pkgrel=1
 pkgdesc="YAML parser and emitter in C++ matching the YAML 1.2 spec"
-url="http://code.google.com/p/yaml-cpp/"
+url="https://github.com/jbeder/yaml-cpp"
 arch=('x86_64')
 license=('MIT')
-makedepends=('cmake')
 depends=('boost')
-source=("http://yaml-cpp.googlecode.com/files/$pkgname-$pkgver.tar.gz")
-md5sums=('0fa47a5ed8fedefab766592785c85ee7')
+makedepends=('cmake')
+source=("https://github.com/jbeder/yaml-cpp/archive/release-$pkgver.tar.gz")
+md5sums=('2728af8a15e2b2c407730c45b99b274b')
 
 build() {
-    cd $srcdir/$pkgname-$pkgver
+    cd $srcdir/$pkgname-release-$pkgver
 
     cmake . -DCMAKE_INSTALL_PREFIX=/usr -DBUILD_SHARED_LIBS=ON
     make
 }
 
 package() {
-    cd $srcdir/$pkgname-$pkgver
+    cd $srcdir/$pkgname-release-$pkgver
     make DESTDIR=$pkgdir install
 
     install -Dm644 license.txt $pkgdir/usr/share/licenses/$pkgname/LICENSE
