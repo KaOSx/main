@@ -1,7 +1,7 @@
 
 pkgname=sox
-pkgver=14.4.1
-pkgrel=3
+pkgver=14.4.2
+pkgrel=1
 pkgdesc="The Swiss Army knife of sound processing tools"
 arch=('x86_64')
 url="http://sox.sourceforge.net/"
@@ -13,12 +13,16 @@ optdepends=('libao: for ao plugin'
             'libid3tag: for mp3 plugin'
             'wavpack: for wavpack plugin')
 options=('!libtool')
-source=("http://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('ff9ca6aca972549de0e80e8e30ed379c')
+source=("http://downloads.sourceforge.net/sox/${pkgname}-${pkgver}.tar.bz2")
+md5sums=('ba804bb1ce5c71dd484a102a5b27d0dd')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
   sed -i 's|man1/sox.1 soxeffect.7|man1/sox.1.gz soxeffect.7.gz|' Makefile.am
+  sed -i 's|1.14|1.15|' configure
+  sed -i 's|am__api_version='1.14'|am__api_version='1.15'|' aclocal.m4
+  sed -i 's|1.14.1|1.15|' aclocal.m4
+  
   
   ./configure --prefix=/usr \
     --sysconfdir=/etc \
