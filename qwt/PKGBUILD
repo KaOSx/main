@@ -1,8 +1,8 @@
 # keep at 5 series, unless smokeqt is ready for newer
 
 pkgname=qwt
-pkgver=5.2.3
-pkgrel=2
+pkgver=6.1.2
+pkgrel=1
 pkgdesc="Qt Widgets for Technical Applications"
 arch=('x86_64')
 url="http://qwt.sourceforge.net/"
@@ -11,13 +11,13 @@ options=('!makeflags')
 license=("custom:$pkgname")
 source=("http://downloads.sourceforge.net/sourceforge/qwt/$pkgname-$pkgver.tar.bz2" 
         "qwtconfig.pri")
-md5sums=('7d37a11d02bc7d095d0ca6427ec97b8d'
-         'fa356326c67f3b09239ecb81161875c3')
+md5sums=('9c88db1774fa7e3045af063bbde44d7d'
+         '348950fd874add9eeee4a6ff9ff16c36')
 
 build() {
   cd ${srcdir}/${pkgname}-${pkgver}
 
-  # copy config file to the right place
+  # needed config file 
   install -Dm644 ${srcdir}/qwtconfig.pri ${srcdir}/${pkgname}-${pkgver}/qwtconfig.pri
 
   qmake qwt.pro
@@ -28,9 +28,7 @@ package() {
   cd ${srcdir}/${pkgname}-${pkgver}
   make INSTALL_ROOT=${pkgdir} QTDIR=/usr install
 
-  # fix doc files
-  install -d ${pkgdir}/usr/share/doc/${pkgname}
-  mv -f ${pkgdir}/usr/share/html/* ${pkgdir}/usr/share/doc/${pkgname}
+  mv -f ${pkgdir}/usr/share/doc/qwt/man/ ${pkgdir}/usr/share/
 
   install -Dm644 ${srcdir}/${pkgname}-${pkgver}/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/license.txt
 }
