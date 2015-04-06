@@ -1,6 +1,6 @@
 
 pkgname=texlive-core
-pkgver=2014.34872
+pkgver=2014.36709
 _revnr=${pkgver#2014.}
 pkgrel=1
 pkgdesc="TeX Live core distribution"
@@ -18,7 +18,8 @@ optdepends=(
 )
 groups=('texlive-most')
 url='http://tug.org/texlive/'
-source=("http://ftp.sjtu.edu.cn/sites/ftp.archlinux.org/other/texlive/$pkgname-$pkgver-src.zip"
+# full credit for this PKGBUILD goes to Rémy Oudompheng <remy@archlinux.org>
+source=("https://sources.archlinux.org/other/texlive/$pkgname-$pkgver-src.zip"
         "$pkgname.maps"
         'texmf.cnf'
         '09-texlive-fonts.conf')
