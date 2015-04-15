@@ -18,11 +18,10 @@ md5sums=('ba804bb1ce5c71dd484a102a5b27d0dd')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
-  sed -i 's|man1/sox.1 soxeffect.7|man1/sox.1.gz soxeffect.7.gz|' Makefile.am
-  sed -i 's|1.14|1.15|' configure
-  sed -i 's|am__api_version='1.14'|am__api_version='1.15'|' aclocal.m4
-  sed -i 's|1.14.1|1.15|' aclocal.m4
+  sed -i 's/(sox_.*|lsx_(check_read_params|/(sox_.*|lsx_(error|flush|check_read_params|/' src/Makefile.am
   
+  aclocal
+  automake
   
   ./configure --prefix=/usr \
     --sysconfdir=/etc \
