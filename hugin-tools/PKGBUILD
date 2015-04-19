@@ -2,7 +2,7 @@
 pkgname=hugin-tools
 _pkgname=hugin
 pkgver=2014.0.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Hugin libs and tools to be used by Kipi-plugins"
 arch=('x86_64')
 url="http://hugin.sourceforge.net/"
@@ -25,6 +25,8 @@ build() {
 
   # make it possible to compile all the hugin tools without GUis
   sed -i -e "s~FIND_PACKAGE(wxWidgets REQUIRED)~~g" ${srcdir}/${_pkgname}-${pkgver}/CMakeLists.txt
+  
+  sed '/LF_DIST_MODEL_FOV1/d' -i ${srcdir}/${_pkgname}-${pkgver}/src/hugin_base/lensdb/LensDB.cpp
  
   mkdir ${srcdir}/${_pkgname}-${pkgver}/src/hugin_base/PT
   cp ${srcdir}/${_pkgname}-${pkgver}/src/hugin1/PT/*.h ${srcdir}/${_pkgname}-${pkgver}/src/hugin_base/PT
