@@ -1,0 +1,25 @@
+
+pkgname=libva-intel-driver
+pkgver=1.5.1
+pkgrel=1
+pkgdesc='VA-API implementation for Intel G45 chipsets and Intel HD Graphics for Intel Core processor family'
+arch=('i686' 'x86_64')
+url='http://cgit.freedesktop.org/vaapi/intel-driver/tree/README'
+license=('MIT')
+depends=('libva')
+source=("http://freedesktop.org/software/vaapi/releases/libva-intel-driver/$pkgname-$pkgver.tar.bz2")
+md5sums=('93ba8b1fbe5322d3c3ef47d187f6951e')
+
+build() {
+  cd $pkgname-$pkgver
+
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd $pkgname-$pkgver
+  make DESTDIR=$pkgdir install
+
+  install -Dm644 COPYING $pkgdir/usr/share/licenses/$pkgname/COPYING
+}
