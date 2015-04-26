@@ -1,15 +1,15 @@
 
 pkgname=python-pysqlite
 pkgver=2.6.3
-pkgrel=3
+pkgrel=4
 pkgdesc="A Python DB-API 2.0 interface for the SQLite embedded relational database engine"
 license=('custom')
 arch=('x86_64')
-url="http://code.google.com/p/pysqlite/"
-depends=('python2' 'sqlite3')
-source=("http://pysqlite.googlecode.com/files/pysqlite-${pkgver}.tar.gz"
+url="https://github.com/ghaering/pysqlite"
+depends=('python2' 'sqlite')
+source=("https://pypi.python.org/packages/source/p/pysqlite/pysqlite-${pkgver}.tar.gz"
         'setup.cfg')
-md5sums=('711afa1062a1d2c4a67acdf02a33d86e'
+md5sums=('7ff1cedee74646b50117acff87aa1cfa'
 	 '86dd356c65afd14a22f2f8f64a26441e')
 build() {
 	cd ${srcdir}/pysqlite-${pkgver}
