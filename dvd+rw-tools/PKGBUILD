@@ -1,7 +1,7 @@
 
 pkgname=dvd+rw-tools
 pkgver=7.1
-pkgrel=4
+pkgrel=5
 pkgdesc="dvd burning tools"
 arch=('x86_64')
 license=('GPL')
@@ -20,9 +20,6 @@ md5sums=('8acb3c885c87f6838704a0025e435871'
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
-  # patches from Gentoo/Fedora
-  # see https://bugs.gentoo.org/257360, https://bugzilla.redhat.com/show_bug.cgi?id=426068
-  # and https://bugzilla.redhat.com/show_bug.cgi?id=243036
   patch -p0 -i "${srcdir}/dvd+rw-tools-7.0-dvddl.patch"
   patch -p1 -i "${srcdir}/dvd+rw-tools-7.0-glibc2.6.90.patch"
   patch -p0 -i "${srcdir}/dvd+rw-tools-7.0-wctomb.patch"

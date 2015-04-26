@@ -1,16 +1,15 @@
 
 pkgname=cups-pdf
 pkgver=2.6.1
-pkgrel=1
+pkgrel=2
 pkgdesc="PDF printer for cups"
-url="http://cip.physik.uni-wuerzburg.de/~vrbehr/cups-pdf"
+url="http://www.cups-pdf.de/"
 arch=('x86_64')
 depends=('cups' 'ghostscript')
 install=cups-pdf.install
 license=('GPL2')
 backup=('etc/cups/cups-pdf.conf')
-source=("http://cip.physik.uni-wuerzburg.de/~vrbehr/cups-pdf/src/cups-pdf_$pkgver.tar.gz")
-
+source=("http://www.cups-pdf.de/src/cups-pdf_$pkgver.tar.gz")
 md5sums=('65f3fd525c4a9b1d736b91594b3166d5')
 
 build() {
@@ -23,10 +22,7 @@ package() {
   cd $srcdir/$pkgname-$pkgver/src
   install -D -m700 cups-pdf $pkgdir/usr/lib/cups/backend/cups-pdf
 
-  # Install Postscript Color printer
   cd ../extra
   install -D -m644 CUPS-PDF.ppd $pkgdir/usr/share/cups/model/CUPS-PDF.ppd
-
-  # Install config file
   install -D -m644 cups-pdf.conf $pkgdir/etc/cups/cups-pdf.conf
 }
