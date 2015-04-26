@@ -2,15 +2,15 @@
 pkgbase=libcanberra
 pkgname=('libcanberra' 'libcanberra-pulse' 'libcanberra-gstreamer')
 pkgver=0.30
-pkgrel=1
+pkgrel=2
 pkgdesc="A small and lightweight implementation of the XDG Sound Theme Specification"
 arch=('x86_64')
 license=('LGPL')
-depends=('libvorbis' 'libltdl' 'alsa-lib' 'tdb' 'sound-theme-freedesktop')
+depends=('libvorbis' 'libtool' 'alsa-lib' 'tdb' 'sound-theme-freedesktop')
 makedepends=('pulseaudio' 'gstreamer')
 options=('!emptydirs')
 url="http://0pointer.de/lennart/projects/libcanberra"
-source=("http://0pointer.de/lennart/projects/${pkgbase}/${pkgbase}-${pkgver}.tar.xz")
+source=("http://0pointer.de/lennart/projects/libcanberra/${pkgbase}-${pkgver}.tar.xz")
 md5sums=('34cb7e4430afaf6f447c4ebdb9b42072')
 
 build() {
