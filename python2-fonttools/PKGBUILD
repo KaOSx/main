@@ -1,15 +1,15 @@
 
 pkgname=python2-fonttools
-pkgver=2.3
+pkgver=2.5
 pkgrel=1
 pkgdesc="Converts OpenType and TrueType fonts to and from XML"
-url="http://sourceforge.net/projects/fonttools/"
+url="https://github.com/behdad/fonttools/"
 license=('BSD')
 arch=('x86_64')
 depends=('python2-numpy')
-makedepends=('python2-distribute')
-source=("http://downloads.sourceforge.net/fonttools/fonttools-$pkgver.tar.gz")
-md5sums=('502cdf6662e1d075f1902fbd995eaace')
+makedepends=('python2-setuptools')
+source=("https://github.com/behdad/fonttools/archive/$pkgver.tar.gz")
+md5sums=('aaea54faef0e09466d4c6e99503b291d')
 
 build() {
   cd "$srcdir"/fonttools-$pkgver
@@ -24,7 +24,5 @@ package() {
 
   install -D -m755 LICENSE.txt "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
   chmod oga+r "$pkgdir"/usr/share/man/man1/ttx.1
-  sed -i -e "s|#![ ]*/usr/bin/env python$|#!/usr/bin/env python2|" \
-    $(find "${pkgdir}" -name '*.py')
 }
 
