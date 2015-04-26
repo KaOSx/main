@@ -18,7 +18,7 @@ build() {
     cd "${srcdir}/libdbus-c++-${pkgver}"
     patch -p0 -i ${srcdir}/patch-gcc47.patch
     
-    export LDFLAGS="${LDFLAGS} -lexpat"
+    export LDFLAGS="${LDFLAGS} -lexpat -lpthread"
     ./autogen.sh --prefix=/usr \
           --disable-static \
           --enable-glib \

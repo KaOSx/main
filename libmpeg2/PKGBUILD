@@ -1,15 +1,12 @@
 
 pkgname=libmpeg2
 pkgver=0.5.1
-pkgrel=3
+pkgrel=4
 pkgdesc="libmpeg2 is a library for decoding MPEG-1 and MPEG-2 video streams."
 arch=('x86_64')
 url="http://libmpeg2.sourceforge.net/"
 license=('GPL2')
-depends=('glibc')
-makedepends=('sdl' 'libxv')
-optdepends=('sdl: requiered for mpeg2dec'
-            'libxv: requiered for mpeg2dec')
+depends=('glibc' 'sdl' 'libxv')
 options=('!libtool')
 source=("http://libmpeg2.sourceforge.net/files/${pkgname}-${pkgver}.tar.gz"
         'gcc.patch')
