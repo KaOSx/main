@@ -1,17 +1,13 @@
 
 pkgname=alure
 pkgver=1.2
-pkgrel=1
+pkgrel=2
 pkgdesc="Utility library to help manage common tasks with OpenAL applications."
 arch=('x86_64')
 url="http://kcat.strangesoft.net/alure.html"
 license=('MIT')
-depends=('openal')
-makedepends=('cmake' 'libsndfile' 'libvorbis' 'flac' 'mpg123')
-optdepends=('libsndfile: for uncompressed audio support'
-            'libvorbis: for OGG Vorbis support'
-            'flac: for FLAC support'
-            'mpg123: for MPEG support')
+depends=('openal' 'libsndfile' 'libvorbis' 'flac' 'mpg123')
+makedepends=('cmake')
 source=("http://kcat.strangesoft.net/alure-releases/alure-${pkgver}.tar.bz2")
 md5sums=('3088aba074ad02d95ea51e705053b9f5')
 
