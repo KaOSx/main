@@ -1,0 +1,9 @@
+post_install() {
+ echo "Enabling systemd service"
+         systemctl enable vnstat
+}
+
+post_remove() {
+  echo "Disabling systemd service"
+         systemctl disable vnstat
+}
