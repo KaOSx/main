@@ -1,13 +1,13 @@
 
 pkgname=octave
 pkgver=3.8.2
-pkgrel=3
+pkgrel=4
 pkgdesc="A high-level language, primarily intended for numerical computations."
 arch=('x86_64')
 url="http://www.octave.org"
 license=('GPL')
 depends=('fftw' 'curl' 'graphicsmagick' 'glpk' 'hdf5' 'gcc-libs' 'qhull' 'fltk'
-         'arpack' 'suitesparse' 'gperf' 'qt' 'glu' 'gnuplot' 'qscintilla')
+         'arpack' 'suitesparse' 'gperf' 'glu' 'gnuplot' 'qt' 'qscintilla')
 makedepends=('texlive-core' 'gcc-fortran' 'python2')
 options=('!emptydirs')
 install='octave.install'
@@ -23,7 +23,8 @@ build() {
        --libexecdir=/usr/lib \
        --enable-shared \
        --disable-static \
-       --with-umfpack="-lumfpack -lsuitesparseconfig" 
+       --with-umfpack="-lumfpack -lsuitesparseconfig" \
+       MOC=moc UIC=uic
 
   LANG=C make
 }
