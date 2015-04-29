@@ -1,13 +1,14 @@
 
 pkgname=testdisk
 pkgver=7.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Checks and undeletes partitions + PhotoRec, signature based recovery tool"
 arch=('x86_64')
 url="http://www.cgsecurity.org/index.html?testdisk.html"
 license=('GPL')
-depends=('libjpeg>=8' 'openssl' 'progsreiserfs' 'ntfs-3g' 'qt')
-makedepends=('pkgconfig')
+depends=('libjpeg>=8' 'openssl' 'progsreiserfs' 'ntfs-3g')
+makedepends=('pkgconfig' 'qt')
+optdepends=('qt: to enable GUI qphotorec')
 source=("http://www.cgsecurity.org/${pkgname}-${pkgver}.tar.bz2")
 md5sums=('f0cfe4ca9dd35f2878b2704251665e9f')
 
