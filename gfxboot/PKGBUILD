@@ -1,7 +1,7 @@
 
 pkgname=gfxboot
-pkgver=4.5.1
-_pkgver=2.1.1
+pkgver=4.5.6
+_pkgver=1.1
 pkgrel=1
 arch=('x86_64')
 license=('GPL')
@@ -11,10 +11,10 @@ depends=('perl-html-parser' 'freetype2' 'cpio' 'nasm')
 makedepends=('rpmextract')
 install=gfxboot.install
 options=('docs')
-source=("http://download.opensuse.org/source/distribution/12.3/repo/oss/suse/src/${pkgname}-${pkgver}-${_pkgver}.src.rpm"
+source=("http://download.opensuse.org/source/distribution/13.2/repo/oss/suse/src/${pkgname}-${pkgver}-${_pkgver}.src.rpm"
 	'gfxboot.html'
 	'isolinux.patch')
-md5sums=('f71ac3ed80b9eb84c15ead6099898bb7'
+md5sums=('30435f328f89b4afee69d2f9f4b48db3'
          'f824c5bc2f716f8029677cae6956c1c7'
          '224289270f7ea288aaded3272a9c53f4')
 
@@ -23,7 +23,7 @@ build() {
     
   rpmextract.sh ${pkgname}-${pkgver}-${_pkgver}.src.rpm 
   
-  for i in $(find -name '*.tar.bz2');do tar -jxf $i;done
+  for i in $(find -name '*.tar.xz');do tar -Jxf $i;done
   mv -f themes ${pkgname}-${pkgver}/
 
   #chown -R root:root ${pkgname}-${pkgver}

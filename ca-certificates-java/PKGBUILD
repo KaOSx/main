@@ -1,7 +1,7 @@
 
 pkgname=ca-certificates-java
-pkgver=20140324
-pkgrel=1
+pkgver=20121112+nmu2
+pkgrel=2
 pkgdesc='Common CA certificates (JKS keystore)'
 arch=('x86_64')
 url='http://packages.qa.debian.org/c/ca-certificates-java.html'
@@ -10,12 +10,12 @@ depends=('ca-certificates')
 makedepends=('java-runtime')
 install='ca-certificates-java.install'
 backup=('etc/default/cacerts')
-source=("http://ftp.debian.org/debian/pool/main/c/${pkgname}/${pkgname}_${pkgver}.tar.xz"
+source=("http://ftp.debian.org/debian/pool/main/c/${pkgname}/${pkgname}_${pkgver}.tar.gz"
         'init-jks-keystore'
         'jks-keystore.hook')
-md5sums=('18d945321d2cc391124d1c5f18617814'
-         '1480f47f5d4dc370d22782018cef5b6'
-         '2356f4d46995a058d6995e3c0967bd27')
+md5sums=('9562403f0cc9300d29af5b8baa9ddeab'
+         '75eeca3f443f4b5a17ed5ac81875f1e9'
+         '6dd4f915aee0df51260083e00b7fa012')
 
 build() {
 	cd ${srcdir}/${pkgname}-${pkgver}
