@@ -1,18 +1,18 @@
 
 pkgname=arpack
-pkgver=3.1.5
+pkgver=3.2.0
 pkgrel=1
 arch=('x86_64')
 pkgdesc="Fortran77 subroutines designed to solve large scale eigenvalue problems"
-url="http://forge.scilab.org/index.php/p/arpack-ng/"
+url="https://github.com/opencollab/arpack-ng"
 license=('BSD')
 depends=('glibc' 'lapack' 'openmpi')
 options=('!libtool')
-source=("http://forge.scilab.org/index.php/p/arpack-ng/downloads/get/$pkgname-ng_$pkgver.tar.gz")
-md5sums=('f773f34079a9c24807da6bc2e72fe6df')
+source=("https://github.com/opencollab/arpack-ng/archive/$pkgver.tar.gz")
+md5sums=('0ae8a0bb796370b06647d9e005c0f3ea')
 
 build() {
-  cd "$srcdir/$pkgname-ng-$pkgver"
+  cd $srcdir/$pkgname-ng-$pkgver
 
   ./configure --prefix=/usr --enable-mpi
   make \
@@ -22,8 +22,8 @@ build() {
 }
 
 package() {
-  cd "$srcdir/$pkgname-ng-$pkgver"
-
-  make DESTDIR="$pkgdir/" install
-  install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
+  cd $srcdir/$pkgname-ng-$pkgver
+  make DESTDIR=$pkgdir install
+  
+  install -Dm644 COPYING $pkgdir/usr/share/licenses/$pkgname/COPYING
 }

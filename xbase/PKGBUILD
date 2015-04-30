@@ -1,7 +1,7 @@
 
 pkgname=xbase
 pkgver=2.0.0
-pkgrel=2
+pkgrel=3
 pkgdesc="An XBase compatible C++ class library"
 arch=('x86_64')
 url='http://linux.techass.com/projects/xdb/'
@@ -23,6 +23,7 @@ build() {
   patch -p1 -i "${srcdir}/fix-build.patch"
   patch -p1 -i "${srcdir}/gcc43.patch"
   patch -p1 -i "${srcdir}/gcc47.patch"
+  unset CPPFLAGS
  
   ./configure --host=i686-pc-linux-gnu --prefix=/usr
   make
