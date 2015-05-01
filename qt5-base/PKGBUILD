@@ -16,14 +16,18 @@ makedepends=('sqlite3' 'xcb-util-keysyms' 'xcb-util-wm' 'xcb-util-image' 'xcb-ut
          'postgresql-libs' 'cups' 'python2' 'gperf' 'ruby' 'pulseaudio' 'qt5-tools')
 options=('!libtool' 'debug')
 _pkgfqn="qtbase-opensource-src-${subver}"
-source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
+source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz"
+        'qlockfile-deadlock.patch')
 #source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
-md5sums=('9507825e558c980fed602de1f16ec7ae')
+md5sums=('9507825e558c980fed602de1f16ec7ae'
+         'f91e913566937d1b525c44a7def7115d')
 
 build() {
     cd $srcdir/$_pkgfqn
     # http://kaosx.us/phpBB3/viewtopic.php?f=18&t=871#p4527, fix is in review for Qt 5.5
     sed -i -e 's|"gurj",  // Gujarati|"gujr",  // Gujarati|' $srcdir/$_pkgfqn/src/platformsupport/fontdatabases/fontconfig/qfontconfigdatabase.cpp
+    # https://bugreports.qt.io/browse/QTBUG-44771, should be in 5.4.2
+    patch -p1 -i $srcdir/qlockfile-deadlock.patch
         
     unset QTDIR
     export PATH="$PWD/qtbase/bin:$PWD/qtrepotools/bin:$PATH"

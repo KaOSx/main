@@ -1,18 +1,17 @@
 
 pkgname=itstool
-pkgver=1.2.0
-pkgrel=2
+pkgver=2.0.2
+pkgrel=1
 pkgdesc="XML to PO and back again"
 arch=('x86_64')
 url="http://itstool.org/"
 license=('GPL3')
 depends=('python2' 'libxml2')
 source=("http://files.itstool.org/itstool/$pkgname-$pkgver.tar.bz2")
-md5sums=('c0925f6869e33af8e7fe56848c129152')
+md5sums=('d472d877a7bc49899a73d442085b2f93')
 
 build() {
   cd $pkgname-$pkgver
-  sed -i '1s|#!/usr/bin/python|&2|' itstool itstool.in
   
   ./configure --prefix=/usr
   make
