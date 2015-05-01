@@ -1,6 +1,6 @@
 
 pkgname=cln
-pkgver=1.3.3
+pkgver=1.3.4
 pkgrel=1
 pkgdesc="Class library for numbers"
 arch=('x86_64')
@@ -10,8 +10,8 @@ options=('!libtool')
 depends=('gmp' 'bash' 'texinfo')
 makedepends=('texlive-core')
 install=cln.install
-source=("ftp://ftpthep.physik.uni-mainz.de/pub/gnu/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('9871c401133a12182ad6a3bed89fb3c4')
+source=("http://www.ginac.de/CLN/${pkgname}-${pkgver}.tar.bz2")
+md5sums=('30ef9d2f02ef5c3f8d221a8692f8b28e')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"

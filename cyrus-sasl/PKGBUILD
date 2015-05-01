@@ -1,12 +1,15 @@
 
 pkgname=cyrus-sasl
 pkgver=2.1.26
-pkgrel=1
-pkgdesc="SASL authentication daemon"
+pkgrel=2
+pkgdesc="Cyrus Simple Authentication Service Layer (SASL) library and daemon"
 arch=('x86_64')
 license=('custom')
 url="http://asg.web.cmu.edu/cyrus/download/"
-depends=('pam' 'krb5' 'libldap' 'cyrus-sasl-plugins' 'db')
+depends=('pam' 'krb5' 'libldap' 'db' 'postgresql-libs' 'libmariadbclient')
+conflicts=('cyrus-sasl-plugins')
+replaces=('cyrus-sasl-plugins')
+provides=('cyrus-sasl-plugins')
 backup=(etc/conf.d/saslauthd)
 source=("ftp://ftp.cyrusimap.org/cyrus-sasl/${pkgname}-${pkgver}.tar.gz"
 	'saslauthd.service'
@@ -21,20 +24,41 @@ build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
   
   ./configure --prefix=/usr \
-        --mandir=/usr/share/man \
-        --with-ldap=/usr \
-        --with-saslauthd=/var/run/saslauthd
-  cd saslauthd
-  make 
+    --mandir=/usr/share/man \
+    --with-ldap=/usr \
+    --with-saslauthd=/var/run/saslauthd \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --disable-login \
+    --disable-plain \
+    --enable-sql \
+    --disable-sqlite \
+    --enable-gssapi=/usr/include/gssapi \
+    --with-mysql=/usr \
+    --with-pgsql=/usr \
+    --enable-postgresql \
+    --enable-ldapdb
+  make
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}/saslauthd"
+  cd "${srcdir}/${pkgname}-${pkgver}"
   make DESTDIR="${pkgdir}" install 
 
   install -Dm644 "${srcdir}/saslauthd.conf.d" "${pkgdir}/etc/conf.d/saslauthd"
   install -Dm644 "${srcdir}/saslauthd.service" "${pkgdir}/usr/lib/systemd/system/saslauthd.service"
   install -Dm644 "${srcdir}/tmpfiles.conf" "${pkgdir}/usr/lib/tmpfiles.d/saslauthd.conf"
 
-  install -Dm644 ../COPYING "${pkgdir}/usr/share/licenses/cyrus-sasl/COPYING"
+  install -Dm644 COPYING "${pkgdir}/usr/share/licenses/cyrus-sasl/COPYING"
+  # part of libsasl
+  rm -rf ${pkgdir}/usr/include
+  rm -f ${pkgdir}/usr/lib/sasl2/libsasldb.*
+  rm -f ${pkgdir}/usr/lib/libsasl2.*
+  rm -f ${pkgdir}/usr/lib/sasl2/libscram.*
+  rm -r ${pkgdir}/usr/sbin/pluginv*
+  rm -r ${pkgdir}/usr/sbin/sasldblis*
+  rm -r ${pkgdir}/usr/sbin/saslpass*
+  rm -r ${pkgdir}/usr/share/man/man8/plugin*
+  rm -r ${pkgdir}/usr/share/man/man8/sasldb*
+  rm -r ${pkgdir}/usr/share/man/man8/saslpass*
 }
