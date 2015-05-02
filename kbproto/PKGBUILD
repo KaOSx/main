@@ -1,13 +1,13 @@
 
 pkgname=kbproto
-pkgver=1.0.6
-pkgrel=3
+pkgver=1.0.7
+pkgrel=1
 pkgdesc="X11 XKB extension wire protocol"
 arch=('x86_64')
 url="http://xorg.freedesktop.org/"
 license=('custom')
-source=(${url}/releases/individual/proto/${pkgname}-${pkgver}.tar.bz2)
-md5sums=('677ea8523eec6caca86121ad2dca0b71')
+source=("http://xorg.freedesktop.org/releases/individual/proto/${pkgname}-${pkgver}.tar.bz2")
+md5sums=('94afc90c1f7bef4a27fdd59ece39c878')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
