@@ -1,14 +1,14 @@
 
 pkgname=xdelta3
-pkgver=3.0.8
+pkgver=3.0.9
 pkgrel=1
 pkgdesc="A diff utility which works with binary files"
 arch=('x86_64')
 url="http://xdelta.org/"
 license=('GPL')
 depends=('xz')
-source=("http://xdelta.googlecode.com/files/$pkgname-$pkgver.tar.xz")
-md5sums=('c3ae3286ce4193de8e03d5bcaccf3bc3')
+source=("https://github.com/jmacd/xdelta-devel/releases/download/v$pkgver/$pkgname-$pkgver.tar.xz")
+md5sums=('f06e15f8765294d7f1807d96db9425d8')
 
 build() {
   cd "$srcdir/$pkgname-$pkgver"
