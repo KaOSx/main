@@ -2,18 +2,21 @@
 pkgname=gwenhywfar
 pkgver=4.13.1
 _dnrel=78
-pkgrel=1
+pkgrel=2
 pkgdesc="OS abstraction functions for various projects"
 arch=('x86_64')
 url="http://www.aquamaniac.de"
 options=('!libtool')
 license=("LGPL")
 depends=('openssl' 'qt' 'gnutls' 'libgcrypt')
-source=("gwenhywfar-$pkgver.tar.gz::http://www2.aquamaniac.de/sites/download/download.php?package=01&release=${_dnrel}&file=01&dummy=gwenhywfar-$pkgver.tar.gz")
-md5sums=('231b4af546c791a85d0f042773e6bd82')
+source=("gwenhywfar-$pkgver.tar.gz::http://www2.aquamaniac.de/sites/download/download.php?package=01&release=${_dnrel}&file=01&dummy=gwenhywfar-$pkgver.tar.gz"
+        'gnutls34.patch')
+md5sums=('231b4af546c791a85d0f042773e6bd82'
+         '1197ac1f8378b3b3a8ed12169fcb57f9')
 
 build() {
   cd $srcdir/gwenhywfar-$pkgver
+  patch -p1 -i ${srcdir}/gnutls34.patch
   
   ./configure --prefix=/usr --sysconfdir=/etc --enable-ssl --with-guis=qt4 
   make

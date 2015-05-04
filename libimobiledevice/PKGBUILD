@@ -1,7 +1,7 @@
 
 pkgname=libimobiledevice
 pkgver=1.2.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Is a software library that talks the protocols to support iPhone and iPod Touch devices on Linux"
 url="http://libimobiledevice.org/"
 arch=('x86_64')
@@ -15,7 +15,7 @@ md5sums=('8757900ba7bbe2ef5f54342415d0223e')
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
 
-  PYTHON=/usr/bin/python2 ./configure --prefix=/usr
+  ./configure --prefix=/usr
   make
 }
 
