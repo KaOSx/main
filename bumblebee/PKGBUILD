@@ -1,7 +1,7 @@
 
 pkgname=bumblebee
 pkgver=3.2.1
-pkgrel=3
+pkgrel=4
 pkgdesc="Bumblebee brings Optimus Support for Linux Through VirtualGL."
 arch=('x86_64')
 url="http://www.Bumblebee-Project.org"
@@ -12,14 +12,15 @@ optdepends=('xf86-video-nouveau: Nouveau driver'
             'mesa: 3D acceleration features for Nouveau'
             'bbswitch: switch on/off discrete card'
             'nvidia-utils-bumblebee: Nvidia utils not breaking LibGL'
-            'nvidia-bumblebee: Nvidia kernel driver'
-            'primus: alternative back-end for optirun')
+            'nvidia-bumblebee: Nvidia kernel driver')
 install='bumblebee.install'
 backup=('etc/bumblebee/bumblebee.conf'
         'etc/bumblebee/xorg.conf.nouveau'
          'etc/bumblebee/xorg.conf.nvidia')
-source=("http://www.bumblebee-project.org/${pkgname}-${pkgver}.tar.gz")
-md5sums=('30974e677bb13e8a3825fd6f3e7d3b24')
+source=("http://www.bumblebee-project.org/${pkgname}-${pkgver}.tar.gz"
+        'bumblebee.conf')
+md5sums=('30974e677bb13e8a3825fd6f3e7d3b24'
+         '43c2c5c069ac8628bd86cd5865785639')
 
 build() {
     cd "${srcdir}/${pkgname}-${pkgver}"
@@ -40,4 +41,6 @@ package() {
   
     install -D -m644 "scripts/systemd/bumblebeed.service" "${pkgdir}/usr/lib/systemd/system/bumblebeed.service"
     mv -v "${pkgdir}/etc/bash_completion.d/bumblebee" "${pkgdir}/etc/bash_completion.d/optirun"
+    # upstream recommended blacklisting
+    install -D -m644 "${srcdir}/bumblebee.conf" "${pkgdir}/etc/modprobe.d/bumblebee.conf"
 }
