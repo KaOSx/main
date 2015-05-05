@@ -1,15 +1,16 @@
 
 pkgname=networkmanager
 _pkgname=NetworkManager
-pkgver=1.0.0
-pkgrel=2
+pkgver=1.0.2
+_pkgver=1.0
+pkgrel=1
 pkgdesc="Network Management daemon"
 arch=('x86_64')
 license=('GPL')
 url="http://www.gnome.org/projects/$_pkgname/"
 depends=('dbus-glib' 'iproute2' 'libnl' 'nss' 'polkit' 'systemd' 'wpa_supplicant' 'ppp' 'dhcpcd'
-         'modemmanager' 'libndp' 'libteam')
-makedepends=('intltool' 'dhclient' 'iptables' 'gobject-introspection')
+         'modemmanager' 'libndp' 'libteam' 'libsoup')
+makedepends=('intltool' 'dhclient' 'iptables' 'gobject-introspection' 'netctl')
 optdepends=('dhclient: alternative DHCP/DHCPv6 client'
             'iptables: Connection sharing'
             'dnsmasq: Connection sharing'
@@ -18,10 +19,10 @@ optdepends=('dhclient: alternative DHCP/DHCPv6 client'
 options=('!libtool')
 backup=('etc/NetworkManager/NetworkManager.conf')
 install=networkmanager.install
-source=("http://ftp.gnome.org/pub/gnome/sources/$_pkgname/${pkgver:0:3}/$_pkgname-$pkgver.tar.xz"
+source=("http://ftp.gnome.org/pub/gnome/sources/$_pkgname/${_pkgver}/$_pkgname-$pkgver.tar.xz"
         'NetworkManager.conf' 
         'disable_set_hostname.patch')
-md5sums=('71cae8707a90fa92e28cafbc9262b548'
+md5sums=('5a4899f89edcbdd1ac46d2d947e8d6eb'
          'e6549aab4cb721a87becd4585efd5148'
          '6b5415350c04304a28d29294441a07ae')
 
@@ -52,7 +53,7 @@ build() {
     --enable-more-warnings=no \
     --disable-wimax \
     --enable-modify-system \
-    --with-pppd-plugin-dir=/usr/lib/pppd/2.4.6
+    --with-pppd-plugin-dir=/usr/lib/pppd/2.4.7
 
   make
 }
