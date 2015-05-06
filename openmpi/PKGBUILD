@@ -1,6 +1,6 @@
 
 pkgname=openmpi
-pkgver=1.8.4
+pkgver=1.8.5
 pkgrel=1
 pkgdesc="High performance message passing library (MPI)"
 arch=('x86_64')
@@ -10,13 +10,10 @@ depends=('gcc' 'gcc-fortran' 'openssh' 'valgrind' 'libltdl' 'hwloc')
 makedepends=('inetutils')
 options=('!libtool')
 source=("http://www.open-mpi.org/software/ompi/v1.8/downloads/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('93b7ea2c4ebae76947f942579608ae4a')
+md5sums=('93e958914ff0e4d9634d668d2d48c793')
 
 build() {
    cd "${srcdir}/${pkgname}-${pkgver}"
-   
-   # use system libltdl
-   rm -r opal/libltdl
 
    ./configure --prefix=/usr \
                --sysconfdir=/etc/${pkgname} \
@@ -47,7 +44,7 @@ package() {
       ln -sf /usr/lib/openmpi/pkgconfig/$i "${pkgdir}"/usr/lib/pkgconfig/
    done
 
-   # Openmpi's otfinfo conflicts with the one from texlive
+   # texlive conflicts
    mv "${pkgdir}"/usr/bin/otfinfo{,mpi}
 
    install -d -m 755 "${pkgdir}"/etc/ld.so.conf.d
