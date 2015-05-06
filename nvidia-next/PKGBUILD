@@ -1,10 +1,10 @@
 
-_extramodules=extramodules-4.0-next
+_extramodules=extramodules-4.0.2-next
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=nvidia-next
-pkgver=346.59
-pkgrel=4
+pkgver=349.16
+pkgrel=1
 pkgdesc="NVIDIA drivers for linux."
 arch=('x86_64')
 url="http://www.nvidia.com/"
@@ -16,7 +16,7 @@ options=('!strip')
 _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 #_pkg="NVIDIA-Linux-x86_64-${pkgver}"
 source=("ftp://download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run")
-md5sums=('db1cebc2a78eac85777bb4c7c2c8c70c')
+md5sums=('3e04208affde8c35a8b96975eec0486b')
 
 build() {
   cd "${srcdir}" 

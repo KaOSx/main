@@ -3,8 +3,8 @@ _extramodules=extramodules-3.19
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=('nvidia' 'khd-nvidia')
-pkgver=346.59
-pkgrel=2
+pkgver=349.16
+pkgrel=1
 arch=('x86_64')
 url="http://www.nvidia.com/"
 makedepends=('linux-headers' 'linux>=3.19' 'linux<4.0' "nvidia-utils=${pkgver}")
@@ -16,7 +16,7 @@ md5sums=('282f73f1a7326339a7b0e0716eee4f76')
 _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 #_pkg="NVIDIA-Linux-x86_64-${pkgver}"
 source+=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run")
-md5sums+=('db1cebc2a78eac85777bb4c7c2c8c70c')
+md5sums+=('3e04208affde8c35a8b96975eec0486b')
 
 build() {
     cd "${srcdir}"
