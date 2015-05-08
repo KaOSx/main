@@ -8,19 +8,25 @@ arch=('x86_64')
 license=('custom')
 depends=('gcc-libs')
 options=('!libtool')
-source=("http://download.savannah.nongnu.org/releases/openexr/$pkgname-$pkgver.tar.gz")
-md5sums=('b540db502c5fa42078249f43d18a4652')
+source=("http://download.savannah.nongnu.org/releases/openexr/$pkgname-$pkgver.tar.gz"
+        'pkgconfig.patch'
+        'undefined.patch')
+md5sums=('b540db502c5fa42078249f43d18a4652'
+         'ed3eb3dfa2393adc6829cc9ca8caa0ff'
+         '27ff3915e03964f85a9e9fb896a93479')
 
 build() {
   cd ${srcdir}/$pkgname-$pkgver
+  patch -p1 -i  ${srcdir}/pkgconfig.patch
+  patch -p1 -i  ${srcdir}/undefined.patch
 
   ./configure --prefix=/usr
-  make
+   make PTHREAD_LIBS="-pthread -lpthread"
 }
 
 check() {
   cd ${srcdir}/$pkgname-$pkgver
-  # one of the tests fails randomly for an unknown reason
+
   make check || true
 }
 
