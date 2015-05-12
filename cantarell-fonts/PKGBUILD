@@ -1,0 +1,25 @@
+
+pkgname=cantarell-fonts
+pkgver=0.0.16
+pkgrel=1
+pkgdesc="The Cantarell typeface family is a contemporary Humanist sans serif"
+arch=('x86_64')
+url="https://git.gnome.org/browse/cantarell-fonts/tree/README"
+license=('GPL2')
+depends=('fontconfig')
+install=cantarell-fonts.install
+source=("http://download.gnome.org/sources/cantarell-fonts/0.0/$pkgname-${pkgver}.tar.xz")
+md5sums=('6665af844817ec1390f8ae2a16feb369')
+
+build() {
+  cd $pkgname-$pkgver
+
+  ./configure --prefix=/usr --with-configdir=/etc/fonts/conf.avail
+  make
+}
+
+package() {
+  cd $pkgname-$pkgver
+
+  make DESTDIR="${pkgdir}" install
+}

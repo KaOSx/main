@@ -1,0 +1,29 @@
+
+pkgname=ttf-google-fonts
+pkgver=20150512
+pkgrel=1
+pkgdesc="TrueType fonts from the Google Fonts project"
+arch=('x86_64')
+url="https://github.com/google/fonts"
+license=('various')
+depends=('fontconfig' 'xorg-fonts-encodings' 'xorg-mkfontdir' 'xorg-mkfontscale')
+makedepends=('git')
+install=${pkgname}.install
+source=("git://github.com/google/fonts.git")
+md5sums=('SKIP')
+
+package() {
+  cd "$srcdir"
+  install -dm755 "$pkgdir/usr/share/fonts/TTF"
+  find . -type f -name \*.ttf -exec install -Dm644 '{}' \
+    "$pkgdir/usr/share/fonts/TTF" \;
+
+  # remove droid & cantarell font packages provided files
+  find "${pkgdir}/usr/share/fonts/TTF" -type f -name "Cantarell-*.ttf" -delete
+  find "${pkgdir}/usr/share/fonts/TTF" -type f -name "Droid*.ttf" -delete
+  
+  find . -type f -name OFL.txt -exec install -Dm644 '{}' \
+    "${pkgdir}/usr/share/licenses/${pkgname}/{}" \;
+  install -Dm644 $srcdir/fonts/ufl/ubuntu/UFL.txt \
+    "${pkgdir}/usr/share/licenses/${pkgname}/UFL.txt"
+}

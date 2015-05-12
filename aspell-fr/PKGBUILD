@@ -1,0 +1,24 @@
+
+pkgname=aspell-fr
+pkgver=0.50.3
+_pkgver=0.50-3
+pkgrel=1
+pkgdesc="French dictionary for aspell"
+arch=('x86_64')
+url="http://aspell.net/"
+license=('GPL')
+depends=('aspell')
+source=("ftp://ftp.gnu.org/gnu/aspell/dict/fr/$pkgname-${_pkgver}.tar.bz2")
+md5sums=('53a2d05c4e8f7fabd3cefe24db977be7')
+
+build() {
+  cd $srcdir/$pkgname-${_pkgver}
+  ./configure 
+  make 
+}
+
+package() {
+  cd $srcdir/$pkgname-${_pkgver}
+  
+  make DESTDIR=$pkgdir install 
+}
