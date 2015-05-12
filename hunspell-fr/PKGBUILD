@@ -1,0 +1,36 @@
+
+pkgname=hunspell-fr
+pkgver=5.3
+pkgrel=1
+pkgdesc="French (modern) hunspell dictionaries"
+arch=('x86_64')
+url="http://www.dicollecte.org/"
+license=('GPL' 'MPL' 'LGPL')
+optdepends=('hunspell:	the spell checking libraries and apps')
+source=("http://www.dicollecte.org/download/fr/hunspell-french-dictionaries-v${pkgver}.zip")
+md5sums=('697fc4c3d61a029694fbe13a84ed37cd')
+
+package() {
+  cd "${srcdir}"
+  install -dm755 ${pkgdir}/usr/share/hunspell
+  install -m644 fr-moderne.dic ${pkgdir}/usr/share/hunspell/fr_FR.dic
+  install -m644 fr-moderne.aff ${pkgdir}/usr/share/hunspell/fr_FR.aff
+
+  pushd ${pkgdir}/usr/share/hunspell/
+  fr_FR_aliases="fr_BE fr_CA fr_CH fr_LU"
+  for lang in ${fr_FR_aliases}; do
+	ln -s fr_FR.aff ${lang}.aff
+	ln -s fr_FR.dic ${lang}.dic
+  done
+
+  popd
+
+  install -dm755 ${pkgdir}/usr/share/myspell/dicts
+  pushd ${pkgdir}/usr/share/myspell/dicts
+    for file in ${pkgdir}/usr/share/hunspell/*; do
+      ln -sv /usr/share/hunspell/$(basename ${file}) .
+    done
+  popd
+  
+  install -Dm644 README_dict_fr.txt $pkgdir/usr/share/doc/${pkgname}/README_fr.txt
+}
