@@ -29,7 +29,7 @@ build() {
   cd ../
 
   # QWebView plugin 
-  cd qt-everywhere-opensource-src-4.8.7
+  cd qt-everywhere-opensource-src-${_qtver}
   patch -p1 -i "${srcdir}"/qwebview.patch
   cd tools/designer/src/plugins/qwebview
   qmake
@@ -42,6 +42,6 @@ package() {
 
   cd ../
 
-  cd qt-everywhere-opensource-src-4.8.7/tools/designer/src/plugins/qwebview
+  cd qt-everywhere-opensource-src-${_qtver}/tools/designer/src/plugins/qwebview
   make INSTALL_ROOT="${pkgdir}" install
 }
