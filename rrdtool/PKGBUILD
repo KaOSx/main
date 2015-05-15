@@ -1,12 +1,12 @@
 
 pkgname=rrdtool
-pkgver=1.4.8
+pkgver=1.5.3
 pkgrel=1
 pkgdesc="Data logging and graphing application"
 arch=('x86_64')
 url="http://www.rrdtool.org"
 license=('GPL')
-depends=('libpng' 'libxml2' 'pango')
+depends=('libpng' 'libxml2' 'pango' 'ttf-dejavu')
 makedepends=('intltool' 'ruby' 'python2' 'tcl' 'lua' 'groff')
 optdepends=('tcl: to use corresponding binding' \
             'python2: to use corresponding binding' \
@@ -14,13 +14,12 @@ optdepends=('tcl: to use corresponding binding' \
             'lua: to use corresponding binding')
 options=('!libtool' '!emptydirs' '!makeflags')
 source=("http://oss.oetiker.ch/rrdtool/pub/rrdtool-${pkgver}.tar.gz")
-md5sums=('dbe59386db97fd2f2216729facd74ca8')
+md5sums=('868a828cc6b10654c440a85054240ae2')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
   sed -e 's/$(RUBY) extconf.rb/& --vendor/' -i bindings/Makefile.in
 
-  PYTHON=python2 
   ./configure --prefix=/usr --localstatedir=/var --disable-rpath --enable-perl \
     --enable-perl-site-install --with-perl-options='INSTALLDIRS=vendor' \
     --enable-ruby --enable-ruby-site-install --enable-python \
