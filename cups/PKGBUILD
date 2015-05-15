@@ -2,7 +2,7 @@
 pkgbase="cups"
 pkgname=('libcups' 'cups')
 pkgver=2.0.2
-pkgrel=2
+pkgrel=3
 arch=('x86_64')
 license=('GPL')
 url="http://www.cups.org/"
@@ -55,7 +55,7 @@ build() {
 check() {
   cd "$srcdir/$pkgbase-$pkgver"
 
-  make -k check || /bin/true
+  #make -k check || /bin/true
 }
 
 package_libcups() {
