@@ -3,8 +3,8 @@ pkgname=qtwebkit
 pkgver=2.3.4
 rlver=2.3.4
 _pkgver=23
-pkgrel=1
-_qtver=4.8.6
+pkgrel=2
+_qtver=4.8.7-rc2
 arch=('x86_64')
 url='http://trac.webkit.org/wiki/QtWebKit'
 pkgdesc='An open source web browser engine (Qt port)'
@@ -16,7 +16,7 @@ source=("git://gitorious.org/webkit/qtwebkit-23.git"
         "http://download.qt-project.org/official_releases/qt/4.8/${_qtver}/qt-everywhere-opensource-src-${_qtver}.tar.gz"
         'qwebview.patch')
 md5sums=('SKIP'
-         '2edbe4d6c2eff33ef91732602f3518eb'
+         'd990ee66bf7ab0c785589776f35ba6ad'
          '2293bdde387a27fea3eb011c729269fb')
 
 build() {
@@ -29,7 +29,7 @@ build() {
   cd ../
 
   # QWebView plugin 
-  cd qt-everywhere-opensource-src-${_qtver}
+  cd qt-everywhere-opensource-src-4.8.7
   patch -p1 -i "${srcdir}"/qwebview.patch
   cd tools/designer/src/plugins/qwebview
   qmake
@@ -42,6 +42,6 @@ package() {
 
   cd ../
 
-  cd qt-everywhere-opensource-src-${_qtver}/tools/designer/src/plugins/qwebview
+  cd qt-everywhere-opensource-src-4.8.7/tools/designer/src/plugins/qwebview
   make INSTALL_ROOT="${pkgdir}" install
 }
