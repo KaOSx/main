@@ -1,7 +1,7 @@
 
 pkgname=telepathy-qt5
 _pkgname=telepathy-qt
-pkgver=0.9.5.1
+pkgver=0.9.6
 pkgrel=1
 pkgdesc="A library for Qt-based Telepathy clients."
 arch=('x86_64')
@@ -11,9 +11,9 @@ license=('LGPL')
 options=('!libtool')
 depends=('qt5-base' 'telepathy-farstream' 'dbus-python')
 makedepends=('libxslt' 'python2' 'cmake' 'doxygen')
-#source=("http://telepathy.freedesktop.org/releases/$_pkgname/$_pkgname-$pkgver.tar.gz")
-source=("git://anongit.freedesktop.org/telepathy/telepathy-qt")
-md5sums=('SKIP')
+source=("http://telepathy.freedesktop.org/releases/$_pkgname/$_pkgname-$pkgver.tar.gz")
+#source=("git://anongit.freedesktop.org/telepathy/telepathy-qt")
+md5sums=('1f18935f30dcf90282a2d6d65fcde752')
 
 build() {
     cd ${srcdir} 
@@ -21,7 +21,7 @@ build() {
 
     mkdir build
     cd build
-    cmake ../$_pkgname \
+    cmake ../$_pkgname-$pkgver \
         -DCMAKE_BUILD_TYPE=Release \
         -DCMAKE_INSTALL_PREFIX=/usr \
         -DQT_QMAKE_EXECUTABLE=/usr/lib/qt5/bin/qmake \

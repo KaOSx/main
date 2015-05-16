@@ -1,12 +1,11 @@
 
 pkgname=telepathy-qt
-pkgver=0.9.5
+pkgver=0.9.6
 pkgrel=1
 epoch=1
 pkgdesc="A library for Qt-based Telepathy clients."
 arch=('x86_64')
 url="http://telepathy.freedesktop.org"
-groups=('telepathy')
 license=('LGPL')
 options=('!libtool')
 depends=('qt' 'telepathy-farstream' 'dbus-python')
@@ -15,7 +14,7 @@ conflicts=('telepathy-qt4')
 provides=('telepathy-qt4')
 source=("http://telepathy.freedesktop.org/releases/telepathy-qt/$pkgname-$pkgver.tar.gz")
 #source=("https://github.com/davidedmundson/telepathy-qt.git")
-md5sums=('22c0daa7e4f7e48e779f703c9b27b816')
+md5sums=('1f18935f30dcf90282a2d6d65fcde752')
 
 build() {
     cd ${srcdir} 
