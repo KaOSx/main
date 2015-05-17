@@ -1,7 +1,7 @@
 
 pkgname=opensc
-pkgver=0.14.0
-pkgrel=2
+pkgver=0.15.0
+pkgrel=1
 pkgdesc='Tools and libraries for smart cards'
 arch=('x86_64')
 url='https://github.com/OpenSC/OpenSC/wiki'
@@ -10,9 +10,8 @@ backup=('etc/opensc.conf')
 depends=('openssl' 'pcsclite' 'libltdl')
 makedepends=('docbook-xsl')
 options=('!emptydirs')
-#source=("git://github.com/OpenSC/OpenSC.git")
 source=("https://github.com/OpenSC/OpenSC/archive/$pkgver.tar.gz")
-md5sums=('1ee31dc2e89860458fd984e0cac9795e')
+md5sums=('f266024e5a9630821ffa0ac14f72e369')
 
 build() {
     cd OpenSC-$pkgver

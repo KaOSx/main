@@ -14,8 +14,7 @@ md5sums=('32e4151f8b6a32b466b1055562ebfb4f')
 
 build() {
   cd ${pkgname}_$pkgver
-  #LDFLAGS+=',-z,noexecstack'
-  #cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=/usr ../../source
+  
   cmake -DCMAKE_INSTALL_PREFIX=/usr source
   make
 }
