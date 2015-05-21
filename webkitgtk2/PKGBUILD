@@ -1,31 +1,31 @@
 
 pkgname=webkitgtk2
-pkgver=1.10.2
-pkgrel=6
+pkgver=2.4.9
+pkgrel=1
 arch=('x86_64')
 url="http://webkitgtk.org/"
 pkgdesc="GTK+ Web content engine library for GTK+ 2.0"
 license=('custom')
-depends=('libxt' 'libxslt' 'sqlite3' 'libsoup' 'enchant' 'libgl' 'gtk2'
-         'gst-plugins-base' 'icu' 'libwebp')
-makedepends=('gperf' 'gobject-introspection' 'python2' 'mesa' 'ruby' 'gtk-doc')
+depends=('libxt' 'libxslt' 'sqlite' 'libsoup' 'enchant' 'libgl' 'gtk2'
+         'gst-plugins-base' 'icu' 'libwebp' 'libsecret')
+makedepends=('gperf' 'gobject-introspection' 'python2' 'mesa' 'ruby')
 options=('!libtool' '!emptydirs')
 source=("http://webkitgtk.org/releases/webkitgtk-$pkgver.tar.xz"
         'bison3.patch')
-md5sums=('7b1a652af1eb11bee5bf7209e9ff67e6'
+md5sums=('312fd29eb7f5970660c6a64b8bf8420e'
          '4bc278e790526da1be2a2199d6f984de')
 
 build() {
   cd "$srcdir/webkitgtk-$pkgver"
-  patch -p1 -i "$srcdir"/bison3.patch
+  #patch -p1 -i "$srcdir"/bison3.patch
   
-  PYTHON=/usr/bin/python2 ./configure --prefix=/usr \
+  ./configure --prefix=/usr \
     --enable-introspection \
     --libexecdir=/usr/lib/webkitgtk2 \
-    --with-gstreamer=1.0 \
     --with-gtk=2.0 \
     --enable-geolocation=no \
-    --disable-webkit2
+    --disable-webkit2 \
+    --disable-gtk-doc
     
   sed -i 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make 
