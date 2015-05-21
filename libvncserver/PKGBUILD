@@ -1,25 +1,26 @@
 
 pkgname=libvncserver
-pkgver=0.9.9
-pkgrel=3
+pkgver=0.9.10
+pkgrel=1
 pkgdesc="The vnc library"
 arch=('x86_64')
 url="http://libvncserver.sourceforge.net/"
 license=('GPL')
 depends=('libjpeg-turbo' 'zlib' 'gnutls' 'libgcrypt')
 options=('!libtool')
-source=("http://downloads.sourceforge.net/libvncserver/LibVNCServer-${pkgver}.tar.gz")
-md5sums=('70422169b122765693d2a294d13e3714')
+source=("https://github.com/LibVNC/libvncserver/archive/LibVNCServer-${pkgver}.tar.gz")
+md5sums=('e1b888fae717b06896f8aec100163d27')
 
 build() {
-  cd $srcdir/LibVNCServer-$pkgver
+  cd $srcdir/$pkgname-LibVNCServer-$pkgver
   
+  ./autogen.sh
   ./configure --prefix=/usr
   make
 }
 
 package() {
-  cd $srcdir/LibVNCServer-$pkgver
+  cd $srcdir/$pkgname-LibVNCServer-$pkgver
   
   make DESTDIR=$pkgdir install
 }
