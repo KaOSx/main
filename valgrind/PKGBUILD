@@ -1,22 +1,22 @@
 
 pkgname=valgrind
 pkgver=3.10.1
-pkgrel=1
+pkgrel=2
 pkgdesc="A tool to help find memory-management problems in programs"
 arch=('x86_64')
 license=('GPL')
 url="http://valgrind.org/"
-depends=('glibc>=2.20' 'glibc<2.21' 'perl')
+depends=('glibc>=2.21' 'glibc<2.22' 'perl')
 makedepends=('gdb')
 options=('!emptydirs')
 source=("http://valgrind.org/downloads/${pkgname}-${pkgver}.tar.bz2"
-        'glibc-2.20.patch')
+        'glibc-2.21.patch')
 md5sums=('60ddae962bc79e7c95cfc4667245707f'
-         '91847b2be654cf2da8bcd2d386235453')
+         '73531363523a73c9b44c3f914106a4ba')
 
 build() {
   cd ${srcdir}/${pkgname}-${pkgver}
-  patch -p1 -i $srcdir/glibc-2.20.patch
+  patch -p1 -i $srcdir/glibc-2.21.patch
   
   ./configure --prefix=/usr --mandir=/usr/share/man --enable-only64bit
   make
