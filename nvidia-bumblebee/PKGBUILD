@@ -1,15 +1,15 @@
 
 
-_extramodules=extramodules-3.19
+_extramodules=extramodules-4.0
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=nvidia-bumblebee
 pkgver=349.16
-pkgrel=1
+pkgrel=2
 pkgdesc="NVIDIA drivers for linux. Packaged for Bumblebee"
 arch=('x86_64')
 url="http://www.nvidia.com/"
-depends=('linux>=3.19' 'linux<4.0' "nvidia-utils-bumblebee")
+depends=('linux>=4.0' 'linux<4.1' "nvidia-utils-bumblebee")
 makedepends=('linux-headers')
 provides=("nvidia=${pkgver}")
 conflicts=('nvidia')
