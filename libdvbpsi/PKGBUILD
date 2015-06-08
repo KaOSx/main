@@ -1,15 +1,15 @@
 
 pkgname=libdvbpsi
-pkgver=1.1.2
+pkgver=1.2.0
 pkgrel=1
 pkgdesc="A library designed for decoding and generation of MPEG TS and DVB PSI tables"
 arch=('x86_64')
+url="http://www.videolan.org/developers/libdvbpsi.html"
 license=('LGPL')
 depends=('glibc')
 options=('!libtool')
-url="http://developers.videolan.org/libdvbpsi/"
 source=("http://download.videolan.org/pub/${pkgname}/${pkgver}/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('0d8ffb38d0ebfeb55c40ce6fe232f5d3')
+md5sums=('69e38e93c4db4f2a58cbd0b6f9f38228')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
