@@ -1,6 +1,6 @@
 
 pkgname=gpgme
-pkgver=1.5.4
+pkgver=1.5.5
 pkgrel=1
 pkgdesc="A C wrapper library for GnuPG"
 arch=('x86_64')
@@ -10,7 +10,7 @@ depends=('libgpg-error' 'pth' 'gnupg2')
 install=${pkgname}.install
 options=('!libtool' '!emptydirs')
 source=("ftp://ftp.gnupg.org/gcrypt/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('feafa03ea064e1d1dc11bc2b88404623')
+md5sums=('a56df7028a0814ef57d77262898ca040')
 
 build() {
   cd ${srcdir}/${pkgname}-${pkgver}

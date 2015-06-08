@@ -1,23 +1,20 @@
 
 pkgname=gegl
-pkgver=0.2.0
-_pkgver=0.2
-pkgrel=8
+pkgver=0.3.0
+_pkgver=0.3
+pkgrel=1
 pkgdesc="Graph based image processing framework."
 arch=('x86_64')
 url="http://www.gegl.org/"
 license=('GPL3' 'LGPL3')
-depends=('babl' 'ffmpeg' 'openexr' 'librsvg' 'jasper')
+depends=('babl' 'ffmpeg' 'openexr' 'librsvg' 'jasper' 'json-glib' 'libwebp')
 makedepends=('ruby' 'lua' 'exiv2' 'intltool')
 options=('!libtool')
-source=("http://download.gimp.org/pub/gegl/${_pkgver}/${pkgname}-${pkgver}.tar.bz2"
-	'gentoo-gegl-0.2.0-ffmpeg-0.11.diff')
-md5sums=('32b00002f1f1e316115c4ed922e1dec8'
-         'aada2b2e776b8934ab115df940f74b9d')
+source=("http://download.gimp.org/pub/gegl/${_pkgver}/${pkgname}-${pkgver}.tar.bz2")
+md5sums=('6d71daab78377d5074a74651bbf7a76a')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
-  patch -p1 -i "${srcdir}/gentoo-gegl-0.2.0-ffmpeg-0.11.diff"
 
   ./configure --prefix=/usr \
               --with-sdl \
