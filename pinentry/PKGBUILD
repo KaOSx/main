@@ -1,6 +1,6 @@
 
 pkgname=pinentry
-pkgver=0.9.1
+pkgver=0.9.4
 pkgrel=1
 pkgdesc="Collection of dialog programs that allow GnuPG to read passphrases and PIN numbers in a secure manner. "
 arch=('x86_64')
@@ -11,7 +11,7 @@ makedepends=('qt')
 optdepends=('qt: for qt4 backend')  
 install=pinentry.install
 source=("ftp://ftp.gnupg.org/gcrypt/pinentry/$pkgname-$pkgver.tar.bz2")
-md5sums=('d224d031130aedb44b05164cb04ed88b')
+md5sums=('50dd255d23839079e15a02761f11d4c8')
 
 build() {
   cd $srcdir/$pkgname-$pkgver
@@ -21,11 +21,10 @@ build() {
   # done
   ./configure --prefix=/usr \
 	--enable-pinentry-curses \
-	--disable-pinentry-gtk \
 	--disable-pinentry-gtk2 \
-        --disable-pinentry-qt \
         --enable-pinentry-qt4 \
-	--enable-fallback-curses
+	--enable-fallback-curses \
+	--disable-ncurses
   make
 }
 
