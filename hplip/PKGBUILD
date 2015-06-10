@@ -3,17 +3,18 @@ pkgname=hplip
 pkgver=3.15.4
 # incase a or b is used in hplip rls:
 _pkgver=3.15.4
-pkgrel=1
+pkgrel=2
 pkgdesc="Drivers for HP DeskJet, OfficeJet, Photosmart, Business Inkjet and some LaserJet."
 arch=('x86_64')
 url="http://hplipopensource.com"
 license=('GPL')
 depends=('python2' 'ghostscript' 'foomatic-db' 'foomatic-db-engine' 'cups'
-         'net-snmp' 'libusb' 'wget' 'pyqt-python2' 'python2-gobject')
-makedepends=('pkgconfig' 'sane' 'rpcbind' 'dbus-python')
+         'net-snmp' 'libusb' 'wget' 'python2-gobject')
+makedepends=('pkgconfig' 'sane' 'rpcbind' 'dbus-python' 'pyqt-python2')
 optdepends=('dbus-python: for dbus support'
             'sane: for scanner support'
-            'rpcbind: for network support')
+            'rpcbind: for network support'
+            'pyqt-python2: for the GUI')
 options=('!libtool')
 install=${pkgname}.install
 source=("http://downloads.sourceforge.net/${pkgname}/${pkgname}-${_pkgver}.tar.gz")
