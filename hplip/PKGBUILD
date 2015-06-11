@@ -1,9 +1,9 @@
 
 pkgname=hplip
-pkgver=3.15.4
+pkgver=3.15.6
 # incase a or b is used in hplip rls:
-_pkgver=3.15.4
-pkgrel=2
+_pkgver=3.15.6
+pkgrel=1
 pkgdesc="Drivers for HP DeskJet, OfficeJet, Photosmart, Business Inkjet and some LaserJet."
 arch=('x86_64')
 url="http://hplipopensource.com"
@@ -18,7 +18,7 @@ optdepends=('dbus-python: for dbus support'
 options=('!libtool')
 install=${pkgname}.install
 source=("http://downloads.sourceforge.net/${pkgname}/${pkgname}-${_pkgver}.tar.gz")
-md5sums=('2cc12f3c8c2cf023891980c8a6b3fa5d')
+md5sums=('fd0a9092c74f5d1e8cf01203365b5030')
 
 build() {
   cd "${srcdir}/${pkgname}-${_pkgver}"
