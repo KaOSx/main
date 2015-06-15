@@ -1,11 +1,11 @@
 post_install() {
-    EXTRAMODULES='extramodules-4.1-rc7-next'
+    EXTRAMODULES='extramodules-4.1-rc8-next'
     depmod $(cat /lib/modules/$EXTRAMODULES/version)
     echo 'In order to use nvidia module, reboot the system.'
 }
 
 post_upgrade() {
-    EXTRAMODULES='extramodules-4.1-rc7-next'
+    EXTRAMODULES='extramodules-4.1-rc8-next'
     depmod $(cat /lib/modules/$EXTRAMODULES/version)
     echo -e '\e[31;46m WARNING'
     echo -e '\e[31;46m If your card is from the G8x, G9x, and GT2xx GPUs or earlier,'
@@ -16,7 +16,7 @@ post_upgrade() {
 }
 
 post_remove() {
-    EXTRAMODULES='extramodules-4.1-rc7-next'
+    EXTRAMODULES='extramodules-4.1-rc8-next'
     depmod $(cat /lib/modules/$EXTRAMODULES/version)
     
 }
