@@ -1,24 +1,26 @@
 
 pkgname=xf86-video-intel
 pkgver=2.99.917
-pkgrel=2
+pkgrel=3
 pkgdesc="X.org Intel i810/i830/i915/945G/G965+ video drivers"
 arch=('x86_64')
 url="http://xorg.freedesktop.org"
 license=('custom')
 depends=('mesa' 'libxvmc' 'libpciaccess' 'libdrm' 'xcb-util' 'libxfixes' 'systemd'
          'libxrandr' 'libxinerama' 'libxcursor' 'libxtst')
-makedepends=('xorg-server>=1.16.0' 'libx11' 'xf86driproto' 'glproto' 'libxrender'
+makedepends=('xorg-server>=1.17.2' 'libx11' 'xf86driproto' 'glproto' 'libxrender'
              'resourceproto' 'scrnsaverproto')
 options=('!libtool')
 groups=('xorg-drivers' 'xorg')
 install=xf86-video-intel.install
-source=("http://xorg.freedesktop.org/releases/individual/driver/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('fa196a66e52c0c624fe5d350af7a5e7b')
+#source=("http://xorg.freedesktop.org/releases/individual/driver/${pkgname}-${pkgver}.tar.bz2")
+source=("git://anongit.freedesktop.org/git/xorg/driver/xf86-video-intel.git#commit=f1f2e7202854c725293c63293de1552337c717b2")
+md5sums=('SKIP')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd "${srcdir}/${pkgname}"
 
+  ./autogen.sh
   ./configure --prefix=/usr \
               --libexecdir=/usr/lib \
               --enable-dri \
@@ -29,7 +31,7 @@ build() {
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd "${srcdir}/${pkgname}"
   make DESTDIR="${pkgdir}" install
   
   install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"

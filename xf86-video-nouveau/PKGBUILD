@@ -1,14 +1,14 @@
 
 pkgname=xf86-video-nouveau
 pkgver=1.0.11
-pkgrel=1
+pkgrel=2
 pkgdesc="Open Source 3D acceleration driver for nVidia cards"
 arch=('x86_64')
 url="http://nouveau.freedesktop.org/"
 license=('GPL') #and MIT, not yet a license file, see http://nouveau.freedesktop.org/wiki/FAQ#head-09f75d03eb30011c754038a3893119a70745de4e
 depends=('libdrm' 'systemd' 'mesa')
 makedepends=('xorg-server' 'xf86driproto' 'resourceproto' 'scrnsaverproto')
-options=('!libtool') # 'force')
+options=('!libtool')
 install=${pkgname}.install
 source=("http://xorg.freedesktop.org/archive/individual/driver/$pkgname-$pkgver.tar.bz2"
         '50-nouveau-hwmon.rules')
