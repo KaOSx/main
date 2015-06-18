@@ -1,21 +1,21 @@
 
 pkgname=muparser
-pkgver=2.2.3
-_pkgver=2_2_3
+pkgver=2.2.4
+_pkgver=2_2_4
 pkgrel=1
 pkgdesc="Fast math parser library"
 arch=('x86_64')
-url="http://muparser.sourceforge.net/"
+url="http://muparser.beltoforion.de/"
 depends=('gcc-libs')
 license=('custom')
 options=('!makeflags')
-source=("http://downloads.sourceforge.net/$pkgname/${pkgname}_v${_pkgver}.zip")
-md5sums=('9de40ec1dab5bd2787ee344fce5846ad')
+source=("https://sourceforge.net/projects/kaosx/files/sources/muparser/${pkgname}_v${_pkgver}.zip")
+md5sums=('ab5d86af1c75e3946314e76e6018f78d')
 
 build() {
   cd $srcdir/${pkgname}_v${_pkgver}
   
-  ./configure --prefix=/usr
+  sh ./configure --prefix=/usr
   make
 }
 
