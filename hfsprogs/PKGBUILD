@@ -1,37 +1,36 @@
 
 pkgname=hfsprogs
 pkgver=332.25
-pkgrel=1
+pkgrel=2
 pkgdesc="HFS/HFS+ user space utils" 
 arch=('x86_64')
 depends=('libbsd')
 license=('custom:APSL')
 url="http://www.opensource.apple.com/"
-source=("http://ftp.de.debian.org/debian/pool/main/h/hfsprogs/hfsprogs_332.25.orig.tar.gz" 
-	"http://ftp.de.debian.org/debian/pool/main/h/hfsprogs/hfsprogs_332.25-10.debian.tar.gz"
+source=("http://ftp.de.debian.org/debian/pool/main/h/hfsprogs/hfsprogs_${pkgver}.orig.tar.gz" 
+	"http://ftp.de.debian.org/debian/pool/main/h/hfsprogs/hfsprogs_${pkgver}-11.debian.tar.gz"
         'license'
 	'makefile.patch')
 md5sums=('261c3de5ec0dcf5244e3f60d79c1d6f1'
-	 'f3d04a0380ecfbb7751abed53fb5525d'
+	 'ce42d7b88de9c41c6192ff3c450a6bd1'
          '771f0a6036a80d929c07df49f9a3d909'
 	 'e2429944c0192d817c700b8f0dffce6e')
 
 build() {
     cd $srcdir/diskdev_cmds-${pkgver}
-    patch -p1 -i $srcdir/debian/patches/00-create_makefiles.patch
-    patch -p1 -i $srcdir/debian/patches/10-linux_specific_code.patch
-    patch -p1 -i $srcdir/debian/patches/20-apple_specific_files.patch
-    patch -p1 -i $srcdir/debian/patches/25-64-bit-fix.patch
-    patch -p1 -i $srcdir/debian/patches/30-formatting_strings.patch
-    patch -p1 -i $srcdir/debian/patches/40-printf_types.patch
-    patch -p1 -i $srcdir/debian/patches/50-typo-new_fs-manpage.diff
-    patch -p1 -i $srcdir/debian/patches/60-hfs-wrapper-boot-in-usr-share.diff
-    patch -p1 -i $srcdir/debian/patches/70-diskdev_cmds_system_check-332.14.patch
-    patch -p1 -i $srcdir/debian/patches/80-fix_manpages.patch
-    patch -p1 -i $srcdir/debian/patches/90-rename_dprintf.patch
-    patch -p1 -i $srcdir/debian/patches/91-remove-nils.patch
-    patch -p1 -i $srcdir/debian/patches/92-fix-types.patch
-    patch -p1 -i $srcdir/debian/patches/hfsplus-tools-332.14-fix-uuid.patch
+    patch -p1 -i $srcdir/debian/patches/0001-Create-short-Makefiles-for-Debian.patch
+    patch -p1 -i $srcdir/debian/patches/0002-Add-exclude-Darwin-specific-code.patch
+    patch -p1 -i $srcdir/debian/patches/0005-Remove-Apple-specific-p-from-strings.patch
+    patch -p1 -i $srcdir/debian/patches/0004-Fix-compilation-on-64-bit-arches.patch
+    patch -p1 -i $srcdir/debian/patches/0003-Add-helper-include-files-absent-from-the-upstream-pa.patch
+    patch -p1 -i $srcdir/debian/patches/0006-Adjust-types-for-printing.patch
+    patch -p1 -i $srcdir/debian/patches/0007-Fix-path-for-HFS-wrapper-block.patch
+    patch -p1 -i $srcdir/debian/patches/0008-Provide-command-line-option-a.patch
+    patch -p1 -i $srcdir/debian/patches/0009-Rename-dprintf-to-dbg_printf.patch
+    patch -p1 -i $srcdir/debian/patches/0013-Fix-manpages.patch
+    patch -p1 -i $srcdir/debian/patches/0010-Rename-custom-macro-nil-with-NULL.patch
+    patch -p1 -i $srcdir/debian/patches/0012-Fix-mkfs-not-creating-UUIDs-for-new-filesystems.patch
+    patch -p1 -i $srcdir/debian/patches/0011-Fix-types.patch
     patch -p0 -i "${srcdir}/makefile.patch"
     make -f Makefile.lnx
 }
