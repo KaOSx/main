@@ -1,12 +1,12 @@
 
 pkgname=udisks
 pkgver=1.0.5
-pkgrel=2
+pkgrel=3
 pkgdesc="Disk Management Service"
 arch=('x86_64')
 url="http://www.freedesktop.org/wiki/Software/udisks"
 license=('GPL')
-depends=('systemd' 'sg3_utils' 'glib2' 'dbus-glib' 'polkit' 'parted' 'device-mapper'
+depends=('systemd' 'libgudev' 'sg3_utils' 'glib2' 'dbus-glib' 'polkit' 'parted' 'device-mapper'
          'libatasmart' 'lsof' 'lvm2' 'util-linux')
 makedepends=('intltool' 'docbook-xsl')
 options=(!libtool)
@@ -19,6 +19,7 @@ md5sums=('70d48dcfe523a74cd7c7fbbc2847fcdd'
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
+  sed -i '1i #include <sys/stat.h>' src/helpers/job-drive-detach.c
   
   # fix fail pci-db message, patch thanks to Tom Gundersen <teg@jklm.no>
   patch -p1 -i ${srcdir}/drop-pci-db.patch
