@@ -1,7 +1,7 @@
 
 pkgname=gdal
-pkgver=1.11.2
-pkgrel=5
+pkgver=2.0.0
+pkgrel=1
 pkgdesc="A translator library for raster geospatial data formats"
 arch=('x86_64')
 url="http://www.gdal.org/"
@@ -12,11 +12,9 @@ depends=('curl' 'geos' 'giflib' 'hdf5' 'libgeotiff' 'libjpeg-turbo' 'libpng' 'li
 makedepends=('perl' 'swig')
 options=('!libtool' '!makeflags')
 source=("http://download.osgeo.org/gdal/${pkgver}/${pkgname}-${pkgver}.tar.gz"
-	'gdal-1.5.1-python-install.patch'
-	'poppler31.diff')
-md5sums=('866a46f72b1feadd60310206439c1a76'
-         '81afc1c26d29cee84aadb6924fe33861'
-         '78a56ae6e8263bb360a7f17ca6589c2a')
+	'gdal-1.5.1-python-install.patch')
+md5sums=('2c5f8f12ed416febd2cbd7b63c48eb17'
+         '81afc1c26d29cee84aadb6924fe33861')
 
 build() {
   export CFLAGS="$CFLAGS -fno-strict-aliasing"
@@ -24,14 +22,6 @@ build() {
 
   cd ${srcdir}/$pkgname-$pkgver
   patch -p0 -i ${srcdir}/gdal-1.5.1-python-install.patch
-  # poppler 0.31.0 fix http://trac.osgeo.org/gdal/changeset/28438#file0
-  patch -p1 -i ${srcdir}/poppler31.diff
-
-  # python2 fixes
-  sed -i 's_python python1.5_python2 python python1.5_' configure
-  for file in swig/python/{,osgeo/,samples/,scripts/}*.py; do
-      sed -i 's_#!/usr/bin/env python_#!/usr/bin/env python2_' $file
-  done
 
   ./configure --prefix=/usr --with-netcdf --with-libtiff --with-sqlite3 \
               --with-geotiff --with-mysql --with-python --with-curl \
