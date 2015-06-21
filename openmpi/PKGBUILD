@@ -1,16 +1,16 @@
 
 pkgname=openmpi
-pkgver=1.8.5
+pkgver=1.8.6
 pkgrel=1
 pkgdesc="High performance message passing library (MPI)"
 arch=('x86_64')
 url="http://www.open-mpi.org"
 license=('custom')
-depends=('gcc' 'gcc-fortran' 'openssh' 'valgrind' 'libltdl' 'hwloc')
+depends=('gcc' 'openssh' 'valgrind' 'libltdl' 'hwloc')
 makedepends=('inetutils')
 options=('!libtool')
 source=("http://www.open-mpi.org/software/ompi/v1.8/downloads/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('93e958914ff0e4d9634d668d2d48c793')
+md5sums=('eb569e7dc97eeaa5b1876cccf114f377')
 
 build() {
    cd "${srcdir}/${pkgname}-${pkgver}"
