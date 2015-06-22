@@ -10,42 +10,12 @@ depends=('libjpeg-turbo' 'zlib' 'xz')
 makedepends=('freeglut' 'glu' 'mesa')
 optdepends=('freeglut: for using tiffgt')
 options=('!libtool')
-source=("ftp://ftp.remotesensing.org/pub/libtiff/tiff-${pkgver}.tar.gz"
-        'tiff-3.9.7-CVE-2012-4447.patch'
-	'tiff-3.9.7-CVE-2012-4564.patch'
-	'tiff-4.0.3-CVE-2013-1960.patch'
-	'tiff-4.0.3-CVE-2013-1961.patch'
-	'tiff-4.0.3-libjpeg-turbo.patch'
-	'tiff-4.0.3-tiff2pdf-colors.patch'
-	'tiff-4.0.3-CVE-2013-4231.patch'
-	'tiff-4.0.3-CVE-2013-4232.patch'
-	'gif2tiff.patch')
-md5sums=('051c1068e6a0627f461948c365290410'
-         'adacceabd7a9c6c23f71d34deb41afbe'
-         'cee27ee12605521c612ef692440ef00b'
-         'e9de577a81571ab8ffac84aac8c64381'
-         'e484981da6d2366a30a89dc0217c115a'
-         'f7cbe41ac63f23e441572c6ecf4bdccc'
-         '085ddc6d1b976c0ed8e307250b695990'
-         '6c1189a715708edc8ba926977b33895f'
-         '35aee7eea6949c2d26ffa52872991115'
-         '2c0dabc854c95e7453fc56d2fd50a503')
+source=("ftp://ftp.remotesensing.org/pub/libtiff/tiff-${pkgver}.tar.gz")
+md5sums=('9aee7107408a128c0c7b24286c0db900')
 
 build() {
   cd "${srcdir}/tiff-${pkgver}"
-  patch -p0 -i "${srcdir}/tiff-4.0.3-tiff2pdf-colors.patch"
-  patch -p1 -i "${srcdir}/tiff-3.9.7-CVE-2012-4447.patch"
-  patch -p1 -i "${srcdir}/tiff-3.9.7-CVE-2012-4564.patch"
-  patch -p1 -i "${srcdir}/tiff-4.0.3-CVE-2013-1960.patch"
-  patch -p1 -i "${srcdir}/tiff-4.0.3-CVE-2013-1961.patch"
-  patch -p1 -i "${srcdir}/tiff-4.0.3-libjpeg-turbo.patch"
-  cd tools
-  patch -p0 -i "${srcdir}/tiff-4.0.3-CVE-2013-4231.patch"
-  patch -p0 -i "${srcdir}/tiff-4.0.3-CVE-2013-4232.patch"
-  # https://github.com/vadz/libtiff/commit/ce6841d9e41d621ba23cf18b190ee6a23b2cc833
-  patch -p0 -i "${srcdir}/gif2tiff.patch"
   
-  cd ..
   ./configure --prefix=/usr
   make
 }
