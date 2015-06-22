@@ -1,7 +1,7 @@
 
 pkgname=libtiff
-pkgver=4.0.3
-pkgrel=5
+pkgver=4.0.4
+pkgrel=1
 pkgdesc="Library for manipulation of TIFF images"
 arch=('x86_64')
 url="http://www.remotesensing.org/libtiff/"
@@ -53,7 +53,7 @@ build() {
 check() {
   cd "${srcdir}/tiff-${pkgver}"
   
-  #make check
+  make check
 }
 
 package() {
