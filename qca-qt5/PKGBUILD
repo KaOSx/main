@@ -1,6 +1,6 @@
 
 pkgname=qca-qt5
-pkgver=2.1.0.2
+pkgver=2.1.0.3
 pkgrel=1
 pkgdesc="Qt Cryptographic Architecture"
 arch=('x86_64')
@@ -9,8 +9,15 @@ license=('LGPL')
 depends=('qt5-base' 'ca-certificates' 'nss')
 makedepends=('cmake')
 #source=("http://delta.affinix.com/download/qca/2.0/${_pkgname}-${pkgver}.tar.gz")
-source=("http://download.kde.org/stable/qca-qt5/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
-md5sums=('c09681efe0d38e874cbb4e72a2db9303')
+source=("http://download.kde.org/stable/qca-qt5/${pkgver}/src/${pkgname}-${pkgver}.tar.xz"
+        'qt5.5.diff')
+md5sums=('e29cc1d8f0292eb28e20b216f52d60fc'
+         'ac2dff0a97f6bc58544278fb4eee90cf')
+
+prepare() {
+  cd ${srcdir}/${pkgname}-${pkgver}
+  patch -p1 -i ${srcdir}/qt5.5.diff
+}
 
 build() {
   cd $srcdir
