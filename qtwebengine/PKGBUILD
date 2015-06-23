@@ -1,20 +1,22 @@
 
 pkgname=qtwebengine
-pkgver=5.4.2
-subver=5.4.2
-_pkgver=5.4
+pkgver=5.5.0rc
+subver=5.5.0-rc
+_pkgver=5.5
 pkgrel=1
 pkgdesc="Chromium-based web engine to replace Qt WebKit"
 url="http://blog.qt.digia.com/blog/2014/01/23/qt-webengine-technology-preview-available/"
 arch=('x86_64')
 license=('GPL3')
 depends=('qt5-declarative' 'python2-jinja' 'mesa' 'systemd' 'pango' 'nss' 'speex' 'libevent' 'libcups'
-         'libxslt' 'libpng' 'libjpeg-turbo' 'libwebp' 'zlib' 'pciutils' 'jsoncpp' 'pulseaudio' 'libxcomposite')
+         'libxslt' 'libpng' 'libjpeg-turbo' 'libwebp' 'zlib' 'pciutils' 'jsoncpp' 'pulseaudio' 'libxcomposite'
+         'qt5-webchannel')
 makedepends=('gperf' 'yasm' 'openssh' 'icu')
 groups=('qt5')
 _pkgfqn="qtwebengine-opensource-src-${subver}"
-source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
-md5sums=('db9fde9b048441c6d0a9d88dfe286e7c')
+#source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
+source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
+md5sums=('e2fc79b5582fbc2d7181c55b33b3aa8a')
 
 build() {
    cd "${srcdir}/$_pkgfqn/"   

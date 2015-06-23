@@ -1,8 +1,8 @@
 
 pkgname=qt5-wayland
-pkgver=5.4.2
-subver=5.4.2
-_pkgver=5.4
+pkgver=5.5.0rc
+subver=5.5.0-rc
+_pkgver=5.5
 pkgrel=1
 pkgdesc="Cross-platform application and UI framework (QtWayland)"
 arch=('x86_64')
@@ -14,9 +14,9 @@ provides=('qtwayland')
 conflicts=('qtwayland')
 replaces=('qtwayland')
 _pkgfqn="qtwayland-opensource-src-${subver}"
-source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
-#source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
-md5sums=('68de7d22a4275e55e787fb8b0f0e2896')
+#source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
+source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
+md5sums=('6af935d192ab3f0c5ea1a99075cad38c')
 
 build() {
     cd $srcdir/$_pkgfqn

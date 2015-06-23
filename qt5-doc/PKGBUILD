@@ -1,8 +1,8 @@
 
 pkgname=qt5-doc
-pkgver=5.4.2
-subver=5.4.2
-_pkgver=5.4
+pkgver=5.5.0rc
+subver=5.5.0-rc
+_pkgver=5.5
 pkgrel=1
 pkgdesc=('A cross-platform application and UI framework, offline documentation files')
 arch=('x86_64')
@@ -11,9 +11,9 @@ license=('GPL3' 'LGPL')
 depends=('qt5-tools')
 options=('!libtool')
 _pkgfqn="qtdoc-opensource-src-${subver}"
-source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
-#source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
-md5sums=('99fde3a86c3c3a22ec74d1db943bf18b')
+#source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
+source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
+md5sums=('6623874705adab76537efd23efe867ef')
 
 build() {
     cd $srcdir/$_pkgfqn

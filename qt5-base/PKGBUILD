@@ -1,8 +1,8 @@
 
 pkgname=('qt5-base' 'qt5-base-docs')
-pkgver=5.4.2
-subver=5.4.2
-_pkgver=5.4
+pkgver=5.5.0rc
+subver=5.5.0-rc
+_pkgver=5.5
 pkgrel=1
 pkgdesc=('A cross-platform application and UI framework')
 arch=('x86_64')
@@ -16,14 +16,14 @@ makedepends=('sqlite3' 'xcb-util-keysyms' 'xcb-util-wm' 'xcb-util-image' 'xcb-ut
          'postgresql-libs' 'cups' 'python2' 'gperf' 'ruby' 'pulseaudio' 'qt5-tools')
 options=('!libtool' 'debug')
 _pkgfqn="qtbase-opensource-src-${subver}"
-source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
-#source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
-md5sums=('67a95eec79ffc4a14f516ad6f3d24c96')
+#source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
+source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
+md5sums=('72524783859d653461d70dc83c3664a5')
 
 build() {
     cd $srcdir/$_pkgfqn
     # http://kaosx.us/phpBB3/viewtopic.php?f=18&t=871#p4527, fix is in review for Qt 5.5
-    sed -i -e 's|"gurj",  // Gujarati|"gujr",  // Gujarati|' $srcdir/$_pkgfqn/src/platformsupport/fontdatabases/fontconfig/qfontconfigdatabase.cpp
+    #sed -i -e 's|"gurj",  // Gujarati|"gujr",  // Gujarati|' $srcdir/$_pkgfqn/src/platformsupport/fontdatabases/fontconfig/qfontconfigdatabase.cpp
         
     unset QTDIR
     export PATH="$PWD/qtbase/bin:$PWD/qtrepotools/bin:$PATH"

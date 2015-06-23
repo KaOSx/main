@@ -1,8 +1,8 @@
 
 pkgname=('qt5-declarative' 'qt5-declarative-docs')
-pkgver=5.4.2
-subver=5.4.2
-_pkgver=5.4
+pkgver=5.5.0rc
+subver=5.5.0-rc
+_pkgver=5.5
 pkgrel=1
 pkgdesc=('A cross-platform application and UI framework, QtDeclarative files')
 arch=('x86_64')
@@ -11,9 +11,9 @@ license=('GPL3' 'LGPL' 'FDL' 'custom')
 makedepends=('qt5-xmlpatterns' 'mesa' 'python2' 'qt5-tools')
 options=('!libtool')
 _pkgfqn="qtdeclarative-opensource-src-${subver}"
-source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
-#source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
-md5sums=('5b257cd097c315dab1b3c15e26211823')
+#source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
+source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
+md5sums=('aba878ad9cabf2e08e0ec88103f1e95d')
 
 build() {
     cd $srcdir/$_pkgfqn
