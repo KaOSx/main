@@ -8,7 +8,7 @@ pkgdesc=('A cross-platform application and UI framework')
 arch=('x86_64')
 url='http://qt-project.org/'
 license=('GPL3' 'LGPL' 'FDL' 'custom')
-makedepends=('sqlite3' 'xcb-util-keysyms' 'xcb-util-wm' 'xcb-util-image' 'xcb-util-renderutil'
+makedepends=('sqlite' 'xcb-util-keysyms' 'xcb-util-wm' 'xcb-util-image' 'xcb-util-renderutil'
          'glib2' 'dbus' 'fontconfig' 'libsm' 'libxrandr' 'libxv' 'libxi' 'unixodbc' 'libjpeg-turbo'
          'alsa-lib' 'xdg-utils' 'hicolor-icon-theme' 'desktop-file-utils' 'mesa' 'systemd'
          'libxcursor' 'libxrender' 'libpng' 'libmariadbclient' 'icu' 'libgl' 'libxfixes' 'libxinerama'
@@ -61,11 +61,11 @@ build() {
 
 package_qt5-base() {
     pkgdesc=('A cross-platform application and UI framework')
-    depends=('sqlite3' 'xcb-util-keysyms' 'xcb-util-wm' 'xcb-util-image' 'xcb-util-renderutil'
+    depends=('sqlite' 'xcb-util-keysyms' 'xcb-util-wm' 'xcb-util-image' 'xcb-util-renderutil'
              'glib2' 'dbus' 'fontconfig' 'libsm' 'libxrandr' 'libxv' 'libxi' 'unixodbc' 'libjpeg-turbo'
              'alsa-lib' 'xdg-utils' 'hicolor-icon-theme' 'desktop-file-utils' 'mesa' 'systemd'
              'libxcursor' 'libxrender' 'libpng' 'libmariadbclient' 'icu' 'libgl' 'libxfixes' 'libxinerama'
-             'libxkbcommon' 'harfbuzz' 'mtdev')
+             'libxkbcommon' 'harfbuzz' 'mtdev' 'libproxy')
     optdepends=('postgresql-libs: PostgreSQL driver')
     groups=('qt5')
     
