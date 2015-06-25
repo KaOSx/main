@@ -1,7 +1,7 @@
 
 pkgname=lm_sensors
-pkgver=3.3.5
-pkgrel=2
+pkgver=3.4.0
+pkgrel=1
 pkgdesc="Collection of user space tools for general SMBus access and hardware monitoring"
 arch=('x86_64')
 url="http://www.lm-sensors.org/"
@@ -11,15 +11,16 @@ makedepends=('rrdtool')
 backup=('etc/sensors3.conf' 'etc/conf.d/healthd' 'etc/conf.d/sensord')
 options=('!emptydirs')
 source=("http://dl.lm-sensors.org/lm-sensors/releases/lm_sensors-${pkgver}.tar.bz2" \
-        'healthd' 'healthd.conf' 'sensord.conf' \
-        'fancontrol.patch' 'linux_3.0.patch' \
-        'fancontrol.service' 'sensord.service' 'healthd.service')
-md5sums=('da506dedceb41822e64865f6ba34828a'
+        'healthd' 
+        'healthd.conf' 
+        'sensord.conf' 
+        'fancontrol.service' 
+        'sensord.service' 
+        'healthd.service')
+md5sums=('c03675ae9d43d60322110c679416901a'
          'b68bdb73bb4d28ebdb36e2d92278582d'
          'f8af587038b0e2a89c441f7eeaa5e640'
          '96a8dd468e81d455ec9b165bdf33e0b7'
-         '020a7ca27b203cd4fccbe7655e1f59d2'
-         '0583decd3f47fb2b98204aa623ea7375'
          '3e2e0ebe6e0772cac50bd2721229f12f'
          'b2dfc6fc1cdb38432b8317dbc63ce23f'
          'daf19e142d59f015040814172742502b')
@@ -28,11 +29,7 @@ build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
   sed -i 's|/etc/sysconfig|/etc/conf.d|' prog/{detect/sensors-detect,init/lm_sensors.service}
   sed -i 's@\(/bin/systemctl\|/lib/systemd/system\)@/usr\1@g' prog/detect/sensors-detect
-  #if the configuration file is not present don't show any errors (file generated with sensors-detect), Arch bug #30887
   sed -i 's/EnvironmentFile=/EnvironmentFile=-/' prog/init/lm_sensors.service
-  
-  #patch -p0 -i ${srcdir}/fancontrol.patch
-  #patch -p0 -i ${srcdir}/linux_3.0.patch
   
   make PREFIX=/usr
 }
