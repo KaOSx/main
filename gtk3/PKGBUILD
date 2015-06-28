@@ -1,7 +1,7 @@
 
 pkgname=gtk3
-pkgver=3.14.13
-_pkgver=3.14
+pkgver=3.16.4
+_pkgver=3.16
 pkgrel=1
 pkgdesc="The GTK+ Toolkit (v3)"
 arch=('x86_64')
@@ -9,13 +9,14 @@ url="http://www.gtk.org/"
 install="gtk3.install"
 depends=('cairo' 'gtk-update-icon-cache' 'libcups' 'libxcursor'
          'libxinerama' 'libxrandr' 'libxi' 'libxcomposite' 'libxdamage'
-         'pango' 'shared-mime-info' 'colord' 'at-spi2-atk')
+         'pango' 'shared-mime-info' 'colord' 'at-spi2-atk' 'libepoxy'
+         'libxkbcommon' 'wayland')
 makedepends=('gobject-introspection')
 options=('!libtool' '!docs')
 backup=(etc/gtk-3.0/settings.ini)
 license=('LGPL')
 source=("http://ftp.gnome.org/pub/gnome/sources/gtk+/${_pkgver}/gtk+-${pkgver}.tar.xz")
-md5sums=('258da3f4ff099e908010ef4a23b6051b')
+md5sums=('c7497aaf6730524a127597b768a73bd7')
 
 build() {
   cd "${srcdir}/gtk+-${pkgver}"
@@ -23,8 +24,9 @@ build() {
  ./configure --prefix=/usr \
              --sysconfdir=/etc \
              --localstatedir=/var \
-             --enable-gtk2-dependency \
-             --disable-schemas-compile
+             --disable-schemas-compile \
+             --enable-x11-backend \
+             --enable-wayland-backend
 
   #https://bugzilla.gnome.org/show_bug.cgi?id=655517
   sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
