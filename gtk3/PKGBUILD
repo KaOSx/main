@@ -1,19 +1,15 @@
 
-pkgname=gtk3
+pkgbase=gtk3
+pkgname=('gtk3' 'gtk-update-icon-cache')
 pkgver=3.16.4
 _pkgver=3.16
 pkgrel=1
-pkgdesc="The GTK+ Toolkit (v3)"
 arch=('x86_64')
 url="http://www.gtk.org/"
-install="gtk3.install"
-depends=('cairo' 'gtk-update-icon-cache' 'libcups' 'libxcursor'
-         'libxinerama' 'libxrandr' 'libxi' 'libxcomposite' 'libxdamage'
-         'pango' 'shared-mime-info' 'colord' 'at-spi2-atk' 'libepoxy'
-         'libxkbcommon' 'wayland')
-makedepends=('gobject-introspection')
+makedepends=('gobject-introspection' 'cairo' 'libcups' 'libxcursor' 'libxinerama' 'libxrandr' 
+             'libxi' 'libxcomposite' 'libxdamage' 'pango' 'shared-mime-info' 'gdk-pixbuf2' 
+             'colord' 'at-spi2-atk' 'libepoxy' 'libxkbcommon' 'wayland')
 options=('!libtool' '!docs')
-backup=(etc/gtk-3.0/settings.ini)
 license=('LGPL')
 source=("http://ftp.gnome.org/pub/gnome/sources/gtk+/${_pkgver}/gtk+-${pkgver}.tar.xz")
 md5sums=('c7497aaf6730524a127597b768a73bd7')
@@ -33,9 +29,27 @@ build() {
   make
 }
 
-package() {
+package_gtk3() {
+  pkgdesc="The GTK+ Toolkit (v3)"
+  depends=('cairo' 'libcups' 'libxcursor' 'libxinerama' 'libxrandr' 
+          'libxi' 'libxcomposite' 'libxdamage' 'pango' 'shared-mime-info' 
+          'colord' 'at-spi2-atk' 'libepoxy' 'libxkbcommon' 'wayland')
+  install="gtk3.install"
+  
   cd "${srcdir}/gtk+-${pkgver}"
 
   make DESTDIR="${pkgdir}" install
+  
+  # avoid gtk2 conflict, used for both gtk2 & 3 this way
+  rm "$pkgdir/usr/bin/gtk-update-icon-cache"
 }
 
+package_gtk-update-icon-cache() {
+    pkgdesc="The GTK+ update icon cache tool"
+    depends=('gdk-pixbuf2')
+    install="gtk-update-icon-cache.install"
+
+    cd "$srcdir/gtk+-$pkgver/gtk"
+
+    install -D -m755 gtk-update-icon-cache $pkgdir/usr/bin/gtk-update-icon-cache
+}

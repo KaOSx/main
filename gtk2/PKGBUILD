@@ -1,15 +1,18 @@
 
-pkgbase=gtk2
-pkgname=('gtk2' 'gtk-update-icon-cache')
+pkgname=gtk2
 pkgver=2.24.28
 _pkgver=2.24
 pkgrel=3
 arch=('x86_64')
 url="http://www.gtk.org/"
-makedepends=('atk' 'pango' 'libxcursor' 'libxinerama' 'libxrandr' 'libxi' 'libxcomposite' 'libxdamage'
-             'shared-mime-info' 'cairo' 'libcups' 'gdk-pixbuf2' 'gobject-introspection')
-options=('!libtool' '!docs')
+pkgdesc="GTK+ is a multi-platform toolkit (v2)"
 license=('LGPL')
+depends=('atk' 'pango' 'libxcursor' 'libxinerama' 'libxrandr' 'libxi' 'libxcomposite' 'libxdamage'
+         'shared-mime-info' 'cairo' 'libcups' 'gtk-update-icon-cache')
+makedepends=('gobject-introspection')
+options=('!libtool' '!docs')
+install=gtk2.install
+backup=(etc/gtk-2.0/gtkrc)
 source=("http://ftp.gnome.org/pub/gnome/sources/gtk+/${_pkgver}/gtk+-$pkgver.tar.xz"
         'xid-collision-debug.patch')
 md5sums=('bfacf87b2ea67e4e5c7866a9003e6526'
@@ -30,25 +33,13 @@ build() {
     make
 }
 
-package_gtk2() {
-    pkgdesc="GTK+ is a multi-platform toolkit (v2)"
-    install=gtk2.install
-    depends=('atk' 'pango' 'libxcursor' 'libxinerama' 'libxrandr' 'libxi' 'libxcomposite' 'libxdamage' 'shared-mime-info' 'cairo' 'libcups' 'gtk-update-icon-cache')
-    backup=(etc/gtk-2.0/gtkrc)
-
+package() {
     cd "$srcdir/gtk+-$pkgver"
 
     make DESTDIR="$pkgdir" install
     sed -i "s#env python#env python2#" $pkgdir/usr/bin/gtk-builder-convert
     echo 'gtk-fallback-icon-theme = "gnome"' > "$pkgdir/etc/gtk-2.0/gtkrc"
-    #split this out to use with gtk3 too
+    
     rm $pkgdir/usr/bin/gtk-update-icon-cache
 }
-package_gtk-update-icon-cache() {
-    pkgdesc="The GTK+ update icon cache tool"
-    depends=('gdk-pixbuf2')
 
-    cd "$srcdir/gtk+-$pkgver/gtk"
-
-    install -D -m755 gtk-update-icon-cache $pkgdir/usr/bin/gtk-update-icon-cache
-}
