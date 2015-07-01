@@ -1,7 +1,7 @@
 
 pkgname=qt5-multimedia
-pkgver=5.5.0rc
-subver=5.5.0-rc
+pkgver=5.5.0
+subver=5.5.0
 _pkgver=5.5
 pkgrel=1
 pkgdesc=('A cross-platform application and UI framework, QtMultimedia files')
@@ -14,11 +14,9 @@ depends=('qt5-declarative' 'openal' 'libxslt' 'libxcomposite' 'gst-plugins-base'
 options=('!libtool')
 groups=('qt5')
 _pkgfqn="qtmultimedia-opensource-src-${subver}"
-#_pkgfqn=qt-qtmultimedia
-#source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
-source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
-#source=("qt-qtmultimedia-5e376b135e94dee85787e093d228e59284964ce7.tar.gz")
-md5sums=('5d6d46f893bf5451da9baa6e68beb43c')
+source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
+#source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
+md5sums=('2759807c5d1842ee69e516aacd5e756a')
 
 build() {
     cd $srcdir/$_pkgfqn
