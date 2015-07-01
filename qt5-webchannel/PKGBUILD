@@ -1,7 +1,7 @@
 
 pkgname=qt5-webchannel
-pkgver=5.5.0rc
-subver=5.5.0-rc
+pkgver=5.5.0
+subver=5.5.0
 _pkgver=5.5
 pkgrel=1
 pkgdesc=('Module being used in e.g. Qt WebKit to provide a seamless integration of QML/C++ 
@@ -14,9 +14,9 @@ makedepends=('python2')
 groups=('qt5')
 options=('!libtool')
 _pkgfqn="qtwebchannel-opensource-src-${subver}"
-#source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
-source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
-md5sums=('c2a155a4843eb9741d5cbf5e3bb11ade')
+source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
+#source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
+md5sums=('c20146286108477cdab60c67d2d87dc7')
 
 build() {
     cd $srcdir/$_pkgfqn

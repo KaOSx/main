@@ -1,7 +1,7 @@
 
 pkgname=qt5-graphicaleffects
-pkgver=5.5.0rc
-subver=5.5.0-rc
+pkgver=5.5.0
+subver=5.5.0
 _pkgver=5.5
 pkgrel=1
 pkgdesc=('A cross-platform application and UI framework, QtGraphicaleffects files')
@@ -13,9 +13,9 @@ makedepends=('qt5-tools')
 options=('!libtool')
 groups=('qt5')
 _pkgfqn="qtgraphicaleffects-opensource-src-${subver}"
-#source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
-source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
-md5sums=('2fdcf706b5a195e756b28c1db91ee75c')
+source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
+#source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
+md5sums=('2fb95cecb2ab0542cb0b5847c65600c3')
 
 build() {
     cd $srcdir/$_pkgfqn

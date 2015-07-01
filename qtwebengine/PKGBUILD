@@ -1,7 +1,7 @@
 
 pkgname=qtwebengine
-pkgver=5.5.0rc
-subver=5.5.0-rc
+pkgver=5.5.0
+subver=5.5.0
 _pkgver=5.5
 pkgrel=1
 pkgdesc="Chromium-based web engine to replace Qt WebKit"
@@ -14,9 +14,9 @@ depends=('qt5-declarative' 'python2-jinja' 'mesa' 'systemd' 'pango' 'nss' 'speex
 makedepends=('gperf' 'yasm' 'openssh' 'icu')
 groups=('qt5')
 _pkgfqn="qtwebengine-opensource-src-${subver}"
-#source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
-source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
-md5sums=('e2fc79b5582fbc2d7181c55b33b3aa8a')
+source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
+#source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
+md5sums=('1405a87ce84ba58478f98e89ec1e737e')
 
 build() {
    cd "${srcdir}/$_pkgfqn/"   
