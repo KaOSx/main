@@ -1,6 +1,6 @@
 
 pkgname=libgphoto2
-pkgver=2.5.7
+pkgver=2.5.8
 pkgrel=1
 pkgdesc="The core library of gphoto2 with increased file limits"
 arch=('x86_64')
@@ -9,11 +9,11 @@ license=('LGPL')
 conflicts=('libgphoto2-nolimit')
 provides=('libgphoto2-nolimit')
 replaces=('libgphoto2-nolimit')
-depends=('libexif' 'libjpeg>=8' 'gd' 'libtool' 'libusb' 'libusb-compat')
+depends=('libexif' 'libjpeg>=8' 'gd' 'libtool' 'libusb')
 install=libgphoto2.install
 options=('libtool')
 source=("http://downloads.sourceforge.net/gphoto/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('6b20635dc9120efb3d23c3b5201894a2')
+md5sums=('873ab01aced49c6b92a98e515db5dcef')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
