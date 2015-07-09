@@ -1,7 +1,7 @@
 
 pkgname=signonqt
 pkgver=8.57
-pkgrel=3
+pkgrel=4
 arch=('x86_64')
 url="http://code.google.com/p/accounts-sso/"
 license=('LGPL')
@@ -15,12 +15,15 @@ replaces=('signonqt-doc' 'signon-qt5')
 provides=('signonqt-doc' 'signon-qt5')
 # check source https://groups.google.com/forum/#!forum/accounts-sso-announce
 # latest tars https://drive.google.com/#folders/0B8fX9XOwH_g4alFsYV8tZTI4VjQ
-source=("http://sourceforge.net/projects/kaosx/files/sources/signon/signon-$pkgver.tar.bz2")
-md5sums=('9afb31332df8afffd8923f0079967d31')
+source=("http://sourceforge.net/projects/kaosx/files/sources/signon/signon-$pkgver.tar.bz2"
+        'qt5.5.diff')
+md5sums=('9afb31332df8afffd8923f0079967d31'
+         '89adf6e5725beb1fd0a1ae4fc0a64653')
 
 build() {
   cd signon-$pkgver
   sed -i 's/qdbusxml2cpp/qdbusxml2cpp-qt5/' src/signond/signond.pro
+  patch -p1 -i $srcdir/qt5.5.diff
   
   /usr/lib/qt5/bin/qmake PREFIX=/usr LIBDIR=/usr/lib
   make
