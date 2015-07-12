@@ -1,33 +1,22 @@
 
 pkgname=junit
-pkgver=4.11
-pkgrel=2
+pkgver=4.12
+pkgrel=1
 pkgdesc="Automated testing framework for Java"
 arch=('x86_64')
 url="http://www.junit.org/"
 license=('CPL')
 depends=('java-runtime' 'hamcrest')
-makedepends=('apache-ant' 'git')
-source=("https://github.com/junit-team/junit/archive/r${pkgver}.tar.gz"
+#makedepends=('apache-ant' 'git')
+source=("https://github.com/junit-team/junit/releases/download/r${pkgver}/${pkgname}-${pkgver}.jar"
         'Manifest.txt')
-md5sums=('bf62095e510f50baf0962af329438647'
+md5sums=('5b38c40c97fbd0adee29f91e60405584'
          '165500a4fcda0cdd6cff5256301d3702')
 
-build() {
-  cd ${srcdir}/${pkgname}-r${pkgver}
-
-  ant dist -Dversion-status=''
-  jar ufm ${pkgname}${pkgver}/${pkgname}-dep-${pkgver}.jar ${srcdir}/Manifest.txt
-}
-
-check() {
-  cd ${srcdir}/${pkgname}-r${pkgver}
-
-  ant test
-}
-
 package() {
-  install -Dm644 ${srcdir}/${pkgname}-r${pkgver}/${pkgname}${pkgver}/${pkgname}-dep-${pkgver}.jar \
+  cd ${srcdir}/${pkgname}
+  
+  install -Dm644 ${srcdir}/${pkgname}-${pkgver}.jar \
                  ${pkgdir}/usr/share/java/${pkgname}-${pkgver}.jar
   ln -s ${pkgname}-${pkgver}.jar ${pkgdir}/usr/share/java/${pkgname}.jar
 }
