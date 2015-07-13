@@ -1,10 +1,10 @@
 
 pkgbase="llvm"
 pkgname=('llvm' 'clang' 'clang-analyzer')
-pkgver=3.6.1
-subver=3.6.1
+pkgver=3.6.2
+subver=3.6.2
 _gcc_ver=4.9.3
-pkgrel=2
+pkgrel=1
 arch=('x86_64')
 url="http://llvm.org/"
 license=('custom:University of Illinois/NCSA Open Source License')
@@ -12,9 +12,9 @@ makedepends=('gcc-libs' 'libffi' 'python2' 'ocaml' "gcc=${_gcc_ver}" 'groff' 'sw
 source=("http://llvm.org/releases/${pkgver}/${pkgbase}-${pkgver}.src.tar.xz"
         "http://llvm.org/releases/$pkgver/cfe-$pkgver.src.tar.xz"
         "http://llvm.org/releases/$pkgver/compiler-rt-$pkgver.src.tar.xz")
-md5sums=('ebf9e97be405ae126e134d3a357cd58a'
-         '9ff6811757735051f8651833b22ae014'
-         '6f204b1feb324b1672ac907b32d927c0')
+md5sums=('0c1ee3597d75280dee603bae9cbf5cc2'
+         'ff862793682f714bb7862325b9c06e20'
+         'e3bc4eb7ba8c39a6fe90d6c988927f3c')
 
 build() {
   cd "${srcdir}/${pkgbase}-${pkgver}.src"

@@ -1,7 +1,7 @@
 
 pkgname=hamcrest
 pkgver=1.3
-pkgrel=1
+pkgrel=2
 pkgdesc='Java matcher objects library'
 arch=('x86_64')
 url='https://code.google.com/p/hamcrest'
@@ -27,9 +27,9 @@ package() {
 
   install -dm755 ${pkgdir}/usr/share/java/${pkgname}
   for j in core library generator integration; do
-    cp ${pkgname}-${j}-${pkgver}.jar ${pkgdir}/usr/share/java/${pkgname}
-    ln -s ${pkgname}/${pkgname}-${j}-${pkgver}.jar \
-          ${pkgdir}/usr/share/java/${pkgname}-${j}.jar
+    cp ${pkgname}-${j}-${pkgver}.jar ${pkgdir}/usr/share/java/${pkgname}/${j}-${pkgver}.jar
+    ln -s ${j}-${pkgver}.jar ${pkgdir}/usr/share/java/${pkgname}/${j}.jar
+    ln -s ${pkgname}/${j}-${pkgver}.jar ${pkgdir}/usr/share/java/${pkgname}-${j}.jar
   done
 
   install -Dm644 LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
