@@ -28,14 +28,14 @@ win32 {
 
 QWT_INSTALL_DOCS      = $${QWT_INSTALL_PREFIX}/share/doc/qwt
 QWT_INSTALL_HEADERS   = $${QWT_INSTALL_PREFIX}/include/qwt
-QWT_INSTALL_LIBS      = $${QWT_INSTALL_PREFIX}/lib/qwt
+QWT_INSTALL_LIBS      = $${QWT_INSTALL_PREFIX}/lib
 
 ######################################################################
 # Designer plugin
 ######################################################################
 
 #QWT_INSTALL_PLUGINS   = $${QWT_INSTALL_PREFIX}/plugins/designer
-QWT_INSTALL_PLUGINS   = $${QT_INSTALL_PREFIX}/usr/lib/qt/plugins/designer/
+QWT_INSTALL_PLUGINS   = $${QT_INSTALL_PREFIX}/usr/lib/qt5/plugins/designer/
 
 ######################################################################
 # Features
