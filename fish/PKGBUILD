@@ -1,7 +1,7 @@
 
 pkgname=fish
 pkgver=2.2.0
-pkgrel=1
+pkgrel=2
 pkgdesc='Smart and user friendly shell intended mostly for interactive use'
 arch=('x86_64')
 url='http://fishshell.com/'
@@ -22,6 +22,7 @@ build() {
 
 package() {
   cd fish-shell-$pkgver
-  
   make DESTDIR="$pkgdir" install
+  # part of docker:
+  rm -r $pkgdir/usr/share/fish/completions/docker.fish
 }
