@@ -1,7 +1,7 @@
 
 pkgname=sip
-pkgver=4.16.8
-_pkgver=4.16.8
+pkgver=4.16.9
+_pkgver=4.16.9
 _snapshot=0b19f77489ce
 pkgrel=1
 pkgdesc="A tool that makes it easy to create Python bindings for C and C++ libraries"
@@ -9,9 +9,10 @@ arch=('x86_64')
 url="http://www.riverbankcomputing.com/software/sip/"
 license=('custom:"sip"')
 depends=('python2' 'gcc-libs')
-source=("http://sourceforge.net/projects/pyqt/files/sip/sip-${pkgver}/${pkgname}-${pkgver}.tar.gz")
+#source=("http://sourceforge.net/projects/pyqt/files/sip/sip-${pkgver}/${pkgname}-${pkgver}.tar.gz")
+source=("http://www.riverbankcomputing.com/static/Downloads/sip4/sip-${pkgver}.tar.gz")
 #source=("http://www.riverbankcomputing.com/static/Downloads/sip4/sip-4.15.5-snapshot-$_snapshot.tar.gz")
-md5sums=('8e48cd78bcd31f9310a701a4111c2739')
+md5sums=('7a1dfff4e6fade0e4adee2c4e3d3aa9a')
 
 build() {
   cd ${srcdir}/${pkgname}-${pkgver}
