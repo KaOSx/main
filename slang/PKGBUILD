@@ -1,6 +1,6 @@
 
 pkgname=slang
-pkgver=2.2.4
+pkgver=2.3.0
 pkgrel=1
 pkgdesc="S-Lang is a powerful interpreted language"
 arch=('x86_64')
@@ -9,11 +9,11 @@ license=('GPL')
 depends=('glibc' 'pcre' 'zlib')
 backup=('etc/slsh.rc')
 options=('!makeflags')
-source=("ftp://ftp.fu-berlin.de/pub/unix/misc/slang/v${pkgver%.*}/${pkgname}-${pkgver}.tar.gz")
-md5sums=('86cd8689cd71e281b4720fef8453ceeb')
+source=("http://www.jedsoft.org/releases/slang/${pkgname}-${pkgver}.tar.bz2")
+md5sums=('3bcc790460d52db1316c20395b7ac2f1')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${srcdir}/${pkgname}-${pkgver}
   
   ./configure --prefix=/usr --sysconfdir=/etc 
   make
@@ -27,7 +27,7 @@ check() {
 
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${srcdir}/${pkgname}-${pkgver}
   
   make DESTDIR="${pkgdir}" install-all
 }

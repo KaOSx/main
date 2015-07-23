@@ -2,16 +2,16 @@
 pkgbase=lapack
 pkgname=('lapack' 'blas')
 pkgver=3.5.0
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 url="http://www.netlib.org/lapack"
 pkgdesc="Linear Algebra PACKage"
-makedepends=('gcc-fortran' 'cmake')
 depends=('gcc-libs')
+makedepends=('gcc' 'cmake')
 license=("custom")
 source=("http://www.netlib.org/${pkgbase}/${pkgbase}-${pkgver}.tgz"
         'LICENSE.blas')
-md5sums=('e7ba742120bd75339ac4c6fbdd8bce92'
+md5sums=('b1d3e3e425b2e44a06760ff173104bdf'
          '38b6acb8ed5691d25863319d30a8b365')
 
 build() {
