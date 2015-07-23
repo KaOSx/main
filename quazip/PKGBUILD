@@ -1,0 +1,26 @@
+
+pkgname=quazip
+pkgver=0.7.1
+pkgrel=1
+pkgdesc="Simple C++ wrapper over Gilles Vollant's ZIP/UNZIP package that can be used to access ZIP archives"
+url="http://quazip.sourceforge.net/"
+license=('LGPL')
+arch=('x86_64')
+depends=('qt5-base')
+source=("http://downloads.sourceforge.net/quazip/${pkgname}-${pkgver}.tar.gz")
+md5sums=('3b99effb2a9417707d463e6f19cf2629')
+
+build() {
+  cd ${pkgname}-${pkgver}/${pkgname}
+
+  /usr/lib/qt5/bin/qmake PREFIX=/usr
+  make
+}
+
+package() {
+  cd ${pkgname}-${pkgver}/${pkgname}
+  make INSTALL_ROOT=${pkgdir} install
+
+  #install -d ${pkgdir}/usr/share/cmake-3.2/Modules
+  #install -m644 ../FindQuaZip.cmake ${pkgdir}/usr/share/cmake-3.2/Modules
+}
