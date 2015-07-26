@@ -1,7 +1,7 @@
 
 pkgname=cups-filters
 pkgver=1.0.71
-pkgrel=1
+pkgrel=2
 pkgdesc="OpenPrinting CUPS Filters"
 arch=('x86_64')
 url="http://www.linuxfoundation.org/collaborate/workgroups/openprinting"
@@ -17,11 +17,14 @@ provides=('foomatic-filters')
 replaces=('foomatic-filters')
 backup=(etc/fonts/conf.d/99pdftoopvp.conf)
 options=('!libtool')
-source=("http://www.openprinting.org/download/cups-filters/$pkgname-$pkgver.tar.xz")
-md5sums=('f1e11dfe5fa52eb65aa0bdd3a7ee0117')
+source=("http://www.openprinting.org/download/cups-filters/$pkgname-$pkgver.tar.xz"
+        'poppler34.diff')
+md5sums=('f1e11dfe5fa52eb65aa0bdd3a7ee0117'
+         'da7b236ab95d9a58606b8878496247ba')
 
 build() {
   cd $srcdir/$pkgname-$pkgver
+  patch -p1 -i $srcdir/poppler34.diff
   
   ./configure --prefix=/usr  \
     --sysconfdir=/etc \
