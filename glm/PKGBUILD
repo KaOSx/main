@@ -1,25 +1,29 @@
 pkgname=glm
-pkgver=0.9.6.3
+pkgver=0.9.7.0
 pkgrel=1
 pkgdesc="Header only C++ mathematics library for graphics software based on the OpenGL Shading Language (GLSL) specifications"
 arch=('x86_64')
 license=('MIT')
 url="http://glm.g-truc.net"
-source=("http://sourceforge.net/projects/ogl-math/files/glm-$pkgver/glm-$pkgver.zip")
-md5sums=('acd0b517c37ed25c3f11ee155ee8257e')
+source=("https://github.com/g-truc/glm/releases/download/$pkgver/glm-$pkgver.zip")
+md5sums=('34c3eb7e99e1ae68a7d42bd401bf38bb')
+
+build() {
+  mkdir build
+  cd build
+  
+  cmake ../${pkgname} \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_INSTALL_DOCDIR=/usr/share/doc/glm
+  make
+}
 
 package() {
-    cd $pkgname
-    mkdir -p $pkgdir/usr/include/glm
-    mkdir -p $pkgdir/usr/share/doc
-
-    cp -r glm $pkgdir/usr/include
-    cp -r doc $pkgdir/usr/share/doc/glm
-
-    rm -f $pkgdir/usr/include/glm/CMakeLists.txt
-    find $pkgdir -type f -exec chmod 644 {} \;
-    find $pkgdir -type d -exec chmod 755 {} \;
-
-    install -Dm644 util/FindGLM.cmake $pkgdir/usr/share/cmake-3.2/Modules/FindGLM.cmake
-    install -Dm644 copying.txt $pkgdir/usr/share/licenses/$pkgname/LICENSE
+  cd build
+  make DESTDIR="${pkgdir}" install
+  
+  install -Dm644 ../glm/copying.txt $pkgdir/usr/share/licenses/$pkgname/LICENSE
 }
+
