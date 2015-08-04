@@ -1,0 +1,25 @@
+
+pkgname=lmdb
+pkgver=0.9.15
+pkgrel=1
+pkgdesc="Fast, ultra-compact key-value embedded data store developed by Symas for the OpenLDAP Project."
+url="http://symas.com/mdb"
+license=('custom:OpenLDAP')
+depends=('gcc')
+arch=('x86_64')
+source=("https://github.com/LMDB/lmdb/archive/LMDB_${pkgver}.tar.gz")
+md5sums=('408b6b94ca3e2e06fe40d742690e15a8')
+
+build() {
+  cd lmdb-LMDB_${pkgver}/libraries/liblmdb
+
+  make prefix=/usr
+}
+
+package() {
+  cd lmdb-LMDB_${pkgver}/libraries/liblmdb
+  install -m755 -d ${pkgdir}/usr/{bin,lib,include,man/man1}
+  
+  make DESTDIR=${pkgdir} prefix=/usr install
+  install -m644 -D LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
