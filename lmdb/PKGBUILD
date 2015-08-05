@@ -18,8 +18,9 @@ build() {
 
 package() {
   cd lmdb-LMDB_${pkgver}/libraries/liblmdb
-  install -m755 -d ${pkgdir}/usr/{bin,lib,include,man/man1}
+  install -m755 -d ${pkgdir}/usr/{bin,lib,include,man/man1,share}
   
   make DESTDIR=${pkgdir} prefix=/usr install
+  mv $pkgdir/usr/man $pkgdir/usr/share/man
   install -m644 -D LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
