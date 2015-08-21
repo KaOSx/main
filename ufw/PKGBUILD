@@ -1,7 +1,7 @@
 
 pkgname=ufw
-pkgver=0.33
-pkgrel=3
+pkgver=0.34
+pkgrel=1
 pkgdesc="Uncomplicated and easy to use CLI tool for managing a netfilter firewall"
 arch=('x86_64')
 url="https://launchpad.net/ufw"
@@ -20,7 +20,7 @@ backup=('etc/ufw/before.rules'
 categories=('network')
 source=("http://launchpad.net/${pkgname}/${pkgver}/${pkgver}/+download/${pkgname}-${pkgver}.tar.gz"
         "${pkgname}.service")
-md5sums=('3747b453d76709e5a99da209fc0bb5f5'
+md5sums=('9b19a73073c76ce78b3f02cb62b35da6'
          '2c85da635f53c6817be8c1941a9a35fb')
 
 package() {
@@ -36,7 +36,7 @@ package() {
   # Fix permissions
   chmod 644 "${pkgdir}/etc/ufw"/*.rules "${pkgdir}/usr/lib/ufw"/*.rules
 
-  # Absolute paths are bad!
+  # no absolute paths
   sed -e 's#/bin/echo#echo#g' -i "${pkgdir}/usr/lib/ufw/ufw-init-functions"
 
   # Enable by default
