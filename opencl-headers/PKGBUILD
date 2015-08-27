@@ -1,27 +1,39 @@
 
 pkgname=opencl-headers
-pkgver=1.1.20110526
-_clbasever=1.1 # 1.1 for Nvidia
+pkgver=2.0.20150827
+_clbasever=2.0 
 pkgrel=1
 pkgdesc='OpenCL (Open Computing Language) header files'
 arch=('x86_64')
 url='http://www.khronos.org/registry/cl/'
 license=('custom')
 depends=('libcl')
-source=("http://sourceforge.net/projects/kaosx/files/sources/opencl/${pkgname}-${pkgver}.src.tar.xz"
-        'LICENSE.txt')
-_headers=("http://www.khronos.org/registry/cl/api/${_clbasever}/cl_ext.h"
-          "http://www.khronos.org/registry/cl/api/${_clbasever}/cl_gl_ext.h"
-          "http://www.khronos.org/registry/cl/api/${_clbasever}/cl_gl.h"
-          "http://www.khronos.org/registry/cl/api/${_clbasever}/cl.h"
-          "http://www.khronos.org/registry/cl/api/${_clbasever}/cl.hpp"
-          "http://www.khronos.org/registry/cl/api/${_clbasever}/cl_platform.h"
-          "http://www.khronos.org/registry/cl/api/${_clbasever}/opencl.h")
-md5sums=('d16a036ce182f0951aad81cb27e6c35d'
-         '8e59f0e0f64326e826007b49700fba76')
+source=('LICENSE.txt'
+        "http://www.khronos.org/registry/cl/api/${_clbasever}/cl_ext.h"
+        "http://www.khronos.org/registry/cl/api/${_clbasever}/cl_gl_ext.h"
+        "http://www.khronos.org/registry/cl/api/${_clbasever}/cl_egl.h"
+        "http://www.khronos.org/registry/cl/api/${_clbasever}/cl_gl.h"
+        "http://www.khronos.org/registry/cl/api/${_clbasever}/cl.h"
+        "http://www.khronos.org/registry/cl/api/${_clbasever}/cl2.hpp"
+        "http://www.khronos.org/registry/cl/api/${_clbasever}/cl_platform.h"
+        "http://www.khronos.org/registry/cl/api/${_clbasever}/cl_dx9_media_sharing.h"
+        "http://www.khronos.org/registry/cl/api/${_clbasever}/cl_d3d10.h"
+        "http://www.khronos.org/registry/cl/api/${_clbasever}/cl_d3d11.h"
+        "http://www.khronos.org/registry/cl/api/${_clbasever}/opencl.h")
+md5sums=('8e59f0e0f64326e826007b49700fba76'
+         'a31487129afd2040c98597f31a7a0039'
+         '25cf9128d1d189a08b19a6a47693e71e'
+         'b58aebb229378ac0c8d076828ea37a24'
+         'c85b5c61940ca3dd42d76dc93baaba9b'
+         '8fce851a7e009583a5ee10dec9111cda'
+         '85bd00be0df339d5d2c90d7d2077268d'
+         '56bc3c5aec53109c4b9d794740a7a4f6'
+         'bbec1ee4f18461b9401585641084ee96'
+         '4e4921ba92e5b8fd09eebea9c5d368d5'
+         '22a787c1212677ad192ab93531b4439f'
+         'f6d1ab7b5a3230990e29fa236ab043dc')
 
 package() {
-   cd "${srcdir}/${pkgname}-${pkgver}"
    install -dm755 "${pkgdir}"/usr/include/CL
 
    for h in $(ls -1 *.h *.hpp); do
