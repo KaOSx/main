@@ -1,33 +1,31 @@
 
 pkgname=vim
-pkgver=7.4.781
-_pkgver=v7-4-781
+pkgver=7.4.847
 pkgrel=1
 arch=('x86_64')
 pkgdesc='Vi Improved, a highly configurable, improved version of the vi text editor.'
 license=('custom:vim')
 url="http://www.vim.org"
 depends=('gpm' 'perl')
-makedepends=('python2>=2.7.1' 'ruby' 'libxt' 'libxext' 'libxpm' 'libxmu' 'desktop-file-utils'
+makedepends=('python2' 'ruby' 'libxt' 'libxext' 'libxpm' 'libxmu' 'desktop-file-utils'
              'gettext' 'pkgconfig')
 provides=('vim-runtime')
 conflicts=('vim-runtime')
-# check version https://code.google.com/p/vim/source/list select correct tag
-source=("https://vim.googlecode.com/archive/${_pkgver}.tar.gz")
-md5sums=('6484d9a73d85bfd3f04495529e5af0ac')
+source=("https://github.com/vim/vim/archive/v${pkgver}.tar.gz")
+md5sums=('934840fb34f94b3106f9456d50b1c599')
 
 build() {
   cd "${srcdir}"
 
   # define the place for the global vimrc file (set to /etc/vimrc)
   sed -e 's|^.*\(#define SYS_.*VIMRC_FILE.*"\) .*$|\1|' \
-      -i vim-${_pkgver}/src/feature.h
+      -i vim-${pkgver}/src/feature.h
   sed -e 's|^.*\(#define VIMRC_FILE.*"\) .*$|\1|' \
-      -i vim-${_pkgver}/src/feature.h
+      -i vim-${pkgver}/src/feature.h
   
-  (cd vim-${_pkgver}/src && autoconf)
+  (cd vim-${pkgver}/src && autoconf)
 
-  cd "${srcdir}/vim-${_pkgver}"
+  cd "${srcdir}/vim-${pkgver}"
 
   ./configure --prefix=/usr --localstatedir=/var/lib/vim \
     --mandir=/usr/share/man --with-compiledby=KaOS \
@@ -39,7 +37,7 @@ build() {
 }
 
 package() {
-  cd "${srcdir}/vim-${_pkgver}"
+  cd "${srcdir}/vim-${pkgver}"
   make -j1 VIMRCLOC=/etc DESTDIR="${pkgdir}" install
 
   # provided by (n)vi in core
@@ -55,6 +53,6 @@ package() {
 
   # license
   install -d -m755 "${pkgdir}/usr/share/licenses/vim"
-  ln -s "/usr/share/vim/${_versiondir}/doc/uganda.txt" \
+  ln -s "/usr/share/vim/vim74/doc/uganda.txt" \
         "${pkgdir}/usr/share/licenses/vim/license.txt"
 }

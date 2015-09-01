@@ -3,26 +3,22 @@ _extramodules=extramodules-4.1
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=('nvidia-304xx' 'khd-nvidia-304xx')
-pkgver=304.125
-pkgrel=7
+pkgver=304.128
+pkgrel=1
 arch=('x86_64')
 url="http://www.nvidia.com/"
 makedepends=('linux-headers' 'linux>=4.1' 'linux<4.2' "nvidia-304xx-utils=${pkgver}")
 license=('custom')
 source=("https://raw.github.com/KaOSx/hardware-detection/master/hwdb/nvidia_supported"
         '20-nvidia.conf'
-        'nv-drm.patch'
-        'linux-3.19.patch'
-        'linux-4.0.patch')
+        'nv-drm.patch')
 md5sums=('62d0cdb856cfae64753c0f3acf729d47'
          '7642a7a57034c96a7952771c671c81a2'
-         '79671a27131da619a33eb02ed0c2c031'
-         'd14e651d20054d18e0360c157ae60ae4'
-         'c5ca4916ab186b32f0af74ab3f29fe98')
+         '79671a27131da619a33eb02ed0c2c031')
 
 _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 source+=("ftp://download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run")
-md5sums+=('291d41ccdbcc08f752a38f9e0a7eeea0')
+md5sums+=('6478e40ed87d9177cbfc3d0b6e39a051')
 
 build() {
     cd "${srcdir}"
@@ -30,8 +26,6 @@ build() {
     
     cd "${_pkg}"
     patch -p0 -i ${srcdir}/nv-drm.patch
-    patch -p1 -i ${srcdir}/linux-3.19.patch
-    patch -p0 -i $srcdir/linux-4.0.patch
     
     cd "${srcdir}/${_pkg}/kernel"  
     make SYSSRC=/lib/modules/"${_kver}/build" module
