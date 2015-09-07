@@ -1,29 +1,39 @@
 
 pkgname=frei0r-plugins
-pkgver=1.4
-pkgrel=5
+pkgver=1.4.1
+pkgrel=1
 pkgdesc="frei0r is a minimalistic plugin API for video sources and filters."
 arch=('x86_64')
 url="http://www.piksel.org/frei0r"
 license=('GPL')
-depends=('gcc-libs' 'gavl' 'cairo')
+depends=('gcc-libs' 'gavl' 'opencv')
 makedepends=('doxygen')
 options=('!emptydirs')
 conflicts=('frei0r-plugins-qt5')
 replaces=('frei0r-plugins-qt5')
 provides=('frei0r-plugins-qt5')
-source=("https://files.dyne.org/frei0r/releases/$pkgname-$pkgver.tar.gz")
-md5sums=('202375d1bcb545c1b6eb8f34e0260ec5')
+#source=("https://files.dyne.org/frei0r/releases/$pkgname-$pkgver.tar.gz")
+source=("git://code.dyne.org/frei0r.git"
+        'facedetect.diff')
+md5sums=('SKIP'
+         'b7eb97d16db106c9a081f05befeafc3f')
 
-build() {
-  cd "$srcdir/$pkgname-$pkgver"
+prepare() {
+  cd "$srcdir/frei0r"
   
+  patch -p1 -i ${srcdir}/facedetect.diff
+}
+         
+build() {
+  cd "$srcdir/frei0r"
+  
+  ./autogen.sh
   ./configure --prefix=/usr 
   make
 }
 
 package() {
-  cd "$srcdir/$pkgname-$pkgver"
+  cd "$srcdir/frei0r"
   
   make DESTDIR="$pkgdir" install 
 }
