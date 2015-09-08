@@ -1,8 +1,8 @@
 
 pkgname=vlc
-pkgver=3.0.0
-_pkgver=3.0.0
-pkgrel=1
+pkgver=2.2.1
+_pkgver=2.2.1
+pkgrel=5
 epoch=1
 pkgdesc="Free and open source cross-platform multimedia player and framework that plays most multimedia files and various streaming protocols."
 arch=('x86_64')
@@ -12,8 +12,8 @@ depends=('a52dec' 'fluidsynth' 'libmtp' 'libdvbpsi' 'libxpm' 'libcdio' 'libdca' 
          'sdl_image' 'libdvdnav' 'mesa' 'v4l-utils' 'libcddb' 'samba' 'libmatroska' 'zvbi'
          'taglib' 'sysfsutils' 'libmpcdec' 'ffmpeg' 'faad2' 'libupnp' 'libshout' 'libmad' 'fribidi'
          'libmpeg2' 'libmodplug' 'opus' 'ttf-freefont' 'libxv' 'libass' 'xdg-utils'
-         'desktop-file-utils' 'xcb-util-keysyms' 'pulseaudio' 'chromaprint'
-         'qt5-x11extras' 'kdelibs4support')
+         'desktop-file-utils' 'xcb-util-keysyms' 'pulseaudio' 'chromaprint' 'qt')
+         #'qt5-x11extras' 'kdelibs4support')
 makedepends=('avahi' 'pkgconfig' 'libnotify' 'libbluray' 'flac' 'libtheora' 'alsa-lib'
              'jack' 'systemd' 'libraw1394' 'libdc1394' 'libavc1394' 'libva' 
              'gnutls' 'libcaca' 'librsvg' 'live-media')
@@ -31,20 +31,20 @@ backup=('usr/share/vlc/http/.hosts'
 groups=('multimedia')
 options=('!libtool' 'debug')
 install="vlc.install"
-#source=("http://download.videolan.org/pub/videolan/vlc/${_pkgver/a}/$pkgname-$_pkgver.tar.xz")
-source=("http://nightlies.videolan.org/build/source/vlc-3.0.0-20150810-0534.tar.xz")
-md5sums=('fc4583acf5c5b89d72444f6921a1cd4e')
+source=("http://download.videolan.org/pub/videolan/vlc/${_pkgver/a}/$pkgname-$_pkgver.tar.xz")
+#source=("http://nightlies.videolan.org/build/source/vlc-3.0.0-20150810-0534.tar.xz")
+md5sums=('42273945758b521c408fabc7fd6d9946')
 
 prepare() {
-  cd "${srcdir}/${pkgname}-${pkgver}-git"
+  cd "${srcdir}/${pkgname}-${pkgver}"
   
   #patch -p1 -i "${srcdir}/ffmpeg24.patch"
   autoreconf -fi
 }
 
 build() {
-  #cd "${srcdir}/${pkgname}-${_pkgver/a}"
-  cd "${srcdir}/${pkgname}-${_pkgver}-git"
+  cd "${srcdir}/${pkgname}-${_pkgver/a}"
+  #cd "${srcdir}/${pkgname}-${_pkgver}-git"
 
   sed -i -e 's:truetype/freefont:TTF:g' modules/text_renderer/freetype.c
 
@@ -63,13 +63,13 @@ build() {
 }
 
 package() {
-  #cd "${srcdir}/${pkgname}-${_pkgver/a}"
-  cd "${srcdir}/${pkgname}-${_pkgver}-git"
+  cd "${srcdir}/${pkgname}-${_pkgver/a}"
+  #cd "${srcdir}/${pkgname}-${_pkgver}-git"
 
   make DESTDIR="${pkgdir}" install
 
   for res in 16 32 48 128; do
-    install -D -m644 "${srcdir}/vlc-${_pkgver}-git/share/icons/${res}x${res}/vlc.png" \
+    install -D -m644 "${srcdir}/vlc-${_pkgver}/share/icons/${res}x${res}/vlc.png" \
         "${pkgdir}/usr/share/icons/hicolor/${res}x${res}/apps/vlc.png"
   done
 }
