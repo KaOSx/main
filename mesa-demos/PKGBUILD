@@ -15,7 +15,7 @@ md5sums=('72613a2c8c013716db02e3ff59d29061'
 build() {
   cd "${srcdir}/mesa-demos-${pkgver}"
   
-  ./configure --prefix=/usr
+  ./configure --prefix=/usr --disable-egl
   make
 }
 
