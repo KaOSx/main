@@ -2,21 +2,23 @@
 pkgname=opencv
 pkgver=3.0.0
 _pkgver=3.0.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Open Source Computer Vision Library"
 arch=('x86_64')
 license=('BSD')
 url="http://opencv.willowgarage.com/"
-depends=('jasper' 'gst-plugins-base' 'openexr' 'xine-lib' 'libdc1394' 'v4l-utils' 'ffmpeg' 'qt5-base')
-makedepends=('pkgconfig' 'cmake' 'python2-numpy' 'eigen3' 'python2-sphinx' 'mesa' 'libwebp')
+depends=('jasper' 'gst-plugins-base' 'openexr' 'xine-lib' 'libdc1394' 'v4l-utils' 'ffmpeg' 'qt5-base'
+         'libgphoto2' 'libwebp')
+makedepends=('pkgconfig' 'cmake' 'python2-numpy' 'eigen3' 'python2-sphinx' 'mesa')
 optdepends=('python2-numpy: Python 2.x interface' 'eigen3') #eigen3 for 3.0.0
 options=('!libtool')
 conflicts=('opencv-qt5')
 replaces=('opencv-qt5')
 provides=('opencv-qt5')
-source=("https://github.com/Itseez/opencv/archive/${_pkgver}.tar.gz")
-#source=("https://github.com/Itseez/opencv/tarball/master/opencv-${pkgver}.tar.gz")
-md5sums=('e6c72f54f7127161b371ef798f34d5c9')
+source=("https://github.com/Itseez/opencv/archive/${_pkgver}.tar.gz"
+        "opencv_contrib-${_pkgver}::https://github.com/Itseez/opencv_contrib/archive/${_pkgver}.tar.gz")
+md5sums=('e6c72f54f7127161b371ef798f34d5c9'
+         '2029c16ea4bf62113372a68e906fad78')
 
 build() {
   cd "$srcdir/opencv-${_pkgver}"
@@ -38,7 +40,8 @@ build() {
         -DWITH_TBB=OFF \
         -DWITH_CUDA=OFF \
         -DWITH_GTK=OFF \
-        -DENABLE_FAST_MATH=ON 
+        -DENABLE_FAST_MATH=ON \
+        -DOPENCV_EXTRA_MODULES_PATH=${srcdir}/opencv_contrib-${_pkgver}/modules
   make
 }
 
