@@ -1,43 +1,61 @@
 
 pkgbase="llvm"
 pkgname=('llvm' 'clang' 'clang-analyzer')
-pkgver=3.6.2
-subver=3.6.2
+pkgver=3.7.0
+subver=3.7.0
 _gcc_ver=4.9.3
-pkgrel=3
+pkgrel=1
 arch=('x86_64')
 url="http://llvm.org/"
 license=('custom:University of Illinois/NCSA Open Source License')
-makedepends=('gcc-libs' 'libffi' 'python2' 'ocaml' "gcc=${_gcc_ver}" 'groff' 'swig')
+makedepends=('gcc-libs' 'libffi' 'python2' 'ocaml' "gcc=${_gcc_ver}" 'groff' 'swig' 'cmake')
 source=("http://llvm.org/releases/${pkgver}/${pkgbase}-${pkgver}.src.tar.xz"
         "http://llvm.org/releases/$pkgver/cfe-$pkgver.src.tar.xz"
         "http://llvm.org/releases/$pkgver/compiler-rt-$pkgver.src.tar.xz")
-md5sums=('0c1ee3597d75280dee603bae9cbf5cc2'
-         'ff862793682f714bb7862325b9c06e20'
-         'e3bc4eb7ba8c39a6fe90d6c988927f3c')
+md5sums=('b98b9495e5655a672d6cb83e1a180f8e'
+         '8f9d27335e7331cf0a4711e952f21f01'
+         '383c10affd513026f08936b5525523f5')
 
-build() {
+prepare() {
   cd "${srcdir}/${pkgbase}-${pkgver}.src"
-
-  # http://llvm.org/bugs/show_bug.cgi?id=4840
+  
+  # http://www.linuxfromscratch.org/blfs/view/svn/general/llvm.html
   mv "${srcdir}/cfe-${pkgver}.src" tools/clang
-
   mv "$srcdir/compiler-rt-$pkgver.src" projects/compiler-rt
+  
+  sed -e "s:/docs/llvm:/share/doc/llvm-$pkgver:" -i Makefile.config.in
   
   # http://llvm.org/bugs/show_bug.cgi?id=22742
   chmod -R u=rwX,go=rX "$srcdir/llvm-$pkgver.src"
-
-  # doc directories
-  sed -i 's:\$(PROJ_prefix)/docs/llvm:$(PROJ_prefix)/share/doc/llvm:' \
-      Makefile.config.in
+}
+  
+build() {
+  cd "${srcdir}/${pkgbase}-${pkgver}.src"
+  mkdir -p build
+  cd build
 
   # location libffi headers 
   export CPPFLAGS="${CPPFLAGS} $(pkg-config --cflags libffi)"
 
   _cxx_headers="/usr/include/c++/${_gcc_ver}"
   
+  #cmake -G 'Unix Makefiles' \
+  #      -DCMAKE_BUILD_TYPE:STRING=Release \
+  #      -DCMAKE_INSTALL_PREFIX:PATH=/usr \
+  #      -DLLVM_APPEND_VC_REV:BOOL=ON \
+  #      -DLLVM_ENABLE_RTTI:BOOL=ON \
+  #      -DLLVM_ENABLE_FFI:BOOL=ON \
+  #      -DFFI_INCLUDE_DIR:PATH="${_ffi_include_flags#-I}" \
+  #      -DFFI_LIBRARY_DIR:PATH="${_ffi_libs_flags#-L}" \
+  #      -DLLVM_BUILD_LLVM_DYLIB:BOOL=ON \
+  #      -DLLVM_DYLIB_EXPORT_ALL:BOOL=ON \
+  #      -DLLVM_LINK_LLVM_DYLIB:BOOL=ON \
+  #      -DLLVM_BINUTILS_INCDIR:PATH=/usr/include \
+  #      "../${pkgbase}-${pkgver}.src"
+  
   CC=gcc CXX=g++ \
-  ./configure --prefix=/usr \
+  ../configure --prefix=/usr \
+              --datarootdir=/usr/share \
               --sysconfdir=/etc \
               --enable-shared \
               --enable-libffi \
@@ -45,7 +63,8 @@ build() {
               --disable-expensive-checks \
               --disable-debug-runtime \
               --disable-assertions \
-              --with-binutils-include=/usr/include
+              --with-binutils-include=/usr/include \
+              --docdir=/usr/share/doc/llvm-$pkgver
 
   make REQUIRES_RTTI=1
 }
@@ -56,16 +75,16 @@ depends=('perl' 'libffi')
 conflicts=('llvm-ocaml')
 replaces=('llvm-ocaml')
 
-  cd "${srcdir}/${pkgbase}-${pkgver}.src"
+  #cd "${srcdir}/${pkgbase}-${pkgver}.src"
+  cd "${srcdir}/${pkgbase}-${pkgver}.src"/build
 
   # https://github.com/mxcl/homebrew/issues/8947#issuecomment-3256464
-  sed -e 's:\$(ObjDir)/META.llvm:\$(OcamlDir)/META.llvm:' \
-      -i bindings/ocaml/llvm/Makefile
+  sed -e 's:\$(ObjDir)/META.llvm:\$(OcamlDir)/META.llvm:' -i ${srcdir}/${pkgbase}-${pkgver}.src/bindings/ocaml/llvm/Makefile
 
   # Move the clang directory 
-  mv tools/clang "${srcdir}"
+  mv tools/clang "${srcdir}/"
   # -j1, stop race conditions 
-  make -j1 DESTDIR="${pkgdir}" install
+  make DESTDIR="${pkgdir}" install
   mv "${srcdir}/clang" tools
 
   # Move OCaml bindings 
@@ -82,11 +101,11 @@ replaces=('llvm-ocaml')
 
   rm "${pkgdir}"/usr/lib/*LLVMHello.*
 
-  install -D -m644 LICENSE.TXT "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+  install -D -m644 "${srcdir}/${pkgbase}-${pkgver}.src/LICENSE.TXT" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
 }
 
 package_clang() {
-pkgdesc="Clang is an \"LLVM native\" C/C++/Objective-C compiler, which aims to deliver amazingly fast compiles, extremely useful error and warning messages and to provide a platform for building great source level tools."
+pkgdesc="C/C++/Objective-C compiler, which aims to deliver amazingly fast compiles, extremely useful error and warning messages and to provide a platform for building great source level tools."
 url="http://clang.llvm.org/"
 # http://old.nabble.com/%22clang--v%22-shows-a-GCC-call-td28378453.html
 depends=("llvm=${pkgver}-${pkgrel}" "gcc=${_gcc_ver}")
@@ -96,6 +115,7 @@ depends=("llvm=${pkgver}-${pkgrel}" "gcc=${_gcc_ver}")
       -i "${srcdir}/${pkgbase}-${pkgver}.src/Makefile.config"
 
   cd "${srcdir}/${pkgbase}-${pkgver}.src/tools/clang"
+  #cd "${srcdir}/${pkgbase}-${pkgver}.src"/build/tools/clang
   make DESTDIR="${pkgdir}" install
 
   chmod -x "${pkgdir}"/usr/lib/*.a
@@ -104,15 +124,16 @@ depends=("llvm=${pkgver}-${pkgrel}" "gcc=${_gcc_ver}")
   sed -e 's:$(PROJ_prefix)/share/doc/clang:$(PROJ_prefix)/share/doc/llvm:' \
       -i "${srcdir}/${pkgbase}-${pkgver}.src/Makefile.config"
 
-  install -D -m644 LICENSE.TXT "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+  install -D -m644 "${srcdir}/${pkgbase}-${pkgver}.src/LICENSE.TXT" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
 }
 
 package_clang-analyzer() {
-pkgdesc="The Clang Static Analyzer is a tool that automatically finds bugs in your code, and is a great example of the sort of tool that can be built using the Clang frontend as a library to parse C/C++ code."
+pkgdesc="Tool that automatically finds bugs in your code, example tool that can be built using the Clang frontend as a library to parse C/C++ code."
 url="http://clang-analyzer.llvm.org/"
 depends=("clang=${pkgver}-${pkgrel}" 'python2')
 
   cd "${srcdir}/${pkgbase}-${pkgver}.src/tools/clang"
+  #cd llvm/tools/clang
 
   install -d "${pkgdir}"/usr/{bin,lib/clang-analyzer}
   for _tool in scan-{build,view}; do
@@ -124,6 +145,6 @@ depends=("clang=${pkgver}-${pkgrel}" 'python2')
   python2 -m compileall "${pkgdir}/usr/lib/clang-analyzer"
   python2 -O -m compileall "${pkgdir}/usr/lib/clang-analyzer"
 
-  install -D -m644 LICENSE.TXT "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+  install -D -m644 "${srcdir}/${pkgbase}-${pkgver}.src/LICENSE.TXT" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
 }
 
