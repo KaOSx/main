@@ -98,8 +98,9 @@ replaces=('llvm-ocaml')
   chmod -x "${pkgdir}"/usr/lib/*.a
   # Remove execute bit from static libraries
   #chmod -x "${pkgdir}"/usr/lib/ocaml/libllvm*.a
-
-  rm "${pkgdir}"/usr/lib/*LLVMHello.*
+  
+  # needed with cmake builds, comment out for now, remove soon
+  #rm "${pkgdir}"/usr/lib/*LLVMHello.*
 
   install -D -m644 "${srcdir}/${pkgbase}-${pkgver}.src/LICENSE.TXT" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
 }
