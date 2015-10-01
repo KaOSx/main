@@ -3,7 +3,7 @@ pkgbase=mesa
 pkgname=('mesa' 'libgl')
 pkgver=11.0.2
 _pkgver=11.0.2
-pkgrel=2
+pkgrel=1
 arch=('x86_64')
 makedepends=('glproto' 'libdrm' 'libxxf86vm' 'libxdamage' 'libva' 'expat' 'llvm' 'libx11' 'libxt' 'gcc-libs'
              'dri2proto' 'python2' 'libxml2' 'imake' 'systemd' 'libvdpau' 'wayland' 'dri3proto'
@@ -20,7 +20,7 @@ build() {
     cd ${srcdir}/${pkgname}-${pkgver}
     
     # needed with llvm 3.7.0 CMake build or build with --disable-llvm-shared:
-    sed -i 's/LLVM_SO_NAME=.*/LLVM_SO_NAME=LLVM/' configure
+    #sed -i 's/LLVM_SO_NAME=.*/LLVM_SO_NAME=LLVM/' configure
     
     ./configure --prefix=/usr \
     --sysconfdir=/etc \
