@@ -8,7 +8,8 @@ pkgrel=1
 arch=('x86_64')
 url="http://llvm.org/"
 license=('custom:University of Illinois/NCSA Open Source License')
-makedepends=('gcc-libs' 'libffi' 'python2' 'ocaml' "gcc=${_gcc_ver}" 'groff' 'swig' 'cmake')
+makedepends=('gcc-libs' 'libffi' 'python2' 'ocaml' "gcc=${_gcc_ver}" 'groff'
+             'swig' 'cmake') # 'ocaml-ctypes' 'findlib' needed to have CMake build find ocaml
 source=("http://llvm.org/releases/${pkgver}/${pkgbase}-${pkgver}.src.tar.xz"
         "http://llvm.org/releases/$pkgver/cfe-$pkgver.src.tar.xz"
         "http://llvm.org/releases/$pkgver/compiler-rt-$pkgver.src.tar.xz")
@@ -19,54 +20,49 @@ md5sums=('b98b9495e5655a672d6cb83e1a180f8e'
 prepare() {
   cd "${srcdir}/${pkgbase}-${pkgver}.src"
   
-  # http://www.linuxfromscratch.org/blfs/view/svn/general/llvm.html
-  mv "${srcdir}/cfe-${pkgver}.src" tools/clang
-  mv "$srcdir/compiler-rt-$pkgver.src" projects/compiler-rt
+  # doc directories
+  #sed -i 's:\$(PROJ_prefix)/docs/llvm:$(PROJ_prefix)/share/doc/llvm:' Makefile.config.in
   
-  sed -e "s:/docs/llvm:/share/doc/llvm-$pkgver:" -i Makefile.config.in
+  # http://llvm.org/bugs/show_bug.cgi?id=4840
+  mv "${srcdir}/cfe-${pkgver}.src" tools/clang
+
+  mv "$srcdir/compiler-rt-$pkgver.src" projects/compiler-rt
   
   # http://llvm.org/bugs/show_bug.cgi?id=22742
   chmod -R u=rwX,go=rX "$srcdir/llvm-$pkgver.src"
 }
   
 build() {
-  cd "${srcdir}/${pkgbase}-${pkgver}.src"
+  #cd "${srcdir}/${pkgbase}-${pkgver}"
   mkdir -p build
   cd build
-
-  # location libffi headers 
-  export CPPFLAGS="${CPPFLAGS} $(pkg-config --cflags libffi)"
+  
+  export PKG_CONFIG_PATH='/usr/lib/pkgconfig'
+  _ffi_include_flags=$(pkg-config --cflags-only-I libffi)
+  _ffi_libs_flags=$(pkg-config --libs-only-L libffi)
 
   _cxx_headers="/usr/include/c++/${_gcc_ver}"
   
-  #cmake -G 'Unix Makefiles' \
-  #      -DCMAKE_BUILD_TYPE:STRING=Release \
-  #      -DCMAKE_INSTALL_PREFIX:PATH=/usr \
-  #      -DLLVM_APPEND_VC_REV:BOOL=ON \
-  #      -DLLVM_ENABLE_RTTI:BOOL=ON \
-  #      -DLLVM_ENABLE_FFI:BOOL=ON \
-  #      -DFFI_INCLUDE_DIR:PATH="${_ffi_include_flags#-I}" \
-  #      -DFFI_LIBRARY_DIR:PATH="${_ffi_libs_flags#-L}" \
-  #      -DLLVM_BUILD_LLVM_DYLIB:BOOL=ON \
-  #      -DLLVM_DYLIB_EXPORT_ALL:BOOL=ON \
-  #      -DLLVM_LINK_LLVM_DYLIB:BOOL=ON \
-  #      -DLLVM_BINUTILS_INCDIR:PATH=/usr/include \
-  #      "../${pkgbase}-${pkgver}.src"
-  
-  CC=gcc CXX=g++ \
-  ../configure --prefix=/usr \
-              --datarootdir=/usr/share \
-              --sysconfdir=/etc \
-              --enable-shared \
-              --enable-libffi \
-              --enable-targets=all \
-              --disable-expensive-checks \
-              --disable-debug-runtime \
-              --disable-assertions \
-              --with-binutils-include=/usr/include \
-              --docdir=/usr/share/doc/llvm-$pkgver
+  cmake -G 'Unix Makefiles' \
+        -DCMAKE_BUILD_TYPE:STRING=Release \
+        -DCMAKE_INSTALL_PREFIX:PATH=/usr \
+        -DLLVM_TARGETS_TO_BUILD=all \
+        -DLLVM_APPEND_VC_REV:BOOL=ON \
+        -DLLVM_ENABLE_RTTI:BOOL=ON \
+        -DLLVM_ENABLE_FFI:BOOL=ON \
+        -DFFI_INCLUDE_DIR:PATH="${_ffi_include_flags#-I}" \
+        -DFFI_LIBRARY_DIR:PATH="${_ffi_libs_flags#-L}" \
+        -DLLVM_BUILD_LLVM_DYLIB:BOOL=ON \
+        -DLLVM_DYLIB_EXPORT_ALL:BOOL=ON \
+        -DLLVM_LINK_LLVM_DYLIB:BOOL=ON \
+        -DLLVM_BINUTILS_INCDIR:PATH=/usr/include \
+        "../${pkgbase}-${pkgver}.src"
 
-  make REQUIRES_RTTI=1
+  make
+  
+  # install in clang packaging
+  sed -i '/clang\/cmake_install.cmake/d' tools/cmake_install.cmake
+  sed -i '/compiler-rt\/cmake_install.cmake/d' projects/cmake_install.cmake
 }
 
 package_llvm() {
@@ -76,16 +72,9 @@ conflicts=('llvm-ocaml')
 replaces=('llvm-ocaml')
 
   #cd "${srcdir}/${pkgbase}-${pkgver}.src"
-  cd "${srcdir}/${pkgbase}-${pkgver}.src"/build
+  cd build
 
-  # https://github.com/mxcl/homebrew/issues/8947#issuecomment-3256464
-  sed -e 's:\$(ObjDir)/META.llvm:\$(OcamlDir)/META.llvm:' -i ${srcdir}/${pkgbase}-${pkgver}.src/bindings/ocaml/llvm/Makefile
-
-  # Move the clang directory 
-  mv tools/clang "${srcdir}/"
-  # -j1, stop race conditions 
   make DESTDIR="${pkgdir}" install
-  mv "${srcdir}/clang" tools
 
   # Move OCaml bindings 
   #rm -rf "${srcdir}"/{ocaml,ocamldoc}
@@ -98,8 +87,7 @@ replaces=('llvm-ocaml')
   chmod -x "${pkgdir}"/usr/lib/*.a
   # Remove execute bit from static libraries
   #chmod -x "${pkgdir}"/usr/lib/ocaml/libllvm*.a
-  
-  # needed with cmake builds, comment out for now, remove soon
+
   #rm "${pkgdir}"/usr/lib/*LLVMHello.*
 
   install -D -m644 "${srcdir}/${pkgbase}-${pkgver}.src/LICENSE.TXT" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
@@ -112,18 +100,16 @@ url="http://clang.llvm.org/"
 depends=("llvm=${pkgver}-${pkgrel}" "gcc=${_gcc_ver}")
 
   # Installation path docs
-  sed -e 's:$(PROJ_prefix)/share/doc/llvm:$(PROJ_prefix)/share/doc/clang:' \
-      -i "${srcdir}/${pkgbase}-${pkgver}.src/Makefile.config"
+  #sed -e 's:$(PROJ_prefix)/share/doc/llvm:$(PROJ_prefix)/share/doc/clang:' \
+  #    -i "${srcdir}/${pkgbase}-${pkgver}.src/Makefile.config"
 
-  cd "${srcdir}/${pkgbase}-${pkgver}.src/tools/clang"
-  #cd "${srcdir}/${pkgbase}-${pkgver}.src"/build/tools/clang
+  #cd "${srcdir}/${pkgbase}-${pkgver}.src"
+  cd build/tools/clang
   make DESTDIR="${pkgdir}" install
+  cd ../../projects/compiler-rt
+  make DESTDIR="$pkgdir" install
 
   chmod -x "${pkgdir}"/usr/lib/*.a
-
-  # Revert the path change in case of repackage
-  sed -e 's:$(PROJ_prefix)/share/doc/clang:$(PROJ_prefix)/share/doc/llvm:' \
-      -i "${srcdir}/${pkgbase}-${pkgver}.src/Makefile.config"
 
   install -D -m644 "${srcdir}/${pkgbase}-${pkgver}.src/LICENSE.TXT" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
 }
@@ -138,7 +124,7 @@ depends=("clang=${pkgver}-${pkgrel}" 'python2')
 
   install -d "${pkgdir}"/usr/{bin,lib/clang-analyzer}
   for _tool in scan-{build,view}; do
-    cp -r "tools/${_tool}" "${pkgdir}/usr/lib/clang-analyzer"
+    cp -a "tools/${_tool}" "${pkgdir}/usr/lib/clang-analyzer"
     ln -s "/usr/lib/clang-analyzer/${_tool}/${_tool}" "${pkgdir}/usr/bin"
   done
 
