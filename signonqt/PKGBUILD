@@ -1,9 +1,10 @@
 
 pkgname=signonqt
-pkgver=8.57
-pkgrel=4
+pkgver=8.58
+_pkgver=VERSION_8.58-aa1bcf3c9218addbdb376a40151b689409046125
+pkgrel=1
 arch=('x86_64')
-url="http://code.google.com/p/accounts-sso/"
+url="https://gitlab.com/accounts-sso/signond/"
 license=('LGPL')
 pkgdesc="Framework to provide credential storage and authentication service, Qt5 version"
 depends=('qt5-base' 'libproxy')
@@ -13,24 +14,19 @@ options=('!emptydirs')
 conflicts=('signonqt-doc' 'signon-qt5')
 replaces=('signonqt-doc' 'signon-qt5')
 provides=('signonqt-doc' 'signon-qt5')
-# check source https://groups.google.com/forum/#!forum/accounts-sso-announce
-# latest tars https://drive.google.com/#folders/0B8fX9XOwH_g4alFsYV8tZTI4VjQ
-source=("http://sourceforge.net/projects/kaosx/files/sources/signon/signon-$pkgver.tar.bz2"
-        'qt5.5.diff')
-md5sums=('9afb31332df8afffd8923f0079967d31'
-         '89adf6e5725beb1fd0a1ae4fc0a64653')
+source=("https://gitlab.com/accounts-sso/signond/repository/archive.tar.bz2?ref=VERSION_$pkgver")
+md5sums=('9f98e0758f72ca81abea9ce46088d42b')
 
 build() {
-  cd signon-$pkgver
+  cd signond-$_pkgver
   sed -i 's/qdbusxml2cpp/qdbusxml2cpp-qt5/' src/signond/signond.pro
-  patch -p1 -i $srcdir/qt5.5.diff
   
-  /usr/lib/qt5/bin/qmake PREFIX=/usr LIBDIR=/usr/lib
+  /usr/lib/qt5/bin/qmake CONFIG+=coverage PREFIX=/usr LIBDIR=/usr/lib
   make
 }
 
 package() { 
-  cd signon-$pkgver
+  cd signond-$_pkgver
   
   make INSTALL_ROOT="$pkgdir" install
 }
