@@ -1,38 +1,31 @@
 
 pkgname=tidyhtml
-# obtain pkgver from http://tidy.cvs.sourceforge.net/tidy/tidy/src/version.h?view=markup
-pkgver=1.46
-pkgrel=3
+_pkgname=tidy-html5
+pkgver=5.0.0
+pkgrel=1
 pkgdesc="A tool to tidy down your HTML code to a clean style"
 arch=('x86_64')
-url="http://tidy.sourceforge.net/"
+url="eea9f515609ff534cf35cfe930b39fd9"
 license=('custom')
 depends=('glibc')
+makedepends=('cmake' 'git')
 options=('!libtool')
-source=("http://sourceforge.net/projects/kdeos/files/Sources/tidyhtml/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('3d970d54be83c5ec985687e9976a2832')
+source=("https://github.com/htacg/${_pkgname}/archive/${pkgver}.tar.gz")
+md5sums=('b0e95bda662a06e7652c8475cf8e9b1a')
 
-mksource() {
-  mkdir tidyhtml-${pkgver}
-  cd tidyhtml-${pkgver}
-  cvs -d:pserver:anonymous@tidy.cvs.sourceforge.net:/cvsroot/tidy login   #hit enter for password
-  cvs -z3 -d:pserver:anonymous@tidy.cvs.sourceforge.net:/cvsroot/tidy co -P tidy
-  cd ..
-  tar -cvjf tidyhtml-${pkgver}.tar.bz2 tidyhtml-${pkgver}/*
-}
-
-build(){
-  cd $srcdir/${pkgname}-${pkgver}/tidy
-  source build/gnuauto/setup.sh
+build() {
+  mkdir -p build
+  cd build
   
-  ./configure --prefix=/usr
+  cmake ../${_pkgname}-${pkgver} \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr 
   make 
 }
 
 package() {
-  cd $srcdir/${pkgname}-${pkgver}/tidy
+  cd build
   make DESTDIR=$pkgdir install
   
-  install -Dm644 htmldoc/license.html \
-    ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+  install -Dm644 $srcdir/${_pkgname}-${pkgver}/LICENSE.md ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.md
 }
