@@ -1,6 +1,6 @@
 
 pkgname=libjpeg-turbo
-pkgver=1.4.1
+pkgver=1.4.2
 pkgrel=1
 pkgdesc="libjpeg derivative with accelerated baseline JPEG compression and decompression"
 arch=('x86_64')
@@ -12,18 +12,11 @@ replaces=('libjpeg' 'libjpeg6')
 conflicts=('libjpeg' 'libjpeg6')
 options=('!libtool')
 source=("http://sourceforge.net/projects/$pkgname/files/$pkgver/$pkgname-$pkgver.tar.gz")
-md5sums=('b1f6b84859a16b8ebdcda951fa07c3f2')
+md5sums=('86b0d5f7507c2e6c21c00219162c3c44')
 
 build() {
   cd "$srcdir/$pkgname-$pkgver"
 
-  # create libjpeg6
-  ./configure --prefix=/usr --with-jpeg6 --mandir=/usr/share/man
-  make
-  mkdir -p $srcdir/libjpeg6
-  cp -d .libs/libjpeg.so.6* $srcdir/libjpeg6
-  rm -R .libs
-  # create libjpeg8
   ./configure --prefix=/usr --with-jpeg8 --mandir=/usr/share/man
   make
 }
@@ -31,11 +24,6 @@ build() {
 package() {
   cd "$srcdir/$pkgname-$pkgver"
 
-  # install libjpeg6
-  mkdir -p $pkgdir/usr/lib
-  cp -vd $srcdir/libjpeg6/libjpeg.so.6* $pkgdir/usr/lib
-  
-  # install libjpeg8
   make DESTDIR="$pkgdir/" install
 
   # provide jpegint.h as it is required by various software
