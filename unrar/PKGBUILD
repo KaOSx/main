@@ -1,14 +1,15 @@
 
 pkgname=unrar
-pkgver=5.3.4
+pkgver=5.3.6
 pkgrel=1
 pkgdesc="The RAR uncompression program"
 arch=('x86_64')
 url="http://www.rarlab.com/rar_add.htm"
 license=('custom')
 depends=('gcc-libs')
+# http://www.rarlab.com/rar_add.htm
 source=("http://www.rarlab.com/rar/unrarsrc-${pkgver}.tar.gz")
-md5sums=('60afbc74a97eff512a6c42425ec43bbf')
+md5sums=('3c58a7e9e6bdf34dee7db72f299b05e8')
 
 build() {
   cd "${srcdir}/${pkgname}"
