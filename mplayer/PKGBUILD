@@ -1,7 +1,7 @@
 
 pkgname=mplayer
-pkgver=37379
-pkgrel=6
+pkgver=37544
+pkgrel=1
 pkgdesc="Multimedia player."
 arch=('x86_64')
 depends=('a52dec' 'aalib' 'alsa-lib' 'bzip2' 'directfb' 'enca' 'faac' 'faad2'
@@ -22,7 +22,7 @@ source=("http://sourceforge.net/projects/kaosx/files/sources/${pkgname}/${pkgnam
         'mplayer.desktop'
         'mplayer.png'
         'cdio-includes.patch')
-md5sums=('46f2020ba1a384ba479e2c9c8990112c'
+md5sums=('e8065f2db1d4eef58fc651b0d80a22ed'
          '62f44a58f072b2b1a3c3d3e4976d64b3'
          'd00874ccc644b7f43d6ef1c942fcef28'
          '7b5be7191aafbea64218dc4916343bbc')
@@ -52,7 +52,7 @@ mksource() {
 
 build() {
     cd ${srcdir}/${pkgname}
-    patch -p0 -i ${srcdir}/cdio-includes.patch
+    #patch -p0 -i ${srcdir}/cdio-includes.patch
     
     ./configure \
       --confdir=/etc/mplayer \
