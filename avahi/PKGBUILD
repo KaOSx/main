@@ -1,25 +1,31 @@
 
 pkgname=avahi
-pkgver=0.6.31
-pkgrel=10
+pkgver=0.6.32rc
+_pkgver=0.6.32-rc
+pkgrel=11
 pkgdesc="A multicast/unicast DNS-SD framework"
 arch=('x86_64')
 url="http://www.avahi.org/"
 license=('LGPL')
 depends=('dbus' 'libcap' 'libdaemon' 'gdbm' 'glib2' 'expat')
-optdepends=('qt: qt bindings')
 makedepends=('qt' 'dbus-python2' 'gobject-introspection' 'intltool')
+optdepends=('qt: qt4 bindings')
 backup=(etc/avahi/avahi-daemon.conf etc/avahi/services/{sftp-,}ssh.service)
 install=avahi.install
 options=('!libtool')
-source=("http://www.avahi.org/download/avahi-${pkgver}.tar.gz")
-md5sums=('2f22745b8f7368ad5a0a3fddac343f2d')
+#source=("http://www.avahi.org/download/avahi-${pkgver}.tar.gz")
+source=("https://github.com/lathiat/avahi/archive/${_pkgver}.tar.gz")
+md5sums=('40781846af871d043c2ddfc4eb846a1d')
+
+prepare() {
+  cd ${srcdir}/${pkgname}-${_pkgver}
+  
+  NOCONFIGURE=1 ./autogen.sh
+}
 
 build() {
-  cd ${srcdir}/${pkgname}-${pkgver}
-  sed -i 's/netdev/network/g' avahi-daemon/avahi-dbus.conf
+  cd ${srcdir}/${pkgname}-${_pkgver}
 
-  export PYTHON=/usr/bin/python2
     ./configure --prefix=/usr \
     --sysconfdir=/etc \
     --localstatedir=/var \
@@ -30,6 +36,7 @@ build() {
     --disable-monodoc \
     --disable-doxygen-doc \
     --disable-xmltoman \
+    --disable-manpages \
     --disable-gtk \
     --disable-gtk3 \
     --disable-pygtk \
@@ -45,7 +52,7 @@ build() {
 }
 
 package() {
-	cd "${srcdir}/${pkgname}-${pkgver}"
+	cd "${srcdir}/${pkgname}-${_pkgver}"
 	make DESTDIR="${pkgdir}" install
 	
 	rm ${pkgdir}/var -rfv

@@ -12,8 +12,4 @@ pre_remove() {
          systemctl disable avahi-daemon.service
 }
 
-post_remove() {
-  getent passwd avahi &>/dev/null && userdel avahi >/dev/null
-  getent group avahi &>/dev/null && groupdel avahi >/dev/null
-  true
-}
+
