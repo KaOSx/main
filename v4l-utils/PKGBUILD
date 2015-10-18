@@ -1,16 +1,16 @@
 
 pkgname=v4l-utils
-pkgver=1.6.3
+pkgver=1.8.1
 pkgrel=1
 pkgdesc="Userspace tools and conversion library for Video 4 Linux"
 arch=('x86_64')
 url="http://freshmeat.net/projects/libv4l"
 license=('LGPL')
 depends=('glibc' 'gcc-libs' 'sysfsutils' 'libjpeg-turbo')
-makedepends=('qt')
+makedepends=('qt5-base')
 options=('!libtool')
 source=("http://linuxtv.org/downloads/v4l-utils/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('307858616be6374f63bf946307f15a7f')
+md5sums=('f86d0938e46fde821dc10d4d2f6636e4')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
