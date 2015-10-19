@@ -1,0 +1,22 @@
+
+pkgname=ttf-noto
+pkgver=20150929
+pkgrel=1
+pkgdesc="Google developed font family which aims to support all languages with a harmonious look and feel, OTF fonts "
+arch=('x86_64')
+license=('SIL Open Font License (OFL)')
+url="https://www.google.com/get/noto/"
+depends=('fontconfig' 'xorg-fonts-encodings' 'xorg-font-utils')
+install=$pkgname.install
+source=("https://noto-website-2.storage.googleapis.com/pkgs/Noto-hinted.zip")
+md5sums=('1b8430f1d59f7492527123afec4ddea8')
+
+package() {
+  cd "$srcdir"
+    
+  install -dm755 "$pkgdir/usr/share/fonts/OTF"
+  find . -type f -name \*.otf -exec install -Dm644 '{}' \
+    "$pkgdir/usr/share/fonts/OTF" \;
+    
+  install -Dm644 LICENSE_OFL.txt "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+}
