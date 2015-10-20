@@ -1,20 +1,20 @@
 
 pkgname=texlive-bin
-pkgver=2014.34260
-pkgrel=14
+pkgver=2015.37497
+pkgrel=1
 pkgdesc="TeX Live binaries"
 url='http://tug.org/texlive/'
 license=('GPL')
 arch=('x86_64')
 depends=('t1lib' 'gd' 'poppler' 'libsigsegv' 'zziplib' 'libpng' 'libjpeg-turbo' 'freetype2'
-         'cairo' 'pixman' 'graphite' 'icu' 'harfbuzz')
+         'cairo' 'pixman' 'graphite' 'icu' 'harfbuzz' 'libpaper')
 makedepends=('perl' 'clisp' 'ffcall')
 optdepends=('ed: for texconfig')
 options=('!libtool' '!strip')
 install="texlive.install"
 # full credit for this PKGBUILD goes to Rémy Oudompheng <remy@archlinux.org>
 source=("http://mirrors.kernel.org/archlinux/other/texlive/texlive-bin-source-${pkgver}.tar.xz")
-md5sums=('b6fe9a6e6b3df0d69e804b87370039ef')
+md5sums=('20be644511704910151560a4d99f6995')
 
 prepare() {
    cd source
@@ -51,6 +51,8 @@ build() {
      --disable-t1utils \
      --disable-bibtexu \
      --disable-xz \
+     --enable-shared \
+     --disable-static \
      --with-system-zlib \
      --with-system-zziplib \
      --with-system-pnglib \
@@ -64,6 +66,9 @@ build() {
      --with-system-cairo \
      --with-system-harfbuzz \
      --with-system-icu \
+     --with-system-gmp \
+     --with-system-mpfr \
+     --with-system-libpaper \
      --with-system-graphite \
      --with-freetype2-libdir=/usr/lib \
      --with-freetype2-include=/usr/include/freetype2 \
@@ -135,7 +140,10 @@ package() {
    # remove dangling symlinks
    _bibtexextra_scripts="
 bibexport
+bibdoiadd
+bibzbladd
 listbib
+ltx2crossrefxml
 multibibliography
 urlbst
 "
@@ -153,6 +161,7 @@ autoinst
 bundledoc
 checkcites
 chkweb
+cjk-gs-integrate
 context
 contextjit
 ctanify
@@ -195,7 +204,6 @@ luatools
 match_parens
 mf2pt1
 mkjobtexmf
-mkluatexfontdb
 mkt1font
 mktexfmt
 mptopdf
@@ -273,11 +281,12 @@ perltex
 ps4pdf
 splitindex
 svn-multi
-vpe"
+vpe
+yplan"
    _music_scripts="lily-glyph-commands lily-image-commands lily-rebuild-pdfs m-tx musixtex musixflx pmx2pdf"
-   _pictures_scripts="cachepic epspdf epspdftk fig4latex mathspic mkpic"
+   _pictures_scripts="cachepic epspdf epspdftk fig4latex getmapdl mathspic mkpic"
    _pstricks_scripts="pedigree pst2pdf"
-   _science_scripts="ulqda"
+   _science_scripts="pygmentex ulqda"
    for s in \
         ${_bibtexextra_scripts} \
         ${_core_scripts}       \

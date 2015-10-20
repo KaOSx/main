@@ -1,7 +1,7 @@
 
 pkgname=texlive-core
-pkgver=2014.36709
-_revnr=${pkgver#2014.}
+pkgver=2015.37554
+_revnr=${pkgver#2015.}
 pkgrel=1
 pkgdesc="TeX Live core distribution"
 license=('GPL')
@@ -22,12 +22,14 @@ url='http://tug.org/texlive/'
 source=("https://sources.archlinux.org/other/texlive/$pkgname-$pkgver-src.zip"
         "$pkgname.maps"
         'texmf.cnf'
+        'texmfcnf.lua'
         '09-texlive-fonts.conf')
 options=('!strip')
 install=texlive.install
-md5sums=('c02299998a0e7a26a7e9fff1c16d2f97'
+md5sums=('0342ec0740cc11417403efde9c95883d'
          '54a34f8ddbeccec2427e4d5763349f9b'
          'df537245012f3e5f05bdc55644b7a3df'
+         '16ad4dc53deb00029baef1b01ba1d984'
          '393a4bf67adc7ca5df2b386759d1a637')
 
 build() {
@@ -105,14 +107,14 @@ package() {
    sed -i '/^#! \(Map\|MixedMap\)/d' "$pkgdir"/etc/texmf/web2c/updmap.cfg
 
 
-   # replace upstream texmf.cnf with ours
+   # replace upstream texmf.cnf
    rm -f "$pkgdir"/usr/share/texmf-dist/web2c/texmf.cnf
    install -m644 "$srcdir"/texmf.cnf "$pkgdir"/etc/texmf/web2c/texmf.cnf
    # since the location of texmf.cnf is hard-wired to be under /usr/share/texmf/web2c
-   # we make a symlink from /etc/texmf/web2c/texmf.cnf to the latter
+   # make a symlink from /etc/texmf/web2c/texmf.cnf to the latter
    ln -sf /etc/texmf/web2c/texmf.cnf "$pkgdir"/usr/share/texmf-dist/web2c/texmf.cnf
-   # fix location of TEXMFCACHE for luatools
-   sed -i 's#texlive2013#texlive#' "$pkgdir"/usr/share/texmf-dist/web2c/texmfcnf.lua
+   # replace upstream texmfcnf.lua
+   install -m644 "$srcdir"/texmfcnf.lua "$pkgdir"/usr/share/texmf-dist/web2c/texmfcnf.lua
    ## remove aleph from fmtutil.cnf
    sed -i -e '/aleph/d' "$pkgdir"/usr/share/texmf-dist/web2c/fmtutil.cnf
 
@@ -157,14 +159,13 @@ bundledoc/bundledoc
 checkcites/checkcites.lua
 chktex/chkweb.sh
 chktex/deweb.pl
+cjk-gs-integrate/cjk-gs-integrate.pl
 context/perl/mptopdf.pl
 context/stubs/unix/context
 context/stubs/unix/contextjit
-context/stubs/unix/ctxtools
 context/stubs/unix/luatools
 context/stubs/unix/mtxrun
 context/stubs/unix/mtxrunjit
-context/stubs/unix/pstopdf
 context/stubs/unix/texexec
 context/stubs/unix/texmfstart
 ctanify/ctanify
@@ -231,9 +232,9 @@ texlive/allcm.sh
 texlive/allneeded.sh
 texlive/dvi2fax.sh
 texlive/dvired.sh
-texlive/e2pall.sh
+texlive/e2pall.pl
 texlive/fmtutil-sys.sh
-texlive/fmtutil.sh
+texlive/fmtutil.pl
 texlive/fontinst.sh
 texlive/kpsetool.sh
 texlive/kpsewhere.sh
@@ -257,8 +258,7 @@ xindy/xindy.pl
     for _script in ${_linked_scripts}; do
         _scriptbase=$(basename $_script)
         _scriptbase=${_scriptbase%.*}
-        [[ -f ${pkgdir}/usr/share/texmf-dist/scripts/${_script} ]] &&
-            ln -s /usr/share/texmf-dist/scripts/${_script} ${pkgdir}/usr/bin/${_scriptbase}
+        ln -s /usr/share/texmf-dist/scripts/${_script} ${pkgdir}/usr/bin/${_scriptbase}
     done
     ln -s /usr/share/texmf-dist/scripts/listings-ext/listings-ext.sh ${pkgdir}/usr/bin/listings-ext.sh
 
