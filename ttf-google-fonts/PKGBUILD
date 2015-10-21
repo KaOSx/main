@@ -1,6 +1,6 @@
 
 pkgname=ttf-google-fonts
-pkgver=20150512
+pkgver=20151021
 pkgrel=1
 pkgdesc="TrueType fonts from the Google Fonts project"
 arch=('x86_64')
@@ -18,9 +18,13 @@ package() {
   find . -type f -name \*.ttf -exec install -Dm644 '{}' \
     "$pkgdir/usr/share/fonts/TTF" \;
 
-  # remove droid & cantarell font packages provided files
+  # remove droid, noto & cantarell font packages provided files
   find "${pkgdir}/usr/share/fonts/TTF" -type f -name "Cantarell-*.ttf" -delete
   find "${pkgdir}/usr/share/fonts/TTF" -type f -name "Droid*.ttf" -delete
+  find "${pkgdir}/usr/share/fonts/TTF" -type f -name "Noto*.ttf" -delete
+  find "${pkgdir}/usr/share/fonts/TTF" -type f -name "Arimo*.ttf" -delete
+  find "${pkgdir}/usr/share/fonts/TTF" -type f -name "Cousine*.ttf" -delete
+  find "${pkgdir}/usr/share/fonts/TTF" -type f -name "Tinos*.ttf" -delete
   
   find . -type f -name OFL.txt -exec install -Dm644 '{}' \
     "${pkgdir}/usr/share/licenses/${pkgname}/{}" \;
