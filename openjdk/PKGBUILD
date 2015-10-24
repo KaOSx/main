@@ -1,13 +1,13 @@
 
 pkgname=('openjdk' 'openjdk-src')
 pkgbase='openjdk'
-_icedtea_release="2.6.0"
+_icedtea_release="2.6.2"
 _icedtea_jdkver="7"
 # ${srcdir}/build/ChangeLog for versions
-_openjdk_build="b32"
-_pkgver="7u80"
+_openjdk_build="b01"
+_pkgver="7u91"
 pkgver="${_pkgver}_${_openjdk_build}_${_icedtea_release}"
-pkgrel=2
+pkgrel=1
 pkgdesc="An open-source implementation of the seventh edition of the Java SE Platform."
 arch=('x86_64')
 url="http://icedtea.classpath.org/"
@@ -18,7 +18,7 @@ makedepends=('java-environment=7' 'apache-ant>=1.6.5' 'zip' 'unzip'
              'libpng' 'giflib' 'lcms2' 'freetype2' 'rhino' 'nss' 'libxt'
              'libxtst' 'libxp' 'libxrender' 'ca-certificates-java' 'eclipse-ecj' 'pcsclite')
 
-_hg_url="http://icedtea.wildebeest.org/download/drops/icedtea7/2.6.0"
+_hg_url="http://icedtea.wildebeest.org/download/drops/icedtea7/${_icedtea_release}"
 _jvmdir="/usr/lib/jvm/java-7-openjdk"
 
 source=("http://icedtea.classpath.org/download/source/icedtea-${_icedtea_release}.tar.gz"
@@ -35,14 +35,14 @@ source=("http://icedtea.classpath.org/download/source/icedtea-${_icedtea_release
         'openjdk7_nonreparenting-wm.diff'
         'openjdk.profile.sh'
         'openjdk.profile.csh')
-md5sums=('0ff4b83e54ea672804ffb53aed9d03c9'
-         'ed41ea966552770d8d12825e3e7b76d6'
-         '21be18ce43c1ef2e5a77bcacc4387027'
-         'a60c7b69fecc6d6c97a9e2f2d55e2e7a'
-         '2d4e669c4eb85a3b402dc19e8d16b8a1'
-         '8a098b241d60d378ee2729db46a9704a'
-         '0a878784a1430b176eabfa74e629b24d'
-         'cd27987c756b736b5cc4418ad5c5a4b5'
+md5sums=('a16b3e800030db9d9b35f80dfd11883a'
+         '500547dc50acde20fad18d0645be89c4'
+         '793fb78b5f51323e31785bb89292182f'
+         '131e2f619455e37cea74ca710e6ada6d'
+         '6e8061b2b7c22163ab149fb66553eda8'
+         '1cebffc6b56e9efdbe08eff018801cb1'
+         'd63c5b401aaa9ef76d1dbd87943aa387'
+         '5ffb731931226fbff870b80a377f6258'
          'ee1afda124d5927345014ab382ef581e'
          '986131efd2636724ae37870a5cca6d43'
          '05afd9c7fedcc05d4ebbb3427e068dba'
