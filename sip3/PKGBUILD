@@ -1,16 +1,17 @@
 
 pkgname=sip3
 _pkgname=sip
-pkgver=4.16.9
-_pkgver=4.16.9
+pkgver=4.17
+_pkgver=4.17
 pkgrel=1
 pkgdesc="Tool that makes it easy to create Python3 bindings for C and C++ libraries"
 arch=('x86_64')
 url="http://www.riverbankcomputing.com/software/sip/"
 license=('custom:"sip"')
 depends=('python3' 'gcc-libs' 'sip')
-source=("http://www.riverbankcomputing.com/static/Downloads/sip4/sip-${pkgver}.tar.gz")
-md5sums=('7a1dfff4e6fade0e4adee2c4e3d3aa9a')
+source=("http://sourceforge.net/projects/pyqt/files/sip/sip-${pkgver}/${_pkgname}-${pkgver}.tar.gz")
+#source=("http://www.riverbankcomputing.com/static/Downloads/sip4/sip-${pkgver}.tar.gz")
+md5sums=('ca51677770fa62dd5087877688cf97ba')
 
 build() {
   cd ${srcdir}/${_pkgname}-${pkgver} 
