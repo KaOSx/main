@@ -1,6 +1,6 @@
 
 pkgname=php
-pkgver=5.6.14
+pkgver=5.6.15
 pkgrel=1
 arch=('x86_64')
 pkgdesc='An HTML-embedded scripting language'
@@ -55,7 +55,7 @@ source=("http://www.php.net/distributions/${pkgname}-${pkgver}.tar.bz2"
         'logrotate.d.php-fpm'
         'php-fpm.service'
         'php-fpm.tmpfiles')
-md5sums=('2e1332123a7e19d15ed2af2d1d6bd6fd'
+md5sums=('bdfa8fb1b895a25e1cc05c162f9ae5fc'
          'ebeed393317ed9077a0a74df0986bad3'
          'dec2cbaad64e3abf4f0ec70e1de4e8e9'
          '16b5e2e4da59f15bea4c2db78a7bc8dc'
@@ -68,6 +68,8 @@ prepare() {
 
 	patch -p0 -i ${srcdir}/php.ini.patch
 	patch -p0 -i ${srcdir}/php-fpm.conf.in.patch
+	
+	sed -i -e 's|#include "buffio.h"|#include "tidybuffio.h"|' ext/tidy/tidy.c
 }
 
 build() {
