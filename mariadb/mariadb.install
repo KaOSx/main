@@ -1,3 +1,7 @@
+#!/bin/bash
+# Some colored makepkg-like functions
+# tputcolors
+
 if [[ $(command -v my_print_defaults >/dev/null 2>&1) ]]; then
   datadir=$(my_print_defaults mysqld | sed -n "s/^--datadir=//p")
 fi
@@ -14,9 +18,6 @@ post_install(){
   fi
 
   usr/bin/systemd-tmpfiles --create mysql.conf
-
-  echo ">> If you are migrating from MySQL, don't forget to run 'mysql_upgrade'"
-  echo "     after mysqld.service restart." 
 }
 
 post_upgrade(){
@@ -34,14 +35,13 @@ post_upgrade(){
     echo ">> mysql.service has been renamed to mysqld.service to keep"
     echo "    consistency with MySQL package." 
   fi
+  
+  if [[ "$(vercmp $2 10.1)" -lt 0 ]]; then
+    echo -e '\e[1;31m ==> This is a major MariaDB update'
+    echo -e '\e[1;34m ==> make sure to restart mysqld.service: '
+    echo -e '\e[1;34m ==> sudo systemctl restart mysqld.service '
+    echo -e '\e[1;34m ==> and run sudo mysql_upgrade afterwards. \e[0m'
+   fi
 }
 
-post_remove(){
-  if getent passwd mysql >/dev/null 2>&1; then
-    userdel mysql
 
-  fi
-  if getent group mysql >/dev/null 2>&1; then
-    groupdel mysql
-  fi
-}

@@ -1,19 +1,19 @@
 
 pkgbase=mariadb
 pkgname=('libmariadbclient' 'mariadb-clients' 'mariadb')
-pkgver=5.5.46
-_pkgver=5.5.46
-pkgrel=2
+pkgver=10.1.8
+_pkgver=10.1.8
+pkgrel=1
 arch=('x86_64')
 license=('GPL')
 url='http://mariadb.org/'
-makedepends=('cmake' 'openssl' 'zlib' 'lz4')
+makedepends=('cmake' 'openssl' 'zlib' 'lz4' 'pcre')
 options=('!libtool')
 source=("http://mirrors.syringanetworks.net/mariadb/mariadb-$_pkgver/source/mariadb-$_pkgver.tar.gz"
         'mariadb.service'
         'mariadb-post.sh'
         'mariadb-tmpfile.conf')
-md5sums=('92f682b00eb137af01e59ea93f7e31f7'
+md5sums=('9ba0aaabba40153d83e70edcc1aa43a8'
          'd488fffa9f62f9949c4aa1bb6e6db692'
          'b79e65a5aa536e6b5bc60988eb0b78a2'
          '2fa6e456964d4ff5e6d4f9ff0126aed6')
@@ -40,6 +40,7 @@ build() {
     -DINSTALL_MYSQLSHAREDIR=share/mysql \
     -DINSTALL_DOCDIR=share/mysql/docs \
     -DINSTALL_SHAREDIR=share/mysql \
+    -DWITH_PCRE=system \
     -DWITH_READLINE=ON \
     -DWITH_ZLIB=system \
     -DWITH_SSL=system \
@@ -63,7 +64,7 @@ build() {
 
 package_libmariadbclient() {
   pkgdesc='MariaDB client libraries'
-  depends=('openssl')
+  depends=('openssl' 'pcre')
   conflicts=('libmysqlclient')
   provides=("libmysqlclient=$-pkgver")
   
