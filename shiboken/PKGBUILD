@@ -1,6 +1,7 @@
 
 pkgname=shiboken
-pkgver=1.2.2
+_pkgname=Shiboken
+pkgver=1.2.4
 pkgrel=1
 pkgdesc="Plugin (front-end) for Generator Runner. It generates bindings for C++ libraries using CPython source code"
 arch=('x86_64')
@@ -8,12 +9,12 @@ license=('LGPL')
 url="http://www.pyside.org"
 depends=('python2' 'qt' 'libxslt' 'python2-sphinx')
 makedepends=('cmake')
-source=("http://download.qt-project.org/official_releases/pyside/$pkgname-$pkgver.tar.bz2")
-md5sums=('9f5bee9d414ce51be07ff7a20054a48d')
+source=("https://github.com/PySide/Shiboken/archive/${pkgver}.tar.gz")
+md5sums=('c284197d06ad25d78009ff55f18dd512')
 
 
 build(){
-    cd "$srcdir/shiboken-$pkgver"
+    cd ${_pkgname}-${pkgver}
     mkdir -p build
     cd build
     
@@ -27,7 +28,7 @@ build(){
 }
 
 package(){
-    cd "$srcdir/shiboken-$pkgver/build"
+    cd ${_pkgname}-${pkgver}/build
     
     make DESTDIR="$pkgdir" install
 }
