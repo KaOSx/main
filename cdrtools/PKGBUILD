@@ -1,6 +1,6 @@
 
 pkgname=cdrtools
-pkgver=3.01a31
+pkgver=3.02a01
 pkgrel=1
 pkgdesc="Original cdrtools supporting CD, DVD and BluRay burning"
 arch=('x86_64')
@@ -14,7 +14,7 @@ options=('!makeflags')
 backup=('etc/default/cdrecord' 'etc/default/rscsi')
 install=cdrtools.install
 source=("http://sourceforge.net/projects/cdrtools/files/alpha/cdrtools-$pkgver.tar.bz2")
-md5sums=('78172557894f469b4584d008e93ec469')
+md5sums=('784d5016eac4e06a22c41ae4add0e423')
 
 build() {
   cd "$srcdir"/cdrtools-${pkgver%%a*}
