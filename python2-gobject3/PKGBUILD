@@ -1,16 +1,17 @@
 
 pkgname=python2-gobject3 
 pkgbase=pygobject
-pkgver=3.16.2
+pkgver=3.18.2
+_pkgver=3.18
 pkgrel=1
 pkgdesc="Python2 bindings for GObject, including all introspection files"
 arch=('x86_64')
 url="https://live.gnome.org/PyGObject"
 license=('LGPL')
 depends=('python2' 'python2-cairo' 'gobject-introspection')
-source=("http://ftp.gnome.org/pub/gnome/sources/$pkgbase/${pkgver:0:4}/pygobject-$pkgver.tar.xz")
+source=("http://ftp.gnome.org/pub/gnome/sources/$pkgbase/${_pkgver}/pygobject-$pkgver.tar.xz")
 options=('!libtool')
-md5sums=('8a3720efa69dd2d520e0b21b5d9e7c19')
+md5sums=('0a956f3e785e23b0f136832f2e57a862')
 
 build() {
     cd "$pkgbase-$pkgver"
