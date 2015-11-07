@@ -1,20 +1,20 @@
 
 pkgname=libsoup
-pkgver=2.50.0
-_pkgver=2.50
+pkgver=2.52.1
+_pkgver=2.52
 pkgrel=1
 pkgdesc="GNOME HTTP Library - base library"
 arch=('x86_64')
 license=('LGPL')
 depends=('glib2' 'libxml2' 'gnutls' 'sqlite3' 'glib-networking')
-makedepends=('intltool' 'gobject-introspection' 'libgnome-keyring')
+makedepends=('intltool' 'gobject-introspection' 'libgnome-keyring' 'vala')
 url="http://www.gnome.org"
 source=("http://ftp.gnome.org/pub/gnome/sources/libsoup/${_pkgver}/${pkgname}-${pkgver}.tar.xz")
 options=('!libtool' '!emptydirs')
 provides=('libsoup-gnome')
 replaces=('libsoup-gnome')
 conflicts=('libsoup-gnome')
-md5sums=('9a84d66e1b7ccd3bd340574b11eccc15')
+md5sums=('b80f11674724ab38f96426875bc0e2e5')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
