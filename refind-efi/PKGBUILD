@@ -2,7 +2,7 @@
 _USE_GNU_EFI="1"
 
 pkgname=refind-efi
-pkgver=0.9.2
+pkgver=0.10.0
 pkgrel=1
 pkgdesc="Rod Smith's fork of rEFIt UEFI Boot Manager"
 url="http://www.rodsbooks.com/refind/index.html"
@@ -12,9 +12,9 @@ depends=('bash' 'dosfstools' 'efibootmgr')
 optdepends=('imagemagick: For refind-mkfont script')
 options=('!strip' 'docs' '!makeflags')
 install="${pkgname}.install"
-source=("http://downloads.sourceforge.net/refind/refind-src-${pkgver}.zip"
+source=("http://downloads.sourceforge.net/refind/refind-src-${pkgver}.tar.gz"
         'refind_linux.conf')
-md5sums=('23efca89e0de3e11c28b8ac82ec1c6e4'
+md5sums=('52c5c59e6a29e3f75efce4a5b891e2bf'
          '12ce3e22a216e7b25c253478a34713b4')
 
 
@@ -253,9 +253,9 @@ package() {
 	
 	msg "Install rEFInd helper scripts"
 	install -d "${pkgdir}/usr/bin/"
-	install -D -m0755 "${srcdir}/refind-${pkgver}/install.sh" "${pkgdir}/usr/bin/refind-install"
-	install -D -m0755 "${srcdir}/refind-${pkgver}/mkrlconf.sh" "${pkgdir}/usr/bin/refind-mkrlconf"
-	install -D -m0755 "${srcdir}/refind-${pkgver}/mvrefind.sh" "${pkgdir}/usr/bin/refind-mvrefind"
+	install -D -m0755 "${srcdir}/refind-${pkgver}/refind-install" "${pkgdir}/usr/bin/refind-install"
+	install -D -m0755 "${srcdir}/refind-${pkgver}/mkrlconf" "${pkgdir}/usr/bin/refind-mkrlconf"
+	install -D -m0755 "${srcdir}/refind-${pkgver}/mvrefind" "${pkgdir}/usr/bin/refind-mvrefind"
 	install -D -m0755 "${srcdir}/refind-${pkgver}/fonts/mkfont.sh" "${pkgdir}/usr/bin/refind-mkfont"
 	
 	msg "Install the rEFInd sample config files"
@@ -278,7 +278,7 @@ package() {
 	
 	msg "Install the rEFInd icons"
 	install -d "${pkgdir}/usr/share/refind/icons/"
-	install -D -m0644 "${srcdir}/refind-${pkgver}/icons"/* "${pkgdir}/usr/share/refind/icons/"
+	install -D -m0644 "${srcdir}/refind-${pkgver}/icons"/*.png "${pkgdir}/usr/share/refind/icons/"
 	
 	msg "Install the rEFInd images"
 	install -d "${pkgdir}/usr/share/refind/images/"
