@@ -15,7 +15,8 @@ build() {
   cd build
   cmake ../Vc-${pkgver} \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_BUILD_TYPE=Release
+    -DCMAKE_BUILD_TYPE=Release 
+    #-DTARGET_ARCHITECTURE=core  leaving empty will use auto, other options to test are generic and amd
   make
 }
 
