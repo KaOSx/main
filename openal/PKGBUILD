@@ -1,6 +1,6 @@
 
 pkgname=openal
-pkgver=1.16.0
+pkgver=1.17.0
 pkgrel=1
 pkgdesc="OpenAL is a cross-platform 3D audio library for use with OpenGL"
 arch=('x86_64')
@@ -9,8 +9,8 @@ license=('LGPL')
 depends=('glibc')
 makedepends=('alsa-lib' 'sdl' 'cmake' 'pulseaudio')
 options=('!libtool')
-source=("http://kcat.strangesoft.net/$pkgname-releases/$pkgname-soft-${pkgver}.tar.bz2")
-md5sums=('14db4b0d12f07252070b4fe5eb5911f6')
+source=("http://kcat.strangesoft.net/openal-releases/$pkgname-soft-${pkgver}.tar.bz2")
+md5sums=('0b7d1e79fd57e6c9827a3bbdc97f19b6')
 
 build() {
   cd ${srcdir}/${pkgname}-soft-${pkgver}/build
