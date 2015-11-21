@@ -7,7 +7,7 @@ arch=('x86_64')
 url="http://sourceforge.net/projects/lensfun/"
 license=('LGPL3')
 depends=('glibc' 'glib2')
-makedepends=('python2' 'libpng' 'cmake')
+makedepends=('python3' 'libpng' 'cmake')
 source=("http://sourceforge.net/projects/lensfun/files/${pkgver}/${pkgname}-${pkgver}.tar.gz") 
 md5sums=('247e59a0812ec451f6cd0d20b3379cb5')
 
@@ -16,7 +16,8 @@ build() {
     
     cmake -DCMAKE_INSTALL_PREFIX=/usr \
           -DCMAKE_BUILD_TYPE=Release \
-          -DCMAKE_INSTALL_LIBDIR=lib
+          -DCMAKE_INSTALL_LIBDIR=lib \
+          -DBUILD_AUXFUN=ON
     make
 }
 
