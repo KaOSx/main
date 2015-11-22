@@ -1,17 +1,18 @@
 
 pkgname=mdds
-pkgver=0.12.1
+pkgver=1.0.0
 pkgrel=1
 pkgdesc="Collection of multi-dimensional data structures and indexing algorithm"
 arch=('x86_64')
 url="https://gitlab.com/mdds/mdds"
 license=('MIT')
 checkdepends=('boost')
-source=("https://gitlab.com/mdds/mdds/repository/archive.tar.gz?ref=${pkgver}")
-md5sums=('84f6136ea2f663d621f68cf62527ed81')
+#source=("https://gitlab.com/mdds/mdds/repository/archive.tar.gz?ref=${pkgver}")
+source=("http://kohei.us/files/mdds/src/mdds_${pkgver}.tar.bz2")
+md5sums=('74e0a81c5af4137285fe6a52217f71e4')
 
 build() {
-  cd ${pkgname}.git
+  cd ${pkgname}_${pkgver}
 
   ./autogen.sh
   ./configure --prefix=/usr
@@ -19,13 +20,13 @@ build() {
 }
 
 check() {
-  cd ${pkgname}.git
+  cd ${pkgname}_${pkgver}
 
   make check
 }
 
 package() {
-  cd ${pkgname}.git
+  cd ${pkgname}_${pkgver}
   make DESTDIR="${pkgdir}" install
 
   install -Dm644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/COPYING"
