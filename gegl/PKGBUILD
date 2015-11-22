@@ -1,17 +1,17 @@
 
 pkgname=gegl
-pkgver=0.3.0
+pkgver=0.3.2
 _pkgver=0.3
 pkgrel=1
 pkgdesc="Graph based image processing framework."
 arch=('x86_64')
 url="http://www.gegl.org/"
 license=('GPL3' 'LGPL3')
-depends=('babl' 'ffmpeg' 'openexr' 'librsvg' 'jasper' 'json-glib' 'libwebp')
+depends=('babl' 'ffmpeg' 'openexr' 'librsvg' 'jasper' 'json-glib' 'libwebp' 'libraw')
 makedepends=('ruby' 'lua' 'exiv2' 'intltool')
 options=('!libtool')
 source=("http://download.gimp.org/pub/gegl/${_pkgver}/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('6d71daab78377d5074a74651bbf7a76a')
+md5sums=('6955dd2ac208448c8a2a4bc7c7f37869')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
