@@ -1,20 +1,19 @@
 
-_doc_root=/srv/http
+_doc_root=/usr/share/nginx
 _server_root=/etc/nginx
 _conf_path=${_server_root}/conf
-_tmp_path=/var/spool/nginx
+_tmp_path=/var/lib/nginx
 _log_path=/var/log/nginx
 _user=http
 _group=http
 
 pkgname=nginx
-pkgver=1.2.6
+pkgver=1.8.0
 pkgrel=1
 pkgdesc="small, but very powerful and efficient web server and mail proxy"
 arch=('x86_64')
-depends=('pcre' 'zlib' 'openssl')
+depends=('pcre' 'zlib' 'openssl' 'geoip' 'gd')
 url="http://nginx.org"
-screenshot="http://wiki.nginx.org/local/nginx-logo.png"
 license=('2-clause BSD')
 backup=("etc/nginx/conf/fastcgi.conf"
 	"etc/nginx/conf/fastcgi_params"
@@ -25,47 +24,56 @@ backup=("etc/nginx/conf/fastcgi.conf"
 	"etc/nginx/conf/scgi_params"
 	"etc/nginx/conf/uwsgi_params"
 	"etc/nginx/conf/win-utf"
-	"etc/logrotate.d/nginx"
-	"etc/conf.d/nginx")
+	"etc/logrotate.d/nginx")
 source=("http://nginx.org/download/nginx-$pkgver.tar.gz"
-	'nginx.service')
-md5sums=('1350d26eb9b66364d9143fb3c4366ab6'
-         '62d494d23aef31d0b867161f9fffa6eb')
+	'nginx.service'
+	'logrotate')
+md5sums=('3ca4a37931e9fa301964b8ce889da8cb'
+         'c5b7a8068499262a4e40f890c2b855d3'
+         '19a26a61c8afe78defb8b4544f79a9a0')
 
 build() {
 	cd $srcdir/nginx-${pkgver}
 	./configure \
 		--prefix=${_server_root} \
 		--sbin-path=/usr/sbin/nginx \
-		--pid-path=/var/run/nginx.pid \
-		--lock-path=/var/lock/nginx.lock \
+		--pid-path=/run/nginx.pid \
+		--lock-path=/run/lock/nginx.lock \
 		--http-client-body-temp-path=${_tmp_path}/client_body_temp \
 		--http-proxy-temp-path=${_tmp_path}/proxy_temp \
 		--http-fastcgi-temp-path=${_tmp_path}/fastcgi_temp \
 		--http-log-path=${_log_path}/access.log \
-		--error-log-path=${_log_path}/error.log \
+		--error-log-path=stderr \
 		--user=${_user} --group=${_group} \
 		--with-imap --with-imap_ssl_module --with-http_ssl_module \
 		--with-http_stub_status_module \
 		--with-http_dav_module \
 		--with-http_gzip_static_module \
 		--with-ipv6 \
-		--http-scgi-temp-path=${_tmp_path} \
-		--http-uwsgi-temp-path=${_tmp_path}
-		#--add-module=/usr/lib/passenger/ext/nginx \
-		#--with-http_mp4_module \
-		#--with-http_realip_module \
-		#--with-http_addition_module \
-		#--with-http_xslt_module \
-		#--with-http_image_filter_module \
-		#--with-http_geoip_module \
-		#--with-http_sub_module \
-		#--with-http_flv_module \
-		#--with-http_gzip_static_module \
-		#--with-http_random_index_module \
-		#--with-http_secure_link_module \
-		#--with-http_degradation_module \
-		#--with-http_perl_module \
+		--http-scgi-temp-path=${_tmp_path}/scgi \
+		--http-uwsgi-temp-path=${_tmp_path}/uwsgi \
+		--with-imap \
+                --with-imap_ssl_module \
+                --with-ipv6 \
+                --with-pcre-jit \
+                --with-file-aio \
+                --with-http_addition_module \
+                --with-http_auth_request_module \
+                --with-http_dav_module \
+                --with-http_degradation_module \
+                --with-http_flv_module \
+                --with-http_geoip_module \
+                --with-http_gunzip_module \
+                --with-http_gzip_static_module \
+                --with-http_image_filter_module \
+                --with-http_mp4_module \
+                --with-http_random_index_module \
+                --with-http_realip_module \
+                --with-http_secure_link_module \
+                --with-http_spdy_module \
+                --with-http_ssl_module \
+                --with-http_stub_status_module \
+                --with-http_sub_module \
 
 	make
 }
@@ -74,35 +82,19 @@ package() {
 	cd $srcdir/nginx-${pkgver}
 	make DESTDIR=$pkgdir install
 
-	install -d $pkgdir/etc/logrotate.d/
-	cat <<EOF > $pkgdir/etc/logrotate.d/nginx
-	$_log_path/*log {
-		create 640 http log
-		compress
-		postrotate
-			/bin/kill -USR1 \`cat /var/run/nginx.pid 2>/dev/null\` 2> /dev/null || true
-		endscript
-	}
-EOF
-
-	sed -i -e "s/\<user\s\+\w\+;/user $_user;/g" $pkgdir/$_conf_path/nginx.conf
+	sed -i -e "s|\<user\s\+\w\+;|user $_user;|g" \
+            -e '44s|html|/usr/share/nginx/html|' \
+            -e '54s|html|/usr/share/nginx/html|' $pkgdir/$_conf_path/nginx.conf
 
 	install -d $pkgdir/$_tmp_path
 
 	# move default document root outside server root
 	install -d $pkgdir/$_doc_root
-	mv $pkgdir/$_server_root/html/* $pkgdir/$_doc_root/
-	rm -rf $pkgdir/$_server_root/html
-	rm -f $pkgdir/$_doc_root/index.html
-
-	# let's create links for relative paths in config file
-	ln -s $_log_path $pkgdir/$_server_root/logs
-	ln -s $_doc_root $pkgdir/$_server_root/html
+	mv $pkgdir/$_server_root/html/ $pkgdir/$_doc_root/
+	
+	rm -rf $pkgdir/run
 
 	install -D -m644 LICENSE $pkgdir/usr/share/licenses/nginx/LICENSE
-	mkdir -p $pkgdir/etc/conf.d
-	echo "NGINX_CONFIG=/etc/nginx/conf/nginx.conf" >$pkgdir/etc/conf.d/nginx
-	rm -rf $pkgdir/var/run
-
 	install -Dm644 "$srcdir/nginx.service" "$pkgdir/usr/lib/systemd/system/nginx.service"
+	install -Dm644 "$srcdir/logrotate" "$pkgdir/etc/logrotate.d/nginx"
 }
