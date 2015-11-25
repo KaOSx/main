@@ -1,7 +1,7 @@
 
 pkgname=libsignon-glib
 pkgver=1.12
-pkgrel=1
+pkgrel=2
 pkgdesc='Single signon authentication library for GLib applications'
 arch=('x86_64')
 url='https://gitlab.com/accounts-sso/libsignon-glib'
@@ -9,10 +9,10 @@ license=('LGPL2.1')
 depends=('signonqt')
 makedepends=('python2-gobject' 'gtk-doc')
 source=("https://gitlab.com/accounts-sso/libsignon-glib/repository/archive.tar.gz?ref=${pkgver}")
-md5sums=('e12a123d9093a62700b46fa2c6ed8e56')
+md5sums=('e1b6d28984b1a2ac7072eec81f7df3df')
 
 build() {
-  cd ${pkgname}.git
+  cd ${pkgname}-${pkgver}-*
   
   ./autogen.sh \
     --prefix=/usr \
@@ -23,7 +23,7 @@ build() {
 }
 
 package() {
-  cd ${pkgname}.git
+  cd ${pkgname}-${pkgver}-*
 
   make DESTDIR="${pkgdir}" install
 }
