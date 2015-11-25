@@ -1,6 +1,6 @@
 
 pkgname=libkolab
-pkgver=1.0.0
+pkgver=1.0.2
 pkgrel=1
 pkgdesc="Advanced Kolab Object Handling Library"
 url='http://kolab.org/'
@@ -8,16 +8,14 @@ arch=('x86_64')
 license=('GPL')
 depends=('libkolabxml' 'kdepimlibs' 'kcalutils')
 makedepends=('extra-cmake-modules' 'kdoctools' 'boost')
-source=("http://mirror.kolabsys.com/pub/releases/${pkgname}-${pkgver}.tar.gz"
-        "https://git.kolab.org/file/data/t7p5qjkjfi4eqxpnyjg2/PHID-FILE-riut3j5brxqoart2s7ol/D41.diff")
+source=("http://mirror.kolabsys.com/pub/releases/${pkgname}-${pkgver}.tar.gz")
 #source=("http://git.kolab.org/libkolab/snapshot/${pkgname}-${pkgver}.tar.gz")
-md5sums=('3670aae0d6b2ad32f65abd65352e79eb'
-         '46198b207b39d9f067812ce10114ab19')
+md5sums=('312f35920989fd115386ee256fe78ba2')
 
 prepare() {
     cd $pkgname-${pkgver}
   
-    patch -p1 -i $srcdir/D41.diff
+    #patch -p1 -i $srcdir/D41.diff
 }
          
 build() {
