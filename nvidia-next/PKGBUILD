@@ -3,7 +3,7 @@ _extramodules=extramodules-4.3-next
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=nvidia-next
-pkgver=352.63
+pkgver=358.16
 pkgrel=1
 pkgdesc="NVIDIA drivers for linux."
 arch=('x86_64')
@@ -17,7 +17,7 @@ _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 #_pkg="NVIDIA-Linux-x86_64-${pkgver}"
 source=("ftp://download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
         'linux-4.2.patch')
-md5sums=('ce1ec67f875d434c212b859b582204c5'
+md5sums=('efb1e649c0e0d62e92774bbf2c124488'
          '5bad6b6ba2512c619f1dedb56516efa5')
 
 build() {
@@ -25,18 +25,16 @@ build() {
   sh "${_pkg}.run" --extract-only
   
   cd "${_pkg}"
-  patch -p1 -i ${srcdir}/linux-4.2.patch
+  #patch -p1 -i ${srcdir}/linux-4.2.patch
   
   cd "${srcdir}/${_pkg}/kernel"
-  make SYSSRC=/lib/modules/"${_kver}/build" module
-  
-  cd uvm
   make SYSSRC=/lib/modules/"${_kver}/build" module
 }
 
 package() {
   install -D -m644 "${srcdir}/${_pkg}/kernel/nvidia.ko" "${pkgdir}/lib/modules/${_extramodules}/nvidia.ko"
-  install -D -m644 "${srcdir}/${_pkg}/kernel/uvm/nvidia-uvm.ko" "${pkgdir}/lib/modules/${_extramodules}/nvidia-uvm.ko"
+  install -D -m644 "${srcdir}/${_pkg}/kernel/nvidia-modeset.ko" "${pkgdir}/usr/lib/modules/${_extramodules}/nvidia-modeset.ko"
+  install -D -m644 "${srcdir}/${_pkg}/kernel/nvidia-uvm.ko" "${pkgdir}/lib/modules/${_extramodules}/nvidia-uvm.ko"
   gzip "${pkgdir}/lib/modules/${_extramodules}/"*.ko
   install -d -m755 "${pkgdir}/lib/modprobe.d"
   

@@ -3,7 +3,7 @@ _extramodules=extramodules-4.2
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=('nvidia' 'khd-nvidia')
-pkgver=352.63
+pkgver=358.16
 pkgrel=1
 arch=('x86_64')
 url="http://www.nvidia.com/"
@@ -16,7 +16,7 @@ md5sums=('282f73f1a7326339a7b0e0716eee4f76')
 _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 #_pkg="NVIDIA-Linux-x86_64-${pkgver}"
 source+=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run")
-md5sums+=('ce1ec67f875d434c212b859b582204c5')
+md5sums+=('efb1e649c0e0d62e92774bbf2c124488')
 
 build() {
     cd "${srcdir}"
@@ -27,9 +27,6 @@ build() {
 
     cd "${srcdir}/${_pkg}/kernel"  
     make SYSSRC=/lib/modules/"${_kver}/build" module
-    
-    cd uvm
-    make SYSSRC=/lib/modules/"${_kver}/build" module
 }
 
 package_nvidia() {
@@ -39,7 +36,8 @@ package_nvidia() {
     install=nvidia.install
     
     install -D -m644 "${srcdir}/${_pkg}/kernel/nvidia.ko" "${pkgdir}/lib/modules/${_extramodules}/nvidia.ko"
-    install -D -m644 "${srcdir}/${_pkg}/kernel/uvm/nvidia-uvm.ko" "${pkgdir}/lib/modules/${_extramodules}/nvidia-uvm.ko"
+    install -D -m644 "${srcdir}/${_pkg}/kernel/nvidia-modeset.ko" "${pkgdir}/usr/lib/modules/${_extramodules}/nvidia-modeset.ko"
+    install -D -m644 "${srcdir}/${_pkg}/kernel/nvidia-uvm.ko" "${pkgdir}/lib/modules/${_extramodules}/nvidia-uvm.ko"
     gzip "${pkgdir}/lib/modules/${_extramodules}/"*.ko
     install -d -m755 "${pkgdir}/etc/modprobe.d"
     echo "blacklist nouveau" >> "${pkgdir}/etc/modprobe.d/nouveau_blacklist.conf"
