@@ -1,26 +1,34 @@
 
-pkgname=alkimia	
-pkgver=4.3.2
-pkgrel=3
+pkgname=alkimia
+pkgver=5.0.90
+pkgrel=1
 arch=('x86_64')
 pkgdesc="A library with common classes and functionality used by finance applications for the KDE SC."
 url=('http://kde-apps.org/content/show.php/libalkimia?content=137323')
-depends=('kdelibs')
-makedepends=('cmake' 'automoc4' 'doxygen')
+depends=('kcoreaddons' 'kdelibs4support')
+makedepends=('extra-cmake-modules' 'kdoctools' 'doxygen')
+conflicts=('kf5-alkimia')
+replaces=('kf5-alkimia')
 license=('LGPL')
-source=("http://kde-apps.org/CONTENT/content-files/137323-libalkimia-$pkgver.tar.bz2")
-md5sums=('8d7b529c7be5f72ae1cbb02e818e9b79')
+source=("git://anongit.kde.org/alkimia")
+md5sums=('SKIP')
 
 build() {
   cd "${srcdir}"
+  #sed -e "s/Qt5::DBus/Qt5::DBus KF5::KDELibs4Support/" -i ${srcdir}/$_pkgname/libalkimia/CMakeLists.txt
+  #sed -e "s/KDE4_ENABLE_EXCEPTIONS/KDE_ENABLE_EXCEPTIONS/" -i ${srcdir}/$_pkgname/libalkimia/CMakeLists.txt
 
   mkdir build
   cd build
 
-  cmake ../libalkimia-${pkgver} \
-    -DCMAKE_INSTALL_PREFIX=/usr \
+  cmake ../${pkgname} \
     -DCMAKE_BUILD_TYPE=Release \
-    -Wno-dev
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DLIB_INSTALL_DIR=lib \
+    -DSYSCONF_INSTALL_DIR=/etc \
+    -DQML_INSTALL_DIR=/usr/lib/qt5/qml \
+    -DPLUGIN_INSTALL_DIR=/usr/lib/qt5/plugins \
+    -DBUILD_TESTING=OFF 
   make
 }
 
