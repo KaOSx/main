@@ -1,8 +1,8 @@
 
 _pkgname=ubuntu-font-family
 pkgname=ttf-ubuntu-font
-pkgver=0.80
-pkgrel=2
+pkgver=0.83
+pkgrel=1
 pkgdesc="The default TTF font family used by Ubuntu."
 arch=('x86_64')
 license=('custom:ubuntu-font-licence-1.0')
@@ -10,13 +10,13 @@ url="http://font.ubuntu.com/"
 depends=('fontconfig' 'xorg-font-utils')
 source=("http://font.ubuntu.com/download/${_pkgname}-${pkgver}.zip")
 install=$pkgname.install
-md5sums=('a1fc70f5a5b1d096ab8310886cddaa1c')
+md5sums=('a24b8136b8f3bb93f166baf97d9328de')
 
 package() {
   cd "${srcdir}/${_pkgname}-${pkgver}"
 
   install -dm755 "${pkgdir}/usr/share/fonts/TTF"
-  install -m0644 Ubuntu-{L,R,B,C}*.ttf "${pkgdir}/usr/share/fonts/TTF/"
+  install -m0644 Ubuntu-{L,R,B,C,M}*.ttf "${pkgdir}/usr/share/fonts/TTF/"
   install -m0644 UbuntuMono-*.ttf "${pkgdir}/usr/share/fonts/TTF/"
   install -Dm0644 LICENCE.txt "${pkgdir}/usr/share/${pkgname}/LICENSE"
 }
