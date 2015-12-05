@@ -3,8 +3,12 @@ post_install() {
 
 NOTE
 ----
-# If you want to use this driver with sane:
+# If you want to use this driver with your HP scanner:
 #  echo "hpaio" >> /etc/sane.d/dll.conf
 
 EOF
+}
+
+post_upgrade() {
+    post_install
 }
