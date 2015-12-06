@@ -1,14 +1,18 @@
 post_install() {
+
+    if [ -f /etc/sane.d/dll.conf ]; then
+    echo "hpaio" >> /etc/sane.d/dll.conf
+    
+}
+
+post_upgrade() {
   cat << EOF
 
 NOTE
 ----
-# If you want to use this driver with your HP scanner:
+# If you want to use this driver with your HP scanner,
+# make sure hpaio is part of /etc/sane.d/dll.conf, if not:
 #  echo "hpaio" >> /etc/sane.d/dll.conf
 
 EOF
-}
-
-post_upgrade() {
-    post_install
 }
