@@ -1,7 +1,7 @@
 
 pkgname=pyalpm
 pkgver=0.7
-pkgrel=1
+pkgrel=2
 pkgdesc="Libalpm bindings for Python 3"
 arch=('x86_64')
 url="http://projects.archlinux.org/users/remy/pyalpm.git/"
@@ -13,6 +13,7 @@ md5sums=('35b4d2f3b73b0f2cf49ed436ec8a0568')
 build() {
   cd ${srcdir}/${pkgname}-$pkgver
   export CFLAGS="$CFLAGS -Wno-format"
+  sed -i "s/'-Werror',//" setup.py
 
   python3 setup.py build
 }
