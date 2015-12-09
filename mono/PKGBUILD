@@ -1,7 +1,7 @@
 
 pkgname=mono
-pkgver=4.0.5
-_pkgver=4.0.5.1
+pkgver=4.2.1
+_pkgver=4.2.1.102
 pkgrel=1
 pkgdesc="Free implementation of the .NET platform including runtime and compiler"
 arch=('x86_64')
@@ -12,7 +12,7 @@ makedepends=('pkgconfig')
 options=('!libtool' '!makeflags')
 source=("http://download.mono-project.com/sources/mono/${pkgname}-${_pkgver}.tar.bz2"
         'mono.binfmt.d')
-md5sums=('2ebdc1859cdc03d408684779503691dc'
+md5sums=('74f92eccf51e59fb626bbdd39fa89229'
          '568c72e1b42f089a9fec20dfe4bcc3b4')
 
 build() {
@@ -21,7 +21,6 @@ build() {
   ./configure --prefix=/usr \
          --sysconfdir=/etc \
          --bindir=/usr/bin \
-         --disable-static \
          --disable-quiet-build \
          --disable-system-aot \
          --with-mcs-docs=no
