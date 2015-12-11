@@ -1,7 +1,7 @@
 
 pkgname=mesa-demos
-pkgver=8.2.0
-pkgrel=4
+pkgver=8.3.0
+pkgrel=1
 arch=('x86_64')
 pkgdesc="Mesa demos and tools"
 url="http://mesa3d.sourceforge.net"
@@ -9,13 +9,13 @@ license=('custom')
 depends=('glew' 'freeglut')
 source=("ftp://ftp.freedesktop.org/pub/mesa/demos/${pkgver}/mesa-demos-${pkgver}.tar.bz2"
         'LICENSE')
-md5sums=('72613a2c8c013716db02e3ff59d29061'
+md5sums=('628e75c23c17394f11a316c36f8e4164'
          '5c65a0fe315dd347e09b1f2826a1df5a')
 
 build() {
   cd "${srcdir}/mesa-demos-${pkgver}"
   
-  ./configure --prefix=/usr --disable-egl
+  ./configure --prefix=/usr # --disable-egl
   make
 }
 

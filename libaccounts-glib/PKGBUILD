@@ -1,8 +1,8 @@
 
 pkgname=libaccounts-glib
-pkgver=1.18
-_pkgver=02d16e507449f39e094f4babc231d232eeb70737
-pkgrel=2
+pkgver=1.19
+_pkgver=61b5adaadc8efd1b8235580f0f8747fb62b40486
+pkgrel=1
 pkgdesc="Glib-based client library for accessing the online accounts database"
 arch=('x86_64')
 url="https://gitlab.com/groups/accounts-sso"
@@ -10,11 +10,9 @@ license=('LGPL')
 depends=('dbus-glib' 'libxml2' 'sqlite')
 makedepends=('python2-gobject' 'docbook-xsl' 'gtk-doc')
 options=('!libtool')
-# check source https://groups.google.com/forum/#!forum/accounts-sso-announce
-# latest tars https://drive.google.com/#folders/0B8fX9XOwH_g4alFsYV8tZTI4VjQ
-#source=("http://sourceforge.net/projects/kaosx/files/sources/libaccounts-glib/$pkgname-$pkgver.tar.gz")
+# check https://groups.google.com/forum/#!forum/accounts-sso-announce
 source=("https://gitlab.com/accounts-sso/libaccounts-glib/repository/archive.tar.bz2?ref=$_pkgver")
-md5sums=('c1710e3ba6a6f63327221b6c11229ec0')
+md5sums=('71757b29600a2255d11a1f6ff192c471')
 
 build() {
   cd $pkgname-$_pkgver-$_pkgver
