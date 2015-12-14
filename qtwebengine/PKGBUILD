@@ -3,14 +3,14 @@ pkgname=qtwebengine
 pkgver=5.5.1
 subver=5.5.1
 _pkgver=5.5
-pkgrel=1
+pkgrel=2
 pkgdesc="Chromium-based web engine to replace Qt WebKit"
 url="http://blog.qt.digia.com/blog/2014/01/23/qt-webengine-technology-preview-available/"
 arch=('x86_64')
 license=('GPL3')
 depends=('qt5-declarative' 'python2-jinja' 'mesa' 'systemd' 'pango' 'nss' 'speex' 'libevent' 'libcups'
          'libxslt' 'libpng' 'libjpeg-turbo' 'libwebp' 'zlib' 'pciutils' 'jsoncpp' 'pulseaudio' 'libxcomposite'
-         'qt5-webchannel')
+         'qt5-webchannel' 'ffmpeg')
 makedepends=('gperf' 'yasm' 'openssh' 'icu')
 groups=('qt5')
 _pkgfqn="qtwebengine-opensource-src-${subver}"
@@ -25,7 +25,7 @@ build() {
    cd build 
    #export GYP_DEFINES="python_ver=2.7 use_pulseaudio=1 use_pango=1 use_cairo=1 use_cups=1"
    
-   /usr/lib/qt5/bin/qmake ../qtwebengine.pro
+   /usr/lib/qt5/bin/qmake WEBENGINE_CONFIG+="proprietary_codecs -use_system_ffmpeg=1" ../qtwebengine.pro
    make 
 }
 

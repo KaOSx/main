@@ -10,6 +10,7 @@ ExecStop=/usr/sbin/apachectl graceful-stop
 ExecReload=/usr/sbin/apachectl graceful
 PrivateTmp=true
 LimitNOFILE=infinity
+KillMode=mixed
 
 [Install]
 WantedBy=multi-user.target
