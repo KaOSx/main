@@ -1,15 +1,15 @@
 
 pkgname=libshout
-pkgver=2.3.1
-pkgrel=5
+pkgver=2.4.1
+pkgrel=1
 pkgdesc="Library for accessing a shoutcast/icecast server"
 arch=('x86_64')
 depends=('libvorbis' 'libtheora' 'speex')
 url="http://www.icecast.org/"
 options=('!libtool')
 license=('LGPL')
-source=("http://downloads.xiph.org/releases/${pkgname}/${pkgname}-${pkgver}.tar.gz")
-md5sums=('11765b2592e7ea623ccd93d3f8df172c')
+source=("http://downloads.xiph.org/releases/libshout/${pkgname}-${pkgver}.tar.gz")
+md5sums=('89cebf8cb0197f639cde69c95177fe47')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
