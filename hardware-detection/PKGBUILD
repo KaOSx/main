@@ -1,29 +1,20 @@
 
 pkgname=hardware-detection
-pkgver=1.2
+pkgver=20150729
 pkgrel=1
 pkgdesc="Hardware detection scripts"
 arch=('x86_64')
 url="http://kaosx.us"
-depends=('bc' 'util-linux' 'chd-nvidia' 'dmidecode') 
 license=('GPL')
-source=("https://github.com/KaOSx/hardware-detection/archive/v${pkgver}.tar.gz")
-md5sums=('fb952c1f36663d9a4f86a37d23225210')
-
-# create tarball: source PKGBUILD && mksource
-
-mksource() {
-	  rm -vRf ${pkgname}-${pkgver}
-	  git clone git://github.com/KaOSx/${pkgname}.git ${pkgname}-${pkgver}
-	  rm -vRf ${pkgname}-${pkgver}/.git*
-	  pushd ${pkgname}-${pkgver}
-	  popd
-	  tar -cvJf ${pkgname}-${pkgver}.tar.xz ${pkgname}-${pkgver}/*
-	  md5sum ${pkgname}-${pkgver}.tar.xz
-}
+depends=('bc' 'util-linux' 'khd-nvidia' 'khd-nvidia-304xx' 'dmidecode') 
+provides=('kdeos-hardware-detection')
+replaces=('kdeos-hardware-detection')
+conflicts=('kdeos-hardware-detection')
+source=("git://github.com/KaOSx/hardware-detection.git")
+md5sums=('SKIP')
 
 package(){
-	cd "${srcdir}/${pkgname}-${pkgver}"
+    cd "${srcdir}/hardware-detection"
 
-	make install DESTDIR="${pkgdir}"
+    make install DESTDIR="${pkgdir}"
 }
