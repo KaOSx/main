@@ -1,7 +1,7 @@
 
 pkgname=librevenge
-pkgver=0.0.2
-pkgrel=4
+pkgver=0.0.3
+pkgrel=1
 pkgdesc="Base library for writing document import filters. It has interfaces for text documents, 
          vector graphics, spreadsheets and presentations."
 arch=('x86_64')
@@ -10,11 +10,11 @@ license=('MPL 2.0')
 depends=('boost-libs' 'zlib')
 makedepends=('boost' 'cppunit')
 source=("http://sourceforge.net/projects/libwpd/files/librevenge/librevenge-$pkgver/$pkgname-$pkgver.tar.xz")
-md5sums=('4ee55a80ee32af6752dd8c56eb1b1b5e')
+md5sums=('b777d64bbe13830627c7bda69e5f3e31')
 
 build() {
     cd $srcdir/$pkgname-$pkgver
-    export CPPFLAGS=-DBOOST_ERROR_CODE_HEADER_ONLY
+    #export CPPFLAGS=-DBOOST_ERROR_CODE_HEADER_ONLY
 
     ./configure --prefix=/usr
     make
