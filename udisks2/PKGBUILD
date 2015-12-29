@@ -1,7 +1,7 @@
 
 pkgname=udisks2
 pkgver=2.1.6
-pkgrel=1
+pkgrel=2
 pkgdesc="Disk Management Service"
 arch=('x86_64')
 url="http://www.freedesktop.org/wiki/Software/udisks"
@@ -21,6 +21,7 @@ build() {
   ./configure --prefix=/usr \
         --sysconfdir=/etc \
         --localstatedir=/var \
+        --libexecdir=/usr/lib \
         --with-systemdsystemunitdir=/usr/lib/systemd/system \
         --disable-static
   make
