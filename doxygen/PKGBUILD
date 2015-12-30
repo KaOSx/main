@@ -1,17 +1,16 @@
 
 pkgname=doxygen
-pkgver=1.8.10
+pkgver=1.8.11
 pkgrel=1
 pkgdesc="A documentation system for C++, C, Java, IDL and PHP"
 license=('GPL')
 arch=('x86_64')
 url="http://www.doxygen.org/"
 depends=('gcc-libs')
-makedepends=('flex' 'texlive-core' 'ghostscript' 'texlive-latexextra' 'python2' 'qt' 'cmake')
-optdepends=('graphviz: for caller/callee graph generation'
-            'qt: for doxywizard')
+makedepends=('flex' 'texlive-core' 'ghostscript' 'texlive-latexextra' 'python2' 'qt5-base' 'cmake')
+optdepends=('qt5-base: for doxywizard')
 source=("ftp://ftp.stack.nl/pub/users/dimitri/${pkgname}-${pkgver}.src.tar.gz")
-md5sums=('79767ccd986f12a0f949015efb5f058f')
+md5sums=('f4697a444feaed739cfa2f0644abc19b')
 
 build() { 
   mkdir -p build
@@ -21,9 +20,9 @@ build() {
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -Dbuild_wizard=YES \
-    -Dbuild_doc=NO
+    -Dbuild_doc=ON
   make
-  #make docs
+  make docs
 }
 
 package() {
