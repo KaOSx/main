@@ -1,8 +1,8 @@
 
-_pkgbase='pidgin'
-pkgname='libpurple'
-pkgver=2.10.11
-pkgrel=2
+_pkgbase=pidgin
+pkgname=libpurple
+pkgver=2.10.12
+pkgrel=1
 pkgdesc="IM library extracted from Pidgin"
 arch=('x86_64')
 url="http://pidgin.im/"
@@ -13,12 +13,11 @@ makedepends=('startup-notification' 'libxss' 'python2' 'avahi' 'tk'
 optdepends=('dbus-python2: for purple-remote and purple-url-handler')
 options=('!libtool')
 source=("http://downloads.sourceforge.net/${_pkgbase}/${_pkgbase}-${pkgver}.tar.bz2")
-md5sums=('7c8bb6f997e05e7929104439872c2844')
+md5sums=('14e0f5cfb2ed065e4dc80391a806ac76')
 
 build() {
-    cd "${srcdir}/${_pkgbase}-${pkgver}"
-    sed -i "s#env python#env python2#" */plugins/*.py
-    sed -i "s#env python#env python2#" libpurple/purple-{remote,notifications-example,url-handler}
+    cd ${_pkgbase}-${pkgver}
+
     ./configure --prefix=/usr \
                 --sysconfdir=/etc \
                 --disable-schemas-install \
@@ -39,7 +38,7 @@ build() {
 }
 
 package() {
-    cd "${srcdir}/${_pkgbase}-${pkgver}"
+    cd ${_pkgbase}-${pkgver}
     
     for dir in libpurple share/sounds share/ca-certs m4macros po
     do  make -C "${dir}" DESTDIR="${pkgdir}" install
