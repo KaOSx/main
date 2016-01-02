@@ -7,7 +7,7 @@ pkgdesc="IM library extracted from Pidgin"
 arch=('x86_64')
 url="http://pidgin.im/"
 license=('GPL')
-depends=('libsasl' 'dbus-glib' 'nss' 'cyrus-sasl-plugins' 'libidn')
+depends=('libsasl' 'dbus-glib' 'nss' 'cyrus-sasl-plugins' 'libidn' 'farstream')
 makedepends=('startup-notification' 'libxss' 'python2' 'avahi' 'tk'
              'ca-certificates' 'intltool')
 optdepends=('dbus-python2: for purple-remote and purple-url-handler')
@@ -28,8 +28,6 @@ build() {
                 --disable-sm \
                 --disable-nm \
                 --disable-gtkspell \
-                --disable-gstreamer \
-                --disable-vv \
                 --enable-cyrus-sasl \
                 --disable-doxygen \
                 --with-python=/usr/bin/python2 \
