@@ -1,17 +1,17 @@
 
 # Find the kernel name inside the chroot
-_extramodules=extramodules-4.2
+_extramodules=extramodules-4.3
 _kver="$(cat /lib/modules/${_extramodules}/version)"
 
 pkgname=broadcom-wl
 pkgver=6.30.223.271
 _pkgver=6_30_223_271
-pkgrel=3
+pkgrel=4
 pkgdesc='Broadcom 802.11abgn hybrid Linux networking device driver'
 arch=('x86_64')
-url='http://www.broadcom.com/support/802.11/linux_sta.php'
+url='http://www.broadcom.com/support/802.11/'
 license=('custom')
-depends=('linux>=4.2' 'linux<4.3')
+depends=('linux>=4.3' 'linux<4.4')
 makedepends=('linux-headers')
 
 source=("http://www.broadcom.com/docs/linux_sta/hybrid-v35_64-nodebug-pcoem-${_pkgver}.tar.gz"

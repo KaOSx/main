@@ -1,20 +1,22 @@
 
-_extramodules=extramodules-4.2
+_extramodules=extramodules-4.3
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=('nvidia-304xx' 'khd-nvidia-304xx')
 pkgver=304.131
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 url="http://www.nvidia.com/"
-makedepends=('linux-headers' 'linux>=4.2' 'linux<4.3' "nvidia-304xx-utils=${pkgver}")
+makedepends=('linux-headers' 'linux>=4.3' 'linux<4.4' "nvidia-304xx-utils=${pkgver}")
 license=('custom')
 source=("https://raw.github.com/KaOSx/hardware-detection/master/hwdb/nvidia_supported"
         '20-nvidia.conf'
-        'nv-drm.patch')
+        'nv-drm.patch'
+        'linux4.3.patch')
 md5sums=('62d0cdb856cfae64753c0f3acf729d47'
          '7642a7a57034c96a7952771c671c81a2'
-         '79671a27131da619a33eb02ed0c2c031')
+         '79671a27131da619a33eb02ed0c2c031'
+         'dc0453eb0acd51def516b85ee42da5b9')
 
 _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 source+=("ftp://download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run")
@@ -26,6 +28,7 @@ build() {
     
     cd "${_pkg}"
     patch -p0 -i ${srcdir}/nv-drm.patch
+    #patch -p1 -i ${srcdir}/linux4.3.patch
     
     cd "${srcdir}/${_pkg}/kernel"  
     make SYSSRC=/lib/modules/"${_kver}/build" module
@@ -33,7 +36,7 @@ build() {
 
 package_nvidia-304xx() {
     pkgdesc="NVIDIA drivers for linux."
-    depends=('linux>=4.2' 'linux<4.3' "nvidia-304xx-utils=${pkgver}")
+    depends=('linux>=4.3' 'linux<4.4' "nvidia-304xx-utils=${pkgver}")
     conflicts=('nvidia')
     backup=('etc/X11/xorg.conf.d/20-nvidia.conf')
     install=nvidia.install
