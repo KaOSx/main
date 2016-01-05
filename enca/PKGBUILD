@@ -1,18 +1,18 @@
 
 pkgname=enca
-pkgver=1.16
+pkgver=1.17
 pkgrel=1
-pkgdesc="Charset analyser and converter"
+pkgdesc="Detects character set and encoding of text files and can also convert them to other encodings"
 arch=('x86_64')
 url="http://cihar.com/software/enca/"
 options=('!libtool')
 license=('GPL')
 depends=('recode' 'bash')
 source=("http://dl.cihar.com/${pkgname}/${pkgname}-${pkgver}.tar.xz")
-md5sums=('0a1483530b1fdb9e2a54786489ee0b69')
+md5sums=('431f3e996b2f7354124c4e7bd24e03bb')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
 
   ./configure --prefix=/usr \
               --libexecdir=/usr/lib \
@@ -23,7 +23,7 @@ build() {
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
 
   make DESTDIR="${pkgdir}" install
 }
