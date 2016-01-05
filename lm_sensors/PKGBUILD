@@ -1,7 +1,7 @@
 
 pkgname=lm_sensors
 pkgver=3.4.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Collection of user space tools for general SMBus access and hardware monitoring"
 arch=('x86_64')
 url="http://www.lm-sensors.org/"
@@ -10,25 +10,20 @@ depends=('perl' 'sysfsutils')
 makedepends=('rrdtool')
 backup=('etc/sensors3.conf' 'etc/conf.d/healthd' 'etc/conf.d/sensord')
 options=('!emptydirs')
-source=("http://dl.lm-sensors.org/lm-sensors/releases/lm_sensors-${pkgver}.tar.bz2" \
+source=("http://pkgs.fedoraproject.org/repo/pkgs/lm_sensors/lm_sensors-3.4.0.tar.bz2/c03675ae9d43d60322110c679416901a/lm_sensors-${pkgver}.tar.bz2" 
         'healthd' 
         'healthd.conf' 
         'sensord.conf' 
-        'fancontrol.service' 
-        'sensord.service' 
         'healthd.service')
 md5sums=('c03675ae9d43d60322110c679416901a'
          'b68bdb73bb4d28ebdb36e2d92278582d'
-         'f8af587038b0e2a89c441f7eeaa5e640'
-         '96a8dd468e81d455ec9b165bdf33e0b7'
-         '3e2e0ebe6e0772cac50bd2721229f12f'
-         'b2dfc6fc1cdb38432b8317dbc63ce23f'
+         'f3ed015c38bdbe9b4e17d38833fde9cc'
+         'd398a55842fb5f2365a011512df6fc3c'
          'daf19e142d59f015040814172742502b')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
   sed -i 's|/etc/sysconfig|/etc/conf.d|' prog/{detect/sensors-detect,init/lm_sensors.service}
-  sed -i 's@\(/bin/systemctl\|/lib/systemd/system\)@/usr\1@g' prog/detect/sensors-detect
   sed -i 's/EnvironmentFile=/EnvironmentFile=-/' prog/init/lm_sensors.service
   
   make PREFIX=/usr
@@ -39,11 +34,11 @@ package() {
   make BUILD_STATIC_LIB=0 \
     PREFIX=/usr MANDIR=/usr/share/man DESTDIR="${pkgdir}" install
     
+  install -D -m644 prog/init/fancontrol.service "${pkgdir}/usr/lib/systemd/system/fancontrol.service"
   install -D -m644 prog/init/lm_sensors.service "${pkgdir}/usr/lib/systemd/system/lm_sensors.service"
+  
   install -D -m755 "${srcdir}/healthd" "${pkgdir}/usr/sbin/healthd"
   install -D -m644 "${srcdir}/healthd.conf" "${pkgdir}/etc/conf.d/healthd"
   install -D -m644 "${srcdir}/sensord.conf" "${pkgdir}/etc/conf.d/sensord"
-  install -D -m644 "${srcdir}/fancontrol.service" "${pkgdir}/usr/lib/systemd/system/fancontrol.service"
-  install -D -m644 "${srcdir}/sensord.service" "${pkgdir}/usr/lib/systemd/system/sensord.service"
   install -D -m644 "${srcdir}/healthd.service" "${pkgdir}/usr/lib/systemd/system/healthd.service"
 }
