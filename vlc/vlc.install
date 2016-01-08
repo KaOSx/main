@@ -1,7 +1,6 @@
 post_install() {
     xdg-icon-resource forceupdate --theme hicolor &> /dev/null
-    usr/lib/vlc/vlc-cache-gen -f /usr/lib/vlc/plugins
-    sed -i -e 's/#qt-system-tray=1/qt-system-tray=0/' /home/*/.config/vlc/vlcrc
+    usr/lib/vlc/vlc-cache-gen /usr/lib/vlc/plugins
 }
 
 post_upgrade() {
