@@ -7,12 +7,6 @@ post_install() {
 post_upgrade() {
     EXTRAMODULES='extramodules-4.3'
     depmod $(cat /lib/modules/$EXTRAMODULES/version)
-    echo -e '\e[31;46m WARNING'
-    echo -e '\e[31;46m If your card is from the G8x, G9x, and GT2xx GPUs or earlier,'
-    echo -e '\e[31;46m this driver no longer supports your card, replace with nvidia-304xx'
-    echo -e '\e[31;46m sudo pacman -Rdd nvidia-utils nvidia'
-    echo -e '\e[31;46m sudo pacman -S nvidia-304xx'
-    echo -e '\e[0m'
 }
 
 post_remove() {
