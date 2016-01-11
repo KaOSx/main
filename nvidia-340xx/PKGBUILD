@@ -1,0 +1,56 @@
+
+_extramodules=extramodules-4.3
+_kver=$(cat /lib/modules/${_extramodules}/version)
+
+pkgname=('nvidia-340xx' 'khd-nvidia-340xx')
+pkgver=340.96
+pkgrel=1
+arch=('x86_64')
+url="http://www.nvidia.com/"
+makedepends=('linux-headers' 'linux>=4.3' 'linux<4.4' "nvidia-340xx-utils=${pkgver}")
+license=('custom')
+source=("https://raw.github.com/KaOSx/hardware-detection/master/hwdb/nvidia_supported")
+md5sums=('62d0cdb856cfae64753c0f3acf729d47')
+
+_pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
+source+=("ftp://download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run")
+md5sums+=('7bdbcee13bade63227933d9217571882')
+
+build() {
+    cd "${srcdir}"
+    sh "${_pkg}.run" --extract-only
+    
+    cd "${_pkg}"
+    #patch -p1 -i ${srcdir}/linux4.3.patch
+    
+    cd "${srcdir}/${_pkg}/kernel"  
+    make SYSSRC=/lib/modules/"${_kver}/build" module
+}
+
+package_nvidia-340xx() {
+    pkgdesc="NVIDIA drivers for linux."
+    depends=('linux>=4.3' 'linux<4.4' "nvidia-340xx-utils=${pkgver}")
+    conflicts=('nvidia' 'nvidia-304xx')
+    replaces=('nvidia-304xx')
+    backup=('etc/X11/xorg.conf.d/20-nvidia.conf')
+    install=nvidia.install
+    
+    install -D -m644 "${srcdir}/${_pkg}/kernel/nvidia.ko" \
+        "${pkgdir}/lib/modules/${_extramodules}/nvidia.ko"
+    install -d -m755 "${pkgdir}/etc/modprobe.d"
+    echo "blacklist nouveau" >> "${pkgdir}/etc/modprobe.d/nouveau_blacklist.conf"
+    
+    sed -i -e "s/EXTRAMODULES='.*'/EXTRAMODULES='${_extramodules}'/" "${startdir}/nvidia.install"
+    gzip "${pkgdir}/lib/modules/${_extramodules}/nvidia.ko"
+}
+
+package_khd-nvidia-340xx() {
+    pkgdesc="KHD ids for nvidia $pkgver"
+    arch=('x86_64')
+
+    cd "${srcdir}/${_pkg}"
+
+    install -dm755 "${pkgdir}/opt/kdeos/hwdb"
+    sh -e "${srcdir}/nvidia_supported" README.txt kernel/nv-kernel.o \
+        > "${pkgdir}/opt/kdeos/hwdb/hw_nvidia340xx_hwdb"
+}
