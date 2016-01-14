@@ -1,0 +1,33 @@
+
+pkgname=liblangtag
+pkgver=0.5.8
+pkgrel=1
+pkgdesc="Interface library to access/deal with tags for identifying languages, which is described in RFC 5646."
+arch=('x86_64')
+url="http://tagoh.bitbucket.org/liblangtag/"
+license=('GPL3' 'Mozilla Public License, v. 2.0')
+options=('!libtool')
+depends=('gobject-introspection' 'libxml2')
+makedepends=('boost' 'glm' 'cppunit' 'mdds')
+source=("https://bitbucket.org/tagoh/liblangtag/downloads/${pkgname}-${pkgver}.tar.bz2")
+md5sums=('aa899eff126216dafe721149fbdb511b')
+
+build() {
+  cd ${pkgname}-${pkgver}
+
+  ./configure \
+      --prefix=/usr 
+  make
+}
+
+check() {
+  cd $pkgname-$pkgver
+  
+  make check
+}
+
+package() {
+  cd ${pkgname}-${pkgver}
+
+  make DESTDIR=$pkgdir install
+}
