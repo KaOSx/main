@@ -21,6 +21,8 @@ md5sums=('2a548bde706e8639cdec2cbe31d85545')
 
 build() {
    cd "${srcdir}/$_pkgfqn/"   
+   # patch from fedora to get Qt 5.6 qtwebengine to work with nss 3.21
+   # http://pkgs.fedoraproject.org/cgit/rpms/qt5-qtwebengine.git/commit/?id=9a15e3c582902772e7876660afd06f57c4ff48d2
    
    mkdir build   
    cd build 
