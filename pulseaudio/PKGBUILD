@@ -2,15 +2,15 @@
 pkgname=pulseaudio
 pkgdesc="A featureful, general-purpose sound server"
 pkgver=7.99.2
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 url="http://pulseaudio.org/"
 license=('GPL' 'LGPL')
 depends=('dbus' 'xcb-util' 'libasyncns' 'libcap' 'libxtst' 'libsm'
-         'json-c' 'rtkit' 'libltdl' 'speex' 'tdb'
+         'libsndfile' 'json-c' 'rtkit' 'libltdl' 'speex' 'tdb'
          'fftw' 'orc' 'webrtc-audio-processing' 'systemd' 'sbc' 'libsoxr')
 makedepends=('attr' 'libltdl' 'avahi' 'bluez' 'intltool' 'jack' 'openssl'
-             'libsndfile' 'pkgconfig' 'sh')
+             'pkgconfig' 'sh')
 optdepends=('avahi: zeroconf support'
             'bluez: bluetooth support'
             'jack: jack support'
