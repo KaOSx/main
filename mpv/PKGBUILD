@@ -1,6 +1,6 @@
 
 pkgname=mpv
-pkgver=0.14.0
+pkgver=0.15.0
 pkgrel=1
 pkgdesc='Video player based on MPlayer/mplayer2'
 arch=('x86_64')
@@ -15,7 +15,7 @@ options=('!emptydirs' '!buildflags')
 install=mpv.install
 source=("https://github.com/mpv-player/mpv/archive/v${pkgver}.tar.gz")
 #source=("https://github.com/mpv-player/mpv/archive/${_commit}.zip")
-md5sums=('9f78599b52d9e603f2481d36746ddd0c')
+md5sums=('9042bd3fbff2bc8ba0b7fadaa4a22101')
 
 prepare() {
     cd ${pkgname}-${pkgver}
@@ -40,7 +40,5 @@ package() {
     cd ${pkgname}-${pkgver}
     ./waf install --destdir="${pkgdir}"
 
-    install -d "${pkgdir}/usr/share/doc/mpv/examples"
-    install -m644 etc/{input,example}.conf "${pkgdir}/usr/share/doc/mpv/examples"
     install -m644 DOCS/{encoding.rst,tech-overview.txt} "${pkgdir}/usr/share/doc/mpv"
 }
