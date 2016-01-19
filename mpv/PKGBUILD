@@ -1,7 +1,7 @@
 
 pkgname=mpv
 pkgver=0.15.0
-pkgrel=1
+pkgrel=2
 pkgdesc='Video player based on MPlayer/mplayer2'
 arch=('x86_64')
 license=('GPL')
@@ -13,12 +13,16 @@ depends=('ffmpeg' 'lcms2' 'libdvdread' 'libcdio-paranoia' 'libgl' 'enca' 'libxin
 makedepends=('mesa' 'python2-docutils' 'ladspa')
 options=('!emptydirs' '!buildflags')
 install=mpv.install
-source=("https://github.com/mpv-player/mpv/archive/v${pkgver}.tar.gz")
+source=("https://github.com/mpv-player/mpv/archive/v${pkgver}.tar.gz"
+        "https://github.com/mpv-player/mpv/commit/5053f4cc3f48538c3d9a3ba13dc98442f3302052.patch")
 #source=("https://github.com/mpv-player/mpv/archive/${_commit}.zip")
-md5sums=('9042bd3fbff2bc8ba0b7fadaa4a22101')
+md5sums=('9042bd3fbff2bc8ba0b7fadaa4a22101'
+         '0e0c367e20d4c821db4456fb01f5bc71')
 
 prepare() {
     cd ${pkgname}-${pkgver}
+    # https://github.com/mpv-player/mpv/issues/2729
+    patch -p1 -i ${srcdir}/5053f4cc3f48538c3d9a3ba13dc98442f3302052.patch
 
     ./bootstrap.py
 }
