@@ -1,8 +1,8 @@
 
 pkgname=opencv
-pkgver=3.0.0
-_pkgver=3.0.0
-pkgrel=3
+pkgver=3.1.0
+_pkgver=3.1.0
+pkgrel=1
 pkgdesc="Open Source Computer Vision Library"
 arch=('x86_64')
 license=('BSD')
@@ -16,12 +16,16 @@ conflicts=('opencv-qt5')
 replaces=('opencv-qt5')
 provides=('opencv-qt5')
 source=("https://github.com/Itseez/opencv/archive/${_pkgver}.tar.gz"
-        "opencv_contrib-${_pkgver}::https://github.com/Itseez/opencv_contrib/archive/${_pkgver}.tar.gz")
-md5sums=('e6c72f54f7127161b371ef798f34d5c9'
-         '2029c16ea4bf62113372a68e906fad78')
+        "opencv_contrib-${_pkgver}::https://github.com/Itseez/opencv_contrib/archive/${_pkgver}.tar.gz"
+        "https://github.com/alalek/opencv/commit/24dbb43c096691d0333cacf231e22f1369f8c826.patch")
+md5sums=('70e1dd07f0aa06606f1bc0e3fa15abd3'
+         'a822839ad3ab79ff837c16785ea9dd10'
+         '5bd9cd736b171c15cedee3a32a0c47ff')
 
 build() {
   cd "$srcdir/opencv-${_pkgver}"
+  # fix cannot find -lippicv when building with opencv 3.1.0
+  patch -p1 -i ${srcdir}/24dbb43c096691d0333cacf231e22f1369f8c826.patch
  
   mkdir build 
   cd build

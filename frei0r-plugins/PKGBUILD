@@ -1,6 +1,6 @@
 
 pkgname=frei0r-plugins
-pkgver=1.4.1
+pkgver=1.4.2
 pkgrel=1
 pkgdesc="frei0r is a minimalistic plugin API for video sources and filters."
 arch=('x86_64')
@@ -21,7 +21,7 @@ md5sums=('SKIP'
 prepare() {
   cd "$srcdir/frei0r"
   
-  patch -p1 -i ${srcdir}/facedetect.diff
+  #patch -p1 -i ${srcdir}/facedetect.diff
 }
          
 build() {
