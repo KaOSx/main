@@ -1,14 +1,15 @@
 
 pkgname=ffmpeg
 pkgver=2.8.5
-pkgrel=2
+pkgrel=3
 pkgdesc="Complete and free Internet live audio and video broadcasting solution for Linux/Unix"
 arch=('x86_64')
 url="http://ffmpeg.org/"
 license=('GPL')
 depends=('bzip2' 'lame' 'sdl' 'libvorbis' 'xvidcore' 'zlib' 'x264' 'libtheora' 'celt' 'fribidi'
          'opencore-amr' 'alsa-lib' 'libvdpau' 'libxfixes' 'schroedinger' 'libvpx>=1.1.0' 'libwebp'
-         'libva' 'openjpeg' 'rtmpdump' 'speex' 'gsm' 'pulseaudio' 'v4l-utils' 'gnutls' 'x265')
+         'libva' 'openjpeg' 'rtmpdump' 'speex' 'gsm' 'pulseaudio' 'v4l-utils' 'gnutls' 'x265'
+         'libass')
 makedepends=('yasm')
 source=("http://ffmpeg.org/releases/${pkgname}-${pkgver}.tar.bz2")
 md5sums=('989d9024313c2b7e2eeaed58b751c0ee')
@@ -46,6 +47,7 @@ build() {
               --enable-libv4l2 \
               --enable-libcelt \
               --enable-libfribidi \
+              --enable-libass \
               --disable-debug \
               --disable-static
 
