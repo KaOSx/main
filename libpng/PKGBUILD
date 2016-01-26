@@ -1,8 +1,8 @@
 
 pkgname=libpng
 pkgver=1.6.21
-_apngver=1.6.20
-pkgrel=1
+_apngver=1.6.21
+pkgrel=2
 pkgdesc="A collection of routines used to create PNG format graphics files"
 arch=('x86_64')
 url="http://www.libpng.org/pub/png/libpng.html"
@@ -12,7 +12,7 @@ options=('!libtool')
 source=("http://downloads.sourceforge.net/sourceforge/libpng/$pkgname-$pkgver.tar.xz"
         "http://downloads.sourceforge.net/sourceforge/libpng-apng/libpng-$_apngver-apng.patch.gz")
 md5sums=('3bacb4728f6694a64ad9052769d6a4ce'
-         'b2186d5e7853890e25b34b03c7f2ddde')
+         '360346394543ec0a880f61830541608f')
 
 build() {
   cd "$pkgname-$pkgver"
