@@ -1,25 +1,21 @@
 
 pkgname=loudmouth
-pkgver=1.5.0
-_pkgver=1.5.0-20121201
-pkgrel=3
+pkgver=1.5.1
+pkgrel=1
 pkgdesc="A lightweight Jabber client library written in C/Glib"
 arch=('x86_64')
 license=('LGPL')
-url="http://mcabber.com/"
+url="https://github.com/mcabber/loudmouth"
 depends=('glib2' 'openssl' 'gnutls')
 options=('!libtool')
 makedepends=('intltool' 'pkg-config')
-source=("http://mcabber.com/files/loudmouth-${_pkgver}.tar.bz2"
-        'lm-connection.diff')
-md5sums=('c03025069d376049eee8af4fbaf4d9cf'
-         '2585a6afcb12604f9f8e550b00d15fea')
+source=("https://mcabber.com/files/loudmouth/loudmouth-${pkgver}.tar.bz2")
+md5sums=('fbc70329b85a93d9ad1c8df271ae04fc')
 
 build() {
-    cd "${srcdir}/${pkgname}-${_pkgver}"
-    patch -p0 -i "${srcdir}/lm-connection.diff"
+    cd "${srcdir}/${pkgname}-${pkgver}"
     
-    ./autogen.sh -n  disable gtk-doc
+    #./autogen.sh -n  disable gtk-doc
     ./configure --prefix=/usr \
     		--disable-debug \
                 --with-ssl=openssl \
@@ -30,7 +26,7 @@ build() {
 }
 
 package() {
-    cd "${srcdir}/${pkgname}-${_pkgver}"
+    cd "${srcdir}/${pkgname}-${pkgver}"
     
     make DESTDIR="${pkgdir}" install 
 }
