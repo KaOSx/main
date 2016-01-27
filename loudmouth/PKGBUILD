@@ -1,6 +1,6 @@
 
 pkgname=loudmouth
-pkgver=1.5.1
+pkgver=1.5.2
 pkgrel=1
 pkgdesc="A lightweight Jabber client library written in C/Glib"
 arch=('x86_64')
@@ -10,10 +10,10 @@ depends=('glib2' 'openssl' 'gnutls')
 options=('!libtool')
 makedepends=('intltool' 'pkg-config')
 source=("https://mcabber.com/files/loudmouth/loudmouth-${pkgver}.tar.bz2")
-md5sums=('fbc70329b85a93d9ad1c8df271ae04fc')
+md5sums=('9932111ed14d435e4e69d646272c2ab9')
 
 build() {
-    cd "${srcdir}/${pkgname}-${pkgver}"
+    cd ${pkgname}-${pkgver}
     
     #./autogen.sh -n  disable gtk-doc
     ./configure --prefix=/usr \
@@ -26,7 +26,7 @@ build() {
 }
 
 package() {
-    cd "${srcdir}/${pkgname}-${pkgver}"
+    cd ${pkgname}-${pkgver}
     
-    make DESTDIR="${pkgdir}" install 
+    make DESTDIR=${pkgdir} install 
 }

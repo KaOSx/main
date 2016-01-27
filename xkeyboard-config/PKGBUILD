@@ -1,6 +1,6 @@
 
 pkgname=xkeyboard-config
-pkgver=2.16
+pkgver=2.17
 pkgrel=1
 pkgdesc="X keyboard configuration files"
 arch=('x86_64')
@@ -9,10 +9,10 @@ url="http://www.freedesktop.org/wiki/Software/XKeyboardConfig"
 depends=('xorg-xkb-utils')
 makedepends=('intltool')
 source=("http://www.x.org/releases/individual/data/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('bf6aa31195584cfce01b2194c3e5ea26')
+md5sums=('15034bb74deebde54161dface62abbce')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
   ./configure --prefix=/usr \
       --with-xkb-base=/usr/share/X11/xkb \
@@ -22,11 +22,11 @@ build() {
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
-  make DESTDIR="${pkgdir}" install
+  cd ${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install
   
-  rm -f "${pkgdir}/usr/share/X11/xkb/compiled"
-  install -m755 -d "${pkgdir}/var/lib/xkb"
-  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
-  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
+  rm -f ${pkgdir}/usr/share/X11/xkb/compiled
+  install -m755 -d ${pkgdir}/var/lib/xkb
+  install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
 }
