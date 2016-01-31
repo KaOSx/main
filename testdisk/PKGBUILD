@@ -1,20 +1,29 @@
 
 pkgbase=testdisk
 pkgname=('testdisk' 'qphotorec')
-pkgver=7.0
-pkgrel=5
+pkgver=7.1
+pkgrel=1
 pkgdesc="Checks and undeletes partitions + PhotoRec, signature based recovery tool"
 arch=('x86_64')
 url="http://www.cgsecurity.org/index.html?testdisk.html"
 license=('GPL')
-makedepends=('libjpeg>=8' 'openssl' 'progsreiserfs' 'ntfs-3g' 'pkgconfig' 'qt')
-source=("http://www.cgsecurity.org/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('f0cfe4ca9dd35f2878b2704251665e9f')
+makedepends=('libjpeg' 'openssl' 'progsreiserfs' 'ntfs-3g' 'pkgconfig' 'qt5-base' 'qt5-tools')
+source=("http://www.cgsecurity.org/${pkgname}-${pkgver}-WIP.tar.bz2")
+md5sums=('d9cd88ab195f43cba9dcb6a53eb7bc28')
 
 build() {
-  cd $srcdir/$pkgname-$pkgver
-  sed -i 's|Exec=/usr/bin/qphotorec %F|Exec=kdesu /usr/bin/qphotorec %F|g' ${srcdir}/$pkgname-$pkgver/linux/qphotorec.desktop
+  cd $srcdir/$pkgname-$pkgver-WIP
+  sed -i 's|Exec=/usr/bin/qphotorec %F|Exec=kdesu /usr/bin/qphotorec %F|g' linux/qphotorec.desktop
+  
+  # Qt5 changes
+  sed -i '/<QWidget>/d' src/*.h
+  sed -i '/<QWidget>/d' src/*.cpp
+  sed -i 's/Qt::escape\(.*\)text())/QString\1text()).toHtmlEscaped()/g' src/qphotorec.cpp
+  
+  sed -i 's|qt4|qt5|g' configure
 
+  export QTGUI_LIBS="$(pkg-config Qt5Widgets --libs)"
+  export QTGUI_CFLAGS="-fPIC $(pkg-config Qt5Widgets --cflags)"
   ./configure --prefix=/usr \
               --without-ewf \
               --enable-sudo
@@ -25,7 +34,7 @@ package_testdisk() {
   depends=('libjpeg>=8' 'openssl' 'progsreiserfs' 'ntfs-3g')
   pkgdesc="Checks and undeletes partitions + PhotoRec, signature based recovery tool"
   
-  cd $srcdir/$pkgbase-$pkgver
+  cd $srcdir/$pkgbase-$pkgver-WIP
   make DESTDIR=$pkgdir install
   # split out qphotorec files
   rm -f ${pkgdir}/usr/bin/qphotorec
@@ -34,10 +43,10 @@ package_testdisk() {
 }
 
 package_qphotorec() {
-  depends=('testdisk' 'qt')
+  depends=('testdisk' 'qt5-base')
   pkgdesc="Checks and undeletes partitions + PhotoRec, Qt based GUI frontend"
   
-  cd $srcdir/$pkgbase-$pkgver  
+  cd $srcdir/$pkgbase-$pkgver-WIP  
   
   install -D -m755 src/qphotorec ${pkgdir}/usr/bin/qphotorec
   install -D -m644 linux/qphotorec.desktop ${pkgdir}/usr/share/applications/qphotorec.desktop
