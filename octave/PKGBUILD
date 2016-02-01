@@ -1,14 +1,13 @@
 
 pkgname=octave
 pkgver=4.0.0
-pkgrel=5
+pkgrel=6
 pkgdesc="A high-level language, primarily intended for numerical computations."
 arch=('x86_64')
 url="http://www.octave.org"
 license=('GPL')
 depends=('fftw' 'curl' 'graphicsmagick' 'glpk' 'hdf5' 'gcc-libs' 'qhull' 'fltk'
-         'arpack' 'suitesparse' 'gperf' 'glu' 'gnuplot' 'qt' 'qscintilla' 'gl2ps'
-         'ghostscript')
+         'arpack' 'suitesparse' 'gperf' 'glu' 'gnuplot' 'gl2ps' 'ghostscript') # 'qt' 'qscintilla'
 makedepends=('texlive-core' 'gcc-fortran' 'python2')
 options=('!emptydirs')
 install='octave.install'
@@ -25,8 +24,8 @@ build() {
        --enable-shared \
        --disable-static \
        --with-quantum-depth=16 \
-       --with-umfpack="-lumfpack -lsuitesparseconfig" \
-       MOC=moc UIC=uic RCC=rcc
+       --with-umfpack="-lumfpack -lsuitesparseconfig" 
+       #MOC=moc UIC=uic RCC=rcc
 
   LANG=C make
 }
@@ -39,4 +38,6 @@ package(){
   # add path to ld.so.conf.d
   install -d "${pkgdir}/etc/ld.so.conf.d"
   echo "/usr/lib/${pkgname}/${pkgver}" > "${pkgdir}/etc/ld.so.conf.d/${pkgname}.conf"
+  # remove .desktop until ported to Qt 5
+  rm "${pkgdir}/usr/share/applications/www.octave.org-octave.desktop"
 }

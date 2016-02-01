@@ -1,13 +1,16 @@
 
-pkgbase=testdisk
-pkgname=('testdisk' 'qphotorec')
+pkgname=testdisk
 pkgver=7.1
-pkgrel=1
+pkgrel=2
 pkgdesc="Checks and undeletes partitions + PhotoRec, signature based recovery tool"
 arch=('x86_64')
 url="http://www.cgsecurity.org/index.html?testdisk.html"
 license=('GPL')
-makedepends=('libjpeg' 'openssl' 'progsreiserfs' 'ntfs-3g' 'pkgconfig' 'qt5-base' 'qt5-tools')
+depends=('libjpeg' 'openssl' 'progsreiserfs' 'ntfs-3g' 'qt5-base')
+makedepends=('pkgconfig' 'qt5-tools')
+provides=('qphotorec')
+replaces=('qphotorec')
+conflicts=('qphotorec')
 source=("http://www.cgsecurity.org/${pkgname}-${pkgver}-WIP.tar.bz2")
 md5sums=('d9cd88ab195f43cba9dcb6a53eb7bc28')
 
@@ -30,28 +33,10 @@ build() {
   make
 }
 
-package_testdisk() {
-  depends=('libjpeg>=8' 'openssl' 'progsreiserfs' 'ntfs-3g')
-  pkgdesc="Checks and undeletes partitions + PhotoRec, signature based recovery tool"
-  
+package() {
   cd $srcdir/$pkgbase-$pkgver-WIP
+  
   make DESTDIR=$pkgdir install
-  # split out qphotorec files
-  rm -f ${pkgdir}/usr/bin/qphotorec
-  rm -rf ${pkgdir}/usr/share/applications
-  rm -rf ${pkgdir}/usr/share/icons
 }
 
-package_qphotorec() {
-  depends=('testdisk' 'qt5-base')
-  pkgdesc="Checks and undeletes partitions + PhotoRec, Qt based GUI frontend"
-  
-  cd $srcdir/$pkgbase-$pkgver-WIP  
-  
-  install -D -m755 src/qphotorec ${pkgdir}/usr/bin/qphotorec
-  install -D -m644 linux/qphotorec.desktop ${pkgdir}/usr/share/applications/qphotorec.desktop
-  
-  install -D -m755 icons/48x48/apps/qphotorec.png ${pkgdir}/usr/share/icons/hicolor/48x48/apps/qphotorec.png
-  install -D -m755 icons/scalable/apps/qphotorec.svg ${pkgdir}/usr/share/icons/hicolor/scalable/apps/qphotorec.svg
-}  
   
