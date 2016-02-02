@@ -1,6 +1,6 @@
 
 pkgname=iso-codes
-pkgver=3.64
+pkgver=3.65
 pkgrel=1
 pkgdesc="Lists of various ISO standards (e.g. country,language, language scripts, and currency names) in one place"
 arch=('x86_64')
@@ -8,17 +8,17 @@ url="http://pkg-isocodes.alioth.debian.org/"
 license=('LGPL')
 pkgdesc="Lists of the country, language, and currency names"
 source=("http://pkg-isocodes.alioth.debian.org/downloads/$pkgname-$pkgver.tar.xz")
-md5sums=('01c02633ede9d6fdf4b5f99d5dbd47b2')
+md5sums=('890a08d4f962748e0a0758a8aa471896')
 
 build() {
-  cd "$srcdir/$pkgname-$pkgver"
+  cd $pkgname-$pkgver
   
   ./configure --prefix=/usr
   make
 }
 
 package() {
-  cd "$srcdir/$pkgname-$pkgver"
+  cd $pkgname-$pkgver
   
-  make DESTDIR="$pkgdir" pkgconfigdir=/usr/lib/pkgconfig install
+  make DESTDIR=$pkgdir pkgconfigdir=/usr/lib/pkgconfig install
 }
