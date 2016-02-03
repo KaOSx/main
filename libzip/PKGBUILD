@@ -1,6 +1,6 @@
 
 pkgname=libzip
-pkgver=1.0.1
+pkgver=1.1
 pkgrel=1
 pkgdesc="A C library for reading, creating, and modifying zip archives"
 url="http://www.nih.at/libzip/index.html"
@@ -8,11 +8,14 @@ license=('GPL2')
 arch=('x86_64')
 depends=('zlib')
 options=('!libtool')
-source=("http://www.nih.at/${pkgname}/${pkgname}-${pkgver}.tar.xz")
-md5sums=('e2371fc6f04a46efdaf8cbf4118ffafd')
+source=("http://www.nih.at/libzip/${pkgname}-${pkgver}.tar.xz"
+        'optopt.patch')
+md5sums=('e5d856b42a329e8efbcdfd9046b22744'
+         '0f8d15199c7f4c6a6b370e5e70267903')
 
 build() {
-  cd ${srcdir}/${pkgname}-${pkgver}
+  cd ${pkgname}-${pkgver}
+  patch -p1 -i ${srcdir}/optopt.patch
   
   autoreconf -i
   ./configure --prefix=/usr
@@ -20,10 +23,10 @@ build() {
 }
 
 package() {
-  cd ${srcdir}/${pkgname}-${pkgver}
+  cd ${pkgname}-${pkgver}
   make DESTDIR=${pkgdir} install
   
   # ebook-tools needs this path
-  ln -s /usr/lib/libzip/include/zipconf.h "${pkgdir}/usr/include/zipconf.h"
-  install -Dm644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+  ln -s /usr/lib/libzip/include/zipconf.h ${pkgdir}/usr/include/zipconf.h
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }

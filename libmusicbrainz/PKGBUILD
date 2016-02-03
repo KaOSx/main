@@ -1,16 +1,14 @@
 
 pkgname=libmusicbrainz
 pkgver=5.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Library That Provides Access to the MusicBrainz Server  "
 url="http://musicbrainz.org/doc/libmusicbrainz"
 arch=('x86_64')
 license=('LGPL2.1')
 depends=('neon' 'libdiscid')
 makedepends=('cmake')
-provides=('libmusicbrainz3' 'libmusicbrainz4' 'libmusicbrainz5' 'musicbrainz')
-conflicts=('musicbrainz')
-replaces=('musicbrainz')
+provides=('libmusicbrainz3' 'libmusicbrainz4' 'libmusicbrainz5')
 source=("https://github.com/downloads/metabrainz/libmusicbrainz/libmusicbrainz-3.0.3.tar.gz"
         "https://github.com/downloads/metabrainz/libmusicbrainz/libmusicbrainz-4.0.3.tar.gz"
         "https://github.com/metabrainz/libmusicbrainz/releases/download/release-${pkgver}/libmusicbrainz-${pkgver}.tar.gz")
