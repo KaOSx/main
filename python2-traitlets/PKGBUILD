@@ -1,0 +1,32 @@
+
+pkgname=python2-traitlets
+pkgver=4.1.0
+pkgrel=1
+pkgdesc="Easily download, build, install, upgrade, and uninstall Python packages"
+arch=('x86_64')
+license=('PSF')
+url="https://github.com/ipython/traitlets"
+depends=('python2-setuptools' 'python2-nose' 'python2-sphinx')
+makedepends=('')
+source=("https://pypi.python.org/packages/source/t/traitlets/traitlets-${pkgver}.tar.gz")
+md5sums=('2ebf5e11a19f82f25395b4a793097080')
+
+build() {
+   cd traitlets-${pkgver}
+   
+   python2 setup.py build
+}
+ 
+check() {
+   cd traitlets-${pkgver}
+   
+   #nosetests --verbosity=3 traitlets
+}
+ 
+package() {
+   cd traitlets-${pkgver}
+   
+   python2 setup.py install --prefix=/usr --root="${pkgdir}" --optimize=1 --skip-build
+}
+ 
+
