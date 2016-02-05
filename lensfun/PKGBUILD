@@ -1,7 +1,7 @@
 
 pkgname=lensfun
 pkgver=0.3.2
-pkgrel=2
+pkgrel=1
 pkgdesc="Database of photographic lenses and a library that allows advanced access to the database"
 arch=('x86_64')
 url="http://sourceforge.net/projects/lensfun/"
@@ -12,7 +12,7 @@ source=("http://sourceforge.net/projects/lensfun/files/${pkgver}/${pkgname}-${pk
 md5sums=('247e59a0812ec451f6cd0d20b3379cb5')
 
 build() {
-    cd "${srcdir}/${pkgname}-${pkgver}"
+    cd ${pkgname}-${pkgver}
     
     cmake -DCMAKE_INSTALL_PREFIX=/usr \
           -DCMAKE_BUILD_TYPE=Release \
@@ -22,7 +22,7 @@ build() {
 }
 
 package() {
-    cd "${srcdir}/${pkgname}-${pkgver}"
+    cd ${pkgname}-${pkgver}
     
-    make DESTDIR="${pkgdir}" install  
+    make DESTDIR=${pkgdir} install  
 }
