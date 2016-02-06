@@ -1,0 +1,27 @@
+
+pkgname=opusfile
+pkgver=0.7
+pkgrel=1
+pkgdesc="Provides application developers with a high-level API for decoding and seeking in .opus files"
+arch=('x86_64')
+url="http://www.opus-codec.org/"
+license=('BSD')
+depends=('opus' 'libogg')
+options=('!libtool')
+source=("http://downloads.xiph.org/releases/opus/${pkgname}-${pkgver}.tar.gz")
+md5sums=('fb7d408a8b26508e93c37538d44cd574')
+
+build() {
+  cd ${pkgname}-${pkgver}
+  
+  ./configure --prefix=/usr 
+  make
+}
+
+package() {
+  cd ${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install
+  
+  install -m755 -d ${pkgdir}/usr/share/licenses/opusfile
+  install -m644 COPYING ${pkgdir}/usr/share/licenses/opusfile/
+}
