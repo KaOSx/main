@@ -8,9 +8,3 @@ pre_remove() {
    echo "Disabling systemd service"
          systemctl disable ntpd.service
 }
-
-post_remove() {
-	getent passwd ntp &>/dev/null && userdel ntp >/dev/null
-	getent group ntp &>/dev/null && groupdel ntp >/dev/null
-	true
-}
