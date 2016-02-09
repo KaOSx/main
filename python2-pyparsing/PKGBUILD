@@ -1,6 +1,6 @@
 
 pkgname=python2-pyparsing
-pkgver=2.0.7
+pkgver=2.1.0
 pkgrel=1
 pkgdesc='General parsing module for Python'
 arch=('x86_64')
@@ -8,13 +8,13 @@ url='http://pyparsing.wikispaces.com'
 license=('MIT')
 depends=('python2-setuptools')
 source=("http://downloads.sourceforge.net/pyparsing/pyparsing-$pkgver.tar.gz")
-md5sums=('bc5f86cf804a9314373c74146cfc0e8c')
+md5sums=('6fc363eb77331f9cf435d65f63f364ea')
 
 package() {
-  cd "$srcdir/pyparsing-$pkgver"
+  cd pyparsing-$pkgver
   rm -rf build
   
-  python2 setup.py install --prefix=/usr --root="$pkgdir" --optimize=1
-  install -Dm644 LICENSE "$pkgdir/usr/share/licenses/python2-pyparsing/LICENSE"
+  python2 setup.py install --prefix=/usr --root=$pkgdir --optimize=1
+  install -Dm644 LICENSE $pkgdir/usr/share/licenses/python2-pyparsing/LICENSE
 }
 
