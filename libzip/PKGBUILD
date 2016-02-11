@@ -1,6 +1,6 @@
 
 pkgname=libzip
-pkgver=1.1
+pkgver=1.1.1
 pkgrel=1
 pkgdesc="A C library for reading, creating, and modifying zip archives"
 url="http://www.nih.at/libzip/index.html"
@@ -8,14 +8,12 @@ license=('GPL2')
 arch=('x86_64')
 depends=('zlib')
 options=('!libtool')
-source=("http://www.nih.at/libzip/${pkgname}-${pkgver}.tar.xz"
-        'optopt.patch')
-md5sums=('e5d856b42a329e8efbcdfd9046b22744'
-         '0f8d15199c7f4c6a6b370e5e70267903')
+source=("http://www.nih.at/libzip/${pkgname}-${pkgver}.tar.xz")
+md5sums=('0c86a1a94fbc3ec6724801036726ae1f')
 
 build() {
   cd ${pkgname}-${pkgver}
-  patch -p1 -i ${srcdir}/optopt.patch
+  #patch -p1 -i ${srcdir}/optopt.patch
   
   autoreconf -i
   ./configure --prefix=/usr
