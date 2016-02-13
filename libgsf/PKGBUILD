@@ -1,6 +1,6 @@
 
 pkgname=libgsf
-pkgver=1.14.35
+pkgver=1.14.36
 pkgrel=1
 arch=('x86_64')
 pkgdesc="The GNOME Structured File Library is a utility library for reading and writing structured file formats"
@@ -10,10 +10,10 @@ depends=('libxml2' 'glib2' 'bzip2')
 makedepends=('intltool' 'pkgconfig' 'python2' 'gobject-introspection')
 options=('!libtool')
 source=("http://ftp.gnome.org/pub/GNOME/sources/${pkgname}/1.14/${pkgname}-${pkgver}.tar.xz")
-md5sums=('a3e9622b31ab88422d519da72e6f0fa4')
+md5sums=('fcd6a9c2b1d939ca57823eb9c0bfa5cd')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   PYTHON=/usr/bin/python2
   
   ./configure --prefix=/usr \
@@ -26,15 +26,15 @@ build() {
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
-  make DESTDIR="${pkgdir}" install 
+  cd ${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install 
   
   #All removes will strip gnome specific stuff
-  rm -f "${pkgdir}/usr/share/man/man1/gsf-office-thumbnailer.1"
-  rm -f "${pkgdir}/usr/lib/libgsf-gnome"*
-  rm -rf "${pkgdir}/usr/include/libgsf-1/gsf-gnome/"
-  rm -rf "${pkgdir}/etc/gconf"
-  rm -f "${pkgdir}/usr/lib/pkgconfig/libgsf-gnome-1.pc"
-  rm -f "${pkgdir}/usr/bin/gsf-office-thumbnailer"
-  rm -f "${pkgdir}"/usr/lib/python*/site-packages/gsf/gnomemodule.so
+  rm -f ${pkgdir}/usr/share/man/man1/gsf-office-thumbnailer.1
+  rm -f ${pkgdir}/usr/lib/libgsf-gnome*
+  rm -rf ${pkgdir}/usr/include/libgsf-1/gsf-gnome/
+  rm -rf ${pkgdir}/etc/gconf
+  rm -f ${pkgdir}/usr/lib/pkgconfig/libgsf-gnome-1.pc
+  rm -f ${pkgdir}/usr/bin/gsf-office-thumbnailer
+  rm -f ${pkgdir}/usr/lib/python*/site-packages/gsf/gnomemodule.so
 }
