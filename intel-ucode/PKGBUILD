@@ -2,18 +2,17 @@
 pkgname=intel-ucode
 pkgver=20151106
 _pkgver=25512
-pkgrel=2
+pkgrel=3
 pkgdesc="Microcode update files for Intel CPUs"
 arch=('x86_64')
 url="http://downloadcenter.intel.com/SearchResult.aspx?lang=eng&keyword=%22microcode%22"
-replaces=('microcode_ctl')
 license=('custom')
 source=("http://downloadmirror.intel.com/${_pkgver}/eng/microcode-${pkgver}.tgz"
         'LICENSE'
         'intel-microcode2ucode.c')
 md5sums=('288dc721fb39d71457ef2f5a49161f57'
          'b0f489ae4b3e36dc8827dc53a76047aa'
-         '0efc5f6c74a4d7e61ca22683c93c98cf')
+         '444e1670977bd18e85658016eabc7cfa')
 
 build() {
   cd "$srcdir"

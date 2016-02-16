@@ -1,25 +1,23 @@
 
 pkgname=crypto++
-pkgver=5.6.2
-_srcver=562
-pkgrel=3
+pkgver=5.6.3
+_srcver=563
+pkgrel=1
 pkgdesc="A free C++ class library of cryptographic schemes."
 arch=('x86_64')
 license=('custom')
 makedepends=('unzip')
 url="http://www.cryptopp.com/"
 source=("http://www.cryptopp.com/cryptopp${_srcver}.zip"
-        'libcrypto++.pc'
-        "https://github.com/weidai11/cryptopp/commit/9425e16437439e68c7d96abef922167d68fafaff.diff")
-md5sums=('7ed022585698df48e65ce9218f6c6a67'
-         '46de3847c59ad16456fa863eb33e73b2'
-         'a466a320677e28e1436cec25945ab485')
+        'libcrypto++.pc')
+md5sums=('3c5b70e2ec98b7a24988734446242d07'
+         '46de3847c59ad16456fa863eb33e73b2')
 
 build() {
   cd ${srcdir}
   sed -i -e 's/^CXXFLAGS/#CXXFLAGS/' GNUmakefile
   # https://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-2015-2141
-  patch -p1 -i ${srcdir}/9425e16437439e68c7d96abef922167d68fafaff.diff
+  #patch -p1 -i ${srcdir}/9425e16437439e68c7d96abef922167d68fafaff.diff
   
   export CXXFLAGS="${CXXFLAGS} -DNDEBUG -fPIC"
   

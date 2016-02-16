@@ -8,6 +8,7 @@
  * is empty before every run of the converter.
  *
  * Kay Sievers <kay.sievers@vrfy.org>
+ * Anton Arapov <anton@redhat.com>
  */
 
 
@@ -49,7 +50,7 @@ union mcbuf {
 int main(int argc, char *argv[])
 {
 	char *filename = "/lib/firmware/microcode.dat";
-	FILE *f;
+	FILE *input, *f;
 	char line[LINE_MAX];
 	char buf[4000000];
 	union mcbuf *mc;
@@ -59,16 +60,20 @@ int main(int argc, char *argv[])
 	if (argv[1] != NULL)
 		filename = argv[1];
 
-	count = 0;
-	mc = (union mcbuf *) buf;
-	f = fopen(filename, "re");
-	if (f == NULL) {
-		printf("open %s: %m\n", filename);
-		rc = EXIT_FAILURE;
-		goto out;
+	if (!strcmp(filename, "-")) {
+		input = stdin;
+	} else {
+		input = fopen(filename, "re");
+		if (input == NULL) {
+			printf("open %s: %m\n", filename);
+			rc = EXIT_FAILURE;
+			goto out;
+		}
 	}
 
-	while (fgets(line, sizeof(line), f) != NULL) {
+	count = 0;
+	mc = (union mcbuf *) buf;
+	while (fgets(line, sizeof(line), input) != NULL) {
 		if (sscanf(line, "%x, %x, %x, %x",
 		    &mc->i[count],
 		    &mc->i[count + 1],
@@ -77,7 +82,7 @@ int main(int argc, char *argv[])
 			continue;
 		count += 4;
 	}
-	fclose(f);
+	fclose(input);
 
 	bufsize = count * sizeof(int);
 	printf("%s: %lu(%luk) bytes, %zu integers\n",
@@ -158,6 +163,7 @@ int main(int argc, char *argv[])
 			break;
 	}
 	printf("\n");
-out:
+
+ out:
 	return rc;
 }
