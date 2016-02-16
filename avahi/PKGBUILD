@@ -1,21 +1,21 @@
 
 pkgname=avahi
-pkgver=0.6.32rc
-_pkgver=0.6.32-rc
+pkgver=0.6.32
+_pkgver=0.6.32
 pkgrel=1
 pkgdesc="A multicast/unicast DNS-SD framework"
 arch=('x86_64')
 url="http://www.avahi.org/"
 license=('LGPL')
 depends=('dbus' 'libcap' 'libdaemon' 'gdbm' 'glib2' 'expat')
-makedepends=('qt' 'dbus-python2' 'gobject-introspection' 'intltool')
-optdepends=('qt: qt4 bindings')
+makedepends=('dbus-python2' 'gobject-introspection' 'intltool')
+#optdepends=('qt: qt4 bindings')
 backup=(etc/avahi/avahi-daemon.conf etc/avahi/services/{sftp-,}ssh.service)
 install=avahi.install
 options=('!libtool')
 #source=("http://www.avahi.org/download/avahi-${pkgver}.tar.gz")
-source=("https://github.com/lathiat/avahi/archive/${_pkgver}.tar.gz")
-md5sums=('40781846af871d043c2ddfc4eb846a1d')
+source=("https://github.com/lathiat/avahi/releases/download/v${_pkgver}/${pkgname}-${_pkgver}.tar.gz")
+md5sums=('22b5e705d3eabb31d26f2e1e7b074013')
 
 prepare() {
   cd ${srcdir}/${pkgname}-${_pkgver}
@@ -31,7 +31,7 @@ build() {
     --localstatedir=/var \
     --disable-static \
     --disable-qt3 \
-    --enable-qt4 \
+    --disable-qt4 \
     --disable-mono \
     --disable-monodoc \
     --disable-doxygen-doc \
