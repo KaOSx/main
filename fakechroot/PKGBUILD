@@ -1,31 +1,31 @@
 
 pkgname=fakechroot
-pkgver=2.17.2
-pkgrel=2
+pkgver=2.18
+pkgrel=1
 pkgdesc="Gives a fake chroot environment"
 arch=('x86_64')
-url="http://fakechroot.alioth.debian.org"
+url="https://github.com/dex4er/fakechroot"
 license=('LGPL')
 options=('!libtool')
 install=fakechroot.install
-source=("http://ftp.debian.org/debian/pool/main/f/${pkgname}/${pkgname}_${pkgver}.orig.tar.gz")
-md5sums=('e614f62972efa4654fc780ae7e4affad')
+source=("http://ftp.debian.org/debian/pool/main/f/fakechroot/${pkgname}_${pkgver}.orig.tar.gz")
+md5sums=('bdcee07d3c9e3a8ff8443e2bed27a4f8')
 
 build() {
-  cd ${srcdir}/${pkgname}-${pkgver}
+  cd ${pkgname}-${pkgver}
   
   ./configure --prefix=/usr --libdir=/usr/lib/libfakeroot --sysconfdir=/etc
   make 
 }
 
 check() {
-  cd ${srcdir}/${pkgname}-${pkgver}
+  cd ${pkgname}-${pkgver}
   
   make check
 }
 
 package() {
-  cd ${srcdir}/${pkgname}-${pkgver}
+  cd ${pkgname}-${pkgver}
   make DESTDIR=${pkgdir} install
   
   install -dm755 ${pkgdir}/etc/ld.so.conf.d/
