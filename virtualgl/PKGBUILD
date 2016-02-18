@@ -1,6 +1,6 @@
 
 pkgname=virtualgl
-pkgver=2.4.1
+pkgver=2.5
 pkgrel=1
 pkgdesc="Redirects 3D commands from an OpenGL application onto a server-side 3D graphics card."
 arch=('x86_64')
@@ -9,10 +9,10 @@ license=('LGPL')
 depends=('mesa' 'libxv' 'libjpeg-turbo' 'glu')
 makedepends=('cmake')
 source=("http://sourceforge.net/projects/virtualgl/files/$pkgver/VirtualGL-$pkgver.tar.gz")
-md5sums=('f51223658da4a11b128dd4e05d8b87e7')
+md5sums=('7b0a781be8eb249fbe77a99af89cc758')
 
 build() {
-  cd "$srcdir/VirtualGL-$pkgver"
+  cd VirtualGL-$pkgver
 
   mkdir -p build
   cd build
@@ -26,10 +26,10 @@ build() {
 }
 
 package() {
-  cd "$srcdir/VirtualGL-$pkgver/build"
-  make install DESTDIR="$pkgdir"
+  cd VirtualGL-$pkgver/build
+  make install DESTDIR=$pkgdir
 
-  mkdir -p "$pkgdir/opt/VirtualGL/bin"
-  mv "$pkgdir"/usr/bin/glxinfo "$pkgdir/opt/VirtualGL/bin"
+  mkdir -p $pkgdir/opt/VirtualGL/bin
+  mv $pkgdir/usr/bin/glxinfo $pkgdir/opt/VirtualGL/bin
 }
 
