@@ -1,7 +1,7 @@
 
 pkgname=libaccounts-glib
-pkgver=1.19
-_pkgver=61b5adaadc8efd1b8235580f0f8747fb62b40486
+pkgver=1.21
+_pkgver=VERSION_1.21-00254a604a7c7bd38c41794a80ad8930e90f21aa
 pkgrel=1
 pkgdesc="Glib-based client library for accessing the online accounts database"
 arch=('x86_64')
@@ -11,11 +11,11 @@ depends=('dbus-glib' 'libxml2' 'sqlite')
 makedepends=('python2-gobject' 'docbook-xsl' 'gtk-doc')
 options=('!libtool')
 # check https://groups.google.com/forum/#!forum/accounts-sso-announce
-source=("https://gitlab.com/accounts-sso/libaccounts-glib/repository/archive.tar.bz2?ref=$_pkgver")
-md5sums=('71757b29600a2255d11a1f6ff192c471')
+source=("https://gitlab.com/accounts-sso/libaccounts-glib/repository/archive.tar.bz2?ref=VERSION_$pkgver")
+md5sums=('1289685160b463b1b227d2a8aa8e2077')
 
 build() {
-  cd $pkgname-$_pkgver-$_pkgver
+  cd $pkgname-$_pkgver
   
   ./autogen.sh
   HAVE_GCOV_FALSE='#' ./configure \
@@ -26,7 +26,7 @@ build() {
 }
 
 package() {
-  cd $pkgname-$_pkgver-$_pkgver
+  cd $pkgname-$_pkgver
   
   make DESTDIR="$pkgdir" install
 }
