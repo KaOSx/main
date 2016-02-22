@@ -1,12 +1,12 @@
 
 pkgname=ufw
-pkgver=0.34
+pkgver=0.35
 pkgrel=1
 pkgdesc="Uncomplicated and easy to use CLI tool for managing a netfilter firewall"
 arch=('x86_64')
 url="https://launchpad.net/ufw"
 license=('GPL3')
-depends=('iptables' 'python2')
+depends=('iptables' 'python3')
 backup=('etc/ufw/before.rules'
         'etc/ufw/before6.rules'
         'etc/ufw/after.rules'
@@ -20,21 +20,21 @@ backup=('etc/ufw/before.rules'
 categories=('network')
 source=("http://launchpad.net/${pkgname}/${pkgver}/${pkgver}/+download/${pkgname}-${pkgver}.tar.gz"
         "${pkgname}.service")
-md5sums=('9b19a73073c76ce78b3f02cb62b35da6'
+md5sums=('b7cd2dd4e4e98e46df125fee06edff92'
          '2c85da635f53c6817be8c1941a9a35fb')
 
 package() {
   cd "${srcdir}/${pkgname}-${pkgver}"
 
   sed -e 's|/lib|/usr/lib|' -i setup.py
-  python2 setup.py install --root="${pkgdir}"
+  python3 setup.py install --root="${pkgdir}"
 
   install -D -m644 "${srcdir}/${pkgname}.service" "${pkgdir}/usr/lib/systemd/system/${pkgname}.service"
   install -D -m755 "${pkgdir}/usr/sbin/${pkgname}" "${pkgdir}/usr/bin/${pkgname}"
   rm -rf "${pkgdir}/usr/sbin"
 
   # Fix permissions
-  chmod 644 "${pkgdir}/etc/ufw"/*.rules "${pkgdir}/usr/lib/ufw"/*.rules
+  chmod 644 "${pkgdir}/etc/ufw"/*.rules # moved to /etc/ufw with 0.35 "${pkgdir}/usr/lib/ufw"/*.rules
 
   # no absolute paths
   sed -e 's#/bin/echo#echo#g' -i "${pkgdir}/usr/lib/ufw/ufw-init-functions"
