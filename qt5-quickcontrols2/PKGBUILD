@@ -1,21 +1,20 @@
 
-pkgname=qt5-translations
+pkgname=qt5-quickcontrols2
 pkgver=5.5.6RC
 subver=5.6.0-rc
 _pkgver=5.6
 pkgrel=1
-pkgdesc=('A cross-platform application and UI framework, translations')
+pkgdesc=('A cross-platform application and UI framework, QtControls')
 arch=('x86_64')
 url='http://qt.nokia.com/'
-license=('GPL3' 'LGPL' 'FDL' 'custom')
-depends=('qt5-declarative' 'libtiff' 'libmng')
-makedepends=('qt5-tools')
+license=('GPL3' 'LGPL')
+depends=('qt5-declarative')
 groups=('qt5')
 options=('!libtool')
-_pkgfqn="qttranslations-opensource-src-${subver}"
+_pkgfqn="qtquickcontrols2-opensource-src-${subver}"
 #source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
 source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
-md5sums=('085498d2e42c33b9bbb11aeb674f6caa')
+md5sums=('b8809f5a7f7b513c6fc88b9f8712c0d0')
 
 build() {
     cd $srcdir/$_pkgfqn
@@ -32,5 +31,8 @@ package() {
     for i in $(ls ${pkgdir}/usr/lib/qt5/bin); do
         ln -s /usr/lib/qt5/bin/${i} ${pkgdir}/usr/bin/${i}-qt5
     done
+    
+    install -D -m644 LICENSE.LGPLv3 \
+    ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.LGPLv3
 }
 

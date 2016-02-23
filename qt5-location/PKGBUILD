@@ -1,8 +1,8 @@
 
 pkgname=qt5-location
-pkgver=5.5.1
-subver=5.5.1
-_pkgver=5.5
+pkgver=5.5.6RC
+subver=5.6.0-rc
+_pkgver=5.6
 pkgrel=1
 pkgdesc=('A cross-platform application and UI framework (QtLocation, QtPositioning)')
 arch=('x86_64')
@@ -13,9 +13,9 @@ makedepends=('qt5-tools')
 groups=('qt5')
 options=('!libtool')
 _pkgfqn="qtlocation-opensource-src-${subver}"
-source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
-#source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
-md5sums=('9e0c0ad76f520ba89da730b8ff601cc2')
+#source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
+source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
+md5sums=('59d8f0f1aca7808d7f5eb70de70e9962')
 
 build() {
     cd $srcdir/$_pkgfqn

@@ -1,32 +1,31 @@
 
-pkgname=qt5-doc
+pkgname=qt5-canvas3d
 pkgver=5.5.6RC
 subver=5.6.0-rc
 _pkgver=5.6
 pkgrel=1
-pkgdesc=('A cross-platform application and UI framework, offline documentation files')
+pkgdesc=('JavaScript 3D rendering API for Qt Quick')
 arch=('x86_64')
 url='http://qt.nokia.com/'
 license=('GPL3' 'LGPL')
-depends=('qt5-tools')
+depends=('qt5-webkit')
+groups=('qt5')
 options=('!libtool')
-_pkgfqn="qtdoc-opensource-src-${subver}"
-#source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
+_pkgfqn="qtcanvas3d-opensource-src-${subver}"
+#source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz"
 source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
-md5sums=('2188e0907fa8f9d6343c8ac998e4fc9b')
+md5sums=('3740f16c9126a67618ae672fc5315637')
 
 build() {
     cd $srcdir/$_pkgfqn
- 
+
     /usr/lib/qt5/bin/qmake
     make
-    make docs
 }
 
 package() {
     cd $srcdir/$_pkgfqn
     
     make INSTALL_ROOT=$pkgdir install
-    make INSTALL_ROOT=$pkgdir install_docs
 }
 

@@ -1,9 +1,9 @@
 
 pkgname=qt5-xmlpatterns
-pkgver=5.5.1
-subver=5.5.1
-_pkgver=5.5
-pkgrel=2
+pkgver=5.5.6RC
+subver=5.6.0-rc
+_pkgver=5.6
+pkgrel=1
 pkgdesc=('A cross-platform application and UI framework, QtXmlPatterns files')
 arch=('x86_64')
 url='http://qt.nokia.com/'
@@ -13,16 +13,16 @@ makedepends=('qt5-tools')
 groups=('qt5')
 options=('!libtool')
 _pkgfqn="qtxmlpatterns-opensource-src-${subver}"
-source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
-#source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
-md5sums=('17b9ee5031262b5b875ce0e1045e6bdc')
+#source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
+source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
+md5sums=('e0074dc01ef945930c99a4501d3bdaf0')
 
 build() {
     cd $srcdir/$_pkgfqn
 
     /usr/lib/qt5/bin/qmake
     make
-    make docs
+    #make docs
 }
 
 package() {

@@ -1,8 +1,8 @@
 
 pkgname=qt5-quickcontrols
-pkgver=5.5.1
-subver=5.5.1
-_pkgver=5.5
+pkgver=5.5.6RC
+subver=5.6.0-rc
+_pkgver=5.6
 pkgrel=1
 pkgdesc=('A cross-platform application and UI framework, QtControls')
 arch=('x86_64')
@@ -12,9 +12,9 @@ depends=('qt5-declarative')
 groups=('qt5')
 options=('!libtool')
 _pkgfqn="qtquickcontrols-opensource-src-${subver}"
-source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
-#source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
-md5sums=('01ace647bda006b61200f61ebe6ef93b')
+#source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
+source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
+md5sums=('469d3ce771b15bf0d21a4bcd8598f047')
 
 build() {
     cd $srcdir/$_pkgfqn
