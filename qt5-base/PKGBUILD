@@ -1,10 +1,10 @@
 
 # build twice on icu updates, first without qt5-tools/make docs
 pkgname=('qt5-base' 'qt5-base-docs')
-pkgver=5.5.1
-subver=5.5.1
-_pkgver=5.5
-pkgrel=4
+pkgver=5.5.6RC
+subver=5.6.0-rc
+_pkgver=5.6
+pkgrel=1
 pkgdesc=('A cross-platform application and UI framework')
 arch=('x86_64')
 url='http://qt-project.org/'
@@ -17,18 +17,16 @@ makedepends=('sqlite' 'xcb-util-keysyms' 'xcb-util-wm' 'xcb-util-image' 'xcb-uti
          'postgresql-libs' 'cups' 'python2' 'gperf' 'ruby' 'pulseaudio' 'qt5-tools')
 options=('!libtool' 'debug')
 _pkgfqn="qtbase-opensource-src-${subver}"
-source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz"
-        'vlc_widget.patch')
-#source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
-md5sums=('687e2b122fa2c3390b5e20a166d38038'
-         '1aa5b2af21d8e82b3b8f83b5eddcc1c0')
+#source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
+source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
+md5sums=('82e5bd59946630ec36ab357f1779f411')
 
 build() {
     cd $srcdir/$_pkgfqn
     # http://kaosx.us/phpBB3/viewtopic.php?f=18&t=871#p4527, fix is in review for Qt 5.5
     #sed -i -e 's|"gurj",  // Gujarati|"gujr",  // Gujarati|' $srcdir/$_pkgfqn/src/platformsupport/fontdatabases/fontconfig/qfontconfigdatabase.cpp
     # vlc build with Qt5 fix https://bugreports.qt.io/browse/QTBUG-48321
-    patch -p1 -i $srcdir/vlc_widget.patch
+    #patch -p1 -i $srcdir/vlc_widget.patch
         
     unset QTDIR
     export PATH="$PWD/qtbase/bin:$PWD/qtrepotools/bin:$PATH"

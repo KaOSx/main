@@ -1,0 +1,36 @@
+ 
+pkgname=libwacom
+pkgver=0.18
+pkgrel=1
+pkgdesc="Library that provides applications with a way to get information about any tablets that are currently connected."
+arch=('x86_64')
+url="http://linuxwacom.sourceforge.net/wiki/index.php/Libwacom"
+license=('GPLv2')
+depends=('glib2' 'libgudev')
+source=("http://sourceforge.net/projects/linuxwacom/files/libwacom/${pkgname}-${pkgver}.tar.bz2")
+md5sums=('b1fbc5933650bbba033991c828a7c1d0')
+
+build() {
+  cd ${pkgname}-${pkgver}
+  
+  ./configure --prefix=/usr
+  make
+}
+
+check() {
+  cd ${pkgname}-${pkgver}
+  
+  make check
+}
+
+package() {
+  cd ${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install
+  
+  install -D -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+  
+  # adding rules as per https://sourceforge.net/p/linuxwacom/libwacom/ci/master/tree/README
+  install -m755 -d ${pkgdir}/usr/lib/udev/rules.d
+  cd tools ./generate-udev-rules > ${pkgdir}/usr/lib/udev/rules.d/65-libwacom.rules
+  
+}
