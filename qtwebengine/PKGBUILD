@@ -16,13 +16,15 @@ makedepends=('gperf' 'yasm' 'openssh' 'icu')
 groups=('qt5')
 _pkgfqn="qtwebengine-opensource-src-${subver}"
 #source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
-source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
+source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz"
+        'nss321.diff')
 md5sums=('af563195bc61e878e8de45658a1bd745')
 
 build() {
    cd "${srcdir}/$_pkgfqn/"   
    # patch from fedora to get Qt 5.6 qtwebengine to work with nss 3.21
    # http://pkgs.fedoraproject.org/cgit/rpms/qt5-qtwebengine.git/commit/?id=9a15e3c582902772e7876660afd06f57c4ff48d2
+   patch -p1 -i $srcdir/nss321.diff
    
    mkdir build   
    cd build 
