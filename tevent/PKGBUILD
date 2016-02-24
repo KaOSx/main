@@ -1,6 +1,6 @@
 
 pkgname=tevent
-pkgver=0.9.26
+pkgver=0.9.27
 pkgrel=1
 pkgdesc="An event system based on the talloc memory management library"
 arch=('x86_64')
@@ -8,19 +8,16 @@ url="https://tevent.samba.org/"
 license=('GPL3')
 depends=('talloc' 'python2')
 source=("http://samba.org/ftp/tevent/${pkgname}-${pkgver}.tar.gz")
-md5sums=('22c372f3d936d751271f588ab71f829b')
+md5sums=('322d9bbf2e657fa0512b52e1c3c12982')
 
 build() {
-	cd ${srcdir}/${pkgname}-${pkgver}
-
-	sed -i -e "s|/usr/bin/env python$|/usr/bin/env python2|" buildtools/bin/waf
-	export PYTHON=/usr/bin/python2
+	cd ${pkgname}-${pkgver}
 
 	./configure --prefix=/usr
 }
 
 package() {
-	cd ${srcdir}/${pkgname}-${pkgver}
+	cd ${pkgname}-${pkgver}
 	
 	make
 	make DESTDIR=${pkgdir}/ install
