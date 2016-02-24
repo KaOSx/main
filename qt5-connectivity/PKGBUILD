@@ -13,8 +13,8 @@ makedepends=('python2' 'qt5-tools')
 groups=('qt5')
 options=('!libtool')
 _pkgfqn="qtconnectivity-opensource-src-${subver}"
-source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
-#source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
+#source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
+source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
 md5sums=('16a7ed3cc0fc77465cae23be091930b3')
 
 build() {
@@ -34,5 +34,8 @@ package() {
     for i in $(ls ${pkgdir}/usr/lib/qt5/bin); do
         ln -s /usr/lib/qt5/bin/${i} ${pkgdir}/usr/bin/${i}-qt5
     done
+    
+    install -D -m644 LICENSE.LGPLv3 \
+    ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.LGPLv3
 }
 

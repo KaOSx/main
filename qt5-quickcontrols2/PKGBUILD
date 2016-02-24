@@ -27,11 +27,6 @@ package() {
     cd $srcdir/$_pkgfqn
     make INSTALL_ROOT=$pkgdir install
     
-    mkdir -p ${pkgdir}/usr/bin
-    for i in $(ls ${pkgdir}/usr/lib/qt5/bin); do
-        ln -s /usr/lib/qt5/bin/${i} ${pkgdir}/usr/bin/${i}-qt5
-    done
-    
     install -D -m644 LICENSE.LGPLv3 \
     ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.LGPLv3
 }

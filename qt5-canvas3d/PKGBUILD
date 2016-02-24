@@ -8,7 +8,7 @@ pkgdesc=('JavaScript 3D rendering API for Qt Quick')
 arch=('x86_64')
 url='http://qt.nokia.com/'
 license=('GPL3' 'LGPL')
-depends=('qt5-webkit')
+depends=('qt5-declarative')
 groups=('qt5')
 options=('!libtool')
 _pkgfqn="qtcanvas3d-opensource-src-${subver}"
@@ -26,11 +26,6 @@ build() {
 package() {
     cd $srcdir/$_pkgfqn
     make INSTALL_ROOT=$pkgdir install
-    
-    mkdir -p ${pkgdir}/usr/bin
-    for i in $(ls ${pkgdir}/usr/lib/qt5/bin); do
-        ln -s /usr/lib/qt5/bin/${i} ${pkgdir}/usr/bin/${i}-qt5
-    done
     
     install -D -m644 LICENSE.LGPLv3 \
     ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.LGPLv3
