@@ -1,0 +1,206 @@
+From a1ba281a26d065d2e901b3a947a8517ec5790504 Mon Sep 17 00:00:00 2001
+From: Thiago Macieira <thiago.macieira@intel.com>
+Date: Tue, 19 Jan 2016 22:29:33 -0800
+Subject: [PATCH] Call out to QtDBus message spies in the main thread
+
+Whenever there are spies installed, we call out to the main thread to
+call to the kded/kiod message spies. This allows the spy code to do just
+about anything, where previously it was restricted in what it could do
+to avoid deadlocking or triggering assertions if it recursed back into
+QDBusConnection code in the manager thread. After the spies are done,
+the message is re-inserted into the QDBusConnection processing pipeline.
+
+This commit moves the spy handling to after the check for disabled
+dispatching, as doing otherwise would mean the message could get
+postponed again for no good reason. It's also possible that the main
+thread isn't done installing the hooks, so waiting until the dispatching
+is enabled is a good idea.
+
+For simplicity, this commit also restricts spying to method calls
+only. Signals are no longer spyable.
+
+Change-Id: I3d11545be52c43119f0fffff142b0e9d447415c2
+Reviewed-by: David Faure <david.faure@kdab.com>
+---
+ src/dbus/qdbusconnection_p.h |  3 ++-
+ src/dbus/qdbusintegrator.cpp | 48 +++++++++++++++++++++++++++++++++-----------
+ src/dbus/qdbusintegrator_p.h | 19 ++++++++++++++++++
+ 3 files changed, 57 insertions(+), 13 deletions(-)
+
+diff --git a/src/dbus/qdbusconnection_p.h b/src/dbus/qdbusconnection_p.h
+index f030a3f..c77daf7 100644
+--- a/src/dbus/qdbusconnection_p.h
++++ b/src/dbus/qdbusconnection_p.h
+@@ -1,7 +1,7 @@
+ /****************************************************************************
+ **
+ ** Copyright (C) 2015 The Qt Company Ltd.
+-** Copyright (C) 2015 Intel Corporation.
++** Copyright (C) 2016 Intel Corporation.
+ ** Contact: http://www.qt.io/licensing/
+ **
+ ** This file is part of the QtDBus module of the Qt Toolkit.
+@@ -281,6 +281,7 @@ private slots:
+ 
+ signals:
+     void dispatchStatusChanged();
++    void spyHooksFinished(const QDBusMessage &msg);
+     void messageNeedsSending(QDBusPendingCallPrivate *pcall, void *msg, int timeout = -1);
+     void signalNeedsConnecting(const QString &key, const QDBusConnectionPrivate::SignalHook &hook);
+     bool signalNeedsDisconnecting(const QString &key, const QDBusConnectionPrivate::SignalHook &hook);
+diff --git a/src/dbus/qdbusintegrator.cpp b/src/dbus/qdbusintegrator.cpp
+index f6221d5..f0b8f1b 100644
+--- a/src/dbus/qdbusintegrator.cpp
++++ b/src/dbus/qdbusintegrator.cpp
+@@ -1,7 +1,7 @@
+ /****************************************************************************
+ **
+ ** Copyright (C) 2015 The Qt Company Ltd.
+-** Copyright (C) 2015 Intel Corporation.
++** Copyright (C) 2016 Intel Corporation.
+ ** Contact: http://www.qt.io/licensing/
+ **
+ ** This file is part of the QtDBus module of the Qt Toolkit.
+@@ -120,8 +120,7 @@ void qdbusDefaultThreadDebug(int action, int condition, QDBusConnectionPrivate *
+ qdbusThreadDebugFunc qdbusThreadDebug = 0;
+ #endif
+ 
+-typedef void (*QDBusSpyHook)(const QDBusMessage&);
+-typedef QVarLengthArray<QDBusSpyHook, 4> QDBusSpyHookList;
++typedef QVarLengthArray<QDBusSpyCallEvent::Hook, 4> QDBusSpyHookList;
+ Q_GLOBAL_STATIC(QDBusSpyHookList, qDBusSpyHookList)
+ 
+ extern "C" {
+@@ -461,12 +460,29 @@ static QStringList matchArgsForService(const QString &service, QDBusServiceWatch
+ }
+ 
+ 
+-extern Q_DBUS_EXPORT void qDBusAddSpyHook(QDBusSpyHook);
+-void qDBusAddSpyHook(QDBusSpyHook hook)
++extern Q_DBUS_EXPORT void qDBusAddSpyHook(QDBusSpyCallEvent::Hook);
++void qDBusAddSpyHook(QDBusSpyCallEvent::Hook hook)
+ {
+     qDBusSpyHookList()->append(hook);
+ }
+ 
++QDBusSpyCallEvent::~QDBusSpyCallEvent()
++{
++    // Reinsert the message into the processing queue for the connection.
++    // This is done in the destructor so the message is reinserted even if
++    // QCoreApplication is destroyed.
++    QDBusConnectionPrivate *d = static_cast<QDBusConnectionPrivate *>(const_cast<QObject *>(sender()));
++    qDBusDebug() << d << "message spies done for" << msg;
++    emit d->spyHooksFinished(msg);
++}
++
++void QDBusSpyCallEvent::placeMetaCall(QObject *)
++{
++    // call the spy hook list
++    for (int i = 0; i < hookCount; ++i)
++        hooks[i](msg);
++}
++
+ extern "C" {
+ static DBusHandlerResult
+ qDBusSignalFilter(DBusConnection *connection, DBusMessage *message, void *data)
+@@ -488,16 +504,11 @@ qDBusSignalFilter(DBusConnection *connection, DBusMessage *message, void *data)
+ 
+ bool QDBusConnectionPrivate::handleMessage(const QDBusMessage &amsg)
+ {
+-    const QDBusSpyHookList *list = qDBusSpyHookList();
+-    for (int i = 0; list && i < list->size(); ++i) {
+-        qDBusDebug() << "calling the message spy hook";
+-        (*(*list)[i])(amsg);
+-    }
+-
+     if (!ref.load())
+         return false;
+     if (!dispatchEnabled && !QDBusMessagePrivate::isLocal(amsg)) {
+         // queue messages only, we'll handle them later
++        qDBusDebug() << this << "delivery is suspended";
+         pendingMessages << amsg;
+         return amsg.type() == QDBusMessage::MethodCallMessage;
+     }
+@@ -509,6 +520,15 @@ bool QDBusConnectionPrivate::handleMessage(const QDBusMessage &amsg)
+         // let them see the signal too
+         return false;
+     case QDBusMessage::MethodCallMessage:
++        // run it through the spy filters (if any) before the regular processing
++        if (Q_UNLIKELY(qDBusSpyHookList.exists()) && qApp) {
++            const QDBusSpyHookList &list = *qDBusSpyHookList;
++            qDBusDebug() << this << "invoking message spies";
++            QCoreApplication::postEvent(qApp, new QDBusSpyCallEvent(this, QDBusConnection(this),
++                                                                    amsg, list.constData(), list.size()));
++            return true;
++        }
++
+         handleObjectCall(amsg);
+         return true;
+     case QDBusMessage::ReplyMessage:
+@@ -981,6 +1001,8 @@ QDBusConnectionPrivate::QDBusConnectionPrivate(QObject *p)
+     QDBusMetaTypeId::init();
+     connect(this, &QDBusConnectionPrivate::dispatchStatusChanged,
+             this, &QDBusConnectionPrivate::doDispatch, Qt::QueuedConnection);
++    connect(this, &QDBusConnectionPrivate::spyHooksFinished,
++            this, &QDBusConnectionPrivate::handleObjectCall, Qt::QueuedConnection);
+     connect(this, &QDBusConnectionPrivate::messageNeedsSending,
+             this, &QDBusConnectionPrivate::sendInternal);
+     connect(this, &QDBusConnectionPrivate::signalNeedsConnecting,
+@@ -1092,8 +1114,10 @@ void QDBusConnectionPrivate::doDispatch()
+             // dispatch previously queued messages
+             PendingMessageList::Iterator it = pendingMessages.begin();
+             PendingMessageList::Iterator end = pendingMessages.end();
+-            for ( ; it != end; ++it)
++            for ( ; it != end; ++it) {
++                qDBusDebug() << this << "dequeueing message" << *it;
+                 handleMessage(qMove(*it));
++            }
+             pendingMessages.clear();
+         }
+     }
+diff --git a/src/dbus/qdbusintegrator_p.h b/src/dbus/qdbusintegrator_p.h
+index 62106e4..2bbebdf 100644
+--- a/src/dbus/qdbusintegrator_p.h
++++ b/src/dbus/qdbusintegrator_p.h
+@@ -1,6 +1,7 @@
+ /****************************************************************************
+ **
+ ** Copyright (C) 2015 The Qt Company Ltd.
++** Copyright (C) 2016 Intel Corporation.
+ ** Contact: http://www.qt.io/licensing/
+ **
+ ** This file is part of the QtDBus module of the Qt Toolkit.
+@@ -65,6 +66,7 @@
+ QT_BEGIN_NAMESPACE
+ 
+ class QDBusConnectionPrivate;
++class QDBusMessage;
+ 
+ // Really private structs used by qdbusintegrator.cpp
+ // Things that aren't used by any other file
+@@ -133,6 +135,23 @@ private:
+     bool handled;
+ };
+ 
++class QDBusSpyCallEvent : public QMetaCallEvent
++{
++public:
++    typedef void (*Hook)(const QDBusMessage&);
++    QDBusSpyCallEvent(QDBusConnectionPrivate *cp, const QDBusConnection &c, const QDBusMessage &msg,
++                      const Hook *hooks, int count)
++        : QMetaCallEvent(0, 0, Q_NULLPTR, cp, 0), conn(c), msg(msg), hooks(hooks), hookCount(count)
++    {}
++    ~QDBusSpyCallEvent();
++    void placeMetaCall(QObject *) Q_DECL_OVERRIDE;
++
++    QDBusConnection conn;   // keeps the refcount in QDBusConnectionPrivate up
++    QDBusMessage msg;
++    const Hook *hooks;
++    int hookCount;
++};
++
+ QT_END_NAMESPACE
+ 
+ Q_DECLARE_METATYPE(QDBusSlotCache)
+-- 
+2.6.2.2.g1b5ffa3
