@@ -10,14 +10,23 @@ url='http://qt.nokia.com/'
 license=('GPL3' 'LGPL' 'FDL')
 depends=('qt5-sensors' 'qt5-location' 'qt5-quickcontrols' 'icu' 'libxslt' 'libxcomposite' 
          'gst-plugins-base' 'gst-plugins-good' 'libwebp' 'mesa' 'qt5-serialport' 'qt5-multimedia'
-         'qt5-imageformats' 'qt5-webchannel' 'gst-libav' 'gst-plugins-bad')
-makedepends=('gperf' 'sqlite' 'fontconfig' 'perl' 'python2' 'ruby' 'qt5-tools')
+         'qt5-imageformats' 'gst-libav' 'gst-plugins-bad') # 'qt5-webchannel' 
+makedepends=('gperf' 'sqlite' 'fontconfig' 'perl' 'python2' 'ruby') # 'qt5-tools')
 options=('!libtool')
 groups=('qt5')
 _pkgfqn="qtwebkit-opensource-src-${pkgver}"
 #source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
-source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
-md5sums=('f93c15d465a12c4598851ab8319be90d')
+source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz"
+        "https://github.com/qtproject/qtwebkit/commit/5f359baacdf92fabcece83f0a2b30f74c7c02a3c.diff")
+md5sums=('f93c15d465a12c4598851ab8319be90d'
+         '9b9de709333db007f4a4337590b62591')
+
+prepare() {
+  cd ${srcdir}/$_pkgfqn 
+
+  patch -p1 -i $srcdir/5f359baacdf92fabcece83f0a2b30f74c7c02a3c.diff
+  syncqt.pl-qt5 -version 5.6.0 Source/sync.profile
+}
 
 build() {
    cd $srcdir/$_pkgfqn
