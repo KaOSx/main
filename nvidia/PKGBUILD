@@ -1,13 +1,13 @@
 
-_extramodules=extramodules-4.3
+_extramodules=extramodules-4.4
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=('nvidia' 'khd-nvidia')
 pkgver=361.28
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 url="http://www.nvidia.com/"
-makedepends=('linux-headers' 'linux>=4.3' 'linux<4.4' "nvidia-utils=${pkgver}")
+makedepends=('linux-headers' 'linux>=4.4' 'linux<4.5' "nvidia-utils=${pkgver}")
 license=('custom')
 # get from github once hardware-detection is up:
 source=('nvidia_supported')
@@ -31,8 +31,8 @@ build() {
 
 package_nvidia() {
     pkgdesc="NVIDIA drivers for linux."
-    depends=('linux>=4.3' 'linux<4.4' "nvidia-utils=${pkgver}")
-    conflicts=('nvidia-304xx')
+    depends=('linux>=4.4' 'linux<4.5' "nvidia-utils=${pkgver}")
+    conflicts=('nvidia-340xx')
     install=nvidia.install
     
     install -D -m644 "${srcdir}/${_pkg}/kernel/nvidia.ko" "${pkgdir}/lib/modules/${_extramodules}/nvidia.ko"
