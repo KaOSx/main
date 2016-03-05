@@ -1,0 +1,25 @@
+
+pkgname=python3-wrapt
+pkgver=1.10.6
+pkgrel=1
+pkgdesc="Python module for decorators, wrappers and monkey patching."
+arch=('x86_64')
+url="https://github.com/GrahamDumpleton/wrapt"
+license=('LGPL')
+depends=('python3')
+source=("https://pypi.python.org/packages/source/w/wrapt/wrapt-${pkgver}.tar.gz")
+md5sums=('e29294a8949ff4dc74d6fcd800f6f23d')
+
+
+build() {
+  cd wrapt-${pkgver}
+  
+  python3 setup.py build
+}
+
+package() {
+  cd wrapt-${pkgver}
+
+  python3 setup.py install --optimize=1 --skip-build --prefix=/usr --root=${pkgdir}
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}

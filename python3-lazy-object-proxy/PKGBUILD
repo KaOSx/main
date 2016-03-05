@@ -1,0 +1,26 @@
+
+pkgname=python3-lazy-object-proxy
+pkgver=1.2.1
+pkgrel=1
+pkgdesc="A fast and thorough lazy object proxy."
+arch=('x86_64')
+url="https://github.com/ionelmc/python-lazy-object-proxy"
+license=('BSD')
+depends=('python3')
+makedepends=('python3-setuptools')
+source=("https://pypi.python.org/packages/source/l/lazy-object-proxy/lazy-object-proxy-${pkgver}.tar.gz")
+md5sums=('ad33e3e06d24786f708b72cc23350afa')
+
+
+build() {
+  cd lazy-object-proxy-${pkgver}
+  
+  python3 setup.py build
+}
+
+package() {
+  cd lazy-object-proxy-${pkgver}
+
+  python3 setup.py install --optimize=1 --skip-build --prefix=/usr --root=${pkgdir}
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
