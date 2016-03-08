@@ -1,6 +1,6 @@
 
 pkgname=ccnet
-pkgver=5.0.5
+pkgver=5.0.6
 pkgrel=1
 pkgdesc="Ccnet is a framework for writing networked applications in C."
 arch=('x86_64')
@@ -9,14 +9,14 @@ license=('GPLv3')
 depends=('libsearpc' 'libzdb' 'libevent')
 makedepends=('vala' 'python2')
 source=("https://github.com/haiwen/ccnet/archive/v${pkgver}.tar.gz")
-md5sums=('f761053436bc98d19c4fb23930dabba5')
+md5sums=('ecc8f49cc404d0f3fc853ccd314bdcd9')
 
 #prepare() {
   #export PREFIX=${pkgdir}/usr
   #export PKG_CONFIG_PATH=$PREFIX/lib/pkgconfig
 #}
 build() {
-  cd ${srcdir}/${pkgname}-${pkgver}
+  cd ${pkgname}-${pkgver}
 
   ./autogen.sh
   ./configure --prefix=/usr
@@ -24,7 +24,7 @@ build() {
 }
 
 package() {
-  cd ${srcdir}/${pkgname}-${pkgver}
+  cd ${pkgname}-${pkgver}
 
   make DESTDIR=${pkgdir} install
 }
