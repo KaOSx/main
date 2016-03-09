@@ -1,7 +1,7 @@
 
 pkgname=arpack
-pkgver=3.2.0
-pkgrel=2
+pkgver=3.3.0
+pkgrel=1
 arch=('x86_64')
 pkgdesc="Fortran77 subroutines designed to solve large scale eigenvalue problems"
 url="https://github.com/opencollab/arpack-ng"
@@ -9,11 +9,12 @@ license=('BSD')
 depends=('glibc' 'lapack' 'openmpi')
 options=('!libtool')
 source=("https://github.com/opencollab/arpack-ng/archive/$pkgver.tar.gz")
-md5sums=('0ae8a0bb796370b06647d9e005c0f3ea')
+md5sums=('ed3648a23f0a868a43ef44c97a21bad5')
 
 build() {
   cd $srcdir/$pkgname-ng-$pkgver
-
+  
+  sh bootstrap
   ./configure --prefix=/usr --enable-mpi
   make \
     F77="mpif77" \
