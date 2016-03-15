@@ -1,26 +1,25 @@
 
 pkgname=python2-pytz
-pkgver=2015.7
+pkgver=2016.1
 pkgrel=1
 arch=('x86_64')
 pkgdesc="Cross platform time zone library for Python"
 url="http://pypi.python.org/pypi/pytz"
 license=("MIT")
 depends=('python2')
-source=("http://pypi.python.org/packages/source/p/pytz/pytz-$pkgver.tar.bz2")
-md5sums=('ad650c0ce9150d3b53d29d686c09fdda')
+source=("http://pypi.python.org/packages/source/p/pytz/pytz-${pkgver}.tar.bz2")
+md5sums=('581093ed74ceecfc994e8df82bcbaac5')
 
 check() {
-    cd $srcdir/pytz-$pkgver/pytz/tests
+    cd pytz-${pkgver}/pytz/tests
 
     python2 test_tzinfo.py
 }
 
 package() {
-    cd $srcdir/pytz-$pkgver
-    sed -i 's_#!/usr/bin/env python_#!/usr/bin/env python2_' pytz/tzfile.py
+    cd pytz-${pkgver}
 
-    python2 setup.py install --root="$pkgdir/"
+    python2 setup.py install --root=${pkgdir}/
 
-    install -D LICENSE.txt "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+    install -D LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
