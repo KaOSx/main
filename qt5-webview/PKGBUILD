@@ -1,6 +1,6 @@
 
 pkgname=qt5-webview
-pkgver=5.6.0RC
+pkgver=5.6.0
 subver=5.6.0-rc
 _pkgver=5.6
 pkgrel=1
@@ -12,9 +12,9 @@ depends=('qtwebengine')
 groups=('qt5')
 options=('!libtool')
 _pkgfqn="qtwebview-opensource-src-${subver}"
-#source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
-source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
-md5sums=('0cf59ca4e3854ea4b3e10558d6f60f18')
+source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
+#source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
+md5sums=('c324d2acd991b1e958e58ca6d92a686c')
 
 build() {
     cd $srcdir/$_pkgfqn

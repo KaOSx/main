@@ -1,6 +1,6 @@
 
 pkgname=qt5-x11extras
-pkgver=5.6.0RC
+pkgver=5.6.0
 subver=5.6.0-rc
 _pkgver=5.6
 pkgrel=1
@@ -12,9 +12,9 @@ depends=('qt5-declarative')
 groups=('qt5')
 options=('!libtool')
 _pkgfqn="qtx11extras-opensource-src-${subver}"
-#source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
-source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
-md5sums=('77264dbf0bb923622f9773b8424eff87')
+source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
+#source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
+md5sums=('01bd249fdcf41c6edc30f4a85d4aed94')
 
 build() {
     cd $srcdir/$_pkgfqn

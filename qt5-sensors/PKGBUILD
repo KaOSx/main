@@ -1,6 +1,6 @@
 
 pkgname=qt5-sensors
-pkgver=5.6.0RC
+pkgver=5.6.0
 subver=5.6.0-rc
 _pkgver=5.6
 pkgrel=1
@@ -12,9 +12,9 @@ depends=('qt5-declarative')
 groups=('qt5')
 options=('!libtool')
 _pkgfqn="qtsensors-opensource-src-${subver}"
-#source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
-source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
-md5sums=('263fececb81613783a9f91a7d1e4608f')
+source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
+#source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
+md5sums=('1c9a2958e108e8393dbb4427831df647')
 
 build() {
     cd $srcdir/$_pkgfqn

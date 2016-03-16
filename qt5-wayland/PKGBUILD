@@ -1,6 +1,6 @@
 
 pkgname=qt5-wayland
-pkgver=5.6.0RC
+pkgver=5.6.0
 subver=5.6.0-rc
 _pkgver=5.6
 pkgrel=1
@@ -14,9 +14,9 @@ provides=('qtwayland')
 conflicts=('qtwayland')
 replaces=('qtwayland')
 _pkgfqn="qtwayland-opensource-src-${subver}"
-#source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
-source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
-md5sums=('b45023b3cf382444d257c94dd96a5351')
+source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
+#source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
+md5sums=('9dbfb0278eb0891e50b136d8b6eaa62b')
 
 build() {
     cd $srcdir/$_pkgfqn
