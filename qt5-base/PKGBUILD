@@ -17,13 +17,15 @@ makedepends=('sqlite' 'xcb-util-keysyms' 'xcb-util-wm' 'xcb-util-image' 'xcb-uti
          'postgresql-libs' 'cups' 'python2' 'gperf' 'ruby' 'pulseaudio' 'qt5-tools')
 options=('!libtool' 'debug')
 _pkgfqn="qtbase-opensource-src-${subver}"
-source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
+source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz"
 #source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz"
         'qdbus_locking.patch'
         'libdbus.patch'
         'qdbusconnection.patch')
 md5sums=('d6b6cfd333c22829c6c85fc52ceed019'
-         'acc5399f3972004c2b459a00f6598bc2')
+         '8a97270d27bad6bf4fa66bdf582e81e4'
+         'a9320e76c6a6f3606cd3c006e3ebae90'
+         '006098b54beb6bcac3d890a65dbae109')
 
 build() {
     cd $srcdir/$_pkgfqn
