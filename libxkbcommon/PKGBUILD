@@ -1,6 +1,6 @@
 
 pkgname=libxkbcommon
-pkgver=0.5.0
+pkgver=0.6.0
 pkgrel=1
 pkgdesc="Keyboard handling library using XKB data"
 arch=('x86_64')
@@ -9,19 +9,20 @@ license=('custom')
 depends=('xkeyboard-config' 'glibc')
 makedepends=('doxygen' 'xorg-util-macros')
 options=('!libtool')
-source=("http://xkbcommon.org/download/$pkgname-$pkgver.tar.xz")
-md5sums=('2e1faeafcc609c30af3a561a91e84158')
+source=("https://github.com/xkbcommon/${pkgname}/archive/xkbcommon-${pkgver}.tar.gz")
+md5sums=('b4158ebdc5229f25a2bc27b063e706cc')
 
 build() {
-  cd $srcdir/$pkgname-$pkgver
+  cd ${pkgname}-xkbcommon-${pkgver}
   
+  ./autogen.sh
   ./configure --prefix=/usr --disable-static
   make
 }
 
 package() {
-  cd "$srcdir/$pkgname-$pkgver"
-  make DESTDIR="$pkgdir" install
+  cd ${pkgname}-xkbcommon-${pkgver}
+  make DESTDIR=${pkgdir} install
   
-  install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
