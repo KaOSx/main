@@ -1,6 +1,6 @@
 
 pkgname=python2-dateutil
-pkgver=2.5.0
+pkgver=2.5.1
 pkgrel=1
 pkgdesc="Provides powerful extensions to the standard datetime module"
 arch=('x86_64')
@@ -8,24 +8,24 @@ license=('custom:PYTHON')
 url="https://github.com/dateutil/dateutil"
 depends=('python2' 'python2-six')
 makedepends=('python2-setuptools' )
-#source=("http://pypi.python.org/packages/source/p/python-dateutil/python-dateutil-$pkgver.tar.gz")
-source=("https://github.com/dateutil/dateutil/archive/$pkgver.tar.gz")
-md5sums=('80c96851670122fa9b4083ee5fc0ef3b')
+source=("http://pypi.python.org/packages/source/p/python-dateutil/python-dateutil-${pkgver}.tar.gz")
+#source=("https://github.com/dateutil/dateutil/archive/${pkgver}.tar.gz")
+md5sums=('2769f13c596427558136b34977a95269')
 
 check() {
-  cd $srcdir/dateutil-$pkgver
+  cd python-dateutil-${pkgver}
   
   python2 updatezinfo.py
   python2 setup.py test
 }
 
 package() {
-  cd $srcdir/dateutil-$pkgver
-  python2 setup.py install --root=$pkgdir --optimize=1
-  install -Dm644 LICENSE $pkgdir/usr/share/licenses/$pkgname/LICENSE
+  cd python-dateutil-${pkgver}
+  python2 setup.py install --root=${pkgdir} --optimize=1
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 
-  chmod -R a+r $pkgdir/usr/lib/python2.7/
-  rm $pkgdir/usr/lib/python2.7/site-packages/dateutil/zoneinfo/dateutil-zoneinfo.tar.gz
+  chmod -R a+r ${pkgdir}/usr/lib/python2.7/
+  rm ${pkgdir}/usr/lib/python2.7/site-packages/dateutil/zoneinfo/dateutil-zoneinfo.tar.gz
 }
 
   
