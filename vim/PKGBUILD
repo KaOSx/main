@@ -1,6 +1,6 @@
 
 pkgname=vim
-pkgver=7.4.1529
+pkgver=7.4.1641
 pkgrel=1
 arch=('x86_64')
 pkgdesc='Vi Improved, a highly configurable, improved version of the vi text editor.'
@@ -12,7 +12,7 @@ makedepends=('python2' 'ruby' 'libxt' 'libxext' 'libxpm' 'libxmu' 'desktop-file-
 provides=('vim-runtime')
 conflicts=('vim-runtime')
 source=("https://github.com/vim/vim/archive/v${pkgver}.tar.gz")
-md5sums=('b4778ffed84006579f5d8f67cc9da32b')
+md5sums=('c6c11245697e3cb090fe6891e1827e40')
 
 build() {
   cd "${srcdir}"
@@ -40,15 +40,15 @@ package() {
   cd "${srcdir}/vim-${pkgver}"
   make -j1 VIMRCLOC=/etc DESTDIR="${pkgdir}" install
 
-  # provided by (n)vi in core
+  # provided by vi
   rm "${pkgdir}/usr/bin"/{ex,view}
 
   # delete some manpages
   find "${pkgdir}/usr/share/man" -type d -name 'man1' 2>/dev/null | \
     while read _mandir; do
     cd "${_mandir}"
-    rm -f ex.1 view.1 # provided by (n)vi
-    rm -f evim.1    # this does not make sense if we have no GUI
+    rm -f ex.1 view.1 # provided by vi
+    rm -f evim.1    # no GUI
   done
 
   # license
