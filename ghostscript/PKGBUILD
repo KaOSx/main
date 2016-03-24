@@ -2,6 +2,7 @@
 ## rebuild groff on every update
 pkgname=ghostscript
 pkgver=9.19
+_pkgver=919
 pkgrel=1
 epoch=1
 pkgdesc="An interpreter for the PostScript language"
@@ -12,9 +13,10 @@ depends=('libxt' 'libcups' 'fontconfig' 'jasper' 'zlib' 'libpng' 'libjpeg-turbo'
 makedepends=('gnutls')
 optdepends=('texlive-core:      needed for dvipdf')
 url="http://www.ghostscript.com/"
-source=("http://downloads.ghostscript.com/public/ghostscript-${pkgver}.tar.bz2")
+#source=("http://downloads.ghostscript.com/public/ghostscript-${pkgver}.tar.bz2")
+source=("https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs${_pkgver}/ghostscript-${pkgver}.tar.bz2")
 options=('!libtool' '!makeflags')
-md5sums=('21732fd6e39acc283bc623b8842cbfbb')
+md5sums=('e97afb7468c6decb44f18a0719d4ef18')
 
 build() {
   cd ${srcdir}/ghostscript-${pkgver}
@@ -55,9 +57,6 @@ package() {
   make DESTDIR=${pkgdir} \
 	cups_serverroot=${pkgdir}/etc/cups \
 	cups_serverbin=${pkgdir}/usr/lib/cups install soinstall
-
-  # install missing doc files 
-  install -m 644 ${srcdir}/ghostscript-${pkgver}/doc/{Ps2ps2.htm,gs-vms.hlp,gsdoc.el,pscet_status.txt} ${pkgdir}/usr/share/ghostscript/$pkgver/doc/
   
   mkdir -p ${pkgdir}/usr/share/licenses/${pkgname}
   install -m644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/
