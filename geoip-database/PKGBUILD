@@ -24,17 +24,6 @@ build() {
   done
 }
 
-check() {
-  cd "${srcdir}"
-
-  for _database in {GeoIP,GeoIPv6}.dat; do
-    if ! grep -q 'MaxMind Inc All Rights Reserved' ${_database}; then
-      error "Copyright notice is missing from ${_database}; something is fishy!"
-      return 1
-    fi
-  done
-}
-
 package() {
   cd "${srcdir}"
 
