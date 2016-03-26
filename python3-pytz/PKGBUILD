@@ -1,25 +1,25 @@
 
-pkgname=python2-pytz
+pkgname=python3-pytz
 pkgver=2016.3
 pkgrel=1
 arch=('x86_64')
 pkgdesc="Cross platform time zone library for Python"
 url="http://pypi.python.org/pypi/pytz"
 license=("MIT")
-depends=('python2')
+depends=('python3')
 source=("http://pypi.python.org/packages/source/p/pytz/pytz-${pkgver}.tar.bz2")
 md5sums=('5c1a1e8ac88cd63e1ad7bcd069fe3938')
 
 check() {
     cd pytz-${pkgver}/pytz/tests
 
-    python2 test_tzinfo.py
+    python3 test_tzinfo.py
 }
 
 package() {
     cd pytz-${pkgver}
 
-    python2 setup.py install --root=${pkgdir}/
+    python3 setup.py install --root=${pkgdir}/
 
     install -D LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }

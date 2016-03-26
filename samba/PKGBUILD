@@ -3,7 +3,7 @@ pkgname=samba
 pkgver=4.4.0
 #In case version contains a or b
 _realver=4.4.0
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 pkgdesc="The standard Windows interoperability suite of programs for Linux and Unix."
 url="http://www.samba.org"
@@ -53,6 +53,7 @@ build() {
   ./configure --prefix=/usr \
               --libdir=/usr/lib/ \
               --localstatedir=/var \
+              --libexecdir=/usr/lib \
               --with-configdir=/etc/samba \
               --with-lockdir=/var/cache/samba \
               --with-sockets-dir=/var/run/samba \
