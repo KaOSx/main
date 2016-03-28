@@ -1,20 +1,18 @@
 
 pkgname=python2-numpy
-pkgver=1.10.4
+pkgver=1.11.0
 pkgrel=1
 pkgdesc="Scientific tools for Python"
 arch=('x86_64')
 license=('custom')
 url="http://www.numpy.org/"
-depends=('blas' 'lapack' 'python2')
-makedepends=('python2-nose' 'gcc-fortran')
-optdepends=('python2-nose: test suite')
+depends=('lapack' 'python2-nose')
 provides=('python-numeric')
 source=("http://downloads.sourceforge.net/numpy/numpy-${pkgver}.tar.gz")
-md5sums=('90bb9034652cefbada19cf7d141a6a61')
+md5sums=('bc56fb9fc2895aa4961802ffbdb31d0b')
 
 build() {
-  cd "${srcdir}/numpy-${pkgver}"
+  cd numpy-${pkgver}
   export Atlas=None
   export LDFLAGS="$LDFLAGS -shared"
   
@@ -22,12 +20,12 @@ build() {
 }
 
 package() {
-  cd "${srcdir}/numpy-${pkgver}"
-  python2 setup.py config_fc --fcompiler=gnu95 install --prefix=/usr --root="${pkgdir}" --optimize=1
+  cd numpy-${pkgver}
+  python2 setup.py config_fc --fcompiler=gnu95 install --prefix=/usr --root=${pkgdir} --optimize=1
 
-  install -m755 -d "${pkgdir}/usr/share/licenses/python2-numpy"
-  install -m644 LICENSE.txt "${pkgdir}/usr/share/licenses/python2-numpy/"
+  install -m755 -d ${pkgdir}/usr/share/licenses/python2-numpy
+  install -m644 LICENSE.txt ${pkgdir}/usr/share/licenses/python2-numpy/
   
-  install -m755 -d "${pkgdir}/usr/include/python2.7"
-  ln -sf /usr/lib/python2.7/site-packages/numpy/core/include/numpy "${pkgdir}/usr/include/python2.7/numpy"
+  install -m755 -d ${pkgdir}/usr/include/python2.7
+  ln -sf /usr/lib/python2.7/site-packages/numpy/core/include/numpy ${pkgdir}/usr/include/python2.7/numpy
 }
