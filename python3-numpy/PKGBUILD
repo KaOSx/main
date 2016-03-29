@@ -1,0 +1,30 @@
+
+pkgname=python3-numpy
+pkgver=1.11.0
+pkgrel=1
+pkgdesc="Scientific tools for Python"
+arch=('x86_64')
+license=('custom')
+url="http://www.numpy.org/"
+depends=('lapack' 'python3-nose')
+source=("http://downloads.sourceforge.net/numpy/numpy-${pkgver}.tar.gz")
+md5sums=('bc56fb9fc2895aa4961802ffbdb31d0b')
+
+build() {
+  cd numpy-${pkgver}
+  export Atlas=None
+  export LDFLAGS="$LDFLAGS -shared"
+  
+  python3 setup.py config_fc --fcompiler=gnu95 build
+}
+
+package() {
+  cd numpy-${pkgver}
+  python3 setup.py config_fc --fcompiler=gnu95 install --prefix=/usr --root=${pkgdir} --optimize=1
+
+  install -m755 -d ${pkgdir}/usr/share/licenses/python3-numpy
+  install -m644 LICENSE.txt ${pkgdir}/usr/share/licenses/python3-numpy/
+  
+  install -m755 -d ${pkgdir}/usr/include/python3.5
+  ln -sf /usr/lib/python3.5/site-packages/numpy/core/include/numpy ${pkgdir}/usr/include/python3.5/numpy
+}
