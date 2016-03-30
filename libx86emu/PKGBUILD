@@ -1,8 +1,9 @@
 
 pkgname=libx86emu
-pkgver=1.1
-_minorver=23.1
-pkgrel=7
+pkgver=1.6.1.1
+_pkgver=1.6-1.1
+_shortver=1.6
+pkgrel=1
 pkgdesc="x86 emulation library"
 arch=('x86_64')
 url="http://www.opensuse.org"
@@ -10,24 +11,24 @@ license=('BSD')
 depends=('glibc')
 makedepends=('rpmextract')
 options=('!emptydirs')
-source=("http://download.opensuse.org/source/factory/repo/oss/suse/src/${pkgname}-${pkgver}-${_minorver}.src.rpm")
-md5sums=('dd6982574b686afcd69e8cd09aa9456f')
+source=("http://download.opensuse.org/source/tumbleweed/repo/oss/suse/src/${pkgname}-${_pkgver}.src.rpm")
+md5sums=('fe2139ee34b9dbceeede42cf233075a3')
 
 build() {
-  cd "${srcdir}"
-  rpmextract.sh "${pkgname}-${pkgver}-${_minorver}.src.rpm"
-  tar -xjf $pkgname-$pkgver.tar.bz2
+  cd ${srcdir}
+  rpmextract.sh ${pkgname}-${_pkgver}.src.rpm
+  tar -xJf ${pkgname}-${_shortver}.tar.xz
   
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${srcdir}/${pkgname}-${_shortver}
 
   make LIBDIR=/usr/lib
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
-  make LIBDIR=/usr/lib DESTDIR=$pkgdir install
+  cd ${srcdir}/${pkgname}-${_shortver}
+  make LIBDIR=/usr/lib DESTDIR=${pkgdir} install
   
   install -Dm644 LICENSE \
-  ${pkgdir}/usr/share/licenses/$pkgname/LICENSE
+  ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
 
