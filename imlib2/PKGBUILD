@@ -1,18 +1,18 @@
 
 pkgname=imlib2
-pkgver=1.4.7
-pkgrel=2
+pkgver=1.4.8
+pkgrel=1
 pkgdesc="Library that does image file loading and saving as well as rendering, manipulation, arbitrary polygon support"
 url="http://sourceforge.net/projects/enlightenment/"
 arch=('x86_64')
 license=('BSD')
 depends=('libtiff' 'giflib' 'bzip2' 'freetype2' 'libxext' 'libpng' 'libid3tag' 'libjpeg-turbo')
 options=('!libtool')
-source=("http://downloads.sourceforge.net/enlightenment/$pkgname-$pkgver.tar.bz2")
-md5sums=('f2f1418c376da6125453f90f2d58d938')
+source=("http://downloads.sourceforge.net/enlightenment/${pkgname}-${pkgver}.tar.bz2")
+md5sums=('97cf1007b0339102974ce20c8f17c249')
 
 build() {
-  cd "$srcdir/$pkgname-$pkgver"
+  cd ${pkgname}-${pkgver}
   #patch -p1 -i $srcdir/giflib51.patch
 
   ./configure --prefix=/usr \
@@ -23,8 +23,8 @@ build() {
 }
 
 package() {
-  cd "$srcdir/$pkgname-$pkgver" 
-  make DESTDIR="$pkgdir" install
+  cd ${pkgname}-${pkgver} 
+  make DESTDIR=${pkgdir} install
 
-  install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
 }
