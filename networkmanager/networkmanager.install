@@ -3,16 +3,6 @@ post_install() {
          systemctl enable NetworkManager.service
 }
 
-post_upgrade() {
-  (( $(vercmp 0.8.3 $2) > 0 )) && cat <<MSG
-ATTENTION:
-  /etc/NetworkManager/nm-system-settings.conf has been replaced
-  by /etc/NetworkManager/NetworkManager.conf. Make sure you move
-  any custom settings to the new config file.
-MSG
-  true
-}
-
 pre_remove() {
    echo "Disabling systemd service"
          systemctl disable NetworkManager.service
