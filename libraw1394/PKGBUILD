@@ -1,6 +1,6 @@
 
 pkgname=libraw1394
-pkgver=2.1.1
+pkgver=2.1.2
 pkgrel=1
 arch=('x86_64')
 license=('LGPL2.1')
@@ -10,17 +10,17 @@ makedepends=('pkgconfig')
 url="https://ieee1394.wiki.kernel.org/index.php/Main_Page"
 options=('!libtool')
 source=("ftp://ftp.kernel.org/pub/linux/libs/ieee1394/${pkgname}-${pkgver}.tar.xz")
-md5sums=('382191c753ca9241655a288f2caac73c')
+md5sums=('118060584c04f1aa5e29c4d22c1c235a')
 
 build() {
-   cd "${srcdir}/${pkgname}-${pkgver}"
+   cd ${pkgname}-${pkgver}
 
    ./configure --prefix=/usr 
    make 
 }
 
 package() {
-   cd "${srcdir}/${pkgname}-${pkgver}"
+   cd ${pkgname}-${pkgver}
 
-   make DESTDIR="${pkgdir}" install 
+   make DESTDIR=${pkgdir} install 
 }
