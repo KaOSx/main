@@ -5,7 +5,7 @@ pkgbase=qt
 pkgname=('qt' 'qt-private-headers')
 pkgver=4.8.7
 _pkgver=4.8.7
-pkgrel=3
+pkgrel=4
 arch=('x86_64')
 url='http://qt.nokia.com/'
 license=('GPL3' 'LGPL')
@@ -86,7 +86,6 @@ package_qt() {
     depends=('libtiff' 'libpng' 'libmng' 'sqlite3' 'ca-certificates' 'glib2' 'dbus'
              'fontconfig' 'libgl' 'libsm' 'libxrandr' 'libxv' 'libxi' 'alsa-lib'
              'xdg-utils' 'hicolor-icon-theme' 'desktop-file-utils' 'libxinerama' 'libxcursor')
-    optdepends=('sni-qt: for systemtray icons in Qt4 and KDE 4 applications')
     install='qt.install'
 	
     cd $srcdir/$_pkgfqn

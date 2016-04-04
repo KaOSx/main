@@ -1,32 +1,28 @@
 
 pkgname=enblend-enfuse
-pkgver=4.1.5
+pkgver=4.2
 pkgrel=1
 pkgdesc="Intelligent blend tool for overlapping picture"
 arch=("x86_64")
 license=('GPL')
 url="http://enblend.sourceforge.net"
-depends=('openexr' 'glew>=1.13' 'freeglut' 'libgl' 'lcms2' 'texinfo' 'libpng'
-         'boost-libs' 'vigra' 'gsl')
-makedepends=('boost' 'mesa' 'help2man')
+depends=('openexr' 'lcms2' 'libpng' 'vigra' 'gsl')
+makedepends=('boost' 'mesa' 'help2man' 'texlive-latexextra')
 replaces=('enblend')
 conflicts=('enblend')
 provides=('enblend')
-install=${pkgname}.install
 source=("http://downloads.sourceforge.net/sourceforge/enblend/${pkgname}-${pkgver}.tar.gz")
-md5sums=('df3e1ffab3ce186d1fd85833ce1443e0')
+md5sums=('e26751f393862cecfd1a113003787001')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
   ./configure --prefix=/usr
   make
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
-  make DESTDIR="${pkgdir}" install
+  cd ${pkgname}-${pkgver}
   
-  install -D -m644 doc/enblend.info "${pkgdir}/usr/share/info/enblend.info"
-  install -D -m644 doc/enfuse.info "${pkgdir}/usr/share/info/enfuse.info"
+  make DESTDIR=${pkgdir} install
 }
