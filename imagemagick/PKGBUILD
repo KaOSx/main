@@ -1,8 +1,8 @@
 
 # only build local, server for unknown reasons does not follow perl install dir
 pkgname=imagemagick
-pkgver=6.9.3.7
-_pkgver=6.9.3-7
+pkgver=6.9.3.8
+_pkgver=6.9.3-8
 pkgrel=1
 pkgdesc="An image viewing/manipulation program"
 arch=('x86_64')
@@ -17,15 +17,15 @@ optdepends=('ghostscript: for Ghostscript support'
 options=('!docs' 'libtool' '!emptydirs')
 source=("http://www.imagemagick.org/download/ImageMagick-${_pkgver}.tar.xz"
 	'perlmagick.rpath.patch')
-md5sums=('bb31f4ffd561f30068f84060d1d8c0c3'
+md5sums=('5dcd975b0f6f70cc1f0f26a882a99ba7'
          '0faf7158fd3a0904d9a70dd3e3c1fe9c')
 
 build() {
-	cd ${srcdir}/ImageMagick-${_pkgver}
+	cd ImageMagick-${_pkgver}
 	sed '/AC_PATH_XTRA/d' -i configure.ac
         autoreconf --force --install
 
-	patch -p0 -i "${srcdir}/perlmagick.rpath.patch" 
+	patch -p0 -i ${srcdir}/perlmagick.rpath.patch 
 
 	./configure --prefix=/usr --sysconfdir=/etc --with-modules --disable-static \
 	    --enable-hdri --with-wmf --with-openexr --with-xml --enable-opencl \
@@ -38,13 +38,13 @@ build() {
 }
 
 check() {
-  cd ImageMagick-${_pkgver}
+        cd ImageMagick-${_pkgver}
   
-  #make check
+        make check
 }
 
 package() {
-	cd ${srcdir}/ImageMagick-${_pkgver}
+	cd ImageMagick-${_pkgver}
 
 	make -j1 DESTDIR=${pkgdir} install 
 
