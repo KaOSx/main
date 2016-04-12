@@ -1,7 +1,7 @@
 
 pkgname=netcdf
 pkgver=4.4.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Network Common Data Form interface for array-oriented data access and corresponding library."
 arch=("x86_64")
 url="http://www.unidata.ucar.edu/downloads/netcdf/index.jsp"
@@ -12,7 +12,7 @@ source=("http://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-${pkgver}.tar.g
 md5sums=('f01cb26a0126dd9a6224e76472d25f6c')
 
 build() {
-  cd ${srcdir}/${pkgname}-${pkgver}
+  cd ${pkgname}-${pkgver}
   
   ./configure --prefix=/usr \
         --enable-shared \
@@ -20,12 +20,18 @@ build() {
   make
 }
 
+check() {
+  cd ${pkgname}-${pkgver}
+  
+  make check 
+}
+
 package() {
-  cd ${srcdir}/${pkgname}-${pkgver}
+  cd ${pkgname}-${pkgver}
 
   install -m755 -d ${pkgdir}/usr/lib
   install -m755 -d ${pkgdir}/usr/share/man
   make DESTDIR=${pkgdir} install
 
-  install -Dm644 ${srcdir}/${pkgname}-${pkgver}/COPYRIGHT ${pkgdir}/usr/share/licenses/${pkgname}/COPYRIGHT
+  install -Dm644 COPYRIGHT ${pkgdir}/usr/share/licenses/${pkgname}/COPYRIGHT
 }

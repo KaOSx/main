@@ -1,23 +1,24 @@
 
 pkgname=hdf5
-pkgver=1.8.16
+pkgver=1.10.0
+_pkgver=1.10
 pkgrel=1
 arch=('x86_64')
 pkgdesc="General purpose library and file format for storing scientific data"
 url="http://www.hdfgroup.org/HDF5/"
 license=('custom')
 depends=('zlib' 'sh')
-source=("http://www.hdfgroup.org/ftp/HDF5/current/src/${pkgname}-${pkgver}.tar.bz2")
 options=('!libtool')
-md5sums=('79c1593573ebddf734eee8d43ecfe483')
+source=("http://www.hdfgroup.org/ftp/HDF5/releases/hdf5-${_pkgver}/hdf5-${pkgver}/src/${pkgname}-${pkgver}.tar.bz2")
+md5sums=('355243bda5df386aea25f079d550947b')
 
 build() {
-  cd $srcdir/${pkgname}-${pkgver/_/-}
+  cd ${pkgname}-${pkgver}
   
-  ./configure --prefix=/usr --disable-static \
+  ./configure --prefix=/usr \
+    --disable-static \
     --enable-hl \
-    --enable-linux-lfs \
-    --enable-production \
+    --enable-build-mode=production \
     --with-pic \
     --docdir=/usr/share/doc/hdf5/ \
     --with-pthread=/usr/lib/ \
@@ -26,12 +27,11 @@ build() {
 }
 
 package() {
-  cd $srcdir/${pkgname}-${pkgver/_/-}
+  cd ${pkgname}-${pkgver}
 
-  make -j1 prefix=$pkgdir/usr install
+  make -j1 prefix=${pkgdir}/usr install
 
-  install -d -m755 $pkgdir/usr/share/licenses/${pkgname}
-  install -m644 $srcdir/${pkgname}-${pkgver/_/-}/COPYING \
-          $pkgdir/usr/share/licenses/${pkgname}/LICENSE 
+  install -d -m755 ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE 
 }
 
