@@ -1,6 +1,6 @@
 
 pkgname=netpbm
-pkgver=10.72.01
+pkgver=10.74.02
 pkgrel=1
 pkgdesc="A toolkit for manipulation of graphic images"
 arch=('x86_64')
@@ -13,7 +13,7 @@ source=("svn://svn.code.sf.net/p/netpbm/code/advanced")
 md5sums=('SKIP')
 
 build() {
-  cd "${srcdir}/advanced"
+  cd advanced
   
   # use the interactive way
   ./configure
@@ -25,15 +25,14 @@ build() {
 }
 
 package() {
-  cd "${srcdir}/advanced"
-  make package pkgdir="${pkgdir}/usr" 
+  cd advanced
+  make package pkgdir=${pkgdir}/usr 
   
-  install -D -m644 "${srcdir}/advanced/doc/copyright_summary" \
-    "${pkgdir}/usr/share/licenses/${pkgname}/copyright_summary.txt"
+  install -D -m644 doc/copyright_summary ${pkgdir}/usr/share/licenses/${pkgname}/copyright_summary.txt
     
-  mv -iv "${pkgdir}/usr/man" "${pkgdir}/usr/share/man"
-  rm "${pkgdir}"/usr/conf*
-  rm "${pkgdir}"/usr/pkg*
-  rm "${pkgdir}"/usr/README
-  rm "${pkgdir}"/usr/VERSION
+  mv -iv ${pkgdir}/usr/man ${pkgdir}/usr/share/man
+  rm ${pkgdir}/usr/conf*
+  rm ${pkgdir}/usr/pkg*
+  rm ${pkgdir}/usr/README
+  rm ${pkgdir}/usr/VERSION
 }

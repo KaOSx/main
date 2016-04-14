@@ -1,7 +1,7 @@
 
 pkgname=mono
-pkgver=4.2.2
-_pkgver=4.2.2.30
+pkgver=4.4.0
+_pkgver=4.4.0.40
 pkgrel=1
 pkgdesc="Free implementation of the .NET platform including runtime and compiler"
 arch=('x86_64')
@@ -12,7 +12,7 @@ makedepends=('pkgconfig')
 options=('!libtool' '!makeflags')
 source=("http://download.mono-project.com/sources/mono/${pkgname}-${_pkgver}.tar.bz2"
         'mono.binfmt.d')
-md5sums=('2c5358041c931b8c1eabf0544565c9a3'
+md5sums=('f9765c947421ec96ab30aa73f0f4659f'
          '568c72e1b42f089a9fec20dfe4bcc3b4')
 
 build() {
@@ -38,10 +38,10 @@ package() {
   make DESTDIR=${pkgdir} prefix=/usr INSTALL=../../install-sh install
   cd ${srcdir}/${pkgname}-${pkgver}
 
-  install -D -m644 "${srcdir}"/mono.binfmt.d "${pkgdir}"/usr/lib/binfmt.d/mono.conf
+  install -D -m644 ${srcdir}/mono.binfmt.d ${pkgdir}/usr/lib/binfmt.d/mono.conf
 
   mkdir -p ${pkgdir}/usr/share/licenses/${pkgname}
   install -m644 mcs/MIT.X11 ${pkgdir}/usr/share/licenses/${pkgname}/
   
-  sed -i -e "s:#Requires:Requires:" ${pkgdir}/usr/lib/pkgconfig/mono.pc
+  sed -i -e "s|#Requires|Requires|" ${pkgdir}/usr/lib/pkgconfig/mono.pc
 }
