@@ -44,7 +44,7 @@ build() {
     export PATH="$PWD/qtbase/bin:$PWD/qtrepotools/bin:$PATH"
 
     ./configure -confirm-license -opensource \
-		-prefix /usr \
+                -prefix /usr \
                 -bindir /usr/lib/qt5/bin \
                 -headerdir /usr/include/qt5 \
                 -archdatadir /usr/lib/qt5 \
@@ -58,7 +58,7 @@ build() {
                 -sysconfdir /etc/xdg/qt5 \
                 -examplesdir /usr/share/qt5/examples \
                 -system-harfbuzz \
-		-system-sqlite \
+                -system-sqlite \
                 -openssl-linked \
                 -nomake tests \
                 -nomake examples \

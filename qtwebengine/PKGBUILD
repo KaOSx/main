@@ -4,7 +4,7 @@ pkgname=qtwebengine
 pkgver=5.6.0
 subver=5.6.0
 _pkgver=5.6
-pkgrel=1
+pkgrel=2
 pkgdesc="Chromium-based web engine to replace Qt WebKit"
 url="http://blog.qt.digia.com/blog/2014/01/23/qt-webengine-technology-preview-available/"
 arch=('x86_64')
@@ -22,7 +22,7 @@ md5sums=('a8be84d642a78724d84b27c20adee14c'
          '5c297bd337ffab4a2d075a7c85d55ef3')
 
 build() {
-   cd "${srcdir}/$_pkgfqn/"   
+   cd $_pkgfqn/   
    # patch adjusted from fedora to get Qt 5.6 qtwebengine to work with nss 3.21
    # http://pkgs.fedoraproject.org/cgit/rpms/qt5-qtwebengine.git/commit/?id=9a15e3c582902772e7876660afd06f57c4ff48d2
    patch -p1 -i $srcdir/nss321.diff
@@ -33,10 +33,15 @@ build() {
    
    /usr/lib/qt5/bin/qmake WEBENGINE_CONFIG+="use_proprietary_codecs use_system_ffmpeg" ../qtwebengine.pro
    make 
+   
+   cd ..
+   cd examples/webenginewidgets/demobrowser/
+   /usr/lib/qt5/bin/qmake
+   make
 }
 
 package() {
-   cd "${srcdir}/$_pkgfqn/build/"   
+   cd $_pkgfqn/build/   
    
    make INSTALL_ROOT="${pkgdir}" install
 }
