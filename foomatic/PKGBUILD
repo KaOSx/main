@@ -2,7 +2,7 @@
 pkgbase="foomatic"
 pkgname=('foomatic-db' 'foomatic-db-engine' 'foomatic-db-nonfree')
 arch=('x86_64') 
-_snapdate=20160212
+_snapdate=20160416
 _relver=4.0
 pkgver=${_relver}_${_snapdate}
 pkgrel=1
@@ -13,9 +13,9 @@ source=("http://www.openprinting.org/download/foomatic/${pkgbase}-db-engine-${_r
         "http://www.openprinting.org/download/foomatic/${pkgbase}-db-nonfree-${_snapdate}.tar.gz")
 url="http://www.linuxprinting.org/foomatic.html"
 options=('!emptydirs')
-md5sums=('e7d1b3456bdfbf6d22bf8fa78747ada7'
-         '4a66f0bf84865006b487502203744cc4'
-         '4e56b615894a3929a065779b5b770b45') 
+md5sums=('40d4174451f54e96a0bc4985470b9e2a'
+         '15021ee72c9fd49cab9dc080128ab6dc'
+         '4e847690b9a587f10c647ef4a14ec600') 
 
 package_foomatic-db() {
 
@@ -24,10 +24,10 @@ package_foomatic-db() {
   license=('GPL' 'custom')
   depends=('perl' 'libxml2')
 
-  cd "${srcdir}/${pkgname}-${_snapdate}"
+  cd ${pkgname}-${_snapdate}
   ./configure --prefix=/usr
-  make DESTDIR="${pkgdir}" install 
-  install -v -Dm0644 "${srcdir}/${pkgname}-${_snapdate}/COPYING" "${pkgdir}/usr/share/licenses/${pkgname}/COPYING"
+  make DESTDIR=${pkgdir} install 
+  install -v -Dm0644 ${srcdir}/${pkgname}-${_snapdate}/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
 }
 
 package_foomatic-db-engine() {
@@ -37,7 +37,7 @@ package_foomatic-db-engine() {
   license=('GPL')
   depends=('perl' 'libxml2' 'cups-filters' 'bash')
 
-  cd "${srcdir}/foomatic-db-engine-${_relver}-${_snapdate}"
+  cd foomatic-db-engine-${_relver}-${_snapdate}
   ./configure --prefix=/usr
   make 
   eval `perl -V:archname`
@@ -57,8 +57,8 @@ package_foomatic-db-nonfree() {
   license=('custom')
   depends=('perl' 'libxml2' "foomatic-db-engine" 'foomatic-db')
 
-  cd "${srcdir}/foomatic-db-nonfree-${_snapdate}"
+  cd foomatic-db-nonfree-${_snapdate}
   ./configure --prefix=/usr
-  make DESTDIR="${pkgdir}" install 
-  install -Dm644 COPYING "${pkgdir}/usr/share/licenses/foomatic-db-nonfree/COPYING"
+  make DESTDIR=${pkgdir} install 
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/foomatic-db-nonfree/COPYING
 }
