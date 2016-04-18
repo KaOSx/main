@@ -1,19 +1,19 @@
 
 pkgname=phonon-qt5
 _pkgname=phonon
-pkgver=4.8.3
-pkgrel=2
+pkgver=4.9.0
+pkgrel=1
 arch=('x86_64')
 url="http://phonon.kde.org"
 license=('LGPL')
 pkgdesc="The multimedia framework for KDE"
 depends=('phonon-backend-qt5' 'pulseaudio' 'qt5-base')
-makedepends=('cmake' 'qt5-tools')
-source=("http://download.kde.org/stable/${_pkgname}/${pkgver}/src/${_pkgname}-${pkgver}.tar.xz")
-md5sums=('88bb9867261803eed61ff53a7c026338')
+makedepends=('extra-cmake-modules' 'qt5-tools')
+source=("http://download.kde.org/stable/${_pkgname}/${pkgver}/${_pkgname}-${pkgver}.tar.xz")
+md5sums=('8abeb7b1eaf4935668c7fb441fc2491a')
 
 build() {
-  mkdir build
+  mkdir -p build
   
   cd build
   cmake ../${_pkgname}-${pkgver} \

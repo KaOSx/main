@@ -1,26 +1,24 @@
 
 pkgname=phonon-backend-gstreamer
-pkgver=4.8.2
+_pkgname=phonon-gstreamer
+pkgver=4.9.0
 pkgrel=1
 pkgdesc="Phonon GStreamer backend"
 arch=('x86_64')
 url='http://phonon.kde.org'
 license=('LGPL')
-#depends=('gstreamer0.10-base-plugins')
 depends=('gst-plugins-base')
 makedepends=('pkg-config' 'cmake' 'automoc4' 'mesa' 'phonon')
 provides=('phonon-backend')
-groups=("kde-complete" "kde-uninstall")
-source=("http://download.kde.org/stable/phonon/${pkgname}/${pkgver}/src/${pkgname}-${pkgver}.tar.xz")
+source=("http://download.kde.org/stable/phonon/phonon-backend-gstreamer/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 #source=("git://anongit.kde.org/phonon-gstreamer#branch=1.0-porting-for-merge")
-md5sums=('ce441035dc5a00ffaac9a64518ab5c62')
+md5sums=('b2b0ca327908948ce8cdba117e31bf80')
 
 build() { 
-        cd ${srcdir}
 	mkdir -p build
-	
 	cd build
-	cmake ../${pkgname}-${pkgver} \
+	
+	cmake ../${_pkgname}-${pkgver} \
 		 -DCMAKE_BUILD_TYPE=Release \
 		 -DCMAKE_INSTALL_PREFIX=/usr \
 		 -DCMAKE_INSTALL_LIBDIR=lib \
@@ -29,7 +27,8 @@ build() {
 }
 
 package() {
-	cd ${srcdir}/build
-	
+	cd build
 	make DESTDIR=${pkgdir} install
+	# Qt 5 is default, keep conflicting files in phonon-qt5
+	rm -rf ${pkgdir}/usr/share/icons
 }

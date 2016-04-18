@@ -1,27 +1,25 @@
 
 pkgname=phonon-qt5-backend-gstreamer
 _pkgname=phonon-backend-gstreamer
-pkgver=4.8.2
+pkgver=4.9.0
 pkgrel=1
 pkgdesc="Phonon GStreamer backend Qt5 version"
 arch=('x86_64')
 url='http://phonon.kde.org'
 license=('LGPL')
-depends=('gst-plugins-base')
-makedepends=('pkg-config' 'cmake' 'automoc4' 'mesa' 'phonon-qt5')
+depends=('gst-plugins-base' 'qt5-x11extras')
+makedepends=('pkg-config' 'extra-cmake-modules' 'mesa' 'phonon-qt5')
 provides=('phonon-backend-qt5')
-groups=("kde-complete" "kde-uninstall")
-source=("http://download.kde.org/stable/phonon/${_pkgname}/${pkgver}/src/${_pkgname}-${pkgver}.tar.xz")
+groups=('kde-complete' 'kde-uninstall')
+source=("http://download.kde.org/stable/phonon/${_pkgname}/${pkgver}/${_pkgname}-${pkgver}.tar.xz")
 #source=("git://anongit.kde.org/phonon-gstreamer#branch=1.0-porting-for-merge")
-md5sums=('ce441035dc5a00ffaac9a64518ab5c62')
-#md5sums=('SKIP')
+md5sums=('b2b0ca327908948ce8cdba117e31bf80')
 
 build() { 
-        cd ${srcdir}
 	mkdir -p build
-	
 	cd build
-	cmake ../${_pkgname}-${pkgver} \
+	
+	cmake ../phonon-gstreamer-${pkgver} \
 		 -DCMAKE_BUILD_TYPE=Release \
 		 -DCMAKE_INSTALL_PREFIX=/usr \
 		 -DCMAKE_INSTALL_LIBDIR=lib \
@@ -30,8 +28,7 @@ build() {
 }
 
 package() {
-	cd ${srcdir}/build
-	make DESTDIR=${pkgdir} install
+	cd build
 	
-	rm -rf "${pkgdir}"/usr/share
+	make DESTDIR=${pkgdir} install
 }
