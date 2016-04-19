@@ -1,6 +1,6 @@
 
 pkgname=libinput
-pkgver=1.2.3
+pkgver=1.2.4
 pkgrel=1
 pkgdesc="Library to handle input devices in Wayland compositors and to provide a generic X.Org input driver"
 arch=('x86_64')
@@ -8,19 +8,19 @@ url="http://www.freedesktop.org/wiki/Software/libinput/"
 license=('custom:X11')
 depends=('mtdev' 'systemd' 'libevdev' 'libwacom')
 options=('!libtool')
-source=("http://freedesktop.org/software/libinput/$pkgname-$pkgver.tar.xz")
-md5sums=('9f3d603942fefac8860e0fc828a3df99')
+source=("http://freedesktop.org/software/libinput/${pkgname}-${pkgver}.tar.xz")
+md5sums=('1cbaa34f04a336f2703906d564e0a37a')
 
 build() {
-  cd $pkgname-$pkgver
+  cd ${pkgname}-${pkgver}
 
   ./configure --prefix=/usr --disable-static
   make
 }
 
 package() {
-  cd $pkgname-$pkgver
-  make DESTDIR="$pkgdir" install
+  cd ${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install
 
-  install -Dm644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/COPYING"
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
 }
