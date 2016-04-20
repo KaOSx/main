@@ -1,0 +1,40 @@
+
+pkgname=dnsmasq
+pkgver=2.75
+pkgrel=1
+pkgdesc="Network infrastructure for small networks: DNS, DHCP, router advertisement, network boot, tethering on smartphones and portable hotspots"
+url="http://www.thekelleys.org.uk/dnsmasq/doc.html"
+arch=('x86_64')
+license=('GPL')
+depends=('glibc' 'dbus' 'gmp' 'nettle')
+install=dnsmasq.install
+backup=('etc/dnsmasq.conf')
+source=("http://www.thekelleys.org.uk/dnsmasq/${pkgname}-${pkgver}.tar.xz"
+        'dnsmasq.service')
+md5sums=('887236f1ddde6eb57cdb9d01916c9f72'
+         '596c88fc2492f99edf71e398b85a69f4')
+
+build() {
+  cd ${pkgname}-${pkgver}
+
+  make \
+    CFLAGS="$CPPFLAGS $CFLAGS" \
+    LDFLAGS="$LDFLAGS" \
+    COPTS="-DHAVE_DNSSEC -DHAVE_DBUS"
+}
+
+package() {
+  cd ${pkgname}-${pkgver}
+
+  make \
+    COPTS="-DHAVE_DNSSEC -DHAVE_DBUS" \
+    BINDIR=/usr/bin PREFIX=/usr DESTDIR=${pkgdir} install
+
+  install -Dm644 dbus/dnsmasq.conf ${pkgdir}/etc/dbus-1/system.d/dnsmasq.conf
+  install -Dm644 dnsmasq.conf.example ${pkgdir}/etc/dnsmasq.conf
+  install -Dm644 ${srcdir}/dnsmasq.service ${pkgdir}/usr/lib/systemd/system/dnsmasq.service
+
+  sed -i 's|%%PREFIX%%|/usr|' $pkgdir/etc/dnsmasq.conf
+  install -Dm644 trust-anchors.conf $pkgdir/usr/share/dnsmasq/trust-anchors.conf
+}
+
