@@ -1,9 +1,9 @@
 
 pkgname=networkmanager
 _pkgname=NetworkManager
-pkgver=1.0.12
-_pkgver=1.0
-pkgrel=2
+pkgver=1.2.0
+_pkgver=1.2
+pkgrel=1
 pkgdesc="Network Management daemon"
 arch=('x86_64')
 license=('GPL')
@@ -20,20 +20,15 @@ options=('!libtool')
 backup=('etc/NetworkManager/NetworkManager.conf')
 install=networkmanager.install
 source=("https://download.gnome.org/sources/NetworkManager/${_pkgver}/$_pkgname-$pkgver.tar.xz"
-        'NetworkManager.conf' 
-        'disable_set_hostname.patch'
-        'wifiutils.patch')
-md5sums=('ebb273456a81ccf9dfaf2461061b0e96'
-         'e6549aab4cb721a87becd4585efd5148'
-         '6b5415350c04304a28d29294441a07ae'
-         '252b17d19be093698e4b66e84a49f3bc')
+        'NetworkManager.conf')
+md5sums=('d431bad77b68326282249bdb53ade6b4'
+         'e6549aab4cb721a87becd4585efd5148')
 
 build() {
   cd $_pkgname-$pkgver
 
-  patch -p1 -i ../disable_set_hostname.patch
   # wifi failures with 1.0.12 https://plus.google.com/+TonatiuhMiramontesP%C3%A9rez/posts/c5W7ySB83SD
-  patch -p1 -i ../wifiutils.patch
+  #patch -p1 -i ../wifiutils.patch
 
   ./configure \
     --prefix=/usr \
