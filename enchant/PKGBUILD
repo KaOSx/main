@@ -1,19 +1,22 @@
 
 pkgname=enchant
-pkgver=1.6.0
-pkgrel=7
+pkgver=2.2.2
+_pkgver=2-2-2
+pkgrel=1
 pkgdesc="A wrapper library for generic spell checking"
 arch=('x86_64')
 url="http://www.abisource.com/enchant/"
 license=('LGPL')
 depends=('aspell' 'dbus-glib' 'hunspell' 'hspell')
 options=('!libtool')
-source=("http://www.abisource.com/downloads/enchant/${pkgver}/${pkgname}-${pkgver}.tar.gz")
-md5sums=('de11011aff801dc61042828041fb59c7')
+#source=("http://www.abisource.com/downloads/enchant/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+source=("https://github.com/AbiWord/enchant/archive/release-${_pkgver}.tar.gz")
+md5sums=('22c97e75d7dcab9615e97963eb01a7bb')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-release-${_pkgver}
   
+  ./autogen.sh
   ./configure --prefix=/usr \
     --disable-static \
     --disable-ispell \
@@ -22,7 +25,7 @@ build() {
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-release-${_pkgver}
   
-  make DESTDIR="${pkgdir}" install 
+  make DESTDIR=${pkgdir} install 
 }
