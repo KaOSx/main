@@ -3,7 +3,7 @@ pkgname=networkmanager
 _pkgname=NetworkManager
 pkgver=1.2.0
 _pkgver=1.2
-pkgrel=1
+pkgrel=2
 pkgdesc="Network Management daemon"
 arch=('x86_64')
 license=('GPL')
@@ -19,13 +19,13 @@ optdepends=('dhclient: alternative DHCP/DHCPv6 client'
 options=('!libtool')
 backup=('etc/NetworkManager/NetworkManager.conf')
 install=networkmanager.install
-source=("https://download.gnome.org/sources/NetworkManager/${_pkgver}/$_pkgname-$pkgver.tar.xz"
+source=("https://download.gnome.org/sources/NetworkManager/${_pkgver}/${_pkgname}-${pkgver}.tar.xz"
         'NetworkManager.conf')
 md5sums=('d431bad77b68326282249bdb53ade6b4'
          'e6549aab4cb721a87becd4585efd5148')
 
 build() {
-  cd $_pkgname-$pkgver
+  cd ${_pkgname}-${pkgver}
 
   # wifi failures with 1.0.12 https://plus.google.com/+TonatiuhMiramontesP%C3%A9rez/posts/c5W7ySB83SD
   #patch -p1 -i ../wifiutils.patch
@@ -41,6 +41,7 @@ build() {
     --with-pppd=/usr/sbin/pppd \
     --with-pppoe=/usr/sbin/pppoe \
     --with-iptables=/usr/sbin/iptables \
+    --with-dnsmasq=/usr/bin/dnsmasq \
     --with-systemdsystemunitdir=/usr/lib/systemd/system \
     --with-kernel-firmware-dir=/lib/firmware \
     --with-udev-dir=/usr/lib/udev \
@@ -57,11 +58,11 @@ build() {
 }
 
 package() {
-  cd $_pkgname-$pkgver
-  make DESTDIR="$pkgdir" install
+  cd ${_pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install
 
-  install -m644 ../NetworkManager.conf "$pkgdir/etc/NetworkManager/"
-  install -m755 -d "$pkgdir/etc/NetworkManager/dnsmasq.d"
+  install -m644 ../NetworkManager.conf ${pkgdir}/etc/NetworkManager/
+  install -m755 -d ${pkgdir}/etc/NetworkManager/dnsmasq.d
 
-  rm -r "$pkgdir/var/run"  
+  rm -r ${pkgdir}/var/run
 }

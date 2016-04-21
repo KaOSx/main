@@ -15,19 +15,20 @@ source=("http://ftp.gnome.org/pub/GNOME/sources/NetworkManager-openvpn/${_pkgver
 md5sums=('6a8c03288cd0b4b849a7b883689c04f3')
 
 build() {
-  cd "${srcdir}/NetworkManager-openvpn-${pkgver}"
+  cd NetworkManager-openvpn-${pkgver}
   
   ./configure --prefix=/usr \
   	--sysconfdir=/etc \
 	--libexecdir=/usr/lib/networkmanager \
 	--localstatedir=/var \
     --without-gnome \
+    --enable-more-warnings=yes \
 	--disable-static 
   make 
 }
 
 package() {
-  cd "${srcdir}/NetworkManager-openvpn-${pkgver}"
+  cd NetworkManager-openvpn-${pkgver}
   
-  make DESTDIR="${pkgdir}" install 
+  make DESTDIR=${pkgdir} install 
 }
