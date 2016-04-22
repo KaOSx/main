@@ -1,8 +1,8 @@
 
 pkgname=xf86-video-intel
-pkgver=2.99.917.5
+pkgver=2.99.917.6
 pkgrel=1
-_commit=094924f7f882da1f32395d4c982db6ad8e0f609f
+_commit=46caee86db0fb32b16213893c79d9c1a21ed0883
 pkgdesc="X.org Intel i810/i830/i915/945G/G965+ video drivers"
 arch=('x86_64')
 url="http://xorg.freedesktop.org"
@@ -19,7 +19,7 @@ source=("git://anongit.freedesktop.org/git/xorg/driver/xf86-video-intel.git#comm
 md5sums=('SKIP')
 
 build() {
-  cd "${srcdir}/${pkgname}"
+  cd ${pkgname}
 
   ./autogen.sh
   ./configure --prefix=/usr \
@@ -32,7 +32,7 @@ build() {
 }
 
 package() {
-  cd "${srcdir}/${pkgname}"
+  cd ${pkgname}
   make DESTDIR="${pkgdir}" install
   
   install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
