@@ -8,14 +8,14 @@ url="https://www.epson.com"
 license=('GPL')
 depends=('cups' 'gutenprint')
 # http://download.ebz.epson.net/dsc/search/01/search/
-source=("https://download3.ebz.epson.net/dsc/f/03/00/04/54/27/b73564748bfde7b7ce625e20d4a3257d447bec79/$pkgname-$pkgver-1lsb3.2.tar.gz")
+source=("https://download3.ebz.epson.net/dsc/f/03/00/04/54/27/b73564748bfde7b7ce625e20d4a3257d447bec79/${pkgname}-${pkgver}-1lsb3.2.tar.gz")
 md5sums=('a8908eb0e8ca96cff8c550747a8eb765')
 
 build() {
-  cd "$srcdir"
-  tar xzvf "$pkgname-$pkgver-1lsb3.2.tar.gz"
+  cd $srcdir
+  tar xzvf ${pkgname}-${pkgver}-1lsb3.2.tar.gz
   
-  cd "$pkgname-$pkgver"
+  cd ${pkgname}-${pkgver}
   
   ./configure --prefix=/usr \
               --sysconfdir=/etc \
@@ -25,7 +25,7 @@ build() {
 }
 
 package() {
-  cd "$srcdir/$pkgname-$pkgver"
+  cd ${pkgname}-${pkgver}
   
-  make DESTDIR="$pkgdir" install
+  make DESTDIR=${pkgdir} install
 }
