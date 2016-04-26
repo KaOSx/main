@@ -8,9 +8,9 @@ _user=http
 _group=http
 
 pkgname=nginx
-pkgver=1.8.1
-pkgrel=2
-pkgdesc="small, but very powerful and efficient web server and mail proxy"
+pkgver=1.10.0
+pkgrel=1
+pkgdesc="Small, but very powerful and efficient web server and mail proxy"
 arch=('x86_64')
 depends=('pcre' 'zlib' 'openssl' 'geoip' 'gd')
 url="http://nginx.org"
@@ -25,15 +25,15 @@ backup=("etc/nginx/conf/fastcgi.conf"
 	"etc/nginx/conf/uwsgi_params"
 	"etc/nginx/conf/win-utf"
 	"etc/logrotate.d/nginx")
-source=("http://nginx.org/download/nginx-$pkgver.tar.gz"
+source=("http://nginx.org/download/nginx-${pkgver}.tar.gz"
 	'nginx.service'
 	'logrotate')
-md5sums=('2e91695074dbdfbf1bcec0ada9fda462'
+md5sums=('c184c873d2798c5ba92be95ed1209c02'
          'c5b7a8068499262a4e40f890c2b855d3'
          '19a26a61c8afe78defb8b4544f79a9a0')
 
 build() {
-	cd $srcdir/nginx-${pkgver}
+	cd nginx-${pkgver}
 	./configure \
 		--prefix=${_server_root} \
 		--sbin-path=/usr/sbin/nginx \
@@ -70,7 +70,7 @@ build() {
                 --with-http_random_index_module \
                 --with-http_realip_module \
                 --with-http_secure_link_module \
-                --with-http_spdy_module \
+                --with-http_v2_module \
                 --with-http_ssl_module \
                 --with-http_stub_status_module \
                 --with-http_sub_module \
@@ -79,22 +79,22 @@ build() {
 }
 
 package() {
-	cd $srcdir/nginx-${pkgver}
-	make DESTDIR=$pkgdir install
+	cd nginx-${pkgver}
+	make DESTDIR=${pkgdir} install
 
 	sed -i -e "s|\<user\s\+\w\+;|user $_user;|g" \
             -e '44s|html|/usr/share/nginx/html|' \
-            -e '54s|html|/usr/share/nginx/html|' $pkgdir/$_conf_path/nginx.conf
+            -e '54s|html|/usr/share/nginx/html|' ${pkgdir}/${_conf_path}/nginx.conf
 
-	install -d $pkgdir/$_tmp_path
+	install -d ${pkgdir}/${_tmp_path}
 
 	# move default document root outside server root
-	install -d $pkgdir/$_doc_root
-	mv $pkgdir/$_server_root/html/ $pkgdir/$_doc_root/
+	install -d ${pkgdir}/${_doc_root}
+	mv ${pkgdir}/${_server_root}/html/ ${pkgdir}/${_doc_root}/
 	
-	rm -rf $pkgdir/run
+	rm -rf ${pkgdir}/run
 
-	install -D -m644 LICENSE $pkgdir/usr/share/licenses/nginx/LICENSE
-	install -Dm644 "$srcdir/nginx.service" "$pkgdir/usr/lib/systemd/system/nginx.service"
-	install -Dm644 "$srcdir/logrotate" "$pkgdir/etc/logrotate.d/nginx"
+	install -D -m644 LICENSE ${pkgdir}/usr/share/licenses/nginx/LICENSE
+	install -Dm644 ${srcdir}/nginx.service ${pkgdir}/usr/lib/systemd/system/nginx.service
+	install -Dm644 ${srcdir}/logrotate ${pkgdir}/etc/logrotate.d/nginx
 }
