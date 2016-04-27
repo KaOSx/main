@@ -3,7 +3,7 @@ pkgbase=gtk3
 pkgname=('gtk3' 'gtk-update-icon-cache')
 pkgver=3.18.9
 _pkgver=3.18
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 url="http://www.gtk.org/"
 makedepends=('gobject-introspection' 'cairo' 'libcups' 'libxcursor' 'libxinerama' 'libxrandr' 
@@ -11,11 +11,15 @@ makedepends=('gobject-introspection' 'cairo' 'libcups' 'libxcursor' 'libxinerama
              'colord' 'at-spi2-atk' 'libepoxy' 'libxkbcommon' 'librsvg' 'wayland')
 options=('!libtool' '!docs')
 license=('LGPL')
-source=("http://ftp.gnome.org/pub/gnome/sources/gtk+/${_pkgver}/gtk+-${pkgver}.tar.xz")
-md5sums=('c7a5b21d28572bb1d6fc8803864618c0')
+source=("http://ftp.gnome.org/pub/gnome/sources/gtk+/${_pkgver}/gtk+-${pkgver}.tar.xz"
+        'gtk-update-icon-cache.hook'
+        'gtk-update-icon-cache.script')
+md5sums=('c7a5b21d28572bb1d6fc8803864618c0'
+         'c792ef5bb74ceba564b4d8ad306a6592'
+         '025117f62dfb22e942a46784e238e470')
 
 build() {
-  cd "${srcdir}/gtk+-${pkgver}"
+  cd gtk+-${pkgver}
 
  ./configure --prefix=/usr \
              --sysconfdir=/etc \
@@ -36,20 +40,22 @@ package_gtk3() {
           'colord' 'at-spi2-atk' 'libepoxy' 'libxkbcommon' 'wayland')
   install="gtk3.install"
   
-  cd "${srcdir}/gtk+-${pkgver}"
+  cd gtk+-${pkgver}
 
-  make DESTDIR="${pkgdir}" install
+  make DESTDIR=${pkgdir} install
   
   # avoid gtk2 conflict, used for both gtk2 & 3 this way
-  rm "$pkgdir/usr/bin/gtk-update-icon-cache"
+  rm $pkgdir/usr/bin/gtk-update-icon-cache
 }
 
 package_gtk-update-icon-cache() {
     pkgdesc="The GTK+ update icon cache tool"
     depends=('gdk-pixbuf2')
-    install="gtk-update-icon-cache.install"
 
-    cd "$srcdir/gtk+-$pkgver/gtk"
+    cd gtk+-${pkgver}/gtk
 
-    install -D -m755 gtk-update-icon-cache $pkgdir/usr/bin/gtk-update-icon-cache
+    install -Dm755 gtk-update-icon-cache ${pkgdir}/usr/bin/gtk-update-icon-cache
+    
+    install -Dm644 ../../gtk-update-icon-cache.hook ${pkgdir}/usr/share/libalpm/hooks/gtk-update-icon-cache.hook
+    install -Dm755 ../../gtk-update-icon-cache.script ${pkgdir}/usr/share/libalpm/scripts/gtk-update-icon-cache
 }
