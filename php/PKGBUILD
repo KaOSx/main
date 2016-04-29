@@ -1,7 +1,7 @@
 
 pkgname=php
-pkgver=5.6.20
-pkgrel=2
+pkgver=5.6.21
+pkgrel=1
 arch=('x86_64')
 pkgdesc='An HTML-embedded scripting language'
 license=('PHP')
@@ -13,7 +13,6 @@ makedepends=('imap' 'mariadb' 'postfix' 'file' 'libjpeg-turbo' 'openssl' 'db' 'g
 backup=('etc/php/php.ini'
         'etc/php/php-fpm.conf'
         'etc/php/pear.conf')
-install='php.install'
 conflicts=('php-cgi'
          'php-fpm'
          'php-embed'
@@ -55,7 +54,7 @@ source=("http://www.php.net/distributions/${pkgname}-${pkgver}.tar.bz2"
         'logrotate.d.php-fpm'
         'php-fpm.service'
         'php-fpm.tmpfiles')
-md5sums=('e6422449bb0342f074eb649a9adf586b'
+md5sums=('141464ce6b297aa2295b8416c6dbd5e5'
          'ebeed393317ed9077a0a74df0986bad3'
          'dec2cbaad64e3abf4f0ec70e1de4e8e9'
          '16b5e2e4da59f15bea4c2db78a7bc8dc'
@@ -64,7 +63,7 @@ md5sums=('e6422449bb0342f074eb649a9adf586b'
          'c60343df74f8e1afb13b084d5c0e47ed')
 
 prepare() {
-	cd ${srcdir}/${pkgname}-${pkgver}
+	cd ${pkgname}-${pkgver}
 
 	patch -p0 -i ${srcdir}/php.ini.patch
 	patch -p0 -i ${srcdir}/php-fpm.conf.in.patch
@@ -78,7 +77,7 @@ build() {
 	PEAR_INSTALLDIR=/usr/share/pear
 	export PEAR_INSTALLDIR
 
-	cd ${srcdir}/${pkgname}-${pkgver}
+	cd ${pkgname}-${pkgver}
 	
 	./configure --config-cache \
 		--prefix=/usr \
@@ -162,7 +161,7 @@ build() {
 }
 	
 package() {
-	cd ${srcdir}/${pkgname}-${pkgver}
+	cd ${pkgname}-${pkgver}
 	make -j1 INSTALL_ROOT=${pkgdir} install
 	install -d -m755 ${pkgdir}/usr/share/pear
 	# install php.ini
