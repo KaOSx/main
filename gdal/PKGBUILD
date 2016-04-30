@@ -1,7 +1,7 @@
 
 pkgname=gdal
 pkgver=2.0.2
-pkgrel=5
+pkgrel=6
 pkgdesc="A translator library for raster geospatial data formats"
 arch=('x86_64')
 url="http://www.gdal.org/"
@@ -20,7 +20,7 @@ build() {
   export CFLAGS="$CFLAGS -fno-strict-aliasing"
   export LDFLAGS="$LDFLAGS -Wl,--as-needed"
 
-  cd ${srcdir}/$pkgname-$pkgver
+  cd ${pkgname}-${pkgver}
   patch -p0 -i ${srcdir}/gdal-1.5.1-python-install.patch
 
   ./configure --prefix=/usr --with-netcdf --with-libtiff --with-sqlite3 \
@@ -36,7 +36,7 @@ build() {
 }
 
 package () {
-  cd ${srcdir}/$pkgname-$pkgver
+  cd ${pkgname}-${pkgver}
   make DESTDIR=${pkgdir} install
 
   install -D -m644 LICENSE.TXT ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE

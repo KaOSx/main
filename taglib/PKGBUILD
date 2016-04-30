@@ -1,10 +1,10 @@
 
 pkgname=taglib
-pkgver=1.10
+pkgver=1.11
 pkgrel=1
 pkgdesc="A Library for reading and editing the meta-data of several popular audio formats"
 arch=('x86_64')
-url="http://developer.kde.org/~wheeler/taglib.html"
+url="http://taglib.github.io/"
 license=('GPL2')
 depends=('sh' 'zlib' 'gcc-libs')
 makedepends=('cmake' 'pkg-config')
@@ -13,21 +13,20 @@ options=('!libtool')
 md5sums=('5b4441a15423b046dd92a096e09ea22c')
 
 build() {
-  cd "${srcdir}"/${pkgname}-${pkgver}
-
-  cd "${srcdir}"
   mkdir build
   cd build
+  
   cmake ../${pkgname}-${pkgver} \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_BUILD_TYPE=Release \
     -DWITH_MP4=ON \
-    -DWITH_ASF=ON
+    -DWITH_ASF=ON \
+    -DBUILD_SHARED_LIBS=ON
   make
 }
 
 package() {
-  cd "${srcdir}"/build
+  cd build
   
   make DESTDIR="${pkgdir}" install
 }
