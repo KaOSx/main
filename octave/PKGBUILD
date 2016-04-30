@@ -1,21 +1,20 @@
 
 pkgname=octave
-pkgver=4.0.1
-pkgrel=3
+pkgver=4.0.2
+pkgrel=1
 pkgdesc="A high-level language, primarily intended for numerical computations."
 arch=('x86_64')
 url="http://www.octave.org"
 license=('GPL')
 depends=('fftw' 'curl' 'graphicsmagick' 'glpk' 'hdf5' 'gcc-libs' 'qhull' 'fltk'
-         'arpack' 'suitesparse' 'gperf' 'glu' 'gnuplot' 'gl2ps' 'ghostscript') # 'qt' 'qscintilla'
+         'arpack' 'suitesparse' 'gperf' 'glu' 'gnuplot' 'gl2ps' 'ghostscript') # 'qscintilla-qt5')
 makedepends=('texlive-core' 'gcc-fortran' 'python2')
 options=('!emptydirs')
-install='octave.install'
 source=("ftp://ftp.gnu.org/gnu/octave/octave-$pkgver.tar.xz")
-md5sums=('3e406ec2574b6acc78c92cc8c192eaf7')
+md5sums=('646f397dac770d41448870ac3ba9e3b9')
 
 build() {
-  cd ${srcdir}/${pkgname}-${pkgver}
+  cd ${pkgname}-${pkgver}
 
   autoreconf -vfi
 
@@ -31,13 +30,13 @@ build() {
 }
 
 package(){
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
 
-  make DESTDIR="${pkgdir}" install
+  make DESTDIR=${pkgdir} install
 
   # add path to ld.so.conf.d
-  install -d "${pkgdir}/etc/ld.so.conf.d"
-  echo "/usr/lib/${pkgname}/${pkgver}" > "${pkgdir}/etc/ld.so.conf.d/${pkgname}.conf"
+  install -d ${pkgdir}/etc/ld.so.conf.d
+  echo /usr/lib/${pkgname}/${pkgver} > ${pkgdir}/etc/ld.so.conf.d/${pkgname}.conf
   # remove .desktop until ported to Qt 5
-  rm "${pkgdir}/usr/share/applications/www.octave.org-octave.desktop"
+  rm ${pkgdir}/usr/share/applications/www.octave.org-octave.desktop
 }

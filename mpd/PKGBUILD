@@ -1,7 +1,7 @@
 
 pkgname=mpd
-pkgver=0.19.14
-pkgrel=2
+pkgver=0.19.15
+pkgrel=1
 pkgdesc="Music daemon that plays MP3, FLAC, and Ogg Vorbis files"
 arch=('x86_64')
 license=('GPL')
@@ -10,25 +10,25 @@ depends=('libao' 'ffmpeg' 'libmodplug' 'audiofile' 'libshout' 'libmad' 'curl' 'f
          'sqlite' 'jack' 'libmms' 'wavpack' 'libmpcdec' 'avahi' 'libid3tag' 'libmpdclient'
          'pulseaudio' 'mpg123' 'yajl' 'sdl_sound' 'libcdio-paranoia' 'fluidsynth' 'boost-libs'
          'libsoxr' 'libnfs')
-makedepends=('doxygen' 'boost' 'xmlto')
+makedepends=('boost' 'xmlto') #'doxygen' 
 install=${pkgname}.install
 backup=('etc/mpd.conf')
 source=("http://www.musicpd.org/download/mpd/stable/mpd-${pkgver}.tar.xz"
         'tmpfiles.d'
         'conf')
-md5sums=('9f99340ec6b77bea4ba3729e3b76fd7c'
+md5sums=('bb855b1689c9e863c2dd214ab1cb9344'
          'e5cdccd201610a41e957d684ebc38985'
          'ca16fc9ce20ca382b620cd366c95647e')
 
 build() {
-  cd ${srcdir}/${pkgname}-${pkgver}
+  cd ${pkgname}-${pkgver}
 
   ./configure --prefix=/usr \
     --sysconfdir=/etc \
     --enable-jack \
     --enable-pulse \
     --enable-libmpdclient \
-    --enable-documentation \
+    --disable-documentation \
     --enable-pipe-output \
     --disable-libwrap \
     --disable-sidplay \
@@ -37,15 +37,15 @@ build() {
 }
 
 package() {
-   cd "${srcdir}/${pkgname}-${pkgver}"
-   make DESTDIR="${pkgdir}" install
+   cd ${pkgname}-${pkgver}
+   make DESTDIR=${pkgdir} install
    
-   install -Dm644 ../conf "${pkgdir}"/etc/mpd.conf
-   install -Dm644 ../tmpfiles.d "${pkgdir}"/usr/lib/tmpfiles.d/mpd.conf
-   install -d -g 45 -o 45 "${pkgdir}"/var/lib/mpd/playlists
+   install -Dm644 ../conf ${pkgdir}/etc/mpd.conf
+   install -Dm644 ../tmpfiles.d ${pkgdir}/usr/lib/tmpfiles.d/mpd.conf
+   install -d -g 45 -o 45 ${pkgdir}/var/lib/mpd/playlists
 
-   install -Dm644 "${pkgdir}"/usr/lib/systemd/{system,user}/mpd.service
-   sed '/WantedBy=/c WantedBy=default.target' -i "${pkgdir}"/usr/lib/systemd/system/mpd.service
-   sed '/WantedBy=/c WantedBy=default.target' -i "${pkgdir}"/usr/lib/systemd/user/mpd.service
-   sed '/\[Service\]/a User=mpd' -i "${pkgdir}"/usr/lib/systemd/system/mpd.service
+   install -Dm644 ${pkgdir}/usr/lib/systemd/{system,user}/mpd.service
+   sed '/WantedBy=/c WantedBy=default.target' -i ${pkgdir}/usr/lib/systemd/system/mpd.service
+   sed '/WantedBy=/c WantedBy=default.target' -i ${pkgdir}/usr/lib/systemd/user/mpd.service
+   sed '/\[Service\]/a User=mpd' -i ${pkgdir}/usr/lib/systemd/system/mpd.service
 }

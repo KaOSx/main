@@ -1,7 +1,7 @@
 
 pkgname=ffmpeg
-pkgver=2.8.6
-pkgrel=2
+pkgver=2.8.7
+pkgrel=1
 pkgdesc="Complete and free Internet live audio and video broadcasting solution for Linux/Unix"
 arch=('x86_64')
 url="http://ffmpeg.org/"
@@ -12,10 +12,10 @@ depends=('bzip2' 'lame' 'sdl' 'libvorbis' 'xvidcore' 'zlib' 'x264' 'libtheora' '
          'libass' 'dcadec')
 makedepends=('yasm')
 source=("http://ffmpeg.org/releases/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('2e7b3083b9fdb4d21fc72a42419784a8')
+md5sums=('0f8a3fe34fee058ec86eb0e2bf2c5515')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
 
   ./configure --prefix=/usr \
               --enable-avisynth \
@@ -58,7 +58,7 @@ build() {
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
-  make DESTDIR="${pkgdir}" install install-man
-  install -D -m755 tools/qt-faststart "${pkgdir}/usr/bin/qt-faststart"
+  cd ${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install install-man
+  install -D -m755 tools/qt-faststart ${pkgdir}/usr/bin/qt-faststart
 }
