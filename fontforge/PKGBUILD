@@ -1,8 +1,8 @@
 
 pkgname=fontforge
-pkgver=20150824
-_pkgver=20150824
-pkgrel=2
+pkgver=20160404
+_pkgver=20160404
+pkgrel=1
 pkgdesc="An outline and bitmap font editor"
 arch=('x86_64')
 url="http://fontforge.github.io/"
@@ -12,11 +12,11 @@ depends=('libxkbui' 'libxi' 'libxml2' 'pango' 'giflib' 'libpng' 'libtiff' 'libjp
 options=('!libtool' '!makeflags')
 source=("https://github.com/fontforge/fontforge/archive/${_pkgver}.tar.gz"
         'http://fontforge.org/cidmaps.tgz')
-md5sums=('b83c567cc60a7a12fc179a10ba6a146a'
+md5sums=('1daba85b251e00c614e4e857c67cae4c'
          '063691163e592515b31514515bb3ce8c')
 
 build() {
-  cd "${srcdir}/${pkgname}-${_pkgver}"
+  cd ${pkgname}-${_pkgver}
   #sed '/fontforge_package_name/s/^#//' -i configure.ac
   
   ./bootstrap
@@ -26,11 +26,11 @@ build() {
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${_pkgver}" 
-  make DESTDIR="${pkgdir}" install 
+  cd ${pkgname}-${_pkgver} 
+  make DESTDIR=${pkgdir} install 
   
-  install -d "${pkgdir}/usr/share/fontforge"
-  install -m644 ../Adobe-* "${pkgdir}/usr/share/fontforge"
+  install -d ${pkgdir}/usr/share/fontforge
+  install -m644 ../Adobe-* ${pkgdir}/usr/share/fontforge
   
-  install -D -m644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE" 
+  install -D -m644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE 
 }
