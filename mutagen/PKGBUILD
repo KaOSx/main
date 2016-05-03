@@ -1,6 +1,6 @@
 
 pkgname=mutagen
-pkgver=1.31
+pkgver=1.32
 pkgrel=1
 pkgdesc="An audio metadata tag reader and writer implemented in pure python"
 arch=('x86_64')
@@ -9,14 +9,10 @@ license=('GPL2')
 depends=('python2')
 # wget https://bitbucket.org/lazka/mutagen/downloads/mutagen-1.30.tar.gz
 source=("https://bitbucket.org/lazka/mutagen/downloads/${pkgname}-${pkgver}.tar.gz")
-md5sums=('6db58c5b58d85ffb15d208f46a372c01')
+md5sums=('349b987d26dbf15f64919f80c060eb14')
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
-  python2 setup.py install --root="${pkgdir}"
+  cd ${pkgname}-${pkgver}
   
-  install -d "${pkgdir}/usr/bin"
-  install -m755 tools/* "${pkgdir}/usr/bin"
-  sed -i 's|^#!.*/usr/bin/env.*python|#!/usr/bin/env python2|' "${pkgdir}"/usr/bin/* \
-    "${pkgdir}/usr/lib/python2.7/site-packages/mutagen/__init__.py"
+  python2 setup.py install --root=${pkgdir}
 }
