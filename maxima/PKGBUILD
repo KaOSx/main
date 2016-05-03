@@ -1,24 +1,23 @@
 
 pkgname=maxima
 pkgver=5.38.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Maxima - a sophisticated Computer Algebra System."
 arch=('x86_64')
 license=('GPL')
 url="http://maxima.sourceforge.net"
-depends=('sbcl=1.3.3' 'texinfo' 'sh')
+depends=('sbcl=1.3.5' 'texinfo' 'sh')
 optdepends=('gnuplot: plotting capabilities' \
             'tk: graphical xmaxima interface')
 # needs rebuild when bash changes version
 options=('!makeflags' '!zipman') 
-install="maxima.install"
 source=("http://sourceforge.net/projects/maxima/files/Maxima-source/${pkgver}-source/${pkgname}-${pkgver}.tar.gz"
         "${pkgname}.desktop")
 md5sums=('31036638fa60b5019bade619eec27496'
          '24aa81126fbb8b726854e5a80d4c2415')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
 
   ./configure --prefix=/usr \
               --mandir=/usr/share/man \
@@ -32,11 +31,11 @@ build() {
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
-  make DESTDIR="${pkgdir}" install
+  cd ${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install
 
-  install -Dm644 "${srcdir}/${pkgname}.desktop" "${pkgdir}/usr/share/applications/${pkgname}.desktop"
+  install -Dm644 ${srcdir}/${pkgname}.desktop ${pkgdir}/usr/share/applications/${pkgname}.desktop
 
-  install -d "${pkgdir}/usr/share/pixmaps"
-  ln -s /usr/share/maxima/${pkgver}/xmaxima/maxima-new.png "${pkgdir}/usr/share/pixmaps/${pkgname}.png"
+  install -d ${pkgdir}/usr/share/pixmaps
+  ln -s /usr/share/maxima/${pkgver}/xmaxima/maxima-new.png ${pkgdir}/usr/share/pixmaps/${pkgname}.png
 }

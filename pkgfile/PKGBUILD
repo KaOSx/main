@@ -1,18 +1,18 @@
 
 pkgname=pkgfile
 pkgver=15
-pkgrel=2
+pkgrel=3
 pkgdesc="An alpm .files metadata explorer"
 arch=('x86_64')
 url="http://github.com/falconindy/pkgfile"
 license=('MIT')
 depends=('libarchive' 'curl' 'pcre' 'pacman')
 install=pkgfile.install
-source=("http://code.falconindy.com/archive/$pkgname/$pkgname-$pkgver.tar.xz")
+source=("http://code.falconindy.com/archive/${pkgname}/${pkgname}-${pkgver}.tar.xz")
 md5sums=('30b3c4f0b18a33ca0ce4538492093511')
 
 build() {
-  cd "$pkgname-$pkgver"
+  cd ${pkgname}-${pkgver}
 
   ./configure --with-systemdsystemunitdir=/usr/lib/systemd/system
   make
@@ -22,9 +22,9 @@ build() {
 }
 
 package() {
-  cd "$pkgname-$pkgver"
-  make DESTDIR="$pkgdir" install
+  cd ${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install
   
-  install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
 

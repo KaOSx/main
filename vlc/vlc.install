@@ -1,5 +1,4 @@
 post_install() {
-    xdg-icon-resource forceupdate --theme hicolor &> /dev/null
     usr/lib/vlc/vlc-cache-gen /usr/lib/vlc/plugins
 }
 
@@ -11,6 +10,3 @@ pre_remove() {
     rm -f usr/lib/vlc/plugins/plugins-*.dat
 }
 
-post_remove() {
-    xdg-icon-resource forceupdate --theme hicolor &> /dev/null
-}
