@@ -1,27 +1,34 @@
 
 pkgname=schroedinger
 pkgver=1.0.11
-pkgrel=4
+pkgrel=5
 pkgdesc="An implemenation of the Dirac video codec in ANSI C code"
 arch=('x86_64')
-url="http://www.diracvideo.org/"
+url="https://github.com/Distrotech/dirac"
 license=('GPL2' 'LGPL2' 'MPL' 'MIT')
 depends=('orc')
 makedepends=('pkgconfig')
-options=('!libtool')
-source=("http://www.diracvideo.org/download/schroedinger/$pkgname-$pkgver.tar.gz")
-md5sums=('da6af08e564ca1157348fb8d92efc891')
+options=('!libtool' '!staticlibs')
+source=("https://github.com/Distrotech/dirac/archive/${pkgname}-${pkgver}.tar.gz")
+md5sums=('c30534f8b21b3f20b305e1a3e3e0ace3')
+
+prepare() {
+  cd dirac-${pkgname}-${pkgver}
+
+  sed -i -e 's|--enable-gtk-doc|--disable-gtk-doc|' autogen.sh
+}
 
 build() {
-  cd "$srcdir/$pkgname-$pkgver"
+  cd dirac-${pkgname}-${pkgver}
   
-  ./configure --prefix=/usr
+  ./autogen.sh
+  ./configure --prefix=/usr 
   make
 }
 
 package() {
-  cd "$srcdir/$pkgname-$pkgver"
+  cd dirac-${pkgname}-${pkgver}
 
-  make DESTDIR="$pkgdir" install
-  install -m644 -D COPYING.MIT "$pkgdir/usr/share/licenses/$pkgname/COPYING.MIT"
+  make DESTDIR=${pkgdir} install
+  install -m644 -D COPYING.MIT ${pkgdir}/usr/share/licenses/${pkgname}/COPYING.MIT
 }

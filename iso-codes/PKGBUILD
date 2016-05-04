@@ -1,14 +1,15 @@
 
 pkgname=iso-codes
-pkgver=3.67
+pkgver=3.68
 pkgrel=1
 pkgdesc="Lists of various ISO standards (e.g. country,language, language scripts, and currency names) in one place"
 arch=('x86_64')
 url="http://pkg-isocodes.alioth.debian.org/"
 license=('LGPL')
 pkgdesc="Lists of the country, language, and currency names"
+makedepends=('python3')
 source=("http://pkg-isocodes.alioth.debian.org/downloads/$pkgname-$pkgver.tar.xz")
-md5sums=('8dbf901d2c90afd508ffbd99aed2c456')
+md5sums=('a5ce7d78b80f6d29150883d892f2e185')
 
 build() {
   cd $pkgname-$pkgver
