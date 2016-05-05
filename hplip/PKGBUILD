@@ -1,27 +1,29 @@
 
 pkgname=hplip
-pkgver=3.16.3
+pkgver=3.16.5
 # incase a or b is used in hplip rls:
-_pkgver=3.16.3
+_pkgver=3.16.5
 pkgrel=1
 pkgdesc="Drivers for HP DeskJet, OfficeJet, Photosmart, Business Inkjet and some LaserJet."
 arch=('x86_64')
 url="http://hplipopensource.com"
 license=('GPL')
 depends=('python2' 'ghostscript' 'foomatic-db' 'foomatic-db-engine' 'cups'
-         'net-snmp' 'libusb' 'wget' 'python2-gobject')
-makedepends=('pkgconfig' 'sane' 'rpcbind' 'dbus-python2' 'pyqt-python2')
+         'net-snmp' 'libusb' 'wget' 'python3-gobject3' 'pyqt5-python3')
+makedepends=('pkgconfig' 'sane' 'rpcbind' 'dbus-python3')
 optdepends=('dbus-python2: for dbus support'
             'sane: for scanner support'
-            'rpcbind: for network support'
-            'pyqt-python2: for the GUI')
+            'rpcbind: for network support')
 options=('!libtool')
 install=${pkgname}.install
 source=("http://downloads.sourceforge.net/hplip/${pkgname}-${_pkgver}.tar.gz")
-md5sums=('43379bb4790fa7252254094c294f8930')
+md5sums=('3f50c45c52b2adaee8d9ff32db8c4e6e')
 
 build() {
-  cd "${srcdir}/${pkgname}-${_pkgver}"
+  cd ${pkgname}-${_pkgver}
+  sed -i '1s|#!/usr/bin/env python$|&3|' *.py
+  sed -i '1s|#!/usr/bin/env python$|&3|' */*.py
+  sed -i '1s|#!/usr/bin/env python$|&3|' */*/*.py
 
   # from Gentoo
   # Use system foomatic-rip for hpijs driver instead of foomatic-rip-hplip
@@ -35,10 +37,12 @@ build() {
   done
 
   export AUTOMAKE='automake --foreign'
+  export PYTHON=/usr/bin/python3
   autoreconf --force --install
 
 	./configure --prefix=/usr \
-             --enable-qt4 \
+             --disable-qt4 \
+             --enable-qt5 \
              --disable-foomatic-rip-hplip-install \
              --enable-foomatic-ppd-install \
              --enable-hpcups-install \
@@ -52,12 +56,12 @@ build() {
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${_pkgver}"
+  cd ${pkgname}-${_pkgver}
 
-  make rulesdir=/usr/lib/udev/rules.d DESTDIR="${pkgdir}/" install
+  make rulesdir=/usr/lib/udev/rules.d DESTDIR=${pkgdir}/ install
 
   # remove sane conflicts and obsolete files
-  rm -rf "${pkgdir}"/etc/{sane.d,xdg}
-  rm -vrf "${pkgdir}"/usr/share/hal
-  rm -vrf "$pkgdir"/etc/init.d
+  rm -rf ${pkgdir}/etc/{sane.d,xdg}
+  rm -vrf ${pkgdir}/usr/share/hal
+  rm -vrf $pkgdir/etc/init.d
 }
