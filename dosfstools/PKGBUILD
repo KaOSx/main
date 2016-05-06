@@ -1,24 +1,26 @@
 
 pkgname=dosfstools
-pkgver=3.0.28
+pkgver=4.0
 pkgrel=1
 pkgdesc="DOS filesystem utilities."
 arch=('x86_64')
-url="http://www.daniel-baumann.ch/software/dosfstools/"
+url="https://github.com/dosfstools/dosfstools/"
 license=('GPL2')
 depends=('glibc')
 source=("https://github.com/dosfstools/dosfstools/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.xz")
-md5sums=('6a047a6c65186b9ebb1853709adb36db')
+md5sums=('20f8388b99702f276c973d228c7cff45')
 
 build() {
-  cd ${srcdir}/${pkgname}-${pkgver}
+  cd ${pkgname}-${pkgver}
 
+  ./configure --prefix=/usr \
+       --enable-compat-symlinks
   make
 }
 
 package() {
-  cd ${srcdir}/${pkgname}-${pkgver}
+  cd ${pkgname}-${pkgver}
   
-  make DESTDIR=$pkgdir PREFIX=/usr MANDIR=/usr/share/man DOCDIR=/usr/share/doc install
+  make DESTDIR=${pkgdir} PREFIX=/usr MANDIR=/usr/share/man DOCDIR=/usr/share/doc install
 }
 

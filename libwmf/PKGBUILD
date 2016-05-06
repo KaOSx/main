@@ -15,20 +15,20 @@ md5sums=('d1177739bf1ceb07f57421f0cee191e0'
          '21bab2d951aef8e72805eacee950cb09')
 
 build() {
-  cd ${srcdir}/${pkgname}-${pkgver}
-  patch -p1 -i "${srcdir}/libwmf-0.2.8.4-libpng-1.5.patch" 
+  cd ${pkgname}-${pkgver}
+  patch -p1 -i ${srcdir}/libwmf-0.2.8.4-libpng-1.5.patch 
   
   sed -i -e 's/src include fonts doc/src include fonts/g' Makefile.in
   ./configure --prefix=/usr \
               --with-gsfontdir=/usr/share/fonts/Type1 \
-	      --with-fontdir=/usr/share/fonts/Type1 \
-	      --with-gsfontmap=/usr/share/ghostscript/9.14/Resources/Init/Fontmap.GS \
+              --with-fontdir=/usr/share/fonts/Type1 \
+              --with-gsfontmap=/usr/share/ghostscript/9.14/Resources/Init/Fontmap.GS \
               --disable-gtk2
   make 
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
   make DESTDIR=${pkgdir} install
   #Part of gsfonts
