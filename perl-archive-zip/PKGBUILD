@@ -1,26 +1,26 @@
 
 pkgname=perl-archive-zip
-_realname=Archive-Zip
-pkgver=1.56
+_pkgname=Archive-Zip
+pkgver=1.57
 pkgrel=1
 pkgdesc="Provide a perl interface to ZIP archive files"
 arch=('x86_64')
 license=('GPL' 'PerlArtistic')
-url="http://search.cpan.org/dist/${_realname}/"
+url="http://search.cpan.org/dist/${_pkgname}/"
 depends=('perl')
 options=('!emptydirs')
-source=("http://search.cpan.org/CPAN/authors/id/P/PH/PHRED/${_realname}-${pkgver}.tar.gz")
-md5sums=('cc401416dc80e3b268173fa884715822')
+source=("http://search.cpan.org/CPAN/authors/id/P/PH/PHRED/${_pkgname}-${pkgver}.tar.gz")
+md5sums=('d4ca4b60bcd3bc8c3aa67545163d2128')
 
 build() {
-  cd ${srcdir}/${_realname}-${pkgver}
+  cd ${_pkgname}-${pkgver}
 
   PERL_MM_USE_DEFAULT=1 perl Makefile.PL INSTALLDIRS=vendor
   make
 }
 
 package() {
-  cd ${srcdir}/${_realname}-${pkgver}
+  cd ${_pkgname}-${pkgver}
   
   make install DESTDIR=${pkgdir}
 }

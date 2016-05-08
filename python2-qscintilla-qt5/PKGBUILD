@@ -1,0 +1,35 @@
+
+pkgname=python2-qscintilla-qt5
+pkgver=2.9.2
+pkgrel=1
+license=('GPL')
+arch=('x86_64')
+url="http://www.riverbankcomputing.co.uk/software/qscintilla/intro"
+pkgdesc="A port to Qt of Neil Hodgson's Scintilla C++ editor class, python3 bindings"
+depends=('pyqt5-python2' 'python3-qscintilla-qt5' 'qscintilla-designer-qt5')
+makedepends=('chrpath')
+source=("http://downloads.sourceforge.net/pyqt/QScintilla_gpl-${pkgver}.tar.gz"
+        'configure.patch')
+md5sums=('db260651a5e086cc4eee6417172e27e8'
+         'd855b7393be8b72776c278a21a5e5601')
+
+prepare() {
+  cd QScintilla_gpl-${pkgver}
+
+  patch -p1 -i ${srcdir}/configure.patch
+}
+
+build() {
+    cd QScintilla_gpl-$pkgver/Python
+    
+    python2 configure.py -n ../Qt4Qt5/ -o ../Qt4Qt5/ -c --pyqt=PyQt5 --qmake /usr/lib/qt5/bin/qmake 
+    make
+}
+
+package() {
+    cd QScintilla_gpl-${pkgver}/Python
+    
+    make DESTDIR=${pkgdir} INSTALL_ROOT=${pkgdir} install
+    
+    rm -r ${pkgdir}/usr/share
+}

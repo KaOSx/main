@@ -2,13 +2,12 @@
 
 pkgname=qwt
 pkgver=6.1.2
-pkgrel=2
+pkgrel=3
 pkgdesc="Qt Widgets for Technical Applications"
 arch=('x86_64')
 url="http://qwt.sourceforge.net/"
-depends=('qt')
-#depends=('qt5-base' 'qt5-svg')
-#makedepends=('qt5-tools')
+depends=('qt5-base' 'qt5-svg')
+makedepends=('qt5-tools')
 options=('!makeflags')
 license=("custom:$pkgname")
 source=("http://downloads.sourceforge.net/sourceforge/qwt/$pkgname-$pkgver.tar.bz2" 
@@ -22,8 +21,7 @@ build() {
   # needed config file 
   install -Dm644 ${srcdir}/qwtconfig.pri ${srcdir}/${pkgname}-${pkgver}/qwtconfig.pri
 
-  qmake qwt.pro
-  #/usr/lib/qt5/bin/qmake qwt.pro
+  /usr/lib/qt5/bin/qmake qwt.pro
   make
 }
 

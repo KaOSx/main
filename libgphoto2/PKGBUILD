@@ -16,7 +16,7 @@ source=("http://downloads.sourceforge.net/gphoto/${pkgname}-${pkgver}.tar.bz2")
 md5sums=('f1e53e684a3ea51cc7958d7e4eee7f37')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
 
   #Change the limit which cause "Fixed limit exceeded"
   sed -i "s#MAX_ENTRIES 1024#MAX_ENTRIES 8192#" libgphoto2/gphoto2-list.c
@@ -28,15 +28,15 @@ build() {
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
-  make DESTDIR="${pkgdir}" install
+  cd ${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install
 
-  install -m755 -d "${pkgdir}/usr/lib/udev/hwdb.d"
-  LD_LIBRARY_PATH="${pkgdir}/usr/lib${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" \
-  CAMLIBS="${pkgdir}/usr/lib/libgphoto2/${pkgver}" \
+  install -m755 -d ${pkgdir}/usr/lib/udev/hwdb.d
+  LD_LIBRARY_PATH=${pkgdir}/usr/lib${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH \
+  CAMLIBS=${pkgdir}/usr/lib/libgphoto2/${pkgver} \
       
-  "${pkgdir}/usr/lib/libgphoto2/print-camera-list" hwdb > \
-  "${pkgdir}/usr/lib/udev/hwdb.d/20-gphoto.conf"
+  ${pkgdir}/usr/lib/libgphoto2/print-camera-list hwdb > \
+  ${pkgdir}/usr/lib/udev/hwdb.d/20-gphoto.conf
 
-  rm -f "${pkgdir}/usr/include/gphoto2/gphoto2"
+  rm -f ${pkgdir}/usr/include/gphoto2/gphoto2
 }
