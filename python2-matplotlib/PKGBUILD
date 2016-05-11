@@ -25,9 +25,9 @@ build() {
 
 package() {
    cd matplotlib-${pkgver}
-   python2 setup.py install -O1 --skip-build --root "${pkgdir}" --prefix=/usr
+   python2 setup.py install -O1 --skip-build --root ${pkgdir} --prefix=/usr
 
-   install -dm755 "${pkgdir}"/usr/share/licenses/python2-matplotlib
-   install -m 644 doc/users/license.rst "${pkgdir}"/usr/share/licenses/python2-matplotlib
+   install -dm755 ${pkgdir}/usr/share/licenses/python2-matplotlib
+   install -m 644 doc/users/license.rst ${pkgdir}/usr/share/licenses/python2-matplotlib
 }
 

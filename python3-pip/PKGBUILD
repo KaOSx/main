@@ -1,24 +1,24 @@
 
 pkgname=python3-pip
-pkgver=8.1.1
+pkgver=8.1.2
 pkgrel=1
 pkgdesc="An easy_install replacement for installing pypi python3 packages"
 url="http://www.pip-installer.org/"
 arch=('x86_64')
 license=('MIT')
 depends=('python3' 'python3-setuptools')
-source=("http://pypi.python.org/packages/source/p/pip/pip-${pkgver}.tar.gz")
-md5sums=('6b86f11841e89c8241d689956ba99ed7')
+source=("https://pypi.python.org/packages/e7/a8/7556133689add8d1a54c0b14aeff0acb03c64707ce100ecd53934da1aa13/pip-${pkgver}.tar.gz")
+md5sums=('87083c0b9867963b29f7aba3613e8f4a')
 
 package() {
-  cd "$srcdir/pip-$pkgver"
+  cd pip-${pkgver}
   python3 setup.py build
-  python3 setup.py install --prefix=/usr --root="$pkgdir"
+  python3 setup.py install --prefix=/usr --root=${pkgdir}
 
-  mv "$pkgdir/usr/bin/pip" "$pkgdir/usr/bin/pip3"
+  mv ${pkgdir}/usr/bin/pip ${pkgdir}/usr/bin/pip3
+  
   sed -i "s|#!/usr/bin/env python$|#!/usr/bin/env python3|" \
     ${pkgdir}/usr/lib/python3.5/site-packages/pip/__init__.py
 
-  install -D -m644 LICENSE.txt \
-	  "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  install -D -m644 LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
