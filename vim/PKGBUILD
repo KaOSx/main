@@ -1,6 +1,6 @@
 
 pkgname=vim
-pkgver=7.4.1743
+pkgver=7.4.1830
 pkgrel=1
 arch=('x86_64')
 pkgdesc='Vi Improved, a highly configurable, improved version of the vi text editor.'
@@ -12,7 +12,7 @@ makedepends=('python2' 'ruby' 'libxt' 'libxext' 'libxpm' 'libxmu' 'desktop-file-
 provides=('vim-runtime')
 conflicts=('vim-runtime')
 source=("https://github.com/vim/vim/archive/v${pkgver}.tar.gz")
-md5sums=('ba729bd2416ab125721f9e63ba2098e7')
+md5sums=('83344d673aa76c2da4124dc034cb82fc')
 
 build() {
   cd ${srcdir}
@@ -25,7 +25,7 @@ build() {
   
   (cd vim-${pkgver}/src && autoconf)
 
-  cd "${srcdir}/vim-${pkgver}"
+  cd ${srcdir}/vim-${pkgver}
 
   ./configure --prefix=/usr --localstatedir=/var/lib/vim \
     --mandir=/usr/share/man --with-compiledby=KaOS \
@@ -41,7 +41,7 @@ package() {
   make -j1 VIMRCLOC=/etc DESTDIR=${pkgdir} install
 
   # provided by vi
-  rm "${pkgdir}/usr/bin"/{ex,view}
+  rm ${pkgdir}/usr/bin/{ex,view}
 
   # delete some manpages
   find ${pkgdir}/usr/share/man -type d -name 'man1' 2>/dev/null | \
