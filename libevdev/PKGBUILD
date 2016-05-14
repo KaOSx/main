@@ -1,6 +1,6 @@
 
 pkgname=libevdev
-pkgver=1.4.6
+pkgver=1.5.0
 pkgrel=1
 pkgdesc="Library for handling evdev kernel devices"
 arch=('x86_64')
@@ -9,18 +9,18 @@ license=('custom:X11')
 depends=('glibc')
 makedepends=('python2' 'doxygen')
 source=("http://freedesktop.org/software/libevdev/$pkgname-$pkgver.tar.xz")
-md5sums=('9b3f25bd8fb0f8efa4944d34668dddc0')
+md5sums=('d894b3dfb2e672671d294e65f79af245')
 
 build() {
-   cd "${srcdir}/${pkgname}-${pkgver}"
+   cd ${pkgname}-${pkgver}
 
    ./configure --prefix=/usr --disable-static
    make
 }
 
 package() {
-   cd "${srcdir}/${pkgname}-${pkgver}"
-   make DESTDIR="$pkgdir" install
+   cd ${pkgname}-${pkgver}
+   make DESTDIR=$pkgdir install
 
-   install -Dm644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/COPYING"
+   install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
 }
