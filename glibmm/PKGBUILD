@@ -1,8 +1,8 @@
 
 pkgbase=glibmm
 pkgname=('glibmm' 'glibmm-docs')
-pkgver=2.46.3
-_pkgver=2.46
+pkgver=2.48.1
+_pkgver=2.48
 pkgrel=1
 arch=('x86_64')
 url="http://gtkmm.sourceforge.net/"
@@ -10,10 +10,10 @@ license=('LGPL')
 options=('!libtool')
 makedepends=('glib2' 'libsigc++' 'pkgconfig')
 source=("http://ftp.gnome.org/pub/GNOME/sources/${pkgname}/${_pkgver}/${pkgname}-${pkgver}.tar.xz")
-md5sums=('6879e56997aed47816fafe9a7a822a87')
+md5sums=('f08b2c7f09b984b0df05f0bf4d20ad11')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
   ./configure --prefix=/usr
   make
@@ -23,14 +23,14 @@ package_glibmm() {
   pkgdesc="Glib-- (glibmm) is a C++ interface for glib"
   depends=('glib2' 'libsigc++')
   
-  cd "${srcdir}/${pkgbase}-${pkgver}"
-  sed -i -e 's/^doc_subdirs/#doc_subdirs/' Makefile
-  make DESTDIR="${pkgdir}" install
+  cd ${pkgbase}-${pkgver}
+  sed -i -e 's|^doc_subdirs|#doc_subdirs|' Makefile
+  make DESTDIR=${pkgdir} install
 }
 
 package_glibmm-docs() {
   pkgdesc="Developer documentation for glibmm"
   
-  cd "${srcdir}/${pkgbase}-${pkgver}/docs"
-  make DESTDIR="${pkgdir}" install
+  cd ${pkgbase}-${pkgver}/docs
+  make DESTDIR=${pkgdir} install
 }

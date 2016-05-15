@@ -1,7 +1,7 @@
 
 pkgname=libmms
 pkgver=0.6.4
-pkgrel=3
+pkgrel=4
 pkgdesc="MMS stream protocol library"
 arch=('x86_64')
 url="http://sourceforge.net/projects/libmms/"
@@ -12,16 +12,16 @@ source=("http://download.sourceforge.net/libmms/${pkgname}-${pkgver}.tar.gz")
 md5sums=('d6b665b335a6360e000976e770da7691')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
   ./configure --prefix=/usr --disable-static
   make
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
-  make DESTDIR="${pkgdir}" install
+  make DESTDIR=${pkgdir} install
 }
 
 

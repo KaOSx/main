@@ -3,7 +3,7 @@ pkgbase=atkmm
 pkgname=('atkmm' 'atkmm-docs')
 pkgver=2.24.2
 _pkgver=2.24
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 makedepends=('atk' 'glibmm' 'glibmm-docs' 'libsigc++')
 license=('LGPL')
@@ -13,7 +13,7 @@ source=("http://ftp.gnome.org/pub/GNOME/sources/atkmm/${_pkgver}/${pkgbase}-${pk
 md5sums=('d53b60b0f1be597e86070954a49cf0c3')
 
 build() {
-  cd "${srcdir}/${pkgbase}-${pkgver}"
+  cd ${pkgbase}-${pkgver}
   
   ./configure --prefix=/usr
   make
@@ -23,13 +23,13 @@ package_atkmm() {
   pkgdesc="C++ bindings for atk"
   depends=('atk' 'glibmm' 'libsigc++')
 
-  cd "${srcdir}/${pkgbase}-${pkgver}"
-  sed -i -e 's/^doc_subdirs/#doc_subdirs/' Makefile
-  make DESTDIR="${pkgdir}" install
+  cd ${pkgbase}-${pkgver}
+  sed -i -e 's|^doc_subdirs|#doc_subdirs|' Makefile
+  make DESTDIR=${pkgdir} install
 }
 
 package_atkmm-docs() {
   pkgdesc="Developer documentation for atkmm"
-  cd "${srcdir}/${pkgbase}-${pkgver}"
-  make -C doc DESTDIR="${pkgdir}" install
+  cd ${pkgbase}-${pkgver}
+  make -C doc DESTDIR=${pkgdir} install
 }

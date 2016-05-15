@@ -1,7 +1,7 @@
 
 pkgname=glib-networking
-pkgver=2.46.1
-_pkgver=2.46
+pkgver=2.48.2
+_pkgver=2.48
 pkgrel=1
 pkgdesc="Network-related giomodules for glib"
 arch=('x86_64')
@@ -9,29 +9,29 @@ url="http://www.gtk.org/"
 license=('GPL2')
 depends=('glib2' 'libproxy' 'gnutls' 'ca-certificates')
 makedepends=('intltool')
-install=glib-networking.install
-source=("http://download.gnome.org/sources/$pkgname/${_pkgver}/$pkgname-$pkgver.tar.xz")
-md5sums=('c000e0b579f5d8fd48efebc7ac4d95dc')
+source=("http://download.gnome.org/sources/${pkgname}/${_pkgver}/${pkgname}-${pkgver}.tar.xz")
+md5sums=('d7cf81d52c856b0c66f7821021f40e08')
 
 build() {
-  cd $pkgname-$pkgver
+  cd ${pkgname}-${pkgver}
+  
   ./configure --prefix=/usr \
         --sysconfdir=/etc \
-        --libexecdir=/usr/lib/$pkgname \
+        --libexecdir=/usr/lib/${pkgname} \
         --disable-static \
         --disable-installed-tests
   make
 }
 
 check() {
-  cd $pkgname-$pkgver
+  cd ${pkgname}-${pkgver}
   
   make -k check
 }
 
 package() {
-  cd $pkgname-$pkgver
+  cd ${pkgname}-${pkgver}
   
-  make DESTDIR="$pkgdir" install testfiles_DATA=
+  make DESTDIR=${pkgdir} install testfiles_DATA=
 }
 

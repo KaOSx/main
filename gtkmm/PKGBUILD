@@ -3,7 +3,7 @@ pkgbase=gtkmm
 pkgname=('gtkmm' 'gtkmm-docs')
 pkgver=2.24.4
 _pkgver=2.24
-pkgrel=5
+pkgrel=4
 url="http://www.gtkmm.org/"
 arch=('x86_64')
 makedepends=('gtk2' 'pangomm' 'atkmm' 'glibmm-docs')
@@ -12,12 +12,13 @@ options=('!libtool' '!emptydirs')
 source=("http://ftp.gnome.org/pub/GNOME/sources/gtkmm/${_pkgver}/${pkgbase}-${pkgver}.tar.xz"
         'glibmm_includes.patch')
 md5sums=('b9ac60c90959a71095f07f84dd39961d'
-         'bde0978cb7ba6458d1f14fac0cffd444')
+         '6c649470185f750ef879c7fcda1ea32b')
 
 build() {
-  cd "${srcdir}/${pkgbase}-${pkgver}"
+  cd ${pkgbase}-${pkgver}
   patch -p1 -i $srcdir/glibmm_includes.patch
   
+  CXXFLAGS+=' -std=c++11'
   ./configure --prefix=/usr
   make
 }
@@ -25,16 +26,16 @@ build() {
 package_gtkmm() {
   pkgdesc="C++ bindings for gtk2"
   depends=('gtk2' 'pangomm' 'atkmm')
-  cd "${srcdir}/${pkgbase}-${pkgver}"
+  cd ${pkgbase}-${pkgver}
 
-  sed -i -e 's/^doc_subdirs/#doc_subdirs/' Makefile
+  sed -i -e 's|^doc_subdirs|#doc_subdirs|' Makefile
 
-  make DESTDIR="${pkgdir}" install
+  make DESTDIR=${pkgdir} install
 }
 
 package_gtkmm-docs() {
   pkgdesc="Developer documentation for gtkmm v2"
 
-  cd "${srcdir}/${pkgbase}-${pkgver}"
-  make -C docs DESTDIR="${pkgdir}" install
+  cd ${pkgbase}-${pkgver}
+  make -C docs DESTDIR=${pkgdir} install
 }

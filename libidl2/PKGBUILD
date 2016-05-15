@@ -2,27 +2,26 @@
 pkgname=libidl2
 pkgver=0.8.14
 _pkgver=0.8
-pkgrel=10
+pkgrel=11
 pkgdesc="Front-end for CORBA 2.2 IDL and Netscape's XPIDL"
 arch=('x86_64')
 license=('LGPL')
 depends=('glib2' 'texinfo')
 makedepends=('pkgconfig')
-install=libidl2.install
 options=('!libtool' '!emptydirs')
 source=("http://ftp.gnome.org/pub/gnome/sources/libIDL/${_pkgver}/libIDL-${pkgver}.tar.bz2")
 url="http://www.gnome.org"
 md5sums=('bb8e10a218fac793a52d404d14adedcb')
 
 build() {
-  cd "${srcdir}/libIDL-${pkgver}"
+  cd libIDL-${pkgver}
   
   ./configure --prefix=/usr
   make
 }
 
 package() {
-  cd "${srcdir}/libIDL-${pkgver}"
+  cd libIDL-${pkgver}
   
-  make DESTDIR="${pkgdir}" install
+  make DESTDIR=${pkgdir} install
 }

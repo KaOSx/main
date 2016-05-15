@@ -2,7 +2,7 @@
 pkgname=libgnome-keyring
 pkgver=3.12.0
 _pkgver=3.12
-pkgrel=3
+pkgrel=4
 pkgdesc="GNOME keyring client library"
 arch=('x86_64')
 license=('GPL' 'LGPL')
@@ -14,7 +14,7 @@ source=("http://ftp.gnome.org/pub/gnome/sources/${pkgname}/${_pkgver}/${pkgname}
 md5sums=('6696e4f2e9aed4625cdc3af30bd8c238')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
   ./configure --prefix=/usr --sysconfdir=/etc \
       --localstatedir=/var --disable-static \
@@ -23,7 +23,7 @@ build() {
 }
 
 package() {
-  cd "$pkgname-$pkgver"
+  cd ${pkgname}-${pkgver}
   
-  make DESTDIR="$pkgdir" install
+  make DESTDIR=${pkgdir} install
 }

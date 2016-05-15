@@ -1,7 +1,8 @@
 
 pkgname=gdk-pixbuf2
 pkgver=2.34.0
-pkgrel=1
+_pkgevr=2.34
+pkgrel=2
 pkgdesc="An image loading library"
 arch=('x86_64')
 url="http://www.gtk.org/"
@@ -10,7 +11,7 @@ depends=('glib2' 'libpng' 'libtiff' 'libjpeg-turbo' 'libx11')
 makedepends=('gobject-introspection')
 options=('!libtool')
 install=gdk-pixbuf2.install
-source=("http://download.gnome.org/sources/gdk-pixbuf/2.34/gdk-pixbuf-${pkgver}.tar.xz"
+source=("http://download.gnome.org/sources/gdk-pixbuf/${_pkgver}/gdk-pixbuf-${pkgver}.tar.xz"
         'gdk-pixbuf-query-loaders.hook')
 md5sums=('63cb19f92cf7709ccf44bbb6fe1ff70c'
          '6f0b295e93b2c599622e9af078583e01')

@@ -2,7 +2,7 @@
 pkgname=gtk2
 pkgver=2.24.30
 _pkgver=2.24
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 url="http://www.gtk.org/"
 pkgdesc="GTK+ is a multi-platform toolkit (v2)"
@@ -11,16 +11,17 @@ depends=('atk' 'pango' 'libxcursor' 'libxinerama' 'libxrandr' 'libxi' 'libxcompo
          'shared-mime-info' 'cairo' 'libcups' 'gtk-update-icon-cache')
 makedepends=('gobject-introspection')
 options=('!libtool' '!docs')
-install=gtk2.install
 backup=(etc/gtk-2.0/gtkrc)
 source=("http://ftp.gnome.org/pub/gnome/sources/gtk+/${_pkgver}/gtk+-$pkgver.tar.xz"
-        'xid-collision-debug.patch')
+        'xid-collision-debug.patch'
+        'gtk-query-immodules-2.0.hook')
 md5sums=('04568ba5c58b75e3c7543e45628ad789'
-         '22355df723f6ca358e30e6b8f0baace5')
+         '22355df723f6ca358e30e6b8f0baace5'
+         '01735166750a40a539d4bad5dbd5f664')
 
 build() {
-    cd "$srcdir/gtk+-$pkgver"
-    patch -p1 -i "$srcdir/xid-collision-debug.patch"
+    cd gtk+-${pkgver}
+    patch -p1 -i ${srcdir}/xid-collision-debug.patch
 
     CXX=/bin/false ./configure --prefix=/usr \
         --sysconfdir=/etc \
@@ -34,11 +35,12 @@ build() {
 }
 
 package() {
-    cd "$srcdir/gtk+-$pkgver"
+    cd gtk+-${pkgver}
+    make DESTDIR=${pkgdir} install
 
-    make DESTDIR="$pkgdir" install
-    sed -i "s#env python#env python2#" $pkgdir/usr/bin/gtk-builder-convert
-    echo 'gtk-fallback-icon-theme = "gnome"' > "$pkgdir/etc/gtk-2.0/gtkrc"
+    echo 'gtk-fallback-icon-theme = "gnome"' > ${pkgdir}/etc/gtk-2.0/gtkrc
+    
+    install -Dm644 ../gtk-query-immodules-2.0.hook ${pkgdir}/usr/share/libalpm/hooks/gtk-query-immodules-2.0.hook
     
     rm $pkgdir/usr/bin/gtk-update-icon-cache
 }

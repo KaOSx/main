@@ -1,7 +1,7 @@
 
 pkgname=cairomm
 pkgver=1.12.0
-pkgrel=1
+pkgrel=2
 pkgdesc="C++ bindings to Cairo vector graphics library"
 arch=('x86_64')
 url="http://www.cairographics.org"
@@ -13,14 +13,14 @@ options=('!libtool' '!emptydirs')
 md5sums=('481501be65bcc34a605d6bc0f57a0023')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
   ./configure --prefix=/usr
   make
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
-  make DESTDIR="${pkgdir}" install
+  make DESTDIR=${pkgdir} install
 }

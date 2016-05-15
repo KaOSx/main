@@ -1,7 +1,7 @@
 
 pkgname=libsoup
-pkgver=2.52.2
-_pkgver=2.52
+pkgver=2.54.1
+_pkgver=2.54
 pkgrel=1
 pkgdesc="GNOME HTTP Library - base library"
 arch=('x86_64')
@@ -14,10 +14,10 @@ options=('!libtool' '!emptydirs')
 provides=('libsoup-gnome')
 replaces=('libsoup-gnome')
 conflicts=('libsoup-gnome')
-md5sums=('e4757d09012ed93822b1ee41435fec24')
+md5sums=('73b1fb774de16c29b380f87016f9f9dd')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
   ./configure --prefix=/usr \
       --sysconfdir=/etc \
@@ -29,7 +29,7 @@ build() {
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
-  make DESTDIR="${pkgdir}" install 
+  make DESTDIR=${pkgdir} install 
 }
