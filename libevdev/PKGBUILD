@@ -1,6 +1,6 @@
 
 pkgname=libevdev
-pkgver=1.5.0
+pkgver=1.5.1
 pkgrel=1
 pkgdesc="Library for handling evdev kernel devices"
 arch=('x86_64')
@@ -8,14 +8,11 @@ url="http://www.freedesktop.org/wiki/Software/libevdev/"
 license=('custom:X11')
 depends=('glibc')
 makedepends=('python2' 'doxygen')
-source=("http://freedesktop.org/software/libevdev/$pkgname-$pkgver.tar.xz"
-         'uinput.diff')
-md5sums=('d894b3dfb2e672671d294e65f79af245'
-         'a52d1eb610ade56a50321b820c0524c0')
+source=("http://freedesktop.org/software/libevdev/$pkgname-$pkgver.tar.xz")
+md5sums=('c8a85eef889754bb77282554b6761873')
 
 build() {
    cd ${pkgname}-${pkgver}
-   patch -p1 -i ${srcdir}/uinput.diff
 
    ./configure --prefix=/usr --disable-static
    make
