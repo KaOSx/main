@@ -1,26 +1,26 @@
 
 pkgname=xcb-proto
-pkgver=1.11
-pkgrel=3
+pkgver=1.12
+pkgrel=1
 pkgdesc="XML-XCB protocol descriptions"
 arch=('x86_64')
 url="http://xcb.freedesktop.org/"
 license=('custom')
 makedepends=('python3' 'libxml2')
 source=("http://xcb.freedesktop.org/dist/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('6bf2797445dc6d43e9e4707c082eff9c')
+md5sums=('14e60919f859560f28426a685a555962')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
   ./configure --prefix=/usr
   make
 }
 
 package() {
-  cd "$srcdir/${pkgname}-${pkgver}"
-  make DESTDIR="${pkgdir}" install
+  cd ${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install
   
-  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
-  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
+  install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
 }
