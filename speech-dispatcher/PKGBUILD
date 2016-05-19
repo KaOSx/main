@@ -1,6 +1,6 @@
 
 pkgname=speech-dispatcher
-pkgver=0.8.3
+pkgver=0.8.4
 pkgrel=1
 arch=('x86_64')
 url="http://www.freebsoft.org/speechd"
@@ -10,37 +10,37 @@ depends=('glib2' 'libtool' 'dotconf' 'pyxdg' 'pulseaudio' )
 makedepends=('intltool' 'espeak')
 install="speech-dispatcher.install"
 backup=(etc/speech-dispatcher/clients/emacs.conf
-	etc/speech-dispatcher/modules/ibmtts.conf
-	etc/speech-dispatcher/modules/espeak-generic.conf
-	etc/speech-dispatcher/modules/espeak.conf
-	etc/speech-dispatcher/modules/swift-generic.conf
-	etc/speech-dispatcher/modules/festival.conf
-	etc/speech-dispatcher/modules/cicero.conf
-	etc/speech-dispatcher/modules/espeak-mbrola-generic.conf
-	etc/speech-dispatcher/modules/dtk-generic.conf
-	etc/speech-dispatcher/modules/llia_phon-generic.conf
-	etc/speech-dispatcher/modules/ivona.conf
-	etc/speech-dispatcher/modules/epos-generic.conf
-	etc/speech-dispatcher/modules/flite.conf
-	etc/speech-dispatcher/speechd.conf)
+        etc/speech-dispatcher/modules/ibmtts.conf
+        etc/speech-dispatcher/modules/espeak-generic.conf
+        etc/speech-dispatcher/modules/espeak.conf
+        etc/speech-dispatcher/modules/swift-generic.conf
+        etc/speech-dispatcher/modules/festival.conf
+        etc/speech-dispatcher/modules/cicero.conf
+        etc/speech-dispatcher/modules/espeak-mbrola-generic.conf
+        etc/speech-dispatcher/modules/dtk-generic.conf
+        etc/speech-dispatcher/modules/llia_phon-generic.conf
+        etc/speech-dispatcher/modules/ivona.conf
+        etc/speech-dispatcher/modules/epos-generic.conf
+        etc/speech-dispatcher/modules/flite.conf
+        etc/speech-dispatcher/speechd.conf)
 options=('!libtool') 
 source=("http://www.freebsoft.org/pub/projects/speechd/$pkgname-$pkgver.tar.gz"
         'speech-dispatcherd.service')
-md5sums=('d17b041fa3c87cb1b73ac6e95b80d276'
+md5sums=('9e94d3603f69157acd87d10e02d12bb9'
          '0f09abe1af4eb79885ba88a1c2bcde8b')
 
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
   ./configure --prefix=/usr --sysconfdir=/etc --without-flite
   make
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   make DESTDIR=${pkgdir} install
 
-  install -Dm644 "${srcdir}"/speech-dispatcherd.service "${pkgdir}/usr/lib/systemd/system/speech-dispatcherd.service"
-  install -d "${pkgdir}/var/log/speech-dispatcher"
+  install -Dm644 ${srcdir}/speech-dispatcherd.service ${pkgdir}/usr/lib/systemd/system/speech-dispatcherd.service
+  install -d ${pkgdir}/var/log/speech-dispatcher
 }
