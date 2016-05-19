@@ -1,6 +1,6 @@
 
 pkgname=libsignon-glib
-pkgver=1.13
+pkgver=1.14
 pkgrel=1
 pkgdesc='Single signon authentication library for GLib applications'
 arch=('x86_64')
@@ -9,8 +9,8 @@ license=('LGPL2.1')
 depends=('signonqt')
 makedepends=('python2-gobject' 'gtk-doc')
 # check https://groups.google.com/forum/#!forum/accounts-sso-announce
-source=("https://gitlab.com/accounts-sso/libsignon-glib/repository/archive.tar.gz?ref=VERSION_${pkgver}")
-md5sums=('54a6d51db16934d36e0547b3cfbdf25f')
+source=("https://gitlab.com/accounts-sso/libsignon-glib/repository/archive.tar.bz2?ref=VERSION_${pkgver}")
+md5sums=('494936de3c57cd12c3115707be2ca20e')
 
 build() {
   cd ${pkgname}-VERSION_${pkgver}-*
@@ -26,5 +26,5 @@ build() {
 package() {
   cd ${pkgname}-VERSION_${pkgver}-*
 
-  make DESTDIR="${pkgdir}" install
+  make DESTDIR=${pkgdir} install
 }
