@@ -1,17 +1,15 @@
 
 pkgname=net-snmp
 pkgver=5.7.3
-pkgrel=3
+pkgrel=4
 pkgdesc="A suite of applications used to implement SNMP v1, SNMP v2c and SNMP v3 using both IPv4 and IPv6"
 arch=('x86_64')
 url="http://www.net-snmp.org/"
 license=('BSD')
 depends=('openssl' 'libnl' 'pciutils')
 makedepends=('python2-setuptools')
-optdepends=('python2: for the python modules')
-provides=('ucd-snmp')
 options=('!libtool' '!makeflags' '!emptydirs')
-source=("http://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}-${pkgver}.tar.gz"
+source=("http://downloads.sourceforge.net/sourceforge/net-snmp/${pkgname}-${pkgver}.tar.gz"
         'snmpd.service'
         'libnl32.patch')
 md5sums=('d4a3459e1577d0efa8d96ca70a885e53'
@@ -19,7 +17,7 @@ md5sums=('d4a3459e1577d0efa8d96ca70a885e53'
          '66b5d6e61b80cc19766dd65a9949af28')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   #patch -p1 -i "$srcdir/libnl32.patch"
   
   autoreconf -f -i  
@@ -41,10 +39,10 @@ build() {
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
-  sed -i -e "s:install --basedir=\$\$dir:install --basedir=\$\$dir --root=${pkgdir}:" Makefile
-  make DESTDIR="${pkgdir}" INSTALL_PREFIX="${pkgdir}" INSTALLDIRS=vendor install
+  cd ${pkgname}-${pkgver}
+  sed -i -e "s|install --basedir=\$\$dir|install --basedir=\$\$dir --root=${pkgdir}|" Makefile
+  make DESTDIR=${pkgdir} INSTALL_PREFIX=${pkgdir} INSTALLDIRS=vendor install
   
-  install -Dm0644 "${srcdir}/snmpd.service" "${pkgdir}/usr/lib/systemd/system/snmpd.service"
-  install -Dm0644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+  install -Dm0644 ${srcdir}/snmpd.service ${pkgdir}/usr/lib/systemd/system/snmpd.service
+  install -Dm0644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
