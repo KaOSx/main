@@ -3,7 +3,7 @@ pkgbase=nvidia-utils
 pkgname=('nvidia-utils' 'opencl-nvidia' 'nvidia-settings')
 # Edit hardware-detection/hooks/hwdetect_7_graphics and Installer job 11 on version jump from 35x.xx
 pkgver=364.19
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 url="http://www.nvidia.com/"
 license=('custom')
@@ -114,7 +114,7 @@ package_nvidia-utils() {
 
 package_nvidia-settings() {
   pkgdesc="Gtk Graphical User Interface for nVidia"
-  depends=('nvidia-utils' 'gtk2' 'pangox-compat')
+  depends=('nvidia-utils' 'gtk2')
 
   cd "${srcdir}/${_pkg}"
 

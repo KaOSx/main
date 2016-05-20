@@ -3,7 +3,7 @@ pkgbase=nvidia-340xx-utils
 pkgname=('nvidia-340xx-utils' 'nvidia-340xx-settings')
 # Edit hardware-detection/hooks/hwdetect_7_graphics on version jump from 3xx.xx
 pkgver=340.96
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 url="http://www.nvidia.com/"
 license=('custom')
@@ -81,7 +81,7 @@ package_nvidia-340xx-utils() {
 
 package_nvidia-340xx-settings() {
   pkgdesc="Gtk Graphical User Interface for nVidia, , 340xx legacy version"
-  depends=('nvidia-340xx-utils' 'gtk2' 'pangox-compat')
+  depends=('nvidia-340xx-utils' 'gtk2')
   conflicts=('nvidia-settings' 'nvidia-304xx-settings')
   replaces=('nvidia-304xx-settings')
 
