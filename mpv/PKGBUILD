@@ -1,7 +1,7 @@
 
 pkgname=mpv
 pkgver=0.17.0
-pkgrel=1
+pkgrel=2
 pkgdesc='Video player based on MPlayer/mplayer2'
 arch=('x86_64')
 license=('GPL')
@@ -12,7 +12,6 @@ depends=('ffmpeg' 'lcms2' 'libdvdread' 'libcdio-paranoia' 'libgl' 'enca' 'libxin
          'rubberband' 'samba' 'libxss' 'libcaca')
 makedepends=('mesa' 'python2-docutils' 'ladspa')
 options=('!emptydirs' '!buildflags')
-install=mpv.install
 source=("https://github.com/mpv-player/mpv/archive/v${pkgver}.tar.gz"
         "https://github.com/mpv-player/mpv/commit/5053f4cc3f48538c3d9a3ba13dc98442f3302052.patch")
 #source=("https://github.com/mpv-player/mpv/archive/${_commit}.zip")
