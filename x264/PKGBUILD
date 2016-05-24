@@ -1,6 +1,6 @@
 
 pkgname=x264
-pkgver=20160126
+pkgver=20160523
 pkgrel=1
 pkgdesc="Library and application for encoding video streams into the H.264/MPEG-4 AVC"
 arch=('x86_64')
@@ -8,18 +8,18 @@ url="http://www.videolan.org/developers/x264.html"
 license=('GPL')
 depends=('glibc')
 makedepends=('yasm' 'libvpx>=1.1.0')
-source=("ftp://ftp.videolan.org/pub/videolan/x264/snapshots/x264-snapshot-$pkgver-2245-stable.tar.bz2")
-md5sums=('a8715f009f93a0669d5a21934a2a32c0')
+source=("http://download.videolan.org/pub/videolan/x264//snapshots/x264-snapshot-${pkgver}-2245-stable.tar.bz2")
+md5sums=('463ff485c8a8af44f9c4332d48cfb88f')
 
 build() {
-    cd "$srcdir/$pkgname-snapshot-$pkgver-2245-stable"
+    cd ${pkgname}-snapshot-${pkgver}-2245-stable
 
     ./configure --prefix=/usr --enable-shared --enable-pic
 
     make
 }
 package() {
-    cd "$srcdir/$pkgname-snapshot-$pkgver-2245-stable"
+    cd ${pkgname}-snapshot-${pkgver}-2245-stable
 
-    make DESTDIR="$pkgdir" install
+    make DESTDIR=${pkgdir} install
 }
