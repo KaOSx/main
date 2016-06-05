@@ -2,10 +2,10 @@
 # check in tools/scripts/version_resolver.py for used Chromium
 pkgbase=qtwebengine
 pkgname=('qtwebengine' 'qtwebengine-examples')
-pkgver=5.6.0
-subver=5.6.0
-_pkgver=5.6
-pkgrel=2
+pkgver=5.7.0RC
+subver=5.7.0-rc
+_pkgver=5.7
+pkgrel=1
 pkgdesc="Chromium-based web engine to replace Qt WebKit"
 url="http://blog.qt.digia.com/blog/2014/01/23/qt-webengine-technology-preview-available/"
 arch=('x86_64')
@@ -15,13 +15,13 @@ makedepends=('qt5-declarative' 'python2-jinja' 'mesa' 'systemd' 'pango' 'nss' 's
          'qt5-webchannel' 'ffmpeg' 'libxss' 'protobuf' 'opus' 'libvpx'
          'gperf' 'yasm' 'openssh' 'icu' 'qtwebengine')
 _pkgfqn="qtwebengine-opensource-src-${subver}"
-source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz"
-#source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz"
+#source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz"
+source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz"
         'nss321.diff'
         'demobrowser.desktop'
         'quicknanobrowser.desktop'
         'markdowneditor.desktop')
-md5sums=('a8be84d642a78724d84b27c20adee14c'
+md5sums=('cb0e6ee6fc580e651f536b5250777d0a'
          '5c297bd337ffab4a2d075a7c85d55ef3'
          'f11d24801322ef41f8a44eedc5e104c2'
          '6d62ba455c7d70870fb28c9362c9c591'
@@ -31,13 +31,13 @@ build() {
    cd $_pkgfqn/   
    # patch adjusted from fedora to get Qt 5.6 qtwebengine to work with nss 3.21
    # http://pkgs.fedoraproject.org/cgit/rpms/qt5-qtwebengine.git/commit/?id=9a15e3c582902772e7876660afd06f57c4ff48d2
-   patch -p1 -i $srcdir/nss321.diff
+   #patch -p1 -i $srcdir/nss321.diff
    
-   mkdir build   
+   #mkdir build   
    cd build 
    #export GYP_DEFINES="python_ver=2.7 use_pulseaudio=1 use_pango=1 use_cairo=1 use_cups=1"
    
-   /usr/lib/qt5/bin/qmake WEBENGINE_CONFIG+="use_proprietary_codecs use_system_ffmpeg" ../qtwebengine.pro
+   /usr/lib/qt5/bin/qmake WEBENGINE_CONFIG+="use_proprietary_codecs use_system_ffmpeg use_spellcheck" ../qtwebengine.pro
    make 
    
    cd ..
@@ -46,12 +46,12 @@ build() {
    make
    
    cd ..
-   cd examples/webenginewidgets/markdowneditor/
+   cd markdowneditor/
    /usr/lib/qt5/bin/qmake
    make
    
-   cd ..
-   cd examples/webengine/quicknanobrowser/
+   cd ../..
+   cd webengine/quicknanobrowser/
    /usr/lib/qt5/bin/qmake
    make
 }
