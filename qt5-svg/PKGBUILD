@@ -1,8 +1,8 @@
 
 pkgname=qt5-svg
-pkgver=5.6.0
-subver=5.6.0
-_pkgver=5.6
+pkgver=5.7.0RC
+subver=5.7.0-rc
+_pkgver=5.7
 pkgrel=1
 pkgdesc=('A cross-platform application and UI framework, QtSvg files')
 arch=('x86_64')
@@ -12,9 +12,9 @@ depends=('qt5-declarative')
 groups=('qt5')
 options=('!libtool')
 _pkgfqn="qtsvg-opensource-src-${subver}"
-source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
-#source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
-md5sums=('ab86dafed92185a2f98190fc37afceab')
+#source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
+source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
+md5sums=('02f483b3248684b09a6f7fecbbda360c')
 
 build() {
     cd $srcdir/$_pkgfqn

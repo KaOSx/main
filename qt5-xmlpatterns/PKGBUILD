@@ -1,8 +1,8 @@
 
 pkgname=qt5-xmlpatterns
-pkgver=5.6.0
-subver=5.6.0
-_pkgver=5.6
+pkgver=5.7.0RC
+subver=5.7.0-rc
+_pkgver=5.7
 pkgrel=1
 pkgdesc=('A cross-platform application and UI framework, QtXmlPatterns files')
 arch=('x86_64')
@@ -13,9 +13,9 @@ makedepends=('qt5-tools')
 groups=('qt5')
 options=('!libtool')
 _pkgfqn="qtxmlpatterns-opensource-src-${subver}"
-source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
-#source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
-md5sums=('b511b49ab76a1da11b25802861d5688c')
+#source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
+source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
+md5sums=('1821212e7e15ec0e1fc08a4f8b216f42')
 
 build() {
     cd $srcdir/$_pkgfqn

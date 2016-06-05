@@ -1,8 +1,8 @@
 
 pkgname=qt5-canvas3d
-pkgver=5.6.0
-subver=5.6.0
-_pkgver=5.6
+pkgver=5.7.0RC
+subver=5.7.0-rc
+_pkgver=5.7
 pkgrel=1
 pkgdesc=('JavaScript 3D rendering API for Qt Quick')
 arch=('x86_64')
@@ -12,9 +12,9 @@ depends=('qt5-declarative')
 groups=('qt5')
 options=('!libtool')
 _pkgfqn="qtcanvas3d-opensource-src-${subver}"
-source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
-#source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
-md5sums=('73ca1057b64bc99299d2e55c1a35f469')
+#source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
+source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
+md5sums=('98069234748dcb50e761d2ffd0957c09')
 
 build() {
     cd $srcdir/$_pkgfqn
