@@ -1,6 +1,6 @@
 
 pkgname=python3-astroid
-pkgver=1.4.5
+pkgver=1.4.6
 pkgrel=1
 pkgdesc="Module to provide a common base representation of python source code for projects 
          such as pychecker, pyreverse and pylint"
@@ -9,18 +9,18 @@ url="https://github.com/pycqa/astroid"
 license=('LGPL')
 depends=('python3-lazy-object-proxy' 'python3-logilab-common' 'python3-six' 'python3-wrapt')
 makedepends=('python3-setuptools')
-source=("https://pypi.python.org/packages/source/a/astroid/astroid-${pkgver}.tar.gz")
-md5sums=('c106eb90e6d62835c73fa4a080fd5c05')
+source=("https://github.com/PyCQA/astroid/archive/astroid-${pkgver}.tar.gz")
+md5sums=('be05e1f4d8ba65f20314d021f6a6ce5f')
 
 
 build() {
-  cd astroid-${pkgver}
+  cd astroid-astroid-${pkgver}
   
   python3 setup.py build
 }
 
 package() {
-  cd astroid-${pkgver}
+  cd astroid-astroid-${pkgver}
 
   python3 setup.py install --optimize=1 --skip-build --prefix=/usr --root=${pkgdir}
 }
