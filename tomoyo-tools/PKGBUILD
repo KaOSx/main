@@ -4,25 +4,25 @@ _basever=2.5.0
 _timestamp=20140601
 _file=53357
 pkgver=${_basever}.${_timestamp}
-pkgrel=14
+pkgrel=15
 pkgdesc='TOMOYO Linux 2.5.x userspace tools for Linux kernel 3.2 and above'
 arch=('x86_64')
 url='http://tomoyo.sourceforge.jp'
 license=('GPL')
-depends=('ncurses' 'linux>=4.4')
+depends=('ncurses' 'linux>=4.6')
 makedepends=('help2man')
 install=tomoyo-tools.install
 source=("http://sourceforge.jp/frs/redir.php?f=/tomoyo/${_file}/${pkgname}-${_basever}-${_timestamp}.tar.gz")
 md5sums=('888869b793127f00d6439a3246598b83')
 
 build() {
-    cd "${srcdir}/${pkgname}"
+    cd ${pkgname}
     
     make -j1
 }
 
 package() {
-    cd "${srcdir}/${pkgname}"
+    cd ${pkgname}
     
     make INSTALLDIR="${pkgdir}" install
 }

@@ -1,27 +1,30 @@
 
-_extramodules=extramodules-4.4
+_extramodules=extramodules-4.6
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=('nvidia-340xx' 'khd-nvidia-340xx')
 pkgver=340.96
-pkgrel=4
+pkgrel=5
 arch=('x86_64')
 url="http://www.nvidia.com/"
-makedepends=('linux-headers' 'linux>=4.4' 'linux<4.5' "nvidia-340xx-utils=${pkgver}")
+makedepends=('linux-headers' 'linux>=4.6' 'linux<4.7' "nvidia-340xx-utils=${pkgver}")
 license=('custom')
-source=("https://raw.github.com/KaOSx/hardware-detection/master/hwdb/nvidia_supported")
-md5sums=('62d0cdb856cfae64753c0f3acf729d47')
 
 _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
-source+=("ftp://download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run")
-md5sums+=('7bdbcee13bade63227933d9217571882')
+
+source=("ftp://download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
+        "https://raw.github.com/KaOSx/hardware-detection/master/hwdb/nvidia_supported"
+        'linux-4.6.patch')
+md5sums=('7bdbcee13bade63227933d9217571882'
+         '62d0cdb856cfae64753c0f3acf729d47'
+         '1f2baa65fd351ae7a2fc3dfd71ffcbfe')
 
 build() {
     cd "${srcdir}"
     sh "${_pkg}.run" --extract-only
     
     cd "${_pkg}"
-    #patch -p1 -i ${srcdir}/linux4.3.patch
+    patch -p1 -i ${srcdir}/linux-4.6.patch
     
     cd "${srcdir}/${_pkg}/kernel"  
     make SYSSRC=/lib/modules/"${_kver}/build" module
@@ -29,7 +32,7 @@ build() {
 
 package_nvidia-340xx() {
     pkgdesc="NVIDIA drivers for linux."
-    depends=('linux>=4.4' 'linux<4.5' "nvidia-340xx-utils=${pkgver}")
+    depends=('linux>=4.6' 'linux<4.7' "nvidia-340xx-utils=${pkgver}")
     conflicts=('nvidia' 'nvidia-304xx')
     replaces=('nvidia-304xx')
     backup=('etc/X11/xorg.conf.d/20-nvidia.conf')

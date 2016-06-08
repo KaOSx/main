@@ -1,7 +1,7 @@
 
 #keep at 4.2.1 until octave is at 4.1.x
 pkgname=suitesparse
-pkgver=4.4.5
+pkgver=4.5.3
 pkgrel=1
 epoch=1
 pkgdesc="A collection of sparse matrix libraries"
@@ -10,11 +10,11 @@ arch=('x86_64')
 depends=('blas' 'lapack')
 makedepends=('gcc-fortran')
 license=('GPL')
-source=("http://faculty.cse.tamu.edu/davis/SuiteSparse/SuiteSparse-$pkgver.tar.gz")
-md5sums=('a2926c27f8a5285e4a10265cc68bbc18')
+source=("http://faculty.cse.tamu.edu/davis/SuiteSparse/SuiteSparse-${pkgver}.tar.gz")
+md5sums=('8ec57324585df3c6483ad7f556afccbd')
 
 build() {
-   cd "$srcdir"/SuiteSparse
+   cd SuiteSparse
    export CFLAGS=" ${CFLAGS} -DNPARTITION -fPIC"
    
    make -C SuiteSparse_config/xerbla
@@ -69,16 +69,16 @@ build() {
 
 
 package() {
-   cd "${srcdir}"/SuiteSparse
-   install -dm755 "${pkgdir}"/usr/{lib,include}
+   cd SuiteSparse
+   install -dm755 ${pkgdir}/usr/{lib,include}
    
    for _lib in SuiteSparse_config AMD CAMD COLAMD BTF KLU LDL CCOLAMD UMFPACK CHOLMOD CXSparse SPQR; do
-      make -C ${_lib} INSTALL_LIB="${pkgdir}"/usr/lib INSTALL_INCLUDE="${pkgdir}"/usr/include install
+      make -C ${_lib} INSTALL_LIB=${pkgdir}/usr/lib INSTALL_INCLUDE=${pkgdir}/usr/include install
    done
    
-   rm -f "${pkgdir}"/usr/lib/*.a
-   cp -d shared/*.so* "${pkgdir}"/usr/lib/
-   ldconfig -n "${pkgdir}"/usr/lib/
+   rm -f ${pkgdir}/usr/lib/*.a
+   cp -d shared/*.so* ${pkgdir}/usr/lib/
+   ldconfig -n ${pkgdir}/usr/lib/
 
-   chmod 644 "${pkgdir}"/usr/include/*.{h,hpp}
+   chmod 644 ${pkgdir}/usr/include/*.{h,hpp}
 }
