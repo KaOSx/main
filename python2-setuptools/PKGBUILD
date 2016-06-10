@@ -1,18 +1,18 @@
 
 pkgname=python2-setuptools
-pkgver=22.0.5
+pkgver=23.0.0
 pkgrel=1
 pkgdesc="Easily download, build, install, upgrade, and uninstall Python packages"
 arch=('x86_64')
 license=('PSF')
 url="http://pypi.python.org/pypi/setuptools"
 depends=('python2')
-makedepends=('asciidoc')
+makedepends=('asciidoc' 'python2-setuptools')
 provides=('python2-distribute' 'setuptools')
 replaces=('python2-distribute' 'setuptools')
 conflicts=('python2-distribute')
 source=("https://github.com/pypa/setuptools/archive/v${pkgver}.tar.gz")
-md5sums=('37a23031dbab491a91f9423d3d09b643')
+md5sums=('45cc9d36efa8122834966f2818f05e66')
 
 build() {
    cd setuptools-${pkgver}

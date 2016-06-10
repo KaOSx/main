@@ -1,13 +1,13 @@
 
-pkgname=python2-pyparsing
+pkgname=python3-pyparsing
 pkgver=2.1.4
-pkgrel=2
+pkgrel=1
 pkgdesc='General parsing module for Python'
 arch=('x86_64')
 url='http://pyparsing.wikispaces.com'
 license=('MIT')
-depends=('python2')
-makedepends=('python2-setuptools')
+depends=('python3')
+makedepends=('python3-setuptools')
 source=("http://downloads.sourceforge.net/pyparsing/pyparsing-${pkgver}.tar.gz")
 md5sums=('322059c57f0c9f11da1c6c06a2ba2197')
 
@@ -15,7 +15,7 @@ package() {
   cd pyparsing-${pkgver}
   rm -rf build
   
-  python2 setup.py install --prefix=/usr --root=${pkgdir} --optimize=1
-  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/python2-pyparsing/LICENSE
+  python3 setup.py install --prefix=/usr --root=${pkgdir} --optimize=1
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/python3-pyparsing/LICENSE
 }
 

@@ -1,0 +1,26 @@
+
+pkgname=python3-packaging
+pkgver=16.7
+pkgrel=1
+pkgdesc="Core utilities for Python3 packages"
+arch=('x86_64')
+license=('Apache')
+url="https://github.com/pypa/packaging"
+depends=('python3-six' 'python3-pyparsing')
+source=("https://github.com/pypa/packaging/archive/${pkgver}.tar.gz")
+md5sums=('cb5f9d081248362c0ee1b4e4eb22ca40')
+
+build() {
+   cd packaging-${pkgver}
+   
+   python3 setup.py build
+}
+ 
+package() {
+   cd packaging-${pkgver}
+   
+   python3 setup.py install --prefix=/usr --root="${pkgdir}" 
+   #rm ${pkgdir}/usr/bin/easy_install
+}
+ 
+
