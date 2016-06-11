@@ -1,6 +1,6 @@
 
 pkgname=youtube-dl
-pkgver=2016.05.30.2
+pkgver=2016.06.11.3
 pkgrel=1
 pkgdesc='Small command-line program to download videos from YouTube.com and other video sites'
 arch=('x86_64')
@@ -8,8 +8,8 @@ url="http://rg3.github.com/youtube-dl"
 license=('custom')
 depends=('python3')
 makedepends=('zip')
-source=("https://yt-dl.org/downloads/$pkgver/$pkgname-$pkgver.tar.gz")
-md5sums=('21279e7c818db3d38b1419d0c0cfee93')
+source=("https://github.com/rg3/youtube-dl/releases/download/$pkgver/$pkgname-$pkgver.tar.gz")
+md5sums=('75207d38a1be503593a0eb77d79f31d4')
 
 build() {
     cd $pkgname
