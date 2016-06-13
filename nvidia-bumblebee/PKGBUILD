@@ -4,8 +4,8 @@ _extramodules=extramodules-4.6
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=nvidia-bumblebee
-pkgver=364.19
-pkgrel=2
+pkgver=367.27
+pkgrel=1
 pkgdesc="NVIDIA drivers for linux. Packaged for Bumblebee"
 arch=('x86_64')
 url="http://www.nvidia.com/"
@@ -22,7 +22,7 @@ _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 source=("ftp://download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}-no-compat32.run"
         'linux-4.6.patch')
 #source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}.run")
-md5sums=('ad7a0b1855b3913390fb75b4cc3a26dc'
+md5sums=('cdf8a16c533382acc9f088bd8e689860'
          '545129d87779ec600e56e55d6ec9b802')
 
 build() {
@@ -30,7 +30,7 @@ build() {
     sh "${_pkg}.run" --extract-only
     
     cd "${_pkg}"
-    patch -p1 -i ${srcdir}/linux-4.6.patch
+    #patch -p1 -i ${srcdir}/linux-4.6.patch
  
     cd "${srcdir}/${_pkg}/kernel" 
     make SYSSRC=/lib/modules/"${_kver}/build" module
