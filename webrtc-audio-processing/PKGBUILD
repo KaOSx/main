@@ -1,27 +1,27 @@
 
 pkgname=webrtc-audio-processing
-pkgver=0.1
-pkgrel=7
+pkgver=0.2
+pkgrel=1
 pkgdesc="AudioProcessing library based on Google's implementation of WebRTC"
 arch=('x86_64')
-url="http://freedesktop.org/software/pulseaudio/webrtc-audio-processing"
+url="https://freedesktop.org/software/pulseaudio/webrtc-audio-processing"
 license=('custom')
 depends=('gcc-libs')
 options=('!libtool')
-source=("http://freedesktop.org/software/pulseaudio/webrtc-audio-processing/$pkgname-$pkgver.tar.xz")
-md5sums=('da25bb27812c8404060d4cc0dc712f04')
+source=("https://freedesktop.org/software/pulseaudio/webrtc-audio-processing/${pkgname}-${pkgver}.tar.xz")
+md5sums=('3af3e71d50b743eacadcf38f6e9db2f8')
 
 build() {
-  cd $pkgname-$pkgver
+  cd ${pkgname}-${pkgver}
   
   ./configure --prefix=/usr --disable-static
   make
 }
 
 package() {
-  cd $pkgname-$pkgver
-  make DESTDIR="$pkgdir" install
+  cd ${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install
 
-  install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
-  install -Dm644 PATENTS "$pkgdir/usr/share/licenses/$pkgname/PATENTS"
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
+  #install -Dm644 PATENTS ${pkgdir}/usr/share/licenses/${pkgname}/PATENT
 }
