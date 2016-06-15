@@ -34,8 +34,8 @@ build() {
 
 package() {
   cd ${pkgname}-${pkgver}
-  make INSTALLROOT="${pkgdir}" install
+  make INSTALLROOT=${pkgdir} install
   
-  rm -r "$pkgdir/run"
-  install -dm755 "${pkgdir}/etc/autofs/auto.master.d"
+  rm -r $pkgdir/run
+  install -dm755 ${pkgdir}/etc/autofs/auto.master.d
 }
