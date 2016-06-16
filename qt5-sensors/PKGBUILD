@@ -1,7 +1,7 @@
 
 pkgname=qt5-sensors
-pkgver=5.7.0RC
-subver=5.7.0-rc
+pkgver=5.7.0
+subver=5.7.0
 _pkgver=5.7
 pkgrel=1
 pkgdesc=('A cross-platform application and UI framework, QtSensors files')
@@ -12,9 +12,9 @@ depends=('qt5-declarative')
 groups=('qt5')
 options=('!libtool')
 _pkgfqn="qtsensors-opensource-src-${subver}"
-#source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
-source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
-md5sums=('530f5d3122cd1e4b70f4ec0242f05d44')
+source=("https://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
+#source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
+md5sums=('ccd4b5869b83d7a2c8f6dd1d61e9741a')
 
 build() {
     cd $srcdir/$_pkgfqn

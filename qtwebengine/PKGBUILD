@@ -2,8 +2,8 @@
 # check in tools/scripts/version_resolver.py for used Chromium
 pkgbase=qtwebengine
 pkgname=('qtwebengine' 'qtwebengine-examples')
-pkgver=5.7.0RC
-subver=5.7.0-rc
+pkgver=5.7.0
+subver=5.7.0
 _pkgver=5.7
 pkgrel=1
 pkgdesc="Chromium-based web engine to replace Qt WebKit"
@@ -15,13 +15,13 @@ makedepends=('qt5-declarative' 'python2-jinja' 'mesa' 'systemd' 'pango' 'nss' 's
          'qt5-webchannel' 'ffmpeg' 'libxss' 'protobuf' 'opus' 'libvpx'
          'gperf' 'yasm' 'openssh' 'icu' 'qtwebengine')
 _pkgfqn="qtwebengine-opensource-src-${subver}"
-#source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz"
-source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz"
+source=("https://download.qt-project.org/official_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz"
+#source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz"
         'nss321.diff'
         'demobrowser.desktop'
         'quicknanobrowser.desktop'
         'markdowneditor.desktop')
-md5sums=('cb0e6ee6fc580e651f536b5250777d0a'
+md5sums=('937f64886fbcb038d6fa4b44ae80cbeb'
          '5c297bd337ffab4a2d075a7c85d55ef3'
          'f11d24801322ef41f8a44eedc5e104c2'
          '6d62ba455c7d70870fb28c9362c9c591'

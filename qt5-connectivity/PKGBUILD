@@ -1,7 +1,7 @@
 
 pkgname=qt5-connectivity
-pkgver=5.7.0RC
-subver=5.7.0-rc
+pkgver=5.7.0
+subver=5.7.0
 _pkgver=5.7
 pkgrel=1
 pkgdesc=('A cross-platform application and UI framework, QtBluetooth, QtNfc files')
@@ -13,9 +13,9 @@ makedepends=('python2' 'qt5-tools')
 groups=('qt5')
 options=('!libtool')
 _pkgfqn="qtconnectivity-opensource-src-${subver}"
-#source=("http://download.qt-project.org/official_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
-source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
-md5sums=('ded526c87028234eb9c41b7d0e2588fb')
+source=("https://download.qt-project.org/official_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
+#source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
+md5sums=('56229b15e677ee98d56446519723fb3b')
 
 build() {
     cd $srcdir/$_pkgfqn
