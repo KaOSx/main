@@ -17,17 +17,9 @@ makedepends=('sqlite' 'xcb-util-keysyms' 'xcb-util-wm' 'xcb-util-image' 'xcb-uti
          'postgresql-libs' 'cups' 'python2' 'gperf' 'ruby' 'pulseaudio' 'qt5-tools')
 options=('!libtool' 'debug')
 _pkgfqn="qtbase-opensource-src-${subver}"
-source=("https://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz"
-#source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz"
-        'qdbus_locking.patch'
-        'libdbus.patch'
-        'qdbusconnection.patch'
-        'drag_drop.patch')
-md5sums=('184f9460b40752d71b15b827260580c2'
-         '8a97270d27bad6bf4fa66bdf582e81e4'
-         'a9320e76c6a6f3606cd3c006e3ebae90'
-         '006098b54beb6bcac3d890a65dbae109'
-         'bd2a06880b8703001ef8eca2de92c476')
+source=("https://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
+#source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
+md5sums=('184f9460b40752d71b15b827260580c2')
 
 build() {
     cd $srcdir/$_pkgfqn
@@ -35,10 +27,6 @@ build() {
     #sed -i -e 's|"gurj",  // Gujarati|"gujr",  // Gujarati|' $srcdir/$_pkgfqn/src/platformsupport/fontdatabases/fontconfig/qfontconfigdatabase.cpp
     
     #patch -p1 -i $srcdir/qdbus_locking.patch
-    #patch -p1 -i $srcdir/libdbus.patch
-    #patch -p1 -i $srcdir/qdbusconnection.patch
-    # https://bugreports.qt.io/browse/QTBUG-45812
-    #patch -p1 -i $srcdir/drag_drop.patch
         
     unset QTDIR
     export PATH="$PWD/qtbase/bin:$PWD/qtrepotools/bin:$PATH"
