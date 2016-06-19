@@ -1,6 +1,6 @@
 
 pkgname=libsndfile
-pkgver=1.0.26
+pkgver=1.0.27
 pkgrel=1
 pkgdesc="A C library for reading and writing files containing sampled sound"
 arch=('x86_64')
@@ -9,17 +9,17 @@ license=('LGPL')
 depends=('alsa-lib' 'flac' 'libvorbis')
 options=('!libtool')
 source=("http://www.mega-nerd.com/libsndfile/files/${pkgname}-${pkgver}.tar.gz")
-md5sums=('ec810a0c60c08772a8a5552704b63393')
+md5sums=('fd1d97c6077f03b5d984d7956ffedb7a')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
   ./configure --prefix=/usr --disable-sqlite
   make
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
-  make DESTDIR="${pkgdir}" install
+  make DESTDIR=${pkgdir} install
 }
