@@ -1,8 +1,8 @@
 
 pkgname=xf86-video-intel
-pkgver=2.99.917.6
+pkgver=2.99.917.7
 pkgrel=1
-_commit=46caee86db0fb32b16213893c79d9c1a21ed0883
+_commit=7b6e219fe461fbbe0bd498f7731781358d11f934
 pkgdesc="X.org Intel i810/i830/i915/945G/G965+ video drivers"
 arch=('x86_64')
 url="http://xorg.freedesktop.org"
@@ -33,8 +33,8 @@ build() {
 
 package() {
   cd ${pkgname}
-  make DESTDIR="${pkgdir}" install
+  make DESTDIR=${pkgdir} install
   
-  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
-  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
+  install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
 }
