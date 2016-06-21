@@ -1,15 +1,15 @@
 
 pkgname=mpd
 pkgver=0.19.16
-pkgrel=1
+pkgrel=2
 pkgdesc="Music daemon that plays MP3, FLAC, and Ogg Vorbis files"
 arch=('x86_64')
 license=('GPL')
-url="http://mpd.wikia.com/wiki/Server"
+url="http://www.musicpd.org/"
 depends=('libao' 'ffmpeg' 'libmodplug' 'audiofile' 'libshout' 'libmad' 'curl' 'faad2'
          'sqlite' 'jack' 'libmms' 'wavpack' 'libmpcdec' 'avahi' 'libid3tag' 'libmpdclient'
          'pulseaudio' 'mpg123' 'yajl' 'sdl_sound' 'libcdio-paranoia' 'fluidsynth' 'boost-libs'
-         'libsoxr' 'libnfs')
+         'libsoxr' 'libnfs' 'zziplib' 'zip')
 makedepends=('boost' 'xmlto') #'doxygen' 
 install=${pkgname}.install
 backup=('etc/mpd.conf')
@@ -32,6 +32,7 @@ build() {
     --enable-pipe-output \
     --disable-libwrap \
     --disable-sidplay \
+    --enable-zzip \
     --with-systemdsystemunitdir=/usr/lib/systemd/system
   make
 }
