@@ -1,8 +1,8 @@
 
 pkgname=intel-ucode
-pkgver=20151106
-_pkgver=25512
-pkgrel=3
+pkgver=20160607
+_pkgver=26083
+pkgrel=1
 pkgdesc="Microcode update files for Intel CPUs"
 arch=('x86_64')
 url="http://downloadcenter.intel.com/SearchResult.aspx?lang=eng&keyword=%22microcode%22"
@@ -10,20 +10,20 @@ license=('custom')
 source=("http://downloadmirror.intel.com/${_pkgver}/eng/microcode-${pkgver}.tgz"
         'LICENSE'
         'intel-microcode2ucode.c')
-md5sums=('288dc721fb39d71457ef2f5a49161f57'
+md5sums=('9be17f4afe5ee97e81659751e856af50'
          'b0f489ae4b3e36dc8827dc53a76047aa'
          '444e1670977bd18e85658016eabc7cfa')
 
 build() {
-  cd "$srcdir"
+  cd ${srcdir}
   gcc -Wall ${CFLAGS} -o intel-microcode2ucode intel-microcode2ucode.c
   ./intel-microcode2ucode ./microcode.dat
 }
 
 package() {
-  cd "$srcdir"
-  install -d -m755 "${pkgdir}"/lib/firmware/intel-ucode/
+  cd ${srcdir}
+  install -d -m755 ${pkgdir}/lib/firmware/intel-ucode/
   
-  cp intel-ucode/* "${pkgdir}"/lib/firmware/intel-ucode/
-  install -D -m644 LICENSE "${pkgdir}"/usr/share/licenses/${pkgname}/LICENSE
+  cp intel-ucode/* ${pkgdir}/lib/firmware/intel-ucode/
+  install -D -m644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }

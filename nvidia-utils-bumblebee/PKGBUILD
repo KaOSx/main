@@ -2,7 +2,7 @@
 pkgname=nvidia-utils-bumblebee
 pkgbase=nvidia-utils
 pkgver=367.27
-pkgrel=1
+pkgrel=2
 pkgdesc="NVIDIA drivers utilities and libraries. Repacked and installed in different folder to be used simultaneously with libgl."
 arch=('x86_64')
 url="http://www.nvidia.com/"
@@ -58,6 +58,7 @@ package() {
     # CUDA
     install -D -m755 "libcuda.so.${pkgver}" "${pkgdir}/usr/lib/libcuda.so.${pkgver}"
     install -D -m755 "libnvcuvid.so.${pkgver}" "${pkgdir}/usr/lib/libnvcuvid.so.${pkgver}"
+    install -D -m755 "libnvidia-fatbinaryloader.so.${pkgver}" "${pkgdir}/usr/lib/libnvidia-fatbinaryloader.so.${pkgver}"
     # nvidia-xconfig
     install -D -m755 nvidia-xconfig "${pkgdir}/usr/bin/nvidia-xconfig"
     install -D -m644 nvidia-xconfig.1.gz "${pkgdir}/usr/share/man/man1/nvidia-xconfig.1.gz"

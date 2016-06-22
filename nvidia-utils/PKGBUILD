@@ -3,7 +3,7 @@ pkgbase=nvidia-utils
 pkgname=('nvidia-utils' 'opencl-nvidia' 'nvidia-settings')
 # Edit hardware-detection/hooks/hwdetect_7_graphics and Installer job 11 on version jump from 35x.xx
 pkgver=367.27
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 url="http://www.nvidia.com/"
 license=('custom')
@@ -88,6 +88,7 @@ package_nvidia-utils() {
   # CUDA
   install -D -m755 "libcuda.so.${pkgver}" "${pkgdir}/usr/lib/libcuda.so.${pkgver}"
   install -D -m755 "libnvcuvid.so.${pkgver}" "${pkgdir}/usr/lib/libnvcuvid.so.${pkgver}"
+  install -D -m755 "libnvidia-fatbinaryloader.so.${pkgver}" "${pkgdir}/usr/lib/libnvidia-fatbinaryloader.so.${pkgver}"
   
   # nvidia-xconfig
   install -D -m755 nvidia-xconfig "${pkgdir}/usr/bin/nvidia-xconfig"
