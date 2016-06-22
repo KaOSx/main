@@ -1,7 +1,7 @@
 
 pkgname=pulseaudio
 pkgdesc="A featureful, general-purpose sound server"
-pkgver=8.0
+pkgver=9.0
 pkgrel=1
 arch=('x86_64')
 url="http://pulseaudio.org/"
@@ -20,10 +20,10 @@ provides=("libpulse=${pkgver}")
 options=('!emptydirs' '!libtool' '!makeflags')
 source=("http://freedesktop.org/software/pulseaudio/releases/${pkgname}-${pkgver}.tar.xz")
 #source=("$pkgname-$pkgver::git://anongit.freedesktop.org/pulseaudio/pulseaudio#commit=50186d7")
-md5sums=('8678442ba0bb4b4c33ac6f62542962df')
+md5sums=('da7162541b3a9bc20576dbd0d7d1489a')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
 
   ./configure --prefix=/usr \
                --sysconfdir=/etc \
@@ -39,13 +39,13 @@ build() {
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
-  make DESTDIR="${pkgdir}" install
+  cd ${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install
 
   # Disable cork-request module
   sed -e 's|/usr/bin/pactl load-module module-x11-cork-request|#&|' \
-      -i "${pkgdir}/usr/bin/start-pulseaudio-x11"
+      -i ${pkgdir}/usr/bin/start-pulseaudio-x11
 
-  rm "${pkgdir}/etc/dbus-1/system.d/pulseaudio-system.conf"
-  #rm "${pkgdir}/etc/xdg/autostart/pulseaudio.desktop"
+  rm ${pkgdir}/etc/dbus-1/system.d/pulseaudio-system.conf
+  #rm ${pkgdir}/etc/xdg/autostart/pulseaudio.desktop
 }
