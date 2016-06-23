@@ -1,7 +1,7 @@
 
 pkgname=lapack
-pkgver=3.6.0
-pkgrel=2
+pkgver=3.6.1
+pkgrel=1
 arch=('x86_64')
 url="http://www.netlib.org/lapack"
 pkgdesc="Linear Algebra PACKage"
@@ -12,10 +12,10 @@ replaces=('blas' 'atlas-lapack')
 provides=('blas')
 license=("custom")
 source=("http://www.netlib.org/lapack/${pkgname}-${pkgver}.tgz")
-md5sums=('f2f6c67134e851fe189bb3ca1fbb5101')
+md5sums=('421b2cb72e15f237e144428f9c460ee0')
 
 build() {
-  cd "${srcdir}"
+  cd ${srcdir}
 
   install -d build
   cd build
@@ -38,7 +38,7 @@ package() {
   install -m755 -d ${pkgdir}/usr/bin
   install -m755 ${srcdir}/build/bin/* ${pkgdir}/usr/bin
   
-  install -m755 -d "${pkgdir}/usr/share/licenses/lapack"
-  install -m644 "${srcdir}/${pkgname}-${pkgver}/LICENSE"  "${pkgdir}/usr/share/licenses/lapack/"
+  install -m755 -d ${pkgdir}/usr/share/licenses/lapack
+  install -m644 ${srcdir}/${pkgname}-${pkgver}/LICENSE  ${pkgdir}/usr/share/licenses/lapack/
 }
 
