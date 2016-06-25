@@ -1,8 +1,8 @@
 
 pkgbase=poppler
-pkgname=('poppler' 'poppler-glib' 'poppler-qt')
+pkgname=('poppler' 'poppler-glib' 'poppler-qt5')
 pkgver=0.45.0
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 license=('GPL')
 makedepends=('libjpeg-turbo' 'gcc-libs' 'cairo' 'libxml2' 'openjpeg' 'qt5-base'
@@ -59,12 +59,12 @@ package_poppler-glib() {
   rm -f ${pkgdir}/usr/bin/poppler-glib-demo
 }
 
-package_poppler-qt() {
+package_poppler-qt5() {
   pkgdesc="Poppler Qt5 bindings"
   depends=("poppler=${pkgver}" 'qt5-base')
-  provides=('poppler-qt5')
-  replaces=('poppler-qt5')
-  conflicts=('poppler-qt5')
+  provides=('poppler-qt')
+  replaces=('poppler-qt')
+  conflicts=('poppler-qt')
 
   cd ${pkgbase}-${pkgver}/poppler
   make DESTDIR=${pkgdir} install-libLTLIBRARIES
