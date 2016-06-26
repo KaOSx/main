@@ -1,7 +1,7 @@
 
 pkgname=mpv
-pkgver=0.17.0
-pkgrel=2
+pkgver=0.18.0
+pkgrel=1
 pkgdesc='Video player based on MPlayer/mplayer2'
 arch=('x86_64')
 license=('GPL')
@@ -15,7 +15,7 @@ options=('!emptydirs' '!buildflags')
 source=("https://github.com/mpv-player/mpv/archive/v${pkgver}.tar.gz"
         "https://github.com/mpv-player/mpv/commit/5053f4cc3f48538c3d9a3ba13dc98442f3302052.patch")
 #source=("https://github.com/mpv-player/mpv/archive/${_commit}.zip")
-md5sums=('6253da021af1fcc8c1998a190ac593cc'
+md5sums=('d5bdc0751c4d1b5f8eaa9cb4762d5514'
          '0e0c367e20d4c821db4456fb01f5bc71')
 
 prepare() {
@@ -33,8 +33,7 @@ build() {
 	--confdir=/etc/mpv \
 	--enable-libmpv-shared \
 	--enable-cdda \
-	--enable-sdl1 \
-	--enable-gpl3
+	--enable-sdl1 
 		
     ./waf build
 }
