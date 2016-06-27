@@ -1,0 +1,42 @@
+
+pkgname=qt5-virtualkeyboard
+pkgver=5.7.0
+subver=5.7.0
+_pkgver=5.7
+pkgrel=1
+pkgdesc=('Virtual keyboard framework that consists of a C++ backend as well as a UI frontend implemented in QML.')
+arch=('x86_64')
+url='http://qt.nokia.com/'
+license=('GPL3')
+depends=('hunspell' 'qt5-declarative' 'qt5-svg')
+groups=('qt5')
+options=('!libtool')
+_pkgfqn="qtvirtualkeyboard-opensource-src-${subver}"
+source=("https://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz"
+        'virtualkeyboard.desktop')
+#source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
+md5sums=('fa473ab9175483dd82aa4d27b9682715'
+         'd5f233aa149751819c2e8dfcd2fc13e2')
+
+build() {
+    cd $srcdir/$_pkgfqn
+
+    /usr/lib/qt5/bin/qmake CONFIG+="lang-all handwriting"
+    make
+    
+    cd examples
+    /usr/lib/qt5/bin/qmake
+    make
+}
+
+package() {
+    cd $srcdir/$_pkgfqn
+    make INSTALL_ROOT=$pkgdir install
+    
+    install -D -m644 LICENSE.GPL3 ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.GPL3
+    # install a QML example
+    install -D -m755 examples/virtualkeyboard/basic/basic ${pkgdir}/usr/bin/basic
+    install -D -m644 ${srcdir}/virtualkeyboard.desktop ${pkgdir}/usr/share/applications/virtualkeyboard.desktop
+    
+}
+
