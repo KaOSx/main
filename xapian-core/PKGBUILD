@@ -1,6 +1,6 @@
 
 pkgname=xapian-core
-pkgver=1.2.23
+pkgver=1.4.0
 pkgrel=1
 pkgdesc='Open source search engine library.'
 arch=('x86_64')
@@ -9,17 +9,17 @@ license=('GPL')
 depends=('sh' 'gcc-libs' 'zlib' 'util-linux')
 options=('libtool')
 source=("http://oligarchy.co.uk/xapian/${pkgver}/${pkgname}-${pkgver}.tar.xz")
-md5sums=('513b10125090265b5aeb7fb57fd3a708')
+md5sums=('5308261e78337604bd8f845dd6b4aafc')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
   ./configure --prefix=/usr
   make
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
-  make DESTDIR="${pkgdir}" install
+  make DESTDIR=${pkgdir} install
 }
