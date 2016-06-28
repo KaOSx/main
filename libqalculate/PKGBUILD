@@ -1,27 +1,27 @@
 
 pkgname=libqalculate
-pkgver=0.9.7
-pkgrel=6
+pkgver=0.9.8
+pkgrel=1
 pkgdesc="Multi-purpose desktop calculator"
 arch=('x86_64')
 url="http://qalculate.sourceforge.net/"
 license=('GPL')
 depends=('libxml2' 'cln' 'glib2' 'ncurses' 'readline')
-makedepends=('perl-xml-parser')
+makedepends=('perl-xml-parser' 'intltool')
 optdepends=('gnuplot: for plotting support')
 options=('!libtool' '!makeflags')
 source=("http://downloads.sourceforge.net/sourceforge/qalculate/${pkgname}-${pkgver}.tar.gz")
-md5sums=('a1507ab862f4ad9852788619aada35cd')
+md5sums=('d783a6b2333fa2c6a8d5cf658ca5f1d4')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
   ./configure --prefix=/usr
   make
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
-  make DESTDIR="${pkgdir}" install
+  make DESTDIR=${pkgdir} install
 }

@@ -1,7 +1,7 @@
 
 pkgname=gnu-efi-libs
-pkgver=3.0.3
-_pkgver=3.0.3
+pkgver=3.0.4
+_pkgver=3.0.4
 pkgrel=1
 pkgdesc="Library for building UEFI Applications using GNU toolchain"
 url="http://sourceforge.net/projects/gnu-efi/"
@@ -10,19 +10,19 @@ arch=('x86_64')
 options=('!strip' '!makeflags' '!buildflags')
 makedepends=('pciutils')
 source=("http://download.sourceforge.net/gnu-efi/gnu-efi-${pkgver}.tar.bz2")
-md5sums=('15a4bcbc18a9a5e8110ed955970622e6')
+md5sums=('612e0f327f31c4b8468ef55f4eeb9649')
 
 build() {
-	cd "${srcdir}/gnu-efi-${_pkgver}/"
+	cd gnu-efi-${_pkgver}/
 	
 	make lib gnuefi inc apps
 }
 
 package() {
-	cd "${srcdir}/gnu-efi-${_pkgver}/"
+	cd gnu-efi-${_pkgver}/
 	
-	make INSTALLROOT="${pkgdir}" PREFIX="/usr" LIBDIR="/usr/lib" install
+	make INSTALLROOT=${pkgdir} PREFIX=/usr LIBDIR=/usr/lib install
 	
-	install -d "${pkgdir}/usr/share/gnu-efi/apps/x86_64/"
-	install -D -m0644 "${srcdir}/gnu-efi-${_pkgver}/x86_64/apps"/*.efi "${pkgdir}/usr/share/gnu-efi/apps/x86_64/"
+	install -d ${pkgdir}/usr/share/gnu-efi/apps/x86_64/
+	install -D -m0644 ${srcdir}/gnu-efi-${_pkgver}/x86_64/apps/*.efi ${pkgdir}/usr/share/gnu-efi/apps/x86_64/
 }
