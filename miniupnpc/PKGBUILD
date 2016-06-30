@@ -1,25 +1,25 @@
 
 pkgname=miniupnpc
-pkgver=1.9.20150730
+pkgver=2.0
 pkgrel=1
 pkgdesc="Small UPnP client library/tool to access Internet Gateway Devices"
 arch=('x86_64')
 url="http://miniupnp.free.fr"
 license=('BSD')
 depends=('sh')
-source=("http://miniupnp.free.fr/files/$pkgname-$pkgver.tar.gz")
-md5sums=('bd5b56f1e2e1e7e6d7b584591d69414a')
+source=("http://miniupnp.free.fr/files/${pkgname}-${pkgver}.tar.gz")
+md5sums=('2acc4ec912c15447a40cf14ae50df7b9')
 
 build() {
-  cd "$srcdir/$pkgname-$pkgver"
+  cd ${pkgname}-${pkgver}
   
   make
 }
 
 package() {
-  cd "$srcdir/$pkgname-$pkgver"
-  make PREFIX="$pkgdir/" install
+  cd ${pkgname}-${pkgver}
+  make PREFIX=${pkgdir}/ install
   
-  install -Dm644 man3/miniupnpc.3 "${pkgdir}"/usr/share/man/man3/miniupnpc.3
-  install -Dm644 LICENSE "${pkgdir}"/usr/share/licenses/${pkgname}/LICENSE
+  install -Dm644 man3/miniupnpc.3 ${pkgdir}/usr/share/man/man3/miniupnpc.3
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
