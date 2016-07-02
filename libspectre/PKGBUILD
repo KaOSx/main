@@ -1,7 +1,7 @@
 
 pkgname=libspectre
-pkgver=0.2.7
-pkgrel=2
+pkgver=0.2.8
+pkgrel=1
 pkgdesc="Small library for rendering Postscript documents"
 arch=('x86_64')
 license=('GPL2')
@@ -9,17 +9,17 @@ url="http://www.freedesktop.org/wiki/Software/libspectre"
 depends=('ghostscript')
 options=('!libtool')
 source=("http://libspectre.freedesktop.org/releases/${pkgname}-${pkgver}.tar.gz")
-md5sums=('8f759c0e6cd88d68fc8149130fcbc3d3')
+md5sums=('97ad2c8188db6bdc77fd742522b0bbdf')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
   ./configure --prefix=/usr --disable-static
   make
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
-  make DESTDIR="${pkgdir}" install
+  cd ${pkgname}-${pkgver}
   
+  make DESTDIR=${pkgdir} install
 }
