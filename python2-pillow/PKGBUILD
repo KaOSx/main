@@ -1,7 +1,7 @@
 
 pkgname=python2-pillow
-_appname=Pillow
-pkgver=3.2.0
+_pkgname=Pillow
+pkgver=3.3.0
 pkgrel=1
 pkgdesc="Python Imaging Library (PIL) fork. Python2 version."
 arch=('x86_64')
@@ -14,17 +14,17 @@ optdepends=('tk: for the ImageTK module'
 provides=('python2-imaging')
 conflicts=('python2-imaging')
 replaces=('python2-imaging')
-source=("http://pypi.python.org/packages/source/P/Pillow/$_appname-$pkgver.zip")
-md5sums=('a646213ed7bbbc020299af70782f368c')
+source=("https://github.com/python-pillow/Pillow/archive/${pkgver}.tar.gz")
+md5sums=('56c2f864d9a64cb5491410024d755229')
 
 package() { 
-  cd $srcdir/${_appname}-$pkgver
+  cd ${_pkgname}-${pkgver}
 
-  python2 setup.py install --root=$pkgdir/ --optimize=0
-  install -Dm644 docs/COPYING $pkgdir/usr/share/licenses/$pkgname/LICENSE
+  python2 setup.py install --root=${pkgdir}/ --optimize=0
+  install -Dm644 docs/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 
   # avoid python3-pillow conflict
-  cd "$pkgdir/usr/bin"
+  cd ${pkgdir}/usr/bin
   for f in *.py; do
     mv "$f" "${f%.py}2"
   done

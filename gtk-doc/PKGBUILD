@@ -1,27 +1,26 @@
 
 pkgname=gtk-doc
-pkgver=1.20
+pkgver=1.25
 pkgrel=1
 pkgdesc="Documentation tool for public library API"
 arch=('x86_64')
 license=('GPL' 'FDL')
-depends=('docbook-xsl' 'gnome-doc-utils' 'perl')
+depends=('docbook-xsl' 'perl')
 makedepends=('pkgconfig' 'jade' 'itstool')
 url="http://www.gtk.org/gtk-doc/"
 source=("http://ftp.gnome.org/pub/gnome/sources/${pkgname}/${pkgver}/${pkgname}-${pkgver}.tar.xz")
-md5sums=('58532fed036f72fc3bfd4fe79473247b')
+md5sums=('0dc6570953112a464a409fb99258ccbc')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
-  export PYTHON=/usr/bin/python2
+  cd ${pkgname}-${pkgver}
   
   ./configure --prefix=/usr
   make
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
-  make DESTDIR="${pkgdir}" install
+  make DESTDIR=${pkgdir} install
 }
 

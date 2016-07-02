@@ -1,7 +1,7 @@
 
 pkgname=opensp
 pkgver=1.5.2
-pkgrel=4
+pkgrel=5
 pkgdesc="A library and a set of tools for validating, parsing and manipulating SGML and XML documents"
 arch=('x86_64')
 url="http://openjade.sourceforge.net/"
@@ -9,11 +9,11 @@ license=('BSD')
 depends=('gcc-libs')
 makedepends=('xmlto' 'docbook-xsl')
 options=('!libtool')
-source=("http://download.sourceforge.net/openjade/OpenSP-$pkgver.tar.gz")
+source=("http://download.sourceforge.net/openjade/OpenSP-${pkgver}.tar.gz")
 md5sums=('670b223c5d12cee40c9137be86b6c39b')
 
 build() {
-  cd "${srcdir}"/OpenSP-$pkgver
+  cd OpenSP-${pkgver}
   
   ./configure --prefix=/usr \
     --mandir=/usr/share/man \
@@ -26,9 +26,9 @@ build() {
 }
 
 package() {
-  cd "${srcdir}"/OpenSP-$pkgver
-  make DESTDIR="${pkgdir}" install
+  cd OpenSP-$pkgver
+  make DESTDIR=${pkgdir} install
   
-  install -D -m644 COPYING "${pkgdir}"/usr/share/licenses/$pkgname/LICENSE
+  install -D -m644 COPYING ${pkgdir}/usr/share/licenses/$pkgname/LICENSE
 }
 

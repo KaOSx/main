@@ -1,7 +1,7 @@
 
 pkgname=xcb-util-wm
 pkgver=0.4.1
-pkgrel=1
+pkgrel=2
 pkgdesc="Utility libraries for XC Binding"
 arch=('x86_64')
 url="http://xcb.freedesktop.org"
@@ -15,16 +15,15 @@ md5sums=('87b19a1cd7bfcb65a24e36c300e03129'
          '2672c2e72dedb40f773e989dd622f298')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
   ./configure --prefix=/usr --disable-static
   make
 }
 
 package() { 
-  cd "${srcdir}/${pkgname}-${pkgver}"
-  make DESTDIR="${pkgdir}" install
+  cd ${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install
 
-  install -D -m644 "${srcdir}/LICENSE" \
-    "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+  install -D -m644 ${srcdir}/LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
