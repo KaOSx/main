@@ -13,9 +13,9 @@ makedepends=('gcc-libs' 'libffi' 'python2' 'ocaml' "gcc=${_gcc_ver}" 'groff'
 source=("http://llvm.org/releases/${pkgver}/${pkgbase}-${pkgver}.src.tar.xz"
         "http://llvm.org/releases/$pkgver/cfe-$pkgver.src.tar.xz"
         "http://llvm.org/releases/$pkgver/compiler-rt-$pkgver.src.tar.xz")
-md5sums=('bf8b3a2c79e61212c5409041dfdbd319'
-         '0acd026b5529164197563d135a8fd83e'
-         '1c6975daf30bb3b0473b53c3a1a6ff01')
+md5sums=('07a7a74f3c6bd65de4702bf941b511a0'
+         'cc99e7019bb74e6459e80863606250c5'
+         'd6fcbe14352ffb708e4d1ac2e48bb025')
 
 prepare() {
     cd ${srcdir}/${pkgbase}-${pkgver}.src
@@ -49,7 +49,6 @@ build() {
             -DFFI_INCLUDE_DIR:PATH="${_ffi_include_flags#-I}" \
             -DFFI_LIBRARY_DIR:PATH="${_ffi_libs_flags#-L}" \
             -DLLVM_BUILD_LLVM_DYLIB:BOOL=ON \
-            -DLLVM_DYLIB_EXPORT_ALL:BOOL=ON \
             -DLLVM_LINK_LLVM_DYLIB:BOOL=ON \
             -DLLVM_BINUTILS_INCDIR:PATH=/usr/include \
             "../${pkgbase}-${pkgver}.src"

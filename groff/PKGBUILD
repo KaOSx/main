@@ -1,16 +1,16 @@
 
 pkgname=groff
 pkgver=1.22.3
-pkgrel=7
+pkgrel=8
 pkgdesc="GNU troff text-formatting system"
 arch=('x86_64')
 url="http://www.gnu.org/software/groff/groff.html"
 license=('GPL')
 depends=('perl' 'gcc-libs' 'texinfo')
 makedepends=('netpbm' 'psutils' 'ghostscript')
-optdepends=('netpbm: for use together with man -H command interaction in browsers'
-            'psutils: for use together with man -H command interaction in browsers')
-source=("ftp://ftp.gnu.org/gnu/groff/groff-$pkgver.tar.gz"
+optdepends=('netpbm: to use together with man -H command interaction in browsers'
+            'psutils: to use together with man -H command interaction in browsers')
+source=("ftp://ftp.gnu.org/gnu/groff/${pkgname}-${pkgver}.tar.gz"
         'site.tmac'
         'gropdf.patch')
 options=('!docs' '!emptydirs')
@@ -20,7 +20,7 @@ md5sums=('cc825fa64bc7306a885f2fb2268d3ec5'
          '96f261605bd4b31c1f0b56cf590cf459')
 
 build() {
-  cd $srcdir/$pkgname-$pkgver
+  cd ${pkgname}-${pkgver}
   # https://savannah.gnu.org/bugs/index.php?43581
   patch -p1 -i "${srcdir}/gropdf.patch"
   
@@ -30,25 +30,24 @@ build() {
 }
 
 check() {
-  cd $srcdir/$pkgname-$pkgver
+  cd ${pkgname}-${pkgver}
   
   make check
 }
 
 
 package() {
-  cd $srcdir/$pkgname-$pkgver
-  make DESTDIR=$pkgdir install
+  cd ${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install
   
   # needed for xman
-  ln -s eqn $pkgdir/usr/bin/geqn
-  ln -s tbl $pkgdir/usr/bin/gtbl
-  ln -s soelim $pkgdir/usr/bin/zsoelim
+  ln -s eqn ${pkgdir}/usr/bin/geqn
+  ln -s tbl ${pkgdir}/usr/bin/gtbl
+  ln -s soelim ${pkgdir}/usr/bin/zsoelim
   
   # Fix some issues when encoding to utf8 man pages
-  #  The output chars don't match keyboard chars...
-  cat $srcdir/site.tmac >> \
-    $pkgdir/usr/share/groff/site-tmac/man.local
-  cat $srcdir/site.tmac >> \
-    $pkgdir/usr/share/groff/site-tmac/mdoc.local
+  cat ${srcdir}/site.tmac >> \
+    ${pkgdir}/usr/share/groff/site-tmac/man.local
+  cat ${srcdir}/site.tmac >> \
+    ${pkgdir}/usr/share/groff/site-tmac/mdoc.local
 }
