@@ -1,7 +1,7 @@
 
 pkgname=libmp4v2
 pkgver=2.0.0
-pkgrel=3
+pkgrel=4
 pkgdesc="MPEG-4 library"
 arch=('x86_64')
 license=('MPL')
@@ -12,14 +12,14 @@ source=("http://mp4v2.googlecode.com/files/mp4v2-${pkgver}.tar.bz2")
 md5sums=('c91f06711225b34b4c192c9114887b14')
 
 build() {
-  cd "${srcdir}/mp4v2-${pkgver}"
+  cd mp4v2-${pkgver}
 
   ./configure --prefix=/usr
   make
 }
 
 package() {
-  cd "${srcdir}/mp4v2-${pkgver}"
+  cd mp4v2-${pkgver}
   
   make DESTDIR=${pkgdir} install
   make DESTDIR=${pkgdir} install-man

@@ -1,7 +1,7 @@
 
 pkgname=pinentry
 pkgver=0.9.7
-pkgrel=1
+pkgrel=2
 pkgdesc="Collection of dialog programs that allow GnuPG to read passphrases and PIN numbers in a secure manner. "
 arch=('x86_64')
 license=('GPL')
@@ -9,12 +9,11 @@ url="https://www.gnupg.org/related_software/pinentry/"
 depends=('ncurses' 'libcap>=2.16')
 makedepends=('qt5-base')
 optdepends=('qt5-base: for qt backend')  
-install=pinentry.install
-source=("ftp://ftp.gnupg.org/gcrypt/pinentry/$pkgname-$pkgver.tar.bz2")
+source=("ftp://ftp.gnupg.org/gcrypt/pinentry/${pkgname}-${pkgver}.tar.bz2")
 md5sums=('9510b2de013e818dab619e468298703a')
 
 build() {
-  cd $srcdir/$pkgname-$pkgver
+  cd ${pkgname}-${pkgver}
   
   ./configure --prefix=/usr \
 	--enable-pinentry-curses \
@@ -26,7 +25,7 @@ build() {
 }
 
 package() {
-  cd $srcdir/$pkgname-$pkgver
+  cd ${pkgname}-${pkgver}
   
   make DESTDIR=${pkgdir} install
 }

@@ -1,7 +1,7 @@
 
 pkgname=libpgf
 pkgver=6.14.12
-pkgrel=2
+pkgrel=3
 pkgdesc="One of the best image compression algorithms for natural images, best for natural and aerial images with a better compression efficiency than JPEG"
 arch=('x86_64')
 url="http://www.libpgf.org"
@@ -12,7 +12,7 @@ source=("http://sourceforge.net/projects/libpgf/files/libpgf/${pkgver}/${pkgname
 md5sums=('a2b13832e23ad9026bd249d57b6c26da')
 
 build() {
-  cd "${srcdir}/${pkgname}"
+  cd ${pkgname}
   dos2unix configure.ac
   
   ./autogen.sh
@@ -21,7 +21,7 @@ build() {
 }
 
 package() {
-  cd "${srcdir}/${pkgname}"
+  cd ${pkgname}
   
   make DESTDIR=${pkgdir} install
 }

@@ -1,7 +1,7 @@
 
 pkgname=libplist
 pkgver=1.12
-pkgrel=1
+pkgrel=2
 pkgdesc="A library to handle Apple Property List format whereas it's binary or XML"
 url="http://libimobiledevice.org/"
 arch=('x86_64')
@@ -13,15 +13,14 @@ source=("http://www.libimobiledevice.org/downloads/$pkgname-$pkgver.tar.bz2")
 md5sums=('8b04b0f09f2398022dcd4fba75012997')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
-  PYTHON=/usr/bin/python2
   ./configure --prefix=/usr  
   make
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
-  make DESTDIR="${pkgdir}" install
+  make DESTDIR=${pkgdir} install
 }

@@ -1,7 +1,7 @@
 
 pkgname=libproxy
 pkgver=0.4.12
-pkgrel=1
+pkgrel=2
 pkgdesc="A library that provides automatic proxy configuration management"
 arch=('x86_64')
 url="http://libproxy.github.io/libproxy"
@@ -16,7 +16,7 @@ options=('!libtool')
 md5sums=('258d89cc052e0a3c09aa1f42d7f93045')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   mkdir build
   
   cd build
@@ -32,7 +32,7 @@ build() {
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}/build"
+  cd ${pkgname}-${pkgver}/build
   
   make DESTDIR="${pkgdir}" install
 }
