@@ -1,7 +1,7 @@
 
 pkgname=gnuplot 
 pkgver=5.0.3
-pkgrel=1
+pkgrel=2
 pkgdesc="Plotting package which outputs to X11, PostScript, PNG, GIF, and others" 
 arch=('x86_64') 
 url="http://www.gnuplot.info" 
@@ -9,11 +9,11 @@ license=('custom')
 depends=('readline' 'gd' 'pango' 'libjpeg-turbo' 'qt5-svg' 'gnutls') 
 makedepends=('texinfo' 'texlive-core' 'texlive-latexextra' 'qtchooser' 'qt5-tools') 
 install=gnuplot.install 
-source=("http://downloads.sourceforge.net/sourceforge/gnuplot/$pkgname-$pkgver.tar.gz")
+source=("http://downloads.sourceforge.net/sourceforge/gnuplot/${pkgname}-${pkgver}.tar.gz")
 md5sums=('425ec74f34e54298e48b8c85e546d4ad')
 
 build() {
-  cd $srcdir/$pkgname-$pkgver
+  cd ${pkgname}-${pkgver}
 
   # fix default source location; use the GDFONTPATH variable to modify at runtime 
   sed -i 's|/usr/X11R6/lib/X11/fonts/truetype|/usr/share/fonts/TTF|' src/variable.c
@@ -33,10 +33,10 @@ build() {
 
 
 package() {
-  cd $srcdir/$pkgname-$pkgver
-  make pkglibexecdir=/usr/bin DESTDIR=$pkgdir install 
+  cd ${pkgname}-${pkgver}
+  make pkglibexecdir=/usr/bin DESTDIR=${pkgdir} install 
 
-  install -Dm644 Copyright $pkgdir/usr/share/licenses/$pkgname/Copyright
+  install -Dm644 Copyright ${pkgdir}/usr/share/licenses/${pkgname}/Copyright
 
-  rm -f $pkgdir/usr/share/texmf-dist/ls-R
+  rm -f ${pkgdir}/usr/share/texmf-dist/ls-R
 }

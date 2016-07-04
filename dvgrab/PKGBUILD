@@ -1,7 +1,7 @@
 
 pkgname=dvgrab
 pkgver=3.5
-pkgrel=3
+pkgrel=4
 pkgdesc="Saves audio and video data from an IEEE (FireWire) digital source"
 arch=('x86_64')
 url="http://www.kinodv.org"
@@ -12,14 +12,14 @@ source=("http://sourceforge.net/projects/kino/files/dvgrab/${pkgver}/${pkgname}-
 md5sums=('b39a242ce63e80fc347ab59931f75649')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
   ./configure --prefix=/usr
   make
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
-  make DESTDIR="${pkgdir}" install
+  make DESTDIR=${pkgdir} install
 }

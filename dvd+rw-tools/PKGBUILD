@@ -1,7 +1,7 @@
 
 pkgname=dvd+rw-tools
 pkgver=7.1
-pkgrel=5
+pkgrel=6
 pkgdesc="dvd burning tools"
 arch=('x86_64')
 license=('GPL')
@@ -19,20 +19,20 @@ md5sums=('8acb3c885c87f6838704a0025e435871'
          'b2c66b6c6243b207fbe4f6ae34fa6cba')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
-  patch -p0 -i "${srcdir}/dvd+rw-tools-7.0-dvddl.patch"
-  patch -p1 -i "${srcdir}/dvd+rw-tools-7.0-glibc2.6.90.patch"
-  patch -p0 -i "${srcdir}/dvd+rw-tools-7.0-wctomb.patch"
-  patch -p1 -i "${srcdir}/dvd+rw-tools-7.0-wexit.patch"
+  cd ${pkgname}-${pkgver}
+  patch -p0 -i ${srcdir}/dvd+rw-tools-7.0-dvddl.patch
+  patch -p1 -i ${srcdir}/dvd+rw-tools-7.0-glibc2.6.90.patch
+  patch -p0 -i ${srcdir}/dvd+rw-tools-7.0-wctomb.patch
+  patch -p1 -i ${srcdir}/dvd+rw-tools-7.0-wexit.patch
 
   make
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
-  install -m755 -d "${pkgdir}/usr/bin"
-  install -m755 -d "${pkgdir}/usr/share/man/man1"
+  cd ${pkgname}-${pkgver}
+  install -m755 -d ${pkgdir}/usr/bin
+  install -m755 -d ${pkgdir}/usr/share/man/man1
 
-  install -m755 growisofs dvd+rw-booktype dvd+rw-format dvd+rw-mediainfo dvd-ram-control "${pkgdir}/usr/bin/"
+  install -m755 growisofs dvd+rw-booktype dvd+rw-format dvd+rw-mediainfo dvd-ram-control ${pkgdir}/usr/bin/
   install -m644 growisofs.1 ${pkgdir}/usr/share/man/man1/growisofs.1
 }

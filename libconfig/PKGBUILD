@@ -1,26 +1,25 @@
 
 pkgname=libconfig
-pkgver=1.6
-pkgrel=1
+pkgver=1.5
+pkgrel=2
 pkgdesc="C/C++ library for processing configuration files"
 arch=('x86_64')
 url="http://hyperrealm.com/libconfig/libconfig.html"
 license=('LGPL')
 depends=('gcc-libs' 'texinfo')
-install=libconfig.install
 options=('!libtool' '!emptydirs' 'zipman')
-source=("https://github.com/hyperrealm/libconfig/archive/v$pkgver.tar.gz")
-md5sums=('2ccd24b6a2ee39f7ff8a3badfafb6539')
+source=("http://www.hyperrealm.com/libconfig/$pkgname-$pkgver.tar.gz")
+md5sums=('a939c4990d74e6fc1ee62be05716f633')
 
 build() {
-  cd $pkgname-$pkgver
+  cd ${pkgname}-${pkgver}
   
   ./configure --prefix=/usr
   make
 }
 
 package() {
-  cd $pkgname-$pkgver
+  cd ${pkgname}-${pkgver}
   
   make DESTDIR=${pkgdir} install
   rm ${pkgdir}/usr/share/info/dir

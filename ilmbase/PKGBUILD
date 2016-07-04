@@ -1,7 +1,7 @@
 
 pkgname=ilmbase
 pkgver=2.2.0
-pkgrel=1
+pkgrel=2
 pkgdesc="IlmThread is a thread abstraction library for use with OpenEXR"
 url="http://www.openexr.com"
 arch=('x86_64')
@@ -16,7 +16,7 @@ md5sums=('b540db502c5fa42078249f43d18a4652'
          '27ff3915e03964f85a9e9fb896a93479')
 
 build() {
-  cd ${srcdir}/$pkgname-$pkgver
+  cd $pkgname-$pkgver
   patch -p1 -i  ${srcdir}/pkgconfig.patch
   patch -p1 -i  ${srcdir}/undefined.patch
 
@@ -25,13 +25,13 @@ build() {
 }
 
 check() {
-  cd ${srcdir}/$pkgname-$pkgver
+  cd $pkgname-$pkgver
 
   make check || true
 }
 
 package() {
-  cd ${srcdir}/$pkgname-$pkgver
+  cd $pkgname-$pkgver
   
   make DESTDIR=${pkgdir} install
   install -D -m644 COPYING $pkgdir/usr/share/licenses/$pkgname/COPYING

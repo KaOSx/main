@@ -1,7 +1,7 @@
 
 pkgname=protobuf
 pkgver=2.6.1
-pkgrel=1
+pkgrel=2
 pkgdesc="A way of encoding structured data in an efficient yet extensible format."
 arch=('x86_64')
 url="https://github.com/google/protobuf/"
@@ -9,18 +9,18 @@ license=('APACHE')
 depends=('gcc-libs' 'zlib')
 makedepends=('python2' 'python2-setuptools')
 options=('!libtool')
-source=("https://github.com/google/protobuf/releases/download/$pkgver/$pkgname-$pkgver.tar.bz2")
+source=("https://github.com/google/protobuf/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.bz2")
 md5sums=('11aaac2d704eef8efd1867a807865d85')
 
 build() {
-  cd $srcdir/$pkgname-$pkgver
+  cd ${pkgname}-${pkgver}
   
   ./autogen.sh 
   ./configure --prefix=/usr --disable-static 
 }
 
 package() {
-  cd $srcdir/$pkgname-$pkgver
+  cd ${pkgname}-${pkgver}
 
-  make DESTDIR=$pkgdir install
+  make DESTDIR=${pkgdir} install
 }

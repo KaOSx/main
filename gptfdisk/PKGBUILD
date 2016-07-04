@@ -1,27 +1,27 @@
 
 pkgname=gptfdisk
 pkgver=1.0.1
-pkgrel=3
-pkgdesc="A text-mode partitioning tool that works on Globally Unique Identifier (GUID) Partition Table (GPT) disks"
+pkgrel=4
+pkgdesc="Text-mode partitioning tool that works on Globally Unique Identifier (GUID) Partition Table (GPT) disks"
 arch=('x86_64')
 url="http://www.rodsbooks.com/gdisk/"
 license=('GPL2')
 depends=('gcc-libs' 'util-linux' 'popt' 'icu')
 provides=("gdisk=$pkgver")
-source=("http://downloads.sourceforge.net/project/gptfdisk/$pkgname/$pkgver/$pkgname-$pkgver.tar.gz")
+source=("http://downloads.sourceforge.net/project/gptfdisk/${pkgname}/${pkgver}/${pkgname}-${pkgver}.tar.gz")
 md5sums=('d7f3d306b083123bcc6f5941efade586')
 
 build() {
-  cd "$srcdir/$pkgname-$pkgver"
+  cd ${pkgname}-${pkgver}
 
   make
 }
 
 package () {
-  cd "$srcdir/$pkgname-$pkgver"
+  cd ${pkgname}-${pkgver}
 
-  install -d "$pkgdir"/usr/{bin,share/{doc/gdisk,man/man8}}
-  install -t "$pkgdir/usr/bin" {,c,s}gdisk fixparts
-  install -m644 -t "$pkgdir/usr/share/man/man8" {{,c,s}gdisk,fixparts}.8
-  install -m644 -t "$pkgdir/usr/share/doc/gdisk" README NEWS
+  install -d $pkgdir/usr/{bin,share/{doc/gdisk,man/man8}}
+  install -t $pkgdir/usr/bin {,c,s}gdisk fixparts
+  install -m644 -t $pkgdir/usr/share/man/man8 {{,c,s}gdisk,fixparts}.8
+  install -m644 -t $pkgdir/usr/share/doc/gdisk README NEWS
 }

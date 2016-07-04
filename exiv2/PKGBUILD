@@ -1,7 +1,7 @@
 
 pkgname=exiv2
 pkgver=0.25
-pkgrel=1
+pkgrel=2
 pkgdesc="Exif and Iptc metadata manipulation library and tools."
 arch=('x86_64')
 url="http://exiv2.org"
@@ -12,14 +12,14 @@ source=("http://www.exiv2.org/${pkgname}-${pkgver}.tar.gz")
 md5sums=('258d4831b30f75a01e0234065c6c2806')
 
 build() {
-  cd ${srcdir}/${pkgname}-${pkgver}
+  cd ${pkgname}-${pkgver}
   
   CPPFLAGS="-D_FILE_OFFSET_BITS=64" ./configure --prefix=/usr
   make
 }
 
 package() {
-  cd ${srcdir}/${pkgname}-${pkgver}
+  cd ${pkgname}-${pkgver}
   
   make DESTDIR=${pkgdir} install
 }

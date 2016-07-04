@@ -1,25 +1,25 @@
 
 pkgname=geos
 pkgver=3.5.0
-pkgrel=1
+pkgrel=2
 pkgdesc="A C++ port of the Java Topology Suite"
 arch=('x86_64')
 url="http://trac.osgeo.org/geos/"
 license=('LGPL')
 depends=('gcc-libs' 'bash')
 options=('!libtool' '!emptydirs')
-source=("http://download.osgeo.org/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
+source=("http://download.osgeo.org/geos/${pkgname}-${pkgver}.tar.bz2")
 md5sums=('136842690be7f504fba46b3c539438dd')
 
 build() {
-  cd ${srcdir}/${pkgname}-${pkgver}
+  cd ${pkgname}-${pkgver}
 
   ./configure --prefix=/usr
   make
 }
 
 package() {
-  cd ${srcdir}/${pkgname}-${pkgver}
+  cd ${pkgname}-${pkgver}
   
   make DESTDIR=${pkgdir} install
 }

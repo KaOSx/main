@@ -1,31 +1,31 @@
 
 pkgname=glu
 pkgver=9.0.0
-pkgrel=5
+pkgrel=6
 pkgdesc="Mesa OpenGL Utility library"
 arch=('x86_64')
 url="http://cgit.freedesktop.org/mesa/glu/"
 license=('LGPL')
 depends=('libgl')
 options=('!libtool')
-source=("ftp://ftp.freedesktop.org/pub/mesa/glu/$pkgname-$pkgver.tar.bz2")
+source=("ftp://ftp.freedesktop.org/pub/mesa/glu/${pkgname}-${pkgver}.tar.bz2")
 md5sums=('be9249132ff49275461cf92039083030')
 
 build() {
-  cd "$srcdir/$pkgname-$pkgver"
+  cd ${pkgname}-${pkgver}
 
   ./configure --prefix=/usr --disable-static
   make
 }
 
 check() {
-  cd "$srcdir/$pkgname-$pkgver"
+  cd ${pkgname}-${pkgver}
 
   make -k check
 }
 
 package() {
-  cd "$srcdir/$pkgname-$pkgver"
+  cd ${pkgname}-${pkgver}
 
-  make DESTDIR="$pkgdir/" install
+  make DESTDIR=$pkgdir/ install
 }

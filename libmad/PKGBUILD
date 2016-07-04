@@ -1,7 +1,7 @@
 
 pkgname=libmad
 pkgver=0.15.1b
-pkgrel=7
+pkgrel=8
 pkgdesc="A high-quality MPEG audio decoder"
 arch=('x86_64')
 url="http://www.underbit.com/products/mad/"
@@ -9,7 +9,7 @@ license=('GPL')
 depends=('glibc')
 makedepends=('autoconf')
 options=('!libtool')
-source=("http://downloads.sourceforge.net/sourceforge/mad/$pkgname-$pkgver.tar.gz"
+source=("http://downloads.sourceforge.net/sourceforge/mad/${pkgname}-${pkgver}.tar.gz"
         'libmad.patch'
         'amd64-64bit.diff' 
         'frame_length.diff' 
@@ -21,11 +21,11 @@ md5sums=('1be543bc30c56fb6bea1d7bf6a64e66c'
          '3e52afe2103f367810a18bef9e82eb9f')
          
 build() {
-  cd $srcdir/$pkgname-$pkgver
-  patch -p1 -i $srcdir/libmad.patch
-  patch -p1 -i $srcdir/amd64-64bit.diff
-  patch -p1 -i $srcdir/frame_length.diff 
-  patch -p1 -i $srcdir/optimize.diff
+  cd ${pkgname}-${pkgver}
+  patch -p1 -i ${srcdir}/libmad.patch
+  patch -p1 -i ${srcdir}/amd64-64bit.diff
+  patch -p1 -i ${srcdir}/frame_length.diff 
+  patch -p1 -i ${srcdir}/optimize.diff
   
   CFLAGS="$CFLAGS -ftree-vectorize -ftree-vectorizer-verbose=1"
   autoconf
@@ -34,7 +34,7 @@ build() {
 }
 
 package() {
-  cd $srcdir/$pkgname-$pkgver
+  cd ${pkgname}-${pkgver}
   
-  make DESTDIR=$pkgdir install
+  make DESTDIR=${pkgdir} install
 }

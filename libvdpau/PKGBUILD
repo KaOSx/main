@@ -1,7 +1,7 @@
 
 pkgname=libvdpau
 pkgver=1.1.1
-pkgrel=1
+pkgrel=2
 pkgdesc="Nvidia VDPAU library"
 arch=('x86_64')
 url="http://cgit.freedesktop.org/~aplattner/libvdpau"
@@ -13,16 +13,16 @@ source=("http://people.freedesktop.org/~aplattner/vdpau/${pkgname}-${pkgver}.tar
 md5sums=('ac8b21012035c04fd1ec8a9ae6934264')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
   ./configure --prefix=/usr --sysconfdir=/etc
   make
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
-  make DESTDIR="${pkgdir}" install 
+  cd ${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install 
 
-  install -d -m755 "${pkgdir}/usr/share/licenses/${pkgname}"
-  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/" 
+  install -d -m755 ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/ 
 }

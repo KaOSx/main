@@ -2,7 +2,7 @@
 pkgname=djvulibre
 pkgver=3.5.27
 _pkgver=3969bdfd2c904895ce091913feb7e91b2eca54ae
-pkgrel=2
+pkgrel=3
 pkgdesc="Suite to create, manipulate and view DjVu ('déjà vu') documents"
 arch=("x86_64")
 license=('GPL')
@@ -15,7 +15,7 @@ source=("http://downloads.sourceforge.net/djvu/${pkgname}-${pkgver}.tar.gz")
 md5sums=('aa4ed331f669f5a72e3c0d7f9196c4e6')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
   ./autogen.sh
   ./configure --prefix=/usr --disable-desktopfiles
@@ -23,12 +23,12 @@ build() {
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
-  make DESTDIR="${pkgdir}" install
+  cd ${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install
 
   #Install icons for mime-types.
   install -m755 -d ${pkgdir}/usr/share/icons/hicolor/{22x22,32x32,48x48,64x64}/mimetypes
   for sz in 22 32 48 64; do
-    install -m644 desktopfiles/prebuilt-hi${sz}-djvu.png "${pkgdir}/usr/share/icons/hicolor/${sz}x${sz}/mimetypes/image-vnd.djvu.mime.png"
+    install -m644 desktopfiles/prebuilt-hi${sz}-djvu.png ${pkgdir}/usr/share/icons/hicolor/${sz}x${sz}/mimetypes/image-vnd.djvu.mime.png
   done
 }
