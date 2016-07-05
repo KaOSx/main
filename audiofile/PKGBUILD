@@ -1,25 +1,25 @@
 
 pkgname=audiofile
 pkgver=0.3.6
-pkgrel=1
+pkgrel=2
 pkgdesc="Silicon Graphics Audio File Library"
 arch=('x86_64')
 url="http://www.68k.org/~michael/audiofile/"
 license=('LGPL')
 depends=('gcc-libs' 'alsa-lib' 'flac')
 options=('!libtool')
-source=("http://audiofile.68k.org/$pkgname-$pkgver.tar.gz")
+source=("http://pkgs.fedoraproject.org/repo/pkgs/audiofile/audiofile-0.3.6.tar.gz/2731d79bec0acef3d30d2fc86b0b72fd/${pkgname}-${pkgver}.tar.gz")
 md5sums=('2731d79bec0acef3d30d2fc86b0b72fd')
 
 build() {
-  cd "$srcdir/$pkgname-$pkgver"
+  cd ${pkgname}-${pkgver}
 
   ./configure --prefix=/usr
   make
 }
 
 package() {
-  cd "$srcdir/$pkgname-$pkgver"
+  cd ${pkgname}-${pkgver}
 
-  make DESTDIR="$pkgdir" install
+  make DESTDIR=${pkgdir} install
 }

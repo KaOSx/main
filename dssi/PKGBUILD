@@ -7,22 +7,22 @@ arch=("x86_64")
 url="http://dssi.sourceforge.net/"
 license=('LGPL' 'BSD' 'custom')
 depends=('gcc-libs' 'liblo' 'jack' 'libsamplerate' 'libx11')
-makedepends=('ladspa' 'pkgconfig' 'qt')
+makedepends=('ladspa' 'pkgconfig')
 options=('!libtool')
-source=("http://downloads.sourceforge.net/$pkgname/$pkgname-$pkgver.tar.gz"
-	'LICENSE')
+source=("http://downloads.sourceforge.net/dssi/${pkgname}-${pkgver}.tar.gz"
+        'LICENSE')
 md5sums=('619ab73c883b02dc37ddb37001591f8b'
-	'258ca4d0ca28c5c4d4675147621fac18')
+        '258ca4d0ca28c5c4d4675147621fac18')
 
 build() {
-  cd $srcdir/$pkgname-$pkgver
+  cd ${pkgname}-${pkgver}
   
   ./configure --prefix=/usr 
 }
 
 package() {
-  cd "$srcdir/$pkgname-$pkgver"
-  make DESTDIR="$pkgdir" install
+  cd ${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install
 
-  install -Dm644 "$srcdir/LICENSE" "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  install -Dm644 ${srcdir}/LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }

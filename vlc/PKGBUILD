@@ -36,8 +36,7 @@ source=("http://download.videolan.org/pub/videolan/vlc/${_pkgver/a}/$pkgname-$_p
 md5sums=('55666c9898f658c7fcca12725bf7dd1b')
 
 prepare() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
-  #cd "${srcdir}/${pkgname}-${_pkgver}-git"
+  cd ${pkgname}-${pkgver}
   
   #patch -p1 -i "${srcdir}/ffmpeg24.patch"
   #sed -i -e 's|5.5.0|5.5.4|' configure.ac
@@ -45,8 +44,9 @@ prepare() {
 }
 
 build() {
-  cd "${srcdir}/${pkgname}-${_pkgver/a}"
-  #cd "${srcdir}/${pkgname}-${_pkgver}-git"
+  cd ${pkgname}-${_pkgver/a}
+  
+  CXXFLAGS="-std=c++11"
 
   sed -i -e 's:truetype/freefont:TTF:g' modules/text_renderer/freetype.c
 
@@ -65,14 +65,13 @@ build() {
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${_pkgver/a}"
-  #cd "${srcdir}/${pkgname}-${_pkgver}-git"
+  cd ${pkgname}-${_pkgver/a}
 
-  make DESTDIR="${pkgdir}" install
+  make DESTDIR=${pkgdir} install
 
   for res in 16 32 48 128; do
-    install -D -m644 "${srcdir}/vlc-${_pkgver}/share/icons/${res}x${res}/vlc.png" \
-        "${pkgdir}/usr/share/icons/hicolor/${res}x${res}/apps/vlc.png"
+    install -D -m644 ${srcdir}/vlc-${_pkgver}/share/icons/${res}x${res}/vlc.png \
+        ${pkgdir}/usr/share/icons/hicolor/${res}x${res}/apps/vlc.png
   done
 }
 
