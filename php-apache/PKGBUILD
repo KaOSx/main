@@ -2,7 +2,7 @@
 pkgname=php-apache
 _pkgname=php
 pkgver=5.6.23
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 pkgdesc='Apache SAPI for PHP'
 license=('PHP')
@@ -16,14 +16,14 @@ md5sums=('147734b7e0164ebdd2dc18474fcfb309'
          'dec2cbaad64e3abf4f0ec70e1de4e8e9')
 
 prepare() {
-	cd ${srcdir}/${_pkgname}-${pkgver}
+	cd ${_pkgname}-${pkgver}
 	
 	sed '/APACHE_THREADED_MPM=/d' -i sapi/apache2handler/config.m4 -i configure
 	sed -i -e 's|#include "buffio.h"|#include "tidybuffio.h"|' ext/tidy/tidy.c
 }
 
 build() {
-	cd ${srcdir}/${_pkgname}-${pkgver}
+	cd ${_pkgname}-${pkgver}
 	
 	./configure --config-cache \
 		--prefix=/usr \
