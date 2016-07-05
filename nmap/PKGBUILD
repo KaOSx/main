@@ -1,7 +1,7 @@
 
 pkgname=nmap
 pkgver=7.12
-pkgrel=1
+pkgrel=2
 pkgdesc="Network exploration tool and security/port scanner"
 arch=('x86_64')
 url="http://nmap.org"
@@ -12,14 +12,14 @@ source=("http://nmap.org/dist/${pkgname}-${pkgver}.tar.bz2")
 md5sums=('0764f4dabe7cccda3c49fc3990b62a8a')
 
 build() {
-  cd ${srcdir}/${pkgname}-${pkgver}
+  cd ${pkgname}-${pkgver}
 
   ./configure --prefix=/usr --mandir=/usr/share/man --libexecdir=/usr/lib --without-gui
   make
 }
 
 package() {
-  cd ${srcdir}/${pkgname}-${pkgver}
+  cd ${pkgname}-${pkgver}
   make DESTDIR="${pkgdir}" install
 
   # remove zenmap uninstall script

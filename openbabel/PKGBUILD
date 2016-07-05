@@ -1,7 +1,7 @@
 
 pkgname=openbabel
 pkgver=2.3.2
-pkgrel=2
+pkgrel=3
 pkgdesc="Open, collaborative project allowing anyone to search, convert,
          analyze, or store data from molecular modeling, chemistry, solid-state materials,
          biochemistry, or related areas"
@@ -11,12 +11,17 @@ license=('GPL')
 depends=('gcc-libs' 'libxml2' 'eigen')
 makedepends=('cmake')
 options=('!libtool')
-source=("http://downloads.sourceforge.net/$pkgname/$pkgname-$pkgver.tar.gz")
+source=("http://downloads.sourceforge.net/openbabel/${pkgname}-${pkgver}.tar.gz")
 md5sums=('9b0007560d9d838b40ab4ad06daf5610')
 
+prepare() {
+  cd ${pkgname}-${pkgver}
+  
+  sed -i -e 's|if __GNUC__ == 4  //&&|if __GNUC__ >= 4  //&&|' include/openbabel/shared_ptr.h
+}
+
 build() {
-  cd "${srcdir}"
-  mkdir build
+  mkdir -p build
   
   cd build
   cmake ../${pkgname}-${pkgver} \
@@ -26,7 +31,7 @@ build() {
 }
 
 package() {
-  cd "${srcdir}/build"
+  cd build
   
   make DESTDIR="${pkgdir}" install
 }
