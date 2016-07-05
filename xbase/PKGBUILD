@@ -1,7 +1,7 @@
 
 pkgname=xbase
 pkgver=2.0.0
-pkgrel=3
+pkgrel=4
 pkgdesc="An XBase compatible C++ class library"
 arch=('x86_64')
 url='http://linux.techass.com/projects/xdb/'
@@ -18,11 +18,11 @@ md5sums=('9b29362031716a12491beb9f8cc882f2'
          '879bf5107605eee2cbec2dca116edac6')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
 
-  patch -p1 -i "${srcdir}/fix-build.patch"
-  patch -p1 -i "${srcdir}/gcc43.patch"
-  patch -p1 -i "${srcdir}/gcc47.patch"
+  patch -p1 -i ${srcdir}/fix-build.patch
+  patch -p1 -i ${srcdir}/gcc43.patch
+  patch -p1 -i ${srcdir}/gcc47.patch
   unset CPPFLAGS
  
   ./configure --host=i686-pc-linux-gnu --prefix=/usr
@@ -30,7 +30,7 @@ build() {
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
 
-  make DESTDIR="${pkgdir}" install
+  make DESTDIR=${pkgdir} install
 }
