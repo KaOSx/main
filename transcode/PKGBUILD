@@ -37,17 +37,17 @@ md5sums=('9bb25a796a8591fb764de46ee87ce505'
          '5fd43f03549c97651dcc38a6f504de1e')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
 
-  patch -p0 -i "${srcdir}/ffmpeg.patch"
-  patch -p0 -i "${srcdir}/ffmpeg-0.10.patch"
-  patch -p1 -i "${srcdir}/ffmpeg-0.11.patch"
-  patch -p1 -i "${srcdir}/ffmpeg2.patch"
-  patch -p1 -i "${srcdir}/ffmpeg-2.4.patch"
-  patch -p0 -i "${srcdir}/libav-9.patch"
-  patch -p1 -i "${srcdir}/preset-force.patch"
-  patch -p1 -i "${srcdir}/preset-free.patch"
-  sed -i 's|freetype/ftglyph.h|freetype2/ftglyph.h|' filter/subtitler/load_font.c
+  patch -p0 -i ${srcdir}/ffmpeg.patch
+  patch -p0 -i ${srcdir}/ffmpeg-0.10.patch
+  patch -p1 -i ${srcdir}/ffmpeg-0.11.patch
+  patch -p1 -i ${srcdir}/ffmpeg2.patch
+  patch -p1 -i ${srcdir}/ffmpeg-2.4.patch
+  patch -p0 -i ${srcdir}/libav-9.patch
+  patch -p1 -i ${srcdir}/preset-force.patch
+  patch -p1 -i ${srcdir}/preset-free.patch
+  sed -i 's|freetype/ftglyph.h|freetype2/freetype/ftglyph.h|' filter/subtitler/load_font.c
   
   ./configure --prefix=/usr \
     --disable-sse --disable-sse2 --disable-altivec --enable-mmx \
@@ -58,9 +58,9 @@ build() {
     --enable-x264 --enable-alsa --enable-libmpeg2 --enable-libmpeg2convert
   make
 
-  cd "${srcdir}/subtitleripper"
-  patch -p1 -i "${srcdir}/subtitleripper-0.3.4-linkingorder.patch"
-  patch -p1 -i "${srcdir}/subtitleripper-0.3.4-respect-ldflags.patch"
+  cd ${srcdir}/subtitleripper
+  patch -p1 -i ${srcdir}/subtitleripper-0.3.4-linkingorder.patch
+  patch -p1 -i ${srcdir}/subtitleripper-0.3.4-respect-ldflags.patch
   sed -e 's|^\(.*lppm.*\)$|#\1|' \
       -e 's|^\(.*D_HAVE_LIB_PPM.*\)$|#\1|' \
       -e 's/DEFINES :=/DEFINES = -DHAVE_GETLINE/' \
@@ -69,13 +69,13 @@ build() {
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
-  make DESTDIR="${pkgdir}" install
+  cd ${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install
 
-  cd "${srcdir}/subtitleripper"
-  install -m 755 pgm2txt "${pkgdir}/usr/bin/"
-  install -m 755 srttool "${pkgdir}/usr/bin/"
-  install -m 755 subtitle2pgm "${pkgdir}/usr/bin/"
-  install -m 755 subtitle2vobsub "${pkgdir}/usr/bin/"
-  install -m 755 vobsub2pgm "${pkgdir}/usr/bin/"
+  cd ${srcdir}/subtitleripper
+  install -m 755 pgm2txt ${pkgdir}/usr/bin/
+  install -m 755 srttool ${pkgdir}/usr/bin/
+  install -m 755 subtitle2pgm ${pkgdir}/usr/bin/
+  install -m 755 subtitle2vobsub ${pkgdir}/usr/bin/
+  install -m 755 vobsub2pgm ${pkgdir}/usr/bin/
 }

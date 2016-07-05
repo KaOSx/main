@@ -20,6 +20,8 @@ md5sums=('a1c70e535c61dd9242ac9f6ae58899d0')
 
 build() {
   cd mlt-${pkgver}
+  
+  CXXFLAGS="-std=c++11"
 
   ./configure --prefix=/usr \
               --enable-gpl \

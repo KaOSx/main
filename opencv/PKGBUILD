@@ -17,17 +17,20 @@ replaces=('opencv-qt5')
 provides=('opencv-qt5')
 source=("https://github.com/Itseez/opencv/archive/${_pkgver}.tar.gz"
         "opencv_contrib-${_pkgver}::https://github.com/Itseez/opencv_contrib/archive/${_pkgver}.tar.gz"
-        "https://github.com/alalek/opencv/commit/24dbb43c096691d0333cacf231e22f1369f8c826.patch")
+        "https://github.com/alalek/opencv/commit/24dbb43c096691d0333cacf231e22f1369f8c826.patch"
+        'opengl.diff')
 md5sums=('70e1dd07f0aa06606f1bc0e3fa15abd3'
          'a822839ad3ab79ff837c16785ea9dd10'
-         '5bd9cd736b171c15cedee3a32a0c47ff')
+         '5bd9cd736b171c15cedee3a32a0c47ff'
+         '20bc30c514f6f01cfbaaa7e1e0fcb39b')
 
 build() {
-  cd "$srcdir/opencv-${_pkgver}"
+  cd ${pkgname}-${_pkgver}
   # fix cannot find -lippicv when building with opencv 3.1.0
   patch -p1 -i ${srcdir}/24dbb43c096691d0333cacf231e22f1369f8c826.patch
+  patch -p1 -i ${srcdir}/opengl.diff
  
-  mkdir build 
+  mkdir -p build 
   cd build
 
   cmake .. -DCMAKE_BUILD_TYPE=Release \
@@ -40,7 +43,7 @@ build() {
         -DINSTALL_PYTHON_EXAMPLES=ON \
         -DWITH_XINE=ON \
         -DWITH_QT=ON \
-	-DWITH_OPENGL=ON \
+        -DWITH_OPENGL=ON \
         -DWITH_TBB=OFF \
         -DWITH_CUDA=OFF \
         -DWITH_GTK=OFF \
@@ -50,11 +53,11 @@ build() {
 }
 
 package() {
-  cd "$srcdir/opencv-${_pkgver}/build"
-  make DESTDIR="$pkgdir" install
+  cd ${pkgname}-${_pkgver}/build
+  make DESTDIR=${pkgdir} install
 
   cd ..
-  install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
 
 

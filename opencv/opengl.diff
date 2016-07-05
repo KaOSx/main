@@ -1,0 +1,16 @@
+--- a/modules/highgui/src/window_QT.cpp	2015-12-18 10:02:16.000000000 -0500
++++ b/modules/highgui/src/window_QT.cpp	2016-07-05 12:47:09.651354310 -0400
+@@ -54,11 +54,8 @@
+ #include <unistd.h>
+ #endif
+ 
+-#ifdef HAVE_QT_OPENGL
+-    #ifdef Q_WS_X11
+-        #include <GL/glx.h>
+-    #endif
+-#endif
++#include <GL/glx.h>
++
+ 
+ 
+ //Static and global first
