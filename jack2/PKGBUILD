@@ -1,7 +1,7 @@
 
 pkgname=jack2
 pkgver=1.9.10
-pkgrel=1
+pkgrel=2
 _commit=ce825c6
 pkgdesc="The next-generation JACK with SMP support"
 arch=('x86_64')
@@ -12,19 +12,17 @@ depends=('libsamplerate' 'celt' 'libffado' 'dbus' 'opus' 'dbus-python2' 'portaud
 makedepends=('python2' 'doxygen')
 optdepends=('dbus-python2: jack_control')
 provides=('jack' 'jack2-dbus')
-# Build for doxygen fix, commit 95a1162d6aecc91882e4d8b01ba7fb12f6d29d1c Dec 11 2012, remove with 1.9.9.10 or above
-#source=("http://sourceforge.net/projects/kdeos/files/Sources/jack/jack2.tar.xz"
-source=("https://github.com/jackaudio/jack2/tarball/master/jack2-${pkgver}.tar.gz"
+source=("https://github.com/jackaudio/jack2/archive/v${pkgver}.tar.gz"
         '99-audio.conf'
         '40-hpet-permissions.rules')
-md5sums=('SKIP'
+md5sums=('2db990e7c09e4cc163f40add01f6867d'
          '4d928a76e3f3d77d037c42ab75ac0f0b'
          '23eba69d2dbbb800f68176e5d38b9af5')
 
 build() {
-  cd "${srcdir}/jackaudio-${pkgname}-${_commit}"
+  cd ${pkgname}-${pkgver}
   # fix doxygen dir
-  sed -i 's|build/default/html|html|' ${srcdir}/jackaudio-${pkgname}-${_commit}/wscript
+  sed -i 's|build/default/html|html|' wscript
   
   LDFLAGS="$LDFLAGS,--no-as-needed -lm" python2 ./waf configure \
     --prefix=/usr \
@@ -41,15 +39,12 @@ build() {
 }
 
 package() {
-  cd "${srcdir}/jackaudio-${pkgname}-${_commit}"
+  cd ${pkgname}-${pkgver}
 
-  python2 waf install --destdir="${pkgdir}"
+  python2 waf install --destdir=${pkgdir}
 
   # configure realtime access/scheduling
-  install -Dm644 "${srcdir}/99-audio.conf" \
-    "${pkgdir}/etc/security/limits.d/99-audio.conf"
-
-  install -Dm644 "${srcdir}/40-hpet-permissions.rules" \
-    "${pkgdir}/usr/lib/udev/rules.d/40-hpet-permissions.rules"
+  install -Dm644 ${srcdir}/99-audio.conf ${pkgdir}/etc/security/limits.d/99-audio.conf
+  install -Dm644 ${srcdir}/40-hpet-permissions.rules ${pkgdir}/usr/lib/udev/rules.d/40-hpet-permissions.rules
 }
 

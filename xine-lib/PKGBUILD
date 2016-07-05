@@ -1,7 +1,7 @@
 
 pkgname=xine-lib
 pkgver=1.2.6
-pkgrel=5
+pkgrel=6
 pkgdesc="A multimedia playback engine"
 arch=('x86_64')
 url="http://www.xine-project.org"
@@ -32,7 +32,7 @@ md5sums=('02ee3c2380273989b4b016903209e05e'
          'eba8ea7de59c0d5a25e475bbd129341d')
 
 build() {
-  cp accel_vaapi.h ${pkgname}-${pkgver}/src/xine-engine/
+  #cp accel_vaapi.h ${pkgname}-${pkgver}/src/xine-engine/
   cd "${srcdir}/${pkgname}-${pkgver}"
   
   ./configure --prefix=/usr \
