@@ -2,7 +2,7 @@
 pkgname=telepathy-qt5
 _pkgname=telepathy-qt
 pkgver=0.9.7
-pkgrel=1
+pkgrel=2
 pkgdesc="A library for Qt-based Telepathy clients."
 arch=('x86_64')
 url="http://telepathy.freedesktop.org"
@@ -16,17 +16,15 @@ source=("http://telepathy.freedesktop.org/releases/telepathy-qt/$_pkgname-$pkgve
 md5sums=('86470dd3d7f6de8b8f4f36165486d42f')
 
 prepare() {
-  cd ${srcdir}/${_pkgname}-${pkgver}
+  cd ${_pkgname}-${pkgver}
   
   #sed -i -e 's|add_definitions(-D_BSD_SOURCE)|add_definitions(-D_BSD_SOURCE -D_DEFAULT_SOURCE)|' ${srcdir}/${_pkgname}-${pkgver}/cmake/modules/TelepathyDefaults.cmake
 }
 
 build() {
-    cd ${srcdir} 
-    #git clone -b farstream-0.2-port https://github.com/davidedmundson/telepathy-qt.git
-
-    mkdir build
+    mkdir -p build
     cd build
+    
     cmake ../${_pkgname}-${pkgver} \
         -DCMAKE_BUILD_TYPE=Release \
         -DCMAKE_INSTALL_PREFIX=/usr \
