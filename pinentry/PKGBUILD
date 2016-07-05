@@ -15,10 +15,11 @@ md5sums=('9510b2de013e818dab619e468298703a')
 build() {
   cd ${pkgname}-${pkgver}
   
+  CXXFLAGS="-std=c++11"
+  
   ./configure --prefix=/usr \
 	--enable-pinentry-curses \
 	--disable-pinentry-gtk2 \
-        --enable-pinentry-qt4 \
 	--enable-fallback-curses \
 	--disable-ncurses
   make

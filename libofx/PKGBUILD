@@ -2,25 +2,25 @@
 pkgbase=libofx
 pkgname=('libofx' 'libofx-doc')
 pkgver=0.9.10
-pkgrel=1
+pkgrel=2
 pkgdesc="API for the OFX banking standard"
 arch=('x86_64')
 url="http://libofx.sourceforge.net"
 license=('GPL')
 depends=('opensp' 'curl' 'libxml++')
 checkdepends=('gnupg')
-source=("http://downloads.sourceforge.net/libofx/$pkgname-$pkgver.tar.gz")
+source=("http://downloads.sourceforge.net/libofx/${pkgbase}-${pkgver}.tar.gz")
 md5sums=('adfa83a08d76b047f89a82d5b484f79b' )
 
 build() {
-  cd "$srcdir/$pkgbase-$pkgver"
+  cd $${pkgbase}-${pkgver}
 
   ./configure --prefix=/usr
-  make
+  make CXXFLAGS="-std=c++11"
 }
 
 check() {
-  cd "$srcdir/$pkgbase-$pkgver"
+  cd ${pkgbase}-${pkgver}
   
   make check
 }
@@ -28,15 +28,15 @@ check() {
 package_libofx() {
   options=('!libtool' '!docs')
 
-  cd "$srcdir/$pkgbase-$pkgver"
-  make DESTDIR="$pkgdir" install
+  cd ${pkgbase}-${pkgver}
+  make DESTDIR=$pkgdir install
 }
 
 package_libofx-doc() {
   pkgdesc="Documention of the OFX banking standard API"
   depends=()
 
-  cd "$srcdir/$pkgbase-$pkgver"
-  make DESTDIR="$pkgdir" install-docDATA
-  make -C doc DESTDIR="$pkgdir" install
+  cd ${pkgbase}-${pkgver}
+  make DESTDIR=$pkgdir install-docDATA
+  make -C doc DESTDIR=$pkgdir install
 }

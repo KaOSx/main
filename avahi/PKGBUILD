@@ -2,14 +2,13 @@
 pkgname=avahi
 pkgver=0.6.32
 _pkgver=0.6.32
-pkgrel=1
+pkgrel=2
 pkgdesc="A multicast/unicast DNS-SD framework"
 arch=('x86_64')
 url="http://www.avahi.org/"
 license=('LGPL')
 depends=('dbus' 'libcap' 'libdaemon' 'gdbm' 'glib2' 'expat')
 makedepends=('dbus-python2' 'gobject-introspection' 'intltool')
-#optdepends=('qt: qt4 bindings')
 backup=(etc/avahi/avahi-daemon.conf etc/avahi/services/{sftp-,}ssh.service)
 install=avahi.install
 options=('!libtool')
@@ -18,13 +17,13 @@ source=("https://github.com/lathiat/avahi/releases/download/v${_pkgver}/${pkgnam
 md5sums=('22b5e705d3eabb31d26f2e1e7b074013')
 
 prepare() {
-  cd ${srcdir}/${pkgname}-${_pkgver}
+  cd ${pkgname}-${_pkgver}
   
   NOCONFIGURE=1 ./autogen.sh
 }
 
 build() {
-  cd ${srcdir}/${pkgname}-${_pkgver}
+  cd ${pkgname}-${_pkgver}
 
     ./configure --prefix=/usr \
     --sysconfdir=/etc \
@@ -52,13 +51,13 @@ build() {
 }
 
 package() {
-	cd "${srcdir}/${pkgname}-${_pkgver}"
-	make DESTDIR="${pkgdir}" install
+	cd ${pkgname}-${_pkgver}
+	make DESTDIR=${pkgdir} install
 	
 	rm ${pkgdir}/var -rfv
-	rm -fr "${pkgdir}"/etc/rc.d
+	rm -fr ${pkgdir}/etc/rc.d
 
-	cd "${pkgdir}"
+	cd ${pkgdir}
 	sed -i '1c #!/usr/bin/python2' usr/bin/avahi-bookmarks
 	# howl and mdnsresponder compatability
 	(cd usr/include; ln -s avahi-compat-libdns_sd/dns_sd.h dns_sd.h; ln -s avahi-compat-howl howl)
