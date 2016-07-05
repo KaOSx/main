@@ -2,7 +2,7 @@
 pkgname=qca-qt5
 _pkgname=qca
 pkgver=2.1.1
-pkgrel=1
+pkgrel=2
 pkgdesc="Qt Cryptographic Architecture"
 arch=('x86_64')
 url="http://delta.affinix.com/qca/"
@@ -14,12 +14,11 @@ source=("http://download.kde.org/stable/qca/${pkgver}/src/${_pkgname}-${pkgver}.
 md5sums=('657cc701316600199199a6b6cb2c73c9')
 
 prepare() {
-  cd ${srcdir}/${_pkgname}-${pkgver}
+  cd ${_pkgname}-${pkgver}
   #patch -p1 -i ${srcdir}/qt5.5.diff
 }
 
 build() {
-  cd $srcdir
   mkdir -p build
   cd build
   
@@ -32,7 +31,7 @@ build() {
 }
 
 package() {
-  cd $srcdir/build
+  cd build
   
   make DESTDIR=${pkgdir} install 
 }
