@@ -1,7 +1,7 @@
 
 pkgname=libabw
 pkgver=0.1.1
-pkgrel=1
+pkgrel=2
 pkgdesc="Libabw is library providing ability to interpret and import AbiWord documents into various applications."
 arch=('x86_64')
 url="http://www.freedesktop.org/wiki/Software/libabw/"
@@ -9,11 +9,15 @@ license=('MPL2')
 options=('!libtool')
 depends=('libwpd' 'libwpg' 'glib2' 'libgsf' 'gperf' 'librevenge')  
 makedepends=('boost')
-source=("http://dev-www.libreoffice.org/src/libabw/${pkgname}-${pkgver}.tar.xz")
-md5sums=('6be55a46078b593ec20cad9bb8730c3e')
+source=("http://dev-www.libreoffice.org/src/libabw/${pkgname}-${pkgver}.tar.xz"
+        "https://github.com/LibreOffice/libabw/commit/ee2d0729315888d1847587ad556470d2fdc883a7.diff")
+md5sums=('6be55a46078b593ec20cad9bb8730c3e'
+         'bbcdfafc2d5387eadf586fad2981d34c')
 
 build() {
-  cd "${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
+  # boost 1.60 needed patch
+  patch -p1 -i ${srcdir}/ee2d0729315888d1847587ad556470d2fdc883a7.diff
 
   ./autogen.sh
   ./configure --without-docs --enable-static=no --prefix=/usr
@@ -21,7 +25,7 @@ build() {
 }
 
 package() {
-  cd "${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
 
-  make DESTDIR="$pkgdir" install
+  make DESTDIR=${pkgdir} install
 }

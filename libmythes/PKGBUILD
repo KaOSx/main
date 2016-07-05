@@ -1,7 +1,7 @@
 
 pkgname=libmythes
 pkgver=1.2.4
-pkgrel=2
+pkgrel=3
 pkgdesc="a simple thesaurus"
 arch=('x86_64')
 url="http://hunspell.sourceforge.net/ "
@@ -13,7 +13,7 @@ source=("http://downloads.sourceforge.net/hunspell/${pkgname/lib/}-${pkgver}.tar
 md5sums=('a8c2c5b8f09e7ede322d5c602ff6a4b6')
 
 build() {
-  cd ${srcdir}/${pkgname/lib/}-$pkgver
+  cd ${pkgname/lib/}-$pkgver
   ./configure --prefix=/usr --disable-static
   make
 
@@ -22,7 +22,7 @@ build() {
 }
 
 package() {
-  cd ${srcdir}/${pkgname/lib/}-$pkgver
+  cd ${pkgname/lib/}-$pkgver
   make DESTDIR=$pkgdir install
 
   install -Dm644 ${srcdir}/${pkgname/lib/}-$pkgver/COPYING $pkgdir/usr/share/licenses/$pkgname/COPYING

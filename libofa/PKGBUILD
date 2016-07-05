@@ -1,7 +1,7 @@
 
 pkgname=libofa
 pkgver=0.9.3
-pkgrel=4
+pkgrel=5
 pkgdesc="Open Fingerprint Architecture"
 arch=('x86_64')
 url="http://code.google.com/p/musicip-libofa/"
@@ -10,11 +10,11 @@ depends=('expat' 'curl' 'fftw' 'gcc-libs')
 makedepends=('pkgconfig')
 options=('!libtool')
 source=("http://musicip-libofa.googlecode.com/files/$pkgname-$pkgver.tar.gz"
-	'gcc-4.patch' 
-	'libofa-0.9.3-gcc-4.3.patch'
-	'gcc4.5.patch'
-	'libofa-0.9.3-curl-7.21.patch'
-	'gcc-47.patch')
+        'gcc-4.patch' 
+        'libofa-0.9.3-gcc-4.3.patch'
+        'gcc4.5.patch'
+        'libofa-0.9.3-curl-7.21.patch'
+        'gcc-47.patch')
 md5sums=('51507d2c4b432bd2755f48d58471696e'
          'a6f78b90bd0f4354d022a71c3e58ef6c'
          'dd57db13770b8f8d196e8a3d3a50e713'
@@ -23,7 +23,7 @@ md5sums=('51507d2c4b432bd2755f48d58471696e'
          '69cb2996c984adc80e368109e17e48ea')
 
 build() {
-  cd ${srcdir}/${pkgname}-${pkgver}
+  cd ${pkgname}-${pkgver}
 
   patch -p0 -i ${srcdir}/gcc-4.patch
   patch -p1 -i ${srcdir}/libofa-0.9.3-gcc-4.3.patch
@@ -36,7 +36,7 @@ build() {
 }
 
 package() {
-  cd ${srcdir}/${pkgname}-${pkgver}
+  cd ${pkgname}-${pkgver}
   make DESTDIR=${pkgdir} install
   
   install -D -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
