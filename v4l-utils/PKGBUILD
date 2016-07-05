@@ -6,7 +6,7 @@ pkgdesc="Userspace tools and conversion library for Video 4 Linux"
 arch=('x86_64')
 url="http://freshmeat.net/projects/libv4l"
 license=('LGPL')
-depends=('glibc' 'gcc-libs' 'sysfsutils' 'libjpeg-turbo' 'qt5-base')
+depends=('glibc' 'gcc-libs' 'sysfsutils' 'libjpeg-turbo') # 'qt5-base')
 options=('!libtool')
 source=("http://linuxtv.org/downloads/v4l-utils/${pkgname}-${pkgver}.tar.bz2")
 md5sums=('936c9c58343840e91294e4dcec7dc05f')
@@ -14,7 +14,7 @@ md5sums=('936c9c58343840e91294e4dcec7dc05f')
 build() {
   cd ${pkgname}-${pkgver}
   
-  CXXFLAGS="-std=c++11"
+  #CXXFLAGS="-std=c++11"
 
   ./configure --prefix=/usr --sysconfdir=/etc
   make
