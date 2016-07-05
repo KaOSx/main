@@ -1,7 +1,7 @@
 
 pkgname=qimageblitz
 pkgver=0.0.6.1
-pkgrel=1
+pkgrel=2
 pkgdesc="An interm image effect library, Qt5 version"
 arch=('x86_64')
 url="http://www.kde-org"
@@ -15,8 +15,7 @@ source=("svn://anonsvn.kde.org/home/kde/trunk/kdesupport/qimageblitz")
 md5sums=('SKIP')
 
 build() {
-  cd ${srcdir}
-  mkdir build
+  mkdir -p build
   
   cd build
   cmake ../${pkgname} \
@@ -26,7 +25,7 @@ build() {
 }
 
 package() {
-  cd ${srcdir}/build
+  cd build
   
   make DESTDIR=${pkgdir} install
 }
