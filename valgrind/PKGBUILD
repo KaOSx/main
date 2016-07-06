@@ -1,7 +1,7 @@
 
 pkgname=valgrind
 pkgver=3.11.0
-pkgrel=3
+pkgrel=4
 pkgdesc="A tool to help find memory-management problems in programs"
 arch=('x86_64')
 license=('GPL')
@@ -13,14 +13,14 @@ source=("http://valgrind.org/downloads/${pkgname}-${pkgver}.tar.bz2")
 md5sums=('4ea62074da73ae82e0162d6550d3f129')
 
 build() {
-  cd ${srcdir}/${pkgname}-${pkgver}
+  cd ${pkgname}-${pkgver}
   
   ./configure --prefix=/usr --mandir=/usr/share/man --enable-only64bit  
   make
 }
 
 package() {
-  cd ${srcdir}/${pkgname}-${pkgver}
+  cd ${pkgname}-${pkgver}
   
   make DESTDIR=${pkgdir} install
 }
