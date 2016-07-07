@@ -1,7 +1,7 @@
 
 pkgname=xorg-util-macros
 pkgver=1.19.0
-pkgrel=1
+pkgrel=2
 pkgdesc="X.Org Autotools macros"
 arch=('x86_64')
 license=('custom')
@@ -10,19 +10,19 @@ source=("http://ftp.x.org/pub/individual/util/util-macros-${pkgver}.tar.bz2")
 md5sums=('1cf984125e75f8204938d998a8b6c1e1')
 
 build() {
-  cd "${srcdir}/util-macros-${pkgver}"
+  cd util-macros-${pkgver}
 
   ./configure --prefix=/usr 
   make
 }
 
 package() {
-  cd "${srcdir}/util-macros-${pkgver}" 
+  cd util-macros-${pkgver} 
 
-  make DESTDIR="${pkgdir}" install 
-  install -m755 -d "${pkgdir}/usr/lib"
+  make DESTDIR=${pkgdir} install 
+  install -m755 -d ${pkgdir}/usr/lib
 
-  mv "${pkgdir}/usr/share/pkgconfig" "${pkgdir}/usr/lib/" 
-  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
-  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/" 
+  mv ${pkgdir}/usr/share/pkgconfig ${pkgdir}/usr/lib/
+  install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
 }

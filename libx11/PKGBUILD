@@ -1,7 +1,7 @@
 
 pkgname=libx11
 pkgver=1.6.3
-pkgrel=1
+pkgrel=2
 pkgdesc="X11 client-side library"
 arch=('x86_64')
 url="http://xorg.freedesktop.org/"
@@ -9,7 +9,7 @@ depends=('libxcb' 'xproto' 'kbproto')
 makedepends=('xorg-util-macros' 'xextproto' 'xtrans' 'inputproto')
 options=('!libtool')
 license=('custom')
-source=("${url}/releases/individual/lib/libX11-${pkgver}.tar.bz2")
+source=("http://xorg.freedesktop.org/releases/individual/lib/libX11-${pkgver}.tar.bz2")
 md5sums=('2e36b73f8a42143142dda8129f02e4e0')
 
 build() {

@@ -30,7 +30,7 @@ build() {
 
 package() {
   cd wxWidgets-${pkgver}
-  make DESTDIR="${pkgdir}" install
+  make DESTDIR=${pkgdir} install
   
-  install -D -m644 docs/licence.txt "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+  install -D -m644 docs/licence.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
