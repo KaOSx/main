@@ -33,7 +33,7 @@ md5sums=('02ee3c2380273989b4b016903209e05e'
 
 build() {
   #cp accel_vaapi.h ${pkgname}-${pkgver}/src/xine-engine/
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
   ./configure --prefix=/usr \
               --with-wavpack \
@@ -44,8 +44,8 @@ build() {
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
-  make DESTDIR="${pkgdir}" install
+  make DESTDIR=${pkgdir} install
 }
 
