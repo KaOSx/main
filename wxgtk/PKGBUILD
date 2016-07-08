@@ -1,7 +1,7 @@
 
 pkgname=wxgtk
 pkgver=2.8.12.1
-pkgrel=4
+pkgrel=5
 pkgdesc="GTK+ implementation of wxWidgets API for GUI"
 arch=('x86_64')
 url="http://wxwidgets.org"
@@ -15,7 +15,7 @@ md5sums=('8c06c5941477beee213b4f2fa78be620'
          '4f989f5c62bbdaa75c3e9b0da0d636a3')
 
 build() {
-  cd "${srcdir}/wxPython-src-${pkgver}"
+  cd wxPython-src-${pkgver}
   patch -p1 -i ../wxGTK-collision.patch
 
   ./configure --prefix=/usr \
@@ -40,9 +40,9 @@ build() {
 }
 
 package() {
-  cd "${srcdir}/wxPython-src-${pkgver}"
-  make DESTDIR="${pkgdir}" install
+  cd wxPython-src-${pkgver}
+  make DESTDIR=${pkgdir} install
   
-  make -C contrib/src DESTDIR="${pkgdir}" install
-  install -D -m644 docs/licence.txt "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+  make -C contrib/src DESTDIR=${pkgdir} install
+  install -D -m644 docs/licence.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }

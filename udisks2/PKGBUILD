@@ -1,14 +1,14 @@
 
 pkgname=udisks2
 pkgver=2.1.7
-pkgrel=1
+pkgrel=2
 pkgdesc="Disk Management Service"
 arch=('x86_64')
 url="http://www.freedesktop.org/wiki/Software/udisks"
 license=('GPL')
 depends=('systemd' 'libgudev' 'sg3_utils' 'glib2' 'dbus-glib' 'polkit' 'parted' 'device-mapper'
          'libatasmart' 'lsof' 'lvm2' 'util-linux')
-makedepends=('intltool' 'docbook-xsl' 'python2')
+makedepends=('intltool' 'docbook-xsl' 'python3')
 options=('!libtool')
 source=("http://udisks.freedesktop.org/releases/udisks-$pkgver.tar.bz2"
         '10-enable-mount.rules')
@@ -16,7 +16,7 @@ md5sums=('8bccd36573b75286538bd5bd2c424f45'
          '5f6c7dcbc2e98b7814a91fbe7630ecfc')
 
 build() {
-  cd "${srcdir}/udisks-${pkgver}"
+  cd udisks-${pkgver}
   
   ./configure --prefix=/usr \
         --sysconfdir=/etc \
@@ -28,8 +28,8 @@ build() {
 }
 
 package() {
-  cd "${srcdir}/udisks-${pkgver}"
-  make DESTDIR="${pkgdir}" install
+  cd udisks-${pkgver}
+  make DESTDIR=${pkgdir} install
      bash_completiondir=/usr/share/bash-completion/completions
   
   # allow ntfs mounts
