@@ -1,7 +1,7 @@
 
 pkgname=libmpdclient
 pkgver=2.10
-pkgrel=1
+pkgrel=2
 pkgdesc='Asynchronous API library for interfacing MPD in the C, C++ & Objective C languages'
 url='http://www.musicpd.org/libs/libmpdclient/'
 license=('custom:BSD')
@@ -10,17 +10,15 @@ source=("http://www.musicpd.org/download/${pkgname}/${pkgver%.*}/${pkgname}-${pk
 md5sums=('00606c630b905aa6196330373b366c29')
 
 build() {
-	cd "${srcdir}/${pkgname}-${pkgver}"
+	cd ${pkgname}-${pkgver}
 	
 	./configure --prefix=/usr --disable-documentation
 	make
 }
 
 package() {
-	cd "${srcdir}/${pkgname}-${pkgver}"
-	make DESTDIR="${pkgdir}" install
+	cd ${pkgname}-${pkgver}
+	make DESTDIR=${pkgdir} install
 
-	cd "${pkgdir}"
-	install -d usr/share/licenses/libmpdclient
-	ln -s ../../doc/libmpdclient/COPYING usr/share/licenses/libmpdclient/COPYING
+	install -D -m 644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
