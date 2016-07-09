@@ -1,6 +1,6 @@
 
 pkgbase="llvm"
-pkgname=('llvm' 'clang' 'clang-analyzer')
+pkgname=('llvm' 'clang' 'clang-analyzer' 'lldb')
 pkgver=3.8.0
 subver=3.8.0
 _gcc_ver=5.4.0
@@ -114,3 +114,17 @@ package_clang-analyzer() {
     install -D -m644 ${srcdir}/${pkgbase}-${pkgver}.src/LICENSE.TXT ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
 
+package_lldb() {
+    pkgdesc="Next generation, high-performance debugger, built as a set of reusable components in the LLVM Project."
+    url="http://lldb.llvm.org/"
+    depends=("llvm=${pkgver}-${pkgrel}" 'libedit' 'libxml2' 'ncurses' 'python2')
+    
+    cd build/tools/lldb
+    make DESTDIR=${pkgdir} install
+    
+    # Python scripts
+    python2 -m compileall ${pkgdir}/usr/lib/python2.7/site-packages/lldb
+    python2 -O -m compileall ${pkgdir}/usr/lib/python2.7/site-packages/lldb
+    
+    install -D -m644 ${srcdir}/${pkgbase}-${pkgver}.src/LICENSE.TXT ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE    
+}

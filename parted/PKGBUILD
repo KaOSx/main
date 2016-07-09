@@ -1,7 +1,7 @@
 
 pkgname=parted
 pkgver=3.2
-pkgrel=2
+pkgrel=3
 pkgdesc="A program for creating, destroying, resizing, checking and copying partitions"
 arch=('x86_64')
 license=('GPL3')
@@ -9,21 +9,20 @@ url="http://www.gnu.org/software/parted/parted.html"
 depends=('device-mapper' 'e2fsprogs')
 makedepends=('pkgconfig')
 options=('!libtool')
-install=${pkgname}.install
 source=("http://ftp.gnu.org/gnu/${pkgname}/${pkgname}-${pkgver}.tar.xz")
 md5sums=('0247b6a7b314f8edeb618159fa95f9cb')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
 
   ./configure --prefix=/usr \
-              --disable-debug \
-              --disable-rpath
+    --disable-debug \
+    --disable-rpath
   make
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
 
-  make DESTDIR="${pkgdir}" install
+  make DESTDIR=${pkgdir} install
 }
