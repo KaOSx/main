@@ -2,13 +2,13 @@
 pkgname=opencv
 pkgver=3.1.0
 _pkgver=3.1.0
-pkgrel=2
+pkgrel=3
 pkgdesc="Open Source Computer Vision Library"
 arch=('x86_64')
 license=('BSD')
 url="http://opencv.org/"
-depends=('jasper' 'gst-plugins-base' 'openexr' 'xine-lib' 'libdc1394' 'v4l-utils' 'ffmpeg' 'qt5-base'
-         'libgphoto2' 'libwebp')
+depends=('jasper' 'gst-plugins-base' 'openexr' 'libdc1394' 'v4l-utils' 'ffmpeg' 'qt5-base'
+         'libgphoto2' 'libwebp' 'protobuf')
 makedepends=('pkgconfig' 'cmake' 'python2-numpy' 'eigen3' 'python2-sphinx' 'mesa')
 optdepends=('python2-numpy: Python 2.x interface' 'eigen3') #eigen3 for 3.0.0
 options=('!libtool')
@@ -41,7 +41,7 @@ build() {
         -DBUILD_EXAMPLES=ON \
         -DINSTALL_C_EXAMPLES=ON \
         -DINSTALL_PYTHON_EXAMPLES=ON \
-        -DWITH_XINE=ON \
+        -DWITH_XINE=OFF \
         -DWITH_QT=ON \
         -DWITH_OPENGL=ON \
         -DWITH_TBB=OFF \
