@@ -1,7 +1,7 @@
 
 pkgname=openconnect
-pkgver=7.06
-pkgrel=3
+pkgver=7.07
+pkgrel=1
 pkgdesc="Open client for Cisco AnyConnect VPN"
 arch=('x86_64')
 license=('GPL')
@@ -10,17 +10,17 @@ depends=('libxml2' 'gnutls' 'libproxy' 'vpnc')
 makedepends=('intltool' 'python2')
 options=('!libtool' '!emptydirs')
 source=("ftp://ftp.infradead.org/pub/${pkgname}/${pkgname}-${pkgver}.tar.gz")
-md5sums=('80f397911e1fed43d897d99be3d5f1a1')
+md5sums=('582692c4bd8c157daadfcc89d6680cb8')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
   ./configure --prefix=/usr --disable-static
   make
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
-  make DESTDIR="${pkgdir}" install
+  make DESTDIR=${pkgdir} install
 }
