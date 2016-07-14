@@ -1,0 +1,29 @@
+
+pkgname=rust
+pkgver=1.10.0
+pkgrel=1
+arch=('x86_64')
+pkgdesc='Systems programming language that runs fast, prevents segfaults, and guarantees thread safety.'
+url='http://www.rust-lang.org/'
+license=('MIT' 'Apache')
+makedepends=('cmake' 'curl' 'libffi' 'make' 'python2')
+options=('!strip')
+source=("http://static.rust-lang.org/dist/rustc-${pkgver}-src.tar.gz")
+md5sums=('a48fef30353fc9daa70b484b690ce5db')
+
+build() {
+  cd rustc-${pkgver}
+
+  ./configure --prefix=/usr \
+        --disable-docs \
+        --release-channel=stable
+  make CFLAGS="$CFLAGS -fPIC -w"
+}
+
+package() {
+  cd rustc-${pkgver}
+  make DESTDIR=${pkgdir} install
+
+  install -Dm644 LICENSE-APACHE ${pkgdir}/usr/share/licenses/$pkgname/LICENSE-APACHE
+  install -Dm644 LICENSE-MIT ${pkgdir}/usr/share/licenses/$pkgname/LICENSE-MIT
+}
