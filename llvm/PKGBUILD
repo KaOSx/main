@@ -13,9 +13,10 @@ source=("http://llvm.org/releases/${pkgver}/${pkgbase}-${pkgver}.src.tar.xz"
         "http://llvm.org/releases/${pkgver}/cfe-${pkgver}.src.tar.xz"
         "http://llvm.org/releases/${pkgver}/compiler-rt-${pkgver}.src.tar.xz"
         "http://llvm.org/releases/${pkgver}/lldb-${pkgver}.src.tar.xz")
-md5sums=('07a7a74f3c6bd65de4702bf941b511a0'
-         'cc99e7019bb74e6459e80863606250c5'
-         'd6fcbe14352ffb708e4d1ac2e48bb025')
+md5sums=('538467e6028bbc9259b1e6e015d25845'
+         '4ff2f8844a786edb0220f490f7896080'
+         'f140db073d2453f854fbe01cc46f3110'
+         '9e4787b71be8e432fffd31e13ac87623')
 
 prepare() {
     cd ${srcdir}/${pkgbase}-${pkgver}.src
@@ -58,6 +59,8 @@ build() {
     # install in clang packaging
     sed -i '/clang\/cmake_install.cmake/d' tools/cmake_install.cmake
     sed -i '/compiler-rt\/cmake_install.cmake/d' projects/cmake_install.cmake
+    # install in lldb
+    sed -i '/\(clang\|lldb\)\/cmake_install.cmake/d' tools/cmake_install.cmake
 }
 
 package_llvm() {
