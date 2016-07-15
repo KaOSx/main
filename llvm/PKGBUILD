@@ -127,6 +127,8 @@ package_lldb() {
     # Python scripts
     python2 -m compileall ${pkgdir}/usr/lib/python2.7/site-packages/lldb
     python2 -O -m compileall ${pkgdir}/usr/lib/python2.7/site-packages/lldb
+    # part of LLVM
+    rm ${pkgdir}/usr/lib/python2.7/site-packages/six.py
     
     install -D -m644 ${srcdir}/${pkgbase}-${pkgver}.src/LICENSE.TXT ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE    
 }
