@@ -1,7 +1,7 @@
 
 pkgname=php
-pkgver=5.6.23
-pkgrel=2
+pkgver=7.0.8
+pkgrel=1
 arch=('x86_64')
 pkgdesc='An HTML-embedded scripting language'
 license=('PHP')
@@ -49,16 +49,12 @@ replaces=('php-cgi'
          'php-xsl')
 source=("http://www.php.net/distributions/${pkgname}-${pkgver}.tar.bz2"
         'php.ini.patch'
-        'apache.conf'
         'php-fpm.conf.in.patch'
-        'logrotate.d.php-fpm'
         'php-fpm.service'
         'php-fpm.tmpfiles')
-md5sums=('147734b7e0164ebdd2dc18474fcfb309'
-         'ebeed393317ed9077a0a74df0986bad3'
-         'dec2cbaad64e3abf4f0ec70e1de4e8e9'
-         '16b5e2e4da59f15bea4c2db78a7bc8dc'
-         '25bc67ad828e8147a817410b68d8016c'
+md5sums=('d4f67b081a3c1b0b35f729ef8131cdda'
+         '58f9f18a2a8d1dc4e612b41672972360'
+         'a420804a66a6f380f0500f6db39aa649'
          '8fb5a9bc4b44617ba1b29b60c43f62a0'
          'c60343df74f8e1afb13b084d5c0e47ed')
 
@@ -72,10 +68,10 @@ prepare() {
 }
 
 build() {
-        EXTENSION_DIR=/usr/lib/php/modules
+    EXTENSION_DIR=/usr/lib/php/modules
 	export EXTENSION_DIR
-	PEAR_INSTALLDIR=/usr/share/pear
-	export PEAR_INSTALLDIR
+	#PEAR_INSTALLDIR=/usr/share/pear
+	#export PEAR_INSTALLDIR
 
 	cd ${pkgname}-${pkgver}
 	
@@ -88,7 +84,8 @@ build() {
 		--with-config-file-scan-dir=/etc/php/conf.d \
 		--disable-rpath \
 		--mandir=/usr/share/man \
-		--with-pear \
+		--without-pear \
+		--enable-zend-signals \
 		--enable-bcmath=shared \
 		--enable-calendar=shared \
 		--enable-dba=shared \
@@ -127,11 +124,9 @@ build() {
 		--with-libzip \
 		--with-mcrypt=shared \
 		--with-mhash \
-		--with-mssql=shared \
 		--with-mysql-sock=/run/mysqld/mysqld.sock \
 		--with-mysql=shared,mysqlnd \
-		--with-mysqli=shared,mysqlnd \
-		--with-openssl=shared \
+		--with-openssl \
 		--with-pcre-regex=/usr \
 		--with-pdo-mysql=shared,mysqlnd \
 		--with-pdo-odbc=shared,unixODBC,/usr \
@@ -154,8 +149,7 @@ build() {
 		--enable-pcntl \
 		--with-fpm-user=http \
 		--with-fpm-group=http \
-		--enable-embed=shared \
-		--with-pear
+		--enable-embed=shared 
 
 	make
 }
@@ -163,17 +157,14 @@ build() {
 package() {
 	cd ${pkgname}-${pkgver}
 	make -j1 INSTALL_ROOT=${pkgdir} install
-	install -d -m755 ${pkgdir}/usr/share/pear
+	#install -d -m755 ${pkgdir}/usr/share/pear
 	# install php.ini
 	install -D -m644 ${srcdir}/${pkgbase}-${pkgver}/php.ini-production ${pkgdir}/etc/php/php.ini
 	install -d -m755 ${pkgdir}/etc/php/conf.d/
 	
-	#install -D -m644 ${srcdir}/apache.conf ${pkgdir}/etc/httpd/conf/extra/php5_module.conf
-	
-	install -D -m644 ${srcdir}/logrotate.d.php-fpm ${pkgdir}/etc/logrotate.d/php-fpm
 	install -d -m755 ${pkgdir}/etc/php/fpm.d
 	install -D -m644 ${srcdir}/php-fpm.tmpfiles ${pkgdir}/usr/lib/tmpfiles.d/php-fpm.conf
-	install -D -m644 ${srcdir}/php-fpm.service ${pkgdir}/usr/lib/systemd/system/php-fpm.service
+	#install -D -m644 ${srcdir}/php-fpm.service ${pkgdir}/usr/lib/systemd/system/php-fpm.service
 
 	rm -f ${pkgdir}/usr/lib/php/modules/*.a
 	rm -r ${pkgdir}/var/run

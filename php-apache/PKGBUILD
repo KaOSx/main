@@ -1,8 +1,8 @@
 
 pkgname=php-apache
 _pkgname=php
-pkgver=5.6.23
-pkgrel=2
+pkgver=7.0.8
+pkgrel=1
 arch=('x86_64')
 pkgdesc='Apache SAPI for PHP'
 license=('PHP')
@@ -12,8 +12,8 @@ makedepends=('imap' 'mariadb' 'postfix' 'libzip' 'file' 'libjpeg-turbo' 'openssl
 backup=('etc/httpd/conf/extra/php5_module.conf')
 source=("http://www.php.net/distributions/${_pkgname}-${pkgver}.tar.bz2"
         'apache.conf')
-md5sums=('147734b7e0164ebdd2dc18474fcfb309'
-         'dec2cbaad64e3abf4f0ec70e1de4e8e9')
+md5sums=('d4f67b081a3c1b0b35f729ef8131cdda'
+         '0677a10d2e721472d6fccb470356b322')
 
 prepare() {
 	cd ${_pkgname}-${pkgver}
@@ -34,7 +34,7 @@ build() {
 		--with-config-file-scan-dir=/etc/php/conf.d \
 		--disable-rpath \
 		--mandir=/usr/share/man \
-		--with-pear \
+		--without-pear \
 		--enable-bcmath=shared \
 		--enable-calendar=shared \
 		--enable-dba=shared \
@@ -73,9 +73,7 @@ build() {
 		--with-libzip \
 		--with-mcrypt=shared \
 		--with-mhash \
-		--with-mssql=shared \
 		--with-mysql-sock=/run/mysqld/mysqld.sock \
-		--with-mysql=shared,mysqlnd \
 		--with-mysqli=shared,mysqlnd \
 		--with-openssl=shared \
 		--with-pcre-regex=/usr \
@@ -92,6 +90,7 @@ build() {
 		--with-unixODBC=shared,/usr \
 		--with-xmlrpc=shared \
 		--with-xsl=shared \
+		--with-readline \
 		--with-zlib \
 		--with-apxs2 
 
@@ -99,6 +98,6 @@ build() {
 }
 	
 package() {
-	install -D -m755 ${srcdir}/${_pkgname}-${pkgver}/libs/libphp5.so ${pkgdir}/usr/lib/httpd/modules/libphp5.so
-	install -D -m644 ${srcdir}/apache.conf ${pkgdir}/etc/httpd/conf/extra/php5_module.conf
+	install -D -m755 ${srcdir}/${_pkgname}-${pkgver}/libs/libphp7.so ${pkgdir}/usr/lib/httpd/modules/libphp7.so
+	install -D -m644 ${srcdir}/apache.conf ${pkgdir}/etc/httpd/conf/extra/php7_module.conf
 }
