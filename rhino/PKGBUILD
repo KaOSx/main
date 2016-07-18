@@ -1,16 +1,16 @@
 
 pkgname=rhino
-pkgver=1.7R4
-pkgrel=2
+pkgver=1.7.7.1
+pkgrel=1
 pkgdesc="Open-source implementation of JavaScript written entirely in Java"
 arch=('x86_64')
 url="http://www.mozilla.org/rhino/"
 license=('MPL' 'GPL2')
-source=("https://github.com/downloads/mozilla/rhino/rhino1_7R4.zip")
-md5sums=('ad67a3dff135e3a70f0c3528a2d6edf2')
+source=("https://github.com/mozilla/rhino/releases/download/Rhino1_7_7_1_RELEASE/rhino-${pkgver}.zip")
+md5sums=('84428130578f1d86ad9bf7230447b99d')
 
 package() {
-  cd ${srcdir}/rhino1_7R4
+  cd ${srcdir}/rhino${pkgver}
   install -m755 -d ${pkgdir}/usr/share/java
-  install -m644 js.jar ${pkgdir}/usr/share/java/ 
+  install -m644 lib/rhino-${pkgver}.jar ${pkgdir}/usr/share/java/js.jar 
 }

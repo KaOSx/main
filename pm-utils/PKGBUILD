@@ -1,7 +1,7 @@
 
 pkgname=pm-utils
 pkgver=1.4.1
-pkgrel=3
+pkgrel=4
 pkgdesc="Utilities and scripts for suspend and hibernate power management"
 arch=('x86_64')
 url="http://pm-utils.freedesktop.org"
@@ -20,11 +20,11 @@ md5sums=('1742a556089c36c3a89eb1b957da5a60'
          'd0040f7d30b6a0dd195b5401abbbbdb9')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
-  patch -p1 -i "${srcdir}/02-logging-append.patch"
-  patch -p1 -i "${srcdir}/12-fix-intel-audio-powersave-hook.patch"
-  patch -p1 -i "${srcdir}/13-49bluetooth-sync.patch"
-  patch -p1 -i "${srcdir}/14-disable-sata-alpm.patch"
+  cd ${pkgname}-${pkgver}
+  patch -p1 -i ${srcdir}/02-logging-append.patch
+  patch -p1 -i ${srcdir}/12-fix-intel-audio-powersave-hook.patch
+  patch -p1 -i ${srcdir}/13-49bluetooth-sync.patch
+  patch -p1 -i ${srcdir}/14-disable-sata-alpm.patch
   
   ./configure --prefix=/usr \
       --sysconfdir=/etc \
@@ -33,12 +33,12 @@ build() {
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
-  make DESTDIR="${pkgdir}" install
+  cd ${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install
 
-  # nm >=0.8.2 has native udev suspend/resume support
-  rm -f "${pkgdir}/usr/lib/pm-utils/sleep.d/55NetworkManager"
+  # part of networkmanager
+  rm -f ${pkgdir}/usr/lib/pm-utils/sleep.d/55NetworkManager
   
-  # Remove hooks that cause hardware failure or don't make sense at all
-  rm -f "${pkgdir}/usr/lib/pm-utils/power.d/"{harddrive,disable_wol}
+  # not needed/causing failures
+  rm -f ${pkgdir}/usr/lib/pm-utils/power.d/{harddrive,disable_wol}
 }

@@ -1,24 +1,24 @@
 
 pkgname=xbindkeys
 pkgver=1.8.6
-pkgrel=2
+pkgrel=3
 pkgdesc="Launch shell commands with keyboard or mouse under X"
 arch=('x86_64')
 url="http://www.nongnu.org/xbindkeys/xbindkeys.html"
 license=('GPL')
 depends=('libx11' 'guile' 'tk')
-source=("http://www.nongnu.org/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+source=("http://www.nongnu.org/xbindkeys/${pkgname}-${pkgver}.tar.gz")
 md5sums=('c6ea9db56e075dae0697497e2ed390cc')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
   ./configure --prefix=/usr
   make
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
-  make DESTDIR="${pkgdir}" install
+  make DESTDIR=${pkgdir} install
 }
