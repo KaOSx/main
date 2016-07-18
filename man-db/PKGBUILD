@@ -22,28 +22,28 @@ md5sums=('37da0bb0400cc7b640f33c26f6052202'
          'a99d7ffdd72b4d60466aadae2fba211e')
                         
 build() {
-  cd ${srcdir}/${pkgname}-${pkgver}
+  cd ${pkgname}-${pkgver}
   # tmpfile errors, swap man root https://bugzilla.redhat.com/show_bug.cgi?id=1110274
   patch -p1 -i ${srcdir}/root_man.patch
   
   ./configure --prefix=/usr \
         --sysconfdir=/etc \
         --libexecdir=/usr/lib \
-	--with-db=gdbm \
-	--disable-setuid \
-	--enable-mandirs=GNU \
-	--with-sections="1 n l 8 3 0 2 5 4 9 6 7"
+        --with-db=gdbm \
+        --disable-setuid \
+        --enable-mandirs=GNU \
+        --with-sections="1 n l 8 3 0 2 5 4 9 6 7"
   make
 }
 
 check() {
-  cd ${srcdir}/${pkgname}-${pkgver}
+  cd ${pkgname}-${pkgver}
   
   make -k check || true
 }
 
 package() {
-  cd ${srcdir}/${pkgname}-${pkgver}
+  cd ${pkgname}-${pkgver}
   make DESTDIR=${pkgdir} install
 
   # part of groff pkg

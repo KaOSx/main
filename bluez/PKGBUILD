@@ -1,6 +1,6 @@
 
 pkgname=bluez
-pkgver=5.40
+pkgver=5.41
 pkgrel=1
 pkgdesc="Libraries and tools for the Bluetooth protocol stack"
 url="http://www.bluez.org/"
@@ -15,11 +15,11 @@ backup=('etc/dbus-1/system.d/bluetooth.conf'
 install=bluez.install
 source=("http://www.kernel.org/pub/linux/bluetooth/${pkgname}-${pkgver}.tar.xz"
         'bluetooth.modprobe')
-md5sums=('eb24c0d9eaeb1fb69833f322ec669e8b'
+md5sums=('318341b2188698130adb73236ee69244'
          '671c15e99d7154c2df987b71c5851b3d')
 
 build() {
-  cd ${srcdir}/${pkgname}-${pkgver}
+  cd ${pkgname}-${pkgver}
   
   autoreconf -vfi
   ./configure --prefix=/usr \
@@ -33,15 +33,15 @@ build() {
 }
 
 package() {
-  cd ${srcdir}/${pkgname}-${pkgver} 
+  cd ${pkgname}-${pkgver} 
   make DESTDIR=${pkgdir} install
   
   install -dm755 ${pkgdir}/etc/bluetooth
-  install -Dm644 ${srcdir}/${pkgname}-${pkgver}/src/main.conf ${pkgdir}/etc/bluetooth/main.conf
+  install -Dm644 src/main.conf ${pkgdir}/etc/bluetooth/main.conf
 
   install -dm755 ${pkgdir}/usr/share/doc/${pkgname}/dbus-apis
   cp -a doc/*.txt ${pkgdir}/usr/share/doc/${pkgname}/dbus-apis/
 
   install -dm755 ${pkgdir}/usr/lib/modprobe.d
-  install -Dm644 ${srcdir}/bluetooth.modprobe ${pkgdir}/usr/lib/modprobe.d/bluetooth-usb.conf
+  install -Dm644 ../bluetooth.modprobe ${pkgdir}/usr/lib/modprobe.d/bluetooth-usb.conf
 }

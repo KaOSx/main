@@ -1,6 +1,6 @@
 
 pkgname=eigen3
-pkgver=3.2.8
+pkgver=3.2.9
 pkgrel=1
 pkgdesc="Lightweight C++ template library for vector and matrix math, a.k.a. linear algebra."
 arch=('x86_64')
@@ -9,7 +9,7 @@ license=('GPL3' 'LGPL2.1' 'BSD' 'custom:MPL2' 'custom:MINPACK')
 depends=('fftw' 'freeglut')
 makedepends=('cmake' 'pkg-config')
 source=("${pkgname}-${pkgver}.tar.bz2::http://bitbucket.org/eigen/eigen/get/${pkgver}.tar.bz2")
-md5sums=('9e3bfaaab3db18253cfd87ea697b3ab1')
+md5sums=('de11bfbfe2fd2dc4b32e8f416f58ee98')
 
 build() {
   mkdir -p build
@@ -22,9 +22,9 @@ build() {
 
 package() {
   cd build
-  make DESTDIR="$pkgdir" install
+  make DESTDIR=${pkgdir} install
 
-  install -Dm644 ../eigen-eigen-*/COPYING.MPL2 "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
-  install -Dm644 ../eigen-eigen-*/COPYING.BSD "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
-  install -Dm644 ../eigen-eigen-*/COPYING.MINPACK "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  install -Dm644 ../eigen-eigen-*/COPYING.MPL2 ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+  install -Dm644 ../eigen-eigen-*/COPYING.BSD ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+  install -Dm644 ../eigen-eigen-*/COPYING.MINPACK ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
