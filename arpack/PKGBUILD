@@ -1,6 +1,6 @@
 
 pkgname=arpack
-pkgver=3.3.0
+pkgver=3.4.0
 pkgrel=1
 arch=('x86_64')
 pkgdesc="Fortran77 subroutines designed to solve large scale eigenvalue problems"
@@ -8,11 +8,11 @@ url="https://github.com/opencollab/arpack-ng"
 license=('BSD')
 depends=('glibc' 'lapack' 'openmpi')
 options=('!libtool')
-source=("https://github.com/opencollab/arpack-ng/archive/$pkgver.tar.gz")
-md5sums=('ed3648a23f0a868a43ef44c97a21bad5')
+source=("https://github.com/opencollab/arpack-ng/archive/${pkgver}.tar.gz")
+md5sums=('ae9ca13f2143a7ea280cb0e2fd4bfae4')
 
 build() {
-  cd $srcdir/$pkgname-ng-$pkgver
+  cd ${pkgname}-ng-${pkgver}
   
   sh bootstrap
   ./configure --prefix=/usr --enable-mpi
@@ -23,8 +23,8 @@ build() {
 }
 
 package() {
-  cd $srcdir/$pkgname-ng-$pkgver
-  make DESTDIR=$pkgdir install
+  cd ${pkgname}-ng-${pkgver}
+  make DESTDIR=${pkgdir} install
   
-  install -Dm644 COPYING $pkgdir/usr/share/licenses/$pkgname/COPYING
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
 }

@@ -3,7 +3,7 @@ pkgbase="llvm"
 pkgname=('llvm' 'clang' 'clang-analyzer' 'lldb')
 pkgver=3.8.1
 _gcc_ver=5.4.0
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 url="http://llvm.org/"
 license=('custom:University of Illinois/NCSA Open Source License')
@@ -92,6 +92,9 @@ package_clang() {
     make DESTDIR=${pkgdir} install
 
     chmod -x ${pkgdir}/usr/lib/*.a
+    # part of clang-analyzer
+    rm ${pkgdir}/usr/bin/scan-build
+    rm ${pkgdir}/usr/bin/scan-view
 
     install -D -m644 ${srcdir}/${pkgbase}-${pkgver}.src/LICENSE.TXT ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
