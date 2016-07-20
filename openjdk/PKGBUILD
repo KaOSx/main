@@ -32,7 +32,7 @@ source=("http://icedtea.classpath.org/download/source/icedtea-${_icedtea_release
         'fontconfig-paths.diff'
         'corba_path.diff'
         'command_path.diff'
-        'openjdk7_nonreparenting-wm.diff'
+        #'openjdk7_nonreparenting-wm.diff'
         'openjdk.profile.sh'
         'openjdk.profile.csh')
 md5sums=('cb66b595860c3d99a87c3a853667c145'
@@ -64,8 +64,8 @@ build() {
   cp *.diff "${srcdir}/icedtea-${_icedtea_release}/patches"
   export DISTRIBUTION_PATCHES="patches/fontconfig-paths.diff \
                                patches/corba_path.diff \
-                               patches/command_path.diff \
-                               patches/openjdk7_nonreparenting-wm.diff"
+                               patches/command_path.diff"
+                               #patches/openjdk7_nonreparenting-wm.diff
 
   rm -rf build
   cp -r "icedtea-${_icedtea_release}" \
@@ -104,7 +104,6 @@ build() {
 
 package_openjdk() {
 pkgdesc="An open-source implementation of the seventh edition of the Java SE Platform."
-install="openjdk.install"
 conflicts=('openjdk6' 'openjdk7')
 provides=("java-environment=${_icedtea_jdkver}" "java-runtime=${_icedtea_jdkver}")
 replaces=('openjdk6' 'openjdk7')
