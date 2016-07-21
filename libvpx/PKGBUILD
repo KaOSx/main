@@ -1,7 +1,7 @@
 
 pkgname=libvpx
-pkgver=1.5.0
-pkgrel=2
+pkgver=1.6.0
+pkgrel=1
 pkgdesc="The VP8 Codec SDK"
 arch=('x86_64')
 url="http://www.webmproject.org/"
@@ -10,7 +10,7 @@ depends=('glibc')
 makedepends=('yasm')
 source=("https://github.com/webmproject/libvpx/archive/v${pkgver}.tar.gz")
 #source=("$pkgname::git+http://code.google.com/p/webm.libvpx#tag=v$pkgver")
-md5sums=('0c662bc7525afe281badb3175140d35c')
+md5sums=('ba3e22827b9c017213e3a122fabf677b')
 
 build() {
     cd ${srcdir}/libvpx-${pkgver}
