@@ -1,9 +1,9 @@
 
 pkgbase=mesa
 pkgname=('mesa' 'libgl')
-pkgver=11.2.2
-_pkgver=11.2.2
-pkgrel=4
+pkgver=12.0.1
+_pkgver=12.0.1
+pkgrel=1
 arch=('x86_64')
 makedepends=('glproto' 'libdrm' 'libxxf86vm' 'libxdamage' 'libva' 'expat' 'llvm' 'libx11' 'libxt' 'gcc-libs'
              'dri2proto' 'python2' 'libxml2' 'imake' 'systemd' 'libvdpau' 'wayland' 'dri3proto'
@@ -13,17 +13,21 @@ license=('custom')
 source=(${source[@]} "ftp://ftp.freedesktop.org/pub/mesa/${_pkgver}/${pkgname}-${pkgver}.tar.xz" 
 #source=("mesa::git://anongit.freedesktop.org/mesa/mesa#branch=master"
        'LICENSE')
-md5sums=('e0ec73f7273662a74366f0d76dd19ac3'
+md5sums=('972fd5ad5a63aeabf173fb9adefc6522'
          '5c65a0fe315dd347e09b1f2826a1df5a')
-
+  
 build() {
-    cd ${srcdir}/${pkgname}-${pkgver}
+    cd ${pkgname}-${pkgver}
+    # http://www.linuxfromscratch.org/blfs/view/svn/x/mesa.html 
+    # libpthread-stubs package is useless on Linux
+    sed -e "/PTHREADSTUBS/d" -i configure.ac
     
-    ./configure --prefix=/usr \
+    ./autogen.sh --prefix=/usr \
     --sysconfdir=/etc \
     --with-dri-driverdir=/usr/lib/xorg/modules/dri \
     --with-gallium-drivers=r300,r600,nouveau,radeonsi,svga,swrast \
     --with-dri-drivers=i915,i965,r200,radeon,nouveau,swrast \
+    --with-vulkan-drivers=intel \
     --enable-gallium-llvm \
     --with-egl-platforms=x11,drm,wayland \
     --enable-llvm-shared-libs \
@@ -52,17 +56,17 @@ package_libgl() {
   depends=("mesa=${pkgver}")
   pkgdesc="Mesa 3-D graphics library and DRI software rasterizer"
 
-  install -m755 -d "${pkgdir}/usr/lib"
-  install -m755 -d "${pkgdir}/usr/lib/xorg/modules/extensions"
+  install -m755 -d ${pkgdir}/usr/lib
+  install -m755 -d ${pkgdir}/usr/lib/xorg/modules/extensions
 
-  ln -s libglx.xorg "${pkgdir}/usr/lib/xorg/modules/extensions/libglx.so"
+  ln -s libglx.xorg ${pkgdir}/usr/lib/xorg/modules/extensions/libglx.so
   
   ln -s mesa-libGL.so.1.2.0      ${pkgdir}/usr/lib/libGL.so
   ln -s mesa-libGL.so.1.2.0      ${pkgdir}/usr/lib/libGL.so.1
   ln -s mesa-libGL.so.1.2.0      ${pkgdir}/usr/lib/libGL.so.1.2.0
 
-  install -m755 -d "${pkgdir}/usr/share/licenses/libgl"
-  install -m644 "${srcdir}/LICENSE" "${pkgdir}/usr/share/licenses/libgl/"
+  install -m755 -d ${pkgdir}/usr/share/licenses/libgl
+  install -m644 ${srcdir}/LICENSE ${pkgdir}/usr/share/licenses/libgl/
 }
 
 package_mesa() {
@@ -73,14 +77,14 @@ package_mesa() {
   conflicts=('libglapi' 'libgles' 'libegl' 'khrplatform-devel' 'ati-dri' 'intel-dri' 'svga-dri' 'nouveau-dri')
   replaces=('libglapi' 'libgles' 'libegl' 'khrplatform-devel' 'ati-dri' 'intel-dri' 'svga-dri' 'nouveau-dri')
 
-  cd ${srcdir}/${pkgname}-${pkgver}   
+  cd ${pkgname}-${pkgver}   
   #cd "${srcdir}/mesa"
-  make DESTDIR="${pkgdir}" install
+  make DESTDIR=${pkgdir} install
 
   # rename libgl.so to make it possible to package separately 
   mv ${pkgdir}/usr/lib/libGL.so.1.2.0 	${pkgdir}/usr/lib/mesa-libGL.so.1.2.0
   rm ${pkgdir}/usr/lib/libGL.so{,.1}
 
-  install -m755 -d "${pkgdir}/usr/share/licenses/mesa"
-  install -m644 "${srcdir}/LICENSE" "${pkgdir}/usr/share/licenses/mesa/"
+  install -m755 -d ${pkgdir}/usr/share/licenses/mesa
+  install -m644 ${srcdir}/LICENSE ${pkgdir}/usr/share/licenses/mesa/
 }
