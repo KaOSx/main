@@ -1,7 +1,7 @@
 
 pkgname=libmatroska
-pkgver=1.4.4
-pkgrel=2
+pkgver=1.4.5
+pkgrel=1
 pkgdesc="Matroska library"
 arch=('x86_64')
 url="http://www.matroska.org/"
@@ -9,17 +9,17 @@ license=('LGPL')
 depends=('libebml')
 options=('!staticlibs')
 source=("http://dl.matroska.org/downloads/libmatroska/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('6a8e4528f713ec33faf4d793e61f883c')
+md5sums=('2e97a58717564896aba8168cdb577067')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
 
   ./configure --prefix=/usr
   make
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
 
-  make prefix="${pkgdir}/usr" install
+  make prefix=${pkgdir}/usr install
 }
