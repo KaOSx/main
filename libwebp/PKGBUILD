@@ -1,6 +1,6 @@
 
 pkgname=libwebp
-pkgver=0.5.0
+pkgver=0.5.1
 pkgrel=1
 pkgdesc="WebP library and conversion tools"
 arch=('x86_64')
@@ -10,11 +10,11 @@ depends=('libpng' 'libjpeg-turbo' 'libtiff' 'giflib')
 makedepends=('freeglut' 'mesa' 'glu')
 optdepends=('freeglut: vwebp viewer')
 options=('!libtool')
-source=("http://downloads.webmproject.org/releases/webp/$pkgname-$pkgver.tar.gz")
-md5sums=('ba81eb9bf23e3c69a2f5cc8dcdb5938f')
+source=("http://downloads.webmproject.org/releases/webp/${pkgname}-${pkgver}.tar.gz")
+md5sums=('3d7db92ebba5b4f679413d25c6040881')
 
 build() {
-  cd "$srcdir/$pkgname-$pkgver"
+  cd ${pkgname}-${pkgver}
 
   ./configure --prefix=/usr \
      --enable-swap-16bit-csp \
@@ -27,8 +27,8 @@ build() {
 }
 
 package() {
-  cd "$srcdir/$pkgname-$pkgver"
+  cd ${pkgname}-${pkgver}
 
-  make DESTDIR="$pkgdir/" install
-  install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
+  make DESTDIR=${pkgdir}/ install
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
 }
