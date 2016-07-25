@@ -1,7 +1,7 @@
 
 pkgname=lcms
 pkgver=1.19
-pkgrel=5
+pkgrel=6
 pkgdesc="Lightweight color management development library/engine"
 arch=('x86_64')
 license=('custom')
@@ -14,7 +14,7 @@ md5sums=('8af94611baf20d9646c7c2c285859818'
          'ab1161c0d09952c0e4d18cdedcef426a')
 
 build() {
-  cd ${srcdir}/${pkgname}-${pkgver}
+  cd ${pkgname}-${pkgver}
   patch -p1 -i ${srcdir}/cve-2013-4276.patch
   
   ./configure --prefix=/usr
@@ -22,9 +22,8 @@ build() {
 }
 
 package() {
-  cd ${srcdir}/${pkgname}-${pkgver}
+  cd ${pkgname}-${pkgver}
   
   make DESTDIR=${pkgdir} install
-  install -Dm 644 COPYING \
-    ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+  install -Dm 644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
