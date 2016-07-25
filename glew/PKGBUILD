@@ -1,27 +1,32 @@
 
 pkgname=glew
-pkgver=1.13.0
+pkgver=2.0.0
 pkgrel=1
 pkgdesc="A cross-platform C/C++ extension loading library"
 arch=('x86_64')
 url="http://glew.sourceforge.net"
 license=('BSD' 'MIT' 'GPL')
 depends=('libxmu' 'libxi' 'mesa' 'glu')
+makedepends=('cmake' 'python2')
 source=("http://downloads.sourceforge.net/glew/${pkgname}-${pkgver}.tgz")
-md5sums=('7cbada3166d2aadfc4169c4283701066')
+md5sums=('2a2cd7c98f13854d2fcddae0d2b20411')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
-  sed -i 's|lib64|lib|' config/Makefile.linux
+  mkdir -p build
+  cd build
   
+  cmake ../${pkgname}-${pkgver}/build/cmake \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DBUILD_SHARED_LIBS=ON \
+    -DCMAKE_INSTALL_LIBDIR=lib
+    
   make
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
-  make GLEW_DEST="${pkgdir}/usr" install.all
-  install -D -m644 LICENSE.txt "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
-
-  rm "${pkgdir}"/usr/lib/{libGLEW,libGLEWmx}.a
-  chmod 0755 "${pkgdir}"/usr/lib/libGLEW*.so.${pkgver}
+  cd build
+  make DESTDIR=${pkgdir} install
+  
+  install -D -m644 ../${pkgname}-${pkgver}/LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }

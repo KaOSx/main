@@ -1,7 +1,7 @@
 
 pkgname=mesa-demos
 pkgver=8.3.0
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 pkgdesc="Mesa demos and tools"
 url="http://mesa3d.sourceforge.net"
@@ -13,16 +13,16 @@ md5sums=('628e75c23c17394f11a316c36f8e4164'
          '5c65a0fe315dd347e09b1f2826a1df5a')
 
 build() {
-  cd "${srcdir}/mesa-demos-${pkgver}"
+  cd mesa-demos-${pkgver}
   
   ./configure --prefix=/usr # --disable-egl
   make
 }
 
 package() {
-  cd "${srcdir}/mesa-demos-${pkgver}"
-  make DESTDIR="${pkgdir}" install
+  cd mesa-demos-${pkgver}
+  make DESTDIR=${pkgdir} install
   
-  install -m755 -d "${pkgdir}/usr/share/licenses/mesa-demos"
-  install -m755 "${srcdir}/LICENSE" "${pkgdir}/usr/share/licenses/mesa-demos/"
+  install -m755 -d ${pkgdir}/usr/share/licenses/mesa-demos
+  install -m755 ${srcdir}/LICENSE ${pkgdir}/usr/share/licenses/mesa-demos/
 }
