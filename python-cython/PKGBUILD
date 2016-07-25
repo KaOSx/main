@@ -2,7 +2,7 @@
 pkgname=('python2-cython' 'python3-cython')
 pkgbase=cython
 pkgver=0.24.1
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 url="http://www.cython.org"
 license=('APACHE')
@@ -29,4 +29,5 @@ package_python3-cython() {
   
   mv ${pkgdir}/usr/bin/cygdb ${pkgdir}/usr/bin/cygdb3
   mv ${pkgdir}/usr/bin/cython ${pkgdir}/usr/bin/cython3
+  mv $pkgdir/usr/bin/cythonize $pkgdir/usr/bin/cythonize3
 }

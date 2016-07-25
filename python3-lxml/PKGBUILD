@@ -6,20 +6,20 @@ pkgdesc="Python3 binding for the libxml2 and libxslt libraries"
 arch=('x86_64')
 license=('BSD' 'GPL' 'custom')
 url="http://codespeak.net/lxml"
-depends=('python3' 'libxslt')
+depends=('python3-cython' 'libxslt')
 source=("http://lxml.de/files/lxml-${pkgver}.tar.gz")
-md5sums=('5957cc384bd6e83934be35c057ec03b6')
+md5sums=('d112d959364a81044a2b15815ab2ba58')
 
 build() {
   /bin/true
 }
 
 package() {
-  cd ${srcdir}/lxml-$pkgver
+  cd lxml-lxml-${pkgver}
 
   python3 setup.py install --root=${pkgdir} --optimize=1
 
-  install -D -m644 LICENSES.txt ${pkgdir}/usr/share/licenses/$pkgname/LICENSE 
-  install -D -m644 doc/licenses/BSD.txt ${pkgdir}/usr/share/licenses/$pkgname/BSD.txt 
-  install -D -m644 doc/licenses/elementtree.txt ${pkgdir}/usr/share/licenses/$pkgname/elementtree.txt 
+  install -D -m644 LICENSES.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE 
+  install -D -m644 doc/licenses/BSD.txt ${pkgdir}/usr/share/licenses/${pkgname}/BSD.txt 
+  install -D -m644 doc/licenses/elementtree.txt ${pkgdir}/usr/share/licenses/${pkgname}/elementtree.txt 
 }
