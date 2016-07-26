@@ -14,7 +14,7 @@ source=("http://mirrors.syringanetworks.net/mariadb/mariadb-${_pkgver}/source/ma
         'mariadb-post.sh'
         'mariadb-tmpfile.conf')
 md5sums=('2a26b8d6560693cfc51031e76522cb78'
-         'd488fffa9f62f9949c4aa1bb6e6db692'
+         '41fe4303f88b7006743ee1218b332b54'
          'b79e65a5aa536e6b5bc60988eb0b78a2'
          '2fa6e456964d4ff5e6d4f9ff0126aed6')
 
@@ -39,8 +39,6 @@ build() {
     -DINSTALL_MYSQLSHAREDIR=share/mysql \
     -DINSTALL_DOCDIR=share/mysql/docs \
     -DINSTALL_SHAREDIR=share/mysql \
-    -DINSTALL_SYSTEMD_UNITDIR=/usr/lib/systemd/system/ \
-    -DWITH_SYSTEMD=yes \
     -DWITH_PCRE=system \
     -DWITH_READLINE=ON \
     -DWITH_ZLIB=system \
@@ -115,7 +113,7 @@ package_mariadb() {
 
   install -Dm644 ${pkgdir}/usr/share/mysql/my-medium.cnf ${pkgdir}/etc/mysql/my.cnf
   install -Dm755 ${srcdir}/mariadb-post.sh ${pkgdir}/usr/bin/mysqld-post
-  #install -Dm644 ${srcdir}/mariadb.service ${pkgdir}/usr/lib/systemd/system/mysqld.service
+  install -Dm644 ${srcdir}/mariadb.service ${pkgdir}/usr/lib/systemd/system/mysqld.service
   install -Dm644 ${srcdir}/mariadb-tmpfile.conf ${pkgdir}/usr/lib/tmpfiles.d/mysql.conf
 
   # provided by libmariadbclient
