@@ -1,7 +1,7 @@
 
 pkgname=xf86-video-vmware
 pkgver=13.1.0
-pkgrel=4
+pkgrel=5
 pkgdesc="X.org vmware video driver"
 arch=('x86_64')
 url="http://xorg.freedesktop.org/"
@@ -14,16 +14,16 @@ source=("http://xorg.freedesktop.org/releases/individual/driver/${pkgname}-${pkg
 md5sums=('0cba22fed4cb639d5c4276f7892c543d')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
 
   ./configure --prefix=/usr --enable-vmwarectrl-client
   make
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
-  make DESTDIR="${pkgdir}" install
+  cd ${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install
   
-  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
-  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
+  install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
 }
