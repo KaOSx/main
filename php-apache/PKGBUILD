@@ -2,7 +2,7 @@
 pkgname=php-apache
 _pkgname=php
 pkgver=7.0.9
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 pkgdesc='Apache SAPI for PHP'
 license=('PHP')
@@ -43,8 +43,6 @@ build() {
 		--enable-gd-native-ttf \
 		--enable-intl=shared \
 		--enable-mbstring \
-		--enable-phar=shared \
-		--enable-posix=shared \
 		--enable-shmop=shared \
 		--enable-soap=shared \
 		--enable-sockets=shared \
@@ -67,6 +65,7 @@ build() {
 		--with-icu-dir=/usr \
 		--with-imap-ssl \
 		--with-imap=shared \
+		--with-kerberos=/usr \
 		--with-jpeg-dir=/usr \
 		--with-ldap=shared \
 		--with-ldap-sasl \
@@ -77,6 +76,7 @@ build() {
 		--with-mysqli=shared,mysqlnd \
 		--with-openssl=shared \
 		--with-pcre-regex=/usr \
+		--with-pdo-dblib=shared,/usr \
 		--with-pdo-mysql=shared,mysqlnd \
 		--with-pdo-odbc=shared,unixODBC,/usr \
 		--with-pdo-pgsql=shared \
