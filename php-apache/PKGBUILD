@@ -2,7 +2,7 @@
 pkgname=php-apache
 _pkgname=php
 pkgver=7.0.9
-pkgrel=2
+pkgrel=3
 arch=('x86_64')
 pkgdesc='Apache SAPI for PHP'
 license=('PHP')
@@ -35,6 +35,7 @@ build() {
 		--disable-rpath \
 		--mandir=/usr/share/man \
 		--without-pear \
+		--enable-zend-signals \
 		--enable-bcmath=shared \
 		--enable-calendar=shared \
 		--enable-dba=shared \
@@ -74,7 +75,7 @@ build() {
 		--with-mhash \
 		--with-mysql-sock=/run/mysqld/mysqld.sock \
 		--with-mysqli=shared,mysqlnd \
-		--with-openssl=shared \
+		--with-openssl \
 		--with-pcre-regex=/usr \
 		--with-pdo-dblib=shared,/usr \
 		--with-pdo-mysql=shared,mysqlnd \
