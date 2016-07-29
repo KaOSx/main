@@ -7,11 +7,14 @@ post_install() {
   echo "sna and uxa acceleration methods are the only supported"
   echo "With sna set as default"
   echo "Use uxa method if you run into trouble with sna."
+  echo "DRI3 is the default rendering infrastructure, fall back to"
+  echo "DRI2 if you run into trouble with DRI3"
   echo "Try by creating /etc/X11/xorg.conf.d/20-intel.conf "
   echo "Section "Device" "
   echo "       Identifier  "Intel Graphics" "
   echo "       Driver      "intel" "
   echo "       Option      "AccelMethod"  "uxa" "
+  echo "       Option      "DRI" "2" "            # DRI3 is now default
   echo "EndSection "
 }
 
