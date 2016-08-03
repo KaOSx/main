@@ -1,6 +1,6 @@
 
 pkgname=libiodbc
-pkgver=3.52.10
+pkgver=3.52.12
 pkgrel=1
 pkgdesc='Independent Open DataBase Connectivity for Linux'
 arch=('x86_64')
@@ -10,10 +10,10 @@ depends=('glibc' 'sh')
 makedepends=('chrpath')
 options=('!libtool')
 source=("http://downloads.sourceforge.net/sourceforge/iodbc/${pkgname}-${pkgver}.tar.gz")
-md5sums=('ccbbb1e160a8b0e78a8f8e6a5afd5390')
+md5sums=('c76cab12a642a024bd1a262615a1a4a8')
 
 build() {
-	cd ${srcdir}/${pkgname}-${pkgver}
+	cd ${pkgname}-${pkgver}
 	
 	./configure --prefix=/usr \
 		--disable-static \
@@ -24,7 +24,7 @@ build() {
 }
 
 package() {
-	cd ${srcdir}/${pkgname}-${pkgver}
+	cd ${pkgname}-${pkgver}
 	make DESTDIR=${pkgdir} install
 	
 	chrpath -d ${pkgdir}/usr/bin/iodbctest{,w}
