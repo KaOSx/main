@@ -1,7 +1,7 @@
 
 pkgname=alsa-utils
-pkgver=1.1.1
-pkgrel=2
+pkgver=1.1.2
+pkgrel=1
 pkgdesc="An alternative implementation of Linux sound support"
 arch=('x86_64')
 url="http://www.alsa-project.org"
@@ -10,11 +10,11 @@ makedepends=('xmlto' 'docbook-xsl')
 license=('GPL')
 source=("ftp://ftp.alsa-project.org/pub/utils/$pkgname-${pkgver}.tar.bz2"
         '90alsa')
-md5sums=('f8d00ad5fba757b4c3735d066cc288e2'
+md5sums=('38ac7c781f80c41c02b4664d8cbafa87'
          '529216f6a46e61a546640e08ea7a0879')
 
 build() {
-  cd ${srcdir}/${pkgname}-${pkgver}
+  cd ${pkgname}-${pkgver}
 
   ./configure --prefix=/usr \
     --disable-alsaconf \
@@ -24,7 +24,7 @@ build() {
 }
 
 package() {
-  cd ${srcdir}/${pkgname}-${pkgver}
+  cd ${pkgname}-${pkgver}
   make DESTDIR=${pkgdir} install
 
   install -D -m755 ../90alsa ${pkgdir}/etc/pm/sleep.d/90alsa

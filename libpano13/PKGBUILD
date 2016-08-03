@@ -1,7 +1,7 @@
 
 pkgname=libpano13
 pkgver=2.9.19
-pkgrel=2
+pkgrel=3
 pkgdesc="Basic library to calculate panoramical pictures - core functions of the panotools"
 arch=('x86_64')
 url="http://panotools.sourceforge.net/"
@@ -13,14 +13,14 @@ source=("http://downloads.sourceforge.net/sourceforge/panotools/${pkgname}-${pkg
 md5sums=('1e4ce42f58a3f22c0a97d0b7a8e1dbb0')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
   ./configure --prefix=/usr --mandir=/usr/share/man --with-java=${JAVA_HOME}
   make
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
-  make DESTDIR="${pkgdir}" install
+  make DESTDIR=${pkgdir} install
 }

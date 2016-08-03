@@ -1,6 +1,6 @@
 
 pkgname=python2-setuptools
-pkgver=25.1.1
+pkgver=25.1.3
 pkgrel=1
 pkgdesc="Easily download, build, install, upgrade, and uninstall Python packages"
 arch=('x86_64')
@@ -12,7 +12,7 @@ provides=('python2-distribute' 'setuptools')
 replaces=('python2-distribute' 'setuptools')
 conflicts=('python2-distribute')
 source=("https://github.com/pypa/setuptools/archive/v${pkgver}.tar.gz")
-md5sums=('32953366740fe93dcd544c52c46b0d2d')
+md5sums=('311ce2d23952ceefa744b9e21d582d2d')
 
 build() {
    cd setuptools-${pkgver}
@@ -30,7 +30,7 @@ check() {
 package() {
    cd setuptools-${pkgver}
    
-   python2 setup.py install --prefix=/usr --root="${pkgdir}" --optimize=1 --skip-build
+   python2 setup.py install --prefix=/usr --root=${pkgdir} --optimize=1 --skip-build
 }
  
 

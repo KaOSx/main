@@ -2,7 +2,7 @@
 pkgname=hugin-tools
 _pkgname=hugin
 pkgver=2016.0.0
-pkgrel=2
+pkgrel=3
 pkgdesc="Hugin libs and tools to be used by Kipi-plugins"
 arch=('x86_64')
 url="http://hugin.sourceforge.net/"
@@ -18,15 +18,13 @@ md5sums=('8407dd7275374a492610221e7ae56be9')
         # 'd6eef4b4cacb2183f2bf265a5a03a354')
 
 build() {
-  cd "${srcdir}"
-
-  mkdir build 
+  mkdir -p build 
   cd build
 
   # make it possible to compile all the hugin tools without GUis
   sed -i -e "s~FIND_PACKAGE(wxWidgets REQUIRED)~~g" ${srcdir}/${_pkgname}-${pkgver}/CMakeLists.txt
   
-  cmake "${srcdir}/${_pkgname}-${pkgver}" \
+  cmake ../${_pkgname}-${pkgver} \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DENABLE_LAPACK=yes \
@@ -35,8 +33,8 @@ build() {
 }
 
 package() {
-  cd "${srcdir}/build"
-  make DESTDIR="${pkgdir}" install
+  cd build
+  make DESTDIR=${pkgdir} install
   
-  rm -f "${pkgdir}"/usr/share/applications/pto_gen.desktop 
+  rm -f ${pkgdir}/usr/share/applications/pto_gen.desktop 
 }
