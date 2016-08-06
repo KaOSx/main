@@ -1,25 +1,25 @@
 
 pkgname=libupnp
-pkgver=1.6.19
-pkgrel=2
+pkgver=1.6.20
+pkgrel=1
 pkgdesc="Portable UPnP development kit."
 arch=('x86_64')
 url="https://github.com/mrjimenez/pupnp"
 license=('BSD')
 depends=('glibc')
-source=("http://sourceforge.net/projects/pupnp/files/pupnp/libUPnP%20$pkgver/$pkgname-$pkgver.tar.bz2")
-md5sums=('ee16e5d33a3ea7506f38d71facc057dd')
+source=("http://sourceforge.net/projects/pupnp/files/pupnp/libUPnP%20${pkgver}/${pkgname}-${pkgver}.tar.bz2")
+md5sums=('6839c376b5ec71d2d56f7b64e829c438')
 
 build() {
-  cd $srcdir/$pkgname-$pkgver
+  cd ${pkgname}-${pkgver}
   
   ./configure --prefix=/usr
   make
 }
 
 package() {
-  cd $srcdir/$pkgname-$pkgver
-  make DESTDIR=$pkgdir install
+  cd ${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install
 
-  install -Dm644 LICENSE $pkgdir/usr/share/licenses/custom/$pkgname/LICENSE
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/custom/${pkgname}/LICENSE
 }
