@@ -1,7 +1,6 @@
 
 pkgname=sshfs
-pkgver=2.7
-_pkgver=2_7
+pkgver=2.8
 pkgrel=1
 pkgdesc="FUSE client based on the SSH File Transfer Protocol"
 arch=('x86_64')
@@ -9,8 +8,8 @@ url="https://github.com/libfuse/"
 license=('GPL')
 depends=('fuse' 'glib2' 'openssh')
 makedepends=('pkgconfig')
-source=("https://github.com/libfuse/sshfs/releases/download/sshfs-2.7/sshfs-${pkgver}.tar.gz")
-md5sums=('6f8e4b812348a3d752897417e38135fe')
+source=("https://github.com/libfuse/sshfs/releases/download/sshfs_${pkgver}/sshfs-${pkgver}.tar.gz")
+md5sums=('0ba25e848ee59e2595d6576c8f6284b6')
 
 build() {
   cd ${pkgname}-${pkgver}
@@ -23,5 +22,5 @@ build() {
 package() {
   cd ${pkgname}-${pkgver}
 
-  make DESTDIR="${pkgdir}" install
+  make DESTDIR=${pkgdir} install
 }
