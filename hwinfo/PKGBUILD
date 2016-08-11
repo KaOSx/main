@@ -1,26 +1,26 @@
 
 pkgname=hwinfo
-pkgver=21.23
-_minorver=1.2
-pkgrel=2
+pkgver=21.30
+_minorver=1.1
+pkgrel=1
 pkgdesc="Simple program that lists results from the hardware detection library."
 arch=('x86_64')
-url="http://www.opensuse.org"
+url="https://github.com/openSUSE/hwinfo"
 license=('GPL2')
 depends=('perl' 'libx86emu')
 makedepends=('sysfsutils' 'rpmextract' 'flex')
 options=('!emptydirs')
 source=("http://download.opensuse.org/source/tumbleweed/repo/oss/suse/src/${pkgname}-${pkgver}-${_minorver}.src.rpm"
         "kbd.patch")
-md5sums=('13a12b03090b301b2f3f7a5051a01164'
+md5sums=('3e6ab6aecc78d5c6560a19c03f711605'
          '1500ecfa26f6aaf4d7967eea74e86e5d')
 
 build() {
-  cd "${srcdir}"
+  cd ${srcdir}
 
-  rpmextract.sh "${pkgname}-${pkgver}-${_minorver}.src.rpm"
+  rpmextract.sh ${pkgname}-${pkgver}-${_minorver}.src.rpm
   tar -xJf ${pkgname}-${pkgver}.tar.xz
-  cd "${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
 
   patch -p0 -i ${srcdir}/kbd.patch 
   
@@ -28,7 +28,7 @@ build() {
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
 
   make LIBDIR=/usr/lib DESTDIR=${pkgdir} install
 }
