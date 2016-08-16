@@ -5,21 +5,21 @@ pkgrel=1
 pkgdesc="The library for xine-dvdnav plugin."
 arch=('x86_64')
 license=('GPL')
-url="http://dvdnav.mplayerhq.hu/"
+url="https://code.videolan.org/videolan/libdvdnav"
 depends=('libdvdread')
 options=('!libtool')
 source=("ftp://ftp.videolan.org/pub/videolan/libdvdnav/${pkgver}/${pkgname}-${pkgver}.tar.bz2")
 md5sums=('e9ea4de3bd8f204e61301d407d09f033')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
   ./configure --prefix=/usr
   make
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
 
-  make DESTDIR="${pkgdir}" install
+  make DESTDIR=${pkgdir} install
 }

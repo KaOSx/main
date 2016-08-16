@@ -4,7 +4,7 @@ pkgver=5.0.3
 pkgrel=1
 pkgdesc="Provides a simple foundation for reading DVD video disks"
 arch=('x86_64')
-url="http://www.mplayerhq.hu/MPlayer/releases/dvdnav/"
+url="https://code.videolan.org/videolan/libdvdread"
 license=('GPL')
 depends=('glibc')
 makedepends=('libdvdcss')
@@ -14,14 +14,14 @@ source=("ftp://ftp.videolan.org/pub/videolan/libdvdread/${pkgver}/${pkgname}-${p
 md5sums=('b7b7d2a782087ed2a913263087083715')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
 
   ./configure --prefix=/usr --enable-static=no
   make
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
-  make DESTDIR="${pkgdir}" install
+  make DESTDIR=${pkgdir} install
 }
