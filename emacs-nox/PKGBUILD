@@ -1,16 +1,15 @@
 
 pkgname=emacs-nox
 pkgver=24.5
-pkgrel=3
+pkgrel=4
 pkgdesc='The Emacs Editor, without X11 support'
 arch=('x86_64')
 url="http://www.gnu.org/software/emacs/emacs.html"
 license=('GPL3')
-depends=('dbus-core' 'ncurses' 'perl' 'gpm' 'libxpm')
+depends=('dbus' 'ncurses' 'perl' 'gpm' 'libxpm')
 provides=('emacs')
 conflicts=('emacs' 'emacs-cvs')
 options=('docs')
-install=$pkgname.install
 source=("ftp://ftp.gnu.org/gnu/emacs/emacs-${pkgver}.tar.gz")
 md5sums=('d74b597503a68105e61b5b9f6d065b44')
 
