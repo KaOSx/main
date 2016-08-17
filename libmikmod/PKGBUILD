@@ -1,6 +1,6 @@
 
 pkgname=libmikmod
-pkgver=3.3.8
+pkgver=3.3.9
 pkgrel=1
 pkgdesc="A portable sound library"
 license=('GPL' 'LGPL')
@@ -9,12 +9,11 @@ arch=('x86_64')
 depends=('glibc' 'sh' 'pulseaudio')
 makedepends=('alsa-lib')
 options=('!libtool')
-install=$pkgname.install
-source=("http://downloads.sourceforge.net/mikmod/$pkgname-$pkgver.tar.gz")
+source=("http://downloads.sourceforge.net/mikmod/${pkgname}-${pkgver}.tar.gz")
 md5sums=('e100bbc4900953685d876fdd6487bc8a')
 
 build() {
-  cd $srcdir/$pkgname-$pkgver
+  cd ${pkgname}-${pkgver}
   
   ./configure --prefix=/usr \
         --mandir=/usr/share/man \
@@ -24,7 +23,7 @@ build() {
 }
 
 package() {
-  cd $srcdir/$pkgname-$pkgver
+  cd ${pkgname}-${pkgver}
   
   make DESTDIR=$pkgdir install
 }
