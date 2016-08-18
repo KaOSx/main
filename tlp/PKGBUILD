@@ -1,7 +1,7 @@
 
 pkgname=tlp
-pkgver=0.8
-pkgrel=2
+pkgver=0.9
+pkgrel=1
 pkgdesc='Linux Advanced Power Management'
 arch=('x86_64')
 url='http://linrunner.de/en/tlp/docs/tlp-linux-advanced-power-management.html'
@@ -13,11 +13,11 @@ optdepends=('tp_smapi: extend ThinkPad battery functions, SandyBridge and newer'
 conflicts=('pm-utils')
 backup=('etc/default/tlp')
 source=("https://github.com/linrunner/TLP/archive/${pkgver}.tar.gz")
-md5sums=('d53ef993ce96ccff904d6caad1f14006')
+md5sums=('952712c5de56e5fcb9a165b1cd8ba4e0')
 
 prepare() {
     cd TLP-${pkgver}
-    sed -i -e 's|/lib/udev/tlp-usb-udev|/usr/lib/udev/tlp-usb-udev|' ${srcdir}/TLP-${pkgver}/tlp.rules
+    #sed -i -e 's|/lib/udev/tlp-usb-udev|/usr/lib/udev/tlp-usb-udev|' TLP-${pkgver}/tlp.rules
 }
 
 package() {

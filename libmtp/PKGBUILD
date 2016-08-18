@@ -1,6 +1,6 @@
 
 pkgname=libmtp
-pkgver=1.1.11
+pkgver=1.1.12
 pkgrel=1
 pkgdesc="Library implementation of the Media Transfer Protocol"
 arch=('x86_64')
@@ -9,19 +9,19 @@ license=('LGPL')
 depends=('libusb' 'libgcrypt')
 options=('!libtool')
 source=("http://downloads.sourceforge.net/libmtp/${pkgname}-${pkgver}.tar.gz")
-md5sums=('eea14dd30ddd08bbe39cfcb57564a4b8')
+md5sums=('0c59559ea253d02170511ecf6b05d577')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
   ./configure --prefix=/usr --with-udev=/usr/lib/udev
   make
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
-  make DESTDIR="${pkgdir}" install
+  make DESTDIR=${pkgdir} install
   # systemd errors, clean line in udev rules
   sed -i "/^Unable to open/d" ${pkgdir}/usr/lib/udev/rules.d/69-libmtp.rules
 }
