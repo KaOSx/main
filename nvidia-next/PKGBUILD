@@ -3,8 +3,8 @@ _extramodules=extramodules-4.7-next
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=nvidia-next
-pkgver=367.35
-pkgrel=4
+pkgver=367.44
+pkgrel=1
 pkgdesc="NVIDIA drivers for linux."
 arch=('x86_64')
 url="http://www.nvidia.com/"
@@ -17,7 +17,7 @@ _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 #_pkg="NVIDIA-Linux-x86_64-${pkgver}"
 source=("ftp://download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
         'linux-4.7.patch')
-md5sums=('24f1fc19fe10bcc6ff264fb5034c4ccc'
+md5sums=('7478b957513f3f9234b71b88b6d032b9'
          '7125e676a11888031be82413575c9dcc')
 
 build() {
@@ -25,7 +25,7 @@ build() {
   sh "${_pkg}.run" --extract-only
   
   cd "${_pkg}"
-  patch -p1 -i ${srcdir}/linux-4.7.patch
+  #patch -p1 -i ${srcdir}/linux-4.7.patch
   
   cd "${srcdir}/${_pkg}/kernel"
   make SYSSRC=/lib/modules/"${_kver}/build" module
