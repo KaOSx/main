@@ -3,7 +3,7 @@
 
 pkgname=mlt
 pkgver=6.2.0
-pkgrel=2
+pkgrel=3
 pkgdesc="An open source multimedia framework"
 arch=('x86_64')
 url="http://www.mltframework.org"
@@ -27,8 +27,7 @@ build() {
               --enable-gpl \
               --enable-gpl3 \
               --qimage-libdir=/usr/lib/ \
-              --qimage-includedir=/usr/include/Qt \
-              --avformat-vdpau \
+              --qt-includedir=/usr/include/qt \
               --disable-gtk2 \
               --avformat-swscale  
   make

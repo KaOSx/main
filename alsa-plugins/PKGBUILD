@@ -1,7 +1,7 @@
 
 pkgname=alsa-plugins
 pkgver=1.1.1
-pkgrel=2
+pkgrel=3
 pkgdesc="Extra alsa plugins"
 arch=('x86_64')
 url="http://www.alsa-project.org"
@@ -13,11 +13,11 @@ optdepends=('jack: Jack plugin'
             'libsamplerate: libsamplerate resampling plugin'
             'speex: libspeexdsp resampling plugin')
 options=('!libtool')
-source=("ftp://ftp.alsa-project.org/pub/plugins/$pkgname-$pkgver.tar.bz2")
+source=("ftp://ftp.alsa-project.org/pub/plugins/${pkgname}-${pkgver}.tar.bz2")
 md5sums=('69f9f3e2de3c97fc71d496e91e271fe5')
 
 build() {
-  cd "$srcdir/$pkgname-$pkgver"
+  cd ${pkgname}-${pkgver}
   #sed -i 's/ && LIBAVCODEC_VERSION_MINOR >= 34//' a52/pcm_a52.c
   # workaround for split speex caused unknown type name uint16_t & uint32_t error
   #CFLAGS+=' -DHAVE_STDINT_H'
@@ -27,9 +27,9 @@ build() {
 }
 
 package() {
-  cd "$srcdir/$pkgname-$pkgver"
-  make DESTDIR="$pkgdir" install
+  cd ${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install
 
-  install -d "$pkgdir/usr/share/doc/$pkgname"
-  install -m644 doc/README* doc/*.txt "$pkgdir/usr/share/doc/$pkgname/"
+  install -d ${pkgdir}/usr/share/doc/${pkgname}
+  install -m644 doc/README* doc/*.txt ${pkgdir}/usr/share/doc/${pkgname}/
 }
