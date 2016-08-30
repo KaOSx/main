@@ -1,0 +1,20 @@
+ 
+pkgname=pyzmq
+pkgver=15.4.0
+pkgrel=1
+pkgdesc="Python bindings for ØMQ, a lightweight and fast messaging implementation."
+arch=('x86_64')
+url="http://www.zeromq.org/bindings:python"
+license=('LGPL')
+depends=('zeromq' 'python3')
+makedepends=('python3-cython')
+source=("https://github.com/zeromq/pyzmq/archive/v${pkgver}.tar.gz")
+md5sums=('404edb66fcd4a6e3a1002bb427ef9ca5')
+
+package() {
+  cd ${pkgname}-${pkgver}
+  
+  python3 setup.py install --root=${pkgdir} --optimize=0
+}
+
+

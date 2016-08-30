@@ -8,11 +8,11 @@ url="http://libteam.org/"
 license=('LGPL2.1')
 depends=('libnl' 'libdaemon' 'jansson' 'dbus' 'bash' 'zeromq')
 makedepends=('python2' 'swig')
-source=("http://libteam.org/files/$pkgname-$pkgver.tar.gz")
+source=("http://libteam.org/files/${pkgname}-${pkgver}.tar.gz")
 md5sums=('ed5859ab96cbaa365400c771f995ac8d')
 
 build() {
-  cd $pkgname-$pkgver
+  cd ${pkgname}-${pkgver}
 
   ./configure --prefix=/usr \
         --sysconfdir=/etc \
@@ -23,16 +23,16 @@ build() {
 }
 
 check() {
-  cd $pkgname-$pkgver
+  cd ${pkgname}-${pkgver}
 
   make check
 }
 
 package() {
-  cd $pkgname-$pkgver
-  make DESTDIR="$pkgdir" install
+  cd ${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install
 
-  install -Dm644 teamd/redhat/systemd/teamd@.service "$pkgdir/usr/lib/systemd/system/teamd@.service"
-  install -Dm644 teamd/dbus/teamd.conf "$pkgdir/etc/dbus-1/system.d/teamd.conf"
+  install -Dm644 teamd/redhat/systemd/teamd@.service ${pkgdir}/usr/lib/systemd/system/teamd@.service
+  install -Dm644 teamd/dbus/teamd.conf ${pkgdir}/etc/dbus-1/system.d/teamd.conf
 }
 
