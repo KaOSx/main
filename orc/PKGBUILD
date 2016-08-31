@@ -1,7 +1,7 @@
 
 pkgname=orc
-pkgver=0.4.25
-pkgrel=2
+pkgver=0.4.26
+pkgrel=1
 pkgdesc="The Optimized Inner Loops Runtime Compiler"
 arch=('x86_64')
 license=('custom')
@@ -10,24 +10,24 @@ depends=('glibc')
 makedepends=('valgrind')
 options=('!libtool')
 source=("http://gstreamer.freedesktop.org/src/orc/${pkgname}-${pkgver}.tar.xz")
-md5sums=('8582a28b15f53110c88d8043d9f55bcf')
+md5sums=('8e9bef677bae289d3324d81c337a4507')
 
 build () {
-    cd "$srcdir/$pkgname-$pkgver"
+    cd ${pkgname}-${pkgver}
     
     ./configure --prefix=/usr --disable-static
     make
 }
 
 check() {
-    cd "$srcdir/$pkgname-$pkgver"
+    cd ${pkgname}-${pkgver}
     
     make check
 }
     
 package() {
-    cd "$srcdir/$pkgname-$pkgver"
-    make DESTDIR="$pkgdir" install
+    cd ${pkgname}-${pkgver}
+    make DESTDIR=${pkgdir} install
     
-    install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
+    install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
