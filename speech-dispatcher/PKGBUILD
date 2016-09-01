@@ -1,6 +1,6 @@
 
 pkgname=speech-dispatcher
-pkgver=0.8.4
+pkgver=0.8.5
 pkgrel=1
 arch=('x86_64')
 url="http://www.freebsoft.org/speechd"
@@ -8,7 +8,6 @@ pkgdesc="High-level device independent layer for speech synthesis interface"
 license=('GPL2' 'FDL')
 depends=('glib2' 'libtool' 'dotconf' 'pyxdg' 'pulseaudio' )
 makedepends=('intltool' 'espeak')
-install="speech-dispatcher.install"
 backup=(etc/speech-dispatcher/clients/emacs.conf
         etc/speech-dispatcher/modules/ibmtts.conf
         etc/speech-dispatcher/modules/espeak-generic.conf
@@ -26,7 +25,7 @@ backup=(etc/speech-dispatcher/clients/emacs.conf
 options=('!libtool') 
 source=("http://www.freebsoft.org/pub/projects/speechd/$pkgname-$pkgver.tar.gz"
         'speech-dispatcherd.service')
-md5sums=('9e94d3603f69157acd87d10e02d12bb9'
+md5sums=('0c89e02586c66733751fca1408333ccd'
          '0f09abe1af4eb79885ba88a1c2bcde8b')
 
 

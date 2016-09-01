@@ -3,7 +3,7 @@ pkgname=networkmanager
 _pkgname=NetworkManager
 pkgver=1.4.0
 _pkgver=1.4
-pkgrel=1
+pkgrel=2
 pkgdesc="Network Management daemon"
 arch=('x86_64')
 license=('GPL')
@@ -20,15 +20,17 @@ options=('!libtool')
 backup=('etc/NetworkManager/NetworkManager.conf')
 install=networkmanager.install
 source=("https://download.gnome.org/sources/NetworkManager/${_pkgver}/${_pkgname}-${pkgver}.tar.xz"
-        'NetworkManager.conf')
+        'NetworkManager.conf'
+        'nm_exported.patch')
 md5sums=('337e676261ca94af08f8e9b6f9b09a5b'
-         'e6549aab4cb721a87becd4585efd5148')
+         'e6549aab4cb721a87becd4585efd5148'
+         '206971e92d6b592d80adcd19bf96f165')
 
 build() {
   cd ${_pkgname}-${pkgver}
 
-  # wifi failures with 1.0.12 https://plus.google.com/+TonatiuhMiramontesP%C3%A9rez/posts/c5W7ySB83SD
-  #patch -p1 -i ../wifiutils.patch
+  # https://forum.kaosx.us/d/1593-new-networkmanager-1-4-0-1-and-plasma-nm-icon
+  patch -p1 -i ${srcdir}/nm_exported.patch
 
   ./configure \
     --prefix=/usr \
