@@ -1,0 +1,23 @@
+
+pkgname=ttf-hack
+_pkgname=Hack
+pkgver=2.020
+_pkgver=2_020
+pkgrel=1
+pkgdesc="Hack is hand groomed and optically balanced to be your go-to code face."
+arch=('x86_64')
+license=('Hack Open Font License v2.0 and the Bitstream Vera License')
+url="http://sourcefoundry.org/hack/"
+depends=('fontconfig' 'xorg-fonts-encodings' 'xorg-font-utils')
+install=${pkgname}.install
+source=("https://github.com/chrissimpkins/Hack/releases/download/v${pkgver}/${_pkgname}-v${_pkgver}-ttf.tar.xz"
+        "https://raw.githubusercontent.com/chrissimpkins/Hack/master/LICENSE.md")
+md5sums=('627feaa52d5d760d18f0a6485e493826'
+         'a44b1c2ef770d992b157c97dc5f2f084')
+
+package() {
+  install -d ${pkgdir}/usr/share/fonts/TTF/
+  install -D -m644 ${_pkgname}*.ttf ${pkgdir}/usr/share/fonts/TTF/
+  
+  install -D -m644 LICENSE.md ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.md
+}
