@@ -1,6 +1,6 @@
 
 pkgname=enca
-pkgver=1.18
+pkgver=1.19
 pkgrel=1
 pkgdesc="Detects character set and encoding of text files and can also convert them to other encodings"
 arch=('x86_64')
@@ -9,7 +9,7 @@ options=('!libtool')
 license=('GPL')
 depends=('recode' 'bash')
 source=("http://dl.cihar.com/enca/${pkgname}-${pkgver}.tar.xz")
-md5sums=('a139a6ba811c375f50947f9c547b3306')
+md5sums=('a7a0c152658e012db701a48ae8b79525')
 
 build() {
   cd ${pkgname}-${pkgver}
@@ -25,5 +25,5 @@ build() {
 package() {
   cd ${pkgname}-${pkgver}
 
-  make DESTDIR="${pkgdir}" install
+  make DESTDIR=${pkgdir} install
 }

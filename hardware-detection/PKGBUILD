@@ -1,6 +1,6 @@
 
 pkgname=hardware-detection
-pkgver=20160309
+pkgver=20160908
 pkgrel=1
 pkgdesc="Hardware detection scripts"
 arch=('x86_64')
@@ -14,7 +14,7 @@ source=("git://github.com/KaOSx/hardware-detection.git")
 md5sums=('SKIP')
 
 package(){
-    cd "${srcdir}/hardware-detection"
+    cd hardware-detection
 
-    make install DESTDIR="${pkgdir}"
+    make install DESTDIR=${pkgdir}
 }
