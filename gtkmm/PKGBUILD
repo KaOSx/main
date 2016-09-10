@@ -1,24 +1,22 @@
 
 pkgbase=gtkmm
 pkgname=('gtkmm' 'gtkmm-docs')
-pkgver=2.24.4
+pkgver=2.24.5
 _pkgver=2.24
-pkgrel=5
+pkgrel=1
 url="http://www.gtkmm.org/"
 arch=('x86_64')
 makedepends=('gtk2' 'pangomm' 'atkmm' 'glibmm-docs')
 license=('LGPL')
 options=('!libtool' '!emptydirs')
-source=("http://ftp.gnome.org/pub/GNOME/sources/gtkmm/${_pkgver}/${pkgbase}-${pkgver}.tar.xz"
-        'glibmm_includes.patch')
-md5sums=('b9ac60c90959a71095f07f84dd39961d'
-         '6c649470185f750ef879c7fcda1ea32b')
+source=("http://ftp.gnome.org/pub/GNOME/sources/gtkmm/${_pkgver}/${pkgbase}-${pkgver}.tar.xz")
+md5sums=('6c59ae8bbff48fad9132f23af347acf1')
 
 build() {
   cd ${pkgbase}-${pkgver}
-  patch -p1 -i $srcdir/glibmm_includes.patch
+  #patch -p1 -i $srcdir/glibmm_includes.patch
   
-  CXXFLAGS+=' -std=c++11'
+  #CXXFLAGS+=' -std=c++11'
   ./configure --prefix=/usr
   make
 }
