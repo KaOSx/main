@@ -1,28 +1,31 @@
 
 pkgname=encfs
-pkgver=1.8.1
+pkgver=1.9
 pkgrel=7
 pkgdesc='Encrypted filesystem in user-space'
 arch=('x86_64')
 url='https://vgough.github.io/encfs/'
 license=('GPL')
-depends=('rlog' 'openssl' 'fuse' 'boost-libs')
-makedepends=('boost')
+depends=('openssl' 'fuse')
+makedepends=('cmake')
 options=('!libtool')
 source=("https://github.com/vgough/encfs/archive/v${pkgver}.tar.gz")
-md5sums=('ecc4f04ccd6017cafcf98781421589bd')
+md5sums=('271ccc5735076c0fe17c56b102ead821')
 
 build(){
-  cd ${pkgname}-${pkgver}
-
-  autoreconf -if
-  ./configure --prefix=/usr
+  mkdir -p build
+  cd build
+  
+  cmake ../${pkgname}-${pkgver} \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DBUILD_SHARED_LIBS=ON \
+    -DINSTALL_LIBENCFS=ON
 
   make
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
+  cd build
 
   make DESTDIR=${pkgdir} install
 }
