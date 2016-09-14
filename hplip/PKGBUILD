@@ -3,7 +3,7 @@ pkgname=hplip
 pkgver=3.16.8
 # incase a or b is used in hplip rls:
 _pkgver=3.16.8
-pkgrel=1
+pkgrel=2
 pkgdesc="Drivers for HP DeskJet, OfficeJet, Photosmart, Business Inkjet and some LaserJet."
 arch=('x86_64')
 url="http://hplipopensource.com"
@@ -16,14 +16,18 @@ optdepends=('dbus-python2: for dbus support'
             'rpcbind: for network support')
 options=('!libtool')
 install=${pkgname}.install
-source=("http://downloads.sourceforge.net/hplip/${pkgname}-${_pkgver}.tar.gz")
-md5sums=('3e62c8ce740a4b40e1bf9ab1440f3ad5')
+source=("http://downloads.sourceforge.net/hplip/${pkgname}-${_pkgver}.tar.gz"
+        "https://launchpadlibrarian.net/281975878/patch")
+md5sums=('3e62c8ce740a4b40e1bf9ab1440f3ad5'
+         'c873eb40c9e3fa794637523400190218')
 
 build() {
   cd ${pkgname}-${_pkgver}
   sed -i '1s|#!/usr/bin/env python$|&3|' *.py
   sed -i '1s|#!/usr/bin/env python$|&3|' */*.py
   sed -i '1s|#!/usr/bin/env python$|&3|' */*/*.py
+  # https://github.com/KaOSx/main/issues/31
+  patch -p2 -i ${srcdir}/patch
 
   # from Gentoo
   # Use system foomatic-rip for hpijs driver instead of foomatic-rip-hplip
