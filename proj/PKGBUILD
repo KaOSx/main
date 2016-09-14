@@ -1,22 +1,19 @@
 
 pkgname=proj
-pkgver=4.9.1
+pkgver=4.9.3
 pkgrel=1
 pkgdesc="Cartographic Projections library"
 arch=('x86_64')
 url="http://trac.osgeo.org/proj/"
 license=('MIT')
 options=('!libtool')
-source=("http://download.osgeo.org/proj/$pkgname-$pkgver.tar.gz"
-        "http://download.osgeo.org/proj/$pkgname-datumgrid-1.5.zip"
-        "chenyx06a.zip::http://www.swisstopo.admin.ch/internet/swisstopo/en/home/products/software/software.parsys.7090.downloadList.55545.DownloadFile.tmp/chenyx06ntv2.zip")
-md5sums=('3cbb2a964fd19a496f5f4265a717d31c'
-         'f5bf28a2a9c6afe9a3f670f0c0adb783'
-         'fbbfe2b6bcbc41168fe3bdc4a6c1082a')
+source=("http://download.osgeo.org/proj/${pkgname}-${pkgver}.tar.gz"
+        "http://download.osgeo.org/proj/${pkgname}-datumgrid-1.6.zip")
+md5sums=('d598336ca834742735137c5674b214a1'
+         '4dc75812515cfa744032bbf888c5caee')
 
 build() {
-  bsdtar -xzvf ${srcdir}/${pkgname}-datumgrid-1.5.zip -C ${srcdir}/proj-${pkgver}/nad
-  bsdtar -xzvf "${srcdir}/chenyx06a.zip" -C "${srcdir}/proj-${pkgver}/nad" CHENYX06a.gsb
+  bsdtar -xzvf ${srcdir}/${pkgname}-datumgrid-1.6.zip -C ${srcdir}/proj-${pkgver}/nad
   cd ${srcdir}/proj-${pkgver}
 
   ./configure --prefix=/usr
@@ -24,7 +21,7 @@ build() {
 }
 
 package() {
-  cd ${srcdir}/proj-${pkgver}
+  cd ${pkgname}-${pkgver}
   make DESTDIR=${pkgdir} install
 
   install -D COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE

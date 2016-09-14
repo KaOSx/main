@@ -6,7 +6,7 @@ pkgdesc="Header only C++ mathematics library for graphics software based on the 
 arch=('x86_64')
 license=('MIT')
 url="http://glm.g-truc.net"
-source=("https://github.com/g-truc/glm/releases/download/$pkgver/glm-$pkgver.zip")
+source=("https://github.com/g-truc/glm/releases/download/${pkgver}/glm-${pkgver}.zip")
 md5sums=('b24613c1f7e16f504d936ae3ac1f4917')
 
 build() {
@@ -23,8 +23,8 @@ build() {
 
 package() {
   cd build
-  make DESTDIR="${pkgdir}" install
+  make DESTDIR=${pkgdir} install
   
-  install -Dm644 ../glm/copying.txt $pkgdir/usr/share/licenses/$pkgname/LICENSE
+  install -Dm644 ../glm/copying.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
 
