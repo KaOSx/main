@@ -1,12 +1,12 @@
 
 pkgname=encfs
 pkgver=1.9
-pkgrel=7
+pkgrel=2
 pkgdesc='Encrypted filesystem in user-space'
 arch=('x86_64')
 url='https://vgough.github.io/encfs/'
 license=('GPL')
-depends=('openssl' 'fuse')
+depends=('openssl' 'fuse' 'tinyxml2')
 makedepends=('cmake')
 options=('!libtool')
 source=("https://github.com/vgough/encfs/archive/v${pkgver}.tar.gz")
@@ -19,7 +19,8 @@ build(){
   cmake ../${pkgname}-${pkgver} \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DBUILD_SHARED_LIBS=ON \
-    -DINSTALL_LIBENCFS=ON
+    -DINSTALL_LIBENCFS=ON \
+    -DUSE_INTERNAL_TINYXML=OFF
 
   make
 }
