@@ -1,25 +1,25 @@
 
 pkgname=libsigsegv
 pkgver=2.10
-pkgrel=2
+pkgrel=3
 arch=('x86_64')
 pkgdesc="Page fault detection library"
 url="http://libsigsegv.sourceforge.net/"
 license=('GPL2')
 depends=('glibc')
 options=('!libtool')
-source=("http://ftp.gnu.org/gnu/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+source=("http://ftp.gnu.org/gnu/libsigsegv/${pkgname}-${pkgver}.tar.gz")
 md5sums=('7f96fb1f65b3b8cbc1582fb7be774f0f')
 
 build() {
-  cd ${srcdir}/${pkgname}-${pkgver}
+  cd ${pkgname}-${pkgver}
   
   ./configure --prefix=/usr --enable-shared
   make
 }
 
 package() {
-  cd ${srcdir}/${pkgname}-${pkgver}
+  cd ${pkgname}-${pkgver}
   
   make DESTDIR=${pkgdir} install
 }

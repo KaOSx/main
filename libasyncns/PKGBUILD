@@ -1,7 +1,7 @@
 
 pkgname=libasyncns
 pkgver=0.8
-pkgrel=3
+pkgrel=4
 pkgdesc="Linux/Unix A C library for executing name service queries asynchronously"
 arch=('x86_64')
 url="http://0pointer.de/lennart/projects/libasyncns"
@@ -12,14 +12,14 @@ source=("http://0pointer.de/lennart/projects/libasyncns/${pkgname}-${pkgver}.tar
 md5sums=('1f553d6ce1ad255bc83b3d8e9384f515')
 
 build() {
-  cd ${srcdir}/$pkgname-${pkgver}
+  cd $pkgname-${pkgver}
   
   ./configure --prefix=/usr --disable-lynx
   make
 }
 
 package() {
-  cd ${srcdir}/$pkgname-${pkgver}
+  cd $pkgname-${pkgver}
   
   make DESTDIR=${pkgdir} install
 }

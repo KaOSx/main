@@ -1,7 +1,7 @@
 
 pkgname=libid3tag
 pkgver=0.15.1b
-pkgrel=6
+pkgrel=7
 pkgdesc="library for id3 tagging"
 arch=('x86_64')
 url="http://www.underbit.com/products/mad/"
@@ -9,7 +9,7 @@ license=('GPL')
 depends=('zlib')
 makedepends=('gperf')
 options=(!libtool)
-source=("ftp://ftp.mars.org/pub/mpeg/$pkgname-$pkgver.tar.gz"
+source=("ftp://ftp.mars.org/pub/mpeg/${pkgname}-${pkgver}.tar.gz"
         'id3tag.pc'
         '10_utf16.diff'
         '11_unknown_encoding.diff'
@@ -21,7 +21,7 @@ md5sums=('e5808ad997ba32c498803822078748c3'
          'c51822ea6301b1ca469975f0c9ee8e34')
 
 build() {
-  cd "$srcdir/$pkgname-$pkgver"
+  cd ${pkgname}-${pkgver}
   
   patch -p1 -i ${srcdir}/10_utf16.diff
   patch -p1 -i ${srcdir}/11_unknown_encoding.diff
@@ -32,8 +32,8 @@ build() {
 }
 
 package() {
-  cd "$srcdir/$pkgname-$pkgver"
-  make DESTDIR="$pkgdir" install
+  cd ${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install
   
-  install -D -m644 "$srcdir/id3tag.pc" "$pkgdir/usr/lib/pkgconfig/id3tag.pc"
+  install -D -m644 ${srcdir}/id3tag.pc ${pkgdir}/usr/lib/pkgconfig/id3tag.pc
 }

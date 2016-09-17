@@ -1,21 +1,21 @@
 
 pkgname=psutils
 pkgver=1.17
-pkgrel=2
+_pkgver=p17
+pkgrel=3
 pkgdesc="A set of postscript utilities"
 arch=('x86_64')
 url="http://knackered.org/angus/psutils/"
 license=('custom')
 depends=('glibc' 'ghostscript')
-source=("ftp://ftp.knackered.org/pub/psutils/psutils-p17.tar.gz"
+source=("ftp://ftp.knackered.org/pub/psutils/${pkgname}-${_pkgver}.tar.gz"
         'psutils-1.17.diff')
 md5sums=('b161522f3bd1507655326afa7db4a0ad'
          '2b49e9e796000b42f42804d4b50a2be1')
 
 build() {
-  cd "${srcdir}/${pkgname}"
-  
-  patch -p1 -i "${srcdir}/psutils-1.17.diff" 
+  cd ${pkgname}
+  patch -p1 -i ${srcdir}/psutils-1.17.diff 
   
   make -f Makefile.unix BINDIR=/usr/bin \
     INCLUDEDIR=/usr/include/psutils PERL=/usr/bin/perl \
@@ -23,14 +23,15 @@ build() {
 }
 
 package() {
-  cd "${srcdir}/${pkgname}"
+  cd ${pkgname}
   
-  install -d -m755 "${pkgdir}/usr/include"
-  install -d -m755 "${pkgdir}/usr/share/man"
+  install -d -m755 ${pkgdir}/usr/include
+  install -d -m755 ${pkgdir}/usr/share/man
   
-  make -f Makefile.unix BINDIR="${pkgdir}/usr/bin" \
-    INCLUDEDIR="${pkgdir}/usr/include/psutils" PERL=/usr/bin/perl \
-    MANDIR="${pkgdir}/usr/share/man/man1" install 
-  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
-  install -m644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/" 
+  make -f Makefile.unix BINDIR=${pkgdir}/usr/bin \
+    INCLUDEDIR=${pkgdir}/usr/include/psutils PERL=/usr/bin/perl \
+    MANDIR=${pkgdir}/usr/share/man/man1 install 
+    
+  install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/ 
 }

@@ -1,7 +1,7 @@
 
 pkgname=libvisual
 pkgver=0.4.0
-pkgrel=5
+pkgrel=6
 pkgdesc="Abstraction library that comes between applications and audio visualisation plugins"
 arch=("x86_64")
 url="http://sourceforge.net/projects/libvisual/"
@@ -12,14 +12,14 @@ source=("http://downloads.sourceforge.net/sourceforge/libvisual/libvisual-${pkgv
 md5sums=('f4e78547c79ea8a8ad111cf8b85011bb')
 
 build() {
-   cd ${srcdir}/${pkgname}-${pkgver}
+   cd ${pkgname}-${pkgver}
    
    ./configure --prefix=/usr 
    make
 }
 
 package() {
-   cd ${srcdir}/${pkgname}-${pkgver}
+   cd ${pkgname}-${pkgver}
    
    make DESTDIR=${pkgdir} install 
 }
