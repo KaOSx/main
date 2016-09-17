@@ -1,7 +1,7 @@
 
 pkgname=pulseaudio-alsa
 pkgver=2
-pkgrel=3
+pkgrel=4
 pkgdesc="ALSA Configuration for PulseAudio"
 arch=('x86_64')
 url="http://www.pulseaudio.org"
@@ -12,5 +12,5 @@ source=('asound.conf')
 md5sums=('0461fda1c6f6e256c28c24cb5d58af33')
 
 package() {
-  install -Dm644 "$srcdir/asound.conf" "$pkgdir/etc/asound.conf"
+  install -Dm644 ${srcdir}/asound.conf ${pkgdir}/etc/asound.conf
 }

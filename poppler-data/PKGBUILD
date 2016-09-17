@@ -1,7 +1,7 @@
 
 pkgname=poppler-data
 pkgver=0.4.7
-pkgrel=1
+pkgrel=2
 pkgdesc="Encoding data for the poppler PDF rendering library"
 arch=('x86_64')
 url="http://poppler.freedesktop.org/"
@@ -10,9 +10,9 @@ source=("http://poppler.freedesktop.org/${pkgname}-${pkgver}.tar.gz")
 md5sums=('636a8f2b9f6df9e7ced8ec0946961eaf')
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
-  make prefix=/usr DESTDIR="${pkgdir}" install
+  cd ${pkgname}-${pkgver}
+  make prefix=/usr DESTDIR=${pkgdir} install
 
-  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
-  install -m644 COPYING COPYING.adobe "${pkgdir}/usr/share/licenses/${pkgname}/"
+  install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 COPYING COPYING.adobe ${pkgdir}/usr/share/licenses/${pkgname}/
 }

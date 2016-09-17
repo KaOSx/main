@@ -2,25 +2,25 @@
 pkgname=python2-cairo
 _pkgname=py2cairo
 pkgver=1.10.0
-pkgrel=4
+pkgrel=5
 pkgdesc="Python bindings for the cairo graphics library"
+url="http://www.cairographics.org/pycairo"
 arch=('x86_64')
 license=('LGPL' 'MPL')
-depends=('python2' 'cairo>=1.10.0')
+depends=('python2' 'cairo')
 options=('!libtool')
 source=("http://cairographics.org/releases/${_pkgname}-${pkgver}.tar.bz2")
-url="http://www.cairographics.org/pycairo"
 md5sums=('20337132c4ab06c1146ad384d55372c5')
 
 build() {
-  cd "${srcdir}/${_pkgname}-${pkgver}"
+  cd ${_pkgname}-${pkgver}
   
   ./waf configure --prefix=/usr
    ./waf build $MAKEFLAGS
 }
 
-package_python2-cairo() {
-    cd "${srcdir}/${_pkgname}-${pkgver}"
+package() {
+    cd ${_pkgname}-${pkgver}
     
-    ./waf install --destdir="$pkgdir/"
+    ./waf install --destdir=${pkgdir}/
 }

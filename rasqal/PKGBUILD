@@ -1,18 +1,18 @@
 
 pkgname=rasqal
 pkgver=0.9.33
-pkgrel=1
+pkgrel=2
 pkgdesc="Free C library that handles Resource Description Framework (RDF) query syntaxes, query construction and query execution returning result bindings"
 url="http://librdf.org/rasqal"
 license=('GPL' 'LGPL')
 arch=('x86_64')
-depends=('raptor>=2.0.9' 'mpfr' 'util-linux' 'libgcrypt')
+depends=('raptor' 'mpfr' 'util-linux' 'libgcrypt')
 options=('!libtool')
 source=("http://download.librdf.org/source/${pkgname}-${pkgver}.tar.gz")
 md5sums=('1f5def51ca0026cd192958ef07228b52')
 
 build() {
-  cd ${srcdir}/${pkgname}-${pkgver}
+  cd ${pkgname}-${pkgver}
   
   ./configure --prefix=/usr \
 	--disable-static \
@@ -21,7 +21,7 @@ build() {
 }
 
 package() {
-  cd ${srcdir}/${pkgname}-${pkgver}
+  cd ${pkgname}-${pkgver}
   
   make DESTDIR=${pkgdir} install
 }

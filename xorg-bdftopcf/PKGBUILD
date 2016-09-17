@@ -13,15 +13,15 @@ source=("http://xorg.freedesktop.org/archive/individual/app/bdftopcf-${pkgver}.t
 md5sums=('53a48e1fdfec29ab2e89f86d4b7ca902')
 
 build() {
-  cd "${srcdir}/bdftopcf-${pkgver}"
+  cd bdftopcf-${pkgver}
   
   ./configure --prefix=/usr
   make
 }
 
 package() {
-  cd "${srcdir}/bdftopcf-${pkgver}"
-  make DESTDIR="${pkgdir}" install
+  cd bdftopcf-${pkgver}
+  make DESTDIR=${pkgdir} install
 
-  install -Dm644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/COPYING"
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
 }

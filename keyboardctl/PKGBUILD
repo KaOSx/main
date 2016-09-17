@@ -1,7 +1,7 @@
 
 pkgname=keyboardctl
 pkgver=0.1.6
-pkgrel=2
+pkgrel=3
 arch=('x86_64')
 pkgdesc="Keymap setup program"
 url="https://github.com/manjaro/keyboardctl"
@@ -14,7 +14,7 @@ source=("git://github.com/manjaro/keyboardctl.git")
 md5sums=('SKIP')
 
 package() {
-  cd ${srcdir}/${pkgname}
+  cd ${pkgname}
 
-  make DESTDIR="$pkgdir" install
+  make DESTDIR=${pkgdir} install
 }

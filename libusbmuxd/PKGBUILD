@@ -1,7 +1,7 @@
 
 pkgname=libusbmuxd
 pkgver=1.0.10
-pkgrel=1
+pkgrel=2
 pkgdesc="USB Multiplex Daemon, libraries"
 url="http://marcansoft.com/blog/iphonelinux/usbmuxd/"
 arch=('x86_64')
@@ -20,6 +20,6 @@ build() {
 package() {
   cd ${pkgname}-${pkgver}
 
-  make DESTDIR="${pkgdir}" install
+  make DESTDIR=${pkgdir} install
 }
 

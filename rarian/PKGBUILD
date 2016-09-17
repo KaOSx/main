@@ -1,7 +1,7 @@
 
 pkgname=rarian
 pkgver=0.8.1
-pkgrel=3
+pkgrel=4
 pkgdesc="Documentation meta-data library, designed as a replacement for Scrollkeeper."
 arch=('x86_64')
 url="http://rarian.freedesktop.org/"
@@ -15,7 +15,7 @@ md5sums=('75091185e13da67a0ff4279de1757b94'
          '457e9827197009cfa360911fe49a5ad7')
 
 build() {
-  cd ${srcdir}/${pkgname}-${pkgver}
+  cd ${pkgname}-${pkgver}
   patch -p0 -i ${srcdir}/user-segfault.patch
   
   ./configure --prefix=/usr \
@@ -26,7 +26,7 @@ build() {
 }
 
 package() {
-  cd ${srcdir}/${pkgname}-${pkgver}
+  cd ${pkgname}-${pkgver}
   
   make DESTDIR=${pkgdir} install
 }

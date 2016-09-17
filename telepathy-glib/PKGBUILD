@@ -1,7 +1,7 @@
 
 pkgname=telepathy-glib
 pkgver=0.24.1
-pkgrel=1
+pkgrel=2
 pkgdesc="GLib bindings for the Telepathy D-Bus protocol"
 arch=('x86_64')
 url="http://telepathy.freedesktop.org"
@@ -14,16 +14,16 @@ source=("http://telepathy.freedesktop.org/releases/${pkgname}/${pkgname}-${pkgve
 md5sums=('cbeb0a24acc26e7f095be281c324da69')
 
 build() {
-    cd "${srcdir}/${pkgname}-${pkgver}"
+    cd ${pkgname}-${pkgver}
 
-    PYTHON=/usr/bin/python2 ./configure --prefix=/usr \
+    ./configure --prefix=/usr \
         --libexecdir=/usr/lib/telepathy \
         --enable-static=no
     make
 }
 
 package() {
-    cd "${srcdir}/${pkgname}-${pkgver}"
+    cd ${pkgname}-${pkgver}
     
     make DESTDIR=${pkgdir} install
 }

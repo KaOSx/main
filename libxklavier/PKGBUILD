@@ -1,7 +1,7 @@
 
 pkgname=libxklavier
 pkgver=5.3
-pkgrel=2
+pkgrel=3
 pkgdesc="High-level API for X Keyboard Extension"
 arch=('x86_64')
 url="http://www.freedesktop.org/wiki/Software/LibXklavier/"
@@ -9,11 +9,11 @@ license=('LGPL')
 depends=('libxkbfile' 'libxml2' 'glib2' 'xkeyboard-config' 'libxi' 'iso-codes')
 makedepends=('gobject-introspection')
 options=('!libtool' '!emptydirs')
-source=("http://ftp.gnome.org/pub/gnome/sources/${pkgname}/5.3/${pkgname}-${pkgver}.tar.xz")
+source=("https://download.gnome.org/sources/libxklavier/5.3/${pkgname}-${pkgver}.tar.xz")
 md5sums=('290ea2a8abc40f78a3a16bdae6f02808')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
   ./configure --prefix=/usr \
       --with-xkb-base=/usr/share/X11/xkb \
@@ -22,7 +22,7 @@ build() {
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
   make DESTDIR="${pkgdir}" install 
 }

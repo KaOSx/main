@@ -1,25 +1,25 @@
 
 pkgname=libart-lgpl
 pkgver=2.3.21
-pkgrel=4
+pkgrel=5
 pkgdesc="A library for high-performance 2D graphics"
 url="http://www.levien.com/libart/"
 arch=('x86_64')
 license=('LGPL')
 depends=('glibc')
-source=("http://ftp.gnome.org/pub/GNOME/sources/libart_lgpl/2.3/libart_lgpl-${pkgver}.tar.bz2")
+source=("https://download.gnome.org/sources/libart_lgpl/2.3/libart_lgpl-${pkgver}.tar.bz2")
 options=('!libtool')
 md5sums=('08559ff3c67fd95d57b0c5e91a6b4302')
 
 build() {
-  cd ${srcdir}/libart_lgpl-${pkgver}
+  cd libart_lgpl-${pkgver}
   
   ./configure --prefix=/usr
   make
 }
 
 package() {
-  cd ${srcdir}/libart_lgpl-${pkgver}
+  cd libart_lgpl-${pkgver}
   
-  make DESTDIR="${pkgdir}" install
+  make DESTDIR=${pkgdir} install
 }
