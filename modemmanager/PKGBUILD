@@ -1,7 +1,7 @@
 
 pkgname=modemmanager
 _pkgname=ModemManager
-pkgver=1.6.0
+pkgver=1.6.2
 pkgrel=1
 pkgdesc="Mobile broadband modem management service"
 arch=('x86_64')
@@ -13,10 +13,10 @@ optdepends=('usb_modeswitch: install if your modem shows up as a storage drive')
 options=('!libtool')
 install=modemmanager.install
 source=("http://www.freedesktop.org/software/ModemManager/${_pkgname}-${pkgver}.tar.xz")
-md5sums=('d9d93d2961ee35b4cd8a75a6a8631cb4')
+md5sums=('ef56967efecdf0573affe1189a48d858')
 
 build() {
-  cd ${_pkgname}-$pkgver
+  cd ${_pkgname}-${pkgver}
   
    ./configure --prefix=/usr \
    	--sysconfdir=/etc \
@@ -30,7 +30,7 @@ build() {
 }
 
 package() {
-  cd ${_pkgname}-$pkgver
+  cd ${_pkgname}-${pkgver}
   
-  make DESTDIR="$pkgdir" install
+  make DESTDIR=${pkgdir} install
 }
