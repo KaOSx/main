@@ -1,18 +1,18 @@
 
 pkgname=serd
-pkgver=0.22.0
+pkgver=0.24.0
 pkgrel=1
 pkgdesc="A lightweight C library for RDF syntax which supports reading and writing Turtle and NTriples."
 arch=('x86_64')
-url="http://drobilla.net/software/$pkgname/"
+url="http://drobilla.net/software/serd/"
 license=('custom:ISC')
 depends=('glibc')
 makedepends=('python2')
-source=("http://download.drobilla.net/$pkgname-$pkgver.tar.bz2")
-md5sums=('541bceb9f7cec50f4bf618060332b87c')
+source=("http://download.drobilla.net/${pkgname}-${pkgver}.tar.bz2")
+md5sums=('3f7c5fb104908bb0c6f7db554836ba63')
 
 build() {
-  cd "$srcdir/$pkgname-$pkgver"
+  cd ${pkgname}-${pkgver}
   sed -i "/ldconfig/d" wscript
 
   python2 ./waf configure --prefix=/usr \
@@ -21,9 +21,9 @@ build() {
 }
 
 package() {
-  cd "$srcdir/$pkgname-$pkgver"
-  DESTDIR="$pkgdir" python2 ./waf install
+  cd ${pkgname}-${pkgver}
+  DESTDIR=${pkgdir} python2 ./waf install
 
-  install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
 
