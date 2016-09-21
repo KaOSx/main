@@ -1,0 +1,25 @@
+
+pkgname=python3-future
+_pkgname=python-future
+pkgver=0.15.2
+pkgrel=1
+pkgdesc="Easy, clean, reliable Python 2/3 compatibility"
+arch=('x86_64')
+url="http://python-future.org/"
+license=('MIT')
+depends=('python3-setuptools')
+source=("https://github.com/PythonCharmers/python-future/archive/v${pkgver}.tar.gz")
+md5sums=('4718b2e0aa11bf12e3fd6aacea6ee48d')
+
+build() {
+  cd ${_pkgname}-${pkgver}
+  
+  python3 setup.py build
+}
+
+package() {
+  cd ${_pkgname}-${pkgver}
+  python3 setup.py install --skip-build --prefix=/usr --root=${pkgdir}
+  
+  install -Dm644 LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.txt
+}
