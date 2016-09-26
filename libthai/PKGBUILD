@@ -1,6 +1,6 @@
 
 pkgname=libthai
-pkgver=0.1.24
+pkgver=0.1.25
 pkgrel=1
 pkgdesc="Thai language support routines"
 url="http://linux.thai.net/projects/libthai"
@@ -10,18 +10,18 @@ depends=('libdatrie')
 makedepends=('pkgconfig')
 options=('!libtool' '!emptydirs')
 source=("http://linux.thai.net/pub/thailinux/software/${pkgname}/${pkgname}-${pkgver}.tar.xz")
-md5sums=('e4f676b657e75d075c6cba9a231fd7b0')
+md5sums=('c5d165ea47d3a689f850c6b09a4bb3d9')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
   ./configure --prefix=/usr --disable-static
   make
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
-  make DESTDIR="${pkgdir}" install
+  make DESTDIR=${pkgdir} install
 }
 
