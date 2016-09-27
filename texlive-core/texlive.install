@@ -6,16 +6,18 @@ SYNCWITHTREES=''
 MAPFILE="var/lib/texmf/arch/installedpkgs/$PKGNAME.maps"
 
 post_install() {
-  TMPFILE=`mktemp`
-  echo    ">>> texlive: saving updmap.cfg as $TMPFILE..."
-  cp "$UPDMAP" "$TMPFILE"
-  echo    ">>> texlive: regenerating updmap.cfg (custom additions should go"
+ echo    ">>> texlive: regenerating updmap.cfg (custom additions should go"
   echo    "             into /etc/texmf/web2c/updmap-local.cfg"
   cp usr/share/texmf-dist/web2c/updmap-hdr.cfg $UPDMAP
   cat var/lib/texmf/arch/installedpkgs/*.maps >> $UPDMAP
   [ -f "$UPDMAPLOCAL" ] && cat "$UPDMAPLOCAL" >> $UPDMAP
   echo    ">>> texlive: updating the filename database..."
   usr/bin/mktexlsr
+  (cd etc/texmf && ../../bin/mtxrun --generate >/dev/null)
+  # remove directory "." from luatex cache.
+  for item in var/lib/texmf/luatex-cache/context/*/trees/*.lua; do
+    grep -F '["root"]="."' "$item" >/dev/null && rm -f "$item" "${item%.lua}.luc"
+  done
   echo    ">>> texlive: updating the fontmap files with updmap..."
   usr/bin/updmap-sys --quiet --nohash
   echo    " done." 
@@ -24,13 +26,9 @@ post_install() {
   echo      " done." 
   echo      " (logs are under /var/lib/texmf/web2c/<engine>/<formatname>.log)"
   echo    "NB: To setup ConTeXt and the lua(la)tex font db,"
-  echo    "    see http://wiki.archlinux.org/index.php/TeX_Live"
 }
 
 post_upgrade() {
-  TMPFILE=`mktemp`
-  echo    ">>> texlive: saving updmap.cfg as $TMPFILE..."
-  cp "$UPDMAP" "$TMPFILE"
   echo    ">>> texlive: regenerating updmap.cfg (custom additions should go"
   echo    "             into /etc/texmf/web2c/updmap-local.cfg"
   cp usr/share/texmf-dist/web2c/updmap-hdr.cfg $UPDMAP
@@ -38,6 +36,11 @@ post_upgrade() {
   [ -f "$UPDMAPLOCAL" ] && cat "$UPDMAPLOCAL" >> $UPDMAP
   echo    ">>> texlive: updating the filename database..."
   usr/bin/mktexlsr
+ (cd usr/share/texmf-dist && ../../bin/mtxrun --generate >/dev/null)
+   # remove directory "." from luatex cache.
+  for item in var/lib/texmf/luatex-cache/context/*/trees/*.lua; do
+    grep -F '["root"]="."' "$item" >/dev/null && rm -f "$item" "${item%.lua}.luc"
+  done
   echo    ">>> texlive: updating the fontmap files with updmap..."
   usr/bin/updmap-sys --quiet --nohash $SYNCWITHTREES
   echo    " done." 
@@ -46,7 +49,6 @@ post_upgrade() {
   echo      " done." 
   echo      " (logs are under /var/lib/texmf/web2c/<engine>/<formatname>.log)"
   echo    "NB: To setup ConTeXt and the lua(la)tex font db,"
-  echo    "    see http://wiki.archlinux.org/index.php/TeX_Live"
   if [[ "$2" == 200* ]]; then
     echo      "Important note. Some directories have moved:"
     echo      " \$TEXMFSYSVAR    is now /var/lib/texmf (previously /usr/share/texmf-var)"

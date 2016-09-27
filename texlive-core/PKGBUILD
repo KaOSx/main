@@ -1,7 +1,7 @@
 
 pkgname=texlive-core
-pkgver=2015.37554
-_revnr=${pkgver#2015.}
+pkgver=2016.41843
+_revnr=${pkgver#2016.}
 pkgrel=1
 pkgdesc="TeX Live core distribution"
 license=('GPL')
@@ -26,14 +26,14 @@ source=("https://sources.archlinux.org/other/texlive/$pkgname-$pkgver-src.zip"
         '09-texlive-fonts.conf')
 options=('!strip')
 install=texlive.install
-md5sums=('0342ec0740cc11417403efde9c95883d'
+md5sums=('84c8d40322b98dc10994f8e378d62640'
          '54a34f8ddbeccec2427e4d5763349f9b'
-         'df537245012f3e5f05bdc55644b7a3df'
+         'c59f1074a749056b53d36a5892a47e1a'
          '16ad4dc53deb00029baef1b01ba1d984'
          '393a4bf67adc7ca5df2b386759d1a637')
 
 build() {
-   cd "${srcdir}"
+   cd ${srcdir}
 
    echo -n "   --> extracting all packages... "
    for p in *.tar.xz; do 
@@ -44,7 +44,7 @@ build() {
    rm -rf source doc
 }
 package() {
-   cd "${srcdir}"
+   cd ${srcdir}
    install -m755 -d $pkgdir/var/lib/texmf/arch/installedpkgs
    sed -i '/^#/d' CONTENTS
    install -m644 CONTENTS $pkgdir/var/lib/texmf/arch/installedpkgs/${pkgname}_${_revnr}.pkgs
@@ -69,6 +69,7 @@ package() {
    install -d -m755 "$pkgdir"/etc/texmf/dvips/config
    install -d -m755 "$pkgdir"/etc/texmf/dvipdfmx
    install -d -m755 "$pkgdir"/etc/texmf/tex/generic/config
+   install -d -m755 "$pkgdir"/etc/texmf/tex/generic/tex-ini-files
    install -d -m755 "$pkgdir"/etc/texmf/ttf2pk
    install -d -m755 "$pkgdir"/etc/texmf/xdvi
    install -d -m755 "$pkgdir"/etc/fonts/conf.avail
@@ -76,13 +77,16 @@ package() {
 
    # Remove manpages (already in texlive-bin).
    rm -rf "$pkgdir"/usr/share/texmf-dist/doc/man
+   
+   # Remove aleph from fmtutil.cnf
+   sed -i -e '/aleph/d' "$pkgdir"/usr/share/texmf-dist/web2c/fmtutil.cnf
 
    # copy config files to $TEXMFCONFIG tree
    cp -a "$pkgdir"/usr/share/texmf-dist/chktex/chktexrc \
      	"$pkgdir"/etc/texmf/chktex/
    cp -a "$pkgdir"/usr/share/texmf-dist/web2c/mktex.cnf \
    	  "$pkgdir"/etc/texmf/web2c/
-   cp -a "$pkgdir"/usr/share/texmf-dist/web2c/updmap.cfg \
+   cp -a "$pkgdir"/usr/share/texmf-dist/web2c/updmap-hdr.cfg \
    	  "$pkgdir"/etc/texmf/web2c/
    cp -a "$pkgdir"/usr/share/texmf-dist/web2c/fmtutil.cnf \
    	  "$pkgdir"/etc/texmf/web2c/
@@ -90,8 +94,8 @@ package() {
    	  "$pkgdir"/etc/texmf/dvips/config/
    cp -a "$pkgdir"/usr/share/texmf-dist/dvipdfmx/dvipdfmx.cfg \
    	  "$pkgdir"/etc/texmf/dvipdfmx/
-   cp -a "$pkgdir"/usr/share/texmf-dist/tex/generic/config/pdftexconfig.tex \
-   	  "$pkgdir"/etc/texmf/tex/generic/config/
+   cp -a "$pkgdir"/usr/share/texmf-dist/tex/generic/tex-ini-files/pdftexconfig.tex \
+   	  "$pkgdir"/etc/texmf/tex/generic/tex-ini-files/
    cp -a "$pkgdir"/usr/share/texmf-dist/tex/generic/config/language.dat \
    	  "$pkgdir"/etc/texmf/tex/generic/config/
    cp -a "$pkgdir"/usr/share/texmf-dist/tex/generic/config/language.def \
@@ -102,10 +106,6 @@ package() {
    	  "$pkgdir"/etc/texmf/xdvi/
    # remove TL specific warnings in the language.{dat,def} files:
    sed -i -e '/DO NOT EDIT/,+3 d' "$pkgdir"/etc/texmf/tex/generic/config/language.*
-   # clean updmap.cfg
-   sed -i '/^\(Map\|MixedMap\)/d' "$pkgdir"/etc/texmf/web2c/updmap.cfg
-   sed -i '/^#! \(Map\|MixedMap\)/d' "$pkgdir"/etc/texmf/web2c/updmap.cfg
-
 
    # replace upstream texmf.cnf
    rm -f "$pkgdir"/usr/share/texmf-dist/web2c/texmf.cnf
@@ -115,16 +115,11 @@ package() {
    ln -sf /etc/texmf/web2c/texmf.cnf "$pkgdir"/usr/share/texmf-dist/web2c/texmf.cnf
    # replace upstream texmfcnf.lua
    install -m644 "$srcdir"/texmfcnf.lua "$pkgdir"/usr/share/texmf-dist/web2c/texmfcnf.lua
-   ## remove aleph from fmtutil.cnf
-   sed -i -e '/aleph/d' "$pkgdir"/usr/share/texmf-dist/web2c/fmtutil.cnf
 
    # create symlinks for formats 
    echo "--> Create symlinks for TeX formats ..."
    mkdir -p "${pkgdir}/usr/bin"
    bash "${pkgdir}"/usr/share/texmf-dist/scripts/texlive/texlinks.sh -f "$pkgdir"/usr/share/texmf-dist/web2c/fmtutil.cnf "$pkgdir"/usr/bin/
-
-   # use python2 for dviasm
-   sed -i 's/env python/env python2/' $pkgdir/usr/share/texmf-dist/scripts/dviasm/dviasm.py
 
    # install Perl libraries
    mv "$pkgdir"/usr/share/texmf-dist/tlpkg "$pkgdir"/usr/share
@@ -135,11 +130,6 @@ package() {
    #cp -a $pkgdir/usr/share/texmf-dist/tex/context/config/cont-usr.tex \
    #	  $pkgdir/etc/texmf/tex/context/config/cont-usr.tex
    
-   # remove obsolete stuff (we don't provide the omega and aleph binaries anyway)
-   rm -f $pkgdir/usr/share/texmf-dist/tex/plain/config/{omega,aleph}.ini
-   #sed -i '/cherokee\.map/d; /oinuit\.map/d; /omega\.map/d' \
-   #    "${pkgdir}/usr/share/texmf-dist/web2c/updmap.cfg"
-
    # remove upstream updmap.cfg: it contains too many maps.
    rm "${pkgdir}/usr/share/texmf-dist/web2c/updmap.cfg"
  
@@ -157,6 +147,7 @@ arara/arara.sh
 bundledoc/arlatex
 bundledoc/bundledoc
 checkcites/checkcites.lua
+checklistings/checklistings.sh
 chktex/chkweb.sh
 chktex/deweb.pl
 cjk-gs-integrate/cjk-gs-integrate.pl
@@ -194,10 +185,12 @@ ltxfileinfo/ltxfileinfo
 ltximg/ltximg.pl
 lua2dox/lua2dox_filter
 luaotfload/luaotfload-tool.lua
+make4ht/make4ht
 match_parens/match_parens
 mf2pt1/mf2pt1.pl
 mkjobtexmf/mkjobtexmf.pl
 oberdiek/pdfatfi.pl
+pdfbook2/pdfbook2
 pdfcrop/pdfcrop.pl
 pdfjam/pdf180
 pdfjam/pdf270
@@ -211,6 +204,7 @@ pdfjam/pdfjam-slides6up
 pdfjam/pdfjoin
 pdfjam/pdfnup
 pdfjam/pdfpun
+pdfxup/pdfxup
 pfarrei/a5toa4.tlu
 pfarrei/pfarrei.tlu
 pkfix-helper/pkfix-helper
@@ -220,8 +214,10 @@ purifyeps/purifyeps
 pythontex/pythontex.py
 pythontex/depythontex.py
 simpdftex/simpdftex
+srcredact/srcredact.pl
 sty2dtx/sty2dtx.pl
 texcount/texcount.pl
+tex4ebook/tex4ebook
 texdef/texdef.pl
 texdiff/texdiff
 texdirflatten/texdirflatten

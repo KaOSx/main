@@ -1,7 +1,7 @@
 
 pkgname=texlive-bin
-pkgver=2015.37497
-pkgrel=11
+pkgver=2016.41290
+pkgrel=1
 pkgdesc="TeX Live binaries"
 url='http://tug.org/texlive/'
 license=('GPL')
@@ -13,8 +13,16 @@ optdepends=('ed: for texconfig')
 options=('!libtool' '!strip')
 install="texlive.install"
 # full credit for this PKGBUILD goes to Rémy Oudompheng <remy@archlinux.org>
-source=("http://mirrors.kernel.org/archlinux/other/texlive/texlive-bin-source-${pkgver}.tar.xz")
-md5sums=('20be644511704910151560a4d99f6995')
+source=("http://mirrors.kernel.org/archlinux/other/texlive/texlive-bin-source-${pkgver}.tar.xz"
+        'mktexlsr.hook'
+        'mktexlsr.script'
+        'texlive-updmap.hook'
+        'texlive-updmap.script')
+md5sums=('7303361f2d441eb5c962a996fd77e8fa'
+         '7bc9cef52d3b0c15d2364b7d8658faa6'
+         '2bbbef810687f4b2804a4b8cb91ce02f'
+         'c18cbbd000aac60813b1695aa058964f'
+         'c64d77b5111a26b9995263b49df4937c')
 
 prepare() {
    cd source
@@ -22,11 +30,9 @@ prepare() {
 }
 
 build() {
-   export CFLAGS="${CFLAGS} -fPIC"
-   export CXXFLAGS="${CXXFLAGS} -fPIC"
 
-   cd "$srcdir"
-   # t4ht expects to be un /usr/share/texmf/bin/t4ht
+   cd ${srcdir}
+   # t4ht expects to be in /usr/share/texmf/bin/t4ht
    sed -i s/SELFAUTOPARENT/TEXMFROOT/ source/texk/tex4htk/t4ht.c
    #############################################################
    ### configure
@@ -102,9 +108,6 @@ package() {
    make DESTDIR="${pkgdir}" texmf="$pkgdir"/usr/share/texmf install
    rm -rf "${pkgdir}"/usr/{texmf,share/texmf-dist}
 
-   #mkdir -p "$pkgdir"/usr/share/tlpkg/TeXLive
-   #install -m644 "${srcdir}"/source/utils/biber/TeXLive/*.pm "${pkgdir}/usr/share/tlpkg/TeXLive"
-
    ## symlink engines by hand. texlinks has moved to texlive-core...
    mkdir -p ${pkgdir}/usr/bin
    ln -s eptex ${pkgdir}/usr/bin/platex
@@ -112,8 +115,6 @@ package() {
    ln -s luatex ${pkgdir}/usr/bin/dvilualatex
    ln -s luatex ${pkgdir}/usr/bin/dviluatex
    ln -s luatex ${pkgdir}/usr/bin/lualatex
-   ln -s luatex ${pkgdir}/usr/bin/lualollipop
-   ln -s luatex ${pkgdir}/usr/bin/pdfcsplain
    ln -s pdftex ${pkgdir}/usr/bin/amstex
    ln -s pdftex ${pkgdir}/usr/bin/cslatex
    ln -s pdftex ${pkgdir}/usr/bin/csplain
@@ -121,11 +122,13 @@ package() {
    ln -s pdftex ${pkgdir}/usr/bin/etex
    ln -s pdftex ${pkgdir}/usr/bin/jadetex
    ln -s pdftex ${pkgdir}/usr/bin/latex
-   ln -s pdftex ${pkgdir}/usr/bin/lollipop
+   ln -s tex ${pkgdir}/usr/bin/lollipop
    ln -s pdftex ${pkgdir}/usr/bin/mex
    ln -s pdftex ${pkgdir}/usr/bin/mllatex
    ln -s pdftex ${pkgdir}/usr/bin/mltex
    ln -s pdftex ${pkgdir}/usr/bin/pdfetex
+   ln -s pdftex ${pkgdir}/usr/bin/pdfcslatex
+   ln -s pdftex ${pkgdir}/usr/bin/pdfcsplain
    ln -s pdftex ${pkgdir}/usr/bin/pdfjadetex
    ln -s pdftex ${pkgdir}/usr/bin/pdflatex
    ln -s pdftex ${pkgdir}/usr/bin/pdfmex
@@ -134,7 +137,12 @@ package() {
    ln -s pdftex ${pkgdir}/usr/bin/utf8mex
    ln -s pdftex ${pkgdir}/usr/bin/xmltex
    ln -s xetex ${pkgdir}/usr/bin/xelatex
-   ln -s xetex ${pkgdir}/usr/bin/xelollipop
+
+   ## install pacman hooks
+   install -D -m644 ${srcdir}/mktexlsr.hook "$pkgdir/usr/share/libalpm/hooks/mktexlsr.hook"
+   install -D -m644 ${srcdir}/texlive-updmap.hook "$pkgdir/usr/share/libalpm/hooks/texlive-updmap.hook"
+   install -D -m755 ${srcdir}/mktexlsr.script "$pkgdir/usr/share/libalpm/scripts/mktexlsr"
+   install -D -m755 ${srcdir}/texlive-updmap.script "$pkgdir/usr/share/libalpm/scripts/texlive-updmap"
 
    #############################################################
    # remove dangling symlinks
@@ -160,6 +168,7 @@ arlatex
 autoinst
 bundledoc
 checkcites
+checklistings
 chkweb
 cjk-gs-integrate
 context
@@ -201,6 +210,7 @@ ltximg
 lua2dox_filter
 luaotfload-tool
 luatools
+make4ht
 match_parens
 mf2pt1
 mkjobtexmf
@@ -215,6 +225,7 @@ pdf270
 pdf90
 pdfatfi
 pdfbook
+pdfbook2
 pdfcrop
 pdfflip
 pdfjam
@@ -224,6 +235,7 @@ pdfjam-slides6up
 pdfjoin
 pdfnup
 pdfpun
+pdfxup
 pfarrei
 pkfix
 pkfix-helper
@@ -236,7 +248,9 @@ repstopdf
 rpdfcrop
 rungs
 simpdftex
+srcredact
 sty2dtx
+tex4ebook
 texconfig
 texconfig-dialog
 texconfig-sys
@@ -263,6 +277,7 @@ xindy
 "
    _games_scripts="rubikrotation"
    _htmlxml_scripts="ht htcontext htlatex htmex httex httexi htxelatex htxetex mk4ht"
+   _humanities_scripts="diadia"
    _langcyrillic_scripts="rubibtex rumakeindex"
    _langextra_scripts="ebong"
    _langgreek_scripts="mkgrkindex"
@@ -275,7 +290,9 @@ kanji-config-updmap-sys
    _latexextra_scripts="
 authorindex
 exceltex
+makedtx
 makeglossaries
+makeglossaries-lite
 pdfannotextractor
 perltex
 ps4pdf
@@ -283,8 +300,8 @@ splitindex
 svn-multi
 vpe
 yplan"
-   _music_scripts="lily-glyph-commands lily-image-commands lily-rebuild-pdfs m-tx musixtex musixflx pmx2pdf"
-   _pictures_scripts="cachepic epspdf epspdftk fig4latex getmapdl mathspic mkpic"
+   _music_scripts="lily-glyph-commands lily-image-commands lily-rebuild-pdfs m-tx musixtex musixflx pmx2pdf pmxchords"
+   _pictures_scripts="cachepic epspdf epspdftk fig4latex getmapdl mathspic mkpic pn2pdf"
    _pstricks_scripts="pedigree pst2pdf"
    _science_scripts="pygmentex ulqda"
    for s in \

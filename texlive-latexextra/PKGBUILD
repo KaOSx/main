@@ -1,7 +1,7 @@
 
 pkgname=texlive-latexextra
-pkgver=2015.37553
-_revnr=${pkgver#2015.}
+pkgver=2016.41473
+_revnr=${pkgver#2016.}
 pkgrel=1
 pkgdesc="TeX Live - Large collection of add-on packages for LaTeX"
 license=('GPL')
@@ -13,8 +13,7 @@ url='http://tug.org/texlive/'
 source=("https://sources.archlinux.org/other/texlive/$pkgname-$pkgver-src.zip"
         "$pkgname.maps")
 options=('!emptydirs' '!strip')
-install=texlive.install
-md5sums=('456518aa966d23306dfbf23d33fa940a'
+md5sums=('04e9310f60d2936ce08747dba24ceadc'
          '017fc9ed83747aa8884ca9ae0767531f')
 
 build() {
@@ -51,6 +50,7 @@ package() {
 authorindex/authorindex
 exceltex/exceltex
 glossaries/makeglossaries
+glossaries/makeglossaries-lite.lua
 pax/pdfannotextractor.pl
 perltex/perltex.pl
 pst-pdf/ps4pdf
