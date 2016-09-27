@@ -3,7 +3,7 @@
 pkgname=ghostscript
 pkgver=9.20
 _pkgver=920
-pkgrel=2
+pkgrel=3
 epoch=1
 pkgdesc="An interpreter for the PostScript language"
 arch=('x86_64')
@@ -14,9 +14,9 @@ makedepends=('gnutls')
 optdepends=('texlive-core:      needed for dvipdf')
 url="http://www.ghostscript.com/"
 #source=("http://downloads.ghostscript.com/public/ghostscript-${pkgver}.tar.bz2")
-source=("https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs${_pkgver}/ghostscript-${pkgver}.tar.gz")
+source=("https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs${_pkgver}/ghostscript-${pkgver}.tar.xz")
 options=('!libtool' '!makeflags')
-md5sums=('d92bb51c9a34b20b25a71c4deb7cb8dd')
+md5sums=('8f3d383d48da22345937b66b01ab2960')
 
 build() {
   cd ${srcdir}/ghostscript-${pkgver}
@@ -32,9 +32,7 @@ build() {
 	--without-luratech \
 	--disable-compile-inits \
 	--with-system-libtiff \
-	--disable-gtk \
-	--without-pcl \
-	--without-xps
+	--disable-gtk 
 
   make
   
