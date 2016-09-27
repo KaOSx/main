@@ -3,12 +3,12 @@
 pkgname=ghostscript
 pkgver=9.20
 _pkgver=920
-pkgrel=1
+pkgrel=2
 epoch=1
 pkgdesc="An interpreter for the PostScript language"
 arch=('x86_64')
 license=('GPL3' 'custom')
-depends=('libxt' 'libcups' 'fontconfig' 'jasper' 'zlib' 'libjpeg-turbo'
+depends=('libxt' 'libcups' 'fontconfig' 'jasper' 'zlib' 'libpng' 'libjpeg-turbo'
          'libtiff' 'lcms' 'libpaper')
 makedepends=('gnutls')
 optdepends=('texlive-core:      needed for dvipdf')
@@ -22,24 +22,19 @@ build() {
   cd ${srcdir}/ghostscript-${pkgver}
 
   # force it to use system-libs
-  rm -rf jpeg jasper tiff freetype lcms
+  rm -rf jpeg jasper tiff freetype lcms libpng expat
 
   ./configure --prefix=/usr \
 	--enable-dynamic \
-	--with-ijs \
 	--with-jbig2dec \
-	--with-omni \
 	--with-x \
-	--with-drivers=ALL\
 	--with-fontpath=/usr/share/fonts/Type1:/usr/share/fonts \
-	--enable-fontconfig \
-	--enable-freetype \
 	--without-luratech \
 	--disable-compile-inits \
 	--with-system-libtiff \
 	--disable-gtk \
-	--without-omni \
-	--with-libpaper 
+	--without-pcl \
+	--without-xps
 
   make
   
