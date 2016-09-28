@@ -1,6 +1,6 @@
 
 pkgname=nspr
-pkgver=4.12
+pkgver=4.13
 pkgrel=1
 pkgdesc="Netscape Portable Runtime"
 arch=('x86_64')
@@ -10,10 +10,10 @@ depends=('glibc')
 makedepends=('zip')
 options=('!emptydirs')
 source=("https://ftp.mozilla.org/pub/mozilla.org/nspr/releases/v${pkgver}/src/${pkgname}-${pkgver}.tar.gz")
-md5sums=('0de760c1e00a92e180e611cf06ce9589')
+md5sums=('74ef1def8a9ff311e32e7648e2c5c8ce')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
 
   ./nspr/configure \
       --prefix=/usr \
@@ -26,12 +26,11 @@ build() {
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
-  make DESTDIR="${pkgdir}" install
+  cd ${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install
 
   chmod 644 ${pkgdir}/usr/lib/*.a
 
-  ln -s nspr.pc "$pkgdir/usr/lib/pkgconfig/mozilla-nspr.pc"
-  rm -r "$pkgdir"/usr/bin/{compile-et.pl,prerr.properties} \
-         "$pkgdir/usr/include/nspr/md"
+  ln -s nspr.pc ${pkgdir}/usr/lib/pkgconfig/mozilla-nspr.pc
+  rm -r ${pkgdir}/usr/bin/{compile-et.pl,prerr.properties} ${pkgdir}/usr/include/nspr/md
 }
