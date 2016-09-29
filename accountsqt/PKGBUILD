@@ -1,6 +1,6 @@
 
 pkgname=accountsqt
-pkgver=1.14
+pkgver=1.15
 _pkgver=VERSION_1.14-a34ca4b6d250529c900b0382559553b6e5885918
 pkgrel=3
 arch=('x86_64')
@@ -13,11 +13,11 @@ makedepends=('doxygen')
 conflicts=('accountsqt-doc' 'accounts-qt5')
 replaces=('accountsqt-doc' 'accounts-qt5')
 provides=('accountsqt-doc' 'accounts-qt5')
-source=("https://gitlab.com/accounts-sso/libaccounts-qt/repository/archive.tar.bz2?ref=VERSION_$pkgver")
-md5sums=('c6c16ea482613c11ab076b84ebae5633') 
+source=("https://gitlab.com/accounts-sso/libaccounts-qt/repository/archive.tar.bz2?ref=VERSION_${pkgver}")
+md5sums=('e42c66030610d00f48a8c2c1ffc3ebe2') 
 
 build() {
-  cd libaccounts-qt-$_pkgver
+  cd libaccounts-qt-VERSION_${pkgver}*
   #sed -i 's|SUBDIRS  += Accounts tests|SUBDIRS += Accounts|' accounts-qt.pro
   #sed -i 's|QHG_LOCATION           = qhelpgenerator|QHG_LOCATION = qhelpgenerator-qt5|' doc/doxy.conf
 
@@ -26,7 +26,7 @@ build() {
 }
 
 package() {
-  cd libaccounts-qt-$_pkgver
+  cd libaccounts-qt-VERSION_${pkgver}*
 
-  make INSTALL_ROOT="$pkgdir" install_subtargets
+  make INSTALL_ROOT=${pkgdir} install_subtargets
 }
