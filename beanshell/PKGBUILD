@@ -1,18 +1,18 @@
 
 pkgname=beanshell
 pkgver=2.1.8
-pkgrel=2
+pkgrel=3
 pkgdesc="Small, source level Java interpreter with object based scripting language features written in Java"
 arch=('x86_64')
 url="https://code.google.com/p/beanshell2/"
 license=('LGPL')
 depends=('java-runtime')
 provides=('bsh')
-source=("https://github.com/pejobo/beanshell2/blob/v2.1/downloads/bsh-${pkgver}.jar")
-noextract=("${pkgname}-${pkgver}.jar")
-md5sums=('0f08bbcd94b61fcde50c53884e2efc5f')
+source=("https://github.com/pejobo/beanshell2/blob/v2.1/downloads/bsh-${pkgver}.jar?raw=true")
+noextract=("${pkgname}-${pkgver}.jar?raw=true")
+md5sums=('86da39aefd9ab3da7167f141083009ea')
 
 package() {
   install -m755 -d ${pkgdir}/usr/share/java/
-  install -D -m644 ${srcdir}/bsh-${pkgver}.jar ${pkgdir}/usr/share/java/bsh.jar
+  install -D -m644 ${srcdir}/bsh-${pkgver}.jar?raw=true ${pkgdir}/usr/share/java/bsh.jar
 }
