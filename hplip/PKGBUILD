@@ -17,9 +17,11 @@ optdepends=('dbus-python2: for dbus support'
 options=('!libtool')
 install=${pkgname}.install
 source=("http://downloads.sourceforge.net/hplip/${pkgname}-${_pkgver}.tar.gz"
-        "https://launchpadlibrarian.net/281975878/patch")
+        "https://launchpadlibrarian.net/281975878/patch"
+        'cups-2.2.patch')
 md5sums=('19238f44d2af6d46b4a6c27a0f46742d'
-         'c873eb40c9e3fa794637523400190218')
+         'c873eb40c9e3fa794637523400190218'
+         'ceb7449b12e2ecf70f898bc50b161a3c')
 
 build() {
   cd ${pkgname}-${_pkgver}
@@ -28,6 +30,8 @@ build() {
   sed -i '1s|#!/usr/bin/env python$|&3|' */*/*.py
   # https://github.com/KaOSx/main/issues/31
   patch -p2 -i ${srcdir}/patch
+  # cups 2.2 patch https://packages.debian.org/sid/hplip
+  patch -p1 -i ${srcdir}/cups-2.2.patch
 
   # from Gentoo
   # Use system foomatic-rip for hpijs driver instead of foomatic-rip-hplip
