@@ -7,20 +7,20 @@ arch=('x86_64')
 license=('BSD')
 depends=('libogg' 'speexdsp')
 options=('!libtool')
-source=("http://downloads.us.xiph.org/releases/speex/$pkgname-$pkgver.tar.gz")
+source=("http://downloads.us.xiph.org/releases/speex/${pkgname}-${pkgver}.tar.gz")
 md5sums=('6ae7db3bab01e1d4b86bacfa8ca33e81')
 url="http://www.speex.org/"
 
 build() {
-  cd $srcdir/speex-$pkgver
+  cd ${pkgname}-${pkgver}
   
   ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var
   make
 }
 
 package() {
-  cd $srcdir/speex-$pkgver
-  make DESTDIR="$pkgdir" install
+  cd ${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install
 
-  install -Dm644 COPYING $pkgdir/usr/share/licenses/$pkgname/LICENSE
+  install -Dm644 COPYING $pkgdir/usr/share/licenses/${pkgname}/LICENSE
 }

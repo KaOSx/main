@@ -1,6 +1,6 @@
 
 pkgname=networkmanager-pptp
-pkgver=1.2.2
+pkgver=1.2.4
 _pkgver=1.2
 _pppver=2.4.7
 pkgrel=1
@@ -9,10 +9,10 @@ arch=('x86_64')
 license=('GPL')
 url="http://www.gnome.org/projects/NetworkManager/"
 depends=('networkmanager' 'pptpclient')
-makedepends=('intltool')
+makedepends=('intltool' 'python3')
 options=('!libtool')
 source=("http://ftp.gnome.org/pub/GNOME/sources/NetworkManager-pptp/${_pkgver}/NetworkManager-pptp-${pkgver}.tar.xz")
-md5sums=('e1d0021eff80fcf6ad1c445b4fa0451d')
+md5sums=('a05b36c92870e2e248c0c75b2c7ef577')
 
 build() {
   cd NetworkManager-pptp-${pkgver}
