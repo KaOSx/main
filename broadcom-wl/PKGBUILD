@@ -6,7 +6,7 @@ _kver="$(cat /lib/modules/${_extramodules}/version)"
 pkgname=broadcom-wl
 pkgver=6.30.223.271
 _pkgver=6_30_223_271
-pkgrel=9
+pkgrel=10
 pkgdesc='Broadcom 802.11abgn hybrid Linux networking device driver'
 arch=('x86_64')
 url='http://www.broadcom.com/support/802.11/'
@@ -21,7 +21,7 @@ source=("http://www.broadcom.com/docs/linux_sta/hybrid-v35_64-nodebug-pcoem-${_p
 md5sums=('115903050c41d466161784d4c843f4f9'
          '3600df7db49c759c655bc6a7789b28d4'
          '52f9dcef8112f8e325d9236e5290cb88'
-         'b38a42d76eccd4c036ec181920dc4d5a')
+         '7152e3951029bed853a31258149ffae5')
 
 backup=('etc/modprobe.d/broadcom-wl.conf')
 install=install
@@ -31,6 +31,8 @@ build() {
 
 	patch -p1 -i license.patch
 	patch -p1 -i linux-recent.patch
+	
+	sed -i 's|BRCM_WLAN_IFNAME eth|BRCM_WLAN_IFNAME wlan|' src/wl/sys/wl_linux.c
 
 	make -C /lib/modules/"${_kver}"/build M=`pwd`
 }
