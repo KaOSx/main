@@ -1,7 +1,7 @@
 
 pkgname=libxi
-pkgver=1.7.6
-pkgrel=2
+pkgver=1.7.7
+pkgrel=1
 pkgdesc="X11 Input extension library"
 arch=('x86_64')
 url="http://xorg.freedesktop.org"
@@ -10,11 +10,11 @@ makedepends=('pkgconfig' 'xorg-util-macros')
 options=('!libtool')
 license=('custom')
 source=("http://xorg.freedesktop.org/releases/individual/lib/libXi-${pkgver}.tar.bz2")
-md5sums=('510e555ecfffa8d2298a0f42b725e563')
+md5sums=('cc0883a898222d50ff79af3f83595823')
 
 
 build() {
-  cd "${srcdir}/libXi-${pkgver}"
+  cd libXi-${pkgver}
   
   ./configure --prefix=/usr \
         --sysconfdir=/etc \
@@ -23,9 +23,9 @@ build() {
 }
 
 package() {
-  cd "${srcdir}/libXi-${pkgver}"
-  make DESTDIR="${pkgdir}" install
+  cd libXi-${pkgver}
+  make DESTDIR=${pkgdir} install
 
-  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
-  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
+  install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
 }

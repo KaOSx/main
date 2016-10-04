@@ -1,7 +1,7 @@
 
 pkgname=libxv
-pkgver=1.0.10
-pkgrel=3
+pkgver=1.0.11
+pkgrel=1
 pkgdesc="X11 Video extension library"
 arch=('x86_64')
 license=('custom')
@@ -10,19 +10,19 @@ depends=('libxext' 'videoproto')
 makedepends=('pkgconfig')
 options=('!libtool')
 source=("http://xorg.freedesktop.org/releases/individual/lib/libXv-${pkgver}.tar.bz2")
-md5sums=('e0af49d7d758b990e6fef629722d4aca')
+md5sums=('210b6ef30dda2256d54763136faa37b9')
 
 build() {
-  cd "${srcdir}/libXv-${pkgver}"
+  cd libXv-${pkgver}
   
   ./configure --prefix=/usr --disable-static 
   make
 }
 
 package() {
-  cd "${srcdir}/libXv-${pkgver}"
-  make DESTDIR="${pkgdir}" install
+  cd libXv-${pkgver}
+  make DESTDIR=${pkgdir} install
 
-  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
-  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
+  install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
 }

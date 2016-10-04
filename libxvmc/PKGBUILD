@@ -1,7 +1,7 @@
 
 pkgname=libxvmc
-pkgver=1.0.9
-pkgrel=2
+pkgver=1.0.10
+pkgrel=1
 pkgdesc="X11 Video Motion Compensation extension library"
 arch=('x86_64')
 url="http://xorg.freedesktop.org/"
@@ -10,19 +10,19 @@ depends=('libxv')
 makedepends=('pkgconfig')
 options=('!libtool')
 source=("http://xorg.freedesktop.org/releases/individual/lib/libXvMC-${pkgver}.tar.bz2")
-md5sums=('eba6b738ed5fdcd8f4203d7c8a470c79')
+md5sums=('4cbe1c1def7a5e1b0ed5fce8e512f4c6')
 
 build() {
-  cd ${srcdir}/libXvMC-${pkgver}
+  cd libXvMC-${pkgver}
   
   ./configure --prefix=/usr --sysconfdir=/etc --disable-static
   make
 }
 
 package() {
-  cd ${srcdir}/libXvMC-${pkgver}
+  cd libXvMC-${pkgver}
   make DESTDIR=${pkgdir} install
   
-  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
-  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
+  install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
 }
