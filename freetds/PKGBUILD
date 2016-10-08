@@ -1,7 +1,7 @@
 
 pkgname=freetds
 pkgver=1.00.13
-pkgrel=1
+pkgrel=3
 pkgdesc='Library for accessing Sybase and MS SQL Server databases'
 url='http://www.freetds.org'
 arch=('x86_64')
@@ -22,12 +22,16 @@ build() {
 	      --mandir=/usr/share/man \
 	      --enable-msdblib \
 	      --with-tdsver=7.0 \
-	      --with-openssl
+	      --with-openssl \
+	      --with-unixodbc=/usr
 	make
 }
 
 package() {
 	cd ${pkgname}-${pkgver}
-	
 	make DESTDIR=${pkgdir} install
+	
+	install -m644 samples/unixodbc.freetds.driver.template ${pkgdir}/etc/${pkgname}/
+	install -m644 samples/unixodbc.jdbc.datasource.template ${pkgdir}/etc/${pkgname}/
+	install -m644 samples/odbc.ini ${pkgdir}/etc/${pkgname}/odbc.ini.template
 }
