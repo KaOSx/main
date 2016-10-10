@@ -2,36 +2,35 @@
 pkgname=crypto++
 pkgver=5.6.4
 _pkgver=564
-pkgrel=1
+pkgrel=2
 pkgdesc="A free C++ class library of cryptographic schemes."
 arch=('x86_64')
 license=('custom')
-makedepends=('unzip')
+makedepends=('unzip' 'cmake')
 url="http://www.cryptopp.com/"
 source=("http://www.cryptopp.com/cryptopp${_pkgver}.zip"
-        'libcrypto++.pc')
+        'libcrypto++.pc') # set to remove after testing cmake build setup
 md5sums=('4ee7e5cdd4a45a14756c169eaf2a77fc'
-         '46de3847c59ad16456fa863eb33e73b2')
+         'ea27f28fe0303fcaa24d83cf4a964d53')
 
 build() {
-  cd ${srcdir}
-  sed -i -e 's/^CXXFLAGS/#CXXFLAGS/' GNUmakefile
-  # https://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-2015-2141
-  #patch -p1 -i ${srcdir}/9425e16437439e68c7d96abef922167d68fafaff.diff
+  mkdir -p build
+  cd build
   
-  export CXXFLAGS="${CXXFLAGS} -DNDEBUG -fPIC"
-  
-  make -f GNUmakefile  
-  make libcryptopp.so
+  cmake ../ \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DBUILD_SHARED=ON \
+    -DBUILD_STATIC=OFF \
+    -DBUILD_TESTING=OFF \
+    -DCMAKE_INSTALL_LIBDIR=lib
+    
+  make  
 }
 
 package() {
-  cd ${srcdir}
-
-  install -d ${pkgdir}/usr/{lib/pkgconfig,include/cryptopp}
-  install -m644 *.h ${pkgdir}/usr/include/cryptopp/
-  install -m644 libcryptopp.a "${pkgdir}/usr/lib/libcryptopp.a"
-  install -m644 libcryptopp.so "${pkgdir}/usr/lib/libcryptopp.so"
-  install -m644 ${srcdir}/libcrypto++.pc "${pkgdir}/usr/lib/pkgconfig/libcrypto++.pc"
-  install -D -m644 License.txt "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+  cd build
+  make DESTDIR=${pkgdir} install
+  
+  install -Dm644 ../License.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
