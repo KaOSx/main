@@ -1,23 +1,23 @@
 
 pkgname=crypto++
-pkgver=5.6.4
-_pkgver=564
-pkgrel=2
+pkgver=5.6.5
+_pkgver=5_6_5
+pkgrel=1
 pkgdesc="A free C++ class library of cryptographic schemes."
 arch=('x86_64')
 license=('custom')
 makedepends=('unzip' 'cmake')
 url="http://www.cryptopp.com/"
-source=("http://www.cryptopp.com/cryptopp${_pkgver}.zip"
+source=("https://github.com/weidai11/cryptopp/archive/CRYPTOPP_${_pkgver}.tar.gz"
         'libcrypto++.pc') # set to remove after testing cmake build setup
-md5sums=('4ee7e5cdd4a45a14756c169eaf2a77fc'
+md5sums=('88224d9c0322f63aa1fb5b8ae78170f0'
          'ea27f28fe0303fcaa24d83cf4a964d53')
 
 build() {
   mkdir -p build
   cd build
   
-  cmake ../ \
+  cmake ../cryptopp-CRYPTOPP_${_pkgver} \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DBUILD_SHARED=ON \
@@ -32,5 +32,5 @@ package() {
   cd build
   make DESTDIR=${pkgdir} install
   
-  install -Dm644 ../License.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+  install -Dm644 ../cryptopp-CRYPTOPP_${_pkgver}/License.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
