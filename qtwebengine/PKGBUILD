@@ -5,7 +5,7 @@ pkgname=('qtwebengine' 'qtwebengine-examples')
 pkgver=5.7.0
 subver=5.7.0
 _pkgver=5.7
-pkgrel=5
+pkgrel=6
 pkgdesc="Chromium-based web engine to replace Qt WebKit"
 url="http://blog.qt.digia.com/blog/2014/01/23/qt-webengine-technology-preview-available/"
 arch=('x86_64')
@@ -20,20 +20,21 @@ source=("https://download.qt-project.org/official_releases/qt/${_pkgver}/${subve
         'nss321.diff'
         'demobrowser.desktop'
         'quicknanobrowser.desktop'
-        'markdowneditor.desktop')
+        'markdowneditor.desktop'
+        'web_engine_context.diff')
 md5sums=('937f64886fbcb038d6fa4b44ae80cbeb'
          '5c297bd337ffab4a2d075a7c85d55ef3'
          'f11d24801322ef41f8a44eedc5e104c2'
          '6d62ba455c7d70870fb28c9362c9c591'
-         '5ea5aa48c198a8de1398fc9e7a4abd14')
+         '5ea5aa48c198a8de1398fc9e7a4abd14'
+         '19f9f352ac662cde7a37fccf1eb2b87a')
 
 build() {
    cd $_pkgfqn/   
-   # patch adjusted from fedora to get Qt 5.6 qtwebengine to work with nss 3.21
-   # http://pkgs.fedoraproject.org/cgit/rpms/qt5-qtwebengine.git/commit/?id=9a15e3c582902772e7876660afd06f57c4ff48d2
-   #patch -p1 -i $srcdir/nss321.diff
+   # fix qtwebengine crashes on wayland https://codereview.qt-project.org/#/c/173524/
+   patch -p1 -i $srcdir/web_engine_context.diff
    
-   mkdir build   
+   #mkdir build   
    cd build 
    #export GYP_DEFINES="python_ver=2.7 use_pulseaudio=1 use_pango=1 use_cairo=1 use_cups=1"
    

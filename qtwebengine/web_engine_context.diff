@@ -1,0 +1,18 @@
+--- a/src/core/web_engine_context.cpp	2016-10-13 15:43:31.892394887 -0400
++++ b/src/core/web_engine_context.cpp	2016-10-13 15:43:31.532399143 -0400
+@@ -298,7 +298,14 @@
+         parsedCommandLine->AppendSwitch(switches::kDisableGpu);
+     } else {
+         const char *glType = 0;
+-        if (qt_gl_global_share_context()) {
++        if (qt_gl_global_share_context() && qt_gl_global_share_context()->isValid()) {
++            // If the native handle is QEGLNativeContext try to use GL ES/2, if there is no native handle
++            // assume we are using wayland and try GL ES/2, and finally Ozone demands GL ES/2 too.
++            if (qt_gl_global_share_context()->nativeHandle().isNull()
++#ifdef USE_OZONE
++                || true
++#endif
++                || !strcmp(qt_gl_global_share_context()->nativeHandle().typeName(), "QEGLNativeContext"))
+             if (qt_gl_global_share_context()->isOpenGLES()) {
+                 glType = gfx::kGLImplementationEGLName;
+             } else {
