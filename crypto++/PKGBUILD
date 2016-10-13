@@ -2,7 +2,7 @@
 pkgname=crypto++
 pkgver=5.6.5
 _pkgver=5_6_5
-pkgrel=1
+pkgrel=2
 pkgdesc="A free C++ class library of cryptographic schemes."
 arch=('x86_64')
 license=('custom')
@@ -18,7 +18,7 @@ build() {
   cd build
   
   cmake ../cryptopp-CRYPTOPP_${_pkgver} \
-    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_BUILD_TYPE=RelWithDebInfo \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DBUILD_SHARED=ON \
     -DBUILD_STATIC=OFF \
