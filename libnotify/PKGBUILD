@@ -1,7 +1,7 @@
 
 pkgname=libnotify
-pkgver=0.7.6
-pkgrel=2
+pkgver=0.7.7
+pkgrel=1
 pkgdesc="Desktop notification library"
 arch=('x86_64')
 url="http://library.gnome.org/devel/notification-spec/"
@@ -10,18 +10,18 @@ depends=('gdk-pixbuf2')
 makedepends=('gtk3' 'gobject-introspection')
 options=('!libtool')
 source=("http://ftp.gnome.org/pub/GNOME/sources/libnotify/0.7/${pkgname}-${pkgver}.tar.xz")
-md5sums=('a4997019d08f46f3bf57b78e6f795a59')
+md5sums=('e9d911f6a22435e0b922f2fe71212b59')
 
 build() {
-    cd "${srcdir}/${pkgname}-${pkgver}"
+    cd ${pkgname}-${pkgver}
     
     ./configure --prefix=/usr --disable-static 
     make
 }
 
 package() {
-    cd "${srcdir}/${pkgname}-${pkgver}"
+    cd ${pkgname}-${pkgver}
     
-    make DESTDIR="${pkgdir}" install
+    make DESTDIR=${pkgdir} install
 }
 
