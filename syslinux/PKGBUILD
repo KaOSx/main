@@ -1,7 +1,7 @@
 
 pkgname=syslinux
 pkgver=6.03
-pkgrel=2
+pkgrel=3
 arch=('x86_64')
 pkgdesc="Collection of boot loaders that boot from FAT, ext2/3/4 and btrfs filesystems, from CDs and via PXE"
 url="http://syslinux.zytor.com/"
@@ -17,32 +17,25 @@ install=syslinux.install
 options=('!makeflags' '!emptydirs')
 source=("http://www.kernel.org/pub/linux/utils/boot/syslinux/$pkgname-${pkgver}.tar.xz"
         'syslinux.cfg'
-        'syslinux-install_update')
+        'syslinux-install_update'
+        'gcc5.patch')
 md5sums=('92a253df9211e9c20172796ecf388f13'
          '6461abfb17e54dc997cea77c7a312e20'
-         '3fcba3efe6beda6fc4935c1914393377')
+         '3fcba3efe6beda6fc4935c1914393377'
+         '3fc0ea96652b100f71be89d6ac4df8d7')
          
 prepare() {
-  cd "$srcdir"/$pkgname-${pkgver}
-  
-  msg "Do not try to build the Windows or DOS installers and DIAG files"
-    sed 's|diag libinstaller dos win32 win64 dosutil txt|libinstaller txt|g' -i "${srcdir}/${pkgname}-${pkgver}/Makefile" || true
-    sed 's|win32/syslinux.exe win64/syslinux64.exe||g' -i "${srcdir}/${pkgname}-${pkgver}/Makefile" || true
-    sed 's|dosutil/*.com dosutil/*.sys||g' -i "${srcdir}/${pkgname}-${pkgver}/Makefile" || true
-    sed 's|dos/syslinux.com||g' -i "${srcdir}/${pkgname}-${pkgver}/Makefile" || true
-    sed 's|INSTALLSUBDIRS = com32 utils dosutil|INSTALLSUBDIRS = com32 utils|g' -i "${srcdir}/${pkgname}-${pkgver}/Makefile" || true
-    sed 's|install -m 644 -c $(INSTALL_DIAG) $(INSTALLROOT)$(DIAGDIR)|# install -m 644 -c $(INSTALL_DIAG) $(INSTALLROOT)$(DIAGDIR)|g' -i "${srcdir}/${pkgname}-${pkgver}/Makefile" || true
-    sed 's|-include $(MAKEDIR)/devel.mk||g' -i "${srcdir}/${pkgname}-${pkgver}/mk/syslinux.mk" || true
+    cd ${pkgname}-${pkgver}
     
-    msg "Fix FHS manpage path"
-    sed 's|/usr/man|/usr/share/man|g' -i "${srcdir}/${pkgname}-${pkgver}/mk/syslinux.mk" || true
+    sed 's|/usr/man|/usr/share/man|g' -i mk/syslinux.mk
+    patch -p1 -i ${srcdir}/gcc5.patch
 }
 
 _build_syslinux_bios() {
     
-    rm -rf "${srcdir}/${pkgname}-${pkgver}-bios/" || true
-    cp -r "${srcdir}/${pkgname}-${pkgver}" "${srcdir}/${pkgname}-${pkgver}-bios"
-    cd "${srcdir}/${pkgname}-${pkgver}-bios/"
+    rm -rf ${srcdir}/${pkgname}-${pkgver}-bios/ 
+    cp -r ${srcdir}/${pkgname}-${pkgver} ${srcdir}/${pkgname}-${pkgver}-bios
+    cd ${srcdir}/${pkgname}-${pkgver}-bios/
     
     ## Do not build syslinux with default LDFLAGS
     unset LDFLAGS
@@ -54,9 +47,9 @@ _build_syslinux_bios() {
 
 _build_syslinux_efi64() {
     
-    rm -rf "${srcdir}/${pkgname}-${pkgver}-efi64/" || true
-    cp -r "${srcdir}/${pkgname}-${pkgver}" "${srcdir}/${pkgname}-${pkgver}-efi64"
-    cd "${srcdir}/${pkgname}-${pkgver}-efi64/"
+    rm -rf ${srcdir}/${pkgname}-${pkgver}-efi64/ 
+    cp -r ${srcdir}/${pkgname}-${pkgver} ${srcdir}/${pkgname}-${pkgver}-efi64
+    cd ${srcdir}/${pkgname}-${pkgver}-efi64/
     
     ## Unset all compiler FLAGS for efi64 build
     unset CFLAGS
@@ -73,7 +66,7 @@ _build_syslinux_efi64() {
 
 build() {
 
-    cd "${srcdir}/${pkgname}-${pkgver}/"
+    cd ${pkgname}-${pkgver}/
 
     ## Build syslinux-efi
     _build_syslinux_efi64
@@ -84,40 +77,37 @@ build() {
 }
 
 _package_syslinux_bios() {
-    
-    cd "${srcdir}/${pkgname}-${pkgver}-bios/"
+
+    cd ${srcdir}/${pkgname}-${pkgver}-bios/
     
     ## Install Syslinux bios
-    make INSTALLROOT="${pkgdir}/" AUXDIR="/usr/lib/syslinux/bios/" bios install
+    make INSTALLROOT=${pkgdir}/ AUXDIR=/usr/lib/syslinux/bios/ bios install
     
-    ## Remove syslinux.exe,syslinux64.exe,syslinux.com and dosutil dir
-    rm "${pkgdir}/usr/lib/syslinux/bios"/syslinux.{com,exe} || true
-    rm "${pkgdir}/usr/lib/syslinux/bios/syslinux64.exe" || true
-    rm -rf "${pkgdir}/usr/lib/syslinux/bios/dosutil/" || true
+    rm ${pkgdir}/usr/lib/syslinux/bios/syslinux.com
     
-    ## Remove com32 and diag dirs
-    rm -rf "${pkgdir}/usr/lib/syslinux/bios/diag/" || true
-    rm -rf "${pkgdir}/usr/lib/syslinux/bios/com32/" || true
+    ## Remove com32, dosutil and diag dirs
+    rm -rf ${pkgdir}/usr/lib/syslinux/bios/dosutil/
+    rm -rf ${pkgdir}/usr/lib/syslinux/bios/diag/
+    rm -rf ${pkgdir}/usr/lib/syslinux/bios/com32/
     
     ## Install docs
-    install -d "${pkgdir}/usr/share/doc"
-    cp -ar "${srcdir}/${pkgname}-${pkgver}/doc" "${pkgdir}/usr/share/doc/syslinux"
+    install -d ${pkgdir}/usr/share/doc
+    cp -ar ${srcdir}/${pkgname}-${pkgver}/doc ${pkgdir}/usr/share/doc/syslinux
     
     ## Install the default configuration
-    install -D -m0644 "${srcdir}/syslinux.cfg" "${pkgdir}/boot/syslinux/syslinux.cfg"
+    install -D -m0644 ${srcdir}/syslinux.cfg ${pkgdir}/boot/syslinux/syslinux.cfg
     
     ## Install the installation and update script
     ## This script is maintained at git://gist.github.com/772138.git
     ## Script not yet updated for syslinux-efi
-    install -D -m0755 "${srcdir}/syslinux-install_update" "${pkgdir}/usr/sbin/syslinux-install_update"
+    install -D -m0755 ${srcdir}/syslinux-install_update ${pkgdir}/usr/sbin/syslinux-install_update
     
 }
 
 package() { 
-    cd "${srcdir}/${pkgname}-${pkgver}/"
-    
-    cd "${srcdir}/${pkgname}-${pkgver}-efi64/"
-    make INSTALLROOT="${pkgdir}/" AUXDIR="/usr/lib/syslinux/" efi64 install
+
+    cd ${pkgname}-${pkgver}-efi64/
+    make INSTALLROOT=${pkgdir}/ AUXDIR=/usr/lib/syslinux/ efi64 install
 
     _package_syslinux_bios
     
