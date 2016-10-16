@@ -1,15 +1,15 @@
 
 pkgname=python3-setuptools
-pkgver=28.3.0
+pkgver=28.5.0
 pkgrel=1
 pkgdesc="Easily download, build, install, upgrade, and uninstall Python3 packages"
 arch=('x86_64')
 license=('PSF')
 url="http://pypi.python.org/pypi/setuptools"
 depends=('python3-packaging')
-makedepends=('asciidoc' 'python3-setuptools')
+makedepends=('asciidoc') # 'python3-setuptools')
 source=("https://github.com/pypa/setuptools/archive/v${pkgver}.tar.gz")
-md5sums=('b0755af07894fa9463152739c3fe3fce')
+md5sums=('d58d1dfac9a25569cecdf60a47974831')
 
 build() {
    cd setuptools-${pkgver}
