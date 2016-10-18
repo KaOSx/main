@@ -1,17 +1,17 @@
 
 pkgname=libnfs
-pkgver=1.10.0
+pkgver=1.11.0
 pkgrel=1
 pkgdesc="Client library for accessing NFS shares over a network."
 arch=('x86_64')
 url="https://github.com/sahlberg/libnfs"
 license=('GPL')
 depends=('glibc')
-source=("https://github.com/sahlberg/libnfs/archive/$pkgname-$pkgver.tar.gz")
-md5sums=('d0a8ce7b690f143c008f1b65d499d302')
+source=("https://github.com/sahlberg/libnfs/archive/${pkgname}-${pkgver}.tar.gz")
+md5sums=('863b9a7beafb02d93ee963ef84bc6e63')
 
 build() {
-  cd $pkgname-$pkgname-$pkgver
+  cd ${pkgname}-${pkgname}-${pkgver}
 
   ./bootstrap
     ./configure --prefix=/usr
@@ -19,7 +19,7 @@ build() {
 }
 
 package() {
-  cd $pkgname-$pkgname-$pkgver
+  cd ${pkgname}-${pkgname}-${pkgver}
 
-  make DESTDIR="$pkgdir" install
+  make DESTDIR=${pkgdir} install
 }
