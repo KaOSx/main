@@ -1,18 +1,20 @@
 
 pkgname=libconfig
-pkgver=1.5
-pkgrel=2
+pkgver=1.6
+pkgrel=1
 pkgdesc="C/C++ library for processing configuration files"
 arch=('x86_64')
 url="http://hyperrealm.com/libconfig/libconfig.html"
 license=('LGPL')
 depends=('gcc-libs' 'texinfo')
 options=('!libtool' '!emptydirs' 'zipman')
-source=("http://www.hyperrealm.com/libconfig/$pkgname-$pkgver.tar.gz")
-md5sums=('a939c4990d74e6fc1ee62be05716f633')
+source=("https://github.com/hyperrealm/libconfig/archive/v${pkgver}.tar.gz")
+md5sums=('2ccd24b6a2ee39f7ff8a3badfafb6539')
 
 build() {
   cd ${pkgname}-${pkgver}
+  # build fix https://github.com/hyperrealm/libconfig/issues/53
+  rm lib/scanner.c
   
   ./configure --prefix=/usr
   make

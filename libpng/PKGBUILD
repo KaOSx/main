@@ -1,8 +1,8 @@
 
 pkgname=libpng
 pkgver=1.6.26
-_apngver=1.6.25
-pkgrel=1
+_apngver=1.6.26
+pkgrel=2
 pkgdesc="A collection of routines used to create PNG format graphics files"
 arch=('x86_64')
 url="http://www.libpng.org/pub/png/libpng.html"
@@ -12,13 +12,12 @@ options=('!libtool')
 source=("http://downloads.sourceforge.net/sourceforge/libpng/${pkgname}-${pkgver}.tar.xz"
         "http://downloads.sourceforge.net/sourceforge/libpng-apng/libpng-${_apngver}-apng.patch.gz")
 md5sums=('faed9bb495d2e12dd0c9ec561ca60cd8'
-         '0e38f51075a7d77f646e44dcdb0c0a3a')
+         '921d2717418bf74b40b94191c8b282c7')
 
 build() {
   cd ${pkgname}-${pkgver}
 
   # http://sourceforge.net/projects/libpng-apng/
-  sed -i '/pngpriv.h/,/#define PNG_BGR/s|0x[0-9]*|&U|' ${srcdir}/libpng-$_apngver-apng.patch
   patch -p1 -i ${srcdir}/libpng-${_apngver}-apng.patch
 
   ./configure --prefix=/usr --disable-static
