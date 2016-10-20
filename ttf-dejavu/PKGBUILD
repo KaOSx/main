@@ -1,6 +1,6 @@
 
 pkgname=ttf-dejavu
-pkgver=2.36
+pkgver=2.37
 pkgrel=1
 pkgdesc="Font family based on the Bitstream Vera Fonts with a wider range of characters"
 arch=('x86_64')
@@ -9,15 +9,15 @@ license=('custom')
 depends=('fontconfig' 'xorg-fonts-encodings')
 install=ttf-dejavu.install
 source=("http://downloads.sourceforge.net/project/dejavu/dejavu/${pkgver}/dejavu-fonts-ttf-${pkgver}.tar.bz2")
-md5sums=('82e0c79253661bdb7cc43947be3c61d5')
+md5sums=('d0efec10b9f110a32e9b8f796e21782c')
 
 package() {
-  install -dm755 "${pkgdir}"/etc/fonts/conf.avail
-  install -dm755 "${pkgdir}"/usr/share/fonts/TTF
+  install -dm755 ${pkgdir}/etc/fonts/conf.avail
+  install -dm755 ${pkgdir}/usr/share/fonts/TTF
 
-  cd "${srcdir}"/dejavu-fonts-ttf-${pkgver}
-  install -m644 ttf/*.ttf "${pkgdir}"/usr/share/fonts/TTF/
-  install -m644 fontconfig/*.conf "${pkgdir}"/etc/fonts/conf.avail/
+  cd ${srcdir}/dejavu-fonts-ttf-${pkgver}
+  install -m644 ttf/*.ttf ${pkgdir}/usr/share/fonts/TTF/
+  install -m644 fontconfig/*.conf ${pkgdir}/etc/fonts/conf.avail/
 
-  install -Dm644 LICENSE "${pkgdir}"/usr/share/licenses/${pkgname}/LICENSE
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }

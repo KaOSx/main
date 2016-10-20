@@ -1,6 +1,6 @@
 
 pkgname=live-media
-pkgver=2016.09.22
+pkgver=2016.10.11
 pkgrel=1
 pkgdesc="A set of C++ libraries for multimedia streaming"
 arch=('x86_64')
@@ -8,10 +8,10 @@ license=('LGPL')
 url="http://live555.com/liveMedia"
 depends=('gcc-libs')
 source=("http://live555.com/liveMedia/public/live.${pkgver}.tar.gz")
-md5sums=('ce791b134b5ed31fda7ceb0348841a8d')
+md5sums=('945dd16c9d5c68bc417bef00db00e916')
 
 build() {
-  cd ${srcdir}/live
+  cd live
 
   sed \
       -e 's/$(INCLUDES) -I. -O2 -DSOCKLEN_T/$(INCLUDES) -I. -O2 -I. -fPIC -DRTSPCLIENT_SYNCHRONOUS_INTERFACE=1 -DSOCKLEN_T/g' \
@@ -21,7 +21,7 @@ build() {
 }
 
 package() {
-  cd ${srcdir}/live
+  cd live
 
   for dir in BasicUsageEnvironment groupsock liveMedia UsageEnvironment; do
     install -dm755 ${pkgdir}/usr/{bin,lib,include/${dir}}
