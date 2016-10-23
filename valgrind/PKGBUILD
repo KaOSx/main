@@ -1,7 +1,7 @@
 
 pkgname=valgrind
-pkgver=3.11.0
-pkgrel=4
+pkgver=3.12.0
+pkgrel=1
 pkgdesc="A tool to help find memory-management problems in programs"
 arch=('x86_64')
 license=('GPL')
@@ -10,7 +10,7 @@ depends=('glibc>=2.23' 'glibc<2.24' 'perl')
 makedepends=('gdb')
 options=('!emptydirs' '!buildflags')
 source=("http://valgrind.org/downloads/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('4ea62074da73ae82e0162d6550d3f129')
+md5sums=('6eb03c0c10ea917013a7622e483d61bb')
 
 build() {
   cd ${pkgname}-${pkgver}
