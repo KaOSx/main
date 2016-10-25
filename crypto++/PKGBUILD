@@ -2,14 +2,14 @@
 pkgname=crypto++
 pkgver=5.6.5
 _pkgver=5_6_5
-pkgrel=2
+pkgrel=3
 pkgdesc="A free C++ class library of cryptographic schemes."
 arch=('x86_64')
 license=('custom')
 makedepends=('unzip' 'cmake')
 url="http://www.cryptopp.com/"
 source=("https://github.com/weidai11/cryptopp/archive/CRYPTOPP_${_pkgver}.tar.gz"
-        'libcrypto++.pc') # set to remove after testing cmake build setup
+        'libcrypto++.pc') # set to remove after testing cmake build setup, needed for clementine
 md5sums=('88224d9c0322f63aa1fb5b8ae78170f0'
          'ea27f28fe0303fcaa24d83cf4a964d53')
 
@@ -33,4 +33,5 @@ package() {
   make DESTDIR=${pkgdir} install
   
   install -Dm644 ../cryptopp-CRYPTOPP_${_pkgver}/License.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+  install -Dm644 ${srcdir}/libcrypto++.pc ${pkgdir}/usr/lib/pkgconfig/libcrypto++.pc
 }
