@@ -1,36 +1,40 @@
 
 pkgname=rrdtool
-pkgver=1.5.3
+pkgver=1.5.6
 pkgrel=1
 pkgdesc="Data logging and graphing application"
 arch=('x86_64')
 url="http://www.rrdtool.org"
 license=('GPL')
-depends=('libpng' 'libxml2' 'pango' 'ttf-dejavu')
-makedepends=('intltool' 'ruby' 'python2' 'tcl' 'lua' 'groff')
-optdepends=('tcl: to use corresponding binding' \
-            'python2: to use corresponding binding' \
-            'ruby: to use corresponding binding' \
-            'lua: to use corresponding binding')
+depends=('libpng' 'libxml2' 'pango' 'ttf-dejavu' 'ruby' 'python2' 'tcl' 'lua')
+makedepends=('intltool' 'groff')
 options=('!libtool' '!emptydirs' '!makeflags')
 source=("http://oss.oetiker.ch/rrdtool/pub/rrdtool-${pkgver}.tar.gz")
-md5sums=('868a828cc6b10654c440a85054240ae2')
+md5sums=('c3703bca0472e43930e3ddaa848446fc')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
-  sed -e 's/$(RUBY) extconf.rb/& --vendor/' -i bindings/Makefile.in
+  cd ${pkgname}-${pkgver}
+  sed -e 's|$(RUBY) extconf.rb|& --vendor|' -i bindings/Makefile.in
 
-  ./configure --prefix=/usr --localstatedir=/var --disable-rpath --enable-perl \
-    --enable-perl-site-install --with-perl-options='INSTALLDIRS=vendor' \
-    --enable-ruby --enable-ruby-site-install --enable-python \
-    --enable-lua --enable-lua-site-install \
-    --enable-tcl --disable-libwrap
+  ./configure --prefix=/usr \
+    --localstatedir=/var \
+    --disable-rpath \
+    --enable-perl \
+    --enable-perl-site-install \
+    --with-perl-options='INSTALLDIRS=vendor' \
+    --enable-ruby \
+    --enable-ruby-site-install \
+    --enable-python \
+    --enable-lua \
+    --enable-lua-site-install \
+    --enable-tcl \
+    --disable-libwrap
   make
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
-  make DESTDIR="${pkgdir}" includedir=/usr/include install
+  cd ${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} includedir=/usr/include install
   
-  install -D -m644 COPYRIGHT "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+  install -D -m644 COPYRIGHT ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
