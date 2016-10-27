@@ -1,0 +1,25 @@
+
+pkgname=python3-requests
+pkgver=2.11.1
+pkgrel=1
+pkgdesc="Requests is the only Non-GMO HTTP library for Python, safe for human consumption."
+arch=('x86_64')
+license=('Apache')
+url="http://docs.python-requests.org/en/master/"
+depends=('python3')
+makedepends=('python3-setuptools')
+source=("https://github.com/kennethreitz/requests/archive/v${pkgver}.tar.gz")
+md5sums=('3007b144a7ce83ee16262b79e3acfa1b')
+
+build() {
+   cd requests-${pkgver}
+   
+   python3 setup.py build
+}
+ 
+package() {
+   cd requests-${pkgver}
+   
+   python3 setup.py install --prefix=/usr --root=${pkgdir} --optimize=1 --skip-build
+   install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
