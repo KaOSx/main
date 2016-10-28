@@ -1,7 +1,7 @@
 
 pkgname=cups-filters
-pkgver=1.11.4
-pkgrel=2
+pkgver=1.11.5
+pkgrel=1
 pkgdesc="OpenPrinting CUPS Filters"
 arch=('x86_64')
 url="http://www.linuxfoundation.org/collaborate/workgroups/openprinting"
@@ -18,7 +18,7 @@ replaces=('foomatic-filters')
 backup=(etc/fonts/conf.d/99pdftoopvp.conf)
 options=('!libtool')
 source=("http://www.openprinting.org/download/cups-filters/${pkgname}-${pkgver}.tar.xz")
-md5sums=('fbb5c0b25203d712e009a4b3ecd2da51')
+md5sums=('0e02f772d5e9c563de5791e8bc8c140a')
 
 build() {
   cd ${pkgname}-${pkgver}
@@ -28,7 +28,8 @@ build() {
     --sysconfdir=/etc \
     --with-rcdir=no \
     --enable-avahi \
-    --with-test-font-path=/usr/share/fonts/TTF/DejaVuSans.ttf
+    --with-test-font-path=/usr/share/fonts/TTF/DejaVuSans.ttf \
+    --disable-mutool
   make
 }
 
