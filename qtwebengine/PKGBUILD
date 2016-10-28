@@ -5,7 +5,7 @@ pkgname=('qtwebengine' 'qtwebengine-examples')
 pkgver=5.7.0
 subver=5.7.0
 _pkgver=5.7
-pkgrel=6
+pkgrel=7
 pkgdesc="Chromium-based web engine to replace Qt WebKit"
 url="http://blog.qt.digia.com/blog/2014/01/23/qt-webengine-technology-preview-available/"
 arch=('x86_64')
@@ -34,7 +34,7 @@ build() {
    # fix qtwebengine crashes on wayland https://codereview.qt-project.org/#/c/173524/
    patch -p1 -i $srcdir/web_engine_context.diff
    
-   #mkdir build   
+   mkdir build   
    cd build 
    #export GYP_DEFINES="python_ver=2.7 use_pulseaudio=1 use_pango=1 use_cairo=1 use_cups=1"
    
