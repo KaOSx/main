@@ -1,6 +1,6 @@
 
 pkgname=ffmpeg
-pkgver=3.1.5
+pkgver=3.2
 pkgrel=1
 pkgdesc="Complete and free Internet live audio and video broadcasting solution for Linux/Unix"
 arch=('x86_64')
@@ -11,8 +11,8 @@ depends=('bzip2' 'lame' 'sdl' 'libvorbis' 'xvidcore' 'zlib' 'x264' 'libtheora' '
          'libva' 'openjpeg' 'rtmpdump' 'speex' 'gsm' 'pulseaudio' 'v4l-utils' 'gnutls' 'x265'
          'libass' 'dcadec')
 makedepends=('yasm')
-source=("http://ffmpeg.org/releases/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('0dd2f448a41f555a100fb075d5df136e')
+source=("http://ffmpeg.org/releases/${pkgname}-${pkgver}.tar.xz")
+md5sums=('3c065fb5baae1aeb1494a09ac984b2de')
 
 build() {
   cd ${pkgname}-${pkgver}
