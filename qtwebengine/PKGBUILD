@@ -5,14 +5,14 @@ pkgname=('qtwebengine' 'qtwebengine-examples')
 pkgver=5.7.0
 subver=5.7.0
 _pkgver=5.7
-pkgrel=7
+pkgrel=8
 pkgdesc="Chromium-based web engine to replace Qt WebKit"
 url="http://blog.qt.digia.com/blog/2014/01/23/qt-webengine-technology-preview-available/"
 arch=('x86_64')
 license=('GPL3')
 makedepends=('qt5-declarative' 'python2-jinja' 'mesa' 'systemd' 'pango' 'nss' 'speex' 'libevent' 'libcups'
          'libxslt' 'libpng' 'libjpeg-turbo' 'libwebp' 'zlib' 'pciutils' 'jsoncpp' 'pulseaudio' 'libxcomposite'
-         'qt5-webchannel' 'ffmpeg' 'libxss' 'protobuf' 'opus' 'libvpx'
+         'qt5-webchannel' 'ffmpeg' 'libxss' 'protobuf' 'opus' # not used 'libvpx'
          'gperf' 'yasm' 'openssh' 'icu' 'qtwebengine')
 _pkgfqn="qtwebengine-opensource-src-${subver}"
 source=("https://download.qt-project.org/official_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz"
@@ -20,19 +20,15 @@ source=("https://download.qt-project.org/official_releases/qt/${_pkgver}/${subve
         'nss321.diff'
         'demobrowser.desktop'
         'quicknanobrowser.desktop'
-        'markdowneditor.desktop'
-        'web_engine_context.diff')
+        'markdowneditor.desktop')
 md5sums=('937f64886fbcb038d6fa4b44ae80cbeb'
          '5c297bd337ffab4a2d075a7c85d55ef3'
          'f11d24801322ef41f8a44eedc5e104c2'
          '6d62ba455c7d70870fb28c9362c9c591'
-         '5ea5aa48c198a8de1398fc9e7a4abd14'
-         '19f9f352ac662cde7a37fccf1eb2b87a')
+         '5ea5aa48c198a8de1398fc9e7a4abd14')
 
 build() {
    cd $_pkgfqn/   
-   # fix qtwebengine crashes on wayland https://codereview.qt-project.org/#/c/173524/
-   patch -p1 -i $srcdir/web_engine_context.diff
    
    mkdir build   
    cd build 
