@@ -1,6 +1,6 @@
 
 pkgname=gst-plugins-good
-pkgver=1.8.3
+pkgver=1.10.0
 pkgrel=1
 pkgdesc="GStreamer Multimedia Framework Good Plugins"
 arch=('x86_64')
@@ -12,7 +12,7 @@ makedepends=('gstreamer' 'speex' 'flac' 'libraw1394' 'python3')
 options=('!libtool' '!emptydirs')
 source=("http://gstreamer.freedesktop.org/src/gst-plugins-good/${pkgname}-${pkgver}.tar.xz"
         'equalizer.patch')
-md5sums=('473ebb1f15c67de99ddb6e4d027c0876'
+md5sums=('ace9fde726ac785661dda0edbc649d77'
          '36a5b58e136f711152b17db3e30f225e')
 
 build() {
@@ -34,7 +34,7 @@ build() {
 check() {
   cd ${pkgname}-${pkgver}
   
-  #make check
+  make check
 }
 
 package() {
