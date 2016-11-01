@@ -3,7 +3,7 @@ pkgbase=mesa
 pkgname=('mesa' 'libgl')
 pkgver=12.0.3
 _pkgver=12.0.3
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 makedepends=('glproto' 'libdrm' 'libxxf86vm' 'libxdamage' 'libva' 'expat' 'llvm' 'libx11' 'libxt' 'gcc-libs'
              'dri2proto' 'python2' 'libxml2' 'imake' 'systemd' 'libvdpau' 'wayland' 'dri3proto'
@@ -12,15 +12,26 @@ url="http://mesa3d.sourceforge.net"
 license=('custom')
 source=(${source[@]} "ftp://ftp.freedesktop.org/pub/mesa/${_pkgver}/${pkgname}-${pkgver}.tar.xz" 
 #source=("mesa::git://anongit.freedesktop.org/mesa/mesa#branch=master"
-       'LICENSE')
+       'LICENSE'
+       "https://github.com/imirkin/mesa/commit/2e6b0e24cfb0f467e8b6d6f394730442a72dcdaf.diff"
+       "https://github.com/imirkin/mesa/commit/2733e5483e1c2b80e4b0ae21187ec5e3e1579397.diff"
+       "https://github.com/imirkin/mesa/commit/940b3a773f264f3f52574160f0d06c48f8e8aeb2.diff")
 md5sums=('1113699c714042d8c4df4766be8c57d8'
-         '5c65a0fe315dd347e09b1f2826a1df5a')
+         '5c65a0fe315dd347e09b1f2826a1df5a'
+         'cc6590fe2678e6ba8e8e762d59634a8b'
+         '1fd18456d593bb7ac55dd838a6202def'
+         '663c505d69473c2563996812769c9ffd')
   
 build() {
     cd ${pkgname}-${pkgver}
     # http://www.linuxfromscratch.org/blfs/view/svn/x/mesa.html 
     # libpthread-stubs package is useless on Linux
     sed -e "/PTHREADSTUBS/d" -i configure.ac
+    
+    # work in progress for nouveau fixes in qtwebengine
+    patch -p1 -i ${srcdir}/2e6b0e24cfb0f467e8b6d6f394730442a72dcdaf.diff
+    patch -p1 -i ${srcdir}/2733e5483e1c2b80e4b0ae21187ec5e3e1579397.diff
+    patch -p1 -i ${srcdir}/940b3a773f264f3f52574160f0d06c48f8e8aeb2.diff
     
     ./autogen.sh --prefix=/usr \
     --sysconfdir=/etc \
