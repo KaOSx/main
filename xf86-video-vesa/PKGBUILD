@@ -1,7 +1,7 @@
 
 pkgname=xf86-video-vesa
 pkgver=2.3.4
-pkgrel=2
+pkgrel=3
 pkgdesc="X.org vesa video driver"
 arch=('x86_64')
 license=('custom')
@@ -10,24 +10,24 @@ depends=('glibc')
 makedepends=('pkg-config' 'xorg-server>=1.18.1' 'resourceproto' 'scrnsaverproto')
 groups=('xorg' 'xorg-video-drivers')
 options=('!libtool')
-source=("${url}/releases/individual/driver/${pkgname}-${pkgver}.tar.bz2"
+source=("http://xorg.freedesktop.org/releases/individual/driver/${pkgname}-${pkgver}.tar.bz2"
         'revert-kernelcheck.patch')
 md5sums=('a893c37c589f7a31cea929a5d896a0e2'
          '9a6a2c5fe01b96536f67495359c4bcf1')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
-  patch -p1 -R -i "${srcdir}/revert-kernelcheck.patch"
+  patch -p1 -R -i ${srcdir}/revert-kernelcheck.patch
 
   ./configure --prefix=/usr 
   make 
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
 
-  make DESTDIR="${pkgdir}" install 
-  install -d -m755 "${pkgdir}/usr/share/licenses/${pkgname}"
-  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/" 
+  make DESTDIR=${pkgdir} install 
+  install -d -m755 ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
 }
