@@ -13,7 +13,7 @@ source=("http://kcat.strangesoft.net/openal-releases/$pkgname-soft-${pkgver}.tar
 md5sums=('1764e0d8fec499589b47ebc724e0913d')
 
 build() {
-  cd ${srcdir}/${pkgname}-soft-${pkgver}/build
+  cd ${pkgname}-soft-${pkgver}/build
   
   cmake \
     -DCMAKE_INSTALL_PREFIX=/usr \
@@ -22,8 +22,8 @@ build() {
 }
 
 package() {
-  cd "$srcdir/$pkgname-soft-$pkgver"
-  make -C build DESTDIR="$pkgdir/" install
+  cd ${pkgname}-soft-${pkgver}
+  make -C build DESTDIR=${pkgdir}/ install
   
-  install -t "$pkgdir/usr/share/openal" env-vars.txt hrtf.txt
+  install -t ${pkgdir}/usr/share/openal env-vars.txt hrtf.txt
 }
