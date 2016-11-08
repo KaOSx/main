@@ -1,6 +1,6 @@
 
 pkgname=fish
-pkgver=2.3.1
+pkgver=2.4.0
 pkgrel=1
 pkgdesc='Smart and user friendly shell intended mostly for interactive use'
 arch=('x86_64')
@@ -9,19 +9,19 @@ license=('GPL2')
 depends=('python2' 'inetutils' 'gcc-libs' 'ncurses' 'which')
 makedepends=('doxygen')
 install=fish.install
-source=("https://github.com/fish-shell/fish-shell/archive/${pkgver}.tar.gz")
-md5sums=('035b69b24079d7f919f30cee044ed0fc')
+source=("https://github.com/fish-shell/fish-shell/releases/download/${pkgver}/fish-${pkgver}.tar.gz")
+md5sums=('0167eb7c252505451c62f88a2deeffb5')
 
 build() {
-  cd fish-shell-${pkgver}
+  cd fish-${pkgver}
   
-  autoconf -i
+  #autoconf -i
   ./configure --prefix=/usr --sysconfdir=/etc 
   make
 }
 
 package() {
-  cd fish-shell-${pkgver}
+  cd fish-${pkgver}
   make DESTDIR=${pkgdir} install
   # part of docker:
   #rm -r ${pkgdir}/usr/share/fish/completions/docker.fish
