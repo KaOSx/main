@@ -11,11 +11,15 @@ depends=('libjpeg-turbo' 'libpng' 'libxft' 'libxinerama' 'hicolor-icon-theme'
 makedepends=('mesa' 'doxygen' 'alsa-lib')
 options=('!docs')
 groups=('system')
-source=("http://fltk.org/pub/fltk/${pkgver}/${pkgname}-${pkgver}-source.tar.gz")
-md5sums=('c0e43ac259ac8c5d0f7634566e21e3f8')
+source=("http://fltk.org/pub/fltk/${pkgver}/${pkgname}-${pkgver}-source.tar.gz"
+        'x-fluid.desktop')
+md5sums=('c0e43ac259ac8c5d0f7634566e21e3f8'
+         '44cbb9e387f58c7de1bc9ed42d9a128f')
 
 build() {
   cd ${pkgname}-${pkgver}
+  
+  cp ${srcdir}/x-fluid.desktop fluid/
 
   sed -i -e 's/$(LINKFLTK)/$(LINKSHARED)/' \
          -e 's/$(LINKFLTKIMG)/$(LINKSHARED)/' test/Makefile
