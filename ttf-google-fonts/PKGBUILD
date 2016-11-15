@@ -13,7 +13,7 @@ provides=('ttf-raleway')
 conflicts=('ttf-raleway')
 install=${pkgname}.install
 source=("https://github.com/google/fonts/archive/${_commit}.zip")
-md5sums=('37bae2bf9cf6deda3b7d8b0ad61fc0af')
+md5sums=('b65e4c3c8d95bc1aa2ae6e542903da63')
 
 package() {
   install -dm755 ${pkgdir}/usr/share/fonts/TTF
@@ -27,6 +27,6 @@ package() {
   
   find . -type f -name OFL.txt -exec install -Dm644 '{}' \
     ${pkgdir}/usr/share/licenses/${pkgname}/{} \;
-  install -Dm644 ${srcdir}/fonts/ufl/ubuntu/UFL.txt \
+  install -Dm644 ${srcdir}/fonts-${_commit}/ufl/ubuntu/UFL.txt \
     ${pkgdir}/usr/share/licenses/${pkgname}/UFL.txt
 }
