@@ -1,7 +1,7 @@
 
 pkgname=gpgme
 pkgver=1.8.0
-pkgrel=1
+pkgrel=2
 pkgdesc="A C wrapper library for GnuPG"
 arch=('x86_64')
 url="http://www.gnupg.org/related_software/gpgme/"
@@ -14,6 +14,8 @@ md5sums=('722a4153904b9b5dc15485a22d29263b')
 
 build() {
   cd ${pkgname}-${pkgver}
+  
+  sed -i -e 's|libgpgme@libsuffix@;@LIBASSUAN_LIBS@|libgpgme.so;@LIBASSUAN_LIBS@|' lang/cpp/src/GpgmeppConfig.cmake.in.in
   
   ./configure --prefix=/usr \
        --disable-static \
