@@ -1,7 +1,7 @@
 
 pkgname=xf86-input-synaptics
-pkgver=1.8.3
-pkgrel=2
+pkgver=1.9.0
+pkgrel=1
 pkgdesc="Synaptics driver for notebook touchpads"
 arch=('x86_64')
 license=('custom')
@@ -13,25 +13,25 @@ options=('!libtool')
 backup=('etc/X11/xorg.conf.d/50-synaptics.conf')
 source=("http://xorg.freedesktop.org/releases/individual/driver/${pkgname}-${pkgver}.tar.bz2"
         'tapbutton.patch')
-md5sums=('4e3c8bed1ab4a67db2160c2c3d7e2a34'
-         '37e93467e7d9b6f67af301ccfd26f961')
+md5sums=('58e5b7722a402114093bf193962d1e3a'
+         '228986de479c1e3795266d745a373f42')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
-  patch -p1 -i "${srcdir}"/tapbutton.patch
+  cd ${pkgname}-${pkgver}
+  patch -p1 -i ${srcdir}/tapbutton.patch
   
   ./configure --prefix=/usr
   make
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
-  make DESTDIR="${pkgdir}" install
+  cd ${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install
   
-  install -m755 -d "${pkgdir}/etc/X11/xorg.conf.d"
-  install -m644 conf/50-synaptics.conf "${pkgdir}/etc/X11/xorg.conf.d/"
-  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
-  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
+  install -m755 -d ${pkgdir}/etc/X11/xorg.conf.d
+  install -m644 conf/70-synaptics.conf ${pkgdir}/etc/X11/xorg.conf.d/
+  install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
 
-  rm -rf "${pkgdir}/usr/share/X11"
+  rm -rf ${pkgdir}/usr/share/X11
 }
