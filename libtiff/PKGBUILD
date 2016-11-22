@@ -1,34 +1,34 @@
 
 pkgname=libtiff
-pkgver=4.0.6
-pkgrel=2
+pkgver=4.0.7
+pkgrel=1
 pkgdesc="Library for manipulation of TIFF images"
 arch=('x86_64')
-url="http://www.remotesensing.org/libtiff/"
+url="http://www.simplesystems.org/libtiff/"
 license=('custom')
 depends=('libjpeg-turbo' 'zlib' 'xz')
 makedepends=('freeglut' 'glu' 'mesa')
 optdepends=('freeglut: for using tiffgt')
 options=('!libtool')
-source=("ftp://ftp.remotesensing.org/pub/libtiff/tiff-${pkgver}.tar.gz")
-md5sums=('d1d2e940dea0b5ad435f21f03d96dd72')
+source=("ftp://download.osgeo.org/libtiff/tiff-${pkgver}.tar.gz")
+md5sums=('77ae928d2c6b7fb46a21c3a29325157b')
 
 build() {
-  cd "${srcdir}/tiff-${pkgver}"
+  cd tiff-${pkgver}
   
   ./configure --prefix=/usr
   make
 }
 
 check() {
-  cd "${srcdir}/tiff-${pkgver}"
+  cd tiff-${pkgver}
   
   make check
 }
 
 package() {
-  cd "${srcdir}/tiff-${pkgver}"
-  make DESTDIR="${pkgdir}" install
+  cd tiff-${pkgver}
+  make DESTDIR=${pkgdir} install
   
-  install -D -m644 COPYRIGHT "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+  install -D -m644 COPYRIGHT ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }

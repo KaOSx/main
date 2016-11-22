@@ -1,25 +1,25 @@
 
 pkgname=unionfs-fuse
-pkgver=1.0
+pkgver=2.0
 pkgrel=1
-pkgdesc="unionfs-fuse is an effort to create a userland unionfs implementation that is way more flexible than the current in-kernel based unionfs solution."
+pkgdesc="Userland unionfs implementation that is way more flexible than the current in-kernel based unionfs solution."
 arch=('x86_64')
 url="https://github.com/rpodgorny/unionfs-fuse"
 license=('BSD')
 depends=('fuse')
 makedepends=('cmake')
-source=("https://github.com/rpodgorny/unionfs-fuse/archive/v$pkgver.tar.gz")
-md5sums=('598590fb452129c413572ed79824c68a')
+source=("https://github.com/rpodgorny/unionfs-fuse/archive/v${pkgver}.tar.gz")
+md5sums=('40411d156ea7fa0e7cd0a8ec6fe60e70')
 
 build() {
-  cd "$srcdir"/$pkgname-$pkgver
+  cd ${pkgname}-${pkgver}
   
   make
 }
 
 package() {
-  cd "$srcdir"/$pkgname-$pkgver
-  make DESTDIR="$pkgdir" PREFIX=/usr install
+  cd ${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} PREFIX=/usr install
   
-  install -Dm644 "$srcdir"/$pkgname-$pkgver/LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+  install -Dm644 ${srcdir}/$pkgname-$pkgver/LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
