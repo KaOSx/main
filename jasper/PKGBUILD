@@ -1,6 +1,6 @@
 
 pkgname=jasper
-pkgver=1.900.27
+pkgver=1.900.29
 pkgrel=1
 pkgdesc="A software-based implementation of the codec specified in the emerging JPEG-2000 Part-1 standard"
 arch=('x86_64')
@@ -8,18 +8,13 @@ url="http://www.ece.uvic.ca/~mdadams/jasper/"
 license=('custom:JasPer2.0')
 depends=('libjpeg-turbo' 'freeglut' 'libxi' 'libxmu' 'glu')
 options=('!libtool')
-source=("http://www.ece.uvic.ca/~frodo/jasper/software/${pkgname}-${pkgver}.tar.gz"
-        'jasper-1.900.1-CVE-2014-8137.patch' 
-        'jasper-1.900.1-CVE-2015-5203.patch')
-md5sums=('b2beb2c5764f3e1c7b314cb76648173f'
-         '54d15ea7a5e7c7712d0a3a50c5173d2c'
-         '78b02d4e9ab40a956d358f3240869bb4')
+source=("http://www.ece.uvic.ca/~frodo/jasper/software/${pkgname}-${pkgver}.tar.gz")
+md5sums=('4619ec9860c10e557b3f192f5e76f596')
 
 build() {
 	cd ${pkgname}-${pkgver}
     # keep only patches as listed https://github.com/mdadams/jasper/issues/19
     #patch -p1 -i ${srcdir}/jasper-1.900.1-CVE-2014-8137.patch
-    #patch -p1 -i ${srcdir}/jasper-1.900.1-CVE-2015-5203.patch
 
 	./configure --prefix=/usr \
         --mandir=/usr/share/man \

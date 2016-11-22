@@ -1,14 +1,14 @@
 
 pkgname=openbabel
 pkgver=2.3.2
-pkgrel=3
+pkgrel=4
 pkgdesc="Open, collaborative project allowing anyone to search, convert,
          analyze, or store data from molecular modeling, chemistry, solid-state materials,
          biochemistry, or related areas"
 arch=('x86_64')
 url="http://openbabel.sourceforge.net/"
 license=('GPL')
-depends=('gcc-libs' 'libxml2' 'eigen')
+depends=('gcc-libs' 'libxml2' 'eigen3' 'cairo')
 makedepends=('cmake')
 options=('!libtool')
 source=("http://downloads.sourceforge.net/openbabel/${pkgname}-${pkgver}.tar.gz")
@@ -33,5 +33,5 @@ build() {
 package() {
   cd build
   
-  make DESTDIR="${pkgdir}" install
+  make DESTDIR=${pkgdir} install
 }
