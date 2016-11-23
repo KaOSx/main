@@ -1,23 +1,23 @@
 
 pkgname=pysmbc
-pkgver=1.0.15.5
-pkgrel=2
+pkgver=1.0.15.6
+pkgrel=1
 pkgdesc="Python libsmbclient bindings"
 arch=('x86_64')
-url="http://cyberelk.net/tim/software/pysmbc/"
+url="https://github.com/hamano/pysmbc"
 license=('GPL')
 depends=('python3' 'samba')
-source=("http://pypi.python.org/packages/source/p/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('58cd8c60ca83ebf502e8d3b393b9127d')
+source=("https://pypi.io/packages/source/p/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
+md5sums=('36f480baba0f0d4f91d8ad86d7fdf721')
 
 build(){
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
   python3 setup.py build
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
-  python3 setup.py install --root="$pkgdir" --optimize=1
+  python3 setup.py install --root=${pkgdir} --optimize=1
 }
