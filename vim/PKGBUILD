@@ -1,23 +1,20 @@
 
 pkgname=vim
-pkgver=8.0.0084
+pkgver=8.0.0095
 pkgrel=1
 arch=('x86_64')
 pkgdesc='Vi Improved, a highly configurable, improved version of the vi text editor.'
 license=('custom:vim')
 url="http://www.vim.org"
-depends=('gpm' 'perl')
-makedepends=('python2' 'ruby' 'libxt' 'libxext' 'libxpm' 'libxmu' 'desktop-file-utils'
-             'gettext' 'pkgconfig')
-provides=('vim-runtime')
-conflicts=('vim-runtime')
+depends=('gpm' 'perl' 'python2')
+makedepends=('gettext' 'pkgconfig')
 source=("https://github.com/vim/vim/archive/v${pkgver}.tar.gz")
-md5sums=('12e2822be938c5800c96b1f85ec20640')
+md5sums=('d59dcdd985dfe4fffc6be6c20dd45ef1')
 
 build() {
   cd ${srcdir}
 
-  # define the place for the global vimrc file (set to /etc/vimrc)
+  # vimrc to /etc/vimrc
   sed -e 's|^.*\(#define SYS_.*VIMRC_FILE.*"\) .*$|\1|' \
       -i vim-${pkgver}/src/feature.h
   sed -e 's|^.*\(#define VIMRC_FILE.*"\) .*$|\1|' \
@@ -27,12 +24,22 @@ build() {
 
   cd ${srcdir}/vim-${pkgver}
 
-  ./configure --prefix=/usr --localstatedir=/var/lib/vim \
-    --mandir=/usr/share/man --with-compiledby=KaOS \
-    --with-features=huge --enable-gpm --enable-acl --with-x=no \
-    --disable-gui --enable-multibyte --enable-cscope \
-    --disable-netbeans --enable-perlinterp --disable-pythoninterp \
-    --disable-rubyinterp
+  ./configure --prefix=/usr \
+    --localstatedir=/var/lib/vim \
+    --mandir=/usr/share/man \
+    --with-compiledby=KaOS \
+    --with-features=huge \
+    --enable-gpm \
+    --enable-acl \
+    --with-x=no \
+    --disable-gui \
+    --enable-multibyte \
+    --enable-cscope \
+    --disable-netbeans \
+    --enable-perlinterp=yes \
+    --enable-pythoninterp=yes \
+    --enable-python3interp=no \
+    --enable-rubyinterp=no
   make
 }
 
@@ -51,7 +58,6 @@ package() {
     rm -f evim.1    # no GUI
   done
 
-  # license
   install -d -m755 ${pkgdir}/usr/share/licenses/vim
   ln -s /usr/share/vim/vim74/doc/uganda.txt ${pkgdir}/usr/share/licenses/vim/license.txt
 }
