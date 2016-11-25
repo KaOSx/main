@@ -1,9 +1,9 @@
  
 pkgname=lpsolve
 _pkgname=lp_solve
-pkgver=5.5.2.0
+pkgver=5.5.2.5
 _pkgver=5.5
-pkgrel=3
+pkgrel=1
 pkgdesc="Mixed Integer Linear Programming (MILP) solver"
 arch=('x86_64')
 url="http://lpsolve.sourceforge.net/"
@@ -11,22 +11,25 @@ license=('GPL')
 depends=('glibc')
 source=("http://downloads.sourceforge.net/project/lpsolve/lpsolve/${pkgver}/${_pkgname}_${pkgver}_source.tar.gz"
         'cflags.patch')
-md5sums=('167c0fb4ab178e0b7ab50bf0a635a836'
+md5sums=('3be57261fc41dd8e210f54017220d5f7'
          '7403f745d06619f59f52800b655d8751')
 
 build() {
-  cd "${srcdir}/${_pkgname}_${_pkgver}"
+  cd ${_pkgname}_${_pkgver}
   patch -p1 -i $srcdir/cflags.patch
+  # fix for current gcc/glibc
+  sed -i -e 's|isnan(0)|isnan(0.0)|' lpsolve55/ccc
+  sed -i -e 's|isnan(0)|isnan(0.0)|' lp_solve/ccc
 
   cd lpsolve55
   sh -x ccc
-  rm bin/ux*/liblpsolve55.a
+  #rm bin/ux*/liblpsolve55.a
   cd ../lp_solve
   sh -x ccc
 }
 
 package() {
-  cd "${srcdir}/${_pkgname}_${_pkgver}"
+  cd ${_pkgname}_${_pkgver}
 
  install -d ${pkgdir}/usr/{bin,lib,include/lpsolve}
  install -m 755 lp_solve/bin/ux*/lp_solve ${pkgdir}/usr/bin/
