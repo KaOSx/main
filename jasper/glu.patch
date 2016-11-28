@@ -1,0 +1,54 @@
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -173,21 +174,18 @@
+ #	set(JPEG_INCLUDE_DIR "")
+ #endif()
+ 
+-find_package(GLUT)
+-if(GLUT_FOUND)
+-	include_directories("${GLUT_INCLUDE_DIR}")
+-endif()
+-check_include_files(GL/glut.h JAS_HAVE_GL_GLUT_H)
+-message("GLUT library found: ${GLUT_FOUND}")
+-message("GLUT libraries: ${GLUT_LIBRARIES}")
+-message("GLUT include directory: ${GLUT_INCLUDE_DIR}")
+-message("JAS_ENABLE_OPENGL: ${JAS_ENABLE_OPENGL}")
+-message("JAS_HAVE_GL_GLUT_H: ${JAS_HAVE_GL_GLUT_H}")
+-if(GLUT_FOUND AND (NOT JAS_HAVE_GL_GLUT_H OR NOT JAS_ENABLE_OPENGL))
+-	message("disabling GLUT")
+-	set(GLUT_FOUND false)
+-	set(GLUT_LIBRARIES "")
+-	set(GLUT_INCLUDE_DIR "")
++if(JAS_ENABLE_OPENGL)
++	find_package(OpenGL REQUIRED)
++	find_package(GLUT REQUIRED)
++
++	check_include_files(GL/glut.h JAS_HAVE_GL_GLUT_H)
++	message("GLUT library found: ${GLUT_FOUND}")
++	message("GLUT libraries: ${GLUT_LIBRARIES}")
++	message("GLUT include directory: ${GLUT_INCLUDE_DIR}")
++	message("JAS_HAVE_GL_GLUT_H: ${JAS_HAVE_GL_GLUT_H}")
++	if(NOT JAS_HAVE_GL_GLUT_H)
++		message(FATAL_ERROR "GL/glut.h cannot be found or is not working.")
++	endif()
+ endif()
+ 
+ if(UNIX)
+--- a/src/appl/CMakeLists.txt
++++ b/src/appl/CMakeLists.txt
+@@ -22,7 +22,7 @@
+ # The jiv program (which requires GLUT)
+ if(GLUT_FOUND)
+ 	add_executable(jiv jiv.c)
+-	target_link_libraries(jiv libjasper ${JPEG_LIBRARIES} ${GLUT_LIBRARIES} ${MATH_LIBRARY})
++	target_link_libraries(jiv libjasper ${JPEG_LIBRARIES} ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES} ${MATH_LIBRARY})
+ 	set(programs "${programs}" jiv)
+ 	set(man_pages "${man_pages}" jiv.1)
+ else()
+@@ -33,4 +33,4 @@
+ install(TARGETS ${programs} DESTINATION bin)
+ 
+ # Install the manual pages for the programs that were built.
+-install(FILES ${man_pages} DESTINATION man)
++install(FILES ${man_pages} DESTINATION share/man/man1)
+

@@ -1,30 +1,42 @@
 
 pkgname=jasper
-pkgver=1.900.29
+pkgver=2.0.0
 pkgrel=1
-pkgdesc="A software-based implementation of the codec specified in the emerging JPEG-2000 Part-1 standard"
+pkgdesc="Software-based implementation of the codec specified in the emerging JPEG-2000 Part-1 standard"
 arch=('x86_64')
 url="http://www.ece.uvic.ca/~mdadams/jasper/"
 license=('custom:JasPer2.0')
 depends=('libjpeg-turbo' 'freeglut' 'libxi' 'libxmu' 'glu')
+makedepends=('cmake')
 options=('!libtool')
-source=("http://www.ece.uvic.ca/~frodo/jasper/software/${pkgname}-${pkgver}.tar.gz")
-md5sums=('4619ec9860c10e557b3f192f5e76f596')
+source=("http://www.ece.uvic.ca/~frodo/jasper/software/${pkgname}-${pkgver}.tar.gz"
+        'glu.patch')
+md5sums=('ae52fd9d6419159c06fb2401dfec2a54'
+         '83146318cfff0d8e656d3f8385af7be0')
+
+prepare() {
+  cd ${pkgname}-${pkgver}
+  
+  patch -p1 -i $srcdir/glu.patch
+}
 
 build() {
-	cd ${pkgname}-${pkgver}
-    # keep only patches as listed https://github.com/mdadams/jasper/issues/19
-    #patch -p1 -i ${srcdir}/jasper-1.900.1-CVE-2014-8137.patch
-
-	./configure --prefix=/usr \
-        --mandir=/usr/share/man \
-        --enable-shared
-	make
+  mkdir -p build
+  cd build
+  
+  cmake ../${pkgname}-${pkgver} \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DJAS_ENABLE_SHARED=true \
+    -DJAS_ENABLE_LIBJPEG=true \
+    -DJAS_ENABLE_OPENGL=true 
+  make
 }
 
 package() {
-	cd ${pkgname}-${pkgver}
-
-	make DESTDIR=${pkgdir} install
-	install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+  cd build
+  
+  make DESTDIR=${pkgdir} install
+  
+  install -Dm644 ../${pkgname}-${pkgver}/LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
