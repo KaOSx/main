@@ -1,10 +1,13 @@
 
+# include global config
+source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+
 # check in tools/scripts/version_resolver.py for used Chromium
 pkgbase=qtwebengine
 pkgname=('qtwebengine' 'qtwebengine-examples')
-pkgver=5.7.0
-subver=5.7.0
-_pkgver=5.7
+pkgver=${qtver}
+subver=${subver}
+_pkgver=${_qtver}
 pkgrel=9
 pkgdesc="Chromium-based web engine to replace Qt WebKit"
 url="http://blog.qt.digia.com/blog/2014/01/23/qt-webengine-technology-preview-available/"
@@ -21,7 +24,7 @@ source=("https://download.qt-project.org/official_releases/qt/${_pkgver}/${subve
         'demobrowser.desktop'
         'quicknanobrowser.desktop'
         'markdowneditor.desktop')
-md5sums=('937f64886fbcb038d6fa4b44ae80cbeb'
+md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
          '5c297bd337ffab4a2d075a7c85d55ef3'
          'f11d24801322ef41f8a44eedc5e104c2'
          '6d62ba455c7d70870fb28c9362c9c591'

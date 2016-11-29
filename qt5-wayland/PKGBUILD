@@ -1,8 +1,11 @@
 
+# include global config
+source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+
 pkgname=qt5-wayland
-pkgver=5.7.0
-subver=5.7.0
-_pkgver=5.7
+pkgver=${qtver}
+subver=${subver}
+_pkgver=${qtver}
 pkgrel=3
 pkgdesc="Cross-platform application and UI framework (QtWayland)"
 arch=('x86_64')
@@ -16,7 +19,7 @@ replaces=('qtwayland')
 _pkgfqn="qtwayland-opensource-src-${subver}"
 source=("https://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
-md5sums=('2d2543a2564ee1b5db9f25dca9cc2e3b')
+md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`)
 
 build() {
     cd $srcdir/$_pkgfqn

@@ -1,0 +1,35 @@
+
+# include global config
+source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+
+pkgname=qt5-websockets
+pkgver=${qtver}
+subver=${subver}
+_pkgver=${_qtver}
+pkgrel=1
+pkgdesc=('Web-based protocol designed to enable two-way communication between a client application and a remote host.')
+arch=('x86_64')
+url='https://github.com/qt/qtwebsockets'
+license=('GPL3' 'LGPL')
+depends=('qt5-declarative')
+makedepends=('python2')
+groups=('qt5')
+options=('!libtool')
+_pkgfqn="qtwebsockets-opensource-src-${subver}"
+source=("https://download.qt-project.org/official_releases/qt/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz")
+#source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz")
+md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`)
+
+build() {
+    cd ${_pkgfqn}
+
+    /usr/lib/qt5/bin/qmake
+    make
+}
+
+package() {
+    cd ${_pkgfqn}
+    
+    make INSTALL_ROOT=${pkgdir} install
+}
+

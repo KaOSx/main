@@ -1,8 +1,11 @@
 
+# include global config
+source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+
 pkgname=qt5-graphicaleffects
-pkgver=5.7.0
-subver=5.7.0
-_pkgver=5.7
+pkgver=${qtver}
+subver=${subver}
+_pkgver=${_qtver}
 pkgrel=3
 pkgdesc=('A cross-platform application and UI framework, QtGraphicaleffects files')
 arch=('x86_64')
@@ -15,7 +18,7 @@ groups=('qt5')
 _pkgfqn="qtgraphicaleffects-opensource-src-${subver}"
 source=("https://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
-md5sums=('f26b0de5cdbb76ae49faca226628fe65')
+md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`)
 
 build() {
     cd $srcdir/$_pkgfqn

@@ -1,7 +1,7 @@
 
 pkgname=qt5-webkit
-pkgver=5.7.0
-_pkgver=5.7
+pkgver=${qtver}
+_pkgver=${_qtver}
 pkgrel=2
 pkgdesc=('A cross-platform application and UI framework, QtWebkit files')
 arch=('x86_64')
@@ -17,7 +17,7 @@ _pkgfqn="qtwebkit-opensource-src-${pkgver}"
 source=("http://download.qt.io/community_releases/${_pkgver}/${pkgver}/$_pkgfqn.tar.xz"
 #source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz"
         "https://github.com/qtproject/qtwebkit/commit/5f359baacdf92fabcece83f0a2b30f74c7c02a3c.diff")
-md5sums=('9379b8829639645c184fa63532035098'
+md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
          '9b9de709333db007f4a4337590b62591')
 
 prepare() {

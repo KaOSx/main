@@ -1,8 +1,11 @@
 
+# include global config
+source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+
 pkgname=qt5-virtualkeyboard
-pkgver=5.7.0
-subver=5.7.0
-_pkgver=5.7
+pkgver=${qtver}
+subver=${subver}
+_pkgver=${_qtver}
 pkgrel=4
 pkgdesc=('Virtual keyboard framework that consists of a C++ backend as well as a UI frontend implemented in QML.')
 arch=('x86_64')
@@ -15,7 +18,7 @@ _pkgfqn="qtvirtualkeyboard-opensource-src-${subver}"
 source=("https://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz"
         'virtualkeyboard.desktop')
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
-md5sums=('fa473ab9175483dd82aa4d27b9682715'
+md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
          'd5f233aa149751819c2e8dfcd2fc13e2')
 
 build() {
