@@ -1,8 +1,11 @@
 
+# include global config
+source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+
 pkgname=qt5-translations
-pkgver=5.7.0
+pkgver=${qtver}
 subver=${subver}
-_pkgver=5.7
+_pkgver=${_qtver}
 pkgrel=3
 pkgdesc=('A cross-platform application and UI framework, translations')
 arch=('x86_64')
@@ -15,7 +18,7 @@ options=('!libtool')
 _pkgfqn="qttranslations-opensource-src-${subver}"
 source=("https://download.qt-project.org/official_releases/qt/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz")
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
-md5sums=('bb8f47ff5455b1e584588fa1a4141719')
+md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`)
 
 build() {
     cd $srcdir/$_pkgfqn
