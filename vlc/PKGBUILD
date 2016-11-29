@@ -2,7 +2,7 @@
 pkgname=vlc
 pkgver=2.2.83
 _pkgver=3.0.0-20161026-0238-git
-pkgrel=1
+pkgrel=2
 epoch=1
 pkgdesc="Free and open source cross-platform multimedia player and framework that plays most multimedia files and various streaming protocols."
 arch=('x86_64')
@@ -13,10 +13,10 @@ depends=('a52dec' 'fluidsynth' 'libmtp' 'libdvbpsi' 'libxpm' 'libcdio' 'libdca' 
          'taglib' 'sysfsutils' 'libmpcdec' 'ffmpeg' 'faad2' 'libupnp' 'libshout' 'libmad' 'fribidi'
          'libmpeg2' 'libmodplug' 'opus' 'ttf-freefont' 'libxv' 'libass' 'xdg-utils'
          'desktop-file-utils' 'xcb-util-keysyms' 'pulseaudio' 'chromaprint' 
-         'qt5-x11extras' 'x265')
+         'qt5-x11extras' 'x265' 'lua' 'mpg123' 'protobuf')
 makedepends=('avahi' 'pkgconfig' 'libnotify' 'libbluray' 'flac' 'libtheora' 'alsa-lib'
              'jack' 'systemd' 'libraw1394' 'libdc1394' 'libavc1394' 'libva' 
-             'gnutls' 'libcaca' 'librsvg' 'live-media'  'kdelibs4support' 'qt5-tools')
+             'gnutls' 'libcaca' 'librsvg' 'live-media' 'qt5-tools')
 optdepends=('avahi: for service discovery using bonjour protocol'
             'libnotify: for notification plugin'
             'ncurses: for ncurses interface support'
@@ -61,7 +61,8 @@ build() {
               --enable-bluray \
               --enable-opus \
               --enable-ncurses \
-              --disable-lua \
+              --enable-lua \
+              --enable-mpg123 \
               RCC=/usr/bin/rcc-qt5
   make
 }
