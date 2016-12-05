@@ -1,7 +1,7 @@
 
 pkgname=php
 pkgver=7.0.13
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 pkgdesc='An HTML-embedded scripting language'
 license=('PHP')
@@ -11,8 +11,7 @@ depends=('postgresql-libs' 'libldap' 'sqlite' 'unixodbc' 'net-snmp' 'enchant'
          'freetype2' 'systemd' 'pcre' 'libxml2' 'libxpm' 'libzip') #'libvpx'
 makedepends=('imap' 'mariadb' 'postfix' 'file' 'libjpeg-turbo' 'openssl' 'db' 'gmp')
 backup=('etc/php/php.ini'
-        'etc/php/php-fpm.conf'
-        'etc/php/pear.conf')
+        'etc/php/php-fpm.conf')
 conflicts=('php-cgi'
          'php-fpm'
          'php-embed'
@@ -164,7 +163,7 @@ package() {
 	
 	install -d -m755 ${pkgdir}/etc/php/fpm.d
 	install -D -m644 ${srcdir}/php-fpm.tmpfiles ${pkgdir}/usr/lib/tmpfiles.d/php-fpm.conf
-	#install -D -m644 ${srcdir}/php-fpm.service ${pkgdir}/usr/lib/systemd/system/php-fpm.service
+	install -D -m644 ${srcdir}/php-fpm.service ${pkgdir}/usr/lib/systemd/system/php-fpm.service
 
 	rm -f ${pkgdir}/usr/lib/php/modules/*.a
 	rm -r ${pkgdir}/var/run
