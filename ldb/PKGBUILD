@@ -1,6 +1,6 @@
 
 pkgname=ldb
-pkgver=1.1.27
+pkgver=1.1.29
 pkgrel=1
 pkgdesc="Provide a fast database with an LDAP-like API designed to be used within an application."
 arch=('x86_64')
@@ -8,18 +8,18 @@ url="http://ldb.samba.org/"
 license=('GPL3')
 depends=('talloc' 'tevent' 'tdb' 'popt' 'python2')
 source=("http://samba.org/ftp/ldb/${pkgname}-${pkgver}.tar.gz")
-md5sums=('50a194dea128d062cf4b44c59130219b')
+md5sums=('9c90abfb94c1e2a693399392cf4cddb9')
 
 build() {
 	cd ${pkgname}-${pkgver}
 
 	./configure --prefix=/usr \
-		--disable-rpath \
-		--disable-rpath-install \
-		--bundled-libraries=NONE \
-		--builtin-libraries=replace \
-                --with-modulesdir=/usr/lib/ldb/modules \
-                --with-privatelibdir=/usr/lib/ldb
+        --disable-rpath \
+        --disable-rpath-install \
+        --bundled-libraries=NONE \
+        --builtin-libraries=replace \
+        --with-modulesdir=/usr/lib/ldb/modules \
+        --with-privatelibdir=/usr/lib/ldb
 	make
 }
 
