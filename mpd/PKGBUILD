@@ -1,7 +1,7 @@
 
 pkgname=mpd
 pkgver=0.19.20
-pkgrel=1
+pkgrel=2
 pkgdesc="Music daemon that plays MP3, FLAC, and Ogg Vorbis files"
 arch=('x86_64')
 license=('GPL')
@@ -46,7 +46,4 @@ package() {
    install -d -g 45 -o 45 ${pkgdir}/var/lib/mpd/playlists
 
    install -Dm644 ${pkgdir}/usr/lib/systemd/{system,user}/mpd.service
-   sed '/WantedBy=/c WantedBy=default.target' -i ${pkgdir}/usr/lib/systemd/system/mpd.service
-   sed '/WantedBy=/c WantedBy=default.target' -i ${pkgdir}/usr/lib/systemd/user/mpd.service
-   sed '/\[Service\]/a User=mpd' -i ${pkgdir}/usr/lib/systemd/system/mpd.service
 }
