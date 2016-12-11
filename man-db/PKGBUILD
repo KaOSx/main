@@ -1,6 +1,6 @@
 
 pkgname=man-db
-pkgver=2.7.5
+pkgver=2.7.6
 pkgrel=1
 pkgdesc="A utility for reading man pages"
 arch=('x86_64')
@@ -15,7 +15,7 @@ source=("http://savannah.nongnu.org/download/man-db/$pkgname-$pkgver.tar.xz"
         'man-db.service'
         'man-db.timer'
         'root_man.patch')
-md5sums=('37da0bb0400cc7b640f33c26f6052202'
+md5sums=('e0aa460ab00b047f3784d70ae8ccfcab'
          '2b7662a7d5b33fe91f9f3e034361a2f6'
          '36fb3f616e42a0e23cf7a4d284e640cd'
          'df6d4f432e3e16c255c785fca1447346'
@@ -24,7 +24,7 @@ md5sums=('37da0bb0400cc7b640f33c26f6052202'
 build() {
   cd ${pkgname}-${pkgver}
   # tmpfile errors, swap man root https://bugzilla.redhat.com/show_bug.cgi?id=1110274
-  patch -p1 -i ${srcdir}/root_man.patch
+  #patch -p1 -i ${srcdir}/root_man.patch
   
   ./configure --prefix=/usr \
         --sysconfdir=/etc \
