@@ -3,7 +3,7 @@ pkgname=libindi
 _pkgname=indi
 pkgver=1.3.1
 _pkgver=1.3.1
-pkgrel=1
+pkgrel=2
 pkgdesc="Interface control protocol providing backend driver support and
         automation for a wide range of Astronomical devices (telescopes, focusers, CCDs..etc)."
 url="http://indi.sourceforge.net/"
@@ -16,19 +16,19 @@ options=('!libtool')
 md5sums=('f356ada36038be34440b6ed7cb588831')
 
 build() {
-     mkdir -p build
-     cd build
-     
-     cmake ../${_pkgname}-${pkgver}/${pkgname} \
-        -DCMAKE_BUILD_TYPE=Release \
-        -DCMAKE_INSTALL_PREFIX=/usr \
-        -DUDEVRULES_INSTALL_DIR=/usr/lib/udev/rules.d \
-        -DCMAKE_INSTALL_LIBDIR=lib
-     make
+    mkdir -p build
+    cd build
+
+    cmake ../${_pkgname}-${pkgver}/${pkgname} \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DUDEVRULES_INSTALL_DIR=/usr/lib/udev/rules.d \
+    -DCMAKE_INSTALL_LIBDIR=lib
+    make
 }
 
 package() {
-     cd build 
-     
-     make DESTDIR=${pkgdir} install
+    cd build 
+    
+    make DESTDIR=${pkgdir} install
 }
