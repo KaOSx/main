@@ -1,7 +1,7 @@
 
 pkgname=man-db
 pkgver=2.7.6
-pkgrel=1
+pkgrel=2
 pkgdesc="A utility for reading man pages"
 arch=('x86_64')
 url="http://www.nongnu.org/man-db/"
@@ -19,12 +19,12 @@ md5sums=('e0aa460ab00b047f3784d70ae8ccfcab'
          '2b7662a7d5b33fe91f9f3e034361a2f6'
          '36fb3f616e42a0e23cf7a4d284e640cd'
          'df6d4f432e3e16c255c785fca1447346'
-         'a99d7ffdd72b4d60466aadae2fba211e')
+         '74550699da6429c4638e6ecb96eebe86')
                         
 build() {
   cd ${pkgname}-${pkgver}
   # tmpfile errors, swap man root https://bugzilla.redhat.com/show_bug.cgi?id=1110274
-  #patch -p1 -i ${srcdir}/root_man.patch
+  patch -p1 -i ${srcdir}/root_man.patch
   
   ./configure --prefix=/usr \
         --sysconfdir=/etc \
