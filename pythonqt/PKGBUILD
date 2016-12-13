@@ -1,0 +1,34 @@
+ 
+pkgname=pythonqt
+_pkgname=PythonQt
+pkgver=3.1
+pkgrel=1
+pkgdesc='Dynamic Python binding for the Qt framework.'
+arch=('x86_64')
+url='http://pythonqt.sourceforge.net/'
+license=('LGPL2.1')
+depends=('python3' 'qt5-declarative' 'qt5-multimedia' 'qt5-svg' 'qt5-webkit')
+makedepends=('qt5-tools')
+#source=("https://sourceforge.net/projects/pythonqt/files/pythonqt/${_pkgname}-${pkgver}/${_pkgname}${pkgver}.zip")
+source=("https://sourceforge.net/code-snapshots/svn/p/py/pythonqt/code/pythonqt-code-442-trunk.zip")
+md5sums=('1cadf707363e7bbf8829d7f6cade1a14')
+
+build() {
+    cd ${pkgname}-code-442-trunk
+    
+    sed -i -e "s|unix:PYTHON_VERSION=2.7|unix:PYTHON_VERSION=3.5|" build/python.prf
+    
+    /usr/lib/qt5/bin/qmake CONFIG+=release # CONFIG+=c++11
+    make
+}
+
+package() {
+    cd ${pkgname}-code-442-trunk
+
+    mkdir -p ${pkgdir}/usr/include/PythonQt/{gui,extensions/PythonQt_QtAll}
+    cp src/*.h ${pkgdir}/usr/include/PythonQt
+    cp src/gui/*.h ${pkgdir}/usr/include/PythonQt/gui
+    cp extensions/PythonQt_QtAll/*.h ${pkgdir}/usr/include/PythonQt/extensions/PythonQt_QtAll
+
+    cp -Rd lib ${pkgdir}/usr
+}
