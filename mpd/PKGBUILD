@@ -1,7 +1,7 @@
 
 pkgname=mpd
-pkgver=0.19.20
-pkgrel=3
+pkgver=0.19.21
+pkgrel=1
 pkgdesc="Music daemon that plays MP3, FLAC, and Ogg Vorbis files"
 arch=('x86_64')
 license=('GPL')
@@ -16,7 +16,7 @@ backup=('etc/mpd.conf')
 source=("http://www.musicpd.org/download/mpd/stable/mpd-${pkgver}.tar.xz"
         'tmpfiles.d'
         'conf')
-md5sums=('e16e936ad70ee37403c9a7f4165cc743'
+md5sums=('fc19f76b512bd471b6af5214965ff7c5'
          'e5cdccd201610a41e957d684ebc38985'
          'ca16fc9ce20ca382b620cd366c95647e')
 
@@ -33,7 +33,8 @@ build() {
     --disable-libwrap \
     --disable-sidplay \
     --enable-zzip \
-    --with-systemdsystemunitdir=/usr/lib/systemd/system
+    --with-systemdsystemunitdir=/usr/lib/systemd/system \
+    --with-systemduserunitdir=/usr/lib/systemd/user
   make
 }
 
@@ -44,6 +45,4 @@ package() {
    install -Dm644 ../conf ${pkgdir}/etc/mpd.conf
    install -Dm644 ../tmpfiles.d ${pkgdir}/usr/lib/tmpfiles.d/mpd.conf
    install -d -g 45 -o 45 ${pkgdir}/var/lib/mpd/playlists
-
-   install -Dm644 ${pkgdir}/usr/lib/systemd/{system,user}/mpd.service
 }
