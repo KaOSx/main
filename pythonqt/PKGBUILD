@@ -31,4 +31,6 @@ package() {
     cp extensions/PythonQt_QtAll/*.h ${pkgdir}/usr/include/PythonQt/extensions/PythonQt_QtAll
 
     cp -Rd lib ${pkgdir}/usr
+    
+    install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }

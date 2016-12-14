@@ -1,7 +1,7 @@
 
 pkgname=man-db
-pkgver=2.7.6
-pkgrel=2
+pkgver=2.7.6.1
+pkgrel=1
 pkgdesc="A utility for reading man pages"
 arch=('x86_64')
 url="http://www.nongnu.org/man-db/"
@@ -15,7 +15,7 @@ source=("http://savannah.nongnu.org/download/man-db/$pkgname-$pkgver.tar.xz"
         'man-db.service'
         'man-db.timer'
         'root_man.patch')
-md5sums=('e0aa460ab00b047f3784d70ae8ccfcab'
+md5sums=('2948d49d0ed7265f60f83aa4a9ac9268'
          '2b7662a7d5b33fe91f9f3e034361a2f6'
          '36fb3f616e42a0e23cf7a4d284e640cd'
          'df6d4f432e3e16c255c785fca1447346'
@@ -31,6 +31,7 @@ build() {
         --libexecdir=/usr/lib \
         --with-db=gdbm \
         --disable-setuid \
+        --disable-cache-owner \
         --enable-mandirs=GNU \
         --with-sections="1 n l 8 3 0 2 5 4 9 6 7"
   make
@@ -46,10 +47,9 @@ package() {
   cd ${pkgname}-${pkgver}
   make DESTDIR=${pkgdir} install
 
-  # part of groff pkg
+  # groff conflict
   rm -f ${pkgdir}/usr/bin/zsoelim
 
-  # script from LFS to convert manpages, see
   # http://www.linuxfromscratch.org/lfs/view/6.4/chapter06/man-db.html
   install -D -m755 ${srcdir}/convert-mans  ${pkgdir}/usr/bin/convert-mans 
 
@@ -57,6 +57,6 @@ package() {
   install -D -m644 ${srcdir}/man-db.timer ${pkgdir}/usr/lib/systemd/system/man-db.timer
   install -D -m644 ${srcdir}/man-db.service ${pkgdir}/usr/lib/systemd/system/man-db.service
   install -d -m755 ${pkgdir}/usr/lib/systemd/system/multi-user.target.wants
-  ln -s ../man-db.timer ${pkgdir}//usr/lib/systemd/system/multi-user.target.wants/man-db.timer
+  ln -s ../man-db.timer ${pkgdir}/usr/lib/systemd/system/multi-user.target.wants/man-db.timer
 }
 
