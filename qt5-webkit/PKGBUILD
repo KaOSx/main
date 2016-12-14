@@ -5,7 +5,7 @@ source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
 pkgname=qt5-webkit
 pkgver=${qtver}
 _pkgver=${_qtver}
-pkgrel=3
+pkgrel=1
 pkgdesc=('A cross-platform application and UI framework, QtWebkit files')
 arch=('x86_64')
 url='http://qt.nokia.com/'
@@ -20,7 +20,7 @@ _pkgfqn="qtwebkit-opensource-src-${pkgver}"
 source=("http://download.qt.io/community_releases/${_pkgver}/${pkgver}/$_pkgfqn.tar.xz")
 #source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
 #md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`)
-md5sums=('9379b8829639645c184fa63532035098')
+md5sums=('4fa8f47383ce36d59dcc36d701ce93cd')
 
 prepare() {
   cd ${srcdir}/$_pkgfqn 
