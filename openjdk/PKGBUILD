@@ -1,13 +1,13 @@
 
 pkgname=('openjdk' 'openjdk-src')
 pkgbase='openjdk'
-_icedtea_release="2.6.5"
-_icedtea_jdkver="7"
+_icedtea_release="3.2.0"
+_icedtea_jdkver="8"
 # ${srcdir}/build/ChangeLog for versions
-_openjdk_build="b00"
-_pkgver="7u99"
+_openjdk_build="b17"
+_pkgver="8u111"
 pkgver="${_pkgver}_${_openjdk_build}_${_icedtea_release}"
-pkgrel=2
+pkgrel=1
 pkgdesc="An open-source implementation of the seventh edition of the Java SE Platform."
 arch=('x86_64')
 url="http://icedtea.classpath.org/"
@@ -18,54 +18,55 @@ makedepends=('java-environment=7' 'apache-ant>=1.6.5' 'zip' 'unzip'
              'libpng' 'giflib' 'lcms2' 'freetype2' 'rhino' 'nss' 'libxt'
              'libxtst' 'libxp' 'libxrender' 'ca-certificates-java' 'eclipse-ecj' 'pcsclite')
 
-_hg_url="http://icedtea.wildebeest.org/download/drops/icedtea7/${_icedtea_release}"
-_jvmdir="/usr/lib/jvm/java-7-openjdk"
+_hg_url="http://icedtea.wildebeest.org/download/drops/icedtea8/${_icedtea_release}"
+_jvmdir="/usr/lib/jvm/java-8-openjdk"
 
-source=("http://icedtea.classpath.org/download/source/icedtea-${_icedtea_release}.tar.gz"
-        "${_hg_url}/corba.tar.bz2"
-        "${_hg_url}/jaxp.tar.bz2"
-        "${_hg_url}/jaxws.tar.bz2"
-        "${_hg_url}/jdk.tar.bz2"
-        "${_hg_url}/langtools.tar.bz2"
-        "${_hg_url}/openjdk.tar.bz2"
-        "${_hg_url}/hotspot.tar.bz2"
+source=("http://icedtea.classpath.org/download/source/icedtea-${_icedtea_release}.tar.xz"
+        ${_hg_url}/corba.tar.xz 
+        ${_hg_url}/jaxp.tar.xz 
+        ${_hg_url}/jaxws.tar.xz 
+        ${_hg_url}/jdk.tar.xz 
+        ${_hg_url}/langtools.tar.xz 
+        ${_hg_url}/openjdk.tar.xz 
+        ${_hg_url}/nashorn.tar.xz 
+        ${_hg_url}/hotspot.tar.xz 
         'fontconfig-paths.diff'
         'corba_path.diff'
         'command_path.diff'
-        #'openjdk7_nonreparenting-wm.diff'
         'openjdk.profile.sh'
         'openjdk.profile.csh')
-md5sums=('cb66b595860c3d99a87c3a853667c145'
-         '3345d1939663d1ef94459cf215b76b3f'
-         '872a458cde954124eee9913e6ea906b0'
-         'd0d559ca0d797c5dc9640bfa277a23c5'
-         '13fa99cc310f27818867e8a9d0841892'
-         '2e951b311d0cfbd7ebc6e9fbb75de891'
-         '48d9f0e76f92d18aff1b9379b052b0cb'
-         '7e1bdaf4385c3b7e77d3599c52151485'
+md5sums=('e58b2d2d742ef55e60cec90e3304c809'
+         '19a12dc608da61a6878f4614a91156af'
+         '8b1171ec1060517fc1c4eee162c78b33'
+         'ca6bbcdb0f87399bd0a5481ad55939c8'
+         '5f5d90b7036f1e8561f6943308528e80'
+         '9d105ca8e4de3936fe1a4916ec30ad7f'
+         'c7a7681fff0afda6a897b135820a1440'
+         '05fa4f0110a5c9c18828a3e359b1adde'
+         'cc5f423ed2949ee8a7e25d43f0cb425f'
          'ee1afda124d5927345014ab382ef581e'
          '986131efd2636724ae37870a5cca6d43'
          '05afd9c7fedcc05d4ebbb3427e068dba'
-         '029383f5aba2121facc19377504be3df'
-         '64885c74918f07afe88f31692177b0c5'
-         '3baf9768e5be92d6fe80641dcc35f017')
-noextract=("openjdk.tar.gz"
-           "corba.tar.gz"
-           "jaxp.tar.gz"
-           "jaxws.tar.gz"
-           "jdk.tar.gz"
-           "langtools.tar.gz"
-           "hotspot.tar.gz")
+         '2113e8e67f7e11b925b366614721a3dc'
+         'd703a04c47c961b16154974b46cab12d')
+noextract=("openjdk.tar.xz"
+           "corba.tar.xz"
+           "jaxp.tar.xz"
+           "jaxws.tar.xz"
+           "jdk.tar.xz"
+           "nashorn.tar.xz"
+           "langtools.tar.xz"
+           "hotspot.tar.xz")
 
 build() {
   cd "${srcdir}"
 
   # Prepare the patches
-  cp *.diff "${srcdir}/icedtea-${_icedtea_release}/patches"
-  export DISTRIBUTION_PATCHES="patches/fontconfig-paths.diff \
-                               patches/corba_path.diff \
-                               patches/command_path.diff"
-                               #patches/openjdk7_nonreparenting-wm.diff
+  #cp *.diff "${srcdir}/icedtea-${_icedtea_release}/patches"
+  #export DISTRIBUTION_PATCHES="patches/fontconfig-paths.diff \
+  #                             patches/corba_path.diff \
+  #                             patches/command_path.diff"
+  #                             patches/openjdk7_nonreparenting-wm.diff
 
   rm -rf build
   cp -r "icedtea-${_icedtea_release}" \
@@ -83,15 +84,15 @@ build() {
   ./configure --prefix=/usr \
               --with-parallel-jobs="${MAKEFLAGS/-j}" \
               --host="x86_64-unknown-linux-gnu" \
-              --with-rhino \
               --with-jdk-home="${JAVA_HOME}" \
-              --with-openjdk-src-zip="${srcdir}/openjdk.tar.bz2" \
-              --with-hotspot-src-zip="${srcdir}/hotspot.tar.bz2" \
-              --with-corba-src-zip="${srcdir}/corba.tar.bz2" \
-              --with-jaxp-src-zip="${srcdir}/jaxp.tar.bz2" \
-              --with-jaxws-src-zip="${srcdir}/jaxws.tar.bz2" \
-              --with-jdk-src-zip="${srcdir}/jdk.tar.bz2" \
-              --with-langtools-src-zip="${srcdir}/langtools.tar.bz2" \
+              --with-openjdk-src-zip="${srcdir}/openjdk.tar.xz" \
+              --with-hotspot-src-zip="${srcdir}/hotspot.tar.xz" \
+              --with-corba-src-zip="${srcdir}/corba.tar.xz" \
+              --with-jaxp-src-zip="${srcdir}/jaxp.tar.xz" \
+              --with-jaxws-src-zip="${srcdir}/jaxws.tar.xz" \
+              --with-jdk-src-zip="${srcdir}/jdk.tar.xz" \
+              --with-nashorn-src-zip="${srcdir}/nashorn.tar.xz" \
+              --with-langtools-src-zip="${srcdir}/langtools.tar.xz" \
               --with-pkgversion="Linux build ${pkgver}-${pkgrel}-x86_64" \
               --disable-tests \
               --disable-downloading \
@@ -103,7 +104,7 @@ build() {
 }
 
 package_openjdk() {
-pkgdesc="An open-source implementation of the seventh edition of the Java SE Platform."
+pkgdesc="An open-source implementation of the Java SE Platform."
 conflicts=('openjdk6' 'openjdk7')
 provides=("java-environment=${_icedtea_jdkver}" "java-runtime=${_icedtea_jdkver}")
 replaces=('openjdk6' 'openjdk7')
@@ -116,9 +117,11 @@ optdepends=('icedtea-web: web browser plugin and Java Web Start support'
 
   # Copy the built OpenJDK image to the target directory
   install -d -m755 "${pkgdir}/${_jvmdir%/*}"
-  cp -r "openjdk.build/j2sdk-image" \
+  cp -r "openjdk.build/images/j2sdk-image" \
         "${pkgdir}/${_jvmdir#/}"
-
+  # permissions are not preserved
+  find "${pkgdir}/${_jvmdir#/}" \! -type l \( -perm /111 -exec chmod 755 {} \; -o -exec chmod 644 {} \; \)
+  
   # Remove the .zip file which is going to be inside openjdk-src
   rm "${pkgdir}/${_jvmdir#/}/src.zip"
 
@@ -131,7 +134,7 @@ optdepends=('icedtea-web: web browser plugin and Java Web Start support'
     done
   popd >/dev/null
 
-  # Move the manual pages in the right place, avoid conflicts with jdk8
+  # Move the manual pages in the right place
   install -d -m755 "${pkgdir}"/usr/share/man/{,ja/}man2/
   mv "${pkgdir}"/${_jvmdir#/}/man/man1/* \
      "${pkgdir}"/usr/share/man/man2/
@@ -155,14 +158,14 @@ optdepends=('icedtea-web: web browser plugin and Java Web Start support'
 }
 
 package_openjdk-src() {
-pkgdesc="An open-source implementation of the seventh edition of the Java SE Platform. (Source package)"
+pkgdesc="An open-source implementation of the Java SE Platform. (Source package)"
 arch=('x86_64')
 depends=("openjdk=${pkgver}")
 
   cd "${srcdir}/build"
 
   # Install the source package
-  install -D -m644 "openjdk.build/j2sdk-image/src.zip" \
+  install -D -m644 "openjdk.build/images/j2sdk-image/src.zip" \
                    "${pkgdir}/${_jvmdir#/}/src.zip"
 }
 
