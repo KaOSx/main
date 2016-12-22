@@ -1,9 +1,9 @@
 
 pkgbase="llvm"
 pkgname=('llvm' 'clang' 'clang-analyzer' 'lldb')
-pkgver=3.8.1
+pkgver=3.9.1
 _gcc_ver=5.4.0
-pkgrel=2
+pkgrel=1
 arch=('x86_64')
 url="http://llvm.org/"
 license=('custom:University of Illinois/NCSA Open Source License')
@@ -13,13 +13,13 @@ source=("http://llvm.org/releases/${pkgver}/${pkgbase}-${pkgver}.src.tar.xz"
         "http://llvm.org/releases/${pkgver}/cfe-${pkgver}.src.tar.xz"
         "http://llvm.org/releases/${pkgver}/compiler-rt-${pkgver}.src.tar.xz"
         "http://llvm.org/releases/${pkgver}/lldb-${pkgver}.src.tar.xz")
-md5sums=('538467e6028bbc9259b1e6e015d25845'
-         '4ff2f8844a786edb0220f490f7896080'
-         'f140db073d2453f854fbe01cc46f3110'
-         '9e4787b71be8e432fffd31e13ac87623')
+md5sums=('3259018a7437e157f3642df80f1983ea'
+         '45713ec5c417ed9cad614cd283d786a1'
+         'aadc76e7e180fafb10fb729444e287a3'
+         '91399402f287d3f637db1207113deecb')
 
 prepare() {
-    cd ${srcdir}/${pkgbase}-${pkgver}.src
+    cd ${pkgbase}-${pkgver}.src
     
     # http://llvm.org/bugs/show_bug.cgi?id=4840
     mv ${srcdir}/cfe-${pkgver}.src tools/clang
