@@ -18,7 +18,7 @@ makedepends=('qt5-declarative' 'python2-jinja' 'mesa' 'systemd' 'pango' 'nss' 's
          'qt5-webchannel' 'ffmpeg' 'libxss' 'protobuf' 'opus' # not used 'libvpx'
          'gperf' 'yasm' 'openssh' 'icu' 'qtwebengine')
 _pkgfqn="qtwebengine-opensource-src-${subver}"
-source=("https://download.qt-project.org/official_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz"
+source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz"
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz"
         'nss321.diff'
         'demobrowser.desktop'
