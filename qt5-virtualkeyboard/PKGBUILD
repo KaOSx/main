@@ -15,7 +15,7 @@ depends=('hunspell' 'qt5-declarative' 'qt5-svg')
 groups=('qt5')
 options=('!libtool')
 _pkgfqn="qtvirtualkeyboard-opensource-src-${subver}"
-source=("${_qtmirror}/${_pkgver}/${pkgver}/submodules/$_pkgfqn.tar.xz"
+source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz"
         'virtualkeyboard.desktop')
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`

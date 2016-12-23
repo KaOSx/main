@@ -3,7 +3,9 @@
 source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
 
 pkgname=qt5-webkit
-pkgver=${qtver}
+#pkgver=${qtver}
+pkgver=5.8.0beta
+subver=5.8.0-beta
 _pkgver=${_qtver}
 pkgrel=1
 pkgdesc=('A cross-platform application and UI framework, QtWebkit files')
@@ -16,8 +18,8 @@ depends=('qt5-sensors' 'qt5-location' 'qt5-quickcontrols' 'icu' 'libxslt' 'libxc
 makedepends=('gperf' 'sqlite' 'fontconfig' 'perl' 'python2' 'ruby') # 'qt5-tools')
 options=('!libtool')
 groups=('qt5')
-_pkgfqn="qtwebkit-opensource-src-${pkgver}"
-source=("http://download.qt.io/community_releases/${_pkgver}/${pkgver}/$_pkgfqn.tar.xz")
+_pkgfqn="qtwebkit-opensource-src-${subver}"
+source=("http://download.qt.io/community_releases/${_pkgver}/${subver}/$_pkgfqn.tar.xz")
 #source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
 #md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`)
 md5sums=('4fa8f47383ce36d59dcc36d701ce93cd')
