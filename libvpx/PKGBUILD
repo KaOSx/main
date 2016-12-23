@@ -1,7 +1,7 @@
 
 pkgname=libvpx
 pkgver=1.6.0
-pkgrel=1
+pkgrel=2
 pkgdesc="The VP8 Codec SDK"
 arch=('x86_64')
 url="http://www.webmproject.org/"
@@ -13,7 +13,7 @@ source=("https://github.com/webmproject/libvpx/archive/v${pkgver}.tar.gz")
 md5sums=('ba3e22827b9c017213e3a122fabf677b')
 
 build() {
-    cd ${srcdir}/libvpx-${pkgver}
+    cd libvpx-${pkgver}
 
     ./configure --prefix=/usr \
         --enable-vp8 \
@@ -23,14 +23,16 @@ build() {
         --enable-postproc \
         --enable-pic \
         --disable-install-docs \
-        --disable-install-srcs
+        --disable-install-srcs \
+        --enable-experimental \
+        --enable-spatial-svc
     make
 }
 
 package() {
-    cd ${srcdir}/libvpx-${pkgver}
-    make DIST_DIR="$pkgdir/usr" install
+    cd libvpx-${pkgver}
+    make DIST_DIR=${pkgdir}/usr install
     
-    chmod -R o+r "${pkgdir}/usr/include/vpx"
-    install -D -m 0644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+    #chmod -R o+r "${pkgdir}/usr/include/vpx"
+    install -D -m 0644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
