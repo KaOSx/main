@@ -3,6 +3,7 @@
 source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
 
 # check in tools/scripts/version_resolver.py for used Chromium
+# on major updates build twice, first without building examples/qtwebengine dep
 pkgbase=qtwebengine
 pkgname=('qtwebengine' 'qtwebengine-examples')
 pkgver=${qtver}
@@ -15,7 +16,7 @@ arch=('x86_64')
 license=('GPL3')
 makedepends=('qt5-declarative' 'python2-jinja' 'mesa' 'systemd' 'pango' 'nss' 'speex' 'libevent' 'libcups'
          'libxslt' 'libpng' 'libjpeg-turbo' 'libwebp' 'zlib' 'pciutils' 'jsoncpp' 'pulseaudio' 'libxcomposite'
-         'qt5-webchannel' 'ffmpeg' 'libxss' 'protobuf' 'opus' # not used 'libvpx'
+         'qt5-location' 'qt5-webchannel' 'ffmpeg' 'libxss' 'protobuf' 'opus' 'libvpx'
          'gperf' 'yasm' 'openssh' 'icu' 'qtwebengine')
 _pkgfqn="qtwebengine-opensource-src-${subver}"
 source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz"
