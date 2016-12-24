@@ -19,15 +19,17 @@ makedepends=('gperf' 'sqlite' 'fontconfig' 'perl' 'python2' 'ruby') # 'qt5-tools
 options=('!libtool')
 groups=('qt5')
 _pkgfqn="qtwebkit-opensource-src-${subver}"
-source=("http://download.qt.io/community_releases/${_pkgver}/${subver}/$_pkgfqn.tar.xz")
+source=("http://download.qt.io/community_releases/${_pkgver}/${subver}/$_pkgfqn.tar.xz"
+        'default_prf.patch')
 #source=("http://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
 #md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`)
-md5sums=('0d65d15c20d62e0a095d3ad8553b2905')
+md5sums=('0d65d15c20d62e0a095d3ad8553b2905'
+         '6dd34ad8ffa508a894a5e87f8e96015e')
 
 prepare() {
   cd ${srcdir}/$_pkgfqn 
 
-  #patch -p1 -i $srcdir/5f359baacdf92fabcece83f0a2b30f74c7c02a3c.diff
+  patch -p1 -i $srcdir/default_prf.patch
   #syncqt.pl-qt5 -version 5.6.0 Source/sync.profile
 }
 
