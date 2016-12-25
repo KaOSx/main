@@ -1,7 +1,7 @@
 
 pkgname=lm_sensors
 pkgver=3.4.0
-pkgrel=2
+pkgrel=3
 pkgdesc="Collection of user space tools for general SMBus access and hardware monitoring"
 arch=('x86_64')
 url="https://github.com/groeck/lm-sensors"
@@ -22,7 +22,7 @@ md5sums=('c03675ae9d43d60322110c679416901a'
          'daf19e142d59f015040814172742502b')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   sed -i 's|/etc/sysconfig|/etc/conf.d|' prog/{detect/sensors-detect,init/lm_sensors.service}
   sed -i 's/EnvironmentFile=/EnvironmentFile=-/' prog/init/lm_sensors.service
   
@@ -30,15 +30,15 @@ build() {
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   make BUILD_STATIC_LIB=0 \
-    PREFIX=/usr MANDIR=/usr/share/man DESTDIR="${pkgdir}" install
+    PREFIX=/usr MANDIR=/usr/share/man DESTDIR=${pkgdir} install
     
-  install -D -m644 prog/init/fancontrol.service "${pkgdir}/usr/lib/systemd/system/fancontrol.service"
-  install -D -m644 prog/init/lm_sensors.service "${pkgdir}/usr/lib/systemd/system/lm_sensors.service"
+  install -D -m644 prog/init/fancontrol.service ${pkgdir}/usr/lib/systemd/system/fancontrol.service
+  install -D -m644 prog/init/lm_sensors.service ${pkgdir}/usr/lib/systemd/system/lm_sensors.service
   
-  install -D -m755 "${srcdir}/healthd" "${pkgdir}/usr/sbin/healthd"
-  install -D -m644 "${srcdir}/healthd.conf" "${pkgdir}/etc/conf.d/healthd"
-  install -D -m644 "${srcdir}/sensord.conf" "${pkgdir}/etc/conf.d/sensord"
-  install -D -m644 "${srcdir}/healthd.service" "${pkgdir}/usr/lib/systemd/system/healthd.service"
+  install -D -m755 ${srcdir}/healthd ${pkgdir}/usr/sbin/healthd
+  install -D -m644 ${srcdir}/healthd.conf ${pkgdir}/etc/conf.d/healthd
+  install -D -m644 ${srcdir}/sensord.conf ${pkgdir}/etc/conf.d/sensord
+  install -D -m644 ${srcdir}/healthd.service ${pkgdir}/usr/lib/systemd/system/healthd.service
 }

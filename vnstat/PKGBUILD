@@ -1,6 +1,6 @@
 
 pkgname=vnstat
-pkgver=1.15
+pkgver=1.16
 pkgrel=1
 pkgdesc="Console-based network traffic monitor for Linux and BSD that keeps
          a log of network traffic for the selected interface(s)"
@@ -10,11 +10,11 @@ license=('GPL')
 depends=('bash' 'gd')
 backup=(etc/vnstat.conf)
 install=vnstat.install
-source=("http://humdi.net/vnstat/$pkgname-$pkgver.tar.gz")
-md5sums=('351051ef3005e3ca99123eec07ac0a7d')
+source=("http://humdi.net/vnstat/${pkgname}-${pkgver}.tar.gz")
+md5sums=('6eed3fbda4b97411163d8b09415bbba7')
 
 build() {
-  cd $pkgname-$pkgver
+  cd ${pkgname}-${pkgver}
   
   ./configure --prefix=/usr --sysconfdir=/etc
 
@@ -22,9 +22,9 @@ build() {
 }
 
 package() {
-  cd $pkgname-$pkgver
-  make DESTDIR=$pkgdir install
+  cd ${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install
 
-  install -Dm0755 examples/vnstat.cgi $pkgdir/usr/share/doc/vnstat/examples/vnstat.cgi
-  install -Dm0644 examples/systemd/vnstat.service $pkgdir/usr/lib/systemd/system/vnstat.service
+  install -Dm0755 examples/vnstat.cgi ${pkgdir}/usr/share/doc/vnstat/examples/vnstat.cgi
+  install -Dm0644 examples/systemd/vnstat.service ${pkgdir}/usr/lib/systemd/system/vnstat.service
 }
