@@ -1,13 +1,13 @@
 
 pkgname=graphicsmagick
 pkgver=1.3.25
-pkgrel=2
+pkgrel=3
 pkgdesc="Image processing system"
 arch=('x86_64')
 url="http://www.graphicsmagick.org/"
 license=('MIT')
 depends=('bzip2' 'freetype2' 'ghostscript' 'jasper' 'lcms2' 'libsm' 'libpng' 'libxext'
-        'libtiff' 'libwmf' 'libxml2' 'libtool' 'xz' 'perl')
+        'libtiff' 'libxml2' 'libtool' 'xz' 'perl')
 options=('!libtool')
 source=("http://downloads.sourceforge.net/project/graphicsmagick/${pkgname}/${pkgver}/GraphicsMagick-${pkgver}.tar.xz")
 md5sums=('6eed966b22588fb068442319a8aa17f6')
@@ -19,6 +19,7 @@ build() {
               --with-perl \
               --enable-shared \
               --with-modules \
+              --with-wmf=no \
               --with-quantum-depth=16 \
               --with-gs-font-dir=/usr/share/fonts/Type1 
   make
