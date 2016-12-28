@@ -1,8 +1,8 @@
 
 pkgname=opencv
-pkgver=3.1.0
-_pkgver=3.1.0
-pkgrel=8
+pkgver=3.2.0
+_pkgver=3.2.0
+pkgrel=1
 pkgdesc="Open Source Computer Vision Library"
 arch=('x86_64')
 license=('BSD')
@@ -19,16 +19,16 @@ source=("https://github.com/Itseez/opencv/archive/${_pkgver}.tar.gz"
         "opencv_contrib-${_pkgver}::https://github.com/Itseez/opencv_contrib/archive/${_pkgver}.tar.gz"
         "https://github.com/alalek/opencv/commit/24dbb43c096691d0333cacf231e22f1369f8c826.patch"
         'opengl.diff')
-md5sums=('70e1dd07f0aa06606f1bc0e3fa15abd3'
-         'a822839ad3ab79ff837c16785ea9dd10'
+md5sums=('a43b65488124ba33dde195fea9041b70'
+         'd7d50c70c31df3b31310f548f31fd2a2'
          '5bd9cd736b171c15cedee3a32a0c47ff'
          '20bc30c514f6f01cfbaaa7e1e0fcb39b')
 
 build() {
   cd ${pkgname}-${_pkgver}
   # fix cannot find -lippicv when building with opencv 3.1.0
-  patch -p1 -i ${srcdir}/24dbb43c096691d0333cacf231e22f1369f8c826.patch
-  patch -p1 -i ${srcdir}/opengl.diff
+  #patch -p1 -i ${srcdir}/24dbb43c096691d0333cacf231e22f1369f8c826.patch
+  #patch -p1 -i ${srcdir}/opengl.diff
  
   mkdir -p build 
   cd build
