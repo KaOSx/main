@@ -1,6 +1,6 @@
 
 pkgname=qscintilla-designer-qt5
-pkgver=2.9.3
+pkgver=2.9.4
 pkgrel=1
 license=('GPL')
 arch=('x86_64')
@@ -10,13 +10,13 @@ depends=('qscintilla-qt5')
 makedepends=('chrpath' 'qt5-tools')
 source=("http://downloads.sourceforge.net/pyqt/QScintilla_gpl-${pkgver}.tar.gz"
         'qt5_libname.patch')
-md5sums=('3b1cdbce9ef6c28cd868bcc58219f96e'
+md5sums=('e60d61ca1ee1dca8df25fe15d8ca7112'
          'c6945e86d8eaf3b1985974f23dfbf057')
 
 prepare() {
     cd QScintilla_gpl-${pkgver}
 
-    patch -p1 -i ${srcdir}/qt5_libname.patch
+    #patch -p1 -i ${srcdir}/qt5_libname.patch
 }
 
 build() {
