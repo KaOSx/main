@@ -1,7 +1,7 @@
 
 pkgname=doxygen
-pkgver=1.8.12
-pkgrel=2
+pkgver=1.8.13
+pkgrel=1
 pkgdesc="A documentation system for C++, C, Java, IDL and PHP"
 license=('GPL')
 arch=('x86_64')
@@ -11,13 +11,13 @@ makedepends=('flex' 'texlive-core' 'ghostscript' 'texlive-latexextra' 'python2' 
 optdepends=('qt5-base: for doxywizard')
 source=("ftp://ftp.stack.nl/pub/users/dimitri/${pkgname}-${pkgver}.src.tar.gz"
         "https://github.com/doxygen/doxygen/commit/850f0ce7eaf0a689a8e8ef7f3ca05b7a152ab0ad.diff")
-md5sums=('08e0f7850c4d22cb5188da226b209a96'
+md5sums=('0fa414975f8cd6d30e126c28327c1f7c'
          '3f96b9a842df2fa5823757935bf5f2c9')
 
 prepare() {
   cd ${pkgname}-${pkgver}
   
-  patch -p1 -i $srcdir/850f0ce7eaf0a689a8e8ef7f3ca05b7a152ab0ad.diff
+  #patch -p1 -i $srcdir/850f0ce7eaf0a689a8e8ef7f3ca05b7a152ab0ad.diff
 }
 
 
