@@ -1,15 +1,15 @@
 
 pkgname=libraw
-pkgver=0.17.2
-pkgrel=3
+pkgver=0.18.0
+pkgrel=1
 pkgdesc="Library for reading RAW files obtained from digital photo cameras (CRW/CR2, NEF, RAF, DNG, and others)."
 arch=('x86_64')
 url="http://www.libraw.org/"
-license=('CDDL' 'LGPL' 'custom')
+license=('CDDL' 'LGPL')
 depends=('lcms2' 'jasper')
 options=('!makeflags' '!libtool')
 source=("http://www.libraw.org/data/LibRaw-${pkgver}.tar.gz")
-md5sums=('456626300777209def1ea784910f326a')
+md5sums=('1d894aef814ae0dfc2fa517eac36ee85')
 
 build() {
   cd LibRaw-${pkgver}
@@ -22,5 +22,5 @@ package() {
   cd LibRaw-${pkgver}
 
   make DESTDIR=${pkgdir} install
-  install -D -m644 LICENSE.LibRaw.pdf ${pkgdir}/usr/share/licenses/libraw/LICENSE.LibRaw.pdf
+  install -D -m644 LICENSE.LGPL ${pkgdir}/usr/share/licenses/libraw/LICENSE.LGPL
 }
