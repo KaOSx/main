@@ -1,21 +1,21 @@
 
 pkgname=python3
 pkgver=3.5.2
-pkgrel=1
+pkgrel=2
 _pybasever=3.5
 pkgdesc="Next generation of the python high-level scripting language"
 arch=('x86_64')
 license=('custom')
-url="http://www.python.org"
+url="https://www.python.org"
 depends=('expat' 'bzip2' 'gdbm' 'openssl' 'libffi' 'zlib')
 makedepends=('tk' 'sqlite' 'valgrind' 'bluez' 'libgl') # libgl for tests
 optdepends=('tk: for tkinter')
 options=('!makeflags')
-source=("http://www.python.org/ftp/python/${pkgver}/Python-${pkgver}.tar.xz")
+source=("https://www.python.org/ftp/python/${pkgver}/Python-${pkgver}.tar.xz")
 md5sums=('8906efbacfcdc7c3c9198aeefafd159e')  
 
 build() {
-  cd "${srcdir}/Python-${pkgver}"
+  cd Python-${pkgver}
 
   sed -i -e "s|^#.* /usr/local/bin/python|#!/usr/bin/python|" Lib/cgi.py
 
@@ -39,24 +39,24 @@ build() {
 }
 
 check() {
-  cd "${srcdir}/Python-${pkgver}"
+  cd Python-${pkgver}
 
-  LD_LIBRARY_PATH="${srcdir}/Python-${pkgver}":${LD_LIBRARY_PATH} \
-     "${srcdir}/Python-${pkgver}/python" -m test.regrtest -x test_posixpath test_logging test_site test_urllib2_localnet test_pyexpat
+  LD_LIBRARY_PATH=${srcdir}/Python-${pkgver}:${LD_LIBRARY_PATH} \
+     ${srcdir}/Python-${pkgver}/python -m test.regrtest -x test_posixpath test_logging test_site test_urllib2_localnet test_pyexpat
 }
 
 package() {
-  cd "${srcdir}/Python-${pkgver}"
-  make DESTDIR="${pkgdir}" install maninstall
+  cd Python-${pkgver}
+  make DESTDIR=${pkgdir} install maninstall
 
   # Conflicts with python2 
   rm ${pkgdir}/usr/bin/2to3
 
   ln -sf ../../libpython${_pybasever}mu.so \
-    "${pkgdir}/usr/lib/python${_pybasever}/config-${_pybasever}m/libpython${_pybasever}m.so"
+    ${pkgdir}/usr/lib/python${_pybasever}/config-${_pybasever}m/libpython${_pybasever}m.so
 
   # Clean-up reference to build directory
-  sed -i "s#$srcdir/Python-${pkgver}:##" "$pkgdir/usr/lib/python${_pybasever}/config-${_pybasever}m/Makefile"
+  sed -i "s|${srcdir}/Python-${pkgver}:||" ${pkgdir}/usr/lib/python${_pybasever}/config-${_pybasever}m/Makefile
 
-  install -Dm644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }

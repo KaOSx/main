@@ -1,6 +1,6 @@
 
 pkgname=youtube-dl
-pkgver=2016.12.22
+pkgver=2016.12.31
 pkgrel=1
 pkgdesc='Small command-line program to download videos from YouTube.com and other video sites'
 arch=('x86_64')
@@ -9,18 +9,20 @@ license=('custom')
 depends=('python3')
 makedepends=('zip')
 source=("https://github.com/rg3/youtube-dl/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.gz")
-md5sums=('ab5deb1df2b749f40603ed07ffc03252')
+md5sums=('7f0b609d6be12ac565b491d62fa20319')
 
 build() {
     cd ${pkgname}
     sed -i 's|python|python3|g' Makefile
+    sed -i 's|youtube-dl README.md CONTRIBUTING.md README.txt youtube-dl.1|youtube-dl |g' Makefile
+    sed -i 's|youtube-dl youtube-dl.1|youtube-dl |g' Makefile
     
     make
 }
 
 package() {
     cd ${pkgname}
-    make PREFIX=/usr SYSCONFDIR=/usr/share MANDIR=/usr/share DESTDIR=${pkgdir} install
+    make PREFIX=/usr SYSCONFDIR=/usr/share MANDIR=/usr/share/man DESTDIR=${pkgdir} install
 
     install -D -m644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
