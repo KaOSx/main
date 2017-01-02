@@ -1,7 +1,7 @@
 
 pkgname=urw-core35-fonts
-pkgver=20150629
-_commit=e5b3fce
+pkgver=20160712
+_commit=79bcdfb
 pkgrel=1
 pkgdesc="Ghostscript standard Type1 fonts from URW+"
 arch=('x86_64')
@@ -12,11 +12,11 @@ provides=('urw-fonts' 'gsfonts')
 replaces=('urw-fonts' 'gsfonts')
 provides=('urw-fonts' 'gsfonts')
 install=fonts.install
-source=("http://git.ghostscript.com/?p=urw-core35-fonts.git;a=snapshot;h=e5b3fce0aadb091699b409be325468c682bd436d;sf=tgz")
+source=("http://git.ghostscript.com/?p=urw-core35-fonts.git;a=snapshot;h=79bcdfb34fbce12b592cce389fa7a19da6b5b018;sf=tgz")
 md5sums=('f6155cc005f26307539cbe91ab6a2874')
 
 package() {
-  cd $srcdir/${pkgname}-${_commit}
+  cd ${pkgname}-${_commit}
   
   install -d ${pkgdir}/usr/share/fonts/Type1
   install -m644 *.{pfb,pfm,afm} ${pkgdir}/usr/share/fonts/Type1/
