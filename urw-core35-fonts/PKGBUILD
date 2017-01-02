@@ -13,11 +13,17 @@ replaces=('urw-fonts' 'gsfonts')
 provides=('urw-fonts' 'gsfonts')
 install=fonts.install
 source=("http://git.ghostscript.com/?p=urw-core35-fonts.git;a=snapshot;h=79bcdfb34fbce12b592cce389fa7a19da6b5b018;sf=tgz")
-md5sums=('f6155cc005f26307539cbe91ab6a2874')
+md5sums=('559f1a14899c32401ac044e90648c5d5')
 
 package() {
   cd ${pkgname}-${_commit}
   
-  install -d ${pkgdir}/usr/share/fonts/Type1
-  install -m644 *.{pfb,pfm,afm} ${pkgdir}/usr/share/fonts/Type1/
+  #install -d ${pkgdir}/usr/share/fonts/Type1
+  #install -m644 *.{afm.t1} ${pkgdir}/usr/share/fonts/Type1/
+  
+  install -d ${pkgdir}/usr/share/fonts/OTF
+  install -m644 *.otf ${pkgdir}/usr/share/fonts/OTF
+  
+  install -d ${pkgdir}/usr/share/fonts/TTF
+  install -m644 *.ttf ${pkgdir}/usr/share/fonts/TTF
 }
