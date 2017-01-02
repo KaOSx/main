@@ -1,0 +1,30 @@
+
+pkgname=youtube-dl
+pkgver=2016.12.31
+pkgrel=1
+pkgdesc='Small command-line program to download videos from YouTube.com and other video sites'
+arch=('x86_64')
+url="http://rg3.github.com/youtube-dl"
+license=('custom')
+depends=('python3' 'python3-setuptools')
+source=("https://github.com/rg3/youtube-dl/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+md5sums=('7f0b609d6be12ac565b491d62fa20319')
+
+prepare() {
+    cd ${pkgname}
+    #sed -i 's|python|python3|g' makefile
+    sed -i 's|etc/bash_completion.d|share/bash-completion/completions|g' setup.py
+    sed -i 's|etc/fish/completions|share/fish/completions|g' setup.py
+    
+#    make
+}
+
+package() {
+    cd ${pkgname}
+    #make PREFIX=/usr SYSCONFDIR=/usr/share MANDIR=/usr/share DESTDIR=${pkgdir} install
+    
+    python3 setup.py install --root=${pkgdir}/ --optimize=1
+
+    install -Dm644 youtube-dl.zsh ${pkgdir}/usr/share/zsh/site-functions/_youtube-dl
+    install -D -m644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
