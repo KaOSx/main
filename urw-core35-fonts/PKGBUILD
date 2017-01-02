@@ -18,9 +18,6 @@ md5sums=('559f1a14899c32401ac044e90648c5d5')
 package() {
   cd ${pkgname}-${_commit}
   
-  #install -d ${pkgdir}/usr/share/fonts/Type1
-  #install -m644 *.{afm.t1} ${pkgdir}/usr/share/fonts/Type1/
-  
   install -d ${pkgdir}/usr/share/fonts/OTF
   install -m644 *.otf ${pkgdir}/usr/share/fonts/OTF
   
