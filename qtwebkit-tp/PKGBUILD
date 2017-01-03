@@ -1,0 +1,45 @@
+
+pkgname=qtwebkit-tp
+pkgver=5.6.2
+_commit=48338f53708e34731dc51649aed5d6755d82db0f
+pkgrel=1
+pkgdesc='Cross-platform application and UI framework, QtWebkit files (revived branch)'
+arch=('x86_64')
+url='https://github.com/annulen/webkit'
+license=('LGPLv2')
+depends=('qt5-sensors' 'qt5-location' 'qt5-quickcontrols' 'icu' 'libxslt' 'libxcomposite' 
+         'gst-plugins-base' 'gst-plugins-good' 'libwebp' 'mesa' 'qt5-serialport' 'qt5-multimedia'
+         'qt5-imageformats' 'gst-libav' 'gst-plugins-bad' 'hyphen')  
+makedepends=('gperf' 'sqlite' 'fontconfig' 'perl' 'python2' 'ruby' 'extra-cmake-modules' 'qt5-tools')
+options=('!libtool')
+provides=('qt5-webkit')
+replaces=('qt5-webkit')
+conflicts=('qt5-webkit')
+groups=('qt5')
+source=("https://github.com/annulen/qtwebkit-snapshots/archive/${_commit}.zip")
+md5sums=('56424910e688851159dd674dae4ee063')
+
+prepare() {
+  cd qtwebkit-snapshots-${_commit}
+
+  #patch -p1 -i $srcdir/default_prf.patch
+}
+
+build() {
+  mkdir -p build
+  cd build
+  
+  cmake ../qtwebkit-snapshots-${_commit} \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DPORT=Qt \
+    -DUSE_QT_MULTIMEDIA=OFF \
+    -DENABLE_OPENGL=OFF
+  make
+}
+
+package() {
+   cd build
+   
+   make DESTDIR=${pkgdir} install
+}
