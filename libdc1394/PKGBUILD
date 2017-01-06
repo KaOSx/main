@@ -1,6 +1,6 @@
 
 pkgname=libdc1394
-pkgver=2.2.4
+pkgver=2.2.5
 pkgrel=1
 pkgdesc="High level programming interface to control IEEE 1394 based cameras"
 arch=('x86_64')
@@ -9,18 +9,18 @@ url="http://sourceforge.net/projects/libdc1394/"
 depends=('libraw1394' 'libusbx')
 options=('!libtool' '!emptydirs')
 source=("http://downloads.sourceforge.net/sourceforge/libdc1394/${pkgname}-${pkgver}.tar.gz")
-md5sums=('620eb745d64b714c6009f3e6f2ba33ec')
+md5sums=('01acfcde2cc85863b0acb90dcffa1659')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
   ./configure --prefix=/usr
   make
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
-  make DESTDIR="${pkgdir}" install
+  make DESTDIR=${pkgdir} install
 }
 
