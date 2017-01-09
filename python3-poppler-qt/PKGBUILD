@@ -1,8 +1,8 @@
 
 pkgname=python3-poppler-qt
 _pkgname=python-poppler-qt5
-pkgver=0.24.2
-pkgrel=3
+pkgver=0.25.0
+pkgrel=1
 pkgdesc="A Python 3 binding to poppler-qt, early Qt 5 port"
 arch=('x86_64')
 url="https://github.com/wbsoft/python-poppler-qt5/"
@@ -10,18 +10,18 @@ license=('LGPL')
 depends=('pyqt5-python3' 'poppler-qt5' 'python3')
 makedepends=('pkg-config')
 #source=("https://github.com/wbsoft/${_pkgname}/archive/v${pkgver}.tar.gz")
-source=("git://github.com/wbsoft/python-poppler-qt5")
-md5sums=('SKIP')
+source=("https://github.com/zehome/python-poppler-qt5/archive/v${pkgver}.tar.gz")
+md5sums=('775b8a3623619f23515aee61aa6d6bab')
  
 build() {
-    cd ${_pkgname}
+    cd ${_pkgname}-${pkgver}
         
     CFLAGS="-std=c++11" python3 setup.py build_ext --qmake-bin='/usr/lib/qt5/bin/qmake' \
                                --pyqt-sip-dir='/usr/share/sip/PyQt5'
 }
  
 package() {
-    cd ${_pkgname}
+    cd ${_pkgname}-${pkgver}
         
     python3 setup.py install --root=${pkgdir} build_ext --qmake-bin='/usr/lib/qt5/bin/qmake'
 }
