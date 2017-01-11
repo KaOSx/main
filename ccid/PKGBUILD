@@ -1,6 +1,7 @@
 
 pkgname=ccid
-pkgver=1.4.25
+pkgver=1.4.26
+_pkgver=4205
 pkgrel=1
 pkgdesc="Generic USB Chip/Smart Card Interface Devices driver"
 arch=('x86_64')
@@ -9,8 +10,8 @@ license=('LGPL' 'GPL')
 depends=('pcsclite' 'libusbx' 'flex')
 makedepends=('pkg-config')
 backup=(etc/reader.conf.d/libccidtwin)
-source=("https://alioth.debian.org/frs/download.php/file/4187/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('5ebb0a68564a384fd087023f52f1e35c')
+source=("https://alioth.debian.org/frs/download.php/file/${_pkgver}/${pkgname}-${pkgver}.tar.bz2")
+md5sums=('852325456ad4db531c96c30b09fdd36f')
 
 build() {
   cd ${pkgname}-${pkgver}
