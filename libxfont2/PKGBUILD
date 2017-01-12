@@ -1,28 +1,31 @@
-
-pkgname=libxfont
-pkgver=1.5.2
+ 
+pkgname=libxfont2
+pkgver=2.0.1
 pkgrel=1
-pkgdesc="X11 font rasterisation library"
+pkgdesc="X11 font rasterisation library, version 2"
 arch=('x86_64')
 url="http://xorg.freedesktop.org/"
 license=('custom')
 depends=('freetype2' 'libfontenc' 'xproto' 'fontsproto')
-makedepends=('xorg-util-macros' 'xtrans' 'git')
+makedepends=('xorg-util-macros' 'xtrans')
 options=('!libtool')
-source=("http://xorg.freedesktop.org/archive/individual/lib/libXfont-${pkgver}.tar.bz2")
+source=("http://xorg.freedesktop.org/archive/individual/lib/libXfont2-${pkgver}.tar.bz2")
 # git build for http://lists.freedesktop.org/archives/xorg/2014-May/056616.html
 #source=("git://anongit.freedesktop.org/xorg/lib/libXfont")
-md5sums=('254ee42bd178d18ebc7a73aacfde7f79')
+md5sums=('0d9f6dd9c23bf4bcbfb00504b566baf5')
 
 build() {
-  cd libXfont-${pkgver}
+  cd libXfont2-${pkgver}
 
-  ./configure --prefix=/usr --sysconfdir=/etc --disable-static
+  ./configure --prefix=/usr \
+    --sysconfdir=/etc \
+    --disable-static
+    
   make
 }
 
 package() {
-  cd libXfont-${pkgver}
+  cd libXfont2-${pkgver}
   make DESTDIR=${pkgdir} install
   
   install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}

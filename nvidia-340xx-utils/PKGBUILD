@@ -3,10 +3,11 @@ pkgbase=nvidia-340xx-utils
 pkgname=('nvidia-340xx-utils' 'nvidia-340xx-settings')
 # Edit hardware-detection/hooks/hwdetect_7_graphics on version jump from 3xx.xx
 pkgver=340.101
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 url="http://www.nvidia.com/"
 license=('custom')
+makedepends=('xorg-server' 'libxvmc')
 options=('!strip')
 _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 md5sums=('dd1a25ab34b7855d533474f3e8f3e868')

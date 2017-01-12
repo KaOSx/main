@@ -1,7 +1,7 @@
 
 pkgname=xf86-video-nouveau
 pkgver=1.0.13
-pkgrel=2
+pkgrel=3
 pkgdesc="Open Source 3D acceleration driver for nVidia cards"
 arch=('x86_64')
 url="http://nouveau.freedesktop.org/"
@@ -16,14 +16,14 @@ md5sums=('2d7b2917ef18c6e97a6f3817c3e9387b'
          'bc25444cb8b0cffbafcad45d53d42c17')
 
 build() {
-  cd ${srcdir}/$pkgname-$pkgver
+  cd $pkgname-$pkgver
   
   ./configure --prefix=/usr
   make
 }
 
 package() {
-  cd ${srcdir}/$pkgname-$pkgver
+  cd $pkgname-$pkgver
   make DESTDIR=${pkgdir} install
   
   install -Dm644 ${srcdir}/50-nouveau-hwmon.rules ${pkgdir}/etc/udev/rules.d/50-nouveau-hwmon.rules
