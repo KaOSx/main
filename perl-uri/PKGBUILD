@@ -1,7 +1,7 @@
 
 pkgname=perl-uri
 pkgver=1.67
-pkgrel=1
+pkgrel=2
 pkgdesc="Uniform Resource Identifiers (absolute and relative)"
 arch=('x86_64')
 url="http://search.cpan.org/dist/URI/"
@@ -12,19 +12,20 @@ source=("http://cpan.metacpan.org/authors/id/E/ET/ETHER/URI-${pkgver}.tar.gz")
 md5sums=('d0ef53b6c63bcc02ba55f405c30741e3')
 
 build() {
-  cd ${srcdir}/URI-$pkgver
+  cd URI-$pkgver
 
   perl Makefile.PL INSTALLDIRS=vendor
   make
 }
 
 check() {
-  cd ${srcdir}/URI-${pkgver}
+  cd URI-${pkgver}
 
   make test
 }
 
 package() {
-  cd ${srcdir}/URI-$pkgver
+  cd URI-$pkgver
+  
   make install DESTDIR=${pkgdir}
 }

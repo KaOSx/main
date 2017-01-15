@@ -1,20 +1,20 @@
 
 pkgname=perl-html-parser
-_realname=HTML-Parser
+_pkgname=HTML-Parser
 pkgver=3.72
-pkgrel=1
+pkgrel=2
 pkgdesc="Perl HTML parser class"
 arch=('x86_64')
 license=('PerlArtistic')
-url="http://search.cpan.org/dist/${_realname}/"
+url="http://search.cpan.org/dist/${_pkgname}/"
 depends=('perl-html-tagset' 'perl')
 checkdepends=('perl-test-pod')
 options=(!emptydirs)
-source=("http://www.cpan.org/authors/id/G/GA/GAAS/${_realname}-${pkgver}.tar.gz")
+source=("http://www.cpan.org/authors/id/G/GA/GAAS/${_pkgname}-${pkgver}.tar.gz")
 md5sums=('eb7505e5f626913350df9dd4a03d54a8')
 
 build() {
-  cd "${srcdir}/${_realname}-${pkgver}"
+  cd ${_pkgname}-${pkgver}
   
   # install module in vendor directories.
   perl Makefile.PL INSTALLDIRS=vendor
@@ -22,13 +22,13 @@ build() {
 }
 
 check() {
-  cd "${srcdir}/${_realname}-${pkgver}"
+  cd ${_pkgname}-${pkgver}
   
   make test
 }
 
 package() {
-  cd "${srcdir}/${_realname}-${pkgver}"
+  cd ${_pkgname}-${pkgver}
   
-  make install DESTDIR="${pkgdir}"
+  make install DESTDIR=${pkgdir}
 }

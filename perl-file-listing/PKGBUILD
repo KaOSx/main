@@ -1,7 +1,7 @@
 
 pkgname=perl-file-listing
 pkgver=6.04
-pkgrel=5
+pkgrel=6
 pkgdesc="parse directory listing"
 arch=('x86_64')
 url="http://search.cpan.org/dist/File-Listing"
@@ -12,20 +12,20 @@ source=("http://search.cpan.org/CPAN/authors/id/G/GA/GAAS/File-Listing-${pkgver}
 md5sums=('83f636b477741f3a014585bb9cc079a6')
 
 build() {
-    cd ${srcdir}/File-Listing-${pkgver}
+    cd File-Listing-${pkgver}
     
     perl Makefile.PL INSTALLDIRS=vendor
     make
 }
 
 check() {
-    cd ${srcdir}/File-Listing-${pkgver}
+    cd File-Listing-${pkgver}
     
     make test
 }
 
 package() {
-    cd ${srcdir}/File-Listing-${pkgver}
+    cd File-Listing-${pkgver}
     
-    make DESTDIR="$pkgdir" install
+    make DESTDIR=${pkgdir} install
 }
