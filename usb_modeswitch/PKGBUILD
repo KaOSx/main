@@ -1,7 +1,7 @@
 
 pkgname=usb_modeswitch
 pkgver=2.4.0
-pkgrel=2
+pkgrel=3
 _pkgdata=20160612
 pkgdesc="Activating switchable USB devices on Linux."
 arch=('x86_64')
@@ -13,11 +13,19 @@ groups=('system')
 backup=("etc/${pkgname}.conf")
 source=("http://www.draisberghof.de/${pkgname}/usb-modeswitch-${pkgver}.tar.bz2"
         "http://www.draisberghof.de/${pkgname}/usb-modeswitch-data-${_pkgdata}.tar.bz2"
-        "usb-modeswitch-${pkgver}-device_reference.txt::http://www.draisberghof.de/${pkgname}/device_reference.txt")
+        "usb-modeswitch-${pkgver}-device_reference.txt::http://www.draisberghof.de/${pkgname}/device_reference.txt"
+        '40-usb_modeswitch.diff')
 md5sums=('6e1640db47768bb9012f91b7593116ef'
          'e3d30774dc594131ce3398b1e669d427'
-         '080bac4145f002466b1cbd1b973bba44')
+         '080bac4145f002466b1cbd1b973bba44'
+         '6cb86a6d949e0954bb48e950c7263bf9')
 
+prepare() {
+  cd usb-modeswitch-data-${_pkgdata}
+  # exclude flip phones, see https://forum.kaosx.us/d/1790-kaos-and-doro-626/12
+  patch -p1 -i ${srcdir}/40-usb_modeswitch.diff
+}
+         
 build() {
   cd usb-modeswitch-${pkgver}/
   make clean
