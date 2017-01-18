@@ -1,7 +1,7 @@
 
 pkgname=mpv
 pkgver=0.23.0
-pkgrel=3
+pkgrel=4
 pkgdesc='Video player based on MPlayer/mplayer2'
 arch=('x86_64')
 license=('GPL')
@@ -10,7 +10,7 @@ depends=('ffmpeg' 'lcms2' 'libdvdread' 'libcdio-paranoia' 'libgl' 'libxinerama'
          'libxv' 'libxkbcommon' 'libva' 'wayland' 'desktop-file-utils' 'hicolor-icon-theme'
          'xdg-utils' 'libdvdnav' 'youtube-dl' 'libass' 'libbluray' 'lua' 'libxrandr' 'jack'
          'rubberband' 'samba' 'libxss' 'libcaca')
-makedepends=('mesa' 'python2-docutils' 'ladspa')
+makedepends=('mesa' 'python2-docutils' 'ladspa' 'perl')
 options=('!emptydirs' '!buildflags')
 source=("https://github.com/mpv-player/mpv/archive/v${pkgver}.tar.gz"
         "https://github.com/mpv-player/mpv/commit/5053f4cc3f48538c3d9a3ba13dc98442f3302052.patch")
@@ -33,14 +33,15 @@ build() {
 	--confdir=/etc/mpv \
 	--enable-libmpv-shared \
 	--enable-cdda \
-	--enable-sdl2 
+	--enable-sdl2 \
+	--enable-zsh-comp
 		
     ./waf build
 }
 
 package() {
     cd ${pkgname}-${pkgver}
-    ./waf install --destdir="${pkgdir}"
+    ./waf install --destdir=${pkgdir}
 
-    install -m644 DOCS/{encoding.rst,tech-overview.txt} "${pkgdir}/usr/share/doc/mpv"
+    install -m644 DOCS/{encoding.rst,tech-overview.txt} ${pkgdir}/usr/share/doc/mpv
 }
