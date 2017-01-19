@@ -1,6 +1,7 @@
 
 pkgname=fftw
-pkgver=3.3.5
+pkgver=3.3.6
+_pkgver=3.3.6-pl1
 pkgrel=1
 pkgdesc="A library for computing the discrete Fourier transform (DFT)"
 arch=('x86_64')
@@ -8,8 +9,8 @@ license=('GPL2')
 url="http://www.fftw.org/"
 depends=('glibc' 'bash')
 options=('!libtool')
-source=("http://www.fftw.org/${pkgname}-${pkgver}.tar.gz")
-md5sums=('6cc08a3b9c7ee06fdd5b9eb02e06f569')
+source=("http://www.fftw.org/${pkgname}-${_pkgver}.tar.gz")
+md5sums=('682a0e78d6966ca37c7446d4ab4cc2a1')
 
 # notes:
 # http://www.fftw.org/fftw2_doc/fftw_6.html#SEC69
@@ -19,9 +20,9 @@ md5sums=('6cc08a3b9c7ee06fdd5b9eb02e06f569')
 build() {
   cd ${srcdir}
   
-  cp -a ${pkgname}-${pkgver} ${pkgname}-${pkgver}-double
-  cp -a ${pkgname}-${pkgver} ${pkgname}-${pkgver}-long-double
-  mv ${pkgname}-${pkgver} ${pkgname}-${pkgver}-single
+  cp -a ${pkgname}-${_pkgver} ${pkgname}-${pkgver}-double
+  cp -a ${pkgname}-${_pkgver} ${pkgname}-${pkgver}-long-double
+  mv ${pkgname}-${_pkgver} ${pkgname}-${pkgver}-single
   
   CFLAGS+=" -O3 -fomit-frame-pointer -malign-double -fstrict-aliasing -ffast-math"
 

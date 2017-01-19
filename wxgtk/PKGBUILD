@@ -1,48 +1,39 @@
 
 pkgname=wxgtk
-pkgver=2.8.12.1
-pkgrel=5
+pkgver=3.0.2
+pkgrel=1
 pkgdesc="GTK+ implementation of wxWidgets API for GUI"
 arch=('x86_64')
 url="http://wxwidgets.org"
 license=('custom:wxWindows')
-depends=('gtk2' 'libgl' 'libxxf86vm' 'sdl')
-makedepends=('gconf' 'mesa' 'glu')
-source=("http://downloads.sourceforge.net/wxpython/wxPython-src-${pkgver}.tar.bz2"
-       'wxGTK-collision.patch')
-#source=(http://downloads.sourceforge.net/wxwindows/wxGTK-${pkgver}.tar.bz2)
-md5sums=('8c06c5941477beee213b4f2fa78be620'
-         '4f989f5c62bbdaa75c3e9b0da0d636a3')
+depends=('gtk2' 'glu')
+makedepends=('gconf')
+options=('!emptydirs')
+conflicts=('wxgtk2.9')
+replaces=('wxgtk2.9')
+provides=('wxgtk2.9')
+source=("https://github.com/wxWidgets/wxWidgets/releases/download/v${pkgver}/wxWidgets-${pkgver}.tar.bz2")
+md5sums=('ba4cd1f3853d0cd49134c5ae028ad080')
+
+prepare() {
+  cd wxWidgets-${pkgver}
+  #patch -p1 -i ../wxGTK-2.9.5-collision.patch
+}
 
 build() {
-  cd wxPython-src-${pkgver}
-  patch -p1 -i ../wxGTK-collision.patch
-
-  ./configure --prefix=/usr \
-        --libdir=/usr/lib \
-        --with-gtk=2 \
-        --with-opengl \
-        --enable-unicode \
-        --enable-graphics_ctx \
-        --disable-optimize \
-        --enable-mediactrl \
-        --with-regex=builtin \
-        --with-libpng=sys \
-        --with-libxpm=sys \
-        --with-libjpeg=sys \
-        --with-libtiff=sys \
-        --with-sdl \
-        --disable-precomp-headers
+  cd wxWidgets-${pkgver}
+  
+  ./configure --prefix=/usr --libdir=/usr/lib --with-gtk=2 --with-opengl --enable-unicode \
+    --enable-graphics_ctx --disable-mediactrl --disable-webview --with-regex=builtin \
+    --with-libpng=sys --with-libxpm=sys --with-libjpeg=sys --with-libtiff=sys \
+    --disable-precomp-headers --disable-gstreamer
   make
   make -C locale allmo
-  cd contrib/src
-  make
 }
 
 package() {
-  cd wxPython-src-${pkgver}
+  cd wxWidgets-${pkgver}
   make DESTDIR=${pkgdir} install
   
-  make -C contrib/src DESTDIR=${pkgdir} install
   install -D -m644 docs/licence.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
