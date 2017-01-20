@@ -23,10 +23,21 @@ prepare() {
 build() {
   cd wxWidgets-${pkgver}
   
-  ./configure --prefix=/usr --libdir=/usr/lib --with-gtk=2 --with-opengl --enable-unicode \
-    --enable-graphics_ctx --disable-mediactrl --disable-webview --with-regex=builtin \
-    --with-libpng=sys --with-libxpm=sys --with-libjpeg=sys --with-libtiff=sys \
-    --disable-precomp-headers --disable-gstreamer
+  ./configure --prefix=/usr \
+    --libdir=/usr/lib \
+    --with-gtk=2 \
+    --with-opengl \
+    --enable-unicode \
+    --enable-graphics_ctx \
+    --disable-mediactrl \
+    --disable-webview \
+    --with-regex=builtin \
+    --with-libpng=sys \
+    --with-libxpm=sys \
+    --with-libjpeg=sys \
+    --with-libtiff=sys \
+    --disable-precomp-headers \
+    --disable-gstreamer
   make
   make -C locale allmo
 }
