@@ -1,20 +1,20 @@
 
 pkgname=gdb
 pkgver=7.12
-pkgrel=1
+pkgrel=2
 pkgdesc="The GNU Debugger"
 arch=('x86_64')
-url="http://www.gnu.org/software/gdb/"
+url="https://www.gnu.org/software/gdb/"
 license=('GPL3')
 depends=('ncurses' 'expat' 'python2' 'guile')
 makedepends=('texinfo')
 backup=('etc/gdb/gdbinit')
 options=('!libtool' '!buildflags')
-source=("http://ftp.gnu.org/gnu/gdb/${pkgname}-${pkgver}.tar.xz")
+source=("https://ftp.gnu.org/gnu/gdb/${pkgname}-${pkgver}.tar.xz")
 md5sums=('a0a3a00f7499b0c5278ba8676745d180')
 
 build() {
-  cd ${srcdir}/${pkgname}-${pkgver}
+  cd ${pkgname}-${pkgver}
   
   ./configure --prefix=/usr \
     --disable-nls \
@@ -25,7 +25,7 @@ build() {
 }
 
 package() {
-  cd ${srcdir}/${pkgname}-${pkgver}
+  cd ${pkgname}-${pkgver}
   make DESTDIR=${pkgdir} install
 
   install -dm755 $pkgdir/etc/gdb
