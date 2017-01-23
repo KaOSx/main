@@ -6,8 +6,7 @@ pkgname=('qt5-declarative' 'qt5-declarative-docs')
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=2
-pkgdesc=('A cross-platform application and UI framework, QtDeclarative files')
+pkgrel=1
 arch=('x86_64')
 url='http://qt.nokia.com/'
 license=('GPL3' 'LGPL' 'FDL' 'custom')
@@ -28,7 +27,7 @@ build() {
 }
 
 package_qt5-declarative() {
-    pkgdesc=('A cross-platform application and UI framework, QtDeclarative files')
+    pkgdesc="A cross-platform application and UI framework, QtDeclarative files"
     depends=('qt5-xmlpatterns' 'mesa')
     groups=('qt5')
     
@@ -42,7 +41,7 @@ package_qt5-declarative() {
 }
 
 package_qt5-declarative-docs() {
-    pkgdesc=('Documentation files for QtDeclarative')
+    pkgdesc="Documentation files for QtDeclarative"
     depends=('qt5-base')
     groups=('qt5-docs')
     
