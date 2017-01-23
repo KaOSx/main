@@ -1,30 +1,29 @@
 
 pkgname=wayland
 pkgver=1.12.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Wayland the modern display server."
 arch=('x86_64')
-url="http://wayland.freedesktop.org"
+url="https://wayland.freedesktop.org"
 license=('MIT')
 depends=('libffi' 'expat')
 #makedepends=('doxygen' 'xmlto') requires graphviz for documentation
-options=('!makeflags' '!libtool')
-replaces=('wayland-git')
-provides=('wayland-git')
-conflicts=('wayland-git')
-source=("http://wayland.freedesktop.org/releases/${pkgname}-${pkgver}.tar.xz")
+options=('!makeflags' '!libtool' 'debug')
+source=("https://wayland.freedesktop.org/releases/${pkgname}-${pkgver}.tar.xz")
 md5sums=('ee615e2d1e205eec48b02f069327eb96')
 
 build() {
 	cd ${pkgname}-${pkgver}
 
-	./configure --prefix=/usr --disable-static --disable-documentation
+	./configure --prefix=/usr \
+        --disable-static \
+        --disable-documentation
 	make 
 }
 
 package() {
      cd ${pkgname}-${pkgver}
+     make DESTDIR=${pkgdir} install
      
-     make DESTDIR="${pkgdir}" install
-     install -Dm 644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/COPYING"
+     install -Dm 644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
 }
