@@ -1,7 +1,7 @@
 
 pkgname=qtwebkit-tp
-pkgver=5.6.2
-_commit=48338f53708e34731dc51649aed5d6755d82db0f
+pkgver=5.6.2.1
+_commit=8ac9d5c3dc476eb7474aa7fec7b52036a6e39597
 pkgrel=1
 pkgdesc='Cross-platform application and UI framework, QtWebkit files (revived branch)'
 arch=('x86_64')
@@ -17,7 +17,7 @@ replaces=('qt5-webkit')
 conflicts=('qt5-webkit')
 groups=('qt5')
 source=("https://github.com/annulen/qtwebkit-snapshots/archive/${_commit}.zip")
-md5sums=('56424910e688851159dd674dae4ee063')
+md5sums=('cf27cfa22e781ecbe0c71d7921595699')
 
 prepare() {
   cd qtwebkit-snapshots-${_commit}
@@ -32,6 +32,7 @@ build() {
   cmake ../qtwebkit-snapshots-${_commit} \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INCLUDE_PATH=/usr/include/qt5 \
     -DPORT=Qt \
     -DUSE_QT_MULTIMEDIA=OFF \
     -DENABLE_OPENGL=OFF
