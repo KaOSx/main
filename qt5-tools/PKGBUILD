@@ -29,7 +29,7 @@ md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
 build() {
     cd $srcdir/$_pkgfqn
 
-    /usr/lib/qt5/bin/qmake 
+    /usr/lib/qt5/bin/qmake INCLUDEPATH="/usr/include/QtWebKit /usr/include/QtWebKitWidgets"
     make
     make docs
 }
