@@ -2,7 +2,7 @@
 pkgname=qtwebkit-tp
 pkgver=5.6.2.1
 _commit=8ac9d5c3dc476eb7474aa7fec7b52036a6e39597
-pkgrel=1
+pkgrel=2
 pkgdesc='Cross-platform application and UI framework, QtWebkit files (revived branch)'
 arch=('x86_64')
 url='https://github.com/annulen/webkit'
@@ -32,6 +32,7 @@ build() {
   cmake ../qtwebkit-snapshots-${_commit} \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
+    -DKDE_INSTALL_INCLUDEDIR=/usr/include/qt5 \
     -DPORT=Qt \
     -DUSE_QT_MULTIMEDIA=OFF \
     -DENABLE_OPENGL=OFF
