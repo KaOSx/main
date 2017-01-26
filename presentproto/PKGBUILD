@@ -1,27 +1,27 @@
 
 pkgname=presentproto
-pkgver=1.0
-pkgrel=3
+pkgver=1.1
+pkgrel=1
 pkgdesc="X11 Present protocol specification"
 arch=('x86_64')
 url="http://xorg.freedesktop.org/"
 license=('custom')
 source=("http://xorg.freedesktop.org/releases/individual/proto/${pkgname}-${pkgver}.tar.bz2"
         'COPYING')
-md5sums=('2d569c75884455c7148d133d341e8fd6'
+md5sums=('92f9dda9c870d78a1d93f366bcb0e6cd'
          'ac90d1d416be3cb13e1d3c88cd5166bf')
 
 build() {
-    cd $pkgname-$pkgver
+    cd ${pkgname}-${pkgver}
 	
     ./configure --prefix=/usr
     make
 }
 
 package() {
-    cd $pkgname-$pkgver
-    make DESTDIR="$pkgdir/" install
+    cd ${pkgname}-${pkgver}
+    make DESTDIR=${pkgdir}/ install
 	
-    install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
-    install -m644 ${srcdir}/COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
+    install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
+    install -m644 ../COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
 }
