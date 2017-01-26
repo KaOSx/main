@@ -1,16 +1,16 @@
 
 pkgname=networkmanager
 _pkgname=NetworkManager
-pkgver=1.4.4
-_pkgver=1.4
-pkgrel=2
+pkgver=1.6.0
+_pkgver=1.6
+pkgrel=1
 pkgdesc="Network Management daemon"
 arch=('x86_64')
 license=('GPL')
 url="https://wiki.gnome.org/Projects/NetworkManager"
 depends=('dbus-glib' 'iproute2' 'libnl' 'nss' 'polkit' 'systemd' 'wpa_supplicant' 'ppp' 'dhcpcd'
          'modemmanager' 'libndp' 'libteam' 'libsoup' 'libgudev')
-makedepends=('intltool' 'dhclient' 'iptables' 'gobject-introspection' 'netctl')
+makedepends=('intltool' 'dhclient' 'iptables' 'gobject-introspection' 'netctl' 'python2-gobject3')
 optdepends=('dhclient: alternative DHCP/DHCPv6 client'
             'iptables: Connection sharing'
             'dnsmasq: Connection sharing'
@@ -22,7 +22,7 @@ install=networkmanager.install
 source=("https://download.gnome.org/sources/NetworkManager/${_pkgver}/${_pkgname}-${pkgver}.tar.xz"
         'NetworkManager.conf'
         'nm_exported.patch')
-md5sums=('63f1e0d6d7e9099499d062c84c927a75'
+md5sums=('ccdac1d03133a59065cbb93a09fa54b0'
          'e6549aab4cb721a87becd4585efd5148'
          '206971e92d6b592d80adcd19bf96f165')
 
@@ -41,7 +41,6 @@ build() {
     --with-dhclient=/usr/sbin/dhclient \
     --with-dhcpcd=/usr/sbin/dhcpcd \
     --with-pppd=/usr/sbin/pppd \
-    --with-pppoe=/usr/sbin/pppoe \
     --with-iptables=/usr/sbin/iptables \
     --with-dnsmasq=/usr/bin/dnsmasq \
     --with-systemdsystemunitdir=/usr/lib/systemd/system \
@@ -52,7 +51,6 @@ build() {
     --with-modem-manager-1 \
     --disable-static \
     --enable-more-warnings=no \
-    --disable-wimax \
     --enable-modify-system \
     --with-pppd-plugin-dir=/usr/lib/pppd/2.4.7
 
