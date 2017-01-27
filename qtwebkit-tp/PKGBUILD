@@ -1,8 +1,8 @@
 
 pkgname=qtwebkit-tp
-pkgver=5.6.2.1
-_commit=8ac9d5c3dc476eb7474aa7fec7b52036a6e39597
-pkgrel=2
+pkgver=5.6.2.2
+_commit=8bed62ae51870074d3bc8f48791b19911bfc4d10
+pkgrel=1
 pkgdesc='Cross-platform application and UI framework, QtWebkit files (revived branch)'
 arch=('x86_64')
 url='https://github.com/annulen/webkit'
@@ -16,13 +16,15 @@ provides=('qt5-webkit')
 replaces=('qt5-webkit')
 conflicts=('qt5-webkit')
 groups=('qt5')
-source=("https://github.com/annulen/qtwebkit-snapshots/archive/${_commit}.zip")
-md5sums=('cf27cfa22e781ecbe0c71d7921595699')
+source=("https://github.com/annulen/qtwebkit-snapshots/archive/${_commit}.zip"
+        "http://sigsegv.spdns.eu/~crazy/0001-fix-bug-393-and-406-v1.patch")
+md5sums=('f24161a8aa669785290d7b2873a200a1'
+         '5b576cb79ec7eed676c20c3dfc8617b1')
 
 prepare() {
   cd qtwebkit-snapshots-${_commit}
 
-  #patch -p1 -i $srcdir/default_prf.patch
+  patch -p1 -i $srcdir/0001-fix-bug-393-and-406-v1.patch
 }
 
 build() {
@@ -35,7 +37,7 @@ build() {
     -DKDE_INSTALL_INCLUDEDIR=/usr/include/qt5 \
     -DPORT=Qt \
     -DUSE_QT_MULTIMEDIA=OFF \
-    -DENABLE_OPENGL=OFF
+    -DENABLE_OPENGL=ON
   make
 }
 
