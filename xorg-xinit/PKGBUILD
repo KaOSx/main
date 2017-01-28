@@ -1,51 +1,43 @@
 
 pkgname=xorg-xinit
 pkgver=1.3.4
-pkgrel=2
+pkgrel=3
 pkgdesc="X.Org initialisation program "
 arch=('x86_64')
 license=('custom')
-url="http://xorg.freedesktop.org/"
-depends=('libx11' 'xorg-xauth' 'inetutils')
+url="https://xorg.freedesktop.org/"
+depends=('libx11' 'xorg-xauth' 'inetutils' 'xorg-server-utils')
 makedepends=('xorg-util-macros')
 optdepends=('xterm')
-backup=('etc/skel/.xinitrc'
-        'etc/skel/.xsession'
-        'etc/X11/xinit/xserverrc'
+backup=('etc/X11/xinit/xserverrc'
         'etc/X11/xinit/xinitrc')
 groups=('xorg')
-source=("http://xorg.freedesktop.org/releases/individual/app/xinit-${pkgver}.tar.bz2"
+source=("https://xorg.freedesktop.org/releases/individual/app/xinit-${pkgver}.tar.bz2"
         '06_move_serverauthfile_into_tmp.diff'
         'fs25361.patch'
-        'xinitrc'
-        'xsession'
         'xserverrc')
 options=('!emptydirs')
 md5sums=('4e928452dfaf73851413a2d8b8c76388'
          'abd072ec435ce084cf4e89c58f83d45c'
          '73a597d3fb7f5b9487318ac8cfd4bedf'
-         'c7b406c3c5c1e8011b3ac7d6b29c1a2c'
-         '7873d97db30d6c279ed37e3559e7c59d'
          '4deba1b7f2cc7f93b304b956023e65d6')
 
 build() {
-  cd "${srcdir}/xinit-${pkgver}"
-  patch -p1 -i "${srcdir}/06_move_serverauthfile_into_tmp.diff"
-  patch -p1 -i "${srcdir}/fs25361.patch"
-  sed -i -e 's/XSLASHGLOB.sh/XSLASHGLOB/' xinitrc.cpp
+  cd xinit-${pkgver}
+  patch -p1 -i ${srcdir}/06_move_serverauthfile_into_tmp.diff
+  patch -p1 -i ${srcdir}/fs25361.patch
+  sed -i -e 's|XSLASHGLOB.sh|XSLASHGLOB|' xinitrc.cpp
   
   ./configure --prefix=/usr --with-xinitdir=/etc/X11/xinit
   make
 }
 
 package() {
-  cd "${srcdir}/xinit-${pkgver}"
-  make DESTDIR="${pkgdir}" install
+  cd xinit-${pkgver}
+  make DESTDIR=${pkgdir} install
 
-  install -m755 -d "${pkgdir}/etc/skel"
-  install -m644 "${srcdir}/xinitrc" "${pkgdir}/etc/skel/.xinitrc"
-  install -m644 "${srcdir}/xsession" "${pkgdir}/etc/skel/.xsession"
-  install -m644 "${srcdir}/xserverrc" "${pkgdir}/etc/X11/xinit/xserverrc"
-  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
-  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
+  install -m755 -d ${pkgdir}/etc/skel
+  install -m644 ${srcdir}/xserverrc ${pkgdir}/etc/X11/xinit/xserverrc
+  install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
 }
