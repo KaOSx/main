@@ -1,18 +1,19 @@
  
 pkgname=python2-xlib
 _pkgname=python-xlib
-pkgver=0.15rc1
-pkgrel=3
+pkgver=0.18
+pkgrel=1
 pkgdesc='A fully functional X client library for Python programs.'
-url='http://python-xlib.sourceforge.net/'
+url='https://github.com/python-xlib/python-xlib'
 arch=('x86_64')
 license=('GPL')
-depends=('python2')
-source=("http://downloads.sourceforge.net/python-xlib/${_pkgname}-${pkgver}.tar.gz")
-md5sums=('7941e91bc3e92dc921dfc930cc8f7830')
+depends=('python2-six')
+makedepends=('python2-setuptools')
+source=("https://github.com/python-xlib/python-xlib/releases/download/${pkgver}/${_pkgname}-${pkgver}.tar.bz2")
+md5sums=('b54349fd0f3f6b9cbabf3a3303743758')
 
 package() {
-  cd "${srcdir}/${_pkgname}-${pkgver}"
+  cd ${_pkgname}-${pkgver}
   
-  python2 setup.py install --root="${pkgdir}"
+  python2 setup.py install --root=${pkgdir}
 }
