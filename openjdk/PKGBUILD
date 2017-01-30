@@ -1,18 +1,18 @@
 
 pkgname=('openjdk' 'openjdk-src')
 pkgbase='openjdk'
-_icedtea_release="3.2.0"
+_icedtea_release="3.3.0"
 _icedtea_jdkver="8"
 # ${srcdir}/build/ChangeLog for versions
-_openjdk_build="b17"
-_pkgver="8u111"
+_openjdk_build="b14"
+_pkgver="8u121"
 pkgver="${_pkgver}_${_openjdk_build}_${_icedtea_release}"
 pkgrel=1
 pkgdesc="An open-source implementation of the seventh edition of the Java SE Platform."
 arch=('x86_64')
 url="http://icedtea.classpath.org/"
 license=('GPL2 with Classpath exception')
-makedepends=('java-environment=7' 'apache-ant>=1.6.5' 'zip' 'unzip'
+makedepends=('java-environment=8' 'apache-ant>=1.6.5' 'zip' 'unzip'
              'fastjar' 'cpio' 'cups' 'gtk2' 'coreutils'
              'wget' 'gzip' 'alsa-lib' 'pulseaudio' 'zlib' 'libjpeg-turbo'
              'libpng' 'giflib' 'lcms2' 'freetype2' 'rhino' 'nss' 'libxt'
@@ -35,15 +35,15 @@ source=("http://icedtea.classpath.org/download/source/icedtea-${_icedtea_release
         'command_path.diff'
         'openjdk.profile.sh'
         'openjdk.profile.csh')
-md5sums=('e58b2d2d742ef55e60cec90e3304c809'
-         '19a12dc608da61a6878f4614a91156af'
-         '8b1171ec1060517fc1c4eee162c78b33'
-         'ca6bbcdb0f87399bd0a5481ad55939c8'
-         '5f5d90b7036f1e8561f6943308528e80'
-         '9d105ca8e4de3936fe1a4916ec30ad7f'
-         'c7a7681fff0afda6a897b135820a1440'
-         '05fa4f0110a5c9c18828a3e359b1adde'
-         'cc5f423ed2949ee8a7e25d43f0cb425f'
+md5sums=('86d61ef5d3abff3938be8bbb9e03e444'
+         '1bc8c5b63eca3918f1c4c934bf66b233'
+         '2b3559177fead9ccb56db07191102870'
+         '92612fa7cfecf27357743c932a091b9b'
+         '2a732b3f46453fb45b1a37b7c1ab3db8'
+         'b10431e5823ac859de631e183b1d0b67'
+         '2d1c5467d3c7818ee7ec81d37c1bbbd4'
+         '9cc3887801b7ad6c290c4adf4a742130'
+         'e600f285d00ee367b4129450c35f113a'
          'ee1afda124d5927345014ab382ef581e'
          '986131efd2636724ae37870a5cca6d43'
          '05afd9c7fedcc05d4ebbb3427e068dba'

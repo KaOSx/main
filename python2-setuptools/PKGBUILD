@@ -16,6 +16,7 @@ md5sums=('e533f122b7466b7d0a1a61039a6162ac')
 
 build() {
    cd setuptools-${pkgver}
+   sed -i '|pip.main(args)|d' setuptools/bootstrap.py
    
    python2 bootstrap.py
    python2 setup.py build
