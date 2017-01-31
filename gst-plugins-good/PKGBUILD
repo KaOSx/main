@@ -1,18 +1,18 @@
 
 pkgname=gst-plugins-good
-pkgver=1.10.2
+pkgver=1.10.3
 pkgrel=1
 pkgdesc="GStreamer Multimedia Framework Good Plugins"
 arch=('x86_64')
 license=('LGPL')
-url="http://gstreamer.freedesktop.org/"
+url="https://gstreamer.freedesktop.org/"
 depends=('pulseaudio' 'jack' 'libsoup' 'gst-plugins-base' 'wavpack' 'aalib' 'taglib' 'libdv' 'libshout'
          'libvpx' 'gdk-pixbuf2' 'libcaca' 'libavc1394' 'libiec61883' 'libxdamage' 'v4l-utils' 'libgudev')
 makedepends=('gstreamer' 'speex' 'flac' 'libraw1394' 'python3')
 options=('!libtool' '!emptydirs')
-source=("http://gstreamer.freedesktop.org/src/gst-plugins-good/${pkgname}-${pkgver}.tar.xz"
+source=("https://gstreamer.freedesktop.org/src/gst-plugins-good/${pkgname}-${pkgver}.tar.xz"
         'equalizer.patch')
-md5sums=('65c4ff9d406c3ea9383b4d38a6504349'
+md5sums=('fd841c574c081dc205ac07b587704fc8'
          '36a5b58e136f711152b17db3e30f225e')
 
 build() {

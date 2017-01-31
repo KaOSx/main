@@ -1,11 +1,11 @@
 
 pkgname=gst-plugins-bad
-pkgver=1.10.2
-pkgrel=4
+pkgver=1.10.3
+pkgrel=1
 pkgdesc="GStreamer Multimedia Framework Bad Plugins"
 arch=('x86_64')
 license=('LGPL')
-url="http://gstreamer.freedesktop.org/"
+url="https://gstreamer.freedesktop.org/"
 depends=('mjpegtools' 'gst-plugins-base' 'curl' 'chromaprint' 'libmms' 'faad2'
          'mpg123' 'faac' 'celt' 'libdca' 'soundtouch' 'libdvdnav'
          'libmodplug' 'libgme' 'opus' 'wayland' 'neon' 'libofa' 'fluidsynth' 'openjpeg'
@@ -14,8 +14,8 @@ depends=('mjpegtools' 'gst-plugins-base' 'curl' 'chromaprint' 'libmms' 'faad2'
 makedepends=('schroedinger' 'libexif' 'libdvdread' 'libvdpau' 'libmpeg2' 'python3' 
              'gobject-introspection' 'bluez' 'ladspa' 'openal' 'qt5-wayland')
 options=('!libtool' '!emptydirs')
-source=("http://gstreamer.freedesktop.org/src/gst-plugins-bad/${pkgname}-${pkgver}.tar.xz")
-md5sums=('823f4c33fe27c61332c0122273217988')
+source=("https://gstreamer.freedesktop.org/src/gst-plugins-bad/${pkgname}-${pkgver}.tar.xz")
+md5sums=('e59798c86a670041de2e61856ea43d2a')
 
 build() {
   cd ${pkgname}-${pkgver}

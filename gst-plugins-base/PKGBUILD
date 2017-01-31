@@ -1,17 +1,17 @@
 
 pkgname=gst-plugins-base
-pkgver=1.10.2
+pkgver=1.10.3
 pkgrel=1
 pkgdesc="GStreamer Multimedia Framework Base Plugins"
 arch=('x86_64')
+url="https://gstreamer.freedesktop.org/"
 license=('LGPL')
 depends=("gstreamer>=${pkgver}" 'orc' 'libxv' 'alsa-lib' 'cdparanoia' 'libvisual'
          'libvorbis' 'libtheora' 'pango' 'opus')
 makedepends=('pkgconfig' 'gobject-introspection')
 options=('!libtool' '!emptydirs')
-url="http://gstreamer.freedesktop.org/"
-source=("http://gstreamer.freedesktop.org/src/gst-plugins-base/${pkgname}-${pkgver}.tar.xz")
-md5sums=('8efa9e9ad9a841a900359604da82fb8b')
+source=("https://gstreamer.freedesktop.org/src/gst-plugins-base/${pkgname}-${pkgver}.tar.xz")
+md5sums=('12fe89a5536a0c7536c19875928637c2')
 
 build() {
   cd ${pkgname}-${pkgver}
