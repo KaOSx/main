@@ -1,22 +1,20 @@
 
 pkgname=gd
-pkgver=2.2.3
-_pkgver=2.2.3
+pkgver=2.2.4
+_pkgver=2.2.4
 pkgrel=1
 pkgdesc="Library for the dynamic creation of images by programmers"
 arch=('x86_64')
-url="http://www.libgd.org/"
+url="https://www.libgd.org/"
 license=('custom')
 depends=('libpng' 'fontconfig' 'libjpeg-turbo' 'libtiff')
 #makedepends=('cmake')
 options=('!libtool')
 source=("https://github.com/libgd/libgd/archive/gd-${_pkgver}.tar.gz")
-md5sums=('a67bd15fa33d4aac0a1c7904aed19f49')
+md5sums=('38fc1fc8ca12023bae0c2c7ecfbd2c62')
 
 build() {
   cd libgd-gd-${_pkgver}
-  # CVE-2016-3074 http://seclists.org/oss-sec/2016/q2/128 
-  #patch -p1 -i ${srcdir}/2bb97f407c1145c850416a3bfbcc8cf124e68a19.diff
 
   ./bootstrap.sh
   ./configure --prefix=/usr --without-xpm
