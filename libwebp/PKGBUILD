@@ -1,6 +1,6 @@
 
 pkgname=libwebp
-pkgver=0.5.2
+pkgver=0.6.0
 pkgrel=1
 pkgdesc="WebP library and conversion tools"
 arch=('x86_64')
@@ -10,8 +10,8 @@ depends=('libpng' 'libjpeg-turbo' 'libtiff' 'giflib')
 makedepends=('freeglut' 'mesa' 'glu')
 optdepends=('freeglut: vwebp viewer')
 options=('!libtool')
-source=("http://downloads.webmproject.org/releases/webp/${pkgname}-${pkgver}.tar.gz")
-md5sums=('6f36b38c2483b32906f946a621eb0c2e')
+source=("https://storage.googleapis.com/downloads.webmproject.org/releases/webp/${pkgname}-${pkgver}.tar.gz")
+md5sums=('19a6e926ab1721268df03161b84bb4a0')
 
 build() {
   cd ${pkgname}-${pkgver}
