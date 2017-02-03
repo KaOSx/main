@@ -1,8 +1,9 @@
 
 pkgname=qtwebkit-tp
-pkgver=5.6.2.2
-_commit=8bed62ae51870074d3bc8f48791b19911bfc4d10
-pkgrel=2
+pkgver=5.6.2.3
+_pkgver=tp5
+#_commit=8bed62ae51870074d3bc8f48791b19911bfc4d10
+pkgrel=1
 pkgdesc='Cross-platform application and UI framework, QtWebkit files (revived branch)'
 arch=('x86_64')
 url='https://github.com/annulen/webkit'
@@ -16,22 +17,23 @@ provides=('qt5-webkit')
 replaces=('qt5-webkit')
 conflicts=('qt5-webkit')
 groups=('qt5')
-source=("https://github.com/annulen/qtwebkit-snapshots/archive/${_commit}.zip"
+#source=("https://github.com/annulen/qtwebkit-snapshots/archive/${_commit}.zip"
+source=("https://github.com/annulen/webkit/releases/download/qtwebkit-${_pkgver}/qtwebkit-${_pkgver}.tar.xz"
         "http://sigsegv.spdns.eu/~crazy/0001-fix-bug-393-and-406-v1.patch")
-md5sums=('f24161a8aa669785290d7b2873a200a1'
+md5sums=('7fb7b992e7793d3e2827d4ad66c420cc'
          '5b576cb79ec7eed676c20c3dfc8617b1')
 
 prepare() {
-  cd qtwebkit-snapshots-${_commit}
+  cd qtwebkit-${_pkgver}
 
-  patch -p1 -i $srcdir/0001-fix-bug-393-and-406-v1.patch
+  #patch -p1 -i $srcdir/0001-fix-bug-393-and-406-v1.patch
 }
 
 build() {
   mkdir -p build
   cd build
   
-  cmake ../qtwebkit-snapshots-${_commit} \
+  cmake ../qtwebkit-${_pkgver} \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DKDE_INSTALL_INCLUDEDIR=/usr/include/qt5 \
