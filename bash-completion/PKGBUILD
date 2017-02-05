@@ -1,6 +1,6 @@
 
 pkgname=bash-completion
-pkgver=2.4
+pkgver=2.5
 pkgrel=1
 pkgdesc="Programmable completion for the bash shell"
 arch=('x86_64')
@@ -8,7 +8,7 @@ url="https://github.com/scop/bash-completion"
 license=('GPL')
 depends=('bash')
 source=("https://github.com/scop/bash-completion/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
-md5sums=('1ea94864fb2b2446fbbdf82f10bd25df')
+md5sums=('15300010bd4034de12c3fc4f171692e3')
 
 build() {
   cd ${pkgname}-${pkgver}
@@ -22,7 +22,7 @@ build() {
 
 package() {
   cd ${pkgname}-${pkgver}
-  make DESTDIR=${pkgdir} install
+  make -j1 DESTDIR=${pkgdir} install
 
   # bash-completion is sourced in /etc/bash.bashrc so that non-bash shell don't source it
   rm -r ${pkgdir}/etc/profile.d

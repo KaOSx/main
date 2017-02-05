@@ -1,16 +1,16 @@
 
 pkgname=cairomm
-pkgver=1.12.0
-pkgrel=4
+pkgver=1.12.2
+pkgrel=1
 pkgdesc="C++ bindings to Cairo vector graphics library"
 arch=('x86_64')
-url="http://www.cairographics.org"
+url="https://www.cairographics.org"
 license=('LGPL' 'MPL')
 depends=('cairo' 'libsigc++')
 makedepends=('pkgconfig')
-source=("http://www.cairographics.org/releases/${pkgname}-${pkgver}.tar.gz")
+source=("https://www.cairographics.org/releases/${pkgname}-${pkgver}.tar.gz")
 options=('!libtool' '!emptydirs')
-md5sums=('481501be65bcc34a605d6bc0f57a0023')
+md5sums=('9d2282ea34cf9aaa89208bb4bb911909')
 
 build() {
   cd ${pkgname}-${pkgver}
