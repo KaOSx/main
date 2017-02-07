@@ -1,22 +1,14 @@
-info_dir=usr/share/info
-info_files=('speech-dispatcher.info'
-    'ssip.info'
-    'spd-say.info')
+#!/bin/bash
+# tputcolors
 
 post_install() {
-  [[ -x usr/bin/install-info ]] || return 0
-  for f in ${info_files[@]}; do
-    install-info ${info_dir}/$f.gz ${info_dir}/dir 2> /dev/null
-  done
+  echo -e '\e[0;32m To enable speech-dispatcher autostart'
+  echo -e '\e[0;32m edit /etc/speech-dispatcher/speechd.conf'
+  echo -e '\e[0;32m and comment out the last line, so it reads as:' 
+  echo -e '\e[0;32m # DisableAutoSpawn \e[0m'
 }
 
 post_upgrade() {
   post_install
 }
 
-pre_remove() {
-  [[ -x usr/bin/install-info ]] || return 0
-  for f in ${info_files[@]}; do
-    install-info --delete ${info_dir}/$f.gz ${info_dir}/dir 2> /dev/null
-  done
-}
