@@ -3,7 +3,7 @@ pkgname=qtwebkit-tp
 pkgver=5.6.2.3
 _pkgver=tp5
 #_commit=8bed62ae51870074d3bc8f48791b19911bfc4d10
-pkgrel=1
+pkgrel=3
 pkgdesc='Cross-platform application and UI framework, QtWebkit files (revived branch)'
 arch=('x86_64')
 url='https://github.com/annulen/webkit'
@@ -19,18 +19,21 @@ conflicts=('qt5-webkit')
 groups=('qt5')
 #source=("https://github.com/annulen/qtwebkit-snapshots/archive/${_commit}.zip"
 source=("https://github.com/annulen/webkit/releases/download/qtwebkit-${_pkgver}/qtwebkit-${_pkgver}.tar.xz"
-        "http://sigsegv.spdns.eu/~crazy/0001-fix-bug-393-and-406-v1.patch")
+        "https://raw.githubusercontent.com/Alexpux/MINGW-packages/master/mingw-w64-qtwebkit/0012-install-additional-pri-files.patch"
+        "https://github.com/annulen/webkit/commit/afe18f7d13f5c825ce323bfb756b249c0e163554.diff")
 md5sums=('7fb7b992e7793d3e2827d4ad66c420cc'
-         '5b576cb79ec7eed676c20c3dfc8617b1')
+         'd3997143a1b57cbbfbd4364713fea91d'
+         '110e530f46d7c08097fc00703b3a4c27')
 
 prepare() {
   cd qtwebkit-${_pkgver}
 
-  #patch -p1 -i $srcdir/0001-fix-bug-393-and-406-v1.patch
+  patch -p1 -i $srcdir/0012-install-additional-pri-files.patch
+  patch -p1 -i $srcdir/afe18f7d13f5c825ce323bfb756b249c0e163554.diff
 }
 
 build() {
-  mkdir -p build
+  #mkdir -p build
   cd build
   
   cmake ../qtwebkit-${_pkgver} \
