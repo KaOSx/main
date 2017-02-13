@@ -1,7 +1,7 @@
 
 pkgname=libao
-pkgver=1.2.0
-pkgrel=3
+pkgver=1.2.2
+pkgrel=1
 pkgdesc="A cross-platform audio output library and plugins"
 url="http://www.xiph.org/ao"
 arch=('x86_64')
@@ -9,14 +9,16 @@ license=('GPL')
 depends=('glibc' 'alsa-lib' 'pulseaudio')
 backup=('etc/libao.conf')
 options=('!libtool')
-source=("http://downloads.xiph.org/releases/ao/${pkgname}-${pkgver}.tar.gz"
-	'libao.conf')
-md5sums=('9f5dd20d7e95fd0dd72df5353829f097'
+#source=("http://downloads.xiph.org/releases/ao/${pkgname}-${pkgver}.tar.gz"
+source=("https://github.com/xiph/libao/archive/${pkgver}.tar.gz"
+        'libao.conf')
+md5sums=('71a9f8366718036e90954e4f0a4030e0'
          '9fc7db4ee6d5e9d1747333f7d4cce4a1')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
 
+  ./autogen.sh
   ./configure --prefix=/usr \
               --enable-alsa-mmap \
               --enable-pulse \
@@ -25,8 +27,8 @@ build() {
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
-  make DESTDIR="${pkgdir}" install 
+  cd ${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install 
 
-  install -Dm0644 "${srcdir}/libao.conf" "${pkgdir}/etc/libao.conf"
+  install -Dm0644 ${srcdir}/libao.conf ${pkgdir}/etc/libao.conf
 }
