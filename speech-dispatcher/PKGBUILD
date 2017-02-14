@@ -1,7 +1,7 @@
 
 pkgname=speech-dispatcher
 pkgver=0.8.6
-pkgrel=3
+pkgrel=4
 arch=('x86_64')
 url="https://devel.freebsoft.org/speechd"
 pkgdesc="High-level device independent layer for speech synthesis interface"
@@ -44,5 +44,5 @@ package() {
   install -Dm644 ${srcdir}/speech-dispatcherd.service ${pkgdir}/usr/lib/systemd/system/speech-dispatcherd.service
   install -d ${pkgdir}/var/log/speech-dispatcher
   
-  sed -i -e 's|# DisableAutoSpawn|DisableAutoSpawn|' ${pkgdir}/etc/speech-dispatcher/speechd.conf
+  #sed -i -e 's|# DisableAutoSpawn|DisableAutoSpawn|' ${pkgdir}/etc/speech-dispatcher/speechd.conf
 }

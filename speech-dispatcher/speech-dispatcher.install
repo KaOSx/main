@@ -2,10 +2,10 @@
 # tputcolors
 
 post_install() {
-  echo -e '\e[0;32m To enable speech-dispatcher autostart'
-  echo -e '\e[0;32m edit /etc/speech-dispatcher/speechd.conf'
-  echo -e '\e[0;32m and comment out the last line, so it reads as:' 
-  echo -e '\e[0;32m # DisableAutoSpawn \e[0m'
+  echo -e '\e[0;32m To disable speech-dispatcher autostart and not have speech-dispatcher'
+  echo -e '\e[0;32m entries in your sound applet, edit /etc/speech-dispatcher/speechd.conf'
+  echo -e '\e[0;32m and uncomment out the last line, so it reads as:' 
+  echo -e '\e[0;32m DisableAutoSpawn instead of # DisableAutoSpawn \e[0m'
 }
 
 post_upgrade() {
