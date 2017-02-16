@@ -1,7 +1,7 @@
 
 pkgname=networkmanager
 _pkgname=NetworkManager
-pkgver=1.6.0
+pkgver=1.6.2
 _pkgver=1.6
 pkgrel=1
 pkgdesc="Network Management daemon"
@@ -22,7 +22,7 @@ install=networkmanager.install
 source=("https://download.gnome.org/sources/NetworkManager/${_pkgver}/${_pkgname}-${pkgver}.tar.xz"
         'NetworkManager.conf'
         'nm_exported.patch')
-md5sums=('ccdac1d03133a59065cbb93a09fa54b0'
+md5sums=('89c975afe19fbac854191edb6e9bcd3b'
          'e6549aab4cb721a87becd4585efd5148'
          '206971e92d6b592d80adcd19bf96f165')
 
@@ -64,5 +64,5 @@ package() {
   install -m644 ../NetworkManager.conf ${pkgdir}/etc/NetworkManager/
   install -m755 -d ${pkgdir}/etc/NetworkManager/dnsmasq.d
 
-  rm -r ${pkgdir}/var/run
+  #rm -r ${pkgdir}/var/run
 }
