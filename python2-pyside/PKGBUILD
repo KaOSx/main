@@ -1,0 +1,32 @@
+
+pkgname=python2-pyside
+_pkgname=pyside
+pkgver=2.0.0
+pkgrel=1
+pkgdesc="Provides LGPL Qt bindings for Python and related tools for binding generation."
+arch=('x86_64')
+license=('LGPL')
+url="https://wiki.qt.io/PySide2"
+depends=('phonon-qt5' 'qtwebkit-tp' 'qt5-script' 'qt5-svg' 'qt5-tools' 'qt5-websockets' 'shiboken')
+makedepends=('cmake')
+source=("git://code.qt.io/pyside/pyside.git")
+md5sums=('SKIP')
+
+build () {
+  cd ${_pkgname}
+  mkdir -p build 
+  cd build
+  
+  CXXFLAGS="-std=c++11"
+  
+  cmake .. -DCMAKE_INSTALL_PREFIX=/usr \
+           -DCMAKE_BUILD_TYPE=Release \
+           -DBUILD_TESTS=OFF 
+  make
+}
+
+package() {
+    cd ${_pkgname}/build
+    
+    make DESTDIR=$pkgdir install
+}
