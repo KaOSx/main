@@ -1,5 +1,5 @@
 pkgname=os-prober
-pkgver=1.73
+pkgver=1.74
 pkgrel=1
 pkgdesc="Utility to detect other operating systems on a set of drives."
 url="https://packages.debian.org/unstable/utils/os-prober"
@@ -9,10 +9,10 @@ depends=('sh')
 makedepends=('gcc' 'sed')
 source=("ftp://ftp.us.debian.org/debian/pool/main/o/os-prober/${pkgname}_${pkgver}.tar.xz")
 #source=("http://ftp.free.org/pub/frugalware/frugalware-current/source/base/${pkgname}/${pkgname}_${pkgver}.tar.gz")
-md5sums=('15385526901e28816b6695be5880c3c5')
+md5sums=('3010a4b20c81da2a4ac25c59a1c090d3')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}
 
   # adjust lib dir to allow detection of 64-bit distros
   sed -e "s:/lib/ld\*\.so\*:/lib*/ld*.so*:g" -i os-probes/mounted/common/90linux-distro 
@@ -22,22 +22,22 @@ build() {
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}
 
-  install -D -m755 linux-boot-prober "${pkgdir}/usr/bin/linux-boot-prober"
-  install -D -m755 os-prober "${pkgdir}/usr/bin/os-prober"
-  install -D -m755 newns "${pkgdir}/usr/lib/os-prober/newns"
-  install -D -m755 common.sh "${pkgdir}/usr/share/os-prober/common.sh"
+  install -D -m755 linux-boot-prober ${pkgdir}/usr/bin/linux-boot-prober
+  install -D -m755 os-prober ${pkgdir}/usr/bin/os-prober
+  install -D -m755 newns ${pkgdir}/usr/lib/os-prober/newns
+  install -D -m755 common.sh ${pkgdir}/usr/share/os-prober/common.sh
   
   for dir in os-probes os-probes/mounted os-probes/init linux-boot-probes linux-boot-probes/mounted; do
-    install -dm755 "$pkgdir/usr/lib/$dir"
-    install -m755 -t "$pkgdir/usr/lib/$dir" "$dir"/common/*
-    [[ -d "$dir"/x86 ]] && cp -r "$dir"/x86/* "$pkgdir/usr/lib/$dir"
+    install -dm755 ${pkgdir}/usr/lib/$dir
+    install -m755 -t ${pkgdir}/usr/lib/$dir "$dir"/common/*
+    [[ -d "$dir"/x86 ]] && cp -r "$dir"/x86/* ${pkgdir}/usr/lib/$dir
   done
 
-  install -Dm755 os-probes/mounted/powerpc/20macosx "$pkgdir"/usr/lib/os-probes/mounted/20macosx
+  install -Dm755 os-probes/mounted/powerpc/20macosx ${pkgdir}/usr/lib/os-probes/mounted/20macosx
 
-  install -dm755 "$pkgdir"/var/lib/os-prober
+  install -dm755 ${pkgdir}/var/lib/os-prober
 }
 
 
