@@ -1,7 +1,7 @@
 
 pkgname=nvidia-utils-bumblebee
 pkgbase=nvidia-utils
-pkgver=375.39
+pkgver=378.13
 pkgrel=1
 pkgdesc="NVIDIA drivers utilities and libraries. Repacked and installed in different folder to be used simultaneously with libgl."
 arch=('x86_64')
@@ -16,7 +16,7 @@ license=('custom')
 install=nvidia.install
 source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}-no-compat32.run")
 #source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}.run")
-md5sums=('3541e67b444f020b89bcad8334be6d65')
+md5sums=('fe4d25b19a780a690cafc8e3b7c0113f')
 
 create_links() {
     # create soname links
@@ -47,7 +47,8 @@ package() {
     install -D -m755 "libnvidia-glcore.so.${pkgver}" "${pkgdir}/usr/lib/libnvidia-glcore.so.${pkgver}"
     install -D -m755 "libnvidia-eglcore.so.${pkgver}" "${pkgdir}/usr/lib/libnvidia-eglcore.so.${pkgver}"
     install -D -m755 "libnvidia-glsi.so.${pkgver}" "${pkgdir}/usr/lib/libnvidia-glsi.so.${pkgver}"
-    install -D -m755 "libnvidia-egl-wayland.so.${pkgver}" "${pkgdir}/usr/lib/libnvidia-egl-wayland.so.${pkgver}"
+    install -D -m755 "libnvidia-egl-wayland.so.1.0.1" "${pkgdir}/usr/lib/libnvidia-egl-wayland.so.1.0.1"
+    install -D -m644 "10_nvidia_wayland.json" "${pkgdir}/usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json"
     install -D -m755 "libEGL_nvidia.so.${pkgver}" "${pkgdir}/usr/lib/libEGL_nvidia.so.${pkgver}"
     install -D -m644 "10_nvidia.json" "${pkgdir}/usr/share/glvnd/egl_vendor.d/10_nvidia.json"
     # VDPAU

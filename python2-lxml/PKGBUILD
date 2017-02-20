@@ -1,21 +1,21 @@
 
 pkgname=python2-lxml
-pkgver=3.7.2
+pkgver=3.7.3
 pkgrel=1
 pkgdesc="Python binding for the libxml2 and libxslt libraries"
 arch=('x86_64')
 license=('BSD' 'GPL' 'custom')
 url="http://lxml.de/"
 depends=('python2-cython' 'libxslt')
-source=("https://github.com/lxml/lxml/archive/lxml-${pkgver}.tar.gz")
-md5sums=('c23af030be8c62bd5a0492bec322385a')
+source=("https://pypi.io/packages/source/l/lxml/lxml-${pkgver}.tar.gz")
+md5sums=('075692ce442e69bbd604d44e21c02753')
 
 build() {
   /bin/true
 }
 
 package() {
-  cd lxml-lxml-${pkgver}
+  cd lxml-${pkgver}
 
   python2 setup.py install --root=${pkgdir} --optimize=1
 
