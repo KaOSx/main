@@ -1,0 +1,26 @@
+
+pkgname=python2-packaging
+pkgver=16.8
+pkgrel=1
+pkgdesc="Core utilities for Python3 packages"
+arch=('x86_64')
+license=('Apache')
+url="https://github.com/pypa/packaging"
+depends=('python2-six' 'python2-pyparsing')
+source=("https://github.com/pypa/packaging/archive/${pkgver}.tar.gz")
+md5sums=('02c9a248368c7b9d3236cac349a67825')
+
+build() {
+   cd packaging-${pkgver}
+   
+   python2 setup.py build
+}
+ 
+package() {
+   cd packaging-${pkgver}
+   
+   python2 setup.py install --prefix=/usr --root=${pkgdir} 
+   #rm ${pkgdir}/usr/bin/easy_install
+}
+ 
+

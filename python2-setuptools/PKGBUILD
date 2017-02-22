@@ -1,22 +1,22 @@
 
 pkgname=python2-setuptools
-pkgver=34.0.1
+pkgver=34.2.0
 pkgrel=1
 pkgdesc="Easily download, build, install, upgrade, and uninstall Python packages"
 arch=('x86_64')
 license=('PSF')
 url="http://pypi.python.org/pypi/setuptools"
-depends=('python2-six')
+depends=('python2-appdirs' 'python2-packaging')
 makedepends=('asciidoc' 'python2-pip')
 provides=('python2-distribute' 'setuptools')
 replaces=('python2-distribute' 'setuptools')
 conflicts=('python2-distribute')
 source=("https://github.com/pypa/setuptools/archive/v${pkgver}.tar.gz")
-md5sums=('e533f122b7466b7d0a1a61039a6162ac')
+md5sums=('c58f3b3ed271fb3f38b597ffe8aae8d9')
 
 build() {
    cd setuptools-${pkgver}
-   sed -i '|pip.main(args)|d' setuptools/bootstrap.py
+   sed -i '/pip.main(args)/d' bootstrap.py
    
    python2 bootstrap.py
    python2 setup.py build
