@@ -2,19 +2,19 @@
 pkgname=ttf-droid
 _pkgname=google-droid-fonts
 pkgver=20120715
-pkgrel=2
+pkgrel=3
 pkgdesc="A font created by Ascender Corporation for use by the Open Handset Alliance platform, Android."
 arch=('x86_64')
 license=('apache')
-url="http://code.google.com/android/"
+url="http://www.cosmix.org/software/"
 depends=('fontconfig' 'xorg-fonts-encodings' 'xorg-font-utils')
-install=$pkgname.install
+install=${pkgname}.install
 source=("http://pkgs.fedoraproject.org/repo/pkgs/google-droid-fonts/google-droid-fonts-20120715.tar.xz/b1aef1f9f9bf61f521aeb4efd1239dd8/$_pkgname-$pkgver.tar.xz")
 md5sums=('b1aef1f9f9bf61f521aeb4efd1239dd8')
 
 package() {
-  cd "${srcdir}/${_pkgname}-${pkgver}"
+  cd ${_pkgname}-${pkgver}
   
-  install -d "${pkgdir}/usr/share/fonts/TTF/"
-  install -m0644 *.ttf "${pkgdir}/usr/share/fonts/TTF/"
+  install -d ${pkgdir}/usr/share/fonts/TTF/
+  install -m0644 *.ttf ${pkgdir}/usr/share/fonts/TTF/
 }

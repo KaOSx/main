@@ -1,6 +1,6 @@
  
 pkgname=zeromq
-pkgver=4.2.1
+pkgver=4.2.2
 pkgrel=1
 pkgdesc="Lightweight messaging kernel library which extends the standard socket interfaces."
 arch=('x86_64')
@@ -10,8 +10,8 @@ depends=('gcc-libs' 'libsodium' 'util-linux' )
 options=('staticlibs')
 source=("https://github.com/zeromq/libzmq/releases/download/v${pkgver}/zeromq-${pkgver}.tar.gz"
         "https://raw.githubusercontent.com/zeromq/cppzmq/master/zmq.hpp")
-md5sums=('820cec2860a72c3257881a394d83bfc0'
-         'c732ee5409f8419323185d8aa44bc54c')
+md5sums=('52499909b29604c1e47a86f1cb6a9115'
+         '789007bd99d0a824ee3da39fe118cc7c')
 
 build() {
   cd ${pkgname}-${pkgver}
