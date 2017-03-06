@@ -1,10 +1,10 @@
 
 pkgname=mpg123
-pkgver=1.23.8
+pkgver=1.24.0
 pkgrel=1
 pkgdesc="A console based real time MPEG Audio Player for Layer 1, 2 and 3"
 arch=('x86_64')
-url="http://sourceforge.net/projects/mpg123"
+url="http://www.mpg123.org/"
 license=('GPL2' 'LGPL2.1')
 depends=('glibc' 'libtool' 'alsa-lib')
 makedepends=('sdl' 'jack' 'pulseaudio')
@@ -12,8 +12,8 @@ optdepends=('sdl: for sdl audio support'
             'jack: for jack audio support')
 options=('libtool')
 groups=('multimedia')
-source=("http://downloads.sourceforge.net/sourceforge/mpg123/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('4dde045123a2ad1e385a0a82c0ef9268')
+source=("https://downloads.sourceforge.net/sourceforge/mpg123/${pkgname}-${pkgver}.tar.bz2")
+md5sums=('75d62ac0cb713a7bac5af4ded4af2bb4')
 
 build() {
   cd ${pkgname}-${pkgver}

@@ -1,6 +1,6 @@
 
 pkgname=cifs-utils
-pkgver=6.6
+pkgver=6.7
 pkgrel=1
 pkgdesc="CIFS filesystem user-space tools"
 arch=('x86_64')
@@ -10,11 +10,12 @@ depends=('libcap' 'keyutils' 'krb5' 'talloc')
 makedepends=('samba')
 opdepends=('samba: for cifs.idmap and cifsacl')
 source=("https://ftp.samba.org/pub/linux-cifs/cifs-utils/$pkgname-$pkgver.tar.bz2")
-md5sums=('8b11350fade47d308b8f377e06cce243')
+md5sums=('af3ae1d27aca624c4daac5bf3eb0d4c1')
 
 build() {
   cd ${pkgname}-${pkgver}
 
+  autoreconf -i
   ./configure --prefix=/usr --disable-systemd
   make
 }
