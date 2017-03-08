@@ -2,7 +2,7 @@
 # rebuild mpv on any update
 pkgname=ffmpeg
 pkgver=3.2.4
-pkgrel=2
+pkgrel=3
 pkgdesc="Complete and free Internet live audio and video broadcasting solution for Linux/Unix"
 arch=('x86_64')
 url="http://ffmpeg.org/"
@@ -10,7 +10,7 @@ license=('GPL')
 depends=('bzip2' 'lame' 'sdl2' 'libvorbis' 'xvidcore' 'zlib' 'x264' 'libtheora' 'celt' 'fribidi'
          'opencore-amr' 'alsa-lib' 'libvdpau' 'libxfixes' 'schroedinger' 'libvpx>=1.1.0' 'libwebp'
          'libva' 'openjpeg' 'rtmpdump' 'speex' 'gsm' 'pulseaudio' 'v4l-utils' 'gnutls' 'x265'
-         'libass' 'dcadec')
+         'libass' 'dcadec' 'opus')
 makedepends=('yasm')
 source=("http://ffmpeg.org/releases/${pkgname}-${pkgver}.tar.xz")
 md5sums=('39fd71024ac76ba35f04397021af5606')
@@ -34,6 +34,7 @@ build() {
               --enable-x11grab \
               --enable-libopencore_amrnb \
               --enable-libopencore_amrwb \
+              --enable-libopus \
               --enable-libschroedinger \
               --enable-libopenjpeg \
               --enable-librtmp \
