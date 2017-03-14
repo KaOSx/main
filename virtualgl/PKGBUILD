@@ -1,6 +1,6 @@
 
 pkgname=virtualgl
-pkgver=2.5.1
+pkgver=2.5.2
 pkgrel=1
 pkgdesc="Redirects 3D commands from an OpenGL application onto a server-side 3D graphics card."
 arch=('x86_64')
@@ -9,27 +9,26 @@ license=('LGPL')
 depends=('mesa' 'libxv' 'libjpeg-turbo' 'glu')
 makedepends=('cmake')
 source=("http://sourceforge.net/projects/virtualgl/files/${pkgver}/VirtualGL-${pkgver}.tar.gz")
-md5sums=('7c6bac673fab01c572de618d7e8f61a5')
+md5sums=('1a9f404f4a35afa9f56381cb33ed210c')
 
 build() {
-  cd VirtualGL-${pkgver}
-
   mkdir -p build
   cd build
 
-  cmake .. -DCMAKE_INSTALL_PREFIX=/opt/VirtualGL \
-           -DTJPEG_INCLUDE_DIR=/usr/include \
-           -DTJPEG_LIBRARY=/usr/lib/libturbojpeg.so \
-           -DVGL_LIBDIR=/usr/lib \
-           -DVGL_BINDIR=/usr/bin 
+  cmake ../VirtualGL-${pkgver} \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=/usr/lib \
+    -DCMAKE_INSTALL_BINDIR=/usr/bin \
+    -DTJPEG_INCLUDE_DIR=/usr/include \
+    -DTJPEG_LIBRARY=/usr/lib/libturbojpeg.so 
   make
 }
 
 package() {
-  cd VirtualGL-${pkgver}/build
+  cd build
   make install DESTDIR=${pkgdir}
-
-  mkdir -p ${pkgdir}/opt/VirtualGL/bin
-  mv ${pkgdir}/usr/bin/glxinfo ${pkgdir}/opt/VirtualGL/bin
+  
+  # conflicts with mesa-demos
+  mv ${pkgdir}/usr/bin/glxinfo ${pkgdir}/usr/bin/vglxinfo
 }
 
