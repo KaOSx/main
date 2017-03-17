@@ -1,16 +1,16 @@
 
 pkgname=libpqxx
-pkgver=4.0.1
-pkgrel=3
+pkgver=5.0.1
+pkgrel=1
 pkgdesc="C++ client API for PostgreSQL"
 arch=('x86_64')
 license=('custom')
 url="http://pqxx.org/development/libpqxx/"
 depends=('postgresql-libs')
-makedepends=('python2')
+makedepends=('python2' 'boost')
 options=('!libtool')
-source=("http://pqxx.org/download/software/${pkgname}/${pkgname}-${pkgver}.tar.gz")
-md5sums=('6ea888b9ba85dd7cef1b182dc5f223a2')
+source=("https://github.com/jtv/libpqxx/archive/${pkgver}.tar.gz")
+md5sums=('4fab40ed8b6d03897b98742ea6ce7418')
 
 build() {
   cd ${pkgname}-${pkgver}
