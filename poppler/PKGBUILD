@@ -1,7 +1,7 @@
 
 pkgbase=poppler
 pkgname=('poppler' 'poppler-glib' 'poppler-qt5')
-pkgver=0.52.0
+pkgver=0.53.0
 pkgrel=1
 arch=('x86_64')
 url="https://poppler.freedesktop.org/"
@@ -10,13 +10,11 @@ makedepends=('libjpeg-turbo' 'gcc-libs' 'cairo' 'libxml2' 'openjpeg' 'qt5-base'
              'pkgconfig' 'lcms2' 'fontconfig' 'icu' 'gobject-introspection')
 options=('!libtool')
 source=("https://poppler.freedesktop.org/${pkgname}-${pkgver}.tar.xz")
-md5sums=('dfdd55d5df39685bbb82b0c08fa4ef66')
+md5sums=('943679f1030b9bc19a989f24121a282a')
 
 
 build() {
   cd ${pkgbase}-${pkgver}
-  
-  CXXFLAGS="-std=c++11"
   
   ./configure --prefix=/usr --sysconfdir=/etc \
       --localstatedir=/var --disable-static \
