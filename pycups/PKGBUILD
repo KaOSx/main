@@ -1,7 +1,7 @@
 
 pkgname=pycups
 pkgver=1.9.73
-pkgrel=2
+pkgrel=3
 pkgdesc="Python CUPS Bindings"
 url="http://cyberelk.net/tim/software/pycups/"
 arch=('x86_64')
@@ -11,13 +11,13 @@ source=("http://cyberelk.net/tim/data/pycups/${pkgname}-${pkgver}.tar.bz2")
 md5sums=('ee0e7204d7a2ae942e2f4c4508afdbfb')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
   python3 setup.py build
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
-  python3 setup.py install --root="${pkgdir}" --optimize=1
+  python3 setup.py install --root=${pkgdir} --optimize=1
 }
