@@ -1,7 +1,7 @@
 
 pkgname=ufw
 pkgver=0.35
-pkgrel=1
+pkgrel=2
 pkgdesc="Uncomplicated and easy to use CLI tool for managing a netfilter firewall"
 arch=('x86_64')
 url="https://launchpad.net/ufw"
@@ -18,27 +18,27 @@ backup=('etc/ufw/before.rules'
         'usr/lib/ufw/user.rules'
         'usr/lib/ufw/user6.rules')
 categories=('network')
-source=("http://launchpad.net/${pkgname}/${pkgver}/${pkgver}/+download/${pkgname}-${pkgver}.tar.gz"
+source=("http://launchpad.net/ufw/${pkgver}/${pkgver}/+download/${pkgname}-${pkgver}.tar.gz"
         "${pkgname}.service")
 md5sums=('b7cd2dd4e4e98e46df125fee06edff92'
          '2c85da635f53c6817be8c1941a9a35fb')
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
 
   sed -e 's|/lib|/usr/lib|' -i setup.py
-  python3 setup.py install --root="${pkgdir}"
+  python3 setup.py install --root=${pkgdir}
 
-  install -D -m644 "${srcdir}/${pkgname}.service" "${pkgdir}/usr/lib/systemd/system/${pkgname}.service"
-  install -D -m755 "${pkgdir}/usr/sbin/${pkgname}" "${pkgdir}/usr/bin/${pkgname}"
-  rm -rf "${pkgdir}/usr/sbin"
+  install -D -m644 ${srcdir}/${pkgname}.service ${pkgdir}/usr/lib/systemd/system/${pkgname}.service
+  install -D -m755 ${pkgdir}/usr/sbin/${pkgname} ${pkgdir}/usr/bin/${pkgname}
+  rm -rf ${pkgdir}/usr/sbin
 
   # Fix permissions
-  chmod 644 "${pkgdir}/etc/ufw"/*.rules # moved to /etc/ufw with 0.35 "${pkgdir}/usr/lib/ufw"/*.rules
+  chmod 644 ${pkgdir}/etc/ufw/*.rules # moved to /etc/ufw with 0.35 "${pkgdir}/usr/lib/ufw"/*.rules
 
   # no absolute paths
-  sed -e 's#/bin/echo#echo#g' -i "${pkgdir}/usr/lib/ufw/ufw-init-functions"
+  sed -e 's|/bin/echo|echo|g' -i ${pkgdir}/usr/lib/ufw/ufw-init-functions
 
   # Enable by default
-  sed -e 's/ENABLED=no/ENABLED=yes/' -i "${pkgdir}/etc/ufw/ufw.conf"
+  sed -e 's|ENABLED=no|ENABLED=yes|' -i ${pkgdir}/etc/ufw/ufw.conf
 }
