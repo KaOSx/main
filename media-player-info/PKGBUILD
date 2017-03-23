@@ -1,20 +1,20 @@
 
 pkgname=media-player-info
 pkgver=22
-pkgrel=2
+pkgrel=3
 pkgdesc="Data files describing media player capabilities, for post-HAL systems"
 arch=('x86_64')
 license=('BSD')
 url="http://cgit.freedesktop.org/media-player-info/"
 depends=('systemd' 'python3')
 install=$pkgname.install
-source=("http://www.freedesktop.org/software/media-player-info/$pkgname-$pkgver.tar.gz"
+source=("https://www.freedesktop.org/software/media-player-info/${pkgname}-${pkgver}.tar.gz"
         'udev_errors.patch')
 md5sums=('2d4b94104e2266ed4a8ae306086e4243'
          '83d787203ff5192141e82d9dfabb11c6')
 
 build() {
-  cd $pkgname-$pkgver
+  cd ${pkgname}-${pkgver}
   #patch -p1 -i ${srcdir}/udev_errors.patch
 
   ./configure --prefix=/usr --with-udevdir=/usr/lib/udev
@@ -22,9 +22,9 @@ build() {
 }
 
 package() {
-  cd "$pkgname-$pkgver"
-  make DESTDIR="$pkgdir" install
+  cd ${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install
 
-  install -d "$pkgdir/usr/share/licenses/$pkgname"
-  install -m644 COPYING "$pkgdir/usr/share/licenses/$pkgname"
+  install -d ${pkgdir}/usr/share/licenses/$pkgname
+  install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}
 }

@@ -2,7 +2,7 @@
 pkgname=python3-dateutil
 _pkgname=python-dateutil
 pkgver=2.6.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Provides powerful extensions to the standard datetime module"
 arch=('x86_64')
 license=('custom:PYTHON')
@@ -24,8 +24,8 @@ package() {
   python3 setup.py install --root=${pkgdir} --optimize=1
   install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 
-  chmod -R a+r ${pkgdir}/usr/lib/python3.5/
-  rm ${pkgdir}/usr/lib/python3.5/site-packages/dateutil/zoneinfo/dateutil-zoneinfo.tar.gz
+  chmod -R a+r ${pkgdir}/usr/lib/python3.6/
+  rm ${pkgdir}/usr/lib/python3.6/site-packages/dateutil/zoneinfo/dateutil-zoneinfo.tar.gz
 }
 
   

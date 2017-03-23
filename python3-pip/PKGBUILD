@@ -1,7 +1,7 @@
 
 pkgname=python3-pip
 pkgver=9.0.1
-pkgrel=1
+pkgrel=2
 pkgdesc="An easy_install replacement for installing pypi python3 packages"
 url="https://pip.pypa.io/"
 arch=('x86_64')
@@ -18,7 +18,7 @@ package() {
   mv ${pkgdir}/usr/bin/pip ${pkgdir}/usr/bin/pip3
   
   sed -i "s|#!/usr/bin/env python$|#!/usr/bin/env python3|" \
-    ${pkgdir}/usr/lib/python3.5/site-packages/pip/__init__.py
+    ${pkgdir}/usr/lib/python3.6/site-packages/pip/__init__.py
 
   install -D -m644 LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
