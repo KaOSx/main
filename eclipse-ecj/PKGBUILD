@@ -1,8 +1,8 @@
 
 pkgname=eclipse-ecj
-pkgver=4.6.1
+pkgver=4.6.3
 pkgrel=1
-_date=201609071200
+_date=201703010400
 pkgdesc='Eclipse java bytecode compiler'
 arch=('x86_64')
 license=('EPL')
@@ -13,15 +13,15 @@ source=("http://download.eclipse.org/eclipse/downloads/drops4/R-${pkgver}-${_dat
         '01-ecj-include-props.patch'
         '02-buildxml-fix-manifest.patch'
         'ecj')
-md5sums=('909727bfec347bbb55d44a5a16e45379'
+md5sums=('b7936c49962a505a7cb5cd091f3fd2d6'
          '01cb1036969700ebd1b85a417d6d4a0e'
          'b23452f46edf0b2662b5b5865776d319'
          '997d67f1d3e97f65e42e8ace7aba7260')
 
 build() {
   cd ${srcdir}
-  patch -p0 -i "$srcdir/01-ecj-include-props.patch"
-  patch -p0 -i "$srcdir/02-buildxml-fix-manifest.patch"
+  patch -p0 -i ${srcdir}/01-ecj-include-props.patch
+  patch -p0 -i ${srcdir}/02-buildxml-fix-manifest.patch
   export JAVA_TOOL_OPTIONS=-Dfile.encoding=UTF8
   
   ant build

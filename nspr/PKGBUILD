@@ -1,16 +1,16 @@
 
 pkgname=nspr
-pkgver=4.13.1
+pkgver=4.14
 pkgrel=1
 pkgdesc="Netscape Portable Runtime"
 arch=('x86_64')
-url="http://www.mozilla.org/projects/nspr/"
+url="https://www.mozilla.org/projects/nspr/"
 license=('MPL' 'GPL')
 depends=('glibc')
 makedepends=('zip')
 options=('!emptydirs')
-source=("https://ftp.mozilla.org/pub/mozilla.org/nspr/releases/v${pkgver}/src/${pkgname}-${pkgver}.tar.gz")
-md5sums=('9c44298a6fc478b3c0a4e98f4f9981ed')
+source=("https://ftp.mozilla.org/pub/nspr/releases/v${pkgver}/src/${pkgname}-${pkgver}.tar.gz")
+md5sums=('743f6b7888a614da9927400874054d8c')
 
 build() {
   cd ${pkgname}-${pkgver}
