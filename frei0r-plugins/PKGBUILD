@@ -1,45 +1,42 @@
 
 pkgname=frei0r-plugins
-pkgver=1.4.2
+pkgver=1.6.0
 _pkgver=snapshot-27-01-15
-pkgrel=3
-pkgdesc="frei0r is a minimalistic plugin API for video sources and filters."
+pkgrel=1
+pkgdesc="Large collection of free and portable video plugins"
 arch=('x86_64')
 url="https://www.dyne.org/software/frei0r/"
 license=('GPL')
 depends=('gcc-libs' 'gavl' 'opencv')
 makedepends=('doxygen')
 options=('!emptydirs')
-conflicts=('frei0r-plugins-qt5')
-replaces=('frei0r-plugins-qt5')
-provides=('frei0r-plugins-qt5')
-#source=("https://files.dyne.org/frei0r/releases/$pkgname-$pkgver.tar.gz")
+source=("https://files.dyne.org/frei0r/${pkgname}-${pkgver}.tar.gz")
 #source=("git://code.dyne.org/frei0r.git"
-source=("https://files.dyne.org/frei0r/snapshots/frei0r-${_pkgver}.tar.gz"
-        "http://www.linuxfromscratch.org/patches/blfs/7.9/frei0r-snapshot-27-01-15-gcc5_fix-1.patch"
-        'facedetect.diff')
-md5sums=('a383214dacc8edf0d31ee3fea65ca8fd'
-         'a379ff327b80627199220649d50e8094'
-         'b7eb97d16db106c9a081f05befeafc3f')
+#source=("https://files.dyne.org/frei0r/snapshots/frei0r-${_pkgver}.tar.gz"
+#        "http://www.linuxfromscratch.org/patches/blfs/7.9/frei0r-snapshot-27-01-15-gcc5_fix-1.patch"
+#        'facedetect.diff')
+md5sums=('c93eaa8e9cd010249c986f388499b6f6')
 
 prepare() {
-  cd frei0r-${_pkgver}
+  cd ${pkgname}-${pkgver}
   
-  patch -p1 -i ${srcdir}/frei0r-snapshot-27-01-15-gcc5_fix-1.patch
+  #patch -p1 -i ${srcdir}/frei0r-snapshot-27-01-15-gcc5_fix-1.patch
+  sed -i -e 's|AC_INIT(frei0r-plugins, [1.5.0]|AC_INIT(frei0r-plugins, [1.6.0]|g' configure.ac
+  sed -i -e 's|AM_INIT_AUTOMAKE|AM_INIT_AUTOMAKE([foreign])|g' configure.ac
 }
          
 build() {
-  cd frei0r-${_pkgver}
-  
+  cd ${pkgname}-${pkgver}
+
   ./autogen.sh
   ./configure --prefix=/usr 
   make
 }
 
 package() {
-  cd frei0r-${_pkgver}
+  cd ${pkgname}-${pkgver}
   
-  make DESTDIR="$pkgdir" install 
+  make DESTDIR=${pkgdir} install 
 }
 
 

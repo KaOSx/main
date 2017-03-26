@@ -6,23 +6,23 @@ pkgrel=1
 pkgdesc="Python bindings for DBUS"
 arch=('x86_64')
 license=('GPL' 'LGPL')
-url="http://www.freedesktop.org/wiki/Software/DBusBindings"
+url="https://www.freedesktop.org/wiki/Software/DBusBindings"
 depends=('dbus-glib' 'python2')
 makedepends=('pkg-config' 'python2-docutils')
 provides=('dbus-python')
 options=('!libtool')
-source=("http://dbus.freedesktop.org/releases/dbus-python/${_pkgname}-${pkgver}.tar.gz")
+source=("https://dbus.freedesktop.org/releases/dbus-python/${_pkgname}-${pkgver}.tar.gz")
 md5sums=('7372a588c83a7232b4e08159bfd48fe5')
 
 build() {
-  cd "${srcdir}/${_pkgname}-${pkgver}"
+  cd ${_pkgname}-${pkgver}
   
   ./configure --prefix=/usr
   make
 }
 
 package() {
-  cd "${srcdir}/${_pkgname}-${pkgver}"
+  cd ${_pkgname}-${pkgver}
   
-  make DESTDIR="${pkgdir}" install
+  make DESTDIR=${pkgdir} install
 }
