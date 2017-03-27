@@ -1,16 +1,16 @@
 
 pkgname=hunspell
-pkgver=1.6.0
-pkgrel=2
+pkgver=1.6.1
+pkgrel=1
 pkgdesc="Spell checker and morphological analyzer library and program"
 arch=('x86_64')
 url="http://hunspell.github.io/"
 license=('GPL' 'LGPL' 'MPL')
 depends=('gcc-libs' 'readline')
-optdepends=('perl: for ispellaff2myspell')
+optdepends=('perl')
 options=('!libtool')
 source=("https://github.com/hunspell/hunspell/archive/v${pkgver}.tar.gz")
-md5sums=('047c3feb121261b76dc16cdb62f54483')
+md5sums=('0df1c18c1284f8625af5ae5a8d5c4cef')
 
 build() {
   cd hunspell-${pkgver}
