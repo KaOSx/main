@@ -1,16 +1,16 @@
 
 pkgname=libqmi
-pkgver=1.16.2
+pkgver=1.18.0
 pkgrel=1
 pkgdesc="QMI modem protocol helper library"
 arch=('x86_64')
-url="http://cgit.freedesktop.org/libqmi"
+url="https://cgit.freedesktop.org/libqmi"
 license=('GPL2')
-depends=('glib2' 'bash')
+depends=('glib2' 'bash' 'libgudev')
 makedepends=('python2' 'help2man')
 options=('!libtool')
-source=("http://www.freedesktop.org/software/libqmi/${pkgname}-${pkgver}.tar.xz")
-md5sums=('052318439128e428b1a41e75a605d91f')
+source=("https://www.freedesktop.org/software/libqmi/${pkgname}-${pkgver}.tar.xz")
+md5sums=('25bae4e383ad77f491ad49b49e04fdcf')
 
 build() {
   cd ${pkgname}-${pkgver}
