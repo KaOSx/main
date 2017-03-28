@@ -1,7 +1,7 @@
 
 pkgname=gpgme
-pkgver=1.8.0
-pkgrel=3
+pkgver=1.9.0
+pkgrel=1
 pkgdesc="A C wrapper library for GnuPG"
 arch=('x86_64')
 url="http://www.gnupg.org/related_software/gpgme/"
@@ -13,12 +13,12 @@ replaces=('gpgmepp')
 conflicts=('gpgmepp')
 options=('!libtool' '!emptydirs')
 source=("ftp://ftp.gnupg.org/gcrypt/gpgme/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('722a4153904b9b5dc15485a22d29263b')
+md5sums=('1e00bb8ef04d1d05d5a0f19e143854c3')
 
 build() {
   cd ${pkgname}-${pkgver}
   
-  sed -i -e 's|libgpgme@libsuffix@;@LIBASSUAN_LIBS@|libgpgme.so;@LIBASSUAN_LIBS@|' lang/cpp/src/GpgmeppConfig.cmake.in.in
+  #sed -i -e 's|libgpgme@libsuffix@;@LIBASSUAN_LIBS@|libgpgme.so;@LIBASSUAN_LIBS@|' lang/cpp/src/GpgmeppConfig.cmake.in.in
   
   ./configure --prefix=/usr \
        --disable-static \
