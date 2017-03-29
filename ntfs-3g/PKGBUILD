@@ -1,10 +1,10 @@
 
 pkgname=ntfs-3g
-_realname=ntfs-3g_ntfsprogs
-pkgver=2016.2.22
+_pkgname=ntfs-3g_ntfsprogs
+pkgver=2017.3.23
 pkgrel=1
 pkgdesc="Stable read and write NTFS driver"
-url="http://www.tuxera.com/community/ntfs-3g-download/"
+url="https://www.tuxera.com/community/ntfs-3g-download/"
 arch=('x86_64')
 license=('GPL2')
 depends=('glibc' 'fuse' 'util-linux')
@@ -12,11 +12,11 @@ makedepends=('pkgconfig')
 options=('!libtool')
 conflicts=('ntfsprogs')
 provides=("ntfsprogs=${pkgver}")
-source=("http://www.tuxera.com/opensource/${_realname}-${pkgver}.tgz")
-md5sums=('ccbe8672d0f757bd0c975b50aa4c512e')
+source=("https://www.tuxera.com/opensource/${_pkgname}-${pkgver}.tgz")
+md5sums=('d97474ae1954f772c6d2fa386a6f462c')
 
 build() {
-  cd "${srcdir}/${_realname}-${pkgver}"
+  cd ${_pkgname}-${pkgver}
   
   ./configure --prefix=/usr \
        --with-fuse=external \
@@ -29,9 +29,9 @@ build() {
 }
 
 package() {
-  cd "${srcdir}/${_realname}-${pkgver}"
-  make DESTDIR="${pkgdir}" rootlibdir=/usr/lib install
+  cd ${_pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} rootlibdir=/usr/lib install
   
-  ln -s /bin/ntfs-3g "${pkgdir}/sbin/mount.ntfs"
+  ln -s /bin/ntfs-3g ${pkgdir}/sbin/mount.ntfs
 }
 
