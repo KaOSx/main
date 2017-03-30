@@ -1,30 +1,30 @@
 
-_extramodules=extramodules-4.9
+_extramodules=extramodules-4.10
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=('nvidia' 'khd-nvidia')
 pkgver=378.13
-pkgrel=2
+pkgrel=3
 arch=('x86_64')
 url="http://www.nvidia.com/"
-makedepends=('linux-headers' 'linux>=4.9' 'linux<4.10' "nvidia-utils=${pkgver}")
+makedepends=('linux-headers' 'linux>=4.10' 'linux<4.11' "nvidia-utils=${pkgver}")
 license=('custom')
 
 _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 
 source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
         'nvidia_supported'
-        'linux-4.6.patch')
+        'linux-4.10.patch')
 md5sums=('fe4d25b19a780a690cafc8e3b7c0113f'
          '282f73f1a7326339a7b0e0716eee4f76'
-         '545129d87779ec600e56e55d6ec9b802')
+         '4ab00fe5ab144083caa6c6994feea7e6')
 
 build() {
     cd "${srcdir}"
     sh "${_pkg}.run" --extract-only
     
     cd "${_pkg}"
-    #patch -p1 -i ${srcdir}/linux-4.6.patch
+    patch -p1 -i ${srcdir}/linux-4.10.patch
 
     cd "${srcdir}/${_pkg}/kernel"  
     make SYSSRC=/lib/modules/"${_kver}/build" module
@@ -32,7 +32,7 @@ build() {
 
 package_nvidia() {
     pkgdesc="NVIDIA drivers for linux."
-    depends=('linux>=4.9' 'linux<4.10' "nvidia-utils=${pkgver}")
+    depends=('linux>=4.10' 'linux<4.11' "nvidia-utils=${pkgver}")
     conflicts=('nvidia-340xx')
     install=nvidia.install
     
