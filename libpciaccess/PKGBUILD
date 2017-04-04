@@ -1,28 +1,28 @@
 #
 pkgname=libpciaccess
-pkgver=0.13.4
-pkgrel=2
+pkgver=0.13.5
+pkgrel=1
 pkgdesc="X11 PCI access library"
 arch=('x86_64')
 license=('custom')
-url="http://xorg.freedesktop.org/"
+url="https://xorg.freedesktop.org/"
 depends=('glibc')
 makedepends=('pkgconfig' 'xorg-util-macros')
 options=('!libtool')
-source=("http://xorg.freedesktop.org//releases/individual/lib/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('ace78aec799b1cf6dfaea55d3879ed9f')
+source=("https://xorg.freedesktop.org//releases/individual/lib/${pkgname}-${pkgver}.tar.bz2")
+md5sums=('d810ab17e24c1418dedf7207fb2841d4')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
   ./configure --prefix=/usr --sysconfdir=/etc
   make
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
-  make DESTDIR="${pkgdir}" install
+  cd ${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install
   
-  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
-  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
+  install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
 }
