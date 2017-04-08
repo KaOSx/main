@@ -1,0 +1,24 @@
+
+pkgname=meson
+pkgver=0.39.1
+pkgrel=1
+pkgdesc="Open source build system meant to be both extremely fast, and as user friendly as possible."
+arch=('x86_64')
+url="http://mesonbuild.com"
+license=('GPL')
+depends=('ninja' 'python3')
+makedepends=('python3-setuptools')
+source=("https://github.com/mesonbuild/meson/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+md5sums=('7f5381985c6f6de46addc8ffdf5719a4')
+
+#check() {
+#  cd ${pkgname}-${pkgver}
+  
+#  ./run_tests.py
+#}
+
+package() {
+  cd ${pkgname}-${pkgver}
+  
+  python3 setup.py install --prefix=/usr --root=${pkgdir} --optimize=1
+}
