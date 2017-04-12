@@ -1,16 +1,16 @@
 
 # rebuild kodi on every update
 pkgname=libmicrohttpd
-pkgver=0.9.52
+pkgver=0.9.53
 pkgrel=1
 pkgdesc="Small C library that is supposed to make it easy to run an HTTP server as part of another application."
 arch=('x86_64')
-url="http://www.gnu.org/software/libmicrohttpd/"
+url="https://www.gnu.org/software/libmicrohttpd/"
 license=('LGPL')
 depends=('gnutls')
 options=('!libtool')
-source=("ftp://ftp.gnu.org/gnu/libmicrohttpd/$pkgname-$pkgver.tar.gz")
-md5sums=('767111e817e2497ff92f943c5653497a')
+source=("https://ftp.gnu.org/gnu/libmicrohttpd/${pkgname}-${pkgver}.tar.gz")
+md5sums=('5a425e993a0f5295aecb5d6607a1c242')
 
 build() {
   cd ${pkgname}-${pkgver}
@@ -28,7 +28,7 @@ package() {
   cd ${pkgname}-${pkgver}
   make DESTDIR=${pkgdir} install
   
-  install -Dm644 ${srcdir}/${pkgname}-${pkgver}/src/include/platform.h \
-	${pkgdir}/usr/include/$pkgname/platform.h
-  sed -i 's#Cflags: -I${includedir}#Cflags: -I${includedir} -I{includedir}/libmicrohttpd#' $pkgdir/usr/lib/pkgconfig/libmicrohttpd.pc
+  install -Dm644 src/include/platform.h ${pkgdir}/usr/include/$pkgname/platform.h
+  
+  sed -i 's|Cflags: -I${includedir}|Cflags: -I${includedir} -I{includedir}/libmicrohttpd|' ${pkgdir}/usr/lib/pkgconfig/libmicrohttpd.pc
 }
