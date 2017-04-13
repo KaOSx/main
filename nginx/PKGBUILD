@@ -6,9 +6,9 @@ _tmp_path=/var/lib/nginx
 _log_path=/var/log/nginx
 _user=http
 _group=http
-
+# even numbers are for stable
 pkgname=nginx
-pkgver=1.11.13
+pkgver=1.12.0
 pkgrel=1
 pkgdesc="Small, but very powerful and efficient web server and mail proxy"
 arch=('x86_64')
@@ -28,7 +28,7 @@ backup=("etc/nginx/conf/fastcgi.conf"
 source=("https://nginx.org/download/nginx-${pkgver}.tar.gz"
         'nginx.service'
         'logrotate')
-md5sums=('1d8310d4d9f6eb3ed97463cc659178a4'
+md5sums=('995eb0a140455cf0cfc497e5bd7f94b3'
          'c5b7a8068499262a4e40f890c2b855d3'
          '19a26a61c8afe78defb8b4544f79a9a0')
 
