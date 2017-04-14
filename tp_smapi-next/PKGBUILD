@@ -30,7 +30,7 @@ package() {
 
   make -C "${_extramodules%/*}/${_kernver}/build" \
     INSTALL_MOD_PATH="${pkgdir}/${_extramodules%%/lib/*}" \
-    M="${srcdir}/${pkgname}-${pkgver}" modules_install
+    M="${srcdir}/${_pkgname}-${pkgver}" modules_install
 
   cd "${pkgdir}/${_extramodules%/*}"
   mv "${_kernver}/extra" "${_extramodules##*/}"
