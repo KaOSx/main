@@ -1,0 +1,26 @@
+
+pkgname=libva-utils
+pkgver=1.8.1
+pkgrel=1
+pkgdesc="Libva with patches to extend VA API with data needed for VDPAU and XvBA backends."
+arch=('x86_64')
+url="https://github.com/01org/libva-utils"
+license=('MIT')
+depends=('libva')
+source=("https://www.freedesktop.org/software/vaapi/releases/libva/${pkgname}-${pkgver}.tar.bz2")
+md5sums=('1a79895b039d273409318b5d1dc1a8c9')
+
+build() {
+  cd ${pkgname}-${pkgver}
+  
+  ./configure --prefix=/usr  
+  make
+}
+
+package() {
+  cd ${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install
+  
+  install -m644 -D COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
+}
+
