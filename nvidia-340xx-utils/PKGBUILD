@@ -3,7 +3,7 @@ pkgbase=nvidia-340xx-utils
 pkgname=('nvidia-340xx-utils' 'nvidia-340xx-settings')
 # Edit hardware-detection/hooks/hwdetect_7_graphics on version jump from 3xx.xx
 pkgver=340.102
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 url="http://www.nvidia.com/"
 license=('custom')
@@ -97,6 +97,6 @@ package_nvidia-340xx-settings() {
 
   # Install the autostart .desktop file, so that parameters saved through nvidia-settings
   # are automatically reloaded at each login
-  install -D -m644 "${srcdir}/nvidia-restore-settings.desktop" "${pkgdir}/usr/share/autostart/nvidia-restore-settings.desktop"
+  install -D -m644 "${srcdir}/nvidia-restore-settings.desktop" "${pkgdir}/etc/xdg/autostart/nvidia-restore-settings.desktop"
 }
 

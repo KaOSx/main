@@ -7,7 +7,7 @@ pkgname=('qt5-base' 'qt5-base-docs')
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=2
+pkgrel=3
 arch=('x86_64')
 url='http://qt-project.org/'
 license=('GPL3' 'LGPL' 'FDL' 'custom')
@@ -21,15 +21,15 @@ options=('!libtool' 'debug')
 _pkgfqn="qtbase-opensource-src-${subver}"
 source=("${_qtmirror}/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz"
         "https://github.com/qt/qtbase/commit/0c8f3229de8ec4a8e70d4b41672074b94a45b1fe.diff")
-#source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
+#source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
          '052674c819e0f3168946210d947463a4')
 
 build() {
-    cd $srcdir/$_pkgfqn
+    cd ${srcdir}/${_pkgfqn}
     
     # fix journald not linking, thus no logs
-    patch -p1 -i $srcdir/0c8f3229de8ec4a8e70d4b41672074b94a45b1fe.diff
+    patch -p1 -i ${srcdir}/0c8f3229de8ec4a8e70d4b41672074b94a45b1fe.diff
         
     unset QTDIR
     export PATH="$PWD/qtbase/bin:$PWD/qtrepotools/bin:$PATH"
@@ -77,10 +77,10 @@ package_qt5-base() {
     optdepends=('postgresql-libs: PostgreSQL driver')
     groups=('qt5')
     
-    cd $srcdir/$_pkgfqn
+    cd ${srcdir}/${_pkgfqn}
     make INSTALL_ROOT=$pkgdir install
 	
-    cd "${srcdir}"
+    cd ${srcdir}
     install -D -m644 ${_pkgfqn}/LGPL_EXCEPTION.txt \
     ${pkgdir}/usr/share/licenses/qt5/LGPL_EXCEPTION.txt
     
@@ -95,6 +95,6 @@ package_qt5-base-docs() {
     depends=('qt5-base')
     groups=('qt5-docs')
     
-    cd $srcdir/$_pkgfqn
-    make INSTALL_ROOT=$pkgdir install_docs
+    cd ${srcdir}/${_pkgfqn}
+    make INSTALL_ROOT=${pkgdir} install_docs
 }

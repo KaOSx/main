@@ -3,7 +3,7 @@ pkgbase=nvidia-utils
 pkgname=('nvidia-utils' 'opencl-nvidia' 'nvidia-settings')
 # Edit hardware-detection/hooks/hwdetect_7_graphics and Installer job 11 on version jump from 37x.xx
 pkgver=378.13
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 url="http://www.nvidia.com/"
 license=('custom')
@@ -133,7 +133,7 @@ package_nvidia-settings() {
 
   # Install the autostart .desktop file, so that parameters saved through nvidia-settings
   # are automatically reloaded at each login
-  install -D -m644 "${srcdir}/nvidia-restore-settings.desktop" "${pkgdir}/usr/share/autostart/nvidia-restore-settings.desktop"
+  install -D -m644 "${srcdir}/nvidia-restore-settings.desktop" "${pkgdir}/etc/xdg/autostart/nvidia-restore-settings.desktop"
   # key documentation and application profile
   install -D -m644 nvidia-application-profiles-${pkgver}-key-documentation "${pkgdir}/usr/share/nvidia/nvidia-application-profiles-${pkgver}-key-documentation"
   install -D -m644 nvidia-application-profiles-${pkgver}-rc "${pkgdir}/usr/share/nvidia/nvidia-application-profiles-${pkgver}-rc"
