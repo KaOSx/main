@@ -1,14 +1,14 @@
 
-_extramodules=extramodules-4.10-next
+_extramodules=extramodules-4.11-rc7-next
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=nvidia-next
 pkgver=378.13
-pkgrel=11
+pkgrel=12
 pkgdesc="NVIDIA drivers for linux."
 arch=('x86_64')
 url="http://www.nvidia.com/"
-depends=('linux-next>=4.10' 'linux-next<4.11' "nvidia-utils=${pkgver}")
+depends=('linux-next>=4.11RC7' 'linux-next<4.12' "nvidia-utils=${pkgver}")
 makedepends=('linux-next-headers')
 license=('custom')
 install=nvidia-next.install
@@ -16,16 +16,16 @@ options=('!strip')
 _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 #_pkg="NVIDIA-Linux-x86_64-${pkgver}"
 source=("ftp://download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
-        'linux-4.10.patch')
+        'linux-4.11.patch')
 md5sums=('fe4d25b19a780a690cafc8e3b7c0113f'
-         '4ab00fe5ab144083caa6c6994feea7e6')
+         '8434f9ebafacdbcef27aab1079c87ea1')
 
 build() {
   cd "${srcdir}" 
   sh "${_pkg}.run" --extract-only
   
   cd "${_pkg}"
-  patch -p1 -i ${srcdir}/linux-4.10.patch
+  patch -p1 -i ${srcdir}/linux-4.11.patch
   
   cd "${srcdir}/${_pkg}/kernel"
   make SYSSRC=/lib/modules/"${_kver}/build" module
