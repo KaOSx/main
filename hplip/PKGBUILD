@@ -1,9 +1,9 @@
 
 pkgname=hplip
-pkgver=3.16.11
+pkgver=3.17.4
 # incase a or b is used in hplip rls:
-_pkgver=3.16.11
-pkgrel=4
+_pkgver=3.17.4
+pkgrel=1
 pkgdesc="Drivers for HP DeskJet, OfficeJet, Photosmart, Business Inkjet and some LaserJet."
 arch=('x86_64')
 url="http://hplipopensource.com"
@@ -19,7 +19,7 @@ install=${pkgname}.install
 source=("http://downloads.sourceforge.net/hplip/${pkgname}-${_pkgver}.tar.gz"
         "https://launchpadlibrarian.net/281975878/patch"
         'cups-2.2.patch')
-md5sums=('7d187c3142ba323a3021767d333ad9f4'
+md5sums=('80f13e36d7054c0fc3ce96959a2ba35b'
          'c873eb40c9e3fa794637523400190218'
          'ceb7449b12e2ecf70f898bc50b161a3c')
 
@@ -34,7 +34,7 @@ build() {
   sed -i 's|python ./plugin.py|python3 ./plugin.py|' base/pkit.py
   sed -i 's|/usr/bin/python|/usr/bin/python3|' data/rules/hplip-printer@.service
   # https://github.com/KaOSx/main/issues/31, patch file prnt/filters/hpps
-  patch -p2 -i ${srcdir}/patch
+  #patch -p2 -i ${srcdir}/patch
   # cups 2.2 patch https://packages.debian.org/sid/hplip
   patch -p1 -i ${srcdir}/cups-2.2.patch
 
