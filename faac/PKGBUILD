@@ -1,7 +1,7 @@
 
 pkgname=faac
 pkgver=1.28
-pkgrel=5
+pkgrel=6
 pkgdesc="FAAC is an AAC audio encoder"
 arch=('x86_64')
 url="http://www.audiocoding.com/"
@@ -9,17 +9,17 @@ license=('GPL' 'custom')
 depends=('libmp4v2' 'glibc')
 makedepends=('automake' 'autoconf' 'libtool')
 options=('!libtool')
-source=("http://downloads.sourceforge.net/faac/${pkgname}-${pkgver}.tar.gz"
-	'mp4v2-1.9.patch'
-	'mp4v2-2.0.0.patch'
-	'altivec.patch')
+source=("https://downloads.sourceforge.net/faac/${pkgname}-${pkgver}.tar.gz"
+        'mp4v2-1.9.patch'
+        'mp4v2-2.0.0.patch'
+        'altivec.patch')
 md5sums=('80763728d392c7d789cde25614c878f6'
          '9d52a17e68fa15ca94e88e1457b94b74'
          '979ff4f13f36217cb15c92df9fd75f0c'
          'e1ee422ab524fb1f78d178700c3a0e7f')
 
 build() {
-  cd ${srcdir}/${pkgname}-${pkgver}
+  cd ${pkgname}-${pkgver}
   patch -p1 -i ${srcdir}/mp4v2-1.9.patch 
   patch -p0 -i ${srcdir}/mp4v2-2.0.0.patch 
   patch -p0 -i ${srcdir}/altivec.patch 
@@ -31,9 +31,8 @@ build() {
 }
 
 package() {
-  cd ${srcdir}/${pkgname}-${pkgver}
+  cd ${pkgname}-${pkgver}
   make DESTDIR=${pkgdir} install
 
-  install -Dm644 ${srcdir}/${pkgname}-${pkgver}/libfaac/kiss_fft/COPYING \
-    ${pkgdir}/usr/share/licenses/faac/LICENSE
+  install -Dm644 libfaac/kiss_fft/COPYING ${pkgdir}/usr/share/licenses/faac/LICENSE
 }

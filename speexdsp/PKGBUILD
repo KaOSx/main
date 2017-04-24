@@ -1,18 +1,18 @@
 
 pkgname=speexdsp
 pkgver=1.2rc3
-pkgrel=1
+pkgrel=2
 pkgdesc="Speex DSP library with NEON optimizations"
 arch=('x86_64')
-url="http://www.speex.org/"
+url="http1://www.speex.org/"
 license=('BSD')
 depends=('glibc')
 options=('!libtool')
-source=("http://downloads.us.xiph.org/releases/speex/$pkgname-$pkgver.tar.gz")
+source=("http://downloads.us.xiph.org/releases/speex/${pkgname}-${pkgver}.tar.gz")
 md5sums=('70d9d31184f7eb761192fd1ef0b73333')
 
 build() {
-  cd $srcdir/speexdsp-$pkgver
+  cd ${pkgname}-${pkgver}
   
   ./configure --prefix=/usr \
        --sysconfdir=/etc \
@@ -21,8 +21,8 @@ build() {
 }
 
 package() {
-  cd $srcdir/speexdsp-$pkgver
-  make DESTDIR="$pkgdir" install
+  cd ${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install
 
-  install -Dm644 COPYING $pkgdir/usr/share/licenses/$pkgname/LICENSE
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }

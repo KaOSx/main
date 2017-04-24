@@ -1,26 +1,26 @@
 
 pkgname=alure
 pkgver=1.2
-pkgrel=2
+pkgrel=3
 pkgdesc="Utility library to help manage common tasks with OpenAL applications."
 arch=('x86_64')
 url="http://kcat.strangesoft.net/alure.html"
 license=('MIT')
 depends=('openal' 'libsndfile' 'libvorbis' 'flac' 'mpg123')
 makedepends=('cmake')
-source=("http://kcat.strangesoft.net/alure-releases/alure-${pkgver}.tar.bz2")
+source=("http://kcat.strangesoft.net/alure-releases/${pkgname}-${pkgver}.tar.bz2")
 md5sums=('3088aba074ad02d95ea51e705053b9f5')
 
 build() {
-  cd $srcdir/$pkgname-$pkgver
+  cd ${pkgname}-${pkgver}
 
   cmake . -DCMAKE_INSTALL_PREFIX=/usr 
   make
 }
 
 package() {
-  cd $srcdir/$pkgname-$pkgver
-  make DESTDIR=$pkgdir install
+  cd ${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install
 
-  install -Dm0644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/COPYING"
+  install -Dm0644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
 } 

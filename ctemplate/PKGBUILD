@@ -1,7 +1,7 @@
 
 pkgname=ctemplate
 pkgver=2.3
-pkgrel=1
+pkgrel=2
 pkgdesc='Template system that leans strongly towards preserving the separation of logic and presentation.'
 arch=('x86_64')
 url='https://github.com/olafvdspek/ctemplate'
@@ -12,14 +12,14 @@ source=("https://github.com/OlafvdSpek/ctemplate/archive/${pkgname}-${pkgver}.ta
 md5sums=('3b91f3c1e7aa55cb4c2957acf77d6b9a')
 
 build() {
-    cd ${srcdir}/${pkgname}-${pkgname}-${pkgver}
+    cd ${pkgname}-${pkgname}-${pkgver}
 
     ./configure --prefix=/usr
     make
 }
 
 package() {
-    cd ${srcdir}/${pkgname}-${pkgname}-${pkgver}
+    cd ${pkgname}-${pkgname}-${pkgver}
     make DESTDIR=${pkgdir} install
 
     install -D -m0644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE

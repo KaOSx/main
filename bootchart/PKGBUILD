@@ -1,7 +1,7 @@
 
 pkgname=bootchart
 pkgver=1.20
-pkgrel=3
+pkgrel=4
 pkgdesc="Tool that collects and graphs the CPU and disk load of the system as it works"
 url="https://github.com/sofar/bootchart"
 license=('GPL2')
@@ -11,7 +11,7 @@ source=("http://foo-projects.org/~sofar/${pkgname}/${pkgname}-${pkgver}.tar.gz")
 md5sums=('071c67856a2b16e1a9e93a058de3eb65')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
 
   ./configure --prefix=/usr --sbindir=/usr/bin
 
@@ -19,7 +19,7 @@ build() {
 }
 
 package() {
-  cd "$srcdir/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
 
-  make DESTDIR="${pkgdir}" install
+  make DESTDIR=${pkgdir} install
 }

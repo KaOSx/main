@@ -1,26 +1,28 @@
 
 pkgname=anthy
 pkgver=9100h
-_filecode=37536
-pkgrel=2
+_pkgver=37536
+pkgrel=3
 pkgdesc="Hiragana text to Kana Kanji mixed text Japanese input method"
 arch=('x86_64')
 url="http://sourceforge.jp/projects/anthy/"
 license=('LGPL' 'GPL')
 depends=('glibc')
 options=('!libtool')
-source=("http://dl.sourceforge.jp/anthy/${_filecode}/${pkgname}-${pkgver}.tar.gz")
+source=("https://osdn.net/projects/anthy/downloads/${_pkgver}/${pkgname}-${pkgver}.tar.gz")
 md5sums=('1f558ff7ed296787b55bb1c6cf131108')
 
 build() {
-	cd "${srcdir}/${pkgname}-${pkgver}"
-	
-	./configure --prefix=/usr --sysconfdir=/etc --disable-static
-	make
+    cd ${pkgname}-${pkgver}
+
+    ./configure --prefix=/usr \
+        --sysconfdir=/etc \
+        --disable-static
+    make
 }
 
 package() {
-	cd "${srcdir}/${pkgname}-${pkgver}"
-	
-	make EMACS=emacs DESTDIR="${pkgdir}" install
+    cd ${pkgname}-${pkgver}
+        
+    make EMACS=emacs DESTDIR=${pkgdir} install
 }
