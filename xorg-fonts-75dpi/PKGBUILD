@@ -1,19 +1,19 @@
 
 pkgname=xorg-fonts-75dpi
 pkgver=1.0.3
-pkgrel=2
+pkgrel=3
 pkgdesc="X.org 75dpi fonts"
 arch=('x86_64')
-url="http://xorg.freedesktop.org/"
+url="https://xorg.freedesktop.org/"
 license=('custom')
 depends=('xorg-fonts-encodings' 'xorg-fonts-alias' 'xorg-font-utils' 'fontconfig')
 groups=('xorg')
 install=xfonts.install
-source=("${url}/releases/individual/font/font-adobe-75dpi-1.0.3.tar.bz2"
-        "${url}/releases/individual/font/font-adobe-utopia-75dpi-1.0.4.tar.bz2"
-        "${url}/releases/individual/font/font-bh-75dpi-1.0.3.tar.bz2"
-        "${url}/releases/individual/font/font-bh-lucidatypewriter-75dpi-1.0.3.tar.bz2"
-        "${url}/releases/individual/font/font-bitstream-75dpi-1.0.3.tar.bz2")
+source=("https://xorg.freedesktop.org/releases/individual/font/font-adobe-75dpi-1.0.3.tar.bz2"
+        "https://xorg.freedesktop.org/releases/individual/font/font-adobe-utopia-75dpi-1.0.4.tar.bz2"
+        "https://xorg.freedesktop.org/releases/individual/font/font-bh-75dpi-1.0.3.tar.bz2"
+        "https://xorg.freedesktop.org/releases/individual/font/font-bh-lucidatypewriter-75dpi-1.0.3.tar.bz2"
+        "https://xorg.freedesktop.org/releases/individual/font/font-bitstream-75dpi-1.0.3.tar.bz2")
 md5sums=('6c9f26c92393c0756f3e8d614713495b'
          'e99276db3e7cef6dccc8a57bc68aeba7'
          '565494fc3b6ac08010201d79c677a7a7'
@@ -21,11 +21,11 @@ md5sums=('6c9f26c92393c0756f3e8d614713495b'
          'd7c0588c26fac055c0dd683fdd65ac34')
 
 build() {
-  cd "${srcdir}"
+  cd ${srcdir}
   
   for dir in *; do
-    if [ -d "${dir}" ]; then
-      pushd "${dir}"
+    if [ -d ${dir} ]; then
+      pushd ${dir}
       ./configure --prefix=/usr \
           --with-fontdir=/usr/share/fonts/75dpi
       make
@@ -35,17 +35,17 @@ build() {
 }
 
 package() {
-  cd "${srcdir}"
-  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
+  cd ${srcdir}
+  install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
   
   for dir in *; do
-    if [ -d "${dir}" ]; then
-      pushd "${dir}"
-      make DESTDIR="${pkgdir}" install
-      install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.${dir%-75dpi-*}"
+    if [ -d ${dir} ]; then
+      pushd ${dir}
+      make DESTDIR=${pkgdir} install
+      install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.${dir%-75dpi-*}
       popd
     fi
   done
   
-  rm -f "${pkgdir}"/usr/share/fonts/75dpi/fonts.*
+  rm -f ${pkgdir}/usr/share/fonts/75dpi/fonts.*
 }

@@ -1,25 +1,25 @@
 
 pkgname=xorg-fonts-encodings
 pkgver=1.0.4
-pkgrel=3
+pkgrel=4
 pkgdesc="X.org font encoding files"
 arch=('x86_64')
-url="http://xorg.freedesktop.org/"
+url="https://xorg.freedesktop.org/"
 license=('custom')
 depends=('xorg-font-utils')
-source=("${url}/releases/individual/font/encodings-${pkgver}.tar.bz2")
+source=("https://xorg.freedesktop.org/releases/individual/font/encodings-${pkgver}.tar.bz2")
 md5sums=('0f2d6546d514c5cc4ecf78a60657a5c1')
 
 build() {
-  cd "${srcdir}/encodings-${pkgver}"
+  cd encodings-${pkgver}
   
   ./configure --prefix=/usr --with-encodingsdir=/usr/share/fonts/encodings
   make
 }
 
 package() {
-  cd "${srcdir}/encodings-${pkgver}"
-  make DESTDIR="${pkgdir}" install
+  cd encodings-${pkgver}
+  make DESTDIR=${pkgdir} install
   
-  install -Dm644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/COPYING"
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
 }

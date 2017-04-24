@@ -1,31 +1,42 @@
 
 pkgname=libgpod
 pkgver=0.8.3
-pkgrel=5
-pkgdesc="libgpod is a shared library to access the contents of an iPod"
+pkgrel=6
+pkgdesc="Shared library, written using C and GLib/GObject, used by gtkpod to access the contents of an iPod."
 arch=('x86_64')
-license=('LGPL')
-depends=('mutagen' 'sg3_utils>=1.27' 'libimobiledevice>=1.1.0' 'gdk-pixbuf2')
-makedepends=('intltool' 'swig' 'docbook-xsl' 'python2-gobject')
 url="http://www.gtkpod.org/libgpod.html"
-source=("http://downloads.sourceforge.net/sourceforge/gtkpod/${pkgname}-${pkgver}.tar.bz2")
+license=('LGPL')
+depends=('mutagen' 'sg3_utils' 'libimobiledevice' 'gdk-pixbuf2')
+makedepends=('intltool' 'swig' 'docbook-xsl' 'python2-gobject')
+source=("https://downloads.sourceforge.net/sourceforge/gtkpod/${pkgname}-${pkgver}.tar.bz2"
+        'segmentation.patch'
+        'libgpod-fixmono.patch'
+        'swig.diff')
 options=('!libtool')
-md5sums=('f8a0b7a34e768e33a708e8dd172bd6f8')
+md5sums=('f8a0b7a34e768e33a708e8dd172bd6f8'
+         '6b773f274eb33e61a3f5d5589d7ebe06'
+         'b1cc98c39b3cc5f42f5fbeecceb521bc'
+         '3f6834951374b086aefc5b81d91cbb14')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
+  # https://sourceforge.net/p/gtkpod/libgpod/ci/8dc5015ae036b219c4c9579a156886aa3a722aa5/
+  patch -p1 -i ${srcdir}/segmentation.patch
+  patch -p1 -i ${srcdir}/libgpod-fixmono.patch
+  # newer swig trips over annotation format
+  patch -p1 -i ${srcdir}/swig.diff
   
   ./configure --prefix=/usr \
       --with-udev-dir=/usr/lib/udev \
-      --enable-udev \
-      --with-python=/usr/bin/python2
+      --enable-udev
+      
   make PREFIX=/usr
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
-  make PREFIX=/usr DESTDIR="${pkgdir}" install
+  cd ${pkgname}-${pkgver}
+  make PREFIX=/usr DESTDIR=${pkgdir} install
 
   #copy headers
-  cp -v ${srcdir}/${pkgname}-${pkgver}/src/*.h ${pkgdir}/usr/include/gpod-1.0/gpod/
+  cp -v src/*.h ${pkgdir}/usr/include/gpod-1.0/gpod/
 }

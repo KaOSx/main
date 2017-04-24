@@ -1,25 +1,25 @@
 
 pkgname=xorg-fonts-misc
 pkgver=1.0.3
-pkgrel=2
+pkgrel=3
 pkgdesc="X.org misc fonts"
 arch=('x86_64')
 url="http://xorg.freedesktop.org/"
 license=('custom')
 depends=('xorg-fonts-encodings' 'xorg-fonts-alias' 'xorg-font-utils' 'fontconfig')
 install=xfonts.install
-source=("${url}/releases/individual/font/font-arabic-misc-${pkgver}.tar.bz2"
-        "${url}/releases/individual/font/font-cursor-misc-${pkgver}.tar.bz2"
-        "${url}/releases/individual/font/font-daewoo-misc-${pkgver}.tar.bz2"
-        "${url}/releases/individual/font/font-dec-misc-${pkgver}.tar.bz2"
-        "${url}/releases/individual/font/font-isas-misc-${pkgver}.tar.bz2"
-        "${url}/releases/individual/font/font-jis-misc-${pkgver}.tar.bz2"
-        "${url}/releases/individual/font/font-micro-misc-${pkgver}.tar.bz2"
-        "${url}/releases/individual/font/font-misc-misc-1.1.2.tar.bz2"
-        "${url}/releases/individual/font/font-mutt-misc-${pkgver}.tar.bz2"
-        "${url}/releases/individual/font/font-schumacher-misc-1.1.2.tar.bz2"
-        "${url}/releases/individual/font/font-sony-misc-${pkgver}.tar.bz2"
-        "${url}/releases/individual/font/font-sun-misc-${pkgver}.tar.bz2")
+source=("https://xorg.freedesktop.org/releases/individual/font/font-arabic-misc-${pkgver}.tar.bz2"
+        "https://xorg.freedesktop.org/releases/individual/font/font-cursor-misc-${pkgver}.tar.bz2"
+        "https://xorg.freedesktop.org/releases/individual/font/font-daewoo-misc-${pkgver}.tar.bz2"
+        "https://xorg.freedesktop.org/releases/individual/font/font-dec-misc-${pkgver}.tar.bz2"
+        "https://xorg.freedesktop.org/releases/individual/font/font-isas-misc-${pkgver}.tar.bz2"
+        "https://xorg.freedesktop.org/releases/individual/font/font-jis-misc-${pkgver}.tar.bz2"
+        "https://xorg.freedesktop.org/releases/individual/font/font-micro-misc-${pkgver}.tar.bz2"
+        "https://xorg.freedesktop.org/releases/individual/font/font-misc-misc-1.1.2.tar.bz2"
+        "https://xorg.freedesktop.org/releases/individual/font/font-mutt-misc-${pkgver}.tar.bz2"
+        "https://xorg.freedesktop.org/releases/individual/font/font-schumacher-misc-1.1.2.tar.bz2"
+        "https://xorg.freedesktop.org/releases/individual/font/font-sony-misc-${pkgver}.tar.bz2"
+        "https://xorg.freedesktop.org/releases/individual/font/font-sun-misc-${pkgver}.tar.bz2")
 md5sums=('cc0726e4a277d6ed93b8e09c1f195470'
          '3e0069d4f178a399cffe56daa95c2b63'
          '0571bf77f8fab465a5454569d9989506'
@@ -34,11 +34,11 @@ md5sums=('cc0726e4a277d6ed93b8e09c1f195470'
          '948f2e07810b4f31195185921470f68d')
 
 build() {
-  cd "${srcdir}"
+  cd ${srcdir}
   
   for dir in *; do
-    if [ -d "${dir}" ]; then
-      pushd "${dir}"
+    if [ -d ${dir} ]; then
+      pushd ${dir}
       ./configure --prefix=/usr \
           --with-fontdir=/usr/share/fonts/misc
       make
@@ -48,13 +48,13 @@ build() {
 }
 
 package() {
-  cd "${srcdir}"
-  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
+  cd ${srcdir}
+  install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
   
   for dir in *; do
-    if [ -d "${dir}" ]; then
-      pushd "${dir}"
-      make DESTDIR="${pkgdir}" install
+    if [ -d ${dir} ]; then
+      pushd ${dir}
+      make DESTDIR=${pkgdir} install
       install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.${dir%-*}
       popd
     fi

@@ -1,18 +1,19 @@
 
 pkgname=ttf-freefont
 pkgver=20120503
-pkgrel=3
+pkgrel=4
 pkgdesc="A set of free high-quality TrueType fonts covering the Unicode character set"
 arch=('x86_64')
-url="http://www.nongnu.org/freefont/"
+url="https://www.nongnu.org/freefont/"
 license=('GPL')
 depends=('fontconfig' 'xorg-font-utils')
-install=$pkgname.install
-source=("http://ftp.gnu.org/gnu/freefont/freefont-ttf-${pkgver}.zip")
+install=${pkgname}.install
+source=("https://ftp.gnu.org/gnu/freefont/freefont-ttf-${pkgver}.zip")
 md5sums=('879b76d2e3c8003d567b555743f39154')
 
 package() {
-  cd "${srcdir}/freefont-${pkgver}"
-  install -d "${pkgdir}/usr/share/fonts/TTF"
-  install -m0644 *.ttf "${pkgdir}/usr/share/fonts/TTF/"
+  cd freefont-${pkgver}
+  
+  install -d ${pkgdir}/usr/share/fonts/TTF
+  install -m0644 *.ttf ${pkgdir}/usr/share/fonts/TTF/
 }
