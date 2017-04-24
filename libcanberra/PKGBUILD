@@ -1,61 +1,42 @@
 
-pkgbase=libcanberra
-pkgname=('libcanberra' 'libcanberra-pulse' 'libcanberra-gstreamer')
+pkgname=libcanberra
 pkgver=0.30
-pkgrel=2
+pkgrel=3
 pkgdesc="A small and lightweight implementation of the XDG Sound Theme Specification"
 arch=('x86_64')
-license=('LGPL')
-depends=('libvorbis' 'libtool' 'alsa-lib' 'tdb' 'sound-theme-freedesktop')
-makedepends=('pulseaudio' 'gstreamer')
-options=('!emptydirs')
 url="http://0pointer.de/lennart/projects/libcanberra"
-source=("http://0pointer.de/lennart/projects/libcanberra/${pkgbase}-${pkgver}.tar.xz")
+license=('LGPL')
+depends=('libvorbis' 'libtool' 'alsa-lib' 'tdb' 'sound-theme-freedesktop' 
+         'pulseaudio' 'gstreamer')
+provides=('libcanberra-pulse' 'libcanberra-gstreamer')
+conflicts=('libcanberra-pulse' 'libcanberra-gstreamer')
+replaces=('libcanberra-pulse' 'libcanberra-gstreamer')
+options=('!emptydirs')
+source=("http://0pointer.de/lennart/projects/libcanberra/${pkgname}-${pkgver}.tar.xz")
 md5sums=('34cb7e4430afaf6f447c4ebdb9b42072')
 
 build() {
-  cd "${srcdir}/${pkgbase}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
-  ./configure --sysconfdir=/etc --prefix=/usr --localstatedir=/var \
-      --disable-static --with-builtin=dso --enable-null --disable-oss \
-      --enable-alsa --enable-gstreamer --enable-pulse --disable-gtk \
-      --with-systemdsystemunitdir=/usr/lib/systemd/system
+    ./configure --sysconfdir=/etc \
+        --prefix=/usr \
+        --localstatedir=/var \
+        --disable-static \
+        --with-builtin=dso \
+        --enable-null \
+        --disable-oss \
+        --enable-alsa \
+        --enable-gstreamer \
+        --enable-pulse \
+        --disable-gtk \
+        --with-systemdsystemunitdir=/usr/lib/systemd/system
   make
 }
 
-package_libcanberra() {
-  cd "${srcdir}/${pkgbase}-${pkgver}"
-  make -j1 DESTDIR="${pkgdir}" install
-  rm -f "${pkgdir}/usr/lib/libcanberra-gtk.la"
-  rm -f "${pkgdir}/usr/lib/gtk-2.0/modules/"*.la
+package() {
+  cd ${pkgbase}-${pkgver}
+  make -j1 DESTDIR=${pkgdir} install
   
-  install -m755 -d "${pkgdir}/etc/X11/xinit/xinitrc.d"
-
-  # Split libcanberra-pulse
-  mkdir -p pulse-plugin
-  mv "${pkgdir}"/usr/lib/${pkgbase}-${pkgver}/${pkgbase}-pulse.* pulse-plugin
-
-  # Split libcanberra-gstreamer
-  mkdir -p gstreamer-plugin
-  mv "${pkgdir}"/usr/lib/${pkgbase}-${pkgver}/${pkgbase}-gstreamer.* gstreamer-plugin
-}
-
-package_libcanberra-pulse() {
-  pkgdesc="PulseAudio plugin for libcanberra"
-  depends=("$pkgbase=$pkgver-$pkgrel" 'libpulse')
-
-  cd "${srcdir}/${pkgbase}-${pkgver}"
-
-  mkdir -p "${pkgdir}/usr/lib/${pkgbase}-${pkgver}"
-  mv pulse-plugin/* "${pkgdir}/usr/lib/${pkgbase}-${pkgver}" 
-}
-
-package_libcanberra-gstreamer() {
-  pkgdesc="GStreamer plugin for libcanberra"
-  depends=("$pkgbase=$pkgver-$pkgrel" 'gstreamer')
-
-  cd "${srcdir}/${pkgbase}-${pkgver}"
-
-  mkdir -p "${pkgdir}/usr/lib/${pkgbase}-${pkgver}"
-  mv gstreamer-plugin/* "${pkgdir}/usr/lib/${pkgbase}-${pkgver}"
+  rm -f ${pkgdir}/usr/lib/libcanberra-gtk.la
+  rm -f ${pkgdir}/usr/lib/gtk-2.0/modules/*.la
 }

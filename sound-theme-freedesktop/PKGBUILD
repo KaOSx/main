@@ -1,26 +1,25 @@
 
 pkgname=sound-theme-freedesktop
 pkgver=0.8
-pkgrel=2
+pkgrel=3
 pkgdesc="Freedesktop sound theme"
 arch=('x86_64')
-url="http://freedesktop.org/wiki/Specifications/sound-theme-spec"
+url="https://freedesktop.org/wiki/Specifications/sound-theme-spec"
 license=('custom')
 makedepends=('intltool')
 source=("http://people.freedesktop.org/~mccann/dist/${pkgname}-${pkgver}.tar.bz2")
 md5sums=('d7387912cfd275282d1ec94483cb2f62')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
   ./configure --prefix=/usr
   make
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
-  make DESTDIR="${pkgdir}" install
+  cd ${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install
   
-  install -Dm644 "${srcdir}/${pkgname}-${pkgver}/CREDITS" \
-  "${pkgdir}/usr/share/licenses/${pkgname}/CREDITS"
+  install -Dm644 CREDITS ${pkgdir}/usr/share/licenses/${pkgname}/CREDITS
 }
