@@ -1,18 +1,18 @@
 
 pkgname=xorg-res-utils
 pkgver=1.0.6
-pkgrel=2
+pkgrel=3
 pkgdesc="X.Org X11 resource utilities"
 arch=('x86_64')
-url="http://xorg.freedesktop.org/"
+url="https://xorg.freedesktop.org/"
 license=('custom')
 depends=('libxaw')
 makedepends=('pkgconfig')
 groups=('xorg')
-source=("${url}/releases/individual/app/appres-1.0.4.tar.bz2"
-        "${url}/releases/individual/app/editres-1.0.6.tar.bz2"
-        "${url}/releases/individual/app/listres-1.0.3.tar.bz2"
-        "${url}/releases/individual/app/viewres-1.0.4.tar.bz2"
+source=("https://xorg.freedesktop.org/releases/individual/app/appres-1.0.4.tar.bz2"
+        "https://xorg.freedesktop.org/releases/individual/app/editres-1.0.6.tar.bz2"
+        "https://xorg.freedesktop.org/releases/individual/app/listres-1.0.3.tar.bz2"
+        "https://xorg.freedesktop.org/releases/individual/app/viewres-1.0.4.tar.bz2"
         'LICENSE.listres'
         'LICENSE.viewres')
 md5sums=('ed598f0599d726963c1bdfdc691960d9'
@@ -26,8 +26,8 @@ build() {
   cd ${srcdir}
   
   for i in *; do
-    if [ -d "${i}" ]; then
-      pushd "${i}"
+    if [ -d ${i} ]; then
+      pushd ${i}
       ./configure --prefix=/usr --mandir=/usr/share/man --disable-xprint
       make
       popd
@@ -39,14 +39,14 @@ package() {
   cd ${srcdir}
   
   for i in *; do
-    if [ -d "${i}" ]; then
-      pushd "${i}"
+    if [ -d ${i} ]; then
+      pushd ${i}
       make DESTDIR=${pkgdir} install
       install -D -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.${i%-*}
       popd
     fi
   done
-  #Replacing stub license files
-  install -D -m644 "${srcdir}/LICENSE.listres" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.listres"
-  install -D -m644 "${srcdir}/LICENSE.viewres" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.viewres"
+
+  install -D -m644 LICENSE.listres ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.listres
+  install -D -m644 LICENSE.viewres ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.viewres
 }

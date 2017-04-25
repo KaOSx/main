@@ -1,27 +1,27 @@
 
 pkgname=libxcursor
 pkgver=1.1.14
-pkgrel=2
+pkgrel=3
 pkgdesc="X cursor management library"
 arch=('x86_64')
-url="http://xorg.freedesktop.org/"
+url="https://xorg.freedesktop.org/"
 license=('custom')
 depends=('libxfixes' 'libxrender')
 makedepends=('xorg-util-macros')
 options=('!libtool')
-source=("http://xorg.freedesktop.org/releases/individual/lib/libXcursor-${pkgver}.tar.bz2")
+source=("https://xorg.freedesktop.org/releases/individual/lib/libXcursor-${pkgver}.tar.bz2")
 md5sums=('1e7c17afbbce83e2215917047c57d1b3')
 
 build() {
-  cd "${srcdir}/libXcursor-${pkgver}"
+  cd libXcursor-${pkgver}
   
   ./configure --prefix=/usr --sysconfdir=/etc --disable-static
   make
 }
 
 package() {
-  cd "${srcdir}/libXcursor-${pkgver}"
-  make DESTDIR="${pkgdir}" install
+  cd libXcursor-${pkgver}
+  make DESTDIR=${pkgdir} install
 
-  install -Dm644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/COPYING"
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
 }

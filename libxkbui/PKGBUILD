@@ -1,29 +1,29 @@
 
 pkgname=libxkbui
 pkgver=1.0.2
-pkgrel=4
+pkgrel=5
 pkgdesc="X11 keyboard UI presentation library"
 arch=('x86_64')
-url="http://xorg.freedesktop.org/"
+url="https://xorg.freedesktop.org/"
 license=('custom')
 depends=('libxt' 'libxkbfile')
 makedepends=('pkgconfig')
 options=(!libtool)
-source=("http://xorg.freedesktop.org/releases/individual/lib/${pkgname}-${pkgver}.tar.bz2"
+source=("https://xorg.freedesktop.org/releases/individual/lib/${pkgname}-${pkgver}.tar.bz2"
         'LICENSE')
 md5sums=('1143e456f7429e18e88f2eadb2f2b6b1'
          'd1efaa1271fc028cd5bec33f836ee9ef')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
   ./configure --prefix=/usr
   make
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
-  make DESTDIR="${pkgdir}" install
+  cd ${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install
   
-  install -D -m644 ../LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+  install -D -m644 ../LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }

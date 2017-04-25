@@ -1,15 +1,13 @@
 
 pkgname=gamin
 pkgver=0.1.10
-pkgrel=3
+pkgrel=4
 pkgdesc='File and directory monitoring system defined to be a subset of the FAM (File Alteration Monitor).'
 url='http://www.gnome.org/~veillard/gamin'
 license=('GPL2')
 arch=('x86_64')
-depends=('glib2')
-makedepends=('python2')
-optdepends=('python2: for the Python module.')
-source=("http://www.gnome.org/~veillard/gamin/sources/$pkgname-$pkgver.tar.gz"
+depends=('glib2' 'python2')
+source=("https://people.gnome.org/~veillard/gamin/sources/${pkgname}-${pkgver}.tar.gz"
         'const.patch'
         'gam_server.patch')
 md5sums=('b4ec549e57da470c04edd5ec2876a028'
@@ -17,9 +15,9 @@ md5sums=('b4ec549e57da470c04edd5ec2876a028'
          '4784359a3206bfa3c0dce1c23468f87f')
 
 build() {
-  cd $srcdir/$pkgname-$pkgver
-  patch -p1 -i "${srcdir}"/gam_server.patch
-  patch -p1 -i "${srcdir}"/const.patch
+  cd ${pkgname}-${pkgver}
+  patch -p1 -i ${srcdir}/gam_server.patch
+  patch -p1 -i ${srcdir}/const.patch
 
   ./configure \
     --disable-debug \
@@ -27,13 +25,12 @@ build() {
     --disable-static \
     --libexecdir=/usr/lib/gamin \
     --prefix=/usr \
-    --with-python=/usr/bin/python2 \
     --with-threads
   make
 }
 
 package() {
-  cd $srcdir/$pkgname-$pkgver
+  cd ${pkgname}-${pkgver}
   
-  make DESTDIR=$pkgdir install
+  make DESTDIR=${pkgdir} install
 }

@@ -1,17 +1,17 @@
 
 pkgname=libxmi
 pkgver=1.2
-pkgrel=3
+pkgrel=4
 pkgdesc="library for rasterizing 2-D vector graphics"
 arch=('x86_64')
-url="http://www.gnu.org/software/libxmi/libxmi.html"
+url="https://www.gnu.org/software/libxmi/libxmi.html"
 license=('GPL')
 depends=('glibc')
-source=("http://mirrors.usc.edu/pub/gnu/libxmi/${pkgname}-${pkgver}.tar.gz")
+source=("https://mirror.frgl.pw/gnu/libxmi/${pkgname}-${pkgver}.tar.gz")
 md5sums=('4e6935484f0ad71b531920bf4c546b47')
 
 build() {
-  cd ${srcdir}/${pkgname}-${pkgver}
+  cd ${pkgname}-${pkgver}
   autoreconf --force --install
   
   ./configure --prefix=/usr --infodir=/usr/share/info
@@ -19,7 +19,7 @@ build() {
 }
 
 package() {
-  cd ${srcdir}/${pkgname}-${pkgver}
+  cd ${pkgname}-${pkgver}
   
   make DESTDIR=${pkgdir} install
 }

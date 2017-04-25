@@ -1,7 +1,7 @@
 
 pkgname=bluez-firmware
 pkgver=1.2
-pkgrel=8
+pkgrel=9
 pkgdesc="Firmware for Broadcom BCM203x and STLC2300 Bluetooth chips"
 url="http://www.bluez.org/"
 arch=('x86_64')
@@ -10,13 +10,13 @@ source=("http://bluez.sf.net/download/${pkgname}-${pkgver}.tar.gz")
 md5sums=('1cc3cefad872e937e05de5a0a2b390dd')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
 
   ./configure --prefix=/usr
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
-  make DESTDIR="$pkgdir" install
+  make DESTDIR=${pkgdir} install
 }

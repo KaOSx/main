@@ -2,7 +2,7 @@
 pkgbase=hspell
 pkgname=('hspell' 'hunspell-he')
 pkgver=1.3
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 license=('GPL')
 url="http://www.ivrix.org.il/projects/spell-checker/"
@@ -12,7 +12,7 @@ source=("http://hspell.ivrix.org.il/${pkgname}-${pkgver}.tar.gz")
 md5sums=('351850c9f6974a709dd092a2d1063e4a')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
   ./configure --prefix=/usr \
         --mandir=/usr/share/man \
@@ -27,8 +27,8 @@ package_hspell() {
   pkgdesc="Hebrew spell-checker"
   depends=('glibc' 'zlib' 'perl')
 
-  cd "${srcdir}/${pkgname}-${pkgver}"
-  make DESTDIR="${pkgdir}" install
+  cd ${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install
 
   rm -f ${pkgdir}/usr/lib/libhspell.a
 }
@@ -36,13 +36,12 @@ package_hspell() {
 package_hunspell-he() {
   pkgdesc="Hebrew hunspell dictionary"
   
-  cd "${srcdir}/${pkgbase}-${pkgver}"
+  cd ${pkgbase}-${pkgver}
 
   install -dm755 ${pkgdir}/usr/share/hunspell
   install -m644 he.dic ${pkgdir}/usr/share/hunspell/he_IL.dic
   install -m644 he.aff ${pkgdir}/usr/share/hunspell/he_IL.aff
 
-  # the symlinks
   install -dm755 ${pkgdir}/usr/share/myspell/dicts
   pushd $pkgdir/usr/share/myspell/dicts
     for file in $pkgdir/usr/share/hunspell/*; do
