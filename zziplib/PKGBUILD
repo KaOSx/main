@@ -1,31 +1,31 @@
 
 pkgname=zziplib
-pkgver=0.13.62
-pkgrel=3
-pkgdesc="A lightweight library that offers the ability to easily extract data from files archived in a single zip file"
+pkgver=0.13.66
+pkgrel=1
+pkgdesc="Library that provides read access on ZIP-archives and unpacked data."
 arch=('x86_64')
-url="http://zziplib.sourceforge.net"
+url="https://github.com/gdraheim/zziplib"
 license=('LGPL' 'MPL')
 depends=('zlib')
 makedepends=('python2')
 options=('!libtool')
-source=("http://downloads.sourceforge.net/zziplib/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('5fe874946390f939ee8f4abe9624b96c')
+source=("https://github.com/gdraheim/zziplib/archive/v${pkgver}.tar.gz")
+md5sums=('0990b8e409834b62475b4de901fe3f6a')
 
 build() {
-	cd ${pkgname}-${pkgver}
+    cd ${pkgname}-${pkgver}
 
-    export PYTHON=/usr/bin/python2
-	./configure --prefix=/usr
-	make
+    ./configure --prefix=/usr \
+        --enable-maintainer-mode
+    make
 }
 
 package() {
-	cd ${pkgname}-${pkgver}
-	make DESTDIR=${pkgdir} install
+    cd ${pkgname}-${pkgver}
+    make DESTDIR=${pkgdir} install
 
-	#fix permission
-	chmod -s ${pkgdir}/usr/share/man/man3
-	chmod 644 ${pkgdir}/usr/share/man/man3/*
-	chown -R root:root ${pkgdir}/usr/share/man/man3
+    #fix permission
+    #chmod -s ${pkgdir}/usr/share/man/man3
+    #chmod 644 ${pkgdir}/usr/share/man/man3/*
+    #chown -R root:root ${pkgdir}/usr/share/man/man3
 }
