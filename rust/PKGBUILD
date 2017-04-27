@@ -1,15 +1,15 @@
 
 pkgname=rust
-pkgver=1.16.0
+pkgver=1.17.0
 pkgrel=1
 arch=('x86_64')
 pkgdesc='Systems programming language that runs fast, prevents segfaults, and guarantees thread safety.'
 url='http://www.rust-lang.org/'
 license=('MIT' 'Apache')
-makedepends=('cmake' 'curl' 'libffi' 'make' 'python2')
+makedepends=('cmake' 'curl' 'libffi' 'make' 'python2' 'rust' 'cargo')
 options=('!strip')
 source=("http://static.rust-lang.org/dist/rustc-${pkgver}-src.tar.gz")
-md5sums=('c11d94d9e62f71838b20058f0797357a')
+md5sums=('2cba8948591084acdcb78d02914faa80')
 
 build() {
   cd rustc-${pkgver}-src
@@ -17,7 +17,8 @@ build() {
   ./configure --prefix=/usr \
         --disable-docs \
         --release-channel=stable \
-        --disable-rustbuild
+        --enable-local-rust
+        
   make CFLAGS="$CFLAGS -fPIC -w"
 }
 

@@ -2,14 +2,15 @@
 pkgname=cargo
 _pkgname=cargo-nightly-x86_64-unknown-linux-gnu
 pkgver=0.17.0
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 pkgdesc='Downloads your Rust project’s dependencies and compiles your project'
 url='https://crates.io/install'
 license=('MIT' 'Apache')
 depends=('rust')
-source=("https://static.rust-lang.org/cargo-dist/${_pkgname}.tar.gz")
-md5sums=('9adc934923cd33a42b26dfce5bcd46eb')
+#source=("https://static.rust-lang.org/cargo-dist/${_pkgname}.tar.gz")
+source=("https://s3.amazonaws.com/rust-lang-ci/cargo-builds/6b05583d71f982bcad049b9fa094c637c062e751/${_pkgname}.tar.gz")
+md5sums=('060023dd28b11b822de5b005d8e41005')
 
 package() {
   cd ${_pkgname}
