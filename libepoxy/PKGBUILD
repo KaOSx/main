@@ -1,6 +1,6 @@
 
 pkgname=libepoxy
-pkgver=1.4.1
+pkgver=1.4.2
 _pkgver=1.4
 pkgrel=1
 pkgdesc="Library for handling OpenGL function pointer management for you"
@@ -8,27 +8,30 @@ url="https://github.com/anholt/libepoxy"
 arch=('x86_64')
 license=('MIT')
 depends=('glibc')
-makedepends=('xorg-util-macros' 'python3' 'libgl')
+makedepends=('xorg-util-macros' 'python3' 'libgl' 'meson' 'ninja')
 options=('!libtool')
-source=("https://github.com/anholt/libepoxy/archive/${pkgver}.tar.gz")
-md5sums=('96d3fd2069639ff38efc6eed83c1bea2')
+source=("https://github.com/anholt/libepoxy/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
+md5sums=('632fcfd7ae9d21f5a634326d753a89c4')
 
 build() {
-   cd ${pkgname}-${pkgver}
+    mkdir -p build
+    cd build
 
-   ./autogen.sh
-   ./configure --prefix=/usr
+    meson ../${pkgname}-${pkgver} \
+        --prefix=/usr \
+        --buildtype=release
+    ninja
 }
 
 check() {
-   cd ${pkgname}-${pkgver}
+    cd build
 
-   make -k check
+    mesontest
 }
 
 package() {
-   cd ${pkgname}-${pkgver}
-   make DESTDIR=$pkgdir install
+    cd build
+    DESTDIR=${pkgdir} ninja install
 
-   install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
+    install -Dm644 ../${pkgname}-${pkgver}/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
 }
