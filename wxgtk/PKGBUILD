@@ -1,19 +1,19 @@
 
 pkgname=wxgtk
-pkgver=3.0.2
+pkgver=3.0.3
 pkgrel=1
 pkgdesc="GTK+ implementation of wxWidgets API for GUI"
 arch=('x86_64')
 url="http://wxwidgets.org"
 license=('custom:wxWindows')
-depends=('gtk2' 'glu')
+depends=('gtk2' 'glu' 'gst-plugins-base')
 makedepends=('gconf')
 options=('!emptydirs')
 conflicts=('wxgtk2.9')
 replaces=('wxgtk2.9')
 provides=('wxgtk2.9')
 source=("https://github.com/wxWidgets/wxWidgets/releases/download/v${pkgver}/wxWidgets-${pkgver}.tar.bz2")
-md5sums=('ba4cd1f3853d0cd49134c5ae028ad080')
+md5sums=('ba23578300f33eeb26bc75894b9aaf11')
 
 prepare() {
   cd wxWidgets-${pkgver}
@@ -29,15 +29,14 @@ build() {
     --with-opengl \
     --enable-unicode \
     --enable-graphics_ctx \
-    --disable-mediactrl \
+    --enable-mediactrl \
     --disable-webview \
     --with-regex=builtin \
     --with-libpng=sys \
     --with-libxpm=sys \
     --with-libjpeg=sys \
     --with-libtiff=sys \
-    --disable-precomp-headers \
-    --disable-gstreamer
+    --disable-precomp-headers 
   make
   make -C locale allmo
 }
