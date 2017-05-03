@@ -1,8 +1,8 @@
 
 pkgbase=mariadb
 pkgname=('libmariadbclient' 'mariadb-clients' 'mariadb')
-pkgver=10.1.22
-_pkgver=10.1.22
+pkgver=10.1.23
+_pkgver=10.1.23
 pkgrel=1
 arch=('x86_64')
 license=('GPL')
@@ -13,13 +13,13 @@ source=("http://ftp.osuosl.org/pub/mariadb/mariadb-${_pkgver}/source/mariadb-${_
         'mariadb.service'
         'mariadb-post.sh'
         'mariadb-tmpfile.conf')
-md5sums=('8d11f4e20d3ef0bb1befe173de9213c8'
+md5sums=('1a7392cc05c7c249acd4495022719ca8'
          '41fe4303f88b7006743ee1218b332b54'
          'b79e65a5aa536e6b5bc60988eb0b78a2'
          '2fa6e456964d4ff5e6d4f9ff0126aed6')
 
 build() {
-  mkdir build
+  mkdir -p build
   cd build
 
   cmake ../${pkgbase}-${_pkgver} \
