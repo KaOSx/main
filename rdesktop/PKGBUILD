@@ -1,0 +1,29 @@
+
+pkgname=rdesktop
+pkgver=1.8.3
+_commit=7d8675074f99f30727403d69c51f440f24a2b024
+pkgrel=1
+pkgdesc="Open source UNIX client for connecting to Windows Remote Desktop Services"
+arch=('x86_64')
+url="http://www.rdesktop.org/"
+license=('GPL')
+depends=('libx11' 'openssl' 'libao' 'libsamplerate' 'xorg-server-utils' 'pcsclite')
+source=("https://github.com/rdesktop/rdesktop/archive/${_commit}.zip")
+md5sums=('a6039f40f2840170e2cf3579ff7853b9')
+
+build() {
+  cd ${pkgname}-${_commit}
+
+  ./bootstrap
+  ./configure --prefix=/usr \
+    --enable-smartcard \
+    --with-ipv6
+  make
+}
+
+package() {
+  cd ${pkgname}-${_commit}
+  
+  make DESTDIR=${pkgdir} install
+}
+
