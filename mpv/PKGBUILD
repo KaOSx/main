@@ -1,7 +1,7 @@
 
 pkgname=mpv
 pkgver=0.25.0
-pkgrel=1
+pkgrel=2
 pkgdesc='Video player based on MPlayer/mplayer2'
 arch=('x86_64')
 license=('GPL')
@@ -34,7 +34,11 @@ build() {
 	--enable-libmpv-shared \
 	--enable-cdda \
 	--enable-sdl2 \
-	--enable-zsh-comp
+	--enable-zsh-comp \
+	--enable-dvdnav \
+	--enable-dvdread \
+	--enable-libbluray \
+	--enable-cdda
 		
     ./waf build
 }
