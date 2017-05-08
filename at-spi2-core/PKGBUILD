@@ -1,17 +1,17 @@
 
 pkgname=at-spi2-core
-pkgver=2.22.1
-_pkgver=2.22
+pkgver=2.24.0
+_pkgver=2.24
 pkgrel=1
 pkgdesc="Protocol definitions and daemon for D-Bus at-spi"
 arch=('x86_64')
-url="http://www.gnome.org"
+url="https://www.gnome.org"
 license=('GPL2')
 depends=('dbus' 'glib2' 'libxtst')
 makedepends=('intltool' 'gobject-introspection')
 options=('!libtool')
 source=("https://download.gnome.org/sources/at-spi2-core/${_pkgver}/${pkgname}-${pkgver}.tar.xz")
-md5sums=('4b60f9ec87125b33ab67fb48da0f0fe6')
+md5sums=('27598276ec58371a6254a4f8b949bf8c')
 
 build() {
   cd ${pkgname}-${pkgver}
@@ -19,8 +19,10 @@ build() {
   sed -i -e '/AC_PATH_XTRA/d' configure.ac
   autoreconf --force --install
 
-  ./configure --prefix=/usr --sysconfdir=/etc \
-    --libexecdir=/usr/lib/at-spi2-core --disable-xevie
+  ./configure --prefix=/usr \
+    --sysconfdir=/etc \
+    --libexecdir=/usr/lib/at-spi2-core \
+    --disable-xevie
   make
 }
 
