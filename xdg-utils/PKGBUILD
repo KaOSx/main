@@ -1,7 +1,7 @@
 
 pkgname=xdg-utils
-pkgver=1.1.1
-_pkgver=1.1.1
+pkgver=1.1.2
+_pkgver=1.1.2
 _gitver=f0df41402e827051ec16bac212c8eaf08ada75e4
 pkgrel=2
 pkgdesc='Command line tools that assist applications with a variety of desktop integration tasks.'
@@ -11,14 +11,14 @@ depends=('sh')
 makedepends=('docbook-xsl' 'w3m' 'xmlto')
 license=('MIT')
 #source=("http://cgit.freedesktop.org/xdg/xdg-utils/snapshot/xdg-utils-${_gitver}.tar.gz")
-source=("http://portland.freedesktop.org/download/xdg-utils-${_pkgver}.tar.gz"
+source=("https://portland.freedesktop.org/download/xdg-utils-${_pkgver}.tar.gz"
         'xdg-mime.patch')
-md5sums=('2d0aec6037769a5f138ff404b1bb4b15'
+md5sums=('361e75eb76c94d19f6f4f330d8ee626b'
          '7bc92bf7a65e50a50c0d3aa10bea95fd')
 
 build() {
 	cd ${pkgname}-${_pkgver}
-	patch -p1 -i ${srcdir}/xdg-mime.patch
+	#patch -p1 -i ${srcdir}/xdg-mime.patch
 	
 	./configure --prefix=/usr --mandir=/usr/share/man
 	make 
