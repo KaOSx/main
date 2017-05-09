@@ -5,8 +5,8 @@ _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=nvidia-bumblebee-next
 _pkgname=nvidia-bumblebee
-pkgver=378.13
-pkgrel=14
+pkgver=381.22
+pkgrel=1
 pkgdesc="NVIDIA drivers for linux-next. Packaged for Bumblebee"
 arch=('x86_64')
 url="http://www.nvidia.com/"
@@ -20,18 +20,17 @@ options=('!strip')
 
 _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 #_pkg="NVIDIA-Linux-x86_64-${pkgver}"
-source=("ftp://download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}-no-compat32.run"
-        'linux-4.11.patch')
+source=("ftp://download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}-no-compat32.run")
 #source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}.run")
-md5sums=('fe4d25b19a780a690cafc8e3b7c0113f'
-         '8434f9ebafacdbcef27aab1079c87ea1')
+md5sums=('0e9590d48703c8baa034b6f0f8bbf1e5')
 
 build() {
     cd "${srcdir}"
     sh "${_pkg}.run" --extract-only
     
     cd "${_pkg}"
-    patch -p1 -i ${srcdir}/linux-4.11.patch
+    #patch -p1 -i ${srcdir}/linux-4.10.patch
+    sed -i -e 's|MODULE_LICENSE("MIT");|MODULE_LICENSE("Dual MIT/GPL");|' kernel/nvidia-drm/nvidia-drm-linux.c
  
     cd "${srcdir}/${_pkg}/kernel" 
     make SYSSRC=/lib/modules/"${_kver}/build" module
