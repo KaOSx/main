@@ -1,7 +1,7 @@
 
 pkgname=libgpod
 pkgver=0.8.3
-pkgrel=6
+pkgrel=7
 pkgdesc="Shared library, written using C and GLib/GObject, used by gtkpod to access the contents of an iPod."
 arch=('x86_64')
 url="http://www.gtkpod.org/libgpod.html"
@@ -12,7 +12,7 @@ source=("https://downloads.sourceforge.net/sourceforge/gtkpod/${pkgname}-${pkgve
         'segmentation.patch'
         'libgpod-fixmono.patch'
         'swig.diff')
-options=('!libtool')
+options=('!libtool' '!emptydirs')
 md5sums=('f8a0b7a34e768e33a708e8dd172bd6f8'
          '6b773f274eb33e61a3f5d5589d7ebe06'
          'b1cc98c39b3cc5f42f5fbeecceb521bc'
@@ -38,5 +38,5 @@ package() {
   make PREFIX=/usr DESTDIR=${pkgdir} install
 
   #copy headers
-  cp -v src/*.h ${pkgdir}/usr/include/gpod-1.0/gpod/
+  #cp -v src/*.h ${pkgdir}/usr/include/gpod-1.0/gpod/
 }
