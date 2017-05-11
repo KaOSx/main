@@ -1,6 +1,6 @@
 
 pkgname=gdal
-pkgver=2.1.3
+pkgver=2.2.0
 pkgrel=1
 pkgdesc="A translator library for raster geospatial data formats"
 arch=('x86_64')
@@ -12,7 +12,7 @@ depends=('curl' 'geos' 'giflib' 'hdf5' 'libgeotiff' 'libjpeg-turbo' 'libpng' 'li
 makedepends=('perl' 'swig')
 options=('!libtool' '!makeflags')
 source=("http://download.osgeo.org/gdal/${pkgver}/${pkgname}-${pkgver}.tar.gz")
-md5sums=('e5057f6011b720cfbbebbbbf216c0ffe')
+md5sums=('37d98d32d6ab0b2d7026a6089c3d17ba')
 
 build() {
   export CFLAGS="$CFLAGS -fno-strict-aliasing"
