@@ -1,8 +1,8 @@
 
 # rebuild mpv on any update
 pkgname=ffmpeg
-pkgver=3.3
-pkgrel=2
+pkgver=3.3.1
+pkgrel=1
 pkgdesc="Complete and free Internet live audio and video broadcasting solution for Linux/Unix"
 arch=('x86_64')
 url="http://ffmpeg.org/"
@@ -13,7 +13,7 @@ depends=('bzip2' 'lame' 'sdl2' 'libvorbis' 'xvidcore' 'zlib' 'x264' 'libtheora' 
          'libass' 'dcadec' 'opus')
 makedepends=('yasm')
 source=("http://ffmpeg.org/releases/${pkgname}-${pkgver}.tar.xz")
-md5sums=('368f1fff4bdadaf2823934cc0aadd71d')
+md5sums=('047dce1928df340574c891fb801d89ad')
 
 build() {
   cd ${pkgname}-${pkgver}
