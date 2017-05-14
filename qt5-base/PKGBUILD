@@ -20,7 +20,7 @@ makedepends=('sqlite' 'xcb-util-keysyms' 'xcb-util-wm' 'xcb-util-image' 'xcb-uti
 options=('!libtool' 'debug')
 _pkgfqn="qtbase-opensource-src-${subver}"
 source=("${_qtmirror}/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz"
-        "https://github.com/qt/qtbase/commit/0c8f3229de8ec4a8e70d4b41672074b94a45b1fe.diff")
+        "https://github.com/qt/qtbase/commit/f45c6c180463ccb6620e1d273a264f14a1204a93.diff")
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
          '052674c819e0f3168946210d947463a4')
@@ -28,8 +28,8 @@ md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
 build() {
     cd ${srcdir}/${_pkgfqn}
     
-    # fix journald not linking, thus no logs
-    #patch -p1 -i ${srcdir}/0c8f3229de8ec4a8e70d4b41672074b94a45b1fe.diff
+    # fix dbus issues, shown mostly in QtCurve, patch will be in 5.9.1
+    patch -p1 -i ${srcdir}/f45c6c180463ccb6620e1d273a264f14a1204a93.diff
         
     unset QTDIR
     export PATH="$PWD/qtbase/bin:$PWD/qtrepotools/bin:$PATH"
