@@ -2,6 +2,8 @@ post_install() {
   if ! getent passwd nm-openvpn >/dev/null; then
     useradd -r -U -d / -c 'NetworkManager OpenVPN' -s /sbin/nologin nm-openvpn
   fi
+  
+  systemd-sysusers /usr/lib/sysusers.d/nm-openvpn.conf
 }
 
 post_upgrade() {
