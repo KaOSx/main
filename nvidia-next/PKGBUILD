@@ -4,7 +4,7 @@ _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=nvidia-next
 pkgver=381.22
-pkgrel=1
+pkgrel=2
 pkgdesc="NVIDIA drivers for linux."
 arch=('x86_64')
 url="http://www.nvidia.com/"
@@ -24,7 +24,6 @@ build() {
   
   cd "${_pkg}"
   #patch -p1 -i ${srcdir}/linux-4.10.patch
-  sed -i -e 's|MODULE_LICENSE("MIT");|MODULE_LICENSE("Dual MIT/GPL");|' kernel/nvidia-drm/nvidia-drm-linux.c
   
   cd "${srcdir}/${_pkg}/kernel"
   make SYSSRC=/lib/modules/"${_kver}/build" module
