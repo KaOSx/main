@@ -22,7 +22,7 @@ md5sums=('4be15231df45312cf2be7d44206286c3')
 
 build() {
   cd ${pkgname}-${pkgver}
-  #patch -p1 -i $srcdir/poppler34.diff
+  #patch -p1 -i ${srcdir}/poppler34.diff
   
   ./configure --prefix=/usr  \
     --sysconfdir=/etc \

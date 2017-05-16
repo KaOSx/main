@@ -2,7 +2,7 @@
 pkgname=pulseaudio
 pkgdesc="A featureful, general-purpose sound server"
 pkgver=10.0
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 url="http://pulseaudio.org/"
 license=('GPL' 'LGPL')
@@ -18,12 +18,16 @@ optdepends=('avahi: zeroconf support'
 backup=(etc/pulse/{daemon.conf,default.pa,system.pa})
 provides=("libpulse=${pkgver}")
 options=('!emptydirs' '!libtool' '!makeflags')
-source=("http://freedesktop.org/software/pulseaudio/releases/${pkgname}-${pkgver}.tar.xz")
+source=("https://freedesktop.org/software/pulseaudio/releases/${pkgname}-${pkgver}.tar.xz"
+        'default_pa.diff')
 #source=("$pkgname-$pkgver::git://anongit.freedesktop.org/pulseaudio/pulseaudio#commit=50186d7")
-md5sums=('4950d2799bf55ab91f6b7f990b7f0971')
+md5sums=('4950d2799bf55ab91f6b7f990b7f0971'
+         '642b3640a3678186ac7f91f9ebdd409d')
 
 build() {
   cd ${pkgname}-${pkgver}
+  # fix no sound after logout https://github.com/KaOSx/apps/issues/112
+  patch -p1 -i ${srcdir}/default_pa.diff
 
   ./configure --prefix=/usr \
                --sysconfdir=/etc \
