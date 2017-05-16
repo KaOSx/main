@@ -1,6 +1,6 @@
 
 pkgname=cups-filters
-pkgver=1.13.5
+pkgver=1.14.0
 pkgrel=1
 pkgdesc="OpenPrinting CUPS Filters"
 arch=('x86_64')
@@ -17,8 +17,8 @@ provides=('foomatic-filters')
 replaces=('foomatic-filters')
 backup=(etc/fonts/conf.d/99pdftoopvp.conf)
 options=('!libtool')
-source=("http://www.openprinting.org/download/cups-filters/${pkgname}-${pkgver}.tar.xz")
-md5sums=('14e480832b872183574e6bfccdb7eff8')
+source=("https://www.openprinting.org/download/cups-filters/${pkgname}-${pkgver}.tar.xz")
+md5sums=('4be15231df45312cf2be7d44206286c3')
 
 build() {
   cd ${pkgname}-${pkgver}
