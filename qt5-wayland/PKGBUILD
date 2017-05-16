@@ -33,7 +33,6 @@ package() {
     cd ${_pkgfqn}
     make INSTALL_ROOT=$pkgdir install
     
-    install -D -m644 LGPL_EXCEPTION.txt \
-    ${pkgdir}/usr/share/licenses/${pkgname}/LGPL_EXCEPTION.txt
+    install -D -m644 LICENSE.LGPL3 ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.LGPL3
 }
 
