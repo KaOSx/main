@@ -23,7 +23,7 @@ source=("${_qtmirror}/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz"
         "https://github.com/qt/qtbase/commit/f45c6c180463ccb6620e1d273a264f14a1204a93.diff")
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
-         '052674c819e0f3168946210d947463a4')
+         '0cd16ad7bc6b6e1b833d710f6fa5cc36')
 
 build() {
     cd ${srcdir}/${_pkgfqn}
