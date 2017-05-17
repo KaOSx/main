@@ -1,17 +1,20 @@
 
 pkgname=miniupnpc
 pkgver=2.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Small UPnP client library/tool to access Internet Gateway Devices"
 arch=('x86_64')
-url="http://miniupnp.free.fr"
+url="https://miniupnp.tuxfamily.org/"
 license=('BSD')
 depends=('sh')
-source=("http://miniupnp.free.fr/files/${pkgname}-${pkgver}.tar.gz")
-md5sums=('2acc4ec912c15447a40cf14ae50df7b9')
+source=("https://miniupnp.tuxfamily.org/files/download.php?file=${pkgname}-${pkgver}.tar.gz"
+        'CVE-2017-8798.diff')
+md5sums=('2acc4ec912c15447a40cf14ae50df7b9'
+         '0e359ab89d9abac2911e2ce904d39a18')
 
 build() {
   cd ${pkgname}-${pkgver}
+  patch -p1 -i ${srcdir}/CVE-2017-8798.diff
   
   make
 }
