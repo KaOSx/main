@@ -18,16 +18,12 @@ optdepends=('avahi: zeroconf support'
 backup=(etc/pulse/{daemon.conf,default.pa,system.pa})
 provides=("libpulse=${pkgver}")
 options=('!emptydirs' '!libtool' '!makeflags')
-source=("https://freedesktop.org/software/pulseaudio/releases/${pkgname}-${pkgver}.tar.xz"
-        'default_pa.diff')
+source=("https://freedesktop.org/software/pulseaudio/releases/${pkgname}-${pkgver}.tar.xz")
 #source=("$pkgname-$pkgver::git://anongit.freedesktop.org/pulseaudio/pulseaudio#commit=50186d7")
-md5sums=('4950d2799bf55ab91f6b7f990b7f0971'
-         '642b3640a3678186ac7f91f9ebdd409d')
+md5sums=('4950d2799bf55ab91f6b7f990b7f0971')
 
 build() {
   cd ${pkgname}-${pkgver}
-  # fix no sound after logout https://github.com/KaOSx/apps/issues/112
-  patch -p1 -i ${srcdir}/default_pa.diff
 
   ./configure --prefix=/usr \
                --sysconfdir=/etc \
@@ -48,8 +44,12 @@ package() {
 
   # Disable cork-request module
   sed -e 's|/usr/bin/pactl load-module module-x11-cork-request|#&|' \
-      -i ${pkgdir}/usr/bin/start-pulseaudio-x11
+    -i ${pkgdir}/usr/bin/start-pulseaudio-x11
 
   rm ${pkgdir}/etc/dbus-1/system.d/pulseaudio-system.conf
   #rm ${pkgdir}/etc/xdg/autostart/pulseaudio.desktop
+  
+  # fix no sound after logout https://github.com/KaOSx/apps/issues/112
+  sed -e 's|load-module module-esound-protocol-unix|##load-module module-esound-protocol-unix|' \
+    -i ${pkgdir}/etc/pulse/default.pa
 }
