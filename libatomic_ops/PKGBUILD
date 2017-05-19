@@ -1,33 +1,35 @@
 
 pkgname=libatomic_ops
-pkgver=7.4.4
-_pkgver=7_4_4
+pkgver=7.4.6
+_pkgver=7_4_6
 pkgrel=1
 pkgdesc="Provides semi-portable access to hardware-provided atomic memory update operations"
 arch=('x86_64')
 url="https://github.com/ivmai/libatomic_ops"
 license=('GPL2' 'MIT')
 depends=('glibc')
-source=("https://github.com/ivmai/libatomic_ops/archive/${pkgname}-${_pkgver}.tar.gz")
-md5sums=('d29b8c951d32ca9f0be56a84ddd84689')
+source=("https://github.com/ivmai/libatomic_ops/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
+md5sums=('675dbd6681c6de7c9f4a834bcae9b748')
 
 build() {
-  cd ${pkgname}-${pkgname}-${_pkgver}
+  cd ${pkgname}-${pkgver}
 
-  ./autogen.sh
-  ./configure --prefix=/usr --disable-static --enable-shared
+  #./autogen.sh
+  ./configure --prefix=/usr \
+    --disable-static \
+    --enable-shared
   make
 }
 
 check() {
-  cd ${pkgname}-${pkgname}-${_pkgver}
+  cd ${pkgname}-${pkgver}
 
   make check
 }
 
 package() {
-  cd ${pkgname}-${pkgname}-${_pkgver}
-  make DESTDIR="${pkgdir}" install
+  cd ${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install
 
-  install -D -m644 doc/LICENSING.txt "${pkgdir}/usr/share/licenses/$pkgname/LICENSE"
+  install -D -m644 doc/LICENSING.txt ${pkgdir}/usr/share/licenses/$pkgname/LICENSE
 }
