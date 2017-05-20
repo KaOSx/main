@@ -1,0 +1,27 @@
+ 
+pkgname=bubblewrap
+pkgver=0.1.8
+pkgrel=1
+pkgdesc='Core execution engine for unprivileged containers that works as a setuid binary on kernels without
+user namespaces.'
+url='https://github.com/projectatomic/bubblewrap'
+arch=('x86_64')
+license=('LGPLv2')
+depends=('libcap')
+makedepends=('libxslt')
+source=("https://github.com/projectatomic/bubblewrap/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.xz")
+md5sums=('b94c0fd774cdb61a548776807300de65')
+
+build() {
+  cd ${pkgname}-${pkgver}
+  
+  ./configure --prefix=/usr \
+    --with-priv-mode=setuid
+  make
+}
+
+package() {
+  cd ${pkgname}-${pkgver}
+  
+  make DESTDIR=${pkgdir} install
+}
