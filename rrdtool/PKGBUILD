@@ -1,16 +1,16 @@
 
 pkgname=rrdtool
-pkgver=1.6.0
-pkgrel=2
+pkgver=1.7.0
+pkgrel=1
 pkgdesc="Data logging and graphing application"
 arch=('x86_64')
 url="http://www.rrdtool.org"
 license=('GPL')
 depends=('libpng' 'libxml2' 'pango' 'ttf-dejavu' 'ruby' 'python2' 'tcl' 'lua' 'perl')
-makedepends=('intltool' 'groff')
+makedepends=('intltool' 'groff' 'python2-setuptools')
 options=('!libtool' '!emptydirs' '!makeflags')
 source=("http://oss.oetiker.ch/rrdtool/pub/rrdtool-${pkgver}.tar.gz")
-md5sums=('4ff52cc44b935b02d2742e6875094da5')
+md5sums=('2f37eeb613bed11077470c9e2057010e')
 
 build() {
   cd ${pkgname}-${pkgver}
