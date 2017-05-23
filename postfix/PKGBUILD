@@ -1,12 +1,12 @@
 
 pkgname=postfix
 pkgver=3.2.0
-pkgrel=1
+pkgrel=2
 pkgdesc='Secure, fast, easy to administer alternative to Sendmail'
 url='http://www.postfix.org/'
 arch=('x86_64')
 license=('custom')
-depends=('pcre' 'libsasl' 'libmariadbclient' 'postgresql-libs' 'sqlite3' 'libldap' 'db' 'icu')
+depends=('pcre' 'libsasl' 'mariadb' 'postgresql-libs' 'sqlite3' 'libldap' 'db' 'icu')
 backup=('etc/postfix/'{access,aliases,canonical,generic,header_checks,main.cf,master.cf,relocated,transport,virtual})
 install=$pkgname.install
 source=("ftp://ftp.porcupine.org/mirrors/postfix-release/official/${pkgname}-${pkgver}.tar.gz"
@@ -42,7 +42,7 @@ package() {
 	cd ${pkgname}-${pkgver}
 
 	sh postfix-install -non-interactive \
-		install_root="${pkgdir}" \
+		install_root=${pkgdir} \
 		daemon_directory=/usr/lib/${pkgname} \
 		sample_directory=/etc/${pkgname}/sample \
 		manpage_directory=/usr/share/man \

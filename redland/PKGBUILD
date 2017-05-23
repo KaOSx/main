@@ -2,11 +2,11 @@
 pkgbase=redland
 pkgname=('redland' 'redland-storage-mysql' 'redland-storage-postgresql' 'redland-storage-virtuoso' 'redland-storage-sqlite')
 pkgver=1.0.17
-pkgrel=3
+pkgrel=4
 url="http://librdf.org/"
 license=("GPL")
 arch=('x86_64')
-makedepends=('rasqal' 'raptor' 'db' 'postgresql-libs' 'libmariadbclient' 'unixodbc' 'sqlite3')
+makedepends=('rasqal' 'raptor' 'db' 'postgresql-libs' 'mariadb' 'unixodbc' 'sqlite3')
 options=('!libtool')
 source=("http://download.librdf.org/source/$pkgname-$pkgver.tar.gz"
         'rpath.diff')
@@ -39,7 +39,7 @@ package_redland() {
 
 package_redland-storage-mysql() {
  pkgdesc="MySQL storage support for Redland"
- depends=('redland' 'libmariadbclient')
+ depends=('redland' 'mariadb')
 
   cd ${srcdir}/${pkgbase}-${pkgver}
   install -dm755 ${pkgdir}/usr/lib/redland

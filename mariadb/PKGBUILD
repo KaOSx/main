@@ -1,14 +1,20 @@
 
-pkgbase=mariadb
-pkgname=('libmariadbclient' 'mariadb-clients' 'mariadb')
+pkgname=mariadb
 pkgver=10.2.6
 _pkgver=10.2.6
 pkgrel=1
 arch=('x86_64')
 license=('GPL')
 url='http://mariadb.org/'
-makedepends=('cmake' 'openssl' 'zlib' 'lz4' 'pcre')
-options=('!libtool')
+pkgdesc='Open Source database to support today’s enterprise needs from OLTP to analytics from a single SQL compliant interface.'
+depends=('openssl' 'pcre' 'inetutils' 'lz4')
+makedepends=('cmake' 'zlib')
+options=('!libtool' 'emptydirs')
+conflicts=('libmariadbclient' 'mariadb-clients')
+provides=('libmariadbclient' 'mariadb-clients')
+replaces=('libmariadbclient' 'mariadb-clients')
+backup=('etc/mysql/my.cnf')
+install=mariadb.install
 source=("http://ftp.osuosl.org/pub/mariadb/mariadb-${_pkgver}/source/mariadb-${_pkgver}.tar.gz"
         'mariadb.service'
         'mariadb-post.sh'
@@ -22,7 +28,7 @@ build() {
   mkdir -p build
   cd build
 
-  cmake ../${pkgbase}-${_pkgver} \
+  cmake ../${pkgname}-${_pkgver} \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DMYSQL_DATADIR=/var/lib/mysql \
@@ -61,47 +67,7 @@ build() {
   make
 }
 
-package_libmariadbclient() {
-  pkgdesc='MariaDB client libraries'
-  depends=('openssl' 'pcre')
-  
-  cd build
-  for dir in include libmysql libmysqld libservices; do
-    make -C ${dir} DESTDIR=${pkgdir} install
-  done
-
-  install -d ${pkgdir}/usr/bin
-  install -m755 scripts/mysql_config ${pkgdir}/usr/bin/
-  install -d ${pkgdir}/usr/share/man/man1
-  for man in mysql_config mysql_client_test_embedded mysqltest_embedded; do
-    install -m644 ${srcdir}/${pkgbase}-${_pkgver}/man/${man}.1 ${pkgdir}/usr/share/man/man1/${man}.1
-  done
-}
-
-package_mariadb-clients() {
-  pkgdesc='MariaDB client tools'
-  depends=('libmariadbclient')
-  
-  cd build
-  make -C client DESTDIR=${pkgdir} install
-
-  # install man pages
-  install -d ${pkgdir}/usr/share/man/man1
-  for man in mysql mysqladmin mysqlcheck mysqldump mysqlimport mysqlshow mysqlslap; do
-    install -m644 ${srcdir}/${pkgbase}-${_pkgver}/man/${man}.1 ${pkgdir}/usr/share/man/man1/${man}.1
-  done
-
-  # provided by mariadb
-  rm ${pkgdir}/usr/bin/{mysql_{plugin,upgrade},mysqlbinlog,mysqltest}
-}
-
-package_mariadb() {
-  pkgdesc='Fast SQL database server, drop-in replacement for MySQL'
-  backup=('etc/mysql/my.cnf')
-  install=mariadb.install
-  depends=('mariadb-clients' 'inetutils' 'lz4')
-  options=('emptydirs')
-
+package() {
   cd build
   make DESTDIR=${pkgdir} install
 
@@ -109,16 +75,6 @@ package_mariadb() {
   install -Dm755 ${srcdir}/mariadb-post.sh ${pkgdir}/usr/bin/mysqld-post
   install -Dm644 ${srcdir}/mariadb.service ${pkgdir}/usr/lib/systemd/system/mysqld.service
   install -Dm644 ${srcdir}/mariadb-tmpfile.conf ${pkgdir}/usr/lib/tmpfiles.d/mysql.conf
-
-  # provided by libmariadbclient
-  rm ${pkgdir}/usr/bin/{mysql_config,mysql_client_test_embedded,mysqltest_embedded}
-  rm ${pkgdir}/usr/lib/libmysql*
-  rm -r ${pkgdir}/usr/include/
-  rm ${pkgdir}/usr/share/man/man1/{mysql_config,mysql_client_test_embedded,mysqltest_embedded}.1
-  
-  # provided by mariadb-clients
-  rm ${pkgdir}/usr/bin/{mysql,mysqladmin,mysqlcheck,mysqldump,mysqlimport,mysqlshow,mysqlslap}
-  rm ${pkgdir}/usr/share/man/man1/{mysql,mysqladmin,mysqlcheck,mysqldump,mysqlimport,mysqlshow,mysqlslap}.1
 
   # not needed
   rm -r ${pkgdir}/usr/{data,mysql-test,sql-bench}

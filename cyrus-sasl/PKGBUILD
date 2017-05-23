@@ -1,27 +1,27 @@
 
 pkgname=cyrus-sasl
 pkgver=2.1.26
-pkgrel=2
+pkgrel=3
 pkgdesc="Cyrus Simple Authentication Service Layer (SASL) library and daemon"
 arch=('x86_64')
 license=('custom')
-url="http://asg.web.cmu.edu/cyrus/download/"
-depends=('pam' 'krb5' 'libldap' 'db' 'postgresql-libs' 'libmariadbclient')
+url="http://cyrusimap.org/"
+depends=('pam' 'krb5' 'libldap' 'db' 'postgresql-libs' 'mariadb')
 conflicts=('cyrus-sasl-plugins')
 replaces=('cyrus-sasl-plugins')
 provides=('cyrus-sasl-plugins')
 backup=(etc/conf.d/saslauthd)
 source=("ftp://ftp.cyrusimap.org/cyrus-sasl/${pkgname}-${pkgver}.tar.gz"
-	'saslauthd.service'
-	'saslauthd.conf.d'
-	'tmpfiles.conf') 
+        'saslauthd.service'
+        'saslauthd.conf.d'
+        'tmpfiles.conf') 
 md5sums=('a7f4e5e559a0e37b3ffc438c9456e425'
          '3499dcd610ad1ad58e0faffde2aa7a23'
          '96d8a2f6189501f8044838e04d5cae7f'
          '45bb0192d2f188066240b9a66ee6365f')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
   ./configure --prefix=/usr \
     --mandir=/usr/share/man \
@@ -42,14 +42,14 @@ build() {
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
-  make DESTDIR="${pkgdir}" install 
+  cd ${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install 
 
-  install -Dm644 "${srcdir}/saslauthd.conf.d" "${pkgdir}/etc/conf.d/saslauthd"
-  install -Dm644 "${srcdir}/saslauthd.service" "${pkgdir}/usr/lib/systemd/system/saslauthd.service"
-  install -Dm644 "${srcdir}/tmpfiles.conf" "${pkgdir}/usr/lib/tmpfiles.d/saslauthd.conf"
+  install -Dm644 ${srcdir}/saslauthd.conf.d ${pkgdir}/etc/conf.d/saslauthd
+  install -Dm644 ${srcdir}/saslauthd.service ${pkgdir}/usr/lib/systemd/system/saslauthd.service
+  install -Dm644 ${srcdir}/tmpfiles.conf ${pkgdir}/usr/lib/tmpfiles.d/saslauthd.conf
 
-  install -Dm644 COPYING "${pkgdir}/usr/share/licenses/cyrus-sasl/COPYING"
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/cyrus-sasl/COPYING
   # part of libsasl
   rm -rf ${pkgdir}/usr/include
   rm -f ${pkgdir}/usr/lib/sasl2/libsasldb.*
