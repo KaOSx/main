@@ -1,8 +1,8 @@
 
 pkgbase=mariadb
 pkgname=('libmariadbclient' 'mariadb-clients' 'mariadb')
-pkgver=10.1.23
-_pkgver=10.1.23
+pkgver=10.2.6
+_pkgver=10.2.6
 pkgrel=1
 arch=('x86_64')
 license=('GPL')
@@ -13,7 +13,7 @@ source=("http://ftp.osuosl.org/pub/mariadb/mariadb-${_pkgver}/source/mariadb-${_
         'mariadb.service'
         'mariadb-post.sh'
         'mariadb-tmpfile.conf')
-md5sums=('1a7392cc05c7c249acd4495022719ca8'
+md5sums=('3d454cdadbd3208e1c9c23e5338a62b0'
          '41fe4303f88b7006743ee1218b332b54'
          'b79e65a5aa536e6b5bc60988eb0b78a2'
          '2fa6e456964d4ff5e6d4f9ff0126aed6')
@@ -64,8 +64,6 @@ build() {
 package_libmariadbclient() {
   pkgdesc='MariaDB client libraries'
   depends=('openssl' 'pcre')
-  conflicts=('libmysqlclient')
-  provides=("libmysqlclient=$-pkgver")
   
   cd build
   for dir in include libmysql libmysqld libservices; do
@@ -83,8 +81,6 @@ package_libmariadbclient() {
 package_mariadb-clients() {
   pkgdesc='MariaDB client tools'
   depends=('libmariadbclient')
-  conflicts=('mysql-clients')
-  provides=("mysql-clients=${_pkgver}")
   
   cd build
   make -C client DESTDIR=${pkgdir} install
@@ -104,8 +100,6 @@ package_mariadb() {
   backup=('etc/mysql/my.cnf')
   install=mariadb.install
   depends=('mariadb-clients' 'inetutils' 'lz4')
-  conflicts=('mysql' 'mytop')
-  provides=("mysql=${_pkgver}" 'mytop')
   options=('emptydirs')
 
   cd build

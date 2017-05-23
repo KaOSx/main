@@ -21,20 +21,8 @@ post_install(){
 post_upgrade(){
   getent group mysql >/dev/null 2>&1 || groupadd -g 89 mysql &>/dev/null
   getent passwd mysql >/dev/null 2>&1 || useradd -u 89 -g mysql -d $datadir -s /bin/false mysql &>/dev/null
-
-  if [[ "$(vercmp $2 5.5.25-4)" -lt 0 ]] && [[ -d /data ]]; then
-    for x in data/*; do
-      cp -r $x $datadir/
-    done
-    rm -rf data
-  fi
-
-  if [[ "$(vercmp $2 5.5.25-5)" -lt 0 ]]; then
-    echo ">> mysql.service has been renamed to mysqld.service to keep"
-    echo "    consistency with MySQL package." 
-  fi
   
-  if [[ "$(vercmp $2 10.1)" -lt 0 ]]; then
+  if [[ "$(vercmp $2 10.2)" -lt 0 ]]; then
     echo -e '\e[1;31m ==> This is a major MariaDB update'
     echo -e '\e[1;34m ==> make sure to restart mysqld.service: '
     echo -e '\e[1;34m ==> sudo systemctl restart mysqld.service '
