@@ -24,6 +24,12 @@ md5sums=('3d454cdadbd3208e1c9c23e5338a62b0'
          'b79e65a5aa536e6b5bc60988eb0b78a2'
          '2fa6e456964d4ff5e6d4f9ff0126aed6')
 
+prepare() {
+  cd ${pkgname}-${pkgver}
+  
+  sed -i 's|MARIADB_CLIENT_VERSION_PATCH "5"|MARIADB_CLIENT_VERSION_PATCH "6"|' libmariadb/CMakeLists.txt
+}
+         
 build() {
   mkdir -p build
   cd build
@@ -73,7 +79,8 @@ package() {
 
   install -Dm644 ${pkgdir}/usr/share/mysql/my-medium.cnf ${pkgdir}/etc/mysql/my.cnf
   install -Dm755 ${srcdir}/mariadb-post.sh ${pkgdir}/usr/bin/mysqld-post
-  install -Dm644 ${srcdir}/mariadb.service ${pkgdir}/usr/lib/systemd/system/mysqld.service
+  install -Dm644 ${srcdir}/mariadb.service ${pkgdir}/usr/lib/systemd/system/mariadb.service
+  ln -s ${pkgdir}/usr/lib/systemd/system/mariadb.service ${pkgdir}/usr/lib/systemd/system/mysqld.service
   install -Dm644 ${srcdir}/mariadb-tmpfile.conf ${pkgdir}/usr/lib/tmpfiles.d/mysql.conf
 
   # not needed
