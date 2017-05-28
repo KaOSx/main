@@ -2,14 +2,14 @@
 pkgname=glib-networking
 pkgver=2.50.0
 _pkgver=2.50
-pkgrel=2
+pkgrel=3
 pkgdesc="Network-related giomodules for glib"
 arch=('x86_64')
 url="http://www.gtk.org/"
 license=('GPL2')
-depends=('glib2' 'libproxy' 'gnutls' 'ca-certificates')
+depends=('glib2' 'libproxy' 'gnutls' 'ca-certificates' 'libtasn1')
 makedepends=('intltool')
-source=("https://download.gnome.org/sources/${pkgname}/${_pkgver}/${pkgname}-${pkgver}.tar.xz")
+source=("https://download.gnome.org/sources/glib-networking/${_pkgver}/${pkgname}-${pkgver}.tar.xz")
 md5sums=('4d06d0224646f274918b1cb6da9a07f6')
 
 build() {
