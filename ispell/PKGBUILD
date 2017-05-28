@@ -1,23 +1,23 @@
 
 pkgname=ispell
-pkgver=3.3.02
+pkgver=3.4.00
 pkgrel=1
 pkgdesc="Fast screen-oriented spelling checker that shows you your errors in the context of the original file"
 arch=('x86_64')
-url="http://ficus-www.cs.ucla.edu/geoff/ispell.html"
+url="https://ficus-www.cs.ucla.edu/geoff/ispell.html"
 license=('BSD')
 depends=('ncurses')
 options=('!makeflags')
 source=("http://fmg-www.cs.ucla.edu/geoff/tars/${pkgname}-${pkgver}.tar.gz"
         'license.txt'
         'getline.patch')
-md5sums=('12087d7555fc2b746425cd167af480fe'
+md5sums=('051c0946858e15797aed999b21276226'
          'bf51b6181b9914dedc266ba970bb7319'
          '1dca21c5d56405fe592175c3dde2fda2')
 
 build() {
 	cd ${pkgname}-${pkgver}
-	patch -p0 -i ${srcdir}/getline.patch
+	#patch -p0 -i ${srcdir}/getline.patch
 
 	sed -i -e 's/#undef USG/#define USG/' \
 	       -e 's|/usr/local|/usr|' \
