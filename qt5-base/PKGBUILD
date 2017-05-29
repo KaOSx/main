@@ -14,7 +14,7 @@ license=('GPL3' 'LGPL' 'FDL' 'custom')
 makedepends=('sqlite' 'xcb-util-keysyms' 'xcb-util-wm' 'xcb-util-image' 'xcb-util-renderutil'
          'glib2' 'dbus' 'fontconfig' 'libsm' 'libxrandr' 'libxv' 'libxi' 'unixodbc' 'libjpeg-turbo'
          'alsa-lib' 'xdg-utils' 'hicolor-icon-theme' 'desktop-file-utils' 'mesa' 'systemd'
-         'libxcursor' 'libxrender' 'libpng' 'mariadb' 'icu' 'libgl' 'libxfixes' 'libxinerama'
+         'libxcursor' 'libxrender' 'libpng' 'libmariadbclient' 'icu' 'libgl' 'libxfixes' 'libxinerama'
          'libxkbcommon' 'libinput' 'harfbuzz' 'mtdev'
          'postgresql-libs' 'cups' 'python2' 'gperf' 'ruby' 'pulseaudio' 'qt5-tools')
 options=('!libtool' 'debug')
@@ -29,11 +29,11 @@ build() {
     cd ${srcdir}/${_pkgfqn}
     
     # fix dbus issues, shown mostly in QtCurve, patch will be in 5.9.1
-    #patch -p1 -i ${srcdir}/f45c6c180463ccb6620e1d273a264f14a1204a93.diff
+    patch -p1 -i ${srcdir}/f45c6c180463ccb6620e1d273a264f14a1204a93.diff
     
-    sed -i 's|libs": "-lmysqlclient_r"|libs": "-lmariadb"|' src/sql/configure.json
-    sed -i 's|libs": "-lmysqlclient"|libs": "-lmariadb"|' src/sql/configure.json
-    sed -i 's|use_libmysqlclient_r|use_libmariadb|' src/sql/configure.json
+    #sed -i 's|libs": "-lmysqlclient_r"|libs": "-lmariadb"|' src/sql/configure.json
+    #sed -i 's|libs": "-lmysqlclient"|libs": "-lmariadb"|' src/sql/configure.json
+    #sed -i 's|use_libmysqlclient_r|use_libmariadb|' src/sql/configure.json
         
     unset QTDIR
     export PATH="$PWD/qtbase/bin:$PWD/qtrepotools/bin:$PATH"
