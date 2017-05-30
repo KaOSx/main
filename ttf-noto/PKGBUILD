@@ -1,20 +1,19 @@
 
 pkgbase=ttf-noto
 pkgname=('noto-fonts' 'noto-fonts-otf')
-pkgver=20150929
-pkgrel=2
+# version based on latest adjusted font in Noto-hinted.zip
+pkgver=20170403
+pkgrel=1
 arch=('x86_64')
 license=('SIL Open Font License (OFL)')
 url="https://www.google.com/get/noto/"
-source=("https://noto-website-2.storage.googleapis.com/pkgs/Noto-hinted.zip")
-md5sums=('1b8430f1d59f7492527123afec4ddea8')
+source=("https://noto-website.storage.googleapis.com/pkgs/Noto-hinted.zip")
+md5sums=('59ba4db1e832db3c241db1cb224a0087')
 
 package_noto-fonts-otf() {
   pkgdesc="Google developed font family which aims to support all languages with a harmonious look and feel, OTF fonts "
   depends=('fontconfig' 'xorg-fonts-encodings' 'xorg-font-utils')
   install=noto-fonts-otf.install
-  conflicts=ttf-noto
-  replaces=ttf-noto
     
   install -d $pkgdir/usr/share/fonts/OTF
   install -m0644 *.otf ${pkgdir}/usr/share/fonts/OTF/
