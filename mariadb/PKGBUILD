@@ -2,7 +2,7 @@
 pkgname=mariadb
 pkgver=10.1.24
 _pkgver=10.1.24
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 license=('GPL')
 url='http://mariadb.org/'
@@ -80,7 +80,7 @@ package() {
   install -Dm644 ${pkgdir}/usr/share/mysql/my-medium.cnf ${pkgdir}/etc/mysql/my.cnf
   install -Dm755 ${srcdir}/mariadb-post.sh ${pkgdir}/usr/bin/mysqld-post
   install -Dm644 ${srcdir}/mariadb.service ${pkgdir}/usr/lib/systemd/system/mariadb.service
-  ln -s ${pkgdir}/usr/lib/systemd/system/mariadb.service ${pkgdir}/usr/lib/systemd/system/mysqld.service
+  ln -s mariadb.service ${pkgdir}/usr/lib/systemd/system/mysqld.service
   install -Dm644 ${srcdir}/mariadb-tmpfile.conf ${pkgdir}/usr/lib/tmpfiles.d/mysql.conf
 
   # not needed
