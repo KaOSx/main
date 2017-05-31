@@ -1,6 +1,6 @@
 
 pkgname=libgusb
-pkgver=0.2.9
+pkgver=0.2.10
 pkgrel=1
 pkgdesc="GLib wrapper around libusb1"
 arch=('x86_64')
@@ -8,20 +8,20 @@ url="https://github.com/hughsie/libgusb"
 license=('LGPL2.1')
 depends=('systemd' 'libusb')
 makedepends=('gobject-introspection')
-source=("http://people.freedesktop.org/~hughsient/releases/$pkgname-$pkgver.tar.xz")
+source=("https://people.freedesktop.org/~hughsient/releases/${pkgname}-${pkgver}.tar.xz")
 options=('!libtool')
-md5sums=('d4251e958aee7d19e39f8021e457942f')
+md5sums=('5f2658e02fee6d7b484a40c4afc48c5c')
 
 build() {
-  cd "$srcdir/$pkgname-$pkgver"
+  cd ${pkgname}-${pkgver}
   
   ./configure --prefix=/usr --disable-static
   make
 }
 
 package() {
-  cd "$srcdir/$pkgname-$pkgver"
+  cd ${pkgname}-${pkgver}
   
-  make DESTDIR="$pkgdir" install
+  make DESTDIR=${pkgdir} install
 }
 
