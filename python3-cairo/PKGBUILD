@@ -1,28 +1,25 @@
 
 pkgname=python3-cairo
 _pkgname=pycairo
-pkgver=1.10.0
-pkgrel=4
+pkgver=1.13.3
+pkgrel=1
 pkgdesc="Python bindings for the cairo graphics library"
 arch=('x86_64')
-url="http://www.cairographics.org/pycairo"
+url="https://www.cairographics.org/pycairo"
 license=('LGPL3')
-depends=('python3' 'cairo>=1.10.0')
+depends=('python3' 'cairo')
 options=('!libtool')
-#source=("http://cairographics.org/releases/${_pkgname}-${pkgver}.tar.bz2"
-source=("git://anongit.freedesktop.org/pycairo")
-md5sums=('SKIP')
+source=("https://github.com/pygobject/pycairo/releases/download/v${pkgver}/${_pkgname}-${pkgver}.tar.gz")
+md5sums=('405cce9d6d987df924200dc6efb0696e')
 
 build() {
-  cd ${_pkgname}
+  cd ${_pkgname}-${pkgver}
   
-  python3 ./waf --version
-  PYTHON=/usr/bin/python3 ./waf configure --prefix=/usr
-  PYTHON=/usr/bin/python3 ./waf build $MAKEFLAGS
+  python3 setup.py build
 }
 
 package() {
-    cd ${_pkgname}
+  cd ${_pkgname}-${pkgver}
     
-    ./waf install --destdir=${pkgdir}/
+  python3 setup.py install --prefix=/usr --root=${pkgdir} --optimize=1 --skip-build
 }
