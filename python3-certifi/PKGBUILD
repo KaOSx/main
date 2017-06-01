@@ -1,0 +1,26 @@
+
+pkgname=python3-certifi
+_pkgname=python-certifi
+pkgver=2017.04.17
+pkgrel=1
+pkgdesc="Carefully curated collection of Root Certificates for validating the trustworthiness of SSL certificates."
+arch=('x86_64')
+license=('MPL2.0')
+url="https://certifi.io/en/latest/"
+depends=('python3')
+makedepends=('python3-setuptools')
+source=("https://github.com/certifi/python-certifi/archive/${pkgver}.tar.gz")
+md5sums=('34d86e84752e1870704228ef20868ba5')
+
+build() {
+   cd ${_pkgname}-${pkgver}
+   
+   python3 setup.py build
+}
+ 
+package() {
+   cd ${_pkgname}-${pkgver}
+   
+   python3 setup.py install --prefix=/usr --root=${pkgdir} --optimize=1 --skip-build
+   install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
