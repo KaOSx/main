@@ -1,0 +1,31 @@
+
+pkgname=libblockdev
+pkgver=2.7.1
+_pkgver=2.7-1
+pkgrel=1
+pkgdesc="C library supporting GObject introspection for manipulation of block devices."
+arch=('x86_64')
+url="http://www-rhstorage.rhcloud.com/projects/libblockdev"
+license=('LGPL')
+depends=('btrfs-progs' 'cryptsetup' 'dmraid' 'kmod' 'lvm2' 'nss' 'parted' 'python3' 'systemd' 
+         'util-linux')
+makedepends=('gobject-introspection')
+source=("https://github.com/rhinstaller/libblockdev/archive/${pkgname}-${_pkgver}.tar.gz")
+md5sums=('2696a1e91b200f19146635e45b176c97')
+
+build() {
+    cd ${pkgname}-${pkgname}-${_pkgver}
+    
+    ./autogen.sh
+    ./configure --prefix=/usr \
+        --with-python3=yes
+        
+    make
+}
+
+package() {
+    cd ${pkgname}-${pkgname}-${_pkgver}
+
+    make DESTDIR=${pkgdir}/ install
+}
+ 
