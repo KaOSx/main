@@ -1,6 +1,6 @@
 
 pkgname=udisks2
-pkgver=2.6.5
+pkgver=2.7.0
 pkgrel=1
 pkgdesc="Disk Management Service"
 arch=('x86_64')
@@ -12,7 +12,7 @@ makedepends=('intltool' 'docbook-xsl' 'python3')
 options=('!libtool')
 source=("https://github.com/storaged-project/udisks/releases/download/udisks-${pkgver}/udisks-${pkgver}.tar.bz2"
         '10-enable-mount.rules')
-md5sums=('1e46bdb613cbbc2d175b9df71e43cae8'
+md5sums=('6f4bb56daca7be136f6eb4832ad2b3a0'
          '5f6c7dcbc2e98b7814a91fbe7630ecfc')
 
 build() {
@@ -23,7 +23,7 @@ build() {
         --localstatedir=/var \
         --libexecdir=/usr/lib \
         --with-systemdsystemunitdir=/usr/lib/systemd/system \
-        --disable-static
+        --disable-static 
   make
 }
 
