@@ -1,15 +1,14 @@
 
 pkgname=mutagen
-pkgver=1.37
+pkgver=1.38
 pkgrel=1
 pkgdesc="An audio metadata tag reader and writer implemented in pure python"
 arch=('x86_64')
 url="https://mutagen.readthedocs.org/en/latest/"
 license=('GPL2')
 depends=('python2-setuptools')
-# wget https://bitbucket.org/lazka/mutagen/downloads/mutagen-1.30.tar.gz
-source=("https://bitbucket.org/lazka/mutagen/downloads/${pkgname}-${pkgver}.tar.gz")
-md5sums=('da993427407854c94d491824666293ba')
+source=("https://github.com/quodlibet/mutagen/releases/download/release-${pkgver}/${pkgname}-${pkgver}.tar.gz")
+md5sums=('c54443dfb8d4ac088eb2a0c4fd569772')
 
 package() {
   cd ${pkgname}-${pkgver}
