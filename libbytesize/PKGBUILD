@@ -1,0 +1,29 @@
+
+pkgname=libbytesize
+pkgver=0.10
+pkgrel=1
+pkgdesc="Tiny library that would facilitate the common operations with sizes in bytes."
+arch=('x86_64')
+url="https://github.com/rhinstaller/libbytesize"
+license=('LGPL')
+depends=('gmp' 'mpfr' 'pcre' 'python3-six')
+makedepends=('gettext')
+source=("https://github.com/rhinstaller/libbytesize/archive/${pkgname}-${pkgver}.tar.gz")
+md5sums=('c3f050baea4d66f858802f8c423b68c7')
+
+build() {
+    cd ${pkgname}-${pkgname}-${pkgver}
+    
+    ./autogen.sh
+    ./configure --prefix=/usr \
+        --with-python3=yes
+        
+    make
+}
+
+package() {
+    cd ${pkgname}-${pkgname}-${pkgver}
+
+    make DESTDIR=${pkgdir}/ install
+}
+ 
