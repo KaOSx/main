@@ -1,0 +1,95 @@
+From: Tor Arne Vestbø <tor.arne.vestbo@qt.io>
+Date: Fri, 2 Jun 2017 09:09:55 +0000 (+0200)
+Subject: xcb: Don't destroy foreign windows
+X-Git-Url: https://codereview.qt-project.org/gitweb?p=qt%2Fqtbase.git;a=commitdiff_plain;h=32390f49291308eb85dcbcaa898bbf825a2eb229;hp=e579c822c5bedf5e626e4eb72db3b49a4a4015dc
+
+xcb: Don't destroy foreign windows
+
+We can't rely on virtual dispatch in the destructor.
+
+Task-number: QTBUG-61140
+Change-Id: Ib1026caf126095778c24254775cb5a0bfecf3a38
+---
+
+diff --git a/src/plugins/platforms/xcb/qxcbintegration.cpp b/src/plugins/platforms/xcb/qxcbintegration.cpp
+index b414bee..8e3ee20 100644
+--- a/src/plugins/platforms/xcb/qxcbintegration.cpp
++++ b/src/plugins/platforms/xcb/qxcbintegration.cpp
+@@ -214,25 +214,9 @@ QPlatformWindow *QXcbIntegration::createPlatformWindow(QWindow *window) const
+     return xcbWindow;
+ }
+ 
+-class QXcbForeignWindow : public QXcbWindow
+-{
+-public:
+-    QXcbForeignWindow(QWindow *window, WId nativeHandle)
+-        : QXcbWindow(window) { m_window = nativeHandle; }
+-    ~QXcbForeignWindow() {}
+-    bool isForeignWindow() const override { return true; }
+-
+-protected:
+-    // No-ops
+-    void create() override {}
+-    void destroy() override {}
+-};
+-
+ QPlatformWindow *QXcbIntegration::createForeignWindow(QWindow *window, WId nativeHandle) const
+ {
+-    QXcbWindow *xcbWindow = new QXcbForeignWindow(window, nativeHandle);
+-    xcbWindow->create();
+-    return xcbWindow;
++    return new QXcbForeignWindow(window, nativeHandle);
+ }
+ 
+ #ifndef QT_NO_OPENGL
+diff --git a/src/plugins/platforms/xcb/qxcbwindow.cpp b/src/plugins/platforms/xcb/qxcbwindow.cpp
+index 289d072..d6c69d5 100644
+--- a/src/plugins/platforms/xcb/qxcbwindow.cpp
++++ b/src/plugins/platforms/xcb/qxcbwindow.cpp
+@@ -597,13 +597,17 @@ QXcbWindow::~QXcbWindow()
+     }
+ 
+     destroy();
++}
+ 
+-    if (isForeignWindow()) {
+-        if (connection()->mouseGrabber() == this)
+-            connection()->setMouseGrabber(Q_NULLPTR);
+-        if (connection()->mousePressWindow() == this)
+-            connection()->setMousePressWindow(Q_NULLPTR);
+-    }
++QXcbForeignWindow::~QXcbForeignWindow()
++{
++    // Clear window so that destroy() does not affect it
++    m_window = 0;
++
++    if (connection()->mouseGrabber() == this)
++        connection()->setMouseGrabber(nullptr);
++    if (connection()->mousePressWindow() == this)
++        connection()->setMousePressWindow(nullptr);
+ }
+ 
+ void QXcbWindow::destroy()
+diff --git a/src/plugins/platforms/xcb/qxcbwindow.h b/src/plugins/platforms/xcb/qxcbwindow.h
+index 5662809..f38343b 100644
+--- a/src/plugins/platforms/xcb/qxcbwindow.h
++++ b/src/plugins/platforms/xcb/qxcbwindow.h
+@@ -278,6 +278,18 @@ protected:
+     xcb_cursor_t m_currentBitmapCursor = XCB_CURSOR_NONE;
+ };
+ 
++class QXcbForeignWindow : public QXcbWindow
++{
++public:
++    QXcbForeignWindow(QWindow *window, WId nativeHandle)
++        : QXcbWindow(window) { m_window = nativeHandle; }
++    ~QXcbForeignWindow();
++    bool isForeignWindow() const override { return true; }
++
++protected:
++    void create() override {} // No-op
++};
++
+ QT_END_NAMESPACE
+ 
+ Q_DECLARE_METATYPE(QXcbWindow*)

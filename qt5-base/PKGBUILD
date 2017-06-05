@@ -7,7 +7,7 @@ pkgname=('qt5-base' 'qt5-base-docs')
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 url='http://qt-project.org/'
 license=('GPL3' 'LGPL' 'FDL' 'custom')
@@ -20,16 +20,24 @@ makedepends=('sqlite' 'xcb-util-keysyms' 'xcb-util-wm' 'xcb-util-image' 'xcb-uti
 options=('!libtool' 'debug')
 _pkgfqn="qtbase-opensource-src-${subver}"
 source=("${_qtmirror}/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz"
-        "https://github.com/qt/qtbase/commit/f45c6c180463ccb6620e1d273a264f14a1204a93.diff")
+        "https://github.com/qt/qtbase/commit/f45c6c180463ccb6620e1d273a264f14a1204a93.diff"
+        'qmenu.patch'
+        'xcb.patch')
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
-         '0cd16ad7bc6b6e1b833d710f6fa5cc36')
+         '0cd16ad7bc6b6e1b833d710f6fa5cc36'
+         '3b0aedde955f881648bf1ec231796de6'
+         'd3b9f7316fa777a4674da88a772a61fd')
 
 build() {
     cd ${srcdir}/${_pkgfqn}
     
     # fix dbus issues, shown mostly in QtCurve, patch will be in 5.9.1
     patch -p1 -i ${srcdir}/f45c6c180463ccb6620e1d273a264f14a1204a93.diff
+    # don't place wayland session pop-ups all over
+    patch -p1 -i ${srcdir}/qmenu.patch
+    # windows destroyed, example in sddm kcm
+    patch -p1 -i ${srcdir}/xcb.patch
     
     #sed -i 's|libs": "-lmysqlclient_r"|libs": "-lmariadb"|' src/sql/configure.json
     #sed -i 's|libs": "-lmysqlclient"|libs": "-lmariadb"|' src/sql/configure.json
