@@ -1,38 +1,36 @@
 
 pkgname=libblockdev
-pkgver=2.7.1
-_pkgver=2.7-1
-_commit=ed4c586b7cc0aa6ec9d1f3c90a91e0a82dd934ea
+pkgver=2.8.1
+_pkgver=2.8-1
 pkgrel=1
 pkgdesc="C library supporting GObject introspection for manipulation of block devices."
 arch=('x86_64')
 url="http://www-rhstorage.rhcloud.com/projects/libblockdev"
 license=('LGPL')
-depends=('btrfs-progs' 'cryptsetup' 'kmod' 'libbytesize' 'nss' 'parted' 
+depends=('btrfs-progs' 'cryptsetup' 'kmod' 'libbytesize' 'lvm2' 'nss' 'parted' 
          'python3' 'systemd' 'util-linux' 'volume_key')
-makedepends=('gobject-introspection' 'python3-six')
-#source=("https://github.com/rhinstaller/libblockdev/archive/${pkgname}-${_pkgver}.tar.gz")
-source=("https://github.com/rhinstaller/libblockdev/archive/ed4c586b7cc0aa6ec9d1f3c90a91e0a82dd934ea.zip")
-md5sums=('0843f02c71b5aac2e3c3e1b385877cfe')
+makedepends=('gobject-introspection' 'python3-six' 'dmraid')
+source=("https://github.com/rhinstaller/libblockdev/archive/${pkgname}-${_pkgver}.tar.gz")
+md5sums=('7199200a0596647e4592b838dcfce56b')
 
 build() {
-    #cd ${pkgname}-${pkgname}-${_pkgver}
-    cd ${pkgname}-${_commit}
+    cd ${pkgname}-${pkgname}-${_pkgver}
+    sed -i 's|-ldmraid ||' src/lib/Makefile.am
     
     ./autogen.sh
     ./configure --prefix=/usr \
-        --with-python3=yes \
-        --without-dm \
-        --without-lvm \
-        --without-lvm_dbus \
-        --without-mpath
+        --sysconfdir=/etc \
+        --with-python3=yes 
+        #--without-dm \
+        #--without-lvm \
+        #--without-lvm_dbus \
+        #--without-mpath
         
     make
 }
 
 package() {
-    #cd ${pkgname}-${pkgname}-${_pkgver}
-    cd ${pkgname}-${_commit}
+    cd ${pkgname}-${pkgname}-${_pkgver}
 
     make DESTDIR=${pkgdir}/ install
 }
