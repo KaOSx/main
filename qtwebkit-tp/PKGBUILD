@@ -1,9 +1,9 @@
 
 pkgname=qtwebkit-tp
-pkgver=5.6.2.3
-_pkgver=tp5
+pkgver=5.212.0
+_pkgver=5.212.0-alpha
 #_commit=8bed62ae51870074d3bc8f48791b19911bfc4d10
-pkgrel=4
+pkgrel=1
 pkgdesc='Cross-platform application and UI framework, QtWebkit files (revived branch)'
 arch=('x86_64')
 url='https://github.com/annulen/webkit'
@@ -18,25 +18,22 @@ replaces=('qt5-webkit')
 conflicts=('qt5-webkit')
 groups=('qt5')
 #source=("https://github.com/annulen/qtwebkit-snapshots/archive/${_commit}.zip"
-source=("https://github.com/annulen/webkit/releases/download/qtwebkit-${_pkgver}/qtwebkit-${_pkgver}.tar.xz"
-        "https://raw.githubusercontent.com/Alexpux/MINGW-packages/master/mingw-w64-qtwebkit/0012-install-additional-pri-files.patch"
-        "https://github.com/annulen/webkit/commit/afe18f7d13f5c825ce323bfb756b249c0e163554.diff")
-md5sums=('7fb7b992e7793d3e2827d4ad66c420cc'
-         'd3997143a1b57cbbfbd4364713fea91d'
-         '110e530f46d7c08097fc00703b3a4c27')
+source=("https://github.com/annulen/webkit/archive/qtwebkit-${_pkgver}.tar.gz"
+        "https://raw.githubusercontent.com/Alexpux/MINGW-packages/master/mingw-w64-qtwebkit/0012-install-additional-pri-files.patch")
+md5sums=('fd9743242efe4c2cd3ce2ae9627fac7d'
+         'd3997143a1b57cbbfbd4364713fea91d')
 
 prepare() {
-  cd qtwebkit-${_pkgver}
+  cd webkit-qtwebkit-${_pkgver}
 
   patch -p1 -i $srcdir/0012-install-additional-pri-files.patch
-  patch -p1 -i $srcdir/afe18f7d13f5c825ce323bfb756b249c0e163554.diff
 }
 
 build() {
   mkdir -p build
   cd build
   
-  cmake ../qtwebkit-${_pkgver} \
+  cmake ../webkit-qtwebkit-${_pkgver} \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DKDE_INSTALL_INCLUDEDIR=/usr/include/qt5 \
