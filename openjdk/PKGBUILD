@@ -1,11 +1,11 @@
 
 pkgname=('openjdk' 'openjdk-src')
 pkgbase='openjdk'
-_icedtea_release="3.3.0"
+_icedtea_release="3.4.0"
 _icedtea_jdkver="8"
 # ${srcdir}/build/ChangeLog for versions
-_openjdk_build="b14"
-_pkgver="8u121"
+_openjdk_build="b12"
+_pkgver="8u131"
 pkgver="${_pkgver}_${_openjdk_build}_${_icedtea_release}"
 pkgrel=1
 pkgdesc="An open-source implementation of the seventh edition of the Java SE Platform."
@@ -35,15 +35,15 @@ source=("http://icedtea.classpath.org/download/source/icedtea-${_icedtea_release
         'command_path.diff'
         'openjdk.profile.sh'
         'openjdk.profile.csh')
-md5sums=('86d61ef5d3abff3938be8bbb9e03e444'
-         '1bc8c5b63eca3918f1c4c934bf66b233'
-         '2b3559177fead9ccb56db07191102870'
-         '92612fa7cfecf27357743c932a091b9b'
-         '2a732b3f46453fb45b1a37b7c1ab3db8'
-         'b10431e5823ac859de631e183b1d0b67'
-         '2d1c5467d3c7818ee7ec81d37c1bbbd4'
-         '9cc3887801b7ad6c290c4adf4a742130'
-         'e600f285d00ee367b4129450c35f113a'
+md5sums=('0af777c25b01092c511262edf40f868b'
+         '68b8c18562214486c971071ba59413e6'
+         '7e4a9e896f4777fe96dd7e49ed507a0b'
+         'df3c1b88db55fdd9b793714d40930f9f'
+         '1d2130aaeb5b7546f70564e963a68379'
+         '9c7688f164d62d13b4f36e0db379d4c4'
+         '89f287e08058534ed5bf9198d025500f'
+         '65805818ca9ea2af450ac6265e90d509'
+         'b4d1be014037928badc0a28644511663'
          'ee1afda124d5927345014ab382ef581e'
          '986131efd2636724ae37870a5cca6d43'
          '05afd9c7fedcc05d4ebbb3427e068dba'
@@ -74,11 +74,7 @@ build() {
 
   cd "${srcdir}/build"
 
-  export ALT_PARALLEL_COMPILE_JOBS="${MAKEFLAGS/-j}"
-  export HOTSPOT_BUILD_JOBS="${ALT_PARALLEL_COMPILE_JOBS}"
-
   . /etc/profile.d/apache-ant.sh
-
 
   # Start the configuration and build step
   ./configure --prefix=/usr \
