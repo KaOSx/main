@@ -8,12 +8,8 @@ post_install() {
 }
 
 post_upgrade() {
-  if (( $(vercmp $2 0.10) < 0 )); then
-    # Get rid of old user and group
-    post_remove
-  fi
 
-  post_install
+  dbus-send --system --type=method_call --dest=org.freedesktop.DBus / org.freedesktop.DBus.ReloadConfig >/dev/null 2>&1
 }
 
 post_remove() {
@@ -23,4 +19,3 @@ post_remove() {
   true
 }
 
-# vim:set ts=2 sw=2 et:

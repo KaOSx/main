@@ -1,27 +1,26 @@
 
 pkgname=rtkit
 pkgver=0.11
-pkgrel=4
+pkgrel=5
 pkgdesc="Realtime Policy and Watchdog Daemon"
 arch=('x86_64')
-url="http://git.0pointer.de/?p=rtkit.git"
+url="http://0pointer.de/blog/projects/rtkit"
 license=('GPL' 'custom:BSD')
 depends=('dbus' 'polkit' 'systemd')
 install=rtkit.install
-source=("http://0pointer.de/public/$pkgname-$pkgver.tar.xz"
+source=("http://0pointer.de/public/${pkgname}-${pkgver}.tar.xz"
         'libsystemd.patch'
         'cgroup.patch')
 md5sums=('a96c33b9827de66033d2311f82d79a5d'
-         '889636fe576635be98f2fcfa0087309b'
+         '217997fc8f38ce45a798e66256e4f94d'
          '95195a70551057aca833da6bdbf2e35b')
 
 build() {
-  cd "$srcdir/$pkgname-$pkgver"
-  patch -p1 -i $srcdir/libsystemd.patch
-  patch -p1 -i $srcdir/cgroup.patch
+  cd ${pkgname}-${pkgver}
+  patch -p1 -i ${srcdir}/libsystemd.patch
+  patch -p1 -i ${srcdir}/cgroup.patch
   
   autoreconf -fi
-
   ./configure \
     --prefix=/usr \
     --sysconfdir=/etc \
@@ -32,14 +31,14 @@ build() {
 }
 
 package() {
-  cd "$srcdir/$pkgname-$pkgver"
-  make DESTDIR="$pkgdir" install
+  cd ${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install
 
-  mkdir -p "$pkgdir/usr/share/dbus-1/interfaces"
-  ./rtkit-daemon --introspect >"$pkgdir/usr/share/dbus-1/interfaces/org.freedesktop.RealtimeKit1.xml"
+  mkdir -p ${pkgdir}/usr/share/dbus-1/interfaces
+  ./rtkit-daemon --introspect >${pkgdir}/usr/share/dbus-1/interfaces/org.freedesktop.RealtimeKit1.xml
 
-  install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
-  sed -ne '4,25p' rtkit.c >"$pkgdir/usr/share/licenses/rtkit/COPYING"
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/$pkgname/LICENSE
+  sed -ne '4,25p' rtkit.c >${pkgdir}/usr/share/licenses/rtkit/COPYING
 }
 
 

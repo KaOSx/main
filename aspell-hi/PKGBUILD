@@ -1,24 +1,25 @@
 
 pkgname=aspell-hi
 pkgver=0.02
-pkgrel=1
+_pkgver=0.02-0
+pkgrel=2
 pkgdesc="Hindi dictionary for aspell"
 arch=('x86_64')
 url="http://aspell.net"
 license=('GPL')
 depends=('aspell')
-source=("ftp://ftp.gnu.org/gnu/aspell/dict/hi/aspell6-hi-${pkgver}-0.tar.bz2")
+source=("ftp://ftp.gnu.org/gnu/aspell/dict/hi/aspell6-hi-${_pkgver}.tar.bz2")
 md5sums=('4fd4aedbda587bbc4eecb9d3ea57591d')
 
 build() {
-  cd $srcdir//aspell6-hi-${pkgver}-0
+  cd aspell6-hi-${_pkgver}
   
   ./configure
   make
 }
 
 package() {
-  cd $srcdir//aspell6-hi-${pkgver}-0
+  cd aspell6-hi-${_pkgver}
 
   make DESTDIR=${pkgdir} install
 }

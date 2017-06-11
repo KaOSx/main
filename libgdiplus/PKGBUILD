@@ -1,29 +1,26 @@
 
 pkgname=libgdiplus
-pkgver=3.12
-pkgrel=2
-pkgdesc="An Open Source Implementation of the GDI+ API"
+pkgver=4.2
+pkgrel=1
+pkgdesc="Open Source Implementation of the GDI+ API"
 arch=('x86_64')
 license=('MPL' 'LGPL')
-url="http://www.mono-project.com"
+url="https://www.mono-project.com"
 depends=('libtiff' 'cairo' 'giflib' 'glib2' 'libexif')
 makedepends=('pkgconfig')
 options=('!libtool')
-source=("http://download.mono-project.com/sources/libgdiplus/${pkgname}-${pkgver}.tar.gz"
-       'giflib5.patch')
-md5sums=('b8fd78c2adce16498354c2476a248d98'
-         '709db1818be2242de0e5c347e4483b04')
+source=("https://download.mono-project.com/sources/libgdiplus/${pkgname}-${pkgver}.tar.gz")
+md5sums=('3e68075aa0911d5ebc2b3739e85af0ea')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
-  patch -p1 -i "${srcdir}/giflib5.patch"
+  cd ${pkgname}-${pkgver}
   
   ./configure --prefix=/usr --with-cairo=system
   make 
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
-  make DESTDIR="${pkgdir}" install 
+  make DESTDIR=${pkgdir} install 
 }

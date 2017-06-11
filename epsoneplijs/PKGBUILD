@@ -1,41 +1,39 @@
 
 pkgname=epsoneplijs
 pkgver=0.4.1
-pkgrel=2
+pkgrel=3
 pkgdesc="Printer driver which gives ghostscript the ability to print to Epson EPL-5700L, EPL-5800L, EPL-5900L, EPL-6100L and EPL-6200L laser printers."
 arch=('x86_64')
 license=('custom')
 url="http://sourceforge.net/projects/epsonepl/"
 depends=('cups' 'ghostscript' 'libusb' 'cups-filters')
-source=("http://sourceforge.net/projects/epsonepl/files/epsonepl/${pkgver}/${pkgname}-${pkgver}.tgz" 
+source=("https://sourceforge.net/projects/epsonepl/files/epsonepl/${pkgver}/${pkgname}-${pkgver}.tgz" 
         'LICENSE' )
 md5sums=('0840e15c6a96584138d9a1045c16997d'
          '13d64edc89b1551e4c88be3b21d4a39a')
 
 build() {
-    cd $srcdir/$pkgname-$pkgver
+    cd ${pkgname}-${pkgver}
+    
     ./configure --prefix=/usr --with-libusb
     make
 }
 
 package() {
-    cd $srcdir/$pkgname-$pkgver
-    mkdir -p $pkgdir/usr/bin
-    make prefix=$pkgdir/usr install
+    cd ${pkgname}-${pkgver}
+    mkdir -p ${pkgdir}/usr/bin
+    make prefix=${pkgdir}/usr install
 
-    # install ppd
-    mkdir -p $pkgdir/usr/share/foomatic/db/source/driver/
-    cp $srcdir/$pkgname-$pkgver/foomatic/driver/*.* $pkgdir/usr/share/foomatic/db/source/driver/
-    mkdir -p $pkgdir/usr/share/foomatic/db/source/opt/
-    cp $srcdir/$pkgname-$pkgver/foomatic/opt/*.* $pkgdir/usr/share/foomatic/db/source/opt/
-    mkdir -p $pkgdir/usr/share/foomatic/db/source/printer/
-    cp $srcdir/$pkgname-$pkgver/foomatic/printer/*.* $pkgdir/usr/share/foomatic/db/source/printer/
-    mkdir -p $pkgdir/usr/share/foomatic/db/source/PPD/Epson/
-    cp $srcdir/$pkgname-$pkgver/foomatic_PPDs/Epson-EPL-*-cups.ppd.gz $pkgdir/usr/share/foomatic/db/source/PPD/Epson/
-    mkdir -p $pkgdir/usr/share/cups/model/
-    cp -av $srcdir/$pkgname-$pkgver/foomatic_PPDs/Epson-EPL-*-cups.ppd.gz $pkgdir/usr/share/cups/model/
+    mkdir -p ${pkgdir}/usr/share/foomatic/db/source/driver/
+    cp foomatic/driver/*.* ${pkgdir}/usr/share/foomatic/db/source/driver/
+    mkdir -p ${pkgdir}/usr/share/foomatic/db/source/opt/
+    cp foomatic/opt/*.* ${pkgdir}/usr/share/foomatic/db/source/opt/
+    mkdir -p ${pkgdir}/usr/share/foomatic/db/source/printer/
+    cp foomatic/printer/*.* ${pkgdir}/usr/share/foomatic/db/source/printer/
+    mkdir -p ${pkgdir}/usr/share/foomatic/db/source/PPD/Epson/
+    cp foomatic_PPDs/Epson-EPL-*-cups.ppd.gz ${pkgdir}/usr/share/foomatic/db/source/PPD/Epson/
+    mkdir -p ${pkgdir}/usr/share/cups/model/
+    cp -av foomatic_PPDs/Epson-EPL-*-cups.ppd.gz ${pkgdir}/usr/share/cups/model/
 
-    # install license
-    cd $startdir
-    install -D -m 644 LICENSE $pkgdir/usr/share/licenses/$pkgname/LICENSE
+    install -D -m 644 ../LICENSE ${pkgdir}/usr/share/licenses/$pkgname/LICENSE
 }

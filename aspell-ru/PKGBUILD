@@ -1,25 +1,26 @@
 
 pkgname=aspell-ru
 pkgver=0.99f7
-pkgrel=1
+_pkgver=0.99f7-1
+pkgrel=2
 pkgdesc="Russian dictionary for aspell"
 arch=('i686' 'x86_64')
 url="http://aspell.net/"
 license=('custom')
 depends=('aspell')
-source=("ftp://ftp.gnu.org/gnu/aspell/dict/ru/aspell6-ru-$pkgver-1.tar.bz2")
+source=("ftp://ftp.gnu.org/gnu/aspell/dict/ru/aspell6-ru-${_pkgver}.tar.bz2")
 md5sums=('c4c98eaa5e77ad3adccbc5c96cb57cb3')
 
 build() {
-  cd $srcdir/aspell6-ru-$pkgver-1
+  cd aspell6-ru-${_pkgver}
   
   ./configure
   make
 }
 
 package() {
-  cd $srcdir/aspell6-ru-$pkgver-1
-  make DESTDIR=$pkgdir install
+  cd aspell6-ru-${_pkgver}
+  make DESTDIR=${pkgdir} install
   
-  install -D -m644 Copyright $pkgdir/usr/share/licenses/$pkgname/LICENSE
+  install -D -m644 Copyright ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }

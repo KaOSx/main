@@ -1,24 +1,25 @@
 
 pkgname=aspell-gu
 pkgver=0.03
-pkgrel=1
+_pkgver=0.03-0
+pkgrel=2
 pkgdesc="Gujarati dictionary for aspell"
 arch=('x86_64')
 url="http://aspell.net"
 license=('GPL')
 depends=('aspell')
-source=("ftp://ftp.gnu.org/gnu/aspell/dict/gu/aspell6-gu-${pkgver}-0.tar.bz2")
+source=("ftp://ftp.gnu.org/gnu/aspell/dict/gu/aspell6-gu-${_pkgver}.tar.bz2")
 md5sums=('dd9e466b23ced916d6bb89decc919976')
 
 build() {
-  cd $srcdir//aspell6-gu-${pkgver}-0
+  cd aspell6-gu-${_pkgver}
   
   ./configure
   make
 }
 
 package() {
-  cd $srcdir//aspell6-gu-${pkgver}-0
+  cd aspell6-gu-${_pkgver}
 
   make DESTDIR=${pkgdir} install
 }
