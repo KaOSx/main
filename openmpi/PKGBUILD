@@ -1,6 +1,7 @@
 
 pkgname=openmpi
-pkgver=1.10.7
+pkgver=2.1.1
+_pkgver=2.1
 pkgrel=1
 pkgdesc="High performance message passing library (MPI)"
 arch=('x86_64')
@@ -9,28 +10,29 @@ license=('custom')
 depends=('gcc' 'openssh' 'valgrind' 'libltdl' 'hwloc')
 makedepends=('inetutils')
 options=('!libtool')
-source=("https://www.open-mpi.org/software/ompi/v1.10/downloads/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('c87c613f9acb1a4eee21fa1ac8042579')
+source=("https://www.open-mpi.org/software/ompi/v${_pkgver}/downloads/${pkgname}-${pkgver}.tar.bz2")
+md5sums=('ae542f5cf013943ffbbeb93df883731b')
 
 build() {
    cd ${pkgname}-${pkgver}
 
    ./configure --prefix=/usr \
-               --sysconfdir=/etc/${pkgname} \
-               --mandir=/usr/share/man \
-               --enable-mpi-fortran=all \
-               --libdir=/usr/lib/${pkgname} \
-               --with-threads=posix \
-               --enable-smp-locks \
-               --with-valgrind \
-               --enable-memchecker \
-               --enable-debug \
-               --enable-pretty-print-stacktrace \
-               --without-slurm \
-               --with-hwloc=/usr \
-               --with-libltdl=/usr \
-               FC=/usr/bin/gfortran \
-               LDFLAGS="$LDFLAGS -Wl,-z,noexecstack"
+        --sysconfdir=/etc/${pkgname} \
+        --mandir=/usr/share/man \
+        --enable-mpi-fortran=all \
+        --libdir=/usr/lib/${pkgname} \
+        --enable-mpi-cxx \
+        --enable-builtin-atomics \
+        --enable-mpi-thread-multiple \
+        --with-valgrind \
+        --enable-memchecker \
+        --enable-debug \
+        --enable-pretty-print-stacktrace \
+        --without-slurm \
+        --with-hwloc=/usr \
+        --with-libltdl=/usr \
+        FC=/usr/bin/gfortran \
+        LDFLAGS="$LDFLAGS -Wl,-z,noexecstack"
 
    make
 }
@@ -43,9 +45,6 @@ package() {
    for i in ompi-c.pc ompi-cxx.pc ompi-f77.pc ompi-f90.pc ompi.pc; do
       ln -sf /usr/lib/openmpi/pkgconfig/$i ${pkgdir}/usr/lib/pkgconfig/
    done
-
-   # texlive conflicts
-   mv ${pkgdir}/usr/bin/otfinfo{,mpi}
 
    install -d -m 755 ${pkgdir}/etc/ld.so.conf.d
    echo /usr/lib/${pkgname} > ${pkgdir}/etc/ld.so.conf.d/${pkgname}.conf
