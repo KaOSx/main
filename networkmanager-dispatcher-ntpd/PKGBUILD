@@ -1,7 +1,7 @@
 
 pkgname=networkmanager-dispatcher-ntpd
 pkgver=1.0
-pkgrel=7
+pkgrel=8
 pkgdesc="Dispatcher script for ntpd."
 arch=('x86_64')
 license=('BSD')
@@ -11,6 +11,6 @@ source=("10-ntpd")
 md5sums=('2eb9dd950cd7b00c4c523de6a1b46517')
 
 package() {
-  install -Dm700 "${srcdir}/10-ntpd" "${pkgdir}/etc/NetworkManager/dispatcher.d/10-ntpd"
+  install -Dm700 ${srcdir}/10-ntpd ${pkgdir}/etc/NetworkManager/dispatcher.d/10-ntpd
 }
 

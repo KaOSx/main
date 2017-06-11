@@ -2,7 +2,7 @@
 pkgname=gfxboot
 pkgver=4.5.6
 _pkgver=1.1
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 license=('GPL')
 pkgdesc="Graphical Boot Logo tool"
@@ -12,14 +12,14 @@ makedepends=('rpmextract')
 install=gfxboot.install
 options=('docs')
 source=("http://download.opensuse.org/source/distribution/13.2/repo/oss/suse/src/${pkgname}-${pkgver}-${_pkgver}.src.rpm"
-	'gfxboot.html'
-	'isolinux.patch')
+        'gfxboot.html'
+        'isolinux.patch')
 md5sums=('30435f328f89b4afee69d2f9f4b48db3'
          'f824c5bc2f716f8029677cae6956c1c7'
          '224289270f7ea288aaded3272a9c53f4')
 
 build() {
-  cd "${srcdir}"
+  cd ${srcdir}
     
   rpmextract.sh ${pkgname}-${pkgver}-${_pkgver}.src.rpm 
   

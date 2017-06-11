@@ -1,7 +1,7 @@
 
 pkgname=mime-types
 pkgver=9
-pkgrel=2
+pkgrel=3
 pkgdesc='Provides /etc/mime.types'
 url='http://www.gentoo.org/'
 license=('GPL2')
@@ -11,7 +11,7 @@ source=("http://mirrors.kernel.org/gentoo/distfiles/${pkgname}-${pkgver}.tar.bz2
 md5sums=('75c88966b6516cf085125072dc8b39e5')
 
 package() {
-	cd "${srcdir}/${pkgname}-${pkgver}"
+    cd ${pkgname}-${pkgver}
 
-	install -Dm644 mime.types "${pkgdir}"/etc/mime.types
+    install -Dm644 mime.types ${pkgdir}/etc/mime.types
 }
