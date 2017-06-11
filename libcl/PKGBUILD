@@ -1,7 +1,7 @@
 
 pkgname=libcl
-pkgver=1.1.11
-_pkgver=349.16
+pkgver=1.1.12
+_pkgver=381.22
 pkgrel=1
 pkgdesc="OpenCL library and ICD loader from NVIDIA"
 arch=('x86_64')
@@ -10,8 +10,8 @@ depends=('gcc-libs')
 license=('custom')
 options=('!strip')
 _pkg="NVIDIA-Linux-x86_64-${_pkgver}-no-compat32"
-source=("ftp://download.nvidia.com/XFree86/Linux-x86_64/${_pkgver}/${_pkg}.run")
-md5sums=('3e04208affde8c35a8b96975eec0486b')
+source=("https://us.download.nvidia.com/XFree86/Linux-x86_64/${_pkgver}/${_pkg}.run")
+md5sums=('0e9590d48703c8baa034b6f0f8bbf1e5')
 
 build() {
     cd $srcdir
@@ -20,7 +20,7 @@ build() {
 }
 
 package() {
-    cd $srcdir/${_pkg}
+    cd ${_pkg}
     
     install -D -m755 libOpenCL.so.1.0.0 $pkgdir/usr/lib/libOpenCL.so.1.0.0
     ln -s /usr/lib/libOpenCL.so.1.0.0 $pkgdir/usr/lib/libOpenCL.so.1

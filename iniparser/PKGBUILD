@@ -1,6 +1,6 @@
 
 pkgname=iniparser
-pkgver=3.2
+pkgver=4.0
 pkgrel=1
 pkgdesc="A free stand-alone ini file parsing library written in portable ANSI C"
 arch=('x86_64')
@@ -8,30 +8,33 @@ url="http://ndevilla.free.fr/iniparser/"
 license=('MIT')
 depends=('glibc')
 makedepends=('chrpath')
-source=("https://github.com/ndevilla/iniparser/archive/v$pkgver.tar.gz")
-md5sums=('9befdf522f8792cb1c736215260a5122')
+source=("https://github.com/ndevilla/iniparser/archive/v${pkgver}.tar.gz"
+        "https://github.com/ndevilla/iniparser/commit/5e79bf7cc786282635eb0a5a2334017d811ec1d3.diff")
+md5sums=('94c7278f8d22de1a31320219b27634b0'
+         '4a80cb632ddc3d4d36a89e8ab4f35168')
 
 build() {
-  cd $srcdir/$pkgname-$pkgver
+  cd ${pkgname}-${pkgver}
+  patch -p1 -i ${srcdir}/5e79bf7cc786282635eb0a5a2334017d811ec1d3.diff
   
   make
 }
 
 check() {
-  cd $srcdir/$pkgname-$pkgver
+  cd ${pkgname}-${pkgver}
   
   make check
 }
 
 package() {
-  cd $srcdir/$pkgname-$pkgver
+  cd ${pkgname}-${pkgver}
   
-  install -Dm644 src/iniparser.h $pkgdir/usr/include/iniparser.h
-  install -Dm644 src/dictionary.h $pkgdir/usr/include/dictionary.h
-  install -Dm644 libiniparser.a $pkgdir/usr/lib/libiniparser.a
-  install -Dm644 libiniparser.so.0 $pkgdir/usr/lib/libiniparser.so.0
-  install -Dm644 LICENSE $pkgdir/usr/share/licenses/iniparser/LICENSE
+  install -Dm644 src/iniparser.h ${pkgdir}/usr/include/iniparser.h
+  install -Dm644 src/dictionary.h ${pkgdir}/usr/include/dictionary.h
+  install -Dm644 libiniparser.a ${pkgdir}/usr/lib/libiniparser.a
+  install -Dm644 libiniparser.so.0 ${pkgdir}/usr/lib/libiniparser.so.0
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/iniparser/LICENSE
   
-  ln -sf libiniparser.so.0 $pkgdir/usr/lib/libiniparser.so
-  chrpath -d $pkgdir/usr/lib/libiniparser.so
+  ln -sf libiniparser.so.0 ${pkgdir}/usr/lib/libiniparser.so
+  chrpath -d ${pkgdir}/usr/lib/libiniparser.so
 }

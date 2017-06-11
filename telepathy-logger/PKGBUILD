@@ -1,20 +1,19 @@
 
 pkgname=telepathy-logger
 pkgver=0.8.2
-pkgrel=1
+pkgrel=2
 pkgdesc="Telepathy framework logging daemon"
 arch=('x86_64')
-url="http://telepathy.freedesktop.org/wiki/Logger"
+url="https://telepathy.freedesktop.org/wiki/Logger"
 license=('LGPL2.1')
 depends=('telepathy-glib' 'sqlite3' 'libxml2' 'dconf')
 makedepends=('intltool' 'gobject-introspection' 'libxslt')
-install=${pkgname}.install
 options=('!libtool')
-source=("http://telepathy.freedesktop.org/releases/telepathy-logger/${pkgname}-${pkgver}.tar.bz2")
+source=("https://telepathy.freedesktop.org/releases/telepathy-logger/${pkgname}-${pkgver}.tar.bz2")
 md5sums=('c2f6a31c76cbdf8790500cf4f872ba71')
 
 build() {
-  cd "$srcdir/$pkgname-$pkgver"
+  cd ${pkgname}-${pkgver}
 
   ./configure --prefix=/usr \
     --sysconfdir=/etc \
@@ -25,9 +24,9 @@ build() {
 }
 
 package() {
-  cd "$srcdir/$pkgname-$pkgver"
+  cd ${pkgname}-${pkgver}
   
-  make DESTDIR="$pkgdir/" install
-  rm -r $pkgdir/usr/share/gtk-doc
+  make DESTDIR=${pkgdir}/ install
+  rm -r ${pkgdir}/usr/share/gtk-doc
 }
 
