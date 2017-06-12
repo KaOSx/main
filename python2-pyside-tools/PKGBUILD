@@ -1,18 +1,20 @@
 
 pkgname=python2-pyside-tools
-pkgver=0.2.15
+_pkgname=pyside2-tools
+pkgver=2.0.0
+_commit=f68388cf547c0d63a5d4a145f65aa9fa90529d52
 pkgrel=1
 arch=('x86_64')
 license=('LGPL')
 url='https://qt-project.org/wiki/PySide'
 pkgdesc="PySide development tools (pyuic and pyrcc)"
-depends=('python2' 'qt' 'python2-pyside')
-makedepends=('cmake' 'shiboken')
-source=("https://github.com/PySide/Tools/archive/${pkgver}.tar.gz")
-md5sums=('e542b9536bd9d35599ede225c9311cc8')
+depends=('python2-pyside')
+makedepends=('cmake')
+source=("https://github.com/pyside/pyside2-tools/archive/${_commit}.zip")
+md5sums=('c1a5f4f1767138fd0710552a19738211')
 
 build() {
-    cd ${srcdir}/Tools-${pkgver}
+    cd ${_pkgname}-${_commit}
 
     mkdir -p build
     cd build
@@ -23,13 +25,9 @@ build() {
 }
 
 package() {
-    cd ${srcdir}/Tools-${pkgver}/build
+    cd ${_pkgname}-${_commit}/build
+    
     make DESTDIR=${pkgdir} install
-
-    rm -rf ${pkgdir}/usr/lib/python2.7/site-packages/pysideuic/{port_v3,pyside-uic.1}
-
-    python2 -m compileall ${pkgdir}/usr/lib/python2.7/site-packages/pysideuic/
-    python2 -O -m compileall ${pkgdir}/usr/lib/python2.7/site-packages/pysideuic/
 }
 
 

@@ -1,32 +1,35 @@
 
 pkgname=python2-pyside
-_pkgname=pyside
+_pkgname=pyside2-setup
 pkgver=2.0.0
+_commit=2635541daec35024390dc973ff16e7603c94ce39
 pkgrel=1
 pkgdesc="Provides LGPL Qt bindings for Python and related tools for binding generation."
 arch=('x86_64')
 license=('LGPL')
 url="https://wiki.qt.io/PySide2"
-depends=('phonon-qt5' 'qtwebkit-tp' 'qt5-script' 'qt5-svg' 'qt5-tools' 'qt5-websockets' 'shiboken')
-makedepends=('cmake')
-source=("git://code.qt.io/pyside/pyside.git")
-md5sums=('SKIP')
+depends=('phonon-qt5' 'qt5-script' 'qt5-svg' 'qt5-tools' 'qt5-websockets' 'qt5-multimedia'
+         'qt5-speech' 'qtwebengine' 'shiboken') #'qtwebkit-tp' 
+makedepends=('cmake' 'clang' 'python2-sphinx')
+#source=("git://code.qt.io/pyside/pyside-setup.git")
+source=("https://github.com/pyside/pyside2-setup/archive/${_commit}.zip")
+md5sums=('5a5c2425c1e79404a282802a13e1ab87')
 
 build () {
-  cd ${_pkgname}
-  mkdir -p build 
-  cd build
-  
-  CXXFLAGS="-std=c++11"
-  
-  cmake .. -DCMAKE_INSTALL_PREFIX=/usr \
-           -DCMAKE_BUILD_TYPE=Release \
-           -DBUILD_TESTS=OFF 
-  make
+    cd ${_pkgname}-${_commit}/sources/pyside2
+    mkdir -p build
+    cd build
+
+    cmake ../ \
+        -DCMAKE_INSTALL_PREFIX=/usr \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DBUILD_TESTS=OFF \
+        -DUSE_PYTHON_VERSION=2
+    make
 }
 
 package() {
-    cd ${_pkgname}/build
+    cd ${_pkgname}-${_commit}/sources/pyside2/build
     
-    make DESTDIR=$pkgdir install
+    make DESTDIR=${pkgdir} install
 }
