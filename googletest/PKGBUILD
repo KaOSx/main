@@ -1,0 +1,32 @@
+
+pkgname=googletest
+pkgver=1.8.0
+pkgrel=1
+pkgdesc='Googles C++ test framework'
+url='https://github.com/google/googletest/'
+arch=('x86_64')
+license=('BSD')
+depends=('gcc-libs' 'sh')
+makedepends=('cmake' 'python2')
+options=('!makeflags')
+source=("https://github.com/google/googletest/archive/release-${pkgver}.tar.gz")
+md5sums=('16877098823401d1bf2ed7891d7dce36')
+
+build() {
+  mkdir -p build
+  cd build
+  
+  cmake ../${pkgname}-release-${pkgver} \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DBUILD_SHARED_LIBS=ON \
+    -DCMAKE_SKIP_RPATH=ON
+  make
+}
+
+package() {
+  cd build
+  make DESTDIR=${pkgdir} install
+  
+  install -Dm 644 ../${pkgname}-release-${pkgver}/googletest/LICENSE ${pkgdir}/usr/share/licenses/${pkgname}
+}
+
