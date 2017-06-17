@@ -1,13 +1,13 @@
 
-_extramodules=extramodules-4.10
+_extramodules=extramodules-4.11
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=('nvidia-340xx' 'khd-nvidia-340xx')
 pkgver=340.102
-pkgrel=7
+pkgrel=8
 arch=('x86_64')
 url="http://www.nvidia.com/"
-makedepends=('linux-headers' 'linux>=4.10' 'linux<4.11' "nvidia-340xx-utils=${pkgver}")
+makedepends=('linux-headers' 'linux>=4.11' 'linux<4.12' "nvidia-340xx-utils=${pkgver}")
 license=('custom')
 
 _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
@@ -17,7 +17,7 @@ source=("ftp://download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
         'linux-4.10.patch')
 md5sums=('81e720487caa2823586b32659da9acc1'
          '62d0cdb856cfae64753c0f3acf729d47'
-         'fe306bc9c3798a6a922931d6dea7d0e9')
+         '0f727318cbdc384aba14771bb63cc2d7')
 
 build() {
     cd "${srcdir}"
