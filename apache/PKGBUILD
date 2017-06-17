@@ -1,11 +1,11 @@
 
 pkgname=apache
-pkgver=2.4.25
+pkgver=2.4.26
 pkgrel=1
 pkgdesc='A high performance Unix-based HTTP server'
 arch=('x86_64')
 options=('!libtool')
-url='http://www.apache.org/dist/httpd'
+url='https://www.apache.org/dist/httpd'
 license=('Apache')
 backup=(etc/httpd/conf/httpd.conf
         etc/httpd/conf/extra/httpd-{autoindex,dav,default,info,languages}.conf
@@ -15,43 +15,28 @@ backup=(etc/httpd/conf/httpd.conf
 depends=('openssl' 'zlib' 'apr-util' 'pcre' 'systemd')
 makedepends=('apr')
 install=${pkgname}.install
-source=("http://www.apache.org/dist/httpd/httpd-${pkgver}.tar.bz2"
+source=("https://www.apache.org/dist/httpd/httpd-${pkgver}.tar.bz2"
         'httpd.logrotate'
         'kaos.layout'
         'httpd.service'
         'httpd-tmpfile.conf')
-md5sums=('2826f49619112ad5813c0be5afcc7ddb'
+md5sums=('d4d47749a44461cb2e6c9d78a22b522b'
          '6f0c3acecf1160fa6fb6970abce2d93b'
          '7511248625ccaaf3229a320167cdc5d9'
          '06abba73227c1cae7367207e3dacc5e2'
          '110a056408252de4356be7f53872b11d')
 
 build() {
-  cd "${srcdir}/httpd-${pkgver}"
-
-  # apply the monolithic ITK patch
-  # see http://mpm-itk.sesse.net/
-  #patch -p1 -i "${srcdir}/apache2.4-mpm-itk-2.4.2-01.patch"
+  cd httpd-${pkgver}
 
   # set default user
   sed -e 's#User daemon#User http#' \
       -e 's#Group daemon#Group http#' \
       -i docs/conf/httpd.conf.in 
 
-  cat "${srcdir}/kaos.layout" >> config.layout
+  cat ${srcdir}/kaos.layout >> config.layout
 
-  #for mpm in prefork worker itk; do
-   # if [ "${mpm}" = 'itk' ]; then
-    #  mkdir -p server/mpm/experimental/itk
-     # cp -r server/mpm/prefork/* server/mpm/experimental/itk/ 
-      #mv server/mpm/experimental/itk/prefork.c server/mpm/experimental/itk/itk.c 
-      #autoconf 
-    #fi
-
-    #mkdir -p "build-${mpm}"
-    #pushd "build-${mpm}"
-
-    "${srcdir}/httpd-${pkgver}/configure" \
+    ${srcdir}/httpd-${pkgver}/configure \
         --enable-layout=KaOS \
         --enable-mpms-shared=all \
         --enable-modules=all \
@@ -76,32 +61,23 @@ build() {
         #--with-mpm="${mpm}"
 
     make
-
-    #popd >/dev/null
- # done
 }
 
 package() {
-  cd "${srcdir}/httpd-${pkgver}"
-  make DESTDIR="${pkgdir}" install
+  cd httpd-${pkgver}
+  make DESTDIR=${pkgdir} install
 
-  install -D -m644 "${srcdir}/httpd.logrotate" "${pkgdir}/etc/logrotate.d/httpd"  
+  install -D -m644 ${srcdir}/httpd.logrotate ${pkgdir}/etc/logrotate.d/httpd
 
-  # systemd
-  install -D -m644 "${srcdir}/httpd-tmpfile.conf" "${pkgdir}/usr/lib/tmpfiles.d/httpd.conf"
-
-  install -d "${pkgdir}"/usr/lib/systemd/system
-  install -D -m644 "${srcdir}/httpd.service" "${pkgdir}/usr/lib/systemd/system/"
+  install -D -m644 ${srcdir}/httpd-tmpfile.conf ${pkgdir}/usr/lib/tmpfiles.d/httpd.conf
+  install -d ${pkgdir}/usr/lib/systemd/system
+  install -D -m644 ${srcdir}/httpd.service ${pkgdir}/usr/lib/systemd/system/
   
-  install -D -m644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+  install -D -m644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 
-  # symlinks for /etc/httpd
-  #ln -fs /var/log/httpd "${pkgdir}/etc/httpd/logs"
-  #ln -fs /var/run/httpd "${pkgdir}/etc/httpd/run"
-  ln -fs /usr/lib/httpd/modules "${pkgdir}/etc/httpd/modules"
-  #ln -fs /usr/lib/httpd/build "${pkgdir}/etc/httpd/build"
+  ln -fs /usr/lib/httpd/modules ${pkgdir}/etc/httpd/modules
 
-  # set sane defaults
+  # set defaults
   sed -e 's#/usr/lib/httpd/modules/#modules/#' \
 	    -e 's|#\(LoadModule negotiation_module \)|\1|' \
 	    -e 's|#\(LoadModule include_module \)|\1|' \
@@ -113,11 +89,11 @@ package() {
 	    -e 's|#\(Include conf/extra/httpd-userdir.conf\)|\1|' \
 	    -e 's|#\(Include conf/extra/httpd-default.conf\)|\1|' \
 	    -e 's|#\(Include conf/extra/httpd-mpm.conf\)|\1|' \
-	    -i "${pkgdir}/etc/httpd/conf/httpd.conf"
+	    -i ${pkgdir}/etc/httpd/conf/httpd.conf
 
   # cleanup
-  rm -rf "${pkgdir}/usr/share/httpd/manual"
-  rm -rf "${pkgdir}/etc/httpd/conf/original"
-  rm -rf "${pkgdir}/srv/"
-  rm -rf "${pkgdir}/run"
+  rm -rf ${pkgdir}/usr/share/httpd/manual
+  rm -rf ${pkgdir}/etc/httpd/conf/original
+  rm -rf ${pkgdir}/srv/
+  rm -rf ${pkgdir}/run
 }
