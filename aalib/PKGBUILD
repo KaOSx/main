@@ -1,20 +1,21 @@
 
 pkgname=aalib
 pkgver=1.4rc5
-pkgrel=10
+_pkgver=1.4.0
+pkgrel=11
 pkgdesc="AAlib is a portable ASCII art GFX library"
 arch=('x86_64')
 url="http://aa-project.sourceforge.net/aalib/"
 license=('LGPL')
 depends=('glibc' 'ncurses' 'gpm' 'libx11')
 options=('!libtool')
-source=("http://downloads.sourceforge.net/sourceforge/aa-project/$pkgname-$pkgver.tar.gz"
+source=("https://downloads.sourceforge.net/sourceforge/aa-project/${pkgname}-${pkgver}.tar.gz"
         'aclocal-fixes.patch')
 md5sums=('9801095c42bba12edebd1902bcf0a990'
          '863a96a6689aa7ee073ca448bc2f133d')
 
 build() {
-  cd ${pkgname}-1.4.0
+  cd ${pkgname}-${_pkgver}
   patch -p0 -i ${srcdir}/aclocal-fixes.patch
   
   ./configure --prefix=/usr --mandir=/usr/share/man --infodir=/usr/share/info
@@ -22,7 +23,7 @@ build() {
 }
 
 package() {
-  cd ${pkgname}-1.4.0
+  cd ${pkgname}-${_pkgver}
   
   make DESTDIR=${pkgdir} install
 }

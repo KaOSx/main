@@ -2,13 +2,13 @@
 pkgname=libsoxr
 _pkgname=soxr
 pkgver=0.1.2
-pkgrel=1
+pkgrel=2
 pkgdesc="SoX Resampler library"
 arch=('x86_64')
-url="http://sourceforge.net/projects/soxr/"
+url="https://sourceforge.net/projects/soxr/"
 license=('LGPL')
 makedepends=('cmake' 'git')
-source=("http://sourceforge.net/projects/soxr/files/soxr-${pkgver}-Source.tar.xz")
+source=("https://sourceforge.net/projects/soxr/files/soxr-${pkgver}-Source.tar.xz")
 md5sums=('0866fc4320e26f47152798ac000de1c0')
 
 build() {
@@ -28,5 +28,5 @@ check() {
 package() {
   cd ${_pkgname}-${pkgver}-Source
 
-  make DESTDIR="$pkgdir" install
+  make DESTDIR=${pkgdir} install
 }

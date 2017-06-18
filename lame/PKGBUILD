@@ -1,7 +1,7 @@
 
 pkgname=lame
 pkgver=3.99.5
-pkgrel=4
+pkgrel=5
 pkgdesc="A high quality MPEG Audio Layer III (MP3) encoder"
 arch=('x86_64')
 url="http://lame.sourceforge.net/"
@@ -9,21 +9,21 @@ depends=('ncurses')
 makedepends=('nasm')
 license=('LGPL')
 options=('!libtool')
-source=("http://downloads.sourceforge.net/lame/$pkgname-$pkgver.tar.gz")
+source=("https://downloads.sourceforge.net/lame/${pkgname}-${pkgver}.tar.gz")
 md5sums=('84835b313d4a8b68f5349816d33e07ce')
 
 build() {
-  cd "$srcdir/$pkgname-$pkgver"
+  cd ${pkgname}-${pkgver}
 
   ./configure --prefix=/usr \
-              --enable-nasm \
-              --enable-shared
+    --enable-nasm \
+    --enable-shared
   make
 }
 
 package() {
-  cd "$srcdir/$pkgname-$pkgver"
+  cd ${pkgname}-${pkgver}
 
-  make DESTDIR="$pkgdir" install
+  make DESTDIR=${pkgdir} install
 }
 

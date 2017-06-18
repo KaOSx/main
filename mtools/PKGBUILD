@@ -1,20 +1,19 @@
 
 pkgname=mtools
 pkgver=4.0.18
-pkgrel=2
+pkgrel=3
 pkgdesc="A collection of utilities to access MS-DOS disks"
 arch=('x86_64')
-url="http://www.gnu.org/software/mtools/"
+url="https://www.gnu.org/software/mtools/"
 license=('GPL')
 depends=('sh' 'libx11' 'libsm')
 makedepends=('texinfo')
 backup=('etc/mtools.conf')
-install=mtools.install
-source=("http://ftp.gnu.org/gnu/mtools/${pkgname}-${pkgver}.tar.bz2")
+source=("https://ftp.gnu.org/gnu/mtools/${pkgname}-${pkgver}.tar.bz2")
 md5sums=('a23646617546bf6ad56f061d8b283c85')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
 
   sed -i '/^SAMPLE FILE$/s:^:# :' mtools.conf
   ./configure --prefix=/usr \
@@ -25,8 +24,8 @@ build() {
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
 
-  make -j 1 DESTDIR="${pkgdir}" install
-  install -Dm644 mtools.conf "${pkgdir}/etc/mtools.conf"
+  make -j 1 DESTDIR=${pkgdir} install
+  install -Dm644 mtools.conf ${pkgdir}/etc/mtools.conf
 }

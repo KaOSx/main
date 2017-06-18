@@ -1,8 +1,9 @@
 
 pkgname=timidity++
+_pkgname=TiMidity++
 pkgver=2.14.0
-pkgrel=2
-pkgdesc="A MIDI to WAVE converter and player"
+pkgrel=3
+pkgdesc="Open source MIDI to WAVE converter and player."
 arch=('x86_64')
 url="http://timidity.sourceforge.net"
 license=('GPL')
@@ -10,26 +11,35 @@ depends=('libao' 'libvorbis' 'jack' 'ncurses')
 makedepends=('tk' 'libxaw')
 optdepends=('xaw3d: for using the Xaw interface')
 backup=('etc/timidity++/timidity.cfg')
-source=("http://downloads.sourceforge.net/timidity/TiMidity++-${pkgver}.tar.bz2" \
+source=("https://downloads.sourceforge.net/timidity/${_pkgname}-${pkgver}.tar.bz2" \
         'timidity.cfg'
         'timidity.service')
 md5sums=('37a8e9720928869e8adbfa6ce1c313aa'
-	 '3fcc8f065c959205113fa7e9ab2be3c6'
-	 '6e3e6080a74aa6774abfa661c6f67daa')
+         '3fcc8f065c959205113fa7e9ab2be3c6'
+         '6e3e6080a74aa6774abfa661c6f67daa')
 
 build() {
-  cd "${srcdir}/TiMidity++-${pkgver}"
-  ./configure --prefix=/usr --mandir=/usr/share/man --with-default-path=/etc/timidity++/ \
-	--enable-server --enable-alsaseq --enable-spectrogram --enable-network --enable-xft\
-	--enable-audio=alsa,oss,ao,vorbis,flac,esd,jack \
-	--enable-dynamic=ncurses,tcltk,vt100,xaw \
-	--disable-gtktest --disable-gtk
+  cd ${_pkgname}-${pkgver}
+  
+  ./configure --prefix=/usr \
+    --mandir=/usr/share/man \
+    --with-default-path=/etc/timidity++/ \
+    --enable-server \
+    --enable-alsaseq \
+    --enable-spectrogram \
+    --enable-network \
+    --enable-xft \
+    --enable-audio=alsa,oss,ao,vorbis,flac,esd,jack \
+    --enable-dynamic=ncurses,tcltk,vt100,xaw \
+    --disable-gtktest \
+    --disable-gtk
   make
 }
 
 package() {
-  cd "${srcdir}/TiMidity++-${pkgver}"
-  make DESTDIR="${pkgdir}" install
-  install -D -m644 ../timidity.cfg "${pkgdir}/etc/timidity++/timidity.cfg"
-  install -D -m644 ../timidity.service "${pkgdir}/usr/lib/systemd/system/timidity.service"
+  cd ${_pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install
+  
+  install -D -m644 ../timidity.cfg ${pkgdir}/etc/timidity++/timidity.cfg
+  install -D -m644 ../timidity.service ${pkgdir}/usr/lib/systemd/system/timidity.service
 }

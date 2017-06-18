@@ -1,23 +1,23 @@
 
 pkgname=hicolor-icon-theme
 pkgver=0.15
-pkgrel=1
+pkgrel=2
 pkgdesc="Freedesktop.org Hicolor icon theme"
 arch=('x86_64')
-url="http://cgit.freedesktop.org/xdg/default-icon-theme/"
+url="https://cgit.freedesktop.org/xdg/default-icon-theme/"
 license=('GPL2')
-source=("http://icon-theme.freedesktop.org/releases/${pkgname}-${pkgver}.tar.xz")
+source=("https://icon-theme.freedesktop.org/releases/${pkgname}-${pkgver}.tar.xz")
 md5sums=('6aa2b3993a883d85017c7cc0cfc0fb73')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
   ./configure --prefix=/usr
   make
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
-  make DESTDIR="${pkgdir}" install
+  make DESTDIR=${pkgdir} install
 }

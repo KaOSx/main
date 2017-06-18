@@ -1,25 +1,25 @@
 
 pkgname=fribidi
 pkgver=0.19.7
-pkgrel=1
+pkgrel=2
 pkgdesc="A Free Implementation of the Unicode Bidirectional Algorithm"
 arch=('x86_64')
 license=('LGPL')
-url="http://fribidi.org"
+url="https://fribidi.org"
 depends=('glib2')
 options=('!libtool')
-source=("http://fribidi.org/download/${pkgname}-${pkgver}.tar.bz2")
+source=("https://fribidi.org/download/${pkgname}-${pkgver}.tar.bz2")
 md5sums=('6c7e7cfdd39c908f7ac619351c1c5c23')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
 
   ./configure --prefix=/usr
   make
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
-  make DESTDIR="${pkgdir}" install
+  make DESTDIR=${pkgdir} install
 }
