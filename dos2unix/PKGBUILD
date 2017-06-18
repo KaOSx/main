@@ -1,25 +1,25 @@
 
 pkgname=dos2unix
-pkgver=7.3.3
+pkgver=7.3.4
 pkgrel=1
 pkgdesc='Text file format converter'
 arch=('x86_64')
-url='http://waterlan.home.xs4all.nl/dos2unix.html'
+url='https://waterlan.home.xs4all.nl/dos2unix.html'
 license=('BSD')
 depends=('glibc')
 makedepends=('perl')
-source=("http://waterlan.home.xs4all.nl/dos2unix/${pkgname}-${pkgver}.tar.gz")
-md5sums=('e06d7b8bf4b9b86d7ff61f02d514e95f')
+source=("https://waterlan.home.xs4all.nl/dos2unix/${pkgname}-${pkgver}.tar.gz")
+md5sums=('04428e77e2ead8a92c1492ba8977f1d1')
 
 build() {
-  cd $srcdir/$pkgname-$pkgver
+  cd ${pkgname}-${pkgver}
 
   make
 }
 
 package() {
-  cd $srcdir/$pkgname-$pkgver
-  make DESTDIR=$pkgdir install
+  cd ${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install
 
-  install -D -m644 COPYING.txt $pkgdir/usr/share/licenses/$pkgname/LICENSE
+  install -D -m644 COPYING.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }

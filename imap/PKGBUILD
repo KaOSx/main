@@ -1,13 +1,13 @@
 
 pkgname=imap
 pkgver=2007f
-pkgrel=3
+pkgrel=4
 pkgdesc="An IMAP/POP server"
 arch=('x86_64')
 license=('APACHE')
-url="http://www.washington.edu/imap"
+url="https://www.washington.edu/imap"
 depends=('openssl' 'pam')
-source=("ftp://ftp.cac.washington.edu/imap/${pkgname}-${pkgver}.tar.gz"
+source=("http://ftp.ntua.gr/pub/net/mail/imap/${pkgname}-${pkgver}.tar.gz"
         'imap'
         'ipop2'
         'ipop3')
@@ -23,17 +23,16 @@ build() {
     -e "s:-g -fno-omit-frame-pointer -O6:\${CFLAGS}:" \
     -e "s:SSLDIR=/usr/local/ssl:SSLDIR=/usr:" \
     -e "s:SSLCERTS=\$(SSLDIR)/certs:SSLCERTS=/etc/ssl/certs:" \
-    -i "${srcdir}/${pkgname}-${pkgver}/src/osdep/unix/Makefile"
+    -i ${srcdir}/${pkgname}-${pkgver}/src/osdep/unix/Makefile
 	
-  cd "${srcdir}/${pkgname}-${pkgver}"
-  # NOTE: if you wish to enforce SSL, use SSLTYPE=unix.nopwd
+  cd ${pkgname}-${pkgver}
 
   make lnp SPECIALAUTHENTICATORS=ssl SSLTYPE=unix EXTRACFLAGS="${CFLAGS} -fPIC"
 
   # create ssl certs for secure imap
   for i in imapd ipop3d; do
-    PEM1="${srcdir}/pem1"
-    PEM2="${srcdir}/pem2"
+    PEM1=${srcdir}/pem1
+    PEM2=${srcdir}/pem2
     /usr/bin/openssl req -newkey rsa:1024 -keyout ${PEM1} \
       -nodes -x509 -days 365 -out  ${PEM2} << EOF
 --
@@ -54,25 +53,23 @@ EOF
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
 
-  install -d "${pkgdir}/usr/sbin"
-  install -D -m0755 imapd/imapd "${pkgdir}/usr/sbin/imapd"
-  install -D -m0755 ipopd/ipop2d "${pkgdir}/usr/sbin/ipop2d"
-  install -D -m0755 ipopd/ipop3d "${pkgdir}/usr/sbin/ipop3d"
+  install -d ${pkgdir}/usr/sbin
+  install -D -m0755 imapd/imapd ${pkgdir}/usr/sbin/imapd
+  install -D -m0755 ipopd/ipop2d ${pkgdir}/usr/sbin/ipop2d
+  install -D -m0755 ipopd/ipop3d ${pkgdir}/usr/sbin/ipop3d
   for i in c-client mail imap4r1 rfc822 linkage misc smtp nntp \
     osdep env_unix env fs ftl nl tcp sslio utf8 utf8aux; do
-    install -D -m0644 c-client/${i}.h "${pkgdir}/usr/include/imap/${i}.h"
+    install -D -m0644 c-client/${i}.h ${pkgdir}/usr/include/imap/${i}.h
   done
-  install -D -m0644 c-client/c-client.a "${pkgdir}/usr/lib/c-client.a"
-  ln -sf c-client.a "${pkgdir}/usr/lib/libc-client.a"
+  install -D -m0644 c-client/c-client.a ${pkgdir}/usr/lib/c-client.a
+  ln -sf c-client.a ${pkgdir}/usr/lib/libc-client.a
 
-  # install certs
-  install -D -m0600 imapd.pem "${pkgdir}/etc/ssl/certs/imapd.pem"
-  install -D -m0600 ipop3d.pem "${pkgdir}/etc/ssl/certs/ipop3d.pem"
+  install -D -m0600 imapd.pem ${pkgdir}/etc/ssl/certs/imapd.pem
+  install -D -m0600 ipop3d.pem ${pkgdir}/etc/ssl/certs/ipop3d.pem
 
-  # install xinetd.d configs
-  install -D -m0644 ../imap "${pkgdir}/etc/xinetd.d/imap"
-  install -D -m0644 ../ipop2 "${pkgdir}/etc/xinetd.d/ipop2"
-  install -D -m0644 ../ipop3 "${pkgdir}/etc/xinetd.d/ipop3"
+  install -D -m0644 ../imap ${pkgdir}/etc/xinetd.d/imap
+  install -D -m0644 ../ipop2 ${pkgdir}/etc/xinetd.d/ipop2
+  install -D -m0644 ../ipop3 ${pkgdir}/etc/xinetd.d/ipop3
 }

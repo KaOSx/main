@@ -1,26 +1,26 @@
 
 pkgname=libdatrie
 pkgver=0.2.10
-pkgrel=1
+pkgrel=2
 pkgdesc="Implementation of double-array structure for representing trie, as proposed by Junichi Aoe."
-url="http://linux.thai.net/projects/datrie"
+url="https://linux.thai.net/projects/datrie"
 license=('LGPL')
 arch=('x86_64')
 depends=('glibc')
 options=('!libtool' '!emptydirs')
-source=("http://linux.thai.net/pub/thailinux/software/libthai/${pkgname}-${pkgver}.tar.xz")
+source=("https://linux.thai.net/pub/thailinux/software/libthai/${pkgname}-${pkgver}.tar.xz")
 md5sums=('22d4fca2a09c58584a461b115d3d57f1')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
   ./configure --prefix=/usr --disable-static
   make
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
-  make DESTDIR="${pkgdir}" install
+  make DESTDIR=${pkgdir} install
 }
 

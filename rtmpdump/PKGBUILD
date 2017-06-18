@@ -1,7 +1,8 @@
 
 pkgname=rtmpdump
 pkgver=2.4.2
-pkgrel=3
+_commit=dc76f0a8461e6c8f1277eba58eae201b2dc1d06a
+pkgrel=4
 pkgdesc="A tool to download rtmp streams"
 arch=('x86_64')
 url="http://rtmpdump.mplayerhq.hu/"
@@ -10,18 +11,18 @@ depends=('openssl')
 groups=('network')
 #source=("http://rtmpdump.mplayerhq.hu/download/${pkgname}-${pkgver}.tar.gz")
 # from http://repo.or.cz/w/rtmpdump.git/snapshot/dc76f0a8461e6c8f1277eba58eae201b2dc1d06a.tar.gz
-source=("http://sourceforge.net/projects/kaosx/files/sources/${pkgname}/${pkgname}-dc76f0a8461e6c8f1277eba58eae201b2dc1d06a.tar.gz")
+source=("https://sourceforge.net/projects/kaosx/files/sources/${pkgname}/${pkgname}-${_commit}.tar.gz")
 md5sums=('ca05d7b93d9910cf2da4d96e7c2859bb')
 
 build() {
-  cd "${srcdir}/${pkgname}"  
+  cd ${pkgname}
   
   make
 }
 
 package() {
-  cd "${srcdir}/${pkgname}"
-  install -d -m755 "${pkgdir}/usr/lib"
+  cd ${pkgname}
+  install -d -m755 ${pkgdir}/usr/lib
   
-  make prefix=/usr mandir=/usr/share/man DESTDIR="${pkgdir}" install
+  make prefix=/usr mandir=/usr/share/man DESTDIR=${pkgdir} install
 }

@@ -1,6 +1,6 @@
 
 pkgname=aspell-pt
-_pkgverPT=20160206
+_pkgverPT=20170615
 _pkgverBR=20090702
 pkgver=$_pkgverPT
 pkgrel=1
@@ -9,36 +9,36 @@ arch=('x86_64')
 url="http://aspell.net/"
 license=('LGPL' 'GPL')
 depends=('aspell')
-source=("ftp://ftp.gnu.org/gnu/aspell/dict/pt_BR/aspell6-pt_BR-$_pkgverBR-0.tar.bz2"
-       "http://natura.di.uminho.pt/download/sources/Dictionaries/aspell6/aspell6.pt-$_pkgverPT.tar.bz2"
-       "http://natura.di.uminho.pt/download/sources/Dictionaries/aspell6/aspell6.pt-preao-$_pkgverPT.tar.bz2")
+source=("ftp://ftp.gnu.org/gnu/aspell/dict/pt_BR/aspell6-pt_BR-${_pkgverBR}-0.tar.bz2"
+       "http://natura.di.uminho.pt/download/sources/Dictionaries/aspell6/aspell6.pt-${_pkgverPT}.tar.bz2"
+       "http://natura.di.uminho.pt/download/sources/Dictionaries/aspell6/aspell6.pt-preao-${_pkgverPT}.tar.bz2")
 md5sums=('e082a8956882eb94a67c12e1b8c4a324'
-         '3dde074839c3bf9d6d339a547e9abc05'
-         '9f1e91de0b94b492fb44111ed9ce36f3')
+         'e1169de3145bd0384362ef0206c01498'
+         'fb8e753ca63e3dc830ca43830355da56')
 
 build() {
-  cd aspell6-pt_BR-$_pkgverBR-0
+  cd aspell6-pt_BR-${_pkgverBR}-0
   ./configure
   make
 
-  cd ../aspell6-pt_PT-$_pkgverPT-0
+  cd ../aspell6-pt_PT-${_pkgverPT}-0
   ./configure
   make
 
-  cd ../aspell6-pt_PT-preao-$_pkgverPT-0
+  cd ../aspell6-pt_PT-preao-${_pkgverPT}-0
   ./configure
   make
 }
 
 package() {
-  cd aspell6-pt_BR-$_pkgverBR-0
-  make DESTDIR="$pkgdir" install
+  cd aspell6-pt_BR-${_pkgverBR}-0
+  make DESTDIR=${pkgdir} install
 
-  cd ../aspell6-pt_PT-$_pkgverPT-0
-  make DESTDIR="$pkgdir" install
+  cd ../aspell6-pt_PT-${_pkgverPT}-0
+  make DESTDIR=${pkgdir} install
 
-  cd ../aspell6-pt_PT-preao-$_pkgverPT-0
-  make DESTDIR="$pkgdir" install
+  cd ../aspell6-pt_PT-preao-${_pkgverPT}-0
+  make DESTDIR=${pkgdir} install
 
-  echo "add pt_BR.multi" > "$pkgdir"/usr/lib/aspell-0.60/brasileiro.alias
+  echo "add pt_BR.multi" > ${pkgdir}/usr/lib/aspell-0.60/brasileiro.alias
 }

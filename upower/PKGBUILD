@@ -1,20 +1,20 @@
 
 pkgname=upower
 pkgver=0.99.4
-pkgrel=1
+pkgrel=2
 pkgdesc="Abstraction for enumerating power devices, listening to device events and querying history and statistics"
 arch=('x86_64')
-url="http://upower.freedesktop.org"
+url="https://upower.freedesktop.org"
 license=('GPL')
 depends=('systemd' 'libgudev' 'libusb' 'polkit' 'dbus-glib' 'libimobiledevice')
 makedepends=('pkg-config' 'intltool' 'docbook-xsl')
 options=('!libtool')
 install=upower.install
-source=("http://upower.freedesktop.org/releases/${pkgname}-${pkgver}.tar.xz")
+source=("https://upower.freedesktop.org/releases/${pkgname}-${pkgver}.tar.xz")
 md5sums=('78800e1ac7f92b24aabdf433e38f75d2')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   #patch -p1 -i "${srcdir}"/fix-segfault.patch
 
   ./configure --prefix=/usr \
@@ -28,7 +28,7 @@ build() {
 }
 
 package() {
-  cd "$pkgname-$pkgver"
+  cd ${pkgname}-${pkgver}
   
-  make DESTDIR="$pkgdir" install
+  make DESTDIR=${pkgdir} install
 }
