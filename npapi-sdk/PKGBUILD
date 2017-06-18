@@ -1,24 +1,24 @@
 
 pkgname=npapi-sdk
 pkgver=0.27.2
-pkgrel=2
+pkgrel=3
 pkgdesc="Netscape Plugin API (NPAPI)"
 arch=('x86_64')
 url="https://bitbucket.org/mgorny/npapi-sdk"
 license=('MPL')
-source=("https://bitbucket.org/mgorny/$pkgname/downloads/$pkgname-$pkgver.tar.bz2")
+source=("https://bitbucket.org/mgorny/npapi-sdk/downloads/${pkgname}-${pkgver}.tar.bz2")
 md5sums=('e81db61e206cd615cf56c4a9f301e636')
 
 build() {
-  cd "$srcdir/$pkgname-$pkgver"
+  cd ${pkgname}-${pkgver}
   
   ./configure --prefix=/usr
   make
 }
 
 package() {
-  cd "$srcdir/$pkgname-$pkgver"
+  cd ${pkgname}-${pkgver}
   
-  make DESTDIR="$pkgdir" install
+  make DESTDIR=${pkgdir} install
 }
 
