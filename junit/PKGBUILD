@@ -1,7 +1,7 @@
 
 pkgname=junit
 pkgver=4.12
-pkgrel=1
+pkgrel=2
 pkgdesc="Automated testing framework for Java"
 arch=('x86_64')
 url="http://www.junit.org/"
@@ -14,7 +14,7 @@ md5sums=('5b38c40c97fbd0adee29f91e60405584'
          '165500a4fcda0cdd6cff5256301d3702')
 
 package() {
-  cd ${srcdir}/${pkgname}
+  cd ${pkgname}
   
   install -Dm644 ${srcdir}/${pkgname}-${pkgver}.jar \
                  ${pkgdir}/usr/share/java/${pkgname}-${pkgver}.jar

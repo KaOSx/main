@@ -1,7 +1,7 @@
 
 pkgname=ftjam
 pkgver=2.5.3rc2
-pkgrel=1
+pkgrel=2
 pkgdesc='FT Jam, small open-source build tool that can be used as a replacement for Make'
 arch=('x86_64')
 url="http://freetype.org/jam/"
@@ -13,15 +13,15 @@ md5sums=('911cc4191b3e7213905d107962b4529b'
          'ef8ff7da77fe60e25d1e3e740600f1f0')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
   ./configure --prefix=/usr
   make
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
-  make DESTDIR="${pkgdir}" install
+  cd ${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install
   
-  install -D -m644 "${srcdir}/license.txt" "${pkgdir}/usr/share/licenses/${pkgname}/license.txt"
+  install -D -m644 ${srcdir}/license.txt ${pkgdir}/usr/share/licenses/${pkgname}/license.txt
 }
