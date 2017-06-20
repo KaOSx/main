@@ -1,6 +1,6 @@
 
 pkgname=gsl
-pkgver=2.3
+pkgver=2.4
 pkgrel=1
 arch=('x86_64')
 pkgdesc="The GNU Scientific Library (GSL) is a modern numerical library for C and C++ programmers"
@@ -8,8 +8,8 @@ url="https://www.gnu.org/software/gsl/gsl.html"
 license=('GPL')
 depends=('glibc' 'bash')
 options=('!libtool')
-source=("ftp://ftp.gnu.org/gnu/gsl/$pkgname-$pkgver.tar.gz")
-md5sums=('905fcbbb97bc552d1037e34d200931a0')
+source=("https://ftpmirror.gnu.org/gsl/$pkgname-$pkgver.tar.gz")
+md5sums=('dba736f15404807834dc1c7b93e83b92')
 
 build() {
     unset LDFLAGS
