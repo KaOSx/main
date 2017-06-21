@@ -1,19 +1,17 @@
 
 pkgname=libproxy
-pkgver=0.4.14
+pkgver=0.4.15
 pkgrel=1
 pkgdesc="A library that provides automatic proxy configuration management"
 arch=('x86_64')
 url="http://libproxy.github.io/libproxy"
 license=('LGPL')
-depends=('gcc-libs')
-makedepends=('cmake' 'networkmanager' 'python2' 'perl')
-optdepends=('networkmanager: NetworkManager configuration module'
-            'perl: Perl bindings'
-            'python2: Python bindings')
+depends=('gcc-libs' 'networkmanager' 'python2')
+makedepends=('cmake' 'perl')
+optdepends=('perl: Perl bindings')
 source=("https://github.com/libproxy/libproxy/archive/${pkgver}.tar.gz")
 options=('!libtool')
-md5sums=('272dc378efcc3335154cef30d171e84a')
+md5sums=('21ebe5b4ea2a04f5f468bf5d08c40d2c')
 
 build() {
   cd ${pkgname}-${pkgver}
@@ -34,5 +32,5 @@ build() {
 package() {
   cd ${pkgname}-${pkgver}/build
   
-  make DESTDIR="${pkgdir}" install
+  make DESTDIR=${pkgdir} install
 }
