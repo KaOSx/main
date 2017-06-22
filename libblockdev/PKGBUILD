@@ -1,8 +1,8 @@
 
 pkgname=libblockdev
-pkgver=2.8.1
-_pkgver=2.8-1
-pkgrel=2
+pkgver=2.9.1
+_pkgver=2.9-1
+pkgrel=1
 pkgdesc="C library supporting GObject introspection for manipulation of block devices."
 arch=('x86_64')
 url="http://www-rhstorage.rhcloud.com/projects/libblockdev"
@@ -11,17 +11,14 @@ depends=('btrfs-progs' 'cryptsetup' 'kmod' 'libbytesize' 'lvm2' 'nss' 'parted'
          'python3' 'systemd' 'util-linux' 'volume_key')
 makedepends=('gobject-introspection' 'python3-six') # 'dmraid')
 source=("https://github.com/rhinstaller/libblockdev/archive/${pkgname}-${_pkgver}.tar.gz"
-        "https://github.com/rhinstaller/libblockdev/commit/50dec146ddd6c77f5989aa359a545ab676437169.diff"
-        "https://github.com/rhinstaller/libblockdev/commit/5d6617ffaec72a38a61f7e6fe2a102a9a3a5ca94.diff")
-md5sums=('7199200a0596647e4592b838dcfce56b'
-         '9610c23df7c73e74ddebffce971614c3'
-         '1728a015f4102da2c27732e512bbd549')
+        "https://github.com/rhinstaller/libblockdev/commit/50dec146ddd6c77f5989aa359a545ab676437169.diff")
+md5sums=('2044f9a5be5678b3524efa7a6baa373f'
+         '9610c23df7c73e74ddebffce971614c3')
 
 prepare() {
     cd ${pkgname}-${pkgname}-${_pkgver}
     
-    patch -p1 -i ${srcdir}/50dec146ddd6c77f5989aa359a545ab676437169.diff
-    patch -p1 -i ${srcdir}/5d6617ffaec72a38a61f7e6fe2a102a9a3a5ca94.diff
+    #patch -p1 -i ${srcdir}/50dec146ddd6c77f5989aa359a545ab676437169.diff
 }
 
 build() {
