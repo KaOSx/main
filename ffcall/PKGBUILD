@@ -1,31 +1,34 @@
 
 pkgname=ffcall
-pkgver=1.10
-pkgrel=3
+_pkgname=libffcall
+pkgver=1.13
+pkgrel=1
 pkgdesc="C library for implementing foreign function calls in embedded interpreters"
 arch=('x86_64')
-url="http://www.haible.de/bruno/packages-ffcall.html"
-license=('GPL2')
+url="https://www.gnu.org/software/libffcall/"
+license=('GPLv2+')
 options=('!libtool' '!makeflags')
-source=("http://www.haible.de/bruno/gnu/${pkgname}-${pkgver}.tar.gz")
-md5sums=('2db95007e901f3bc2ae7e5a9fe9ebea4')
+source=("https://ftp.gnu.org/gnu/libffcall/${_pkgname}-${pkgver}.tar.gz")
+md5sums=('cb3051a80726b5e7b9031c4038a56afc')
 
 build() {
-  cd ${pkgname}-${pkgver}
-  CONFIGFLAG="--with-pic"
+  cd ${_pkgname}-${pkgver}
   
-  ./configure --prefix=/usr --mandir=/usr/share/man $CONFIGFLAG
+  ./configure --prefix=/usr \
+    --mandir=/usr/share/man \
+    --with-pic \
+    --cache-file=config.cache
   make
 }
 
 check() {
-  cd ${pkgname}-${pkgver}
+  cd ${_pkgname}-${pkgver}
   
   make check
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
+  cd ${_pkgname}-${pkgver}
   
   install -d ${pkgdir}/usr/share/{man,doc/ffcall}
   make DESTDIR=${pkgdir} htmldir=/usr/share/doc/ffcall install
