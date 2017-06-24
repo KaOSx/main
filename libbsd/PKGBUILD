@@ -1,32 +1,32 @@
 
 pkgname=libbsd
-pkgver=0.8.3
+pkgver=0.8.4
 pkgrel=1
 pkgdesc="Provides useful functions commonly found on BSD systems like strlcpy()"
 arch=('x86_64')
-url="http://libbsd.freedesktop.org"
+url="https://libbsd.freedesktop.org"
 license=('custom')
 depends=('glibc')
 options=('!libtool')
-source=("http://libbsd.freedesktop.org/releases/$pkgname-$pkgver.tar.xz")
-md5sums=('e935c1bb6cc98a4a43cb1da22795493a')
+source=("https://libbsd.freedesktop.org/releases/${pkgname}-${pkgver}.tar.xz")
+sha256sums=('217af1642915703151ea6df077311633dd6ad7bfa3c7e07dd9329a93f642cab3')
 
 build() {
-  cd $pkgname-$pkgver
+  cd ${pkgname}-${pkgver}
   
  ./configure --prefix=/usr
   make
 }
 
 check() {
-  cd $pkgname-$pkgver
+  cd ${pkgname}-${pkgver}
 
   make -j1 check
 }
 
 package() {
-  cd $pkgname-$pkgver
-  make DESTDIR=$pkgdir install
+  cd ${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install
   
-  install -D -m644 COPYING $pkgdir/usr/share/licenses/$pkgname/LICENSE
+  install -D -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
