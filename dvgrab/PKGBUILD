@@ -1,25 +1,27 @@
 
 pkgname=dvgrab
 pkgver=3.5
-pkgrel=4
+_commit=e46042e0c7b3523b6854ee547b0534e8310b7460
+pkgrel=5
 pkgdesc="Saves audio and video data from an IEEE (FireWire) digital source"
 arch=('x86_64')
 url="http://www.kinodv.org"
 license=('GPL')
 depends=('libdv' 'libavc1394' 'libjpeg-turbo' 'libiec61883' 'gcc-libs')
 makedepends=('pkgconfig')
-source=("http://sourceforge.net/projects/kino/files/dvgrab/${pkgver}/${pkgname}-${pkgver}.tar.gz")
-md5sums=('b39a242ce63e80fc347ab59931f75649')
+source=("https://github.com/ddennedy/dvgrab/archive/${_commit}.zip")
+md5sums=('3de010a79b095f4a67640c503e78af02')
 
 build() {
-  cd ${pkgname}-${pkgver}
+  cd ${pkgname}-${_commit}
   
+  ./bootstrap
   ./configure --prefix=/usr
   make
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
+  cd ${pkgname}-${_commit}
   
   make DESTDIR=${pkgdir} install
 }
