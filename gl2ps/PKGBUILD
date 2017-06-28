@@ -12,7 +12,7 @@ source=("http://geuz.org/gl2ps/src/${pkgname}-${pkgver}.tgz")
 md5sums=('377b2bcad62d528e7096e76358f41140')
 
 build() {
-  mkdir build
+  mkdir -p build
   cd build
 
   cmake ../${pkgname}-$pkgver-source \
