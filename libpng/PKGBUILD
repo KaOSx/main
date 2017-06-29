@@ -1,7 +1,7 @@
 
 pkgname=libpng
 pkgver=1.6.30
-_apngver=1.6.29
+_apngver=1.6.30
 pkgrel=1
 pkgdesc="A collection of routines used to create PNG format graphics files"
 arch=('x86_64')
@@ -10,15 +10,15 @@ license=('custom')
 depends=('zlib' 'sh')
 options=('!libtool')
 source=("https://downloads.sourceforge.net/sourceforge/libpng/${pkgname}-${pkgver}.tar.xz"
-        "https://downloads.sourceforge.net/sourceforge/libpng-apng/libpng-${_apngver}-apng.patch.gz")
+        "https://downloads.sourceforge.net/sourceforge/apng/libpng-${_apngver}-apng.patch.gz")
 md5sums=('88a729d47eaf880d61a0ef90f4bd5e8f'
-         '75ebf0972827a0079e8d0bd03fcbe6f7')
+         '5bc11b672ed8b27db3f36dafce603453')
 
 build() {
   cd ${pkgname}-${pkgver}
 
   # http://sourceforge.net/projects/libpng-apng/
-  patch -p1 -i ${srcdir}/libpng-${_apngver}-apng.patch
+  patch -p0 -i ${srcdir}/libpng-${_apngver}-apng.patch
 
   ./configure --prefix=/usr --disable-static
   make

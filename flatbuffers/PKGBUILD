@@ -1,0 +1,33 @@
+
+pkgname=flatbuffers
+pkgver=1.7.1
+pkgrel=1
+pkgdesc="Efficient cross platform serialization library for games and other memory constrained apps."
+arch=('x86_64')
+url='http://google.github.io/flatbuffers/'
+license=('Apache')
+makedepends=('cmake')
+source=("https://github.com/google/flatbuffers/archive/v${pkgver}.tar.gz")
+md5sums=('81934736f31fbd2cfdb513e71b53b358')
+
+prepare() {
+  cd ${pkgname}-${pkgver}
+
+  #sed -i -e 's|utcDateTime.toString(QString::fromAscii|QLocale::c().toString(utcDateTime, QString::fromAscii|' src/appendjob.cpp
+}
+
+build() {
+  mkdir -p build
+  
+  cd build 
+  cmake -G "Unix Makefiles" ../${pkgname}-${pkgver} \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release 
+  make 
+}
+
+package() {
+  cd build
+  
+  make DESTDIR=${pkgdir} install
+}
