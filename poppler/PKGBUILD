@@ -2,7 +2,7 @@
 pkgbase=poppler
 pkgname=('poppler' 'poppler-glib' 'poppler-qt5')
 pkgver=0.56.0
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 url="https://poppler.freedesktop.org/"
 license=('GPL')
@@ -30,7 +30,7 @@ build() {
 
 package_poppler() {
   pkgdesc="PDF rendering library based on xpdf 3.0"
-  depends=('libjpeg' 'gcc-libs' 'cairo' 'libxml2' 'fontconfig' 'openjpeg' 'lcms2' 'poppler-data')
+  depends=('libjpeg' 'gcc-libs' 'cairo' 'libxml2' 'fontconfig' 'openjpeg' 'lcms2' 'poppler-data' 'nss')
 
   cd ${pkgbase}-${pkgver}
   sed -e 's/^glib_subdir =.*/glib_subdir =/' \
