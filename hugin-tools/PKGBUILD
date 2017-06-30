@@ -1,8 +1,9 @@
 
 pkgname=hugin-tools
 _pkgname=hugin
-pkgver=2016.2.0
-pkgrel=3
+pkgver=2017.0
+_pkgver=2017.0.0
+pkgrel=1
 pkgdesc="Hugin libs and tools to be used by Kipi-plugins"
 arch=('x86_64')
 url="http://hugin.sourceforge.net/"
@@ -12,9 +13,9 @@ depends=('boost-libs' 'enblend-enfuse' 'exiv2' 'openexr' 'libpano13>=2.9.19'
 makedepends=('zip' 'cmake' 'boost' 'mesa' 'tclap')
 conflict=('hugin')
 provides=('hugin')
-source=("http://downloads.sourceforge.net/hugin/${_pkgname}-${pkgver}.tar.bz2")
+source=("https://downloads.sourceforge.net/hugin/${_pkgname}-${pkgver}.tar.bz2")
        # "http://downloads.sourceforge.net/boost/boost_1_55_0.tar.bz2")
-md5sums=('bfc28b0774e5147207e8b4b54875c33d')
+md5sums=('3b49a905da8ee395774347ee6b3903b0')
         # 'd6eef4b4cacb2183f2bf265a5a03a354')
 
 build() {
@@ -22,9 +23,9 @@ build() {
   cd build
 
   # make it possible to compile all the hugin tools without GUis
-  sed -i -e "s~FIND_PACKAGE(wxWidgets REQUIRED)~~g" ${srcdir}/${_pkgname}-${pkgver}/CMakeLists.txt
+  sed -i -e "s~FIND_PACKAGE(wxWidgets REQUIRED)~~g" ${srcdir}/${_pkgname}-${_pkgver}/CMakeLists.txt
   
-  cmake ../${_pkgname}-${pkgver} \
+  cmake ../${_pkgname}-${_pkgver} \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DENABLE_LAPACK=yes \
