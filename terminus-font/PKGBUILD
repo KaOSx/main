@@ -1,15 +1,16 @@
 
 pkgname=terminus-font
-pkgver=4.40
-pkgrel=2
+pkgver=4.46
+pkgrel=1
 arch=('x86_64')
 url="http://sourceforge.net/projects/terminus-font/"
 pkgdesc="A superb, monospace bitmap font (for X11 and console)"
 license=('GPL2' 'custom:OFL')
 depends=('xorg-fonts-encodings' 'xorg-fonts-alias' 'xorg-font-utils' 'fontconfig')
+makedepends=('python3')
 install=terminus-font.install
 source=("https://downloads.sourceforge.net/project/terminus-font/${pkgname}-${pkgver}/${pkgname}-${pkgver}.tar.gz")
-md5sums=('1e1df0d2c612c374ebe7966f90f04e0c')
+sha1sums=('1f2c23edd81cf06540c094466087072ba1842468')
 
 build() { 
   cd ${pkgname}-${pkgver}
