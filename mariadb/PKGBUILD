@@ -1,11 +1,11 @@
 
 pkgname=mariadb
-pkgver=10.1.24
-_pkgver=10.1.24
-pkgrel=2
+pkgver=10.1.25
+_pkgver=10.1.25
+pkgrel=1
 arch=('x86_64')
 license=('GPL')
-url='http://mariadb.org/'
+url='https://mariadb.org/'
 pkgdesc='Open Source database to support today’s enterprise needs from OLTP to analytics from a single SQL compliant interface.'
 depends=('openssl' 'pcre' 'inetutils' 'lz4')
 makedepends=('cmake' 'zlib')
@@ -15,11 +15,11 @@ provides=('libmariadbclient' 'mariadb-clients')
 replaces=('libmariadbclient' 'mariadb-clients')
 backup=('etc/mysql/my.cnf')
 install=mariadb.install
-source=("http://ftp.osuosl.org/pub/mariadb/mariadb-${_pkgver}/source/mariadb-${_pkgver}.tar.gz"
+source=("https://ftp.osuosl.org/pub/mariadb/mariadb-${_pkgver}/source/mariadb-${_pkgver}.tar.gz"
         'mariadb.service'
         'mariadb-post.sh'
         'mariadb-tmpfile.conf')
-md5sums=('e1af4c62e3345b65975f2fa43a0040d2'
+md5sums=('6349e524bc449767c4650196d4141a02'
          '41fe4303f88b7006743ee1218b332b54'
          'b79e65a5aa536e6b5bc60988eb0b78a2'
          '2fa6e456964d4ff5e6d4f9ff0126aed6')
