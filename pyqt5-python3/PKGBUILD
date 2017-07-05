@@ -1,17 +1,17 @@
 
 pkgname=pyqt5-python3
-pkgver=5.8.2
+pkgver=5.9
 _snapshot=dev1604260930
-pkgrel=3
+pkgrel=1
 pkgdesc="A set of Python3 bindings for the Qt toolkit"
 arch=('x86_64')
-url="http://riverbankcomputing.co.uk/software/pyqt/intro"
+url="https://riverbankcomputing.co.uk/software/pyqt/intro"
 license=('GPL')
 depends=('sip3' 'dbus-python3' 'qt5-multimedia' 'qt5-serialport' 'qt5-svg' 'qtwebkit-tp' 'qtwebengine')
 makedepends=('qt5-tools')
 source=("https://sourceforge.net/projects/pyqt/files/PyQt5/PyQt-${pkgver}/PyQt5_gpl-${pkgver}.tar.gz")
 #source=("https://www.riverbankcomputing.com/static/Downloads/PyQt5/PyQt5_gpl-5.6.1.${_snapshot}.tar.gz")
-md5sums=('c3048e9d242f3e72fd393630da1d971a')
+sha1sums=('325e8f54eafd9358e31704abda98cbfc5c3f5c50')
 
 build() {
   cd PyQt5_gpl-${pkgver}

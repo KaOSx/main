@@ -1,17 +1,17 @@
 
 pkgname=qscintilla-qt5
-pkgver=2.10
+pkgver=2.10.1
 pkgrel=1
 license=('GPL')
 arch=('x86_64')
-url="http://www.riverbankcomputing.co.uk/software/qscintilla/intro"
+url="https://www.riverbankcomputing.co.uk/software/qscintilla/intro"
 pkgdesc="A port to Qt of Neil Hodgson's Scintilla C++ editor class"
 depends=('qt5-base')
 makedepends=('chrpath' 'qt5-tools')
 source=("https://downloads.sourceforge.net/pyqt/QScintilla_gpl-${pkgver}.tar.gz"
         'qt5_libname.patch')
-md5sums=('a61eb0d598b6787de18450574c2ad3b4'
-         'c6945e86d8eaf3b1985974f23dfbf057')
+sha1sums=('f12499c18d80cb59fa46df3ee76ad2c66692e818'
+         'bc78815afa7e9df2c6c4acb412d7f91ada2a9834')
 
 prepare() {
     cd QScintilla_gpl-${pkgver}
