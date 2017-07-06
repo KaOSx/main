@@ -1,6 +1,6 @@
 
 pkgname=tdb
-pkgver=1.3.13
+pkgver=1.3.14
 pkgrel=1
 pkgdesc="Trivial Database similar to GDBM but allows simultaneous commits"
 arch=('x86_64')
@@ -9,14 +9,14 @@ url="https://tdb.samba.org/"
 makedepends=('python2' 'libxslt' 'docbook-xsl')
 optdepends=('python2: for python bindings')
 source=("https://samba.org/ftp/tdb/${pkgname}-${pkgver}.tar.gz")
-md5sums=('75567d47771a1285c58eecd545e24232')
+md5sums=('dd23f2ba8ca2bfdcb833bc79d5b5ac6f')
 
 build() {
    cd ${pkgname}-${pkgver}
    
    ./configure --prefix=/usr \
-               --localstatedir=/var \
-               --sysconfdir=/etc/samba
+        --localstatedir=/var \
+        --sysconfdir=/etc/samba
    make
 }
 
