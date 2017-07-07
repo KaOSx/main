@@ -1,7 +1,7 @@
 
 pkgname=networkmanager
 _pkgname=NetworkManager
-pkgver=1.8.0
+pkgver=1.8.2
 _pkgver=1.8
 pkgrel=1
 pkgdesc="Network Management daemon"
@@ -22,9 +22,9 @@ install=networkmanager.install
 source=("https://download.gnome.org/sources/NetworkManager/${_pkgver}/${_pkgname}-${pkgver}.tar.xz"
         'NetworkManager.conf'
         'nm_exported.patch')
-md5sums=('de0e70933a17ee6a682e8440015c9b1e'
-         'e6549aab4cb721a87becd4585efd5148'
-         '206971e92d6b592d80adcd19bf96f165')
+sha256sums=('71a5efcd9e4c237ab57b2893ccc8f91f884ace3bec0e2bd4b31a4c9677ff1bf4'
+            '57a0d0fc875a0c6b1729eac7e50907cc60a6d6aa834adc56b8c851edacf5fbd4'
+            '13452fde1a87132835ad0fa3065744e3f30fa77c0ca27e84221805c4f2d2aa9e')
 
 build() {
   cd ${_pkgname}-${pkgver}
