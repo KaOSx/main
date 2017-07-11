@@ -1,8 +1,8 @@
 
 pkgname=avahi
-pkgver=0.6.32
-_pkgver=0.6.32
-pkgrel=2
+pkgver=0.7
+_pkgver=0.7
+pkgrel=1
 pkgdesc="A multicast/unicast DNS-SD framework"
 arch=('x86_64')
 url="http://www.avahi.org/"
@@ -14,7 +14,7 @@ install=avahi.install
 options=('!libtool')
 #source=("http://www.avahi.org/download/avahi-${pkgver}.tar.gz")
 source=("https://github.com/lathiat/avahi/releases/download/v${_pkgver}/${pkgname}-${_pkgver}.tar.gz")
-md5sums=('22b5e705d3eabb31d26f2e1e7b074013')
+md5sums=('d76c59d0882ac6c256d70a2a585362a6')
 
 prepare() {
   cd ${pkgname}-${_pkgver}
@@ -38,7 +38,7 @@ build() {
     --disable-manpages \
     --disable-gtk \
     --disable-gtk3 \
-    --disable-pygtk \
+    --disable-pygobject \
     --enable-compat-libdns_sd \
     --enable-compat-howl \
     --with-distro=none \
