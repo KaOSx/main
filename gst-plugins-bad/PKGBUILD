@@ -1,6 +1,6 @@
 
 pkgname=gst-plugins-bad
-pkgver=1.12.1
+pkgver=1.12.2
 pkgrel=1
 pkgdesc="GStreamer Multimedia Framework Bad Plugins"
 arch=('x86_64')
@@ -15,7 +15,7 @@ makedepends=('schroedinger' 'libexif' 'libdvdread' 'libvdpau' 'libmpeg2' 'python
              'gobject-introspection' 'bluez' 'ladspa' 'openal' 'qt5-wayland')
 options=('!libtool' '!emptydirs')
 source=("https://gstreamer.freedesktop.org/src/gst-plugins-bad/${pkgname}-${pkgver}.tar.xz")
-md5sums=('dbae48f984cb76e5fd482285952cf676')
+sha256sums=('9c2c7edde4f59d74eb414e0701c55131f562e5c605a3ce9b091754f106c09e37')
 
 build() {
   cd ${pkgname}-${pkgver}
@@ -26,7 +26,7 @@ build() {
     --disable-static \
     --enable-experimental \
     --with-package-name="GStreamer (KaOS)" \
-    --with-package-origin="http://kaosx.us"
+    --with-package-origin="https://kaosx.us"
     
   sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool 
   

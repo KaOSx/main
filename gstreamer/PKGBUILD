@@ -1,6 +1,6 @@
 
 pkgname=gstreamer
-pkgver=1.12.1
+pkgver=1.12.2
 pkgrel=1
 pkgdesc="GStreamer Multimedia Framework"
 arch=('x86_64')
@@ -11,7 +11,7 @@ optdepends=('sh: feedback script')
 makedepends=('intltool' 'pkgconfig' 'gobject-introspection')
 options=('!libtool')
 source=("https://gstreamer.freedesktop.org/src/gstreamer/gstreamer-${pkgver}.tar.xz")
-md5sums=('3c9f2bc7d75daf87fb5d8d0f2158b8ea')
+sha256sums=('9fde3f39a2ea984f9e07ce09250285ce91f6e3619d186889f75b5154ecf994ba')
 
 build() {
   cd gstreamer-${pkgver}
@@ -21,7 +21,7 @@ build() {
       --localstatedir=/var \
       --libexecdir=/usr/lib \
       --with-package-name="GStreamer (KaOS)" \
-      --with-package-origin="http://kaosx.us/" \
+      --with-package-origin="https://kaosx.us/" \
       --disable-static
   make
 }

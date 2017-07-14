@@ -1,6 +1,6 @@
 
 pkgname=gst-plugins-good
-pkgver=1.12.1
+pkgver=1.12.2
 pkgrel=1
 pkgdesc="GStreamer Multimedia Framework Good Plugins"
 arch=('x86_64')
@@ -10,10 +10,8 @@ depends=('pulseaudio' 'jack' 'libsoup' 'gst-plugins-base' 'wavpack' 'aalib' 'tag
          'libvpx' 'gdk-pixbuf2' 'libcaca' 'libavc1394' 'libiec61883' 'libxdamage' 'v4l-utils' 'libgudev')
 makedepends=('gstreamer' 'speex' 'flac' 'libraw1394' 'python3')
 options=('!libtool' '!emptydirs')
-source=("https://gstreamer.freedesktop.org/src/gst-plugins-good/${pkgname}-${pkgver}.tar.xz"
-        'equalizer.patch')
-md5sums=('53647e9fe9446f2ad808d55fcdf85b6e'
-         '36a5b58e136f711152b17db3e30f225e')
+source=("https://gstreamer.freedesktop.org/src/gst-plugins-good/${pkgname}-${pkgver}.tar.xz")
+sha256sums=('5591ee7208ab30289a30658a82b76bf87169c927572d9b794f3a41ed48e1ee96')
 
 build() {
   cd ${pkgname}-${pkgver}
@@ -27,7 +25,7 @@ build() {
     --disable-static \
     --enable-experimental \
     --with-package-name="GStreamer Good (KaOS)" \
-    --with-package-origin="http://kaosx.us/"
+    --with-package-origin="https://kaosx.us/"
   make
 }
 

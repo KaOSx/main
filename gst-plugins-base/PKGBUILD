@@ -1,6 +1,6 @@
 
 pkgname=gst-plugins-base
-pkgver=1.12.1
+pkgver=1.12.2
 pkgrel=1
 pkgdesc="GStreamer Multimedia Framework Base Plugins"
 arch=('x86_64')
@@ -8,10 +8,10 @@ url="https://gstreamer.freedesktop.org/"
 license=('LGPL')
 depends=("gstreamer>=${pkgver}" 'orc' 'libxv' 'alsa-lib' 'cdparanoia' 'libvisual'
          'libvorbis' 'libtheora' 'pango' 'opus' 'iso-codes')
-makedepends=('pkgconfig' 'gobject-introspection')
+makedepends=('pkgconfig' 'gobject-introspection' 'qt5-base')
 options=('!libtool' '!emptydirs')
 source=("https://gstreamer.freedesktop.org/src/gst-plugins-base/${pkgname}-${pkgver}.tar.xz")
-md5sums=('77d67208ff3750ea6417f0365f655a90')
+sha256sums=('5067dce3afe197a9536fea0107c77213fab536dff4a213b07fc60378d5510675')
 
 build() {
   cd ${pkgname}-${pkgver}
@@ -22,14 +22,14 @@ build() {
     --disable-static \
     --enable-experimental \
     --with-package-name="GStreamer Base (KaOS)" \
-    --with-package-origin="http://kaosx.us/" 
+    --with-package-origin="https://kaosx.us/" 
   make
   sed -e 's/^SUBDIRS_EXT =.*/SUBDIRS_EXT =/' -i Makefile
 }
 
 check() {
   cd ${pkgname}-${pkgver}
- 
+
   make check
 }
 
