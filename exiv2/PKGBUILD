@@ -9,13 +9,15 @@ license=('GPL')
 depends=('gcc-libs' 'zlib' 'expat')
 options=('!libtool')
 source=("http://exiv2.org/builds/${pkgname}-${pkgver}-trunk.tar.gz")
-md5sums=('a171314cbd6535a356c8a7297ea8c5e7')
+md5sums=('5399e3b570d7f9205f0e76d47582da4c')
 
 build() {
   cd ${pkgname}-trunk
   
   #CPPFLAGS="-D_FILE_OFFSET_BITS=64" 
-  ./configure --prefix=/usr
+  ./configure --prefix=/usr \
+    --enable-video 
+    #--enable-webready
   make
 }
 
