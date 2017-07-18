@@ -7,27 +7,34 @@ arch=('x86_64')
 license=('custom')
 url="https://cgit.freedesktop.org/gstreamer/orc/"
 depends=('glibc')
-makedepends=('valgrind')
+makedepends=('valgrind' 'meson' 'ninja')
 options=('!libtool')
 source=("https://gstreamer.freedesktop.org/src/orc/${pkgname}-${pkgver}.tar.xz")
 sha256sums=('51e53e58fc8158e5986a1f1a49a6d970c5b16493841cf7b9de2c2bde7ce36b93')
 
 build () {
-    cd ${pkgname}-${pkgver}
+  mkdir -p build
+  cd build
+  
+  export LANG=en_US.UTF-8
     
-    ./configure --prefix=/usr --disable-static
-    make
+  meson ../${pkgname}-${pkgver} \
+    --prefix=/usr \
+    --buildtype=release \
+    --libexecdir=/usr/lib \
+    -Denable-backend=all
+  ninja
 }
 
 check() {
-    cd ${pkgname}-${pkgver}
-    
-    make check
+  cd build
+  
+  mesontest
 }
     
 package() {
-    cd ${pkgname}-${pkgver}
-    make DESTDIR=${pkgdir} install
+  cd build
+  DESTDIR=${pkgdir} ninja install
     
-    install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
