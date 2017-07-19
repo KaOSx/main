@@ -1,31 +1,37 @@
 
 pkgname=libinput
-pkgver=1.8.0
+pkgver=1.8.1
 pkgrel=1
 pkgdesc="Library to handle input devices in Wayland compositors and to provide a generic X.Org input driver"
 arch=('x86_64')
 url="https://www.freedesktop.org/wiki/Software/libinput/"
 license=('custom:X11')
 depends=('mtdev' 'systemd' 'libevdev' 'libwacom')
-#makedepends=('check')
+makedepends=('meson' 'ninja')
 options=('!libtool')
 source=("https://freedesktop.org/software/libinput/${pkgname}-${pkgver}.tar.xz")
-md5sums=('f12066eeda3e1aeaa65eeca4b9ad833d')
+md5sums=('8247f0bb67052ffb272c50c3cb9c5998')
 
 build() {
-  cd ${pkgname}-${pkgver}
+    mkdir -p build
+    cd build
+    
+    export LANG=en_US.UTF-8
 
-  ./configure --prefix=/usr \
-    --disable-static \
-    --disable-documentation \
-    --disable-debug-gui \
-    --disable-tests
-  make
+    meson ../${pkgname}-${pkgver} \
+        --prefix=/usr \
+        --buildtype=release \
+        --libexecdir=/usr/lib \
+        -Dtests=false \
+        -Ddebug-gui=false \
+        -Ddocumentation=false
+    ninja    
+   
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
-  make DESTDIR=${pkgdir} install
+    cd build
+    DESTDIR=${pkgdir} ninja install
 
-  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
-}
+    install -Dm644 ../${pkgname}-${pkgver}/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
+    }

@@ -1,7 +1,7 @@
 
 pkgbase=gtk3
 pkgname=('gtk3' 'gtk-update-icon-cache')
-pkgver=3.22.16
+pkgver=3.22.17
 _pkgver=3.22
 pkgrel=1
 arch=('x86_64')
@@ -14,9 +14,9 @@ license=('LGPL')
 source=("https://ftp.gnome.org/pub/gnome/sources/gtk+/${_pkgver}/gtk+-${pkgver}.tar.xz"
         'gtk-update-icon-cache.hook'
         'gtk-update-icon-cache.script')
-md5sums=('71820863d5479e2c4a5b78f3164d5f15'
-         'c792ef5bb74ceba564b4d8ad306a6592'
-         '025117f62dfb22e942a46784e238e470')
+sha256sums=('a6c1fb8f229c626a3d9c0e1ce6ea138de7f64a5a6bc799d45fa286fe461c3437'
+            '496064a9dd6214bd58f689dd817dbdc4d7f17d42a8c9940a87018c3f829ce308'
+            'bbe06e1b4e1ad5d61a4e703445a2bb93c6be918964d6dd76c0420c6667fa11eb')
 
 build() {
   cd gtk+-${pkgver}
