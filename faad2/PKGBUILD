@@ -1,30 +1,32 @@
 
 pkgname=faad2
-pkgver=2.7
-pkgrel=4
+pkgver=2.8.1
+pkgrel=1
 pkgdesc="ISO AAC audio decoder"
 arch=('x86_64')
 url="http://www.audiocoding.com/"
 license=('custom:GPL')
 depends=('glibc')
 options=('!libtool' '!makeflags')
-source=("http://downloads.sourceforge.net/sourceforge/faac/${pkgname}-${pkgver}.tar.bz2"
-        'LICENSE')
-md5sums=('4c332fa23febc0e4648064685a3d4332'
-         'ec95f38142e14fb46c849503897a37a0')
+source=("https://downloads.sourceforge.net/sourceforge/faac/${pkgname}-${pkgver}.tar.bz2"
+        'LICENSE'
+        'mp4ff.patch')
+md5sums=('c0c0d1e6d66de38c40ae56a1981321f9'
+         'ec95f38142e14fb46c849503897a37a0'
+         '66c7413cc7e449942a23c1f3db8e89be')
 
 build() {
-  cd ${srcdir}/${pkgname}-${pkgver}
+  cd ${pkgname}-${pkgver}
+  patch -p1 -i ${srcdir}/mp4ff.patch 
   
+  ./bootstrap
   ./configure --prefix=/usr
   make CFLAGS="${CFLAGS} -fPIC"
 }
 
 package() {
-  cd ${srcdir}/${pkgname}-${pkgver}
-  make DESTDIR=${pkgdir} manmdir=/usr/share/man/man1 install
+  cd ${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install
   
-  install -m644 common/mp4ff/mp4ff_int_types.h ${pkgdir}/usr/include/mp4ff_int_types.h
   install -D -m644 ${srcdir}/LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
-  mv ${pkgdir}/usr/share/man/man1/faad.man ${pkgdir}/usr/share/man/man1/faad.1
 }
