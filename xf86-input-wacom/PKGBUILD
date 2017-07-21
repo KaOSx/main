@@ -1,6 +1,6 @@
 
 pkgname=xf86-input-wacom
-pkgver=0.34.2
+pkgver=0.35.0
 pkgrel=1
 pkgdesc="X.Org Wacom tablet driver."
 arch=('x86_64')
@@ -10,7 +10,7 @@ depends=('libxi' 'libxrandr' 'libxinerama' 'systemd')
 makedepends=('xorg-server' 'libxext' 'resourceproto' 'scrnsaverproto')
 options=('!libtool')
 source=("https://downloads.sourceforge.net/project/linuxwacom/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('bfc2bb315210f735bcdb9f7887c9d609')
+sha256sums=('55f60a71e81ef5544885652069a4f52b5cbaceabba53a28ac1397ec0ac26447d')
 
 build() {
   cd ${pkgname}-${pkgver}
