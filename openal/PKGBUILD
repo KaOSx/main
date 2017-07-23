@@ -1,7 +1,7 @@
 
 pkgname=openal
 pkgver=1.18.0
-pkgrel=1
+pkgrel=2
 pkgdesc="OpenAL is a cross-platform 3D audio library for use with OpenGL"
 arch=('x86_64')
 url="http://www.openal.org/"
@@ -9,9 +9,17 @@ license=('LGPL')
 depends=('glibc')
 makedepends=('alsa-lib' 'sdl2' 'cmake' 'pulseaudio' 'qt5-base')
 options=('!libtool')
-source=("http://kcat.strangesoft.net/openal-releases/$pkgname-soft-${pkgver}.tar.bz2")
-md5sums=('704d41343b52dd04115de2dcdac5de03')
+source=("http://kcat.strangesoft.net/openal-releases/$pkgname-soft-${pkgver}.tar.bz2"
+        "https://github.com/kcat/openal-soft/commit/d4f3490a880f779f460332689a396ade69840f50.diff")
+md5sums=('704d41343b52dd04115de2dcdac5de03'
+         'dd59767e3f2ebffb4040066cedf231fd')
 
+prepare() {
+  cd ${pkgname}-soft-${pkgver}
+  # https://github.com/qTox/qTox/issues/4486
+  patch -p1 -i ${srcdir}/d4f3490a880f779f460332689a396ade69840f50.diff
+}
+         
 build() {
   cd ${pkgname}-soft-${pkgver}/build
   
