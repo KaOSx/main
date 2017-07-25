@@ -1,7 +1,7 @@
 
 pkgname=encfs
-pkgver=1.9.1
-pkgrel=4
+pkgver=1.9.2
+pkgrel=1
 pkgdesc='Encrypted filesystem in user-space'
 arch=('x86_64')
 url='https://vgough.github.io/encfs/'
@@ -9,8 +9,8 @@ license=('GPL')
 depends=('openssl' 'fuse' 'tinyxml2')
 makedepends=('cmake')
 options=('!libtool')
-source=("https://github.com/vgough/encfs/releases/download/v${pkgver}/encfs-${pkgver}.tar.gz")
-md5sums=('7cbf9cc3c5af49b46703ce6ba70d22a4')
+source=("https://github.com/vgough/encfs/archive/v${pkgver}.tar.gz")
+md5sums=('bd1d9cd132867012b761b12c341c6af3')
 
 build(){
   mkdir -p build
