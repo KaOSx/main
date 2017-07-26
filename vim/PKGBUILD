@@ -1,15 +1,15 @@
 
 pkgname=vim
-pkgver=8.0.0709
+pkgver=8.0.0776
 pkgrel=1
 arch=('x86_64')
 pkgdesc='Vi Improved, a highly configurable, improved version of the vi text editor.'
 license=('custom:vim')
 url="http://www.vim.org"
 depends=('gpm' 'perl' 'python2')
-makedepends=('gettext' 'pkgconfig')
+makedepends=('gettext' 'pkgconfig' 'python3')
 source=("https://github.com/vim/vim/archive/v${pkgver}.tar.gz")
-md5sums=('cbce273801c5e2e7a02a16e7cdb2621b')
+md5sums=('2e93a464322e032833ea77d9f47cd677')
 
 build() {
   cd ${srcdir}
@@ -38,7 +38,7 @@ build() {
     --disable-netbeans \
     --enable-perlinterp=yes \
     --enable-pythoninterp=yes \
-    --enable-python3interp=no \
+    --enable-python3interp=dynamic \
     --enable-rubyinterp=no
   make
 }
