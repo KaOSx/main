@@ -15,7 +15,7 @@ source=("https://github.com/evgeni/tp_smapi/releases/download/tp-smapi%2F${pkgve
 md5sums=('9796e92c86a53dd84823ca503a69c49e')
 
 build() {
-  cd "${srcdir}/${_pkgname}-${pkgver}"
+  cd ${_pkgname}-${pkgver}
 
  _kernver=$(< "${_extramodules}/version")
 
@@ -32,17 +32,17 @@ package() {
     INSTALL_MOD_PATH="${pkgdir}/${_extramodules%%/lib/*}" \
     M="${srcdir}/${_pkgname}-${pkgver}" modules_install
 
-  cd "${pkgdir}/${_extramodules%/*}"
-  mv "${_kernver}/extra" "${_extramodules##*/}"
-  rmdir "${_kernver}"
+  cd ${pkgdir}/${_extramodules%/*}
+  mv ${_kernver}/extra ${_extramodules##*/}
+  rmdir ${_kernver}
 
   # compress kernel modules
-  find "${pkgdir}" -name "*.ko" -exec gzip -9 {} +
+  find ${pkgdir} -name "*.ko" -exec gzip -9 {} +
 
   # load module on startup
-  echo tp_smapi > "${srcdir}/${pkgname}.conf"
-  install -Dm644 "${srcdir}/${pkgname}.conf" "${pkgdir}/lib/modules-load.d/${pkgname}.conf"
+  echo tp_smapi > ${srcdir}/${pkgname}.conf
+  install -Dm644 ${srcdir}/${pkgname}.conf ${pkgdir}/lib/modules-load.d/${pkgname}.conf
 
   # update kernel version in install file
-  sed -ri "s#^(extramodules=).*\$#\1${_extramodules}#" "${startdir}/${pkgname}.install"
+  sed -ri "s|^(extramodules=).*\$|\1${_extramodules}|" ${startdir}/${pkgname}.install
 }
