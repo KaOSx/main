@@ -1,6 +1,7 @@
 
+#http://news.php.net/group.php?group=php.announce
 pkgname=php
-pkgver=7.0.21
+pkgver=7.0.22
 pkgrel=1
 arch=('x86_64')
 pkgdesc='An HTML-embedded scripting language'
@@ -51,11 +52,11 @@ source=("http://www.php.net/distributions/${pkgname}-${pkgver}.tar.bz2"
         'php-fpm.conf.in.patch'
         'php-fpm.service'
         'php-fpm.tmpfiles')
-md5sums=('c6459c27adbbb174ce58165e39a5d580'
-         'e2683c5c38034548aca3df6427c8be1e'
-         '36919767cffdc25bfbd20540db4c7e13'
-         '8fb5a9bc4b44617ba1b29b60c43f62a0'
-         'c60343df74f8e1afb13b084d5c0e47ed')
+sha256sums=('88e0b27f69abdd12ecde81f000c5a9ea479af7218456ea7f6557edb43c6dfdde'
+            '97523d8407cde123c8f63466707c6d30e06aca9b83a815644de92275bb06c12d'
+            'f0692f2fb51f34cbb3c1289c375d688376a1a44d5e7f33ba0725a1aa2f861a91'
+            '65af4ebac5a1912292c701cca0313c76bd30450ef00d39f449ff5e8cbcfb82ba'
+            '640dba0d960bfeaae9ad38d2826d3f6b5d6c175a4d3e16664eefff29141faad5')
 
 prepare() {
 	cd ${pkgname}-${pkgver}

@@ -2,17 +2,16 @@
 pkgname=librsvg
 pkgver=2.41.0
 _pkgver=2.41
-pkgrel=1
+pkgrel=2
 pkgdesc="SAX-based renderer for SVG files into a GdkPixbuf"
 arch=('x86_64')
 url="https://live.gnome.org/LibRsvg"
 license=('LGPL')
 depends=('gdk-pixbuf2' 'pango' 'libcroco')
-makedepends=('intltool' 'gobject-introspection' 'cargo')
-optdepends=('python: rsvg commandline utility')
+makedepends=('intltool' 'gobject-introspection' 'rust')
 options=('!libtool')
 source=("https://ftp.gnome.org/pub/gnome/sources/librsvg/${_pkgver}/${pkgname}-${pkgver}.tar.xz")
-md5sums=('b5f450facb5144f737a612fef01f57ed')
+sha256sums=('a13573cb4efe3678eaf8709ae3533d79b17d33d29ca78a1e03e81b6235577140')
 
 build() {
   cd ${pkgname}-${pkgver}
