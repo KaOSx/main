@@ -1,7 +1,7 @@
 
 pkgname=texlive-core
-pkgver=2016.41843
-_revnr=${pkgver#2016.}
+pkgver=2017.44515
+_revnr=${pkgver#2017.}
 pkgrel=1
 pkgdesc="TeX Live core distribution"
 license=('GPL')
@@ -19,15 +19,27 @@ optdepends=(
 groups=('texlive-most')
 url='http://tug.org/texlive/'
 # full credit for this PKGBUILD goes to Rémy Oudompheng <remy@archlinux.org>
-source=("https://sources.archlinux.org/other/texlive/$pkgname-$pkgver-src.zip"
-        "$pkgname.maps"
+source=("https://sources.archlinux.org/other/texlive/${pkgname}-${pkgver}-src.zip"
+        "${pkgname}.maps"
+        'mktexlsr.hook'
+        'mktexlsr.script'
+        'texlive-updmap.hook'
+        'texlive-updmap.script'
+        'texlive-fmtutil.hook'
+        'texlive-fmtutil.script'
         'texmf.cnf'
         'texmfcnf.lua'
         '09-texlive-fonts.conf')
 options=('!strip')
-install=texlive.install
-md5sums=('84c8d40322b98dc10994f8e378d62640'
-         '54a34f8ddbeccec2427e4d5763349f9b'
+#install=texlive.install
+md5sums=('7bb0c130342622479466693912236539'
+         'ae4f25a5e69e3debd0e662bd2231ff95'
+         'a4e54f0cb05f401728b2b230fd63b300'
+         '2bbbef810687f4b2804a4b8cb91ce02f'
+         '0ecdbd88cae12dbeb5d0d63127c5fc38'
+         'c64d77b5111a26b9995263b49df4937c'
+         '582af708588fd09eeaa0f08111e60091'
+         '3f05fa08f84b94fcb3a76be271116a95'
          'c59f1074a749056b53d36a5892a47e1a'
          '16ad4dc53deb00029baef1b01ba1d984'
          '393a4bf67adc7ca5df2b386759d1a637')
@@ -118,12 +130,20 @@ package() {
 
    # create symlinks for formats 
    echo "--> Create symlinks for TeX formats ..."
-   mkdir -p "${pkgdir}/usr/bin"
-   bash "${pkgdir}"/usr/share/texmf-dist/scripts/texlive/texlinks.sh -f "$pkgdir"/usr/share/texmf-dist/web2c/fmtutil.cnf "$pkgdir"/usr/bin/
+   mkdir -p ${pkgdir}/usr/bin
+   bash ${pkgdir}/usr/share/texmf-dist/scripts/texlive/texlinks.sh -f ${pkgdir}/usr/share/texmf-dist/web2c/fmtutil.cnf ${pkgdir}/usr/bin/
 
    # install Perl libraries
-   mv "$pkgdir"/usr/share/texmf-dist/tlpkg "$pkgdir"/usr/share
-   rm -rf "$pkgdir"/usr/share/tlpkg/tlpobj
+   mv ${pkgdir}/usr/share/texmf-dist/tlpkg ${pkgdir}/usr/share
+   rm -rf ${pkgdir}/usr/share/tlpkg/tlpobj
+   
+   # pacman hooks
+   install -D -m644 ${srcdir}/mktexlsr.hook ${pkgdir}/usr/share/libalpm/hooks/mktexlsr.hook
+   install -D -m644 ${srcdir}/texlive-updmap.hook ${pkgdir}/usr/share/libalpm/hooks/texlive-updmap.hook
+   install -D -m644 ${srcdir}/texlive-fmtutil.hook ${pkgdir}/usr/share/libalpm/hooks/texlive-fmtutil.hook
+   install -D -m755 ${srcdir}/mktexlsr.script ${pkgdir}/usr/share/libalpm/scripts/mktexlsr
+   install -D -m755 ${srcdir}/texlive-updmap.script ${pkgdir}/usr/share/libalpm/scripts/texlive-updmap
+   install -D -m755 ${srcdir}/texlive-fmtutil.script ${pkgdir}/usr/share/libalpm/scripts/texlive-fmtutil
    
    # copy config file to texmf-config
    #mkdir -p $pkgdir/etc/texmf/tex/context/config
@@ -131,7 +151,7 @@ package() {
    #	  $pkgdir/etc/texmf/tex/context/config/cont-usr.tex
    
    # remove upstream updmap.cfg: it contains too many maps.
-   rm "${pkgdir}/usr/share/texmf-dist/web2c/updmap.cfg"
+   rm ${pkgdir}/usr/share/texmf-dist/web2c/updmap.cfg
  
    # more cleanup
    rm -rf $pkgdir/usr/share/texmf-dist/scripts/context/stubs/mswin/
@@ -165,6 +185,7 @@ de-macro/de-macro
 dosepsbin/dosepsbin.pl
 dtxgen/dtxgen
 dviasm/dviasm.py
+dviinfox/dviinfox.pl
 epstopdf/epstopdf.pl
 findhyph/findhyph
 fontools/afm2afm
@@ -173,7 +194,9 @@ fontools/ot2kpx
 fragmaster/fragmaster.pl
 installfont/installfont-tl
 latex-git-log/latex-git-log
+latex-papersize/latex-papersize.py
 latex2man/latex2man
+latex2nemeth/latex2nemeth
 latexdiff/latexdiff-vc.pl
 latexdiff/latexdiff.pl
 latexdiff/latexrevise.pl
@@ -185,6 +208,7 @@ ltxfileinfo/ltxfileinfo
 ltximg/ltximg.pl
 lua2dox/lua2dox_filter
 luaotfload/luaotfload-tool.lua
+lwarp/lwarpmk.lua
 make4ht/make4ht
 match_parens/match_parens
 mf2pt1/mf2pt1.pl
@@ -204,6 +228,7 @@ pdfjam/pdfjam-slides6up
 pdfjam/pdfjoin
 pdfjam/pdfnup
 pdfjam/pdfpun
+pdflatexpicscale/pdflatexpicscale.pl
 pdfxup/pdfxup
 pfarrei/a5toa4.tlu
 pfarrei/pfarrei.tlu
@@ -218,6 +243,16 @@ srcredact/srcredact.pl
 sty2dtx/sty2dtx.pl
 texcount/texcount.pl
 tex4ebook/tex4ebook
+tex4ht/ht.sh
+tex4ht/htcontext.sh
+tex4ht/htlatex.sh
+tex4ht/htmex.sh
+tex4ht/httex.sh
+tex4ht/httexi.sh
+tex4ht/htxelatex.sh
+tex4ht/htxetex.sh
+tex4ht/mk4ht.pl
+tex4ht/xhlatex.sh
 texdef/texdef.pl
 texdiff/texdiff
 texdirflatten/texdirflatten
@@ -230,6 +265,7 @@ texlive/dvi2fax.sh
 texlive/dvired.sh
 texlive/e2pall.pl
 texlive/fmtutil-sys.sh
+texlive/fmtutil-user.sh
 texlive/fmtutil.pl
 texlive/fontinst.sh
 texlive/kpsetool.sh
@@ -242,6 +278,7 @@ texlive/texconfig-sys.sh
 texlive/texconfig.sh
 texlive/texlinks.sh
 texlive/updmap-sys.sh
+texlive/updmap-user.sh
 texlive/updmap.pl
 texliveonfly/texliveonfly.py
 texloganalyser/texloganalyser

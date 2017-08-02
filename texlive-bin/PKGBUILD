@@ -1,7 +1,7 @@
 
 pkgname=texlive-bin
-pkgver=2016.41290
-pkgrel=9
+pkgver=2017.44590
+pkgrel=1
 pkgdesc="TeX Live binaries"
 url='https://tug.org/texlive/'
 license=('GPL')
@@ -11,36 +11,27 @@ depends=('t1lib' 'gd' 'poppler' 'libsigsegv' 'zziplib' 'libpng' 'libjpeg-turbo' 
 makedepends=('perl' 'clisp' 'ffcall')
 optdepends=('ed: for texconfig')
 options=('!libtool' '!strip')
-install="texlive.install"
+#install="texlive.install"
 # full credit for this PKGBUILD goes to Rémy Oudompheng <remy@archlinux.org>
-source=("https://mirrors.kernel.org/archlinux/other/texlive/texlive-bin-source-${pkgver}.tar.xz"
-        'mktexlsr.hook'
-        'mktexlsr.script'
-        'texlive-updmap.hook'
-        'texlive-updmap.script')
-md5sums=('7303361f2d441eb5c962a996fd77e8fa'
-         '7bc9cef52d3b0c15d2364b7d8658faa6'
-         '2bbbef810687f4b2804a4b8cb91ce02f'
-         'c18cbbd000aac60813b1695aa058964f'
-         'c64d77b5111a26b9995263b49df4937c')
+source=("https://mirrors.kernel.org/archlinux/other/texlive/texlive-bin-source-${pkgver}.tar.xz")
+md5sums=('aef593aa0021ececdaeb0845e85ec70b')
 
 prepare() {
    cd source
    #patch -p2 -i "$srcdir"/poppler0.26.patch
+   # t4ht expects to be in /usr/share/texmf/bin/t4ht
+   sed -i s/SELFAUTOPARENT/TEXMFROOT/ texk/tex4htk/t4ht.c
+   ## prevent compiling Xdvi with libXp
+   sed -i~ 's|-lXp ||' texk/xdvik/configure
 }
 
 build() {
-
-   cd ${srcdir}
-   # t4ht expects to be in /usr/share/texmf/bin/t4ht
-   sed -i s/SELFAUTOPARENT/TEXMFROOT/ source/texk/tex4htk/t4ht.c
    #############################################################
    ### configure
    cd source
-   ## prevent compiling Xdvi with libXp
-   sed -i~ 's|-lXp ||' texk/xdvik/configure
-   test ! -d Work && mkdir Work
+   mkdir -p Work
    cd Work
+   
    echo "--> Initial configuration..."
    # we use temporary prefix to avoid messing the existing
    # $pkgdir/usr/share/texmf tree
@@ -138,17 +129,13 @@ package() {
    ln -s pdftex ${pkgdir}/usr/bin/xmltex
    ln -s xetex ${pkgdir}/usr/bin/xelatex
 
-   ## install pacman hooks
-   install -D -m644 ${srcdir}/mktexlsr.hook "$pkgdir/usr/share/libalpm/hooks/mktexlsr.hook"
-   install -D -m644 ${srcdir}/texlive-updmap.hook "$pkgdir/usr/share/libalpm/hooks/texlive-updmap.hook"
-   install -D -m755 ${srcdir}/mktexlsr.script "$pkgdir/usr/share/libalpm/scripts/mktexlsr"
-   install -D -m755 ${srcdir}/texlive-updmap.script "$pkgdir/usr/share/libalpm/scripts/texlive-updmap"
-
    #############################################################
    # remove dangling symlinks
    _bibtexextra_scripts="
-bibexport
+bbl2bib
 bibdoiadd
+bibexport
+bibmradd
 bibzbladd
 listbib
 ltx2crossrefxml
@@ -188,15 +175,26 @@ epstopdf
 findhyph
 fmtutil
 fmtutil-sys
+fmtutil-user
 fontinst
 fragmaster
+ht
+htcontext
+htlatex
+htmex
+httex
+httexi
+htxelatex
+htxetex
 installfont-tl
 kpsepath
 kpsetool
 kpsewhere
 kpsexpand
 latex-git-log
+latex-papersize
 latex2man
+latex2nemeth
 latexdiff
 latexdiff-vc
 latexfileversion
@@ -210,9 +208,11 @@ ltximg
 lua2dox_filter
 luaotfload-tool
 luatools
+lwarpmk
 make4ht
 match_parens
 mf2pt1
+mk4ht
 mkjobtexmf
 mkt1font
 mktexfmt
@@ -233,6 +233,7 @@ pdfjam-pocketmod
 pdfjam-slides3up
 pdfjam-slides6up
 pdfjoin
+pdflatexpicscale
 pdfnup
 pdfpun
 pdfxup
@@ -267,16 +268,20 @@ texlinks
 texliveonfly
 texloganalyser
 texmfstart
+texosquery
+texosquery-jre5
+texosquery-jre8
 thumbpdf
 typeoutfileinfo
 updmap
 updmap-sys
+updmap-user
 vpl2ovp
 vpl2vpl
+xhlatex
 xindy
 "
    _games_scripts="rubikrotation"
-   _htmlxml_scripts="ht htcontext htlatex htmex httex httexi htxelatex htxetex mk4ht"
    _humanities_scripts="diadia"
    _langcyrillic_scripts="rubibtex rumakeindex"
    _langextra_scripts="ebong"
@@ -285,6 +290,7 @@ xindy
 kanji-fontmap-creator
 kanji-config-updmap
 kanji-config-updmap-sys
+kanji-config-updmap-user
 "
    _langkorean_scripts="jamo-normalize komkindex ttf2kotexfont"
    _latexextra_scripts="
@@ -300,7 +306,7 @@ splitindex
 svn-multi
 vpe
 yplan"
-   _music_scripts="lily-glyph-commands lily-image-commands lily-rebuild-pdfs m-tx musixtex musixflx pmx2pdf pmxchords"
+   _music_scripts="lily-glyph-commands lily-image-commands lily-rebuild-pdfs m-tx musixtex musixflx pmxchords"
    _pictures_scripts="cachepic epspdf epspdftk fig4latex getmapdl mathspic mkpic pn2pdf"
    _pstricks_scripts="pedigree pst2pdf"
    _science_scripts="pygmentex ulqda"
