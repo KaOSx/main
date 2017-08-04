@@ -1,28 +1,33 @@
 
 pkgname=libxkbcommon
-pkgver=0.7.1
+pkgver=0.7.2
 pkgrel=1
 pkgdesc="Keyboard handling library using XKB data"
 arch=('x86_64')
 url="https://xkbcommon.org/"
 license=('custom')
 depends=('xkeyboard-config' 'glibc' 'wayland-protocols')
-makedepends=('doxygen' 'xorg-util-macros')
+makedepends=('doxygen' 'meson' 'ninja')
 options=('!libtool')
 source=("https://xkbcommon.org/download/${pkgname}-${pkgver}.tar.xz")
-md5sums=('947ba609cb0239b9462127d5cf8908ee')
+sha256sums=('28a4dc2735863bec2dba238de07fcdff28c5dd2300ae9dfdb47282206cd9b9d8')
 
 build() {
-  cd ${pkgname}-${pkgver}
+  mkdir -p build
+  cd build
   
-  #./autogen.sh
-  ./configure --prefix=/usr --disable-static
-  make
+  export LANG=en_US.UTF-8
+  
+  meson ../${pkgname}-${pkgver} \
+    --prefix=/usr \
+    --buildtype=release \
+    --libexecdir=/usr/lib 
+  ninja
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
-  make DESTDIR=${pkgdir} install
+  cd build
+  DESTDIR=${pkgdir} ninja install
   
-  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+  install -Dm644 ../${pkgname}-${pkgver}/LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
