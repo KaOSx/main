@@ -9,15 +9,12 @@ license=('LGPL')
 depends=('gcc-libs')
 options=('!libtool')
 source=("http://www.surina.net/soundtouch/${pkgname}-${pkgver}.tar.gz")
-md5sums=('2d1ab4abb54640e8e308e36e309c94a6')
+md5sums=('9f5eaf7b767970c2dbc75b7a443ec15a')
 
 build() {
   cd ${pkgname}
 
-  if [ ! -x ./configure ]; then
-    ./bootstrap
-  fi
-
+  ./bootstrap
   ./configure --prefix=/usr --enable-shared --with-pic 
 
   make

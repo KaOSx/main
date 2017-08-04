@@ -1,24 +1,24 @@
 
 pkgname=python2-docutils
-pkgbase=docutils
-pkgver=0.13.1
+_pkgname=docutils
+pkgver=0.14
 pkgrel=1
 pkgdesc="Set of tools for processing plaintext docs into formats such as HTML, XML, or LaTeX"
 arch=('x86_64')
 url="http://docutils.sourceforge.net"
 license=('custom')
 depends=('python2')
-source=("http://downloads.sourceforge.net/docutils/docutils-$pkgver.tar.gz")
-md5sums=('ea4a893c633c788be9b8078b6b305d53')
+source=("https://downloads.sourceforge.net/docutils/${_pkgname}-${pkgver}.tar.gz")
+sha1sums=('32cefb69ac3dab5b04c4d150776f35419cc4c863')
 
 build() {
-  cd $pkgbase-${pkgver}
+  cd ${_pkgname}-${pkgver}
   
   python2 setup.py build
 }
 
 package() {
-  cd $pkgbase-${pkgver}
+  cd ${_pkgname}-${pkgver}
   python2 setup.py install --root=${pkgdir} --optimize=1
 
   for _f in ${pkgdir}/usr/bin/*.py; do
