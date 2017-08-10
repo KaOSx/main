@@ -2,6 +2,9 @@
 # Some colored makepkg-like functions
 # tputcolors
 
+# arg 1:  the new package version
+# arg 2:  the old package version
+
 if [[ $(command -v my_print_defaults >/dev/null 2>&1) ]]; then
   datadir=$(my_print_defaults mysqld | sed -n "s/^--datadir=//p")
 fi
@@ -22,7 +25,7 @@ post_upgrade(){
   getent group mysql >/dev/null 2>&1 || groupadd -g 89 mysql &>/dev/null
   getent passwd mysql >/dev/null 2>&1 || useradd -u 89 -g mysql -d $datadir -s /bin/false mysql &>/dev/null
   
-  if [[ "$(vercmp $2 10.2)" -lt 0 ]]; then
+  if [[ "$(vercmp $2 10.2)" -eq 1 ]]; then
     echo -e '\e[1;31m ==> This is a major MariaDB update'
     echo -e '\e[1;34m ==> make sure to restart mysqld.service: '
     echo -e '\e[1;34m ==> sudo systemctl restart mysqld.service '
