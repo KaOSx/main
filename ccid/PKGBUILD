@@ -27,7 +27,7 @@ package() {
   cd ${pkgname}-${pkgver}
 
   make DESTDIR=${pkgdir} install
-  # move the configuration file in /etc and create a symbolic link
+
   mv ${pkgdir}/usr/lib/pcsc/drivers/ifd-ccid.bundle/Contents/Info.plist ${pkgdir}/etc/libccid_Info.plist
   ln -s /etc/libccid_Info.plist ${pkgdir}/usr/lib/pcsc/drivers/ifd-ccid.bundle/Contents/Info.plist
   
