@@ -3,7 +3,7 @@
 
 pkgname=mlt
 pkgver=6.4.1
-pkgrel=2
+pkgrel=3
 pkgdesc="An open source multimedia framework"
 arch=('x86_64')
 url="http://www.mltframework.org"
@@ -29,7 +29,8 @@ build() {
               --qimage-libdir=/usr/lib/ \
               --qt-includedir=/usr/include/qt \
               --disable-gtk2 \
-              --avformat-swscale  
+              --avformat-swscale \
+              --disable-opencv
   make
 
   # mlt python bindings

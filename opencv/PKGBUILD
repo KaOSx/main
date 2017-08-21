@@ -1,15 +1,15 @@
 
 pkgname=opencv
-pkgver=3.2.0
-_pkgver=3.2.0
-pkgrel=5
+pkgver=3.3.0
+_pkgver=3.3.0
+pkgrel=1
 pkgdesc="Open Source Computer Vision Library"
 arch=('x86_64')
 license=('BSD')
 url="http://opencv.org/"
 depends=('jasper' 'gst-plugins-base' 'openexr' 'libdc1394' 'v4l-utils' 'ffmpeg' 'qt5-base'
          'libgphoto2' 'libwebp' 'protobuf')
-makedepends=('pkgconfig' 'cmake' 'python2-numpy' 'eigen3' 'python2-sphinx' 'mesa' 'clang')
+makedepends=('pkgconfig' 'cmake' 'python2-numpy' 'eigen3' 'python2-sphinx' 'mesa')
 optdepends=('python2-numpy: Python 2.x interface' 'eigen3')
 options=('!libtool')
 conflicts=('opencv-qt5')
@@ -19,8 +19,8 @@ source=("https://github.com/Itseez/opencv/archive/${_pkgver}.tar.gz"
         "opencv_contrib-${_pkgver}::https://github.com/Itseez/opencv_contrib/archive/${_pkgver}.tar.gz"
         "https://github.com/alalek/opencv/commit/24dbb43c096691d0333cacf231e22f1369f8c826.patch"
         'opengl.diff')
-md5sums=('a43b65488124ba33dde195fea9041b70'
-         'd7d50c70c31df3b31310f548f31fd2a2'
+md5sums=('eeedaec282a70aa2ea1d5152a372c990'
+         '7878ff39d3488b335861831419d30c64'
          '5bd9cd736b171c15cedee3a32a0c47ff'
          '20bc30c514f6f01cfbaaa7e1e0fcb39b')
 
@@ -32,15 +32,11 @@ build() {
  
   mkdir -p build 
   cd build
-  
-  export CC=/usr/bin/clang
-  export CXX=/usr/bin/clang++
 
   cmake .. -DCMAKE_BUILD_TYPE=Release \
         -DCMAKE_INSTALL_PREFIX=/usr \
         -DCMAKE_SKIP_RPATH=ON \
         -DBUILD_TESTS=OFF \
-        -DENABLE_SSE3=OFF \
         -DBUILD_EXAMPLES=ON \
         -DINSTALL_C_EXAMPLES=ON \
         -DINSTALL_PYTHON_EXAMPLES=ON \
