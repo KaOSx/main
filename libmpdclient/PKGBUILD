@@ -1,24 +1,31 @@
 
 pkgname=libmpdclient
-pkgver=2.10
-pkgrel=2
+pkgver=2.13
+pkgrel=1
 pkgdesc='Asynchronous API library for interfacing MPD in the C, C++ & Objective C languages'
-url='http://www.musicpd.org/libs/libmpdclient/'
+url='https://www.musicpd.org/libs/libmpdclient/'
 license=('custom:BSD')
 arch=('x86_64')
-source=("http://www.musicpd.org/download/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
-md5sums=('00606c630b905aa6196330373b366c29')
+makedepends=('meson' 'ninja')
+source=("http://www.musicpd.org/download/${pkgname}/2/${pkgname}-${pkgver}.tar.xz")
+md5sums=('63a3c3f757f073be6f225b1ecc2b8116')
 
 build() {
-	cd ${pkgname}-${pkgver}
-	
-	./configure --prefix=/usr --disable-documentation
-	make
+    mkdir -p build
+    cd build
+    
+    meson ../${pkgname}-${pkgver} \
+    --prefix=/usr \
+    --buildtype=release \
+    --libexecdir=/usr/lib \
+    -Ddocumentation=false \
+    -Dtest=false
+    ninja
 }
 
 package() {
-	cd ${pkgname}-${pkgver}
-	make DESTDIR=${pkgdir} install
+    cd build
+    DESTDIR=${pkgdir} ninja install
 
-	install -D -m 644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+    install -D -m 644 ../${pkgname}-${pkgver}/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
