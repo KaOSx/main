@@ -1,7 +1,7 @@
 
 pkgname=php-apache
 _pkgname=php
-pkgver=7.0.22
+pkgver=7.0.23
 pkgrel=1
 arch=('x86_64')
 pkgdesc='Apache SAPI for PHP'
@@ -10,9 +10,9 @@ url='http://www.php.net'
 depends=("php>=${pkgver}" 'apache') 
 makedepends=('imap' 'mariadb' 'postfix' 'libzip' 'file' 'libjpeg-turbo' 'openssl' 'db' 'gmp')
 backup=('etc/httpd/conf/extra/php5_module.conf')
-source=("http://www.php.net/distributions/${_pkgname}-${pkgver}.tar.bz2"
+source=("http://www.php.net/distributions/${_pkgname}-${pkgver}.tar.xz"
         'apache.conf')
-sha256sums=('88e0b27f69abdd12ecde81f000c5a9ea479af7218456ea7f6557edb43c6dfdde'
+sha256sums=('8e526e3551a58e00c8055fa4a72804aa1bd3ee1c0411b25bf1504cc4992609df'
             'ebc0af1ef3a6baccb013d0ccb29923895a7b22ff2d032e3bba802dc6328301ce')
 
 prepare() {
