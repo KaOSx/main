@@ -1,15 +1,15 @@
 
 pkgname=xerces-c
-pkgver=3.1.4
-pkgrel=3
+pkgver=3.2.0
+pkgrel=1
 pkgdesc="A validating XML parser written in a portable subset of C++."
 arch=('x86_64')
 url="http://xerces.apache.org/xerces-c"
 license=('APACHE')
 depends=('gcc-libs' 'curl' 'icu')
 options=('!libtool')
-source=("http://apache.osuosl.org/xerces/c/3/sources/xerces-c-${pkgver}.tar.gz")
-md5sums=('21bb097b711a513275379b59757cba4c')
+source=("http://apache.osuosl.org/xerces/c/3/sources/xerces-c-${pkgver}.tar.xz")
+sha256sums=('35d8db18ebe6db353850903981cd07cca64abeba071602e7e32596714352de08')
 
 build() {
   cd ${pkgname}-${pkgver}
