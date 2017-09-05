@@ -1,8 +1,8 @@
 
 pkgname=pulseaudio
 pkgdesc="A featureful, general-purpose sound server"
-pkgver=10.0
-pkgrel=2
+pkgver=11.0
+pkgrel=1
 arch=('x86_64')
 url="http://pulseaudio.org/"
 license=('GPL' 'LGPL')
@@ -20,20 +20,20 @@ provides=("libpulse=${pkgver}")
 options=('!emptydirs' '!libtool' '!makeflags')
 source=("https://freedesktop.org/software/pulseaudio/releases/${pkgname}-${pkgver}.tar.xz")
 #source=("$pkgname-$pkgver::git://anongit.freedesktop.org/pulseaudio/pulseaudio#commit=50186d7")
-md5sums=('4950d2799bf55ab91f6b7f990b7f0971')
+sha1sums=('df04f9ffb3fc1de9255f8b88e5d824fcd942607d')
 
 build() {
   cd ${pkgname}-${pkgver}
 
   ./configure --prefix=/usr \
-               --sysconfdir=/etc \
-               --libexecdir=/usr/lib \
-               --localstatedir=/var \
-               --with-udev-rules-dir=/usr/lib/udev/rules.d \
-               --with-database=tdb \
-               --disable-rpath \
-               --disable-bluez4 \
-               --disable-default-build-tests
+    --sysconfdir=/etc \
+    --libexecdir=/usr/lib \
+    --localstatedir=/var \
+    --with-udev-rules-dir=/usr/lib/udev/rules.d \
+    --with-database=tdb \
+    --disable-rpath \
+    --disable-bluez4 \
+    --disable-default-build-tests
 
   make
 }
