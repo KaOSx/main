@@ -1,31 +1,30 @@
 
 pkgname=xf86-video-ati
-pkgver=7.9.0
+pkgver=7.10.0
 pkgrel=1
 pkgdesc="X.org ati video driver"
 arch=('x86_64')
-url="http://xorg.freedesktop.org/"
+url="https://xorg.freedesktop.org/"
 license=('custom')
 depends=('libpciaccess' 'libdrm' 'systemd' 'pixman' 'mesa')
 makedepends=('xorg-server' 'xf86driproto' 'resourceproto' 'scrnsaverproto')
 groups=('xorg-video-drivers')
 options=('!libtool')
-source=("http://xorg.freedesktop.org/releases/individual/driver/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('bf3dfdae23879bdc0c8a7b955572ad90')
+source=("https://xorg.freedesktop.org/releases/individual/driver/${pkgname}-${pkgver}.tar.bz2")
+sha256sums=('ee51d642e3105cb5424f02622dc2966b87b42d498bb34104a70fcf6d4a8f4e79')
 
 build() { 
-    cd ${srcdir}/${pkgname}-${pkgver}
+    cd ${pkgname}-${pkgver}
     
     ./configure \
-            --prefix=/usr \
-            --enable-maintainer-mode \
-            --enable-dependency-tracking \
-            --enable-glamor
+        --prefix=/usr \
+        --enable-dependency-tracking \
+        --enable-glamor
     make
 }
 
 package() {
-    cd ${srcdir}/${pkgname}-${pkgver}
+    cd ${pkgname}-${pkgver}
     make DESTDIR=${pkgdir} install 
  
     msg "Copying license..."
