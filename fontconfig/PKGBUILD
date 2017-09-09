@@ -1,6 +1,6 @@
 # check frescobaldi on updates
 pkgname=fontconfig
-pkgver=2.12.4
+pkgver=2.12.5
 pkgrel=1
 epoch=1
 pkgdesc="A library for configuring and customizing font access"
@@ -11,12 +11,12 @@ depends=('expat' 'freetype2')
 makedepends=('gperf')
 options=('!libtool')
 install='fontconfig.install'
-source=("http://www.fontconfig.org/release/${pkgname}-${pkgver}.tar.gz"
+source=("https://www.freedesktop.org/software/fontconfig/release/${pkgname}-${pkgver}.tar.bz2"
         '29-replace-bitmap-fonts.conf'
         'fc-cache-install.hook')
-md5sums=('4fb01fc3f41760c41c69e37cc784b658'
-         '526b95ebde1b07eb5dbc5d71fb613ed1'
-         'ba07f578513842a325e397aa0f696319')
+sha256sums=('e10ccf1e26b0968f61d81037af1147fea28e86bfd159ffd8cfd5a486da126ce4'
+            '752fe94e93fe6abfd4ff46653d312d497223bdffbecc4effd413b0010f8de2bf'
+            '672f6a1c5e164671955ce807e670306194142a1794ce88df653aa717a972e274')
 
 build() {
   cd ${pkgname}-${pkgver}
