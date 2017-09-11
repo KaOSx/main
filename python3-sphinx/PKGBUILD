@@ -1,0 +1,18 @@
+
+pkgname=python3-sphinx
+pkgver=1.6.3
+pkgrel=1
+pkgdesc="Python documentation generator"
+arch=('x86_64')
+url="http://sphinx.pocoo.org/"
+license=('GPL')
+depends=('python3-setuptools' 'python3-pygments' 'python3-docutils' 'python3-jinja')
+optdepends=('texlive-latexextra: for generation of PDF documentation')
+source=("https://files.pythonhosted.org/packages/source/S/Sphinx/Sphinx-${pkgver}.tar.gz")
+md5sums=('c5ad61f4e0974375ca2c2b58ef8d5411')
+
+package() {
+    cd Sphinx-${pkgver}
+
+    python3 setup.py install --root=${pkgdir} -O1
+}
