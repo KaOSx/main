@@ -11,10 +11,8 @@ optdepends=('gnuplot: plotting capabilities' \
             'tk: graphical xmaxima interface')
 # needs rebuild when bash changes version
 options=('!makeflags' '!zipman') 
-source=("https://sourceforge.net/projects/maxima/files/Maxima-source/${pkgver}-source/${pkgname}-${pkgver}.tar.gz"
-        "${pkgname}.desktop")
-md5sums=('1b7d3b4f7dfc5eae2fcf79e8987f5f23'
-         '24aa81126fbb8b726854e5a80d4c2415')
+source=("https://sourceforge.net/projects/maxima/files/Maxima-source/${pkgver}-source/${pkgname}-${pkgver}.tar.gz")
+md5sums=('1b7d3b4f7dfc5eae2fcf79e8987f5f23')
 
 build() {
   cd ${pkgname}-${pkgver}
@@ -32,10 +30,6 @@ build() {
 
 package() {
   cd ${pkgname}-${pkgver}
+  
   make DESTDIR=${pkgdir} install
-
-  install -Dm644 ${srcdir}/${pkgname}.desktop ${pkgdir}/usr/share/applications/${pkgname}.desktop
-
-  install -d ${pkgdir}/usr/share/pixmaps
-  ln -s /usr/share/maxima/${pkgver}/xmaxima/maxima-new.png ${pkgdir}/usr/share/pixmaps/${pkgname}.png
 }
