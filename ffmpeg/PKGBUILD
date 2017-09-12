@@ -1,22 +1,25 @@
 
 # rebuild mpv on any update
 pkgname=ffmpeg
-pkgver=3.3.3
+pkgver=3.3.4
 pkgrel=1
 pkgdesc="Complete and free Internet live audio and video broadcasting solution for Linux/Unix"
 arch=('x86_64')
-url="http://ffmpeg.org/"
+url="https://ffmpeg.org/"
 license=('GPL')
 depends=('bzip2' 'lame' 'sdl2' 'libvorbis' 'xvidcore' 'zlib' 'x264' 'libtheora' 'celt' 'fribidi'
          'opencore-amr' 'alsa-lib' 'libvdpau' 'libxfixes' 'schroedinger' 'libvpx>=1.1.0' 'libwebp'
          'libva' 'openjpeg' 'rtmpdump' 'speex' 'gsm' 'pulseaudio' 'v4l-utils' 'gnutls' 'x265'
          'libass' 'dcadec' 'opus')
 makedepends=('yasm')
-source=("http://ffmpeg.org/releases/${pkgname}-${pkgver}.tar.xz")
-md5sums=('743dc66ebe67180283b92d029f690d0f')
+source=("https://ffmpeg.org/releases/${pkgname}-${pkgver}.tar.xz"
+        'openjpeg2.2.patch')
+md5sums=('e14a0200c78ce5c918427e57cd406a0d'
+         'e70179f9572035a655c297a2892fae08')
 
 build() {
   cd ${pkgname}-${pkgver}
+  patch -p1 -i ${srcdir}/openjpeg2.2.patch
 
   ./configure --prefix=/usr \
               --enable-avisynth \
