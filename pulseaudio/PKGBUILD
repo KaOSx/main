@@ -1,7 +1,7 @@
 
 pkgname=pulseaudio
 pkgdesc="A featureful, general-purpose sound server"
-pkgver=11.0
+pkgver=11.1
 pkgrel=1
 arch=('x86_64')
 url="http://pulseaudio.org/"
@@ -20,7 +20,7 @@ provides=("libpulse=${pkgver}")
 options=('!emptydirs' '!libtool' '!makeflags')
 source=("https://freedesktop.org/software/pulseaudio/releases/${pkgname}-${pkgver}.tar.xz")
 #source=("$pkgname-$pkgver::git://anongit.freedesktop.org/pulseaudio/pulseaudio#commit=50186d7")
-sha1sums=('df04f9ffb3fc1de9255f8b88e5d824fcd942607d')
+sha1sums=('53bde72b6bfe715c19b1519db8845f7a58346b67')
 
 build() {
   cd ${pkgname}-${pkgver}
