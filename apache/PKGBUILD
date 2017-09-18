@@ -1,7 +1,7 @@
 
 pkgname=apache
 pkgver=2.4.27
-pkgrel=1
+pkgrel=2
 pkgdesc='A high performance Unix-based HTTP server'
 arch=('x86_64')
 options=('!libtool')
@@ -19,12 +19,14 @@ source=("https://www.apache.org/dist/httpd/httpd-${pkgver}.tar.bz2"
         'httpd.logrotate'
         'kaos.layout'
         'httpd.service'
-        'httpd-tmpfile.conf')
+        'httpd-tmpfile.conf'
+        'optionsbleed.patch')
 md5sums=('97b6bbfa83c866dbe20ef317e3afd108'
          '6f0c3acecf1160fa6fb6970abce2d93b'
          '7511248625ccaaf3229a320167cdc5d9'
          '06abba73227c1cae7367207e3dacc5e2'
-         '110a056408252de4356be7f53872b11d')
+         '110a056408252de4356be7f53872b11d'
+         'c2a172543cdc58f8b919632b3959514b')
 
 build() {
   cd httpd-${pkgver}
@@ -33,6 +35,9 @@ build() {
   sed -e 's#User daemon#User http#' \
       -e 's#Group daemon#Group http#' \
       -i docs/conf/httpd.conf.in 
+  
+  # CVE-2017-9798
+  patch -p1 -i ${srcdir}/optionsbleed.patch
 
   cat ${srcdir}/kaos.layout >> config.layout
 
