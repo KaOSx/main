@@ -1,7 +1,7 @@
 
 pkgname=gdal
 pkgver=2.2.1
-pkgrel=2
+pkgrel=3
 pkgdesc="A translator library for raster geospatial data formats"
 arch=('x86_64')
 url="http://www.gdal.org/"
@@ -11,14 +11,17 @@ depends=('curl' 'geos' 'giflib' 'hdf5' 'libgeotiff' 'libjpeg-turbo' 'libpng' 'li
          'libspatialite' 'unixodbc')
 makedepends=('perl' 'swig')
 options=('!libtool' '!makeflags')
-source=("http://download.osgeo.org/gdal/${pkgver}/${pkgname}-${pkgver}.tar.gz")
-md5sums=('785acf2b0cbf9d56d37c9044d0ee2505')
+source=("http://download.osgeo.org/gdal/${pkgver}/${pkgname}-${pkgver}.tar.gz"
+        'poppler0.59.patch')
+md5sums=('785acf2b0cbf9d56d37c9044d0ee2505'
+         '8643325dff87a6e76b24c170c69de74f')
 
 build() {
   export CFLAGS="$CFLAGS -fno-strict-aliasing"
   export LDFLAGS="$LDFLAGS -Wl,--as-needed"
 
   cd ${pkgname}-${pkgver}
+  patch -p4 -i ${srcdir}/poppler0.59.patch
 
   ./configure --prefix=/usr --with-netcdf --with-libtiff --with-sqlite3 \
               --with-geotiff --with-mysql --with-python --with-curl \

@@ -1,7 +1,7 @@
 
 pkgname=texlive-bin
 pkgver=2017.44590
-pkgrel=1
+pkgrel=2
 pkgdesc="TeX Live binaries"
 url='https://tug.org/texlive/'
 license=('GPL')
@@ -13,12 +13,14 @@ optdepends=('ed: for texconfig')
 options=('!libtool' '!strip')
 #install="texlive.install"
 # full credit for this PKGBUILD goes to Rémy Oudompheng <remy@archlinux.org>
-source=("https://mirrors.kernel.org/archlinux/other/texlive/texlive-bin-source-${pkgver}.tar.xz")
-md5sums=('aef593aa0021ececdaeb0845e85ec70b')
+source=("https://mirrors.kernel.org/archlinux/other/texlive/texlive-bin-source-${pkgver}.tar.xz"
+        'poppler0.59.patch')
+md5sums=('aef593aa0021ececdaeb0845e85ec70b'
+         '555722f2912c01f18ace4f6b1996403c')
 
 prepare() {
    cd source
-   #patch -p2 -i "$srcdir"/poppler0.26.patch
+   patch -p1 -i ${srcdir}/poppler0.59.patch
    # t4ht expects to be in /usr/share/texmf/bin/t4ht
    sed -i s/SELFAUTOPARENT/TEXMFROOT/ texk/tex4htk/t4ht.c
    ## prevent compiling Xdvi with libXp
