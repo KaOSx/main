@@ -3,8 +3,8 @@ _extramodules=extramodules-4.12
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=('nvidia-340xx' 'khd-nvidia-340xx')
-pkgver=340.102
-pkgrel=14
+pkgver=340.104
+pkgrel=1
 arch=('x86_64')
 url="http://www.nvidia.com/"
 makedepends=('linux-headers' 'linux>=4.12' 'linux<4.13' "nvidia-340xx-utils=${pkgver}")
@@ -15,7 +15,7 @@ _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 source=("ftp://download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
         "https://raw.github.com/KaOSx/hardware-detection/master/hwdb/nvidia_supported"
         'linux-4.10.patch')
-md5sums=('81e720487caa2823586b32659da9acc1'
+md5sums=('efbd37cde63d50f657d55a6f2b321142'
          '62d0cdb856cfae64753c0f3acf729d47'
          '737e578e4a8fcc59db8f9f7fb0e959ee')
 
@@ -24,9 +24,9 @@ build() {
     sh "${_pkg}.run" --extract-only
     
     cd "${_pkg}"
-    patch -p1 -i ${srcdir}/linux-4.10.patch
+    #patch -p1 -i ${srcdir}/linux-4.10.patch
     # sed line needed for linux 4.9 & 340.101
-    sed -i 's/= DRIVER_GEM | DRIVER_PRIME,/= DRIVER_GEM | DRIVER_PRIME | DRIVER_LEGACY,/g' kernel/nv-drm.c
+    #sed -i 's/= DRIVER_GEM | DRIVER_PRIME,/= DRIVER_GEM | DRIVER_PRIME | DRIVER_LEGACY,/g' kernel/nv-drm.c
     
     cd "${srcdir}/${_pkg}/kernel"  
     make SYSSRC=/lib/modules/"${_kver}/build" module

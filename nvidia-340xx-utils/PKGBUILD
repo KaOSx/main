@@ -2,19 +2,17 @@
 pkgbase=nvidia-340xx-utils
 pkgname=('nvidia-340xx-utils' 'nvidia-340xx-settings')
 # Edit hardware-detection/hooks/hwdetect_7_graphics on version jump from 3xx.xx
-pkgver=340.102
-pkgrel=2
+pkgver=340.104
+pkgrel=1
 arch=('x86_64')
 url="http://www.nvidia.com/"
 license=('custom')
 makedepends=('xorg-server' 'libxvmc')
 options=('!strip')
 _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
-md5sums=('81e720487caa2823586b32659da9acc1')
-
 source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
         'nvidia-restore-settings.desktop')
-md5sums=("${md5sums[@]}"
+md5sums=('efbd37cde63d50f657d55a6f2b321142'
          '9237516792da7b6df32f8c7e8a98f475')
 
 create_links() {
