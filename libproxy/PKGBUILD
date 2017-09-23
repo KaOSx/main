@@ -1,7 +1,7 @@
 
 pkgname=libproxy
 pkgver=0.4.15
-pkgrel=2
+pkgrel=3
 pkgdesc="A library that provides automatic proxy configuration management"
 arch=('x86_64')
 url="http://libproxy.github.io/libproxy"
@@ -16,7 +16,7 @@ md5sums=('21ebe5b4ea2a04f5f468bf5d08c40d2c')
 
 build() {
   cd ${pkgname}-${pkgver}
-  mkdir build
+  mkdir -p build
   
   cd build
   cmake -DCMAKE_INSTALL_PREFIX=/usr \

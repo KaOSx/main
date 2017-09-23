@@ -1,7 +1,7 @@
 
 pkgname=netpbm
-pkgver=10.76.00
-pkgrel=2
+pkgver=10.79.07
+pkgrel=1
 pkgdesc="A toolkit for manipulation of graphic images"
 arch=('x86_64')
 license=('custom' 'BSD' 'GPL' 'LGPL')
@@ -30,7 +30,7 @@ package() {
   
   install -D -m644 doc/copyright_summary ${pkgdir}/usr/share/licenses/${pkgname}/copyright_summary.txt
     
-  mv -iv ${pkgdir}/usr/man ${pkgdir}/usr/share/man
+  #mv -iv ${pkgdir}/usr/man ${pkgdir}/usr/share/man
   rm ${pkgdir}/usr/conf*
   rm ${pkgdir}/usr/pkg*
   rm ${pkgdir}/usr/README
