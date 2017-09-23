@@ -1,33 +1,34 @@
 
 pkgname=imake
 pkgver=1.0.7
-pkgrel=3
+pkgrel=4
 pkgdesc="X.Org imake program and related utilities"
 arch=('x86_64')
-url="http://xorg.freedesktop.org/"
+url="https://xorg.freedesktop.org/"
 license=('custom')
 depends=('glibc')
 makedepends=('pkg-config' 'xproto' 'perl')
 optdepends=('perl:	for mkhtmlindex')
-source=("http://xorg.freedesktop.org/releases/individual/util/imake-${pkgver}.tar.bz2"
-	"http://xorg.freedesktop.org/releases/individual/util/gccmakedep-1.0.3.tar.bz2"
-	"http://xorg.freedesktop.org/releases/individual/util/lndir-1.0.3.tar.bz2"
-	"http://xorg.freedesktop.org/releases/individual/util/makedepend-1.0.5.tar.bz2"
-	"http://xorg.freedesktop.org/releases/individual/util/xorg-cf-files-1.0.5.tar.bz2"
-	'linuxconfig.patch'
-	'LICENSE')
+source=("https://xorg.freedesktop.org/releases/individual/util/imake-${pkgver}.tar.bz2"
+        "https://xorg.freedesktop.org/releases/individual/util/gccmakedep-1.0.3.tar.bz2"
+        "https://xorg.freedesktop.org/releases/individual/util/lndir-1.0.3.tar.bz2"
+        "https://xorg.freedesktop.org/releases/individual/util/makedepend-1.0.5.tar.bz2"
+        "https://xorg.freedesktop.org/releases/individual/util/xorg-cf-files-1.0.6.tar.bz2"
+        'linuxconfig.patch'
+        'LICENSE')
 md5sums=('4042a4139a4636f78e2b8a144fdd1fcd'
          '683847bee13c78a005705824a7c6f225'
          'a47bcd6cecda1a6ebd3395926ea4f53a'
          '0475638eb40a3920d0d3f14482c924a4'
-         '4a9cd7fc995ebf8f3cdad5395f9d8eba'
+         '28649f34fa23143f1945aa2750e1472a'
          'b3385d8efbbe7c7fc50ed3a96ce37a16'
          'f5767133ef7a98a0bfa15139e0e3d32e')
 
 build() {
-  cd ${srcdir}/xorg-cf-files-1.0.5
-  patch -p1 -i "${srcdir}/linuxconfig.patch"
-  cd "${srcdir}"
+  cd ${srcdir}/xorg-cf-files-1.0.6
+  patch -p1 -i ${srcdir}/linuxconfig.patch
+  
+  cd ${srcdir}
   for i in *; do
     if [ -d "${i}" ]; then
       pushd "${i}"
@@ -39,14 +40,14 @@ build() {
 }
 
 package() {
-  cd "${srcdir}"
+  cd ${srcdir}
   for i in *; do
     if [ -d "${i}" ]; then
       pushd "${i}"
-      make DESTDIR="${pkgdir}" install
+      make DESTDIR=${pkgdir} install
       popd
     fi
   done
-  install -D -m644 "${srcdir}/LICENSE" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+  install -D -m644 ${srcdir}/LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
 
