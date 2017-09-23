@@ -1,7 +1,8 @@
 
 pkgname=syslinux
-pkgver=6.03
-pkgrel=4
+pkgver=6.04beta
+_pkgver=6.04-pre1
+pkgrel=1
 arch=('x86_64')
 pkgdesc="Collection of boot loaders that boot from FAT, ext2/3/4 and btrfs filesystems, from CDs and via PXE"
 url="http://syslinux.zytor.com/"
@@ -14,31 +15,29 @@ optdepends=('mtools:           For mkdiskimage and syslinux support'
             'dosfstools:       For EFI support')
 backup=('boot/syslinux/syslinux.cfg')
 install=syslinux.install
-options=('!makeflags' '!emptydirs')
-source=("https://www.kernel.org/pub/linux/utils/boot/syslinux/$pkgname-${pkgver}.tar.xz"
+options=('!makeflags' '!emptydirs' '!buildflags')
+#source=("https://www.kernel.org/pub/linux/utils/boot/syslinux/${pkgname}-${pkgver}.tar.xz"
+source=("https://www.kernel.org/pub/linux/utils/boot/syslinux/Testing/6.04/${pkgname}-${_pkgver}.tar.xz"
         'syslinux.cfg'
         'syslinux-install_update'
         'gcc5.patch')
-md5sums=('92a253df9211e9c20172796ecf388f13'
+md5sums=('f9c956fde0de29be297402ecbc8ff4d0'
          '6461abfb17e54dc997cea77c7a312e20'
          '3fcba3efe6beda6fc4935c1914393377'
          '3fc0ea96652b100f71be89d6ac4df8d7')
          
 prepare() {
-    cd ${pkgname}-${pkgver}
+    cd ${pkgname}-${_pkgver}
     
     sed 's|/usr/man|/usr/share/man|g' -i mk/syslinux.mk
-    patch -p1 -i ${srcdir}/gcc5.patch
+    #patch -p1 -i ${srcdir}/gcc5.patch
 }
 
 _build_syslinux_bios() {
     
-    rm -rf ${srcdir}/${pkgname}-${pkgver}-bios/ 
-    cp -r ${srcdir}/${pkgname}-${pkgver} ${srcdir}/${pkgname}-${pkgver}-bios
-    cd ${srcdir}/${pkgname}-${pkgver}-bios/
-    
-    ## Do not build syslinux with default LDFLAGS
-    unset LDFLAGS
+    rm -rf ${srcdir}/${pkgname}-${_pkgver}-bios/ 
+    cp -r ${srcdir}/${pkgname}-${_pkgver} ${srcdir}/${pkgname}-${_pkgver}-bios
+    cd ${srcdir}/${pkgname}-${_pkgver}-bios/
     
     make bios
     make bios installer
@@ -47,16 +46,9 @@ _build_syslinux_bios() {
 
 _build_syslinux_efi64() {
     
-    rm -rf ${srcdir}/${pkgname}-${pkgver}-efi64/ 
-    cp -r ${srcdir}/${pkgname}-${pkgver} ${srcdir}/${pkgname}-${pkgver}-efi64
-    cd ${srcdir}/${pkgname}-${pkgver}-efi64/
-    
-    ## Unset all compiler FLAGS for efi64 build
-    unset CFLAGS
-    unset CPPFLAGS
-    unset CXXFLAGS
-    unset LDFLAGS
-    unset MAKEFLAGS
+    rm -rf ${srcdir}/${pkgname}-${_pkgver}-efi64/ 
+    cp -r ${srcdir}/${pkgname}-${_pkgver} ${srcdir}/${pkgname}-${_pkgver}-efi64
+    cd ${srcdir}/${pkgname}-${_pkgver}-efi64/
     
     make efi64
     make efi64 installer
@@ -66,7 +58,7 @@ _build_syslinux_efi64() {
 
 build() {
 
-    cd ${pkgname}-${pkgver}/
+    cd ${pkgname}-${_pkgver}/
 
     ## Build syslinux-efi
     _build_syslinux_efi64
@@ -78,7 +70,7 @@ build() {
 
 _package_syslinux_bios() {
 
-    cd ${srcdir}/${pkgname}-${pkgver}-bios/
+    cd ${srcdir}/${pkgname}-${_pkgver}-bios/
     
     ## Install Syslinux bios
     make INSTALLROOT=${pkgdir}/ AUXDIR=/usr/lib/syslinux/bios/ bios install
@@ -92,7 +84,7 @@ _package_syslinux_bios() {
     
     ## Install docs
     install -d ${pkgdir}/usr/share/doc
-    cp -ar ${srcdir}/${pkgname}-${pkgver}/doc ${pkgdir}/usr/share/doc/syslinux
+    cp -ar ${srcdir}/${pkgname}-${_pkgver}/doc ${pkgdir}/usr/share/doc/syslinux
     
     ## Install the default configuration
     install -D -m0644 ${srcdir}/syslinux.cfg ${pkgdir}/boot/syslinux/syslinux.cfg
@@ -106,7 +98,7 @@ _package_syslinux_bios() {
 
 package() { 
 
-    cd ${pkgname}-${pkgver}-efi64/
+    cd ${pkgname}-${_pkgver}-efi64/
     make INSTALLROOT=${pkgdir}/ AUXDIR=/usr/lib/syslinux/ efi64 install
 
     _package_syslinux_bios
