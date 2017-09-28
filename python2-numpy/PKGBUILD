@@ -1,6 +1,7 @@
 
 pkgname=python2-numpy
-pkgver=1.13.1
+pkgver=1.13.2
+_pkgver=1.13.2-1
 pkgrel=1
 pkgdesc="Scientific tools for Python"
 arch=('x86_64')
@@ -8,8 +9,8 @@ license=('custom')
 url="http://www.numpy.org/"
 depends=('lapack' 'python2-nose')
 provides=('python-numeric')
-source=("https://github.com/numpy/numpy/releases/download/v${pkgver}/numpy-${pkgver}.tar.gz")
-md5sums=('6d459e4a24f5035f720dda3c57716a92')
+source=("https://github.com/numpy/numpy/releases/download/v${pkgver}/numpy-${_pkgver}.tar.gz")
+sha256sums=('f976eb3de5ae3a7f17a402380a49f0582e3f2aafcf9d0a99e969b99e32018e29')
 
 build() {
   cd numpy-${pkgver}
