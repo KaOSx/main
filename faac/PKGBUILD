@@ -1,6 +1,6 @@
 
 pkgname=faac
-pkgver=1.29.7.4
+pkgver=1.29.7.6
 pkgrel=1
 pkgdesc="MPEG-4 and MPEG-2 AAC encoder."
 arch=('x86_64')
@@ -9,23 +9,12 @@ license=('GPL' 'custom')
 depends=('libmp4v2' 'glibc')
 makedepends=('automake' 'autoconf' 'libtool')
 options=('!libtool')
-source=("https://downloads.sourceforge.net/faac/${pkgname}-${pkgver}.tar.gz"
-        'mp4v2-1.9.patch'
-        'mp4v2-2.0.0.patch'
-        'altivec.patch')
-md5sums=('5179213f4c93ccf12249a581b27463b6'
-         '9d52a17e68fa15ca94e88e1457b94b74'
-         '979ff4f13f36217cb15c92df9fd75f0c'
-         'e1ee422ab524fb1f78d178700c3a0e7f')
+source=("https://downloads.sourceforge.net/faac/${pkgname}-${pkgver}.tar.gz")
+md5sums=('a263c98506cacfb57591bdf70c695f35')
 
 build() {
   cd ${pkgname}-${pkgver}
-  #patch -p1 -i ${srcdir}/mp4v2-1.9.patch 
-  #patch -p0 -i ${srcdir}/mp4v2-2.0.0.patch 
-  #patch -p0 -i ${srcdir}/altivec.patch 
   
-  find . -type f -print0 | xargs -0 sed -i 's/\r//g'
-  ./bootstrap
   ./configure --prefix=/usr 
   make 
 }
@@ -34,5 +23,5 @@ package() {
   cd ${pkgname}-${pkgver}
   make DESTDIR=${pkgdir} install
 
-  install -Dm644 libfaac/kiss_fft/COPYING ${pkgdir}/usr/share/licenses/faac/LICENSE
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/faac/LICENSE
 }

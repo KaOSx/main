@@ -1,6 +1,6 @@
 
 pkgname=faad2
-pkgver=2.8.1
+pkgver=2.8.3
 pkgrel=1
 pkgdesc="ISO AAC audio decoder"
 arch=('x86_64')
@@ -8,18 +8,16 @@ url="http://www.audiocoding.com/"
 license=('custom:GPL')
 depends=('glibc')
 options=('!libtool' '!makeflags')
-source=("https://downloads.sourceforge.net/sourceforge/faac/${pkgname}-${pkgver}.tar.bz2"
+source=("https://downloads.sourceforge.net/sourceforge/faac/${pkgname}-${pkgver}.tar.gz"
         'LICENSE'
         'mp4ff.patch')
-md5sums=('c0c0d1e6d66de38c40ae56a1981321f9'
+md5sums=('e8b373d17de8a8145dec39e9712d3bf8'
          'ec95f38142e14fb46c849503897a37a0'
          '66c7413cc7e449942a23c1f3db8e89be')
 
 build() {
   cd ${pkgname}-${pkgver}
-  patch -p1 -i ${srcdir}/mp4ff.patch 
   
-  ./bootstrap
   ./configure --prefix=/usr
   make CFLAGS="${CFLAGS} -fPIC"
 }
