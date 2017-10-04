@@ -1,8 +1,8 @@
 
 ## rebuild groff on every update
 pkgname=ghostscript
-pkgver=9.21
-_pkgver=921
+pkgver=9.22
+_pkgver=922
 pkgrel=1
 epoch=1
 pkgdesc="An interpreter for the PostScript language"
@@ -16,7 +16,7 @@ url="http://www.ghostscript.com/"
 #source=("http://downloads.ghostscript.com/public/ghostscript-${pkgver}.tar.bz2")
 source=("https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs${_pkgver}/ghostscript-${pkgver}.tar.xz")
 options=('!libtool' '!makeflags')
-md5sums=('631beea7aa1f70f2cdca14e0308b8801')
+sha256sums=('c1f862e6f40f997dbe3feba89355e8cb05d55818994e10f4932b0dd9b627d1bb')
 
 build() {
   cd ${srcdir}/ghostscript-${pkgver}
