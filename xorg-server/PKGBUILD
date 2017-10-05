@@ -1,6 +1,6 @@
 
 pkgname=xorg-server
-pkgver=1.19.3
+pkgver=1.19.4
 # major updates build xorg-server/xf86-input-evdev/xorg-server again
 pkgrel=1
 pkgdesc="X.Org X servers"
@@ -27,10 +27,10 @@ source=("https://xorg.freedesktop.org/releases/individual/xserver/${pkgname}-${p
         'nvidia-drm-outputclass.conf'
         'xvfb-run'
         'xvfb-run.1')
-md5sums=('015d2fc4b9f2bfe7a626edb63a62c65e'
-         '1b0626939623e92c04809fb76cb505dd'
-         '52fd3effd80d7bc6c1660d4ecf23d31c'
-         '376c70308715cd2643f7bff936d9934b')
+sha256sums=('aa758acea91deaf1f95069ddc5ea3818e13675fb14fef40ad1b3d0b2bf03c9a8'
+            'd3792f4c076eb69ccece1ad4d99c691e02aec86a9b0f69a6cbb4f1b6c448eb62'
+            'ff0156309470fc1d378fd2e104338020a884295e285972cc88e250e031cc35b9'
+            '2460adccd3362fefd4cdc5f1c70f332d7b578091fb9167bf88b5f91265bbd776')
 
 build() {
   cd ${pkgname}-${pkgver}
