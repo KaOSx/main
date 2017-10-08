@@ -6,7 +6,7 @@ source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
 # on major updates build twice, first without building examples/qtwebengine dep
 # rebuild all in "required by" on major updates
 pkgbase=qtwebengine
-pkgname=('qtwebengine' 'qtwebengine-examples')
+pkgname=('qtwebengine') # 'qtwebengine-examples')
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
@@ -35,27 +35,23 @@ md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
 build() {
    cd $_pkgfqn/   
    
-   mkdir build   
+   #mkdir -p build   
    cd build 
    #export GYP_DEFINES="python_ver=2.7 use_pulseaudio=1 use_pango=1 use_cairo=1 use_cups=1"
    
    /usr/lib/qt5/bin/qmake WEBENGINE_CONFIG+="use_proprietary_codecs use_system_ffmpeg use_spellchecker use_nss=0" ../qtwebengine.pro
    make 
    
-   cd ..
-   cd examples/webenginewidgets/demobrowser/
-   /usr/lib/qt5/bin/qmake
-   make
+   #/usr/lib/qt5/bin/qmake ../examples/webenginewidgets/demobrowser/demobrowser.pro
+   #make
    
-   cd ..
-   cd markdowneditor/
-   /usr/lib/qt5/bin/qmake
-   make
+   #cd ..
+   #cd markdowneditor/
+   #/usr/lib/qt5/bin/qmake 
+   #make
    
-   cd ../..
-   cd webengine/quicknanobrowser/
-   /usr/lib/qt5/bin/qmake
-   make
+   #/usr/lib/qt5/bin/qmake ../examples/webengine/quicknanobrowser/quicknanobrowser.pro
+   #make
 }
 
 package_qtwebengine() {
@@ -74,16 +70,16 @@ package_qtwebengine-examples() {
     pkgdesc="Chromium-based web engine examples browsers and editor"
     depends=('qtwebengine')
     
-    cd $_pkgfqn/
+    cd $_pkgfqn/build
     
-    install -D -m755 examples/webenginewidgets/demobrowser/demobrowser ${pkgdir}/usr/bin/demobrowser
-    install -D -m755 examples/webengine/quicknanobrowser/quicknanobrowser ${pkgdir}/usr/bin/quicknanobrowser
-    install -D -m755 examples/webenginewidgets/markdowneditor/markdowneditor ${pkgdir}/usr/bin/markdowneditor
+    install -D -m755 demobrowser ${pkgdir}/usr/bin/demobrowser
+    #install -D -m755 quicknanobrowser ${pkgdir}/usr/bin/quicknanobrowser
+    #install -D -m755 examples/webenginewidgets/markdowneditor/markdowneditor ${pkgdir}/usr/bin/markdowneditor
     
     install -D -m644 ${srcdir}/demobrowser.desktop ${pkgdir}/usr/share/applications/demobrowser.desktop
-    install -D -m644 ${srcdir}/quicknanobrowser.desktop ${pkgdir}/usr/share/applications/quicknanobrowser.desktop
-    install -D -m644 ${srcdir}/markdowneditor.desktop ${pkgdir}/usr/share/applications/markdowneditor.desktop
+    #install -D -m644 ${srcdir}/quicknanobrowser.desktop ${pkgdir}/usr/share/applications/quicknanobrowser.desktop
+    #install -D -m644 ${srcdir}/markdowneditor.desktop ${pkgdir}/usr/share/applications/markdowneditor.desktop
     
-    install -D -m644 examples/webenginewidgets/demobrowser/data/demobrowser.svg \
+    install -D -m644 ../examples/webenginewidgets/demobrowser/data/demobrowser.svg \
     ${pkgdir}/usr/share/icons/hicolor/scalable/apps/demobrowser.svg
 }
