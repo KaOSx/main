@@ -1,15 +1,15 @@
 
 pkgname=sg3_utils
-pkgver=1.42
-pkgrel=2
+pkgver=1.43
+pkgrel=1
 pkgdesc="Generic SCSI utilities"
 arch=('x86_64')
 url="http://sg.danny.cz/sg/sg3_utils.html"
 license=('GPL' 'custom:BSD')
 depends=('glibc')
 options=('!libtool')
-source=("http://sg.danny.cz/sg/p/${pkgname}-${pkgver}.tar.xz")
-md5sums=('913ac2c9069d2ba44e05565a445810ab')
+source=("https://github.com/hreinecke/sg3_utils/archive/v${pkgver}.tar.gz")
+md5sums=('be6aa3bafab7ac6739380881ad1605b7')
 
 build() {
   cd ${pkgname}-${pkgver}
