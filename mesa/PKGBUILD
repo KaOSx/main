@@ -3,7 +3,7 @@ pkgbase=mesa
 pkgname=('mesa' 'libgl')
 pkgver=17.2.2
 _pkgver=17.2.2
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 makedepends=('glproto' 'libdrm' 'libxxf86vm' 'libxdamage' 'libva' 'expat' 'llvm' 'libx11' 'libxt' 'gcc-libs'
              'dri2proto' 'python2' 'libxml2' 'imake' 'systemd' 'libvdpau' 'wayland' 'dri3proto'
@@ -16,12 +16,14 @@ source=("https://mesa.freedesktop.org/archive/${pkgname}-${pkgver}.tar.xz"
        'LICENSE'
        'nouveau_locking_1.patch'
        'nouveau_locking_2.patch'
-       'nouveau_locking_3.patch')
+       'nouveau_locking_3.patch'
+       'swr.patch')
 sha256sums=('cf522244d6a5a1ecde3fc00e7c96935253fe22f808f064cab98be6f3faa65782'
             '7fdc119cf53c8ca65396ea73f6d10af641ba41ea1dd2bd44a824726e01c8b3f2'
             '00b7c369de787ad6cdcd01ffc1e8b7ef81106d174b6c21b27090e84539984467'
             '5532d795b32ebaf875d75a2d76059fef4f88da0efab14855dc797d9b2a2df6cf'
-            '752a293974781bb7c57f2631d5f5282be30c75a1c625dfa90cf4ae6537d8b54d')
+            '752a293974781bb7c57f2631d5f5282be30c75a1c625dfa90cf4ae6537d8b54d'
+            '14ea2e883d4a26d8f00dbb5b933661a18dd3984c6f7cb36eda96aa47c7091980')
   
 build() {
     cd ${pkgname}-${pkgver}
@@ -33,6 +35,8 @@ build() {
     patch -p1 -i ${srcdir}/nouveau_locking_1.patch
     patch -p1 -i ${srcdir}/nouveau_locking_2.patch
     patch -p1 -i ${srcdir}/nouveau_locking_3.patch
+    
+    patch -p1 -i ${srcdir}/swr.patch
     
     ./autogen.sh --prefix=/usr \
     --sysconfdir=/etc \
