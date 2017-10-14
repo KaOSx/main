@@ -35,7 +35,7 @@ build() {
     patch -p1 -i ${srcdir}/nouveau_locking_1.patch
     patch -p1 -i ${srcdir}/nouveau_locking_2.patch
     patch -p1 -i ${srcdir}/nouveau_locking_3.patch
-    
+    # https://cgit.freedesktop.org/mesa/mesa/commit/src/gallium/drivers/swr/rasterizer/core/utils.h?id=21e271024d8e050b75361c2da2e5783100f2e87b
     patch -p1 -i ${srcdir}/swr.patch
     
     ./autogen.sh --prefix=/usr \
