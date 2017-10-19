@@ -1,7 +1,7 @@
 
 pkgname=bash-completion
 pkgver=2.7
-pkgrel=1
+pkgrel=2
 pkgdesc="Programmable completion for the bash shell"
 arch=('x86_64')
 url="https://github.com/scop/bash-completion"
@@ -31,5 +31,6 @@ package() {
   # provided by util-linux since 2.28
   rm ${pkgdir}/usr/share/bash-completion/completions/mount
   rm ${pkgdir}/usr/share/bash-completion/completions/umount
+  rm ${pkgdir}/usr/share/bash-completion/completions/rfkill
 }
 
