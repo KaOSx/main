@@ -1,7 +1,7 @@
 
 pkgname=libva-vdpau-driver
 pkgver=0.7.4
-pkgrel=2
+pkgrel=3
 pkgdesc="VDPAU backend for VA API"
 arch=('x86_64')
 url="http://freedesktop.org/wiki/Software/vaapi"
@@ -13,10 +13,10 @@ source=("http://www.freedesktop.org/software/vaapi/releases/$pkgname/$pkgname-$p
         'utils_glx.diff'
         'libvdpau.patch'
         'vdpau_dump.patch')
-md5sums=('5ec6d452d2dd307434ea3d32da49c3e5'
-         '9ecb758ac8e758946400cc3bb7e94a2b'
-         '1832517ead98e0e27268fc78594e18ce'
-         '4783c9fb3b1514d7a0903d137fa55428')
+sha1sums=('224318f4ea8bafca6a0fec770e388b7d1a1a66b3'
+          'd0eae557e6320e92e5963def9b3e5a0d683b4e75'
+          'f465fbf5dfc32459b060f320b9b2fe15a13e6d9d'
+          '219a01631e2791fa3c3e077a9176c141aaf5f69b')
 
 build() {
   cd ${srcdir}/${pkgname}-${pkgver}
