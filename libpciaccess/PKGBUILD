@@ -1,6 +1,6 @@
 #
 pkgname=libpciaccess
-pkgver=0.13.5
+pkgver=0.14
 pkgrel=1
 pkgdesc="X11 PCI access library"
 arch=('x86_64')
@@ -10,7 +10,7 @@ depends=('glibc')
 makedepends=('pkgconfig' 'xorg-util-macros')
 options=('!libtool')
 source=("https://xorg.freedesktop.org//releases/individual/lib/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('d810ab17e24c1418dedf7207fb2841d4')
+sha256sums=('3df543e12afd41fea8eac817e48cbfde5aed8817b81670a4e9e493bb2f5bf2a4')
 
 build() {
   cd ${pkgname}-${pkgver}
