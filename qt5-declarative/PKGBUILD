@@ -6,20 +6,22 @@ pkgname=('qt5-declarative' 'qt5-declarative-docs')
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 url='http://qt.nokia.com/'
 license=('GPL3' 'LGPL' 'FDL' 'custom')
 makedepends=('qt5-xmlpatterns' 'mesa' 'python2' 'qt5-tools')
 options=('!libtool' 'debug')
 _pkgfqn="qtdeclarative-opensource-src-${subver}"
-source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
+source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz"
+        "https://github.com/qt/qtdeclarative/commit/98358715930739ca8de172d88c5ce6941c275ff3.diff")
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
-md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`)
+md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
+         '6529d25e63640f8f27f47c088490d953')
 
 build() {
     cd $srcdir/$_pkgfqn
-    #patch -p1 -i $srcdir/0001-Scene-Graph-Fixed-memory-leak-in-QSGBatchRenderer-Re.patch
+    patch -R -p1 -i $srcdir/98358715930739ca8de172d88c5ce6941c275ff3.diff
 
     /usr/lib/qt5/bin/qmake
     make
