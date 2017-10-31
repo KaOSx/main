@@ -13,13 +13,17 @@ options=('!libtool' '!docs')
 license=('LGPL')
 source=("https://ftp.gnome.org/pub/gnome/sources/gtk+/${_pkgver}/gtk+-${pkgver}.tar.xz"
         'gtk-update-icon-cache.hook'
-        'gtk-update-icon-cache.script')
+        'gtk-update-icon-cache.script'
+        'wayland.diff')
 sha256sums=('e25eaed5ab0775ddc211898fbfdc873b19e4a7ab03c0dbe88dff1938b433739e'
             '496064a9dd6214bd58f689dd817dbdc4d7f17d42a8c9940a87018c3f829ce308'
-            'bbe06e1b4e1ad5d61a4e703445a2bb93c6be918964d6dd76c0420c6667fa11eb')
+            'bbe06e1b4e1ad5d61a4e703445a2bb93c6be918964d6dd76c0420c6667fa11eb'
+            '06631ce4b475941bcb38b4ba24224d5e7b2ac46d74edfc43a41515b58c654c24')
 
 build() {
   cd gtk+-${pkgver}
+  # fix build fail with wayland https://bugzilla.gnome.org/show_bug.cgi?id=789630
+  patch -p1 -i ${srcdir}/wayland.diff
 
  ./configure --prefix=/usr \
              --sysconfdir=/etc \
