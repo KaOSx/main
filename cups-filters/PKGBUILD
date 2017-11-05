@@ -23,6 +23,7 @@ md5sums=('2ef5f2b902bcdcb963c5ef5858976bbc')
 build() {
   cd ${pkgname}-${pkgver}
   #patch -p1 -i ${srcdir}/poppler34.diff
+  #sed -e "s|cpp/poppler-version.h|poppler/cpp/poppler-version.h|" -i filter/pdftoopvp/oprs/OPRS.cxx
   
   ./configure --prefix=/usr  \
     --sysconfdir=/etc \
