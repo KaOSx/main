@@ -2,8 +2,8 @@
 # update postgresql-check-db-dir on major new version
 pkgbase=postgresql
 pkgname=('postgresql-libs' 'postgresql-docs' 'postgresql')
-pkgver=9.6.5
-pkgrel=2
+pkgver=10.0
+pkgrel=1
 epoch=1
 arch=('x86_64')
 url="https://www.postgresql.org/"
@@ -16,13 +16,13 @@ source=("https://ftp.postgresql.org/pub/source/v${pkgver}/postgresql-${pkgver}.t
         'postgresql.service' 
         'postgresql.tmpfiles.conf' 
         'postgresql-check-db-dir')
-sha256sums=('06da12a7e3dddeb803962af8309fa06da9d6989f49e22865335f0a14bad0744c'
+sha256sums=('712f5592e27b81c5b454df96b258c14d94b6b03836831e015c65d6deeae57fd1'
             '8538619cb8bea51078b605ad64fe22abd6050373c7ae3ad6595178da52f6a7d9'
             '57dfd072fd7ef0018c6b0a798367aac1abb5979060ff3f9df22d1048bb71c0d5'
             '6abb842764bbed74ea4a269d24f1e73d1c0b1d8ecd6e2e6fb5fb10590298605e'
             'c69b614731fdd3f4e127540814f5999f423363523c5209e252e19b1d4362ad68'
             '7e086d70e0dcaa6ce45693b4e826ce92d770192b3aff5642319b1ef279d88dc4'
-            '4a6c08e464d1335b1cb2cf32fd4f59eb1b732606e54353a469ab7ed0118eb9b8')
+            '9f3c7e7cc85d9b4ad9e9487dc232b1281692505912e0a6f9b8d62a68eba713ad')
 build() {
   cd postgresql-${pkgver}
   patch -p1 -i ${srcdir}/postgresql-run-socket.patch

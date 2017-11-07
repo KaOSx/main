@@ -1,30 +1,29 @@
 
 pkgname=libblockdev
-pkgver=2.12.1
-_pkgver=2.12-1
+pkgver=2.14
+_pkgver=2.14-1
 pkgrel=1
 pkgdesc="C library supporting GObject introspection for manipulation of block devices."
 arch=('x86_64')
-url="http://www-rhstorage.rhcloud.com/projects/libblockdev"
+url="http://storaged.org/libblockdev/"
 license=('LGPL')
 depends=('btrfs-progs' 'cryptsetup' 'kmod' 'libbytesize' 'lvm2' 'nss' 'parted' 
          'python3' 'systemd' 'util-linux' 'volume_key')
 makedepends=('gobject-introspection' 'python3-six') # 'dmraid')
-source=("https://github.com/rhinstaller/libblockdev/archive/${pkgname}-${_pkgver}.tar.gz"
+source=("https://github.com/storaged-project/libblockdev/releases/download/${_pkgver}/${pkgname}-${pkgver}.tar.gz"
         "https://github.com/rhinstaller/libblockdev/commit/50dec146ddd6c77f5989aa359a545ab676437169.diff")
-md5sums=('71addbf494f6c2b0106776eab3f51224'
+md5sums=('d13953db5247f326f730ff7ae64493de'
          '9610c23df7c73e74ddebffce971614c3')
 
 prepare() {
-    cd ${pkgname}-${pkgname}-${_pkgver}
+    cd ${pkgname}-${pkgver}
     
     #patch -p1 -i ${srcdir}/50dec146ddd6c77f5989aa359a545ab676437169.diff
 }
 
 build() {
-    cd ${pkgname}-${pkgname}-${_pkgver}
+    cd ${pkgname}-${pkgver}
     
-    ./autogen.sh
     ./configure --prefix=/usr \
         --sysconfdir=/etc \
         --with-python3=yes \
@@ -38,7 +37,7 @@ build() {
 }
 
 package() {
-    cd ${pkgname}-${pkgname}-${_pkgver}
+    cd ${pkgname}-${pkgver}
 
     make DESTDIR=${pkgdir}/ install
 }
