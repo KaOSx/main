@@ -2,7 +2,7 @@
 pkgbase="cups"
 pkgname=('libcups' 'cups')
 pkgver=2.2.6
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 license=('GPL')
 url="http://www.cups.org/"
@@ -112,7 +112,6 @@ optdepends=('xdg-utils: xdg .desktop file support')
   install -D -m644 ../cups.pam ${pkgdir}/etc/pam.d/cups
   
   chmod 755 ${pkgdir}/var/spool
-  chmod 775 ${pkgdir}/var/cache/cups
   chmod 755 ${pkgdir}/etc
 
   # certs dir
