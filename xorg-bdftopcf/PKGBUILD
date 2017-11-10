@@ -1,16 +1,16 @@
 
 pkgname=xorg-bdftopcf
-pkgver=1.0.5
-pkgrel=2
+pkgver=1.1
+pkgrel=1
 pkgdesc="Convert X font from Bitmap Distribution Format to Portable Compiled Format"
 arch=('x86_64')
 url="http://xorg.freedesktop.org/"
 license=('custom')
-depends=('libxfont')
+depends=('libxfont2')
 makedepends=('xorg-util-macros' 'xproto')
 groups=('xorg' 'xorg-apps')
 source=("http://xorg.freedesktop.org/archive/individual/app/bdftopcf-${pkgver}.tar.bz2")
-md5sums=('53a48e1fdfec29ab2e89f86d4b7ca902')
+sha256sums=('4b4df05fc53f1e98993638d6f7e178d95b31745c4568cee407e167491fd311a2')
 
 build() {
   cd bdftopcf-${pkgver}
