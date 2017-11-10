@@ -1,27 +1,27 @@
 
 pkgname=libogg
-pkgver=1.3.2
-pkgrel=3
+pkgver=1.3.3
+pkgrel=1
 pkgdesc="Ogg bitstream and framing library"
 arch=('x86_64')
-url="http://www.xiph.org/ogg/"
+url="https://www.xiph.org/ogg/"
 license=('BSD')
 depends=('glibc')
 options=('!libtool')
-source=("http://downloads.xiph.org/releases/ogg/$pkgname-$pkgver.tar.xz")
-md5sums=('5c3a34309d8b98640827e5d0991a4015')
+source=("https://downloads.xiph.org/releases/ogg/${pkgname}-${pkgver}.tar.xz")
+sha256sums=('4f3fc6178a533d392064f14776b23c397ed4b9f48f5de297aba73b643f955c08')
 
 build() {
-    cd $srcdir/${pkgname}-${pkgver}
+    cd ${pkgname}-${pkgver}
     
     ./configure --prefix=/usr 
     make
 }
 
 package() {
-    cd "$srcdir/${pkgname}-${pkgver}"
-    make DESTDIR=$pkgdir install
+    cd ${pkgname}-${pkgver}
+    make DESTDIR=${pkgdir} install
 
-    install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
+    install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
 }
 
