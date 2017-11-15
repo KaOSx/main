@@ -1,6 +1,6 @@
 
 pkgname=lapack
-pkgver=3.7.1
+pkgver=3.8.0
 pkgrel=1
 arch=('x86_64')
 url="http://www.netlib.org/lapack"
@@ -11,14 +11,13 @@ conflicts=('blas' 'atlas-lapack')
 replaces=('blas' 'atlas-lapack')
 provides=('blas')
 license=("custom")
-source=("http://www.netlib.org/lapack/${pkgname}-${pkgver}.tgz")
-md5sums=('dcdeeed73de152c4643ccc5b1aeb453c')
+source=("http://www.netlib.org/lapack/${pkgname}-${pkgver}.tar.gz")
+md5sums=('96591affdbf58c450d45c1daa540dbd2')
 
 build() {
-  cd ${srcdir}
-
-  install -d build
+  mkdir -p build
   cd build
+  
   cmake ../${pkgname}-${pkgver} \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_SKIP_RPATH=ON \
@@ -35,8 +34,8 @@ package() {
   make DESTDIR=$pkgdir install
   
   # install the test bin options
-  install -m755 -d ${pkgdir}/usr/bin
-  install -m755 ${srcdir}/build/bin/* ${pkgdir}/usr/bin
+  #install -m755 -d ${pkgdir}/usr/bin
+  #install -m755 ${srcdir}/build/bin/* ${pkgdir}/usr/bin
   
   install -m755 -d ${pkgdir}/usr/share/licenses/lapack
   install -m644 ${srcdir}/${pkgname}-${pkgver}/LICENSE  ${pkgdir}/usr/share/licenses/lapack/
