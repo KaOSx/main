@@ -18,16 +18,22 @@ install=mariadb.install
 source=("https://ftp.heanet.ie/mirrors/mariadb/mariadb-${_pkgver}/source/mariadb-${_pkgver}.tar.gz"
         'mariadb.service'
         'mariadb-post.sh'
-        'mariadb-tmpfile.conf')
+        'mariadb-tmpfile.conf'
+        "https://github.com/MariaDB/server/commit/440157cbbe796b6b9a44a3de46bbb93d0cb5a77c.diff"
+        "https://github.com/MariaDB/server/commit/8b18a44fa7e5ddf6c8caee37de4f6112c64dfc87.diff")
 sha256sums=('73bbd5602f52ab5aa4d83f465134871b6c87bda25371d098f6da5a3d98517ed4'
             '56badfd5a654f212566154cd4c1ecc8c88d4e8c0b7e5935b6ad6853ef745da01'
             '368f9fd2454d80eb32abb8f29f703d1cf9553353fb9e1ae4529c4b851cb8c5dd'
-            '2af318c52ae0fe5428e8a9245d1b0fc3bc5ce153842d1563329ceb1edfa83ddd')
+            '2af318c52ae0fe5428e8a9245d1b0fc3bc5ce153842d1563329ceb1edfa83ddd'
+            'acc1f4289288d86036d590d582b11fb45bd804a701761f7114ebc7c997275ae1'
+            '1368fb10582edb123a23fe9005f53a42f848852cddb738713f32d6c1cc96b6fe')
 
 prepare() {
   cd ${pkgname}-${pkgver}
   
   #sed -i 's|MARIADB_CLIENT_VERSION_PATCH "5"|MARIADB_CLIENT_VERSION_PATCH "6"|' libmariadb/CMakeLists.txt
+  patch -p1 -R -i ${srcdir}/440157cbbe796b6b9a44a3de46bbb93d0cb5a77c.diff
+  patch -p1 -R -i ${srcdir}/8b18a44fa7e5ddf6c8caee37de4f6112c64dfc87.diff
 }
          
 build() {

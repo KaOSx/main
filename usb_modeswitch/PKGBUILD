@@ -1,8 +1,8 @@
 
 pkgname=usb_modeswitch
-pkgver=2.5.0
+pkgver=2.5.1
 pkgrel=1
-_pkgdata=20170205
+_pkgdata=20170806
 pkgdesc="Activating switchable USB devices on Linux."
 arch=('x86_64')
 url="http://www.draisberghof.de/usb_modeswitch/"
@@ -15,10 +15,10 @@ source=("http://www.draisberghof.de/${pkgname}/usb-modeswitch-${pkgver}.tar.bz2"
         "http://www.draisberghof.de/${pkgname}/usb-modeswitch-data-${_pkgdata}.tar.bz2"
         "usb-modeswitch-${pkgver}-device_reference.txt::http://www.draisberghof.de/${pkgname}/device_reference.txt"
         '40-usb_modeswitch.diff')
-md5sums=('38ad5c9d70e06227a00361bdc2b1e568'
-         '0cc107cd0c4c83df0d9400c999e21dfd'
+md5sums=('7e6435a2afe7aed8574fe59cf09a3503'
+         'fb50d15b52e909d742dd16f0a9882316'
          '91f3b3638f013fd343bd98b251ce646f'
-         '1217ad78e4cbd563121faad9b939e56f')
+         'fdeec64154f1e7d8f671c5e2d187ab46')
 
 prepare() {
   cd usb-modeswitch-data-${_pkgdata}
