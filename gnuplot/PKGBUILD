@@ -1,6 +1,6 @@
 
 pkgname=gnuplot 
-pkgver=5.2.0
+pkgver=5.2.2
 pkgrel=1
 pkgdesc="Plotting package which outputs to X11, PostScript, PNG, GIF, and others" 
 arch=('x86_64') 
@@ -10,7 +10,7 @@ depends=('readline' 'gd' 'pango' 'libjpeg-turbo' 'qt5-svg' 'gnutls')
 makedepends=('texinfo' 'texlive-core' 'texlive-latexextra' 'qt5-tools') 
 install=gnuplot.install 
 source=("https://downloads.sourceforge.net/sourceforge/gnuplot/${pkgname}-${pkgver}.tar.gz")
-md5sums=('0bd8f9af84c0ad2fa9de16772c366416')
+md5sums=('60aedd08998160593199459dea8467fe')
 
 build() {
   cd ${pkgname}-${pkgver}
@@ -23,7 +23,7 @@ build() {
   # glib 2.23 adjustment
   #sed -i 's|isnan|std::isnan|' src/qtterminal/qt_conversion.cpp
   
-  CXXFLAGS="-std=c++11"
+  #CXXFLAGS="-std=c++11"
 
   ./configure --prefix=/usr \
               --libexecdir=/usr/bin \
