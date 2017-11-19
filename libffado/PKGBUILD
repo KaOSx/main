@@ -1,7 +1,7 @@
 
 pkgname=libffado
 pkgver=2.3.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Driver for FireWire audio devices"
 arch=('x86_64')
 url="http://www.ffado.org/"
@@ -10,14 +10,14 @@ depends=('libiec61883' 'libavc1394' 'libsigc++' 'libxml++' 'alsa-lib' 'dbus' 'li
          'dbus-c++')
 makedepends=('scons' 'jack')
 source=("http://www.ffado.org/files/${pkgname}-${pkgver}.tgz"
-        'glibmm2.46.patch')
+        'gcc6.patch')
 md5sums=('8f452977267200cfaf9b8e16ba3c92df'
-         '8f6ae7707c3bb018543f001ad513ba52')
+         '7364ae3df75f958bd247ab9737a4987a')
 
 prepare() {
   cd ${pkgname}-${pkgver}
   
-  #patch -p1 -i $srcdir/glibmm2.46.patch
+  patch -p1 -i $srcdir/gcc6.patch
 }
 
 build() {
