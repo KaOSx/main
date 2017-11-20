@@ -1,6 +1,6 @@
 
 pkgname=wcslib
-pkgver=5.16
+pkgver=5.17
 pkgrel=1
 pkgdesc="FITS World Coordinate System (WCS) standard defines keywords and usage that provide for the description of astronomical coordinate systems."
 arch=('x86_64')
@@ -9,7 +9,7 @@ license=('GPL3')
 depends=('cfitsio')
 makedepends=('gcc')
 source=("ftp://ftp.atnf.csiro.au/pub/software/wcslib/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('8608b3e7f36a7d82a670c3569ad21817')
+md5sums=('a717e3276189217692486b87e36fdbc1')
 
 build() {
   cd ${pkgname}-${pkgver}
@@ -20,7 +20,7 @@ build() {
 
 package() {
   cd ${pkgname}-${pkgver}
-  make DESTDIR=${pkgdir}/ install
+  make -j1 DESTDIR=${pkgdir}/ install
   
   chmod g=rx,-s ${pkgdir}/usr/{bin/,/lib/{,pkgconfig},share/man/man1/}
   chmod -s ${pkgdir}/usr/{include/wcslib-${pkgver}/,share/doc/wcslib-${pkgver}/{,html/}}
