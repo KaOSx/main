@@ -3,7 +3,7 @@ pkgname=qtwebkit-tp
 pkgver=5.212.0.1
 _pkgver=5.212.0-alpha2
 #_commit=8bed62ae51870074d3bc8f48791b19911bfc4d10
-pkgrel=3
+pkgrel=4
 pkgdesc='Cross-platform application and UI framework, QtWebkit files (revived branch)'
 arch=('x86_64')
 url='https://github.com/annulen/webkit'
@@ -19,14 +19,18 @@ conflicts=('qt5-webkit')
 groups=('qt5')
 #source=("https://github.com/annulen/qtwebkit-snapshots/archive/${_commit}.zip"
 source=("https://github.com/annulen/webkit/archive/qtwebkit-${_pkgver}.tar.gz"
-        "https://raw.githubusercontent.com/Alexpux/MINGW-packages/master/mingw-w64-qtwebkit/0012-install-additional-pri-files.patch")
+        "https://raw.githubusercontent.com/Alexpux/MINGW-packages/master/mingw-w64-qtwebkit/0012-install-additional-pri-files.patch"
+        "https://github.com/annulen/webkit/commit/f51554bf104ab0491370f66631fe46143a23d5c2.diff")
 md5sums=('9216661f6626fe4224ac477adf8d4162'
-         'd3997143a1b57cbbfbd4364713fea91d')
+         'd3997143a1b57cbbfbd4364713fea91d'
+         'b470e396e4bff74b104e98e1362d0161')
 
 prepare() {
   cd webkit-qtwebkit-${_pkgver}
 
-  patch -p1 -i $srcdir/0012-install-additional-pri-files.patch
+  patch -p1 -i ${srcdir}/0012-install-additional-pri-files.patch
+  # needed for cmake 3.10
+  patch -p1 -i ${srcdir}/f51554bf104ab0491370f66631fe46143a23d5c2.diff
 }
 
 build() {
