@@ -1,16 +1,16 @@
 
 pkgname=libcdio
-pkgver=0.94
+pkgver=1.0.0
 pkgrel=1
 pkgdesc="GNU Compact Disc Input and Control Library"
 arch=('x86_64')
 license=('GPL3')
-url="http://www.gnu.org/software/libcdio/"
-depends=('gcc-libs' 'libcddb' 'ncurses')
+url="https://www.gnu.org/software/libcdio/"
+depends=('gcc-libs' 'ncurses')
 options=('!libtool')
-source=("http://ftp.gnu.org/gnu/libcdio/${pkgname}-${pkgver}.tar.gz"
+source=("https://ftp.gnu.org/gnu/libcdio/${pkgname}-${pkgver}.tar.gz"
         'libcdio-0.83-linking.patch')
-md5sums=('d8734266a20fbc2605a97b701b838ab6'
+md5sums=('05b6e95d7f0aa832446ce4875f9e5097'
          '2826f89c78f09b0c0cbaeb47d507a55e')
 
 build() {
@@ -21,8 +21,7 @@ build() {
   ./configure --prefix=/usr \
               --disable-vcd-info \
               --enable-cpp-progs \
-              --disable-static
-              
+              --disable-static              
   make
 }
 
