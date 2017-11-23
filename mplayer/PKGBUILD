@@ -1,16 +1,16 @@
 
 pkgname=mplayer
-pkgver=37905
-pkgrel=5
+pkgver=38006
+pkgrel=1
 pkgdesc="Multimedia player."
 arch=('x86_64')
-depends=('a52dec' 'aalib' 'alsa-lib' 'bzip2' 'directfb' 'enca' 'faac' 'faad2'
+depends=('a52dec' 'aalib' 'alsa-lib' 'bzip2' 'directfb' 'enca' 'faad2'
          'fontconfig' 'freetype2' 'fribidi' 'gcc-libs' 'giflib' 'glibc' 'gsm' 'jack' 'ladspa' 'lame'
-         'libass' 'libbluray' 'libcaca' 'libcdio-paranoia' 'libdca' 'libdv' 'libdvdnav' 'libgl' 
+         'libass' 'libbluray' 'libcaca' 'libcdio' 'libcdio-paranoia' 'libdca' 'libdv' 'libdvdnav' 'libgl' 
          'libjpeg-turbo' 'libmad' 'libmng' 'libmpeg2' 'libogg' 'libpng'
          'pulseaudio' 'libtheora' 'libvdpau' 'libvpx' 'libx11' 'libxext' 'libxinerama'
          'libxss' 'libxv' 'libxxf86dga' 'libxxf86vm' 'live-media' 'opus'
-         'lzo2' 'mpg123' 'ncurses' 'openal' 'opencore-amr' 'orc' 'rtmpdump'  # not ready for 2.0 'openjpeg'
+         'lzo2' 'mpg123' 'ncurses' 'openal' 'opencore-amr' 'orc' 'rtmpdump'  # not ready for 2.0 'openjpeg' and 1.29.9 'faac'
          'schroedinger' 'sdl' 'samba' 'speex' 'ttf-dejavu' 'x264' 'xvidcore' 'zlib' 'gnutls')
 makedepends=('mesa' 'unzip' 'yasm')
 license=('GPL2')
@@ -21,7 +21,7 @@ source=("http://sourceforge.net/projects/kaosx/files/sources/${pkgname}/${pkgnam
         'mplayer.desktop'
         'mplayer.png'
         'cdio-includes.patch')
-md5sums=('0002d43eba52c6d243d21be3b1a4f872'
+md5sums=('1a3136e7e1da4bdc035fc5753766c6b6'
          '62f44a58f072b2b1a3c3d3e4976d64b3'
          'd00874ccc644b7f43d6ef1c942fcef28'
          '7b5be7191aafbea64218dc4916343bbc')
