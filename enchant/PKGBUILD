@@ -1,17 +1,17 @@
 
 pkgname=enchant
-pkgver=2.1.1
+pkgver=2.1.2
 pkgrel=1
 epoch=1
 pkgdesc="A wrapper library for generic spell checking"
 arch=('x86_64')
-url="http://www.abisource.com/enchant/"
+url="https://abiword.github.io/enchant/"
 license=('LGPL')
 depends=('aspell' 'dbus-glib' 'hunspell' 'hspell')
 options=('!libtool')
 #source=("http://www.abisource.com/downloads/enchant/${pkgver}/${pkgname}-${pkgver}.tar.gz")
 source=("https://github.com/AbiWord/enchant/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
-md5sums=('a3d768e06d8e88f7a3bec43eb53c70e1')
+md5sums=('0aa15a6330c4506bcdc9d5b51c24f2f8')
 
 build() {
   cd ${pkgname}-${pkgver}

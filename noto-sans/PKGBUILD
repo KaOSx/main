@@ -1,0 +1,20 @@
+
+pkgname=noto-fonts
+# version based on latest adjusted font in NotoSans-hinted.zip
+pkgver=20171024
+pkgrel=1
+arch=('x86_64')
+pkgdesc="Font family by Google which aims to support all languages with a harmonious look and feel."
+license=('SIL Open Font License (OFL)')
+url="https://www.google.com/get/noto/"
+depends=('fontconfig' 'xorg-fonts-encodings' 'xorg-font-utils')
+nstall=noto-fonts.install
+source=("https://noto-website-2.storage.googleapis.com/pkgs/NotoSans-hinted.zip")
+md5sums=('3abea57292933806314dc9c4048ee033')
+
+package_noto-fonts() {
+  install -d ${pkgdir}/usr/share/fonts/TTF
+  install -m0644 *.ttf ${pkgdir}/usr/share/fonts/TTF/
+  
+  install -Dm644 LICENSE_OFL.txt $pkgdir/usr/share/licenses/$pkgname/LICENSE
+}
