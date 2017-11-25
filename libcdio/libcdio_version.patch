@@ -1,0 +1,31 @@
+From 2d22ae18571caf29460a456340ff0603f04af6b4 Mon Sep 17 00:00:00 2001
+From: "R. Bernstein" <rocky@gnu.org>
+Date: Thu, 23 Nov 2017 18:26:07 -0500
+Subject: Set LIBCDIO_VERSION in a more consistent way
+
+we'll use the convention
+x.y.zjunk => x*10000 + y*100 + z
+
+Savannah bug #52491
+---
+ configure.ac | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index 51beb59..5dd57c6 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -32,7 +32,9 @@ AC_CONFIG_MACRO_DIR([m4])
+ m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])],
+          [AC_SUBST([AM_DEFAULT_VERBOSITY], [1])])
+ 
+-LIBCDIO_VERSION_NUM=`echo RELEASE_NUM | cut -d . -f 1 | tr -d a-z`
++# FXIME: write a m4 macro to conver x.y.zjunk to x*10000 + y*100 + z
++# LIBCDIO_VERSION_NUM=`echo RELEASE_NUM | cut -d . -f 1 | tr -d a-z`
++LIBCDIO_VERSION_NUM=10000
+ AC_SUBST(LIBCDIO_VERSION_NUM)
+ 
+ AM_MISSING_PROG(HELP2MAN, help2man, $missing_dir)
+-- 
+cgit v1.0-41-gc330
+ 
