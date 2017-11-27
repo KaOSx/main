@@ -11,26 +11,33 @@ depends=('curl' 'geos' 'giflib' 'hdf5' 'libgeotiff' 'libjpeg-turbo' 'libpng' 'li
          'libspatialite' 'unixodbc')
 makedepends=('perl' 'swig')
 options=('!libtool' '!makeflags')
-source=("http://download.osgeo.org/gdal/${pkgver}/${pkgname}-${pkgver}.tar.xz"
-        'poppler0.59.patch')
-md5sums=('86a105bb4103b2667200e3dc8ca2c019'
-         '8643325dff87a6e76b24c170c69de74f')
+source=("http://download.osgeo.org/gdal/${pkgver}/${pkgname}-${pkgver}.tar.xz")
+md5sums=('86a105bb4103b2667200e3dc8ca2c019')
 
 build() {
   export CFLAGS="$CFLAGS -fno-strict-aliasing"
   export LDFLAGS="$LDFLAGS -Wl,--as-needed"
 
   cd ${pkgname}-${pkgver}
-  #patch -p4 -i ${srcdir}/poppler0.59.patch
 
-  ./configure --prefix=/usr --with-netcdf --with-libtiff --with-sqlite3 \
-              --with-geotiff --with-mysql --with-python --with-curl \
-              --with-hdf5 --with-perl --with-geos --with-png \
-              --with-poppler --with-spatialite
+  ./configure --prefix=/usr \
+    --sysconfdir=/etc \
+    --with-netcdf \
+    --with-libtiff \
+    --with-sqlite3 \
+    --with-geotiff \
+    --with-mysql \
+    --with-python \
+    --with-curl \
+    --with-hdf5 \
+    --with-perl \
+    --with-geos \
+    --with-png \
+    --with-poppler \
+    --with-spatialite
 
-  sed -i 's/PY_HAVE_SETUPTOOLS=1/PY_HAVE_SETUPTOOLS=/g' ./GDALmake.opt
-  sed -i 's/EXE_DEP_LIBS/KILL_EXE_DEP_LIBS/' apps/GNUmakefile
-  #install -d ${pkgdir}/usr/lib/python2.7/site-packages/
+  sed -i 's|PY_HAVE_SETUPTOOLS=1|PY_HAVE_SETUPTOOLS=|g' ./GDALmake.opt
+  sed -i 's|EXE_DEP_LIBS|KILL_EXE_DEP_LIBS|' apps/GNUmakefile
 
   make
 }
