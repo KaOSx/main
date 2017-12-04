@@ -1,6 +1,6 @@
 
 pkgname=python2-setuptools
-pkgver=38.2.3
+pkgver=38.2.4
 pkgrel=1
 pkgdesc="Easily download, build, install, upgrade, and uninstall Python packages"
 arch=('x86_64')
@@ -11,8 +11,8 @@ makedepends=('asciidoc' 'python2-pip')
 provides=('python2-distribute' 'setuptools')
 replaces=('python2-distribute' 'setuptools')
 conflicts=('python2-distribute')
-source=("https://github.com/pypa/setuptools/archive/v${pkgver}.tar.gz")
-md5sums=('a054af04bb1ea2eb69116b400281d7d0')
+source=("https://github.com/pypa/setuptools/archive/setuptools-${pkgver}.tar.gz")
+md5sums=('a317d98b091f6c53a905e1b7dcf7d7d1')
 
 build() {
    cd setuptools-${pkgver}

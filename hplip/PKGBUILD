@@ -1,8 +1,8 @@
 
 pkgname=hplip
-pkgver=3.17.10
+pkgver=3.17.11
 # incase a or b is used in hplip rls:
-_pkgver=3.17.10
+_pkgver=3.17.11
 pkgrel=1
 pkgdesc="Drivers for HP DeskJet, OfficeJet, Photosmart, Business Inkjet and some LaserJet."
 arch=('x86_64')
@@ -19,7 +19,7 @@ install=${pkgname}.install
 source=("https://downloads.sourceforge.net/hplip/${pkgname}-${_pkgver}.tar.gz"
         "https://launchpadlibrarian.net/281975878/patch"
         'cups-2.2.patch')
-md5sums=('6426709159946c0f4ce48817d62cf989'
+md5sums=('09f3d50a2ba95e0fb66c78da7bab13ba'
          'c873eb40c9e3fa794637523400190218'
          'ceb7449b12e2ecf70f898bc50b161a3c')
 
@@ -36,18 +36,7 @@ build() {
   # https://github.com/KaOSx/main/issues/31, patch file prnt/filters/hpps
   #patch -p2 -i ${srcdir}/patch
   # cups 2.2 patch https://packages.debian.org/sid/hplip
-  patch -p1 -i ${srcdir}/cups-2.2.patch
-
-  # from Gentoo
-  # Use system foomatic-rip for hpijs driver instead of foomatic-rip-hplip
-  # move to cups-filters version asap http://hplipopensource.com/hplip-web/install/manual/distros/lfs.html
-  local i
-  for i in ppd/hpijs/*.ppd.gz ; do
-    rm -f ${i}.temp
-    gunzip -c ${i} | sed 's/foomatic-rip-hplip/foomatic-rip/g' | \
-    gzip > ${i}.temp || return 1
-    mv ${i}.temp ${i}
-  done
+  #patch -p1 -i ${srcdir}/cups-2.2.patch
 
   export AUTOMAKE='automake --foreign'
   export PYTHON=/usr/bin/python3
@@ -56,14 +45,10 @@ build() {
 	./configure --prefix=/usr \
              --disable-qt4 \
              --enable-qt5 \
-             --disable-foomatic-rip-hplip-install \
-             --enable-foomatic-ppd-install \
              --enable-hpcups-install \
              --enable-new-hpcups \
              --enable-cups-ppd-install \
              --enable-cups-drv-install \
-             --enable-hpijs-install \
-             --enable-foomatic-drv-install \
              --enable-pp-build 
   make 
 }
