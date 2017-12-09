@@ -1,8 +1,8 @@
 
 pkgbase=mesa
 pkgname=('mesa' 'libgl')
-pkgver=17.2.6
-_pkgver=17.2.6
+pkgver=17.3.0
+_pkgver=17.3.0
 pkgrel=1
 arch=('x86_64')
 makedepends=('glproto' 'libdrm' 'libxxf86vm' 'libxdamage' 'libva' 'expat' 'llvm' 'libx11' 'libxt' 'gcc-libs'
@@ -18,7 +18,7 @@ source=("https://mesa.freedesktop.org/archive/${pkgname}-${pkgver}.tar.xz"
        'nouveau_locking_2.patch'
        'nouveau_locking_3.patch'
        'swr.patch')
-sha256sums=('6ad85224620330be26ab68c8fc78381b12b38b610ade2db8716b38faaa8f30de'
+sha256sums=('29a0a3a6c39990d491a1a58ed5c692e596b3bfc6c01d0b45e0b787116c50c6d9'
             '7fdc119cf53c8ca65396ea73f6d10af641ba41ea1dd2bd44a824726e01c8b3f2'
             '00b7c369de787ad6cdcd01ffc1e8b7ef81106d174b6c21b27090e84539984467'
             '5532d795b32ebaf875d75a2d76059fef4f88da0efab14855dc797d9b2a2df6cf'
@@ -62,7 +62,7 @@ build() {
     --enable-xa \
     --enable-vdpau \
     --enable-dri3 \
-    --enable-omx \
+    --enable-omx-bellagio \
     --enable-lmsensors
     #--enable-openvg currently not ported yet with gallium-egl removal
     

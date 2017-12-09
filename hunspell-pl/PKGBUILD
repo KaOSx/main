@@ -1,31 +1,31 @@
 
 pkgname=hunspell-pl
-pkgver=20160404
+pkgver=20171208
 pkgrel=1
 pkgdesc='Polish dictionary for Hunspell/Myspell'
 arch=('x86_64')
 url='http://www.sjp.pl/slownik/ort/'
 license=('GPL')
 depends=('hunspell')
-source=("http://sjp.pl/slownik/ort/sjp-myspell-pl-$pkgver.zip")
-md5sums=('8e3df50074f399ae8b6462f17edb7aec')
+source=("http://sjp.pl/slownik/ort/sjp-myspell-pl-${pkgver}.zip")
+md5sums=('bf48ef8aec7b71c12d88112099d877b3')
 
 prepare() {
   bsdtar -xf pl_PL.zip
 }
 
 package() {
-  install -dm755 "$pkgdir"/usr/share/hunspell
-  install -m644 pl_PL.aff "$pkgdir"/usr/share/hunspell
-  install -m644 pl_PL.dic "$pkgdir"/usr/share/hunspell
+  install -dm755 ${pkgdir}/usr/share/hunspell
+  install -m644 pl_PL.aff ${pkgdir}/usr/share/hunspell
+  install -m644 pl_PL.dic ${pkgdir}/usr/share/hunspell
 
   install -dm755 ${pkgdir}/usr/share/myspell/dicts
-  pushd "$pkgdir"/usr/share/myspell/dicts
-  for file in "$pkgdir"/usr/share/hunspell/*; do
+  pushd ${pkgdir}/usr/share/myspell/dicts
+  for file in ${pkgdir}/usr/share/hunspell/*; do
     ln -sv /usr/share/hunspell/$(basename $file) .
   done
   popd
 
-  install -dm755 "$pkgdir"/usr/share/doc/$pkgname
-  install -m644 README_pl_PL.txt "$pkgdir"/usr/share/doc/$pkgname
+  install -dm755 ${pkgdir}/usr/share/doc/${pkgname}
+  install -m644 README_pl_PL.txt ${pkgdir}/usr/share/doc/${pkgname}
 }
