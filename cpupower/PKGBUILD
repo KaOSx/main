@@ -1,6 +1,6 @@
 
 pkgname=cpupower
-pkgver=4.13
+pkgver=4.14
 pkgrel=1
 pkgdesc='Linux kernel tool to examine and tune power saving related features of your processor'
 license=('GPL2')
@@ -11,40 +11,40 @@ makedepends=('asciidoc' 'xmlto')
 backup=('etc/default/cpupower')
 options=('!strip')
 source=("https://ftp.kernel.org/pub/linux/kernel/v4.x/linux-${pkgver}.tar.xz"
-        #"http://ftp.kernel.org/pub/linux/kernel/v4.x/patch-${pkgver}.1.xz"
+        "http://ftp.kernel.org/pub/linux/kernel/v4.x/patch-${pkgver}.5.xz"
         'cpupower.conf'
         'cpupower.service'
         'cpupower.systemd')
-md5sums=('ab1a2abc6f37b752dd2595338bec4e78'
-         #'349734be5387f1605074515ad7207627'
+md5sums=('bacdb9ffdcd922aa069a5e1520160e24'
+         '10bdd04b537db8c9bad90ea8ef2a89d2'
          'fb4b3d184850f5972c5a1bba3ead4e05'
          '2450e8ff41b30eb58d43b5fffbfde1f4'
          'e02e88977fbdde29a2ae38aa064a367d')
 
 build() {
-  if (( NOEXTRACT == 0 )) && [[ -e "$srcdir"/patch-* ]]; then
+  if (( NOEXTRACT == 0 )) && [[ -e ${srcdir}/patch-* ]]; then
     msg2 'Applying stable patch set'
-    patch -N -p1 -i "$srcdir"/patch-*
+    patch -N -p1 -i ${srcdir}/patch-*
   fi
 
-  pushd linux-$pkgver/tools/power/cpupower
+  pushd linux-${pkgver}/tools/power/cpupower
   
   LDFLAGS=${LDFLAGS:+"$LDFLAGS,--no-as-needed"}
-  make VERSION=$pkgver-$pkgrel
+  make VERSION=${pkgver}-${pkgrel}
   popd
 }
 
 package() {
-  pushd linux-$pkgver/tools/power/cpupower
+  pushd linux-${pkgver}/tools/power/cpupower
   make \
-    DESTDIR="$pkgdir" \
+    DESTDIR=${pkgdir} \
     mandir='/usr/share/man' \
     docdir='/usr/share/doc/cpupower' \
     install install-man
   popd
 
-  install -Dm 644 cpupower.conf "$pkgdir/etc/default/cpupower"
-  install -Dm 644 cpupower.service "$pkgdir/usr/lib/systemd/system/cpupower.service"
-  install -Dm 755 cpupower.systemd "$pkgdir/usr/lib/systemd/scripts/cpupower"
+  install -Dm 644 cpupower.conf ${pkgdir}/etc/default/cpupower
+  install -Dm 644 cpupower.service ${pkgdir}/usr/lib/systemd/system/cpupower.service
+  install -Dm 755 cpupower.systemd ${pkgdir}/usr/lib/systemd/scripts/cpupower
 }
 
