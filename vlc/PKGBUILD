@@ -1,8 +1,8 @@
 
 pkgname=vlc
-pkgver=2.2.85
-_pkgver=3.0.0-20170522-0246-git
-pkgrel=6
+pkgver=2.2.90
+_pkgver=3.0.0-20171213-0226-rc2
+pkgrel=1
 epoch=1
 pkgdesc="Free and open source cross-platform multimedia player and framework that plays most multimedia files and various streaming protocols."
 arch=('x86_64')
@@ -13,7 +13,7 @@ depends=('a52dec' 'fluidsynth' 'libmtp' 'libdvbpsi' 'libxpm' 'libcdio' 'libdca' 
          'taglib' 'sysfsutils' 'libmpcdec' 'ffmpeg' 'faad2' 'libupnp' 'libshout' 'libmad' 'fribidi'
          'libmpeg2' 'libmodplug' 'opus' 'ttf-freefont' 'libxv' 'libass' 'xdg-utils'
          'desktop-file-utils' 'xcb-util-keysyms' 'pulseaudio' 'chromaprint' 
-         'qt5-x11extras' 'x265' 'lua' 'mpg123' 'protobuf')
+         'qt5-x11extras' 'qt5-svg' 'x265' 'lua' 'mpg123' 'protobuf')
 makedepends=('avahi' 'pkgconfig' 'libnotify' 'libbluray' 'flac' 'libtheora' 'alsa-lib'
              'jack' 'systemd' 'libraw1394' 'libdc1394' 'libavc1394' 'libva' 
              'gnutls' 'libcaca' 'librsvg' 'live-media' 'qt5-tools')
@@ -33,10 +33,11 @@ options=('!libtool' 'debug')
 install="vlc.install"
 #source=("http://download.videolan.org/pub/videolan/vlc/${_pkgver/a}/${pkgname}-${_pkgver}.tar.xz")
 source=("https://nightlies.videolan.org/build/source/${pkgname}-${_pkgver}.tar.xz")
-md5sums=('78f14a01539fcac602d852d755ec8e87')
+         https://nightlies.videolan.org/build/source/vlc-3.0.0-20171213-0226-rc2.tar.xz
+md5sums=('a871c4e82a47c48697fb3799da24aa73')
 
 prepare() {
-  cd ${pkgname}-3.0.0-git
+  cd ${pkgname}-3.0.0-rc2
   
   #patch -p1 -i "${srcdir}/ffmpeg24.patch"
   #sed -i -e 's|5.5.0|5.5.4|' configure.ac
@@ -44,7 +45,7 @@ prepare() {
 }
 
 build() {
-  cd ${pkgname}-3.0.0-git
+  cd ${pkgname}-3.0.0-rc2
   
   #CXXFLAGS="-std=c++11"
 
@@ -68,12 +69,12 @@ build() {
 }
 
 package() {
-  cd ${pkgname}-3.0.0-git
+  cd ${pkgname}-3.0.0-rc2
 
   make DESTDIR=${pkgdir} install
 
   for res in 16 32 48 128; do
-    install -D -m644 ${srcdir}/vlc-3.0.0-git/share/icons/${res}x${res}/vlc.png \
+    install -D -m644 ${srcdir}/vlc-3.0.0-rc2/share/icons/${res}x${res}/vlc.png \
         ${pkgdir}/usr/share/icons/hicolor/${res}x${res}/apps/vlc.png
   done
 }
