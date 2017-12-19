@@ -3,7 +3,7 @@ pkgbase=gtk3
 pkgname=('gtk3' 'gtk-update-icon-cache')
 pkgver=3.22.26
 _pkgver=3.22
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 url="http://www.gtk.org/"
 makedepends=('gobject-introspection' 'cairo' 'libcups' 'libxcursor' 'libxinerama' 'libxrandr' 
@@ -13,12 +13,10 @@ options=('!libtool' '!docs')
 license=('LGPL')
 source=("https://ftp.gnome.org/pub/gnome/sources/gtk+/${_pkgver}/gtk+-${pkgver}.tar.xz"
         'gtk-update-icon-cache.hook'
-        'gtk-update-icon-cache.script'
-        'wayland.diff')
+        'gtk-update-icon-cache.script')
 sha256sums=('61eef0d320e541976e2dfe445729f12b5ade53050ee9de6184235cb60cd4b967'
             '496064a9dd6214bd58f689dd817dbdc4d7f17d42a8c9940a87018c3f829ce308'
-            'bbe06e1b4e1ad5d61a4e703445a2bb93c6be918964d6dd76c0420c6667fa11eb'
-            '06631ce4b475941bcb38b4ba24224d5e7b2ac46d74edfc43a41515b58c654c24')
+            'bbe06e1b4e1ad5d61a4e703445a2bb93c6be918964d6dd76c0420c6667fa11eb')
 
 build() {
   cd gtk+-${pkgver}
@@ -32,8 +30,6 @@ build() {
              --enable-x11-backend \
              --enable-wayland-backend
 
-  #https://bugzilla.gnome.org/show_bug.cgi?id=655517
-  #sed -i -e 's/ -shared / -Wl,-O1,--as-needed\0/g' libtool
   make
 }
 

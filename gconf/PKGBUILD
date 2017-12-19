@@ -2,7 +2,7 @@
 pkgname=gconf
 pkgver=3.2.6
 _pkgver=3.2
-pkgrel=9
+pkgrel=10
 pkgdesc="A configuration database system"
 arch=('x86_64')
 url="https://www.gnome.org"
@@ -17,13 +17,13 @@ source=("https://ftp.gnome.org/pub/gnome/sources/GConf/${_pkgver}/GConf-${pkgver
         '01_xml-gettext-domain.patch'
         'gconf-install.hook'
         'gconf-remove.hook')
-md5sums=('2b16996d0e4b112856ee5c59130e822c'
-         '240b473fa17b748fc9020caf372d936c'
-         'b745f04b4121d8724c002b14a4c110b6'
-         'cfcc8e15be7b8a48de4aa34336ff6090'
-         '1f9362976d71312bdb57c57fa031681d'
-         '8841a826f43e905a5a437a9f5a82eb66'
-         'c899c0687f6dea0a6464db310f335509')
+sha256sums=('1912b91803ab09a5eed34d364bf09fe3a2a9c96751fde03a4e0cfa51a04d784c'
+            'ee6b6e6f4975dad13a8c45f1c1f0547a99373bdecdcd6604bfc12965c328a028'
+            'bf1928718caa5df2b9e54a13cfd0f15a8fe0e09e86b84385ce023616a114e898'
+            '567b78d8b4b4bbcb77c5f134d57bc503c34867fcc6341c0b01716bcaa4a21694'
+            'c883dec2b96978874a53700cfe7f26f24f8296767203e970bc6402b4b9945eb8'
+            '2732b2a6b187c5620105a036bde12edee99669605f70cbde56fe5f39619c3dc0'
+            '436a65ff290095bc3d35d7d6297cf4d647f61e9f9922cea7ef9f1e251b447ff7')
 
 build() {
   cd GConf-${pkgver}

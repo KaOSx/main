@@ -1,22 +1,19 @@
 
 pkgname=python2-gobject
 _pkgname=pygobject
-pkgver=2.28.6
-pkgrel=8
+pkgver=2.28.7
+pkgrel=1
 pkgdesc="Python bindings for GObject"
 arch=('x86_64')
 url="http://www.pygtk.org/"
 license=('LGPL')
 depends=('python2' 'glib2' 'python2-cairo' 'gobject-introspection')
-source=("https://ftp.gnome.org/pub/gnome/sources/pygobject/2.28/${_pkgname}-${pkgver}.tar.bz2"
-        'python2-fix-type.patch')
+source=("https://ftp.gnome.org/pub/gnome/sources/pygobject/2.28/${_pkgname}-${pkgver}.tar.xz")
 options=('!libtool')
-md5sums=('a43d783228dd32899e6908352b8308f3'
-         'b33aa47c5361af04fb8a26b9e5a15f6f')
+sha256sums=('bb9d25a3442ca7511385a7c01b057492095c263784ef31231ffe589d83a96a5a')
 
 build() {
   cd ${_pkgname}-${pkgver}
-  patch -p1 -i ${srcdir}/python2-fix-type.patch
   
   export PYTHON=/usr/bin/python2
   ./configure --disable-introspection --prefix=/usr 
