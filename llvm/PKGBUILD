@@ -1,22 +1,22 @@
 
 pkgbase="llvm"
 pkgname=('llvm' 'clang' 'clang-analyzer' 'lldb')
-pkgver=4.0.1
+pkgver=5.0.1
 _gcc_ver=6.4.0
-pkgrel=2
+pkgrel=1
 arch=('x86_64')
-url="http://llvm.org/"
+url="https://llvm.org/"
 license=('custom:University of Illinois/NCSA Open Source License')
 makedepends=('gcc-libs' 'libffi' 'python2' 'ocaml' "gcc=${_gcc_ver}" 'groff'
              'swig' 'cmake') # 'ocaml-ctypes' 'findlib' needed to have CMake build find ocaml
-source=("http://llvm.org/releases/${pkgver}/${pkgbase}-${pkgver}.src.tar.xz"
-        "http://llvm.org/releases/${pkgver}/cfe-${pkgver}.src.tar.xz"
-        "http://llvm.org/releases/${pkgver}/compiler-rt-${pkgver}.src.tar.xz"
-        "http://llvm.org/releases/${pkgver}/lldb-${pkgver}.src.tar.xz")
-md5sums=('a818e70321b91e2bb2d47e60edd5408f'
-         'a6c7b3e953f8b93e252af5917df7db97'
-         '0227ac853ce422125f8bb08f6ad5c995'
-         '908bdd777d3b527a914ba360477b8ab3')
+source=("https://llvm.org/releases/${pkgver}/${pkgbase}-${pkgver}.src.tar.xz"
+        "https://llvm.org/releases/${pkgver}/cfe-${pkgver}.src.tar.xz"
+        "https://llvm.org/releases/${pkgver}/compiler-rt-${pkgver}.src.tar.xz"
+        "https://llvm.org/releases/${pkgver}/lldb-${pkgver}.src.tar.xz")
+md5sums=('3a4ec6dcbc71579eeaec7cb157fe2168'
+         'e4daa278d8f252585ab73d196484bf11'
+         '6329380d643fb5dc5f5abdd0d5eecd70'
+         'd64078681215b5935614b6b83b2d1463')
 
 prepare() {
     cd ${pkgbase}-${pkgver}.src
