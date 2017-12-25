@@ -3,7 +3,7 @@ pkgbase=mesa
 pkgname=('mesa' 'libgl')
 pkgver=17.3.1
 _pkgver=17.3.1
-pkgrel=2
+pkgrel=3
 arch=('x86_64')
 makedepends=('glproto' 'libdrm' 'libxxf86vm' 'libxdamage' 'libva' 'expat' 'llvm' 'libx11' 'libxt' 'gcc-libs'
              'dri2proto' 'python2' 'libxml2' 'imake' 'systemd' 'libvdpau' 'wayland' 'dri3proto'
@@ -40,7 +40,6 @@ build() {
     
     ./autogen.sh --prefix=/usr \
     --sysconfdir=/etc \
-    --with-dri-driverdir=/usr/lib/xorg/modules/dri \
     --with-gallium-drivers=r300,r600,nouveau,radeonsi,svga,swrast,virgl,swr \
     --with-dri-drivers=i915,i965,r200,radeon,nouveau,swrast \
     --with-vulkan-drivers=intel,radeon \
