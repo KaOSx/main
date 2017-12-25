@@ -1,7 +1,7 @@
 
 pkgname=mpv
-pkgver=0.27.0
-pkgrel=5
+pkgver=0.28.0
+pkgrel=1
 pkgdesc='Video player based on MPlayer/mplayer2'
 arch=('x86_64')
 license=('GPL')
@@ -15,13 +15,13 @@ options=('!emptydirs' '!buildflags')
 source=("https://github.com/mpv-player/mpv/archive/v${pkgver}.tar.gz"
         "https://github.com/mpv-player/mpv/commit/2ecf240b1cd20875991a5b18efafbe799864ff7f.patch")
 #source=("https://github.com/mpv-player/mpv/archive/${_commit}.zip")
-md5sums=('ec86f42b091d891f9a932de0f6e873ad'
+md5sums=('2ee9b57091fdc80c91a7fca1aae0e396'
          '4ce5e50acfa8fca68ef1bdc13b6e823d')
 
 prepare() {
     cd ${pkgname}-${pkgver}
     # libva 2.0.0 fix
-    patch -p1 -i ${srcdir}/2ecf240b1cd20875991a5b18efafbe799864ff7f.patch
+    #patch -p1 -i ${srcdir}/2ecf240b1cd20875991a5b18efafbe799864ff7f.patch
 
     ./bootstrap.py
 }
