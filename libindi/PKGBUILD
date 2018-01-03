@@ -1,19 +1,20 @@
 
 pkgname=libindi
 _pkgname=indi
-pkgver=1.5.0
-_pkgver=1.5.0
-pkgrel=6
+pkgver=1.6.0
+_pkgver=1.6.0
+pkgrel=1
 pkgdesc="Interface control protocol providing backend driver support and
         automation for a wide range of Astronomical devices (telescopes, focusers, CCDs..etc)."
 url="http://indi.sourceforge.net/"
 license=('GPL2')
 arch=('x86_64')
-depends=('gcc-libs' 'zlib' 'libnova' 'cfitsio' 'libusb' 'boost-libs' 'libjpeg-turbo' 'gsl' 'qt5-base')
+depends=('gcc-libs' 'zlib' 'libnova' 'cfitsio' 'libusb' 'boost-libs' 'libjpeg-turbo' 'gsl'
+         'qt5-base' 'libtheora')
 makedepends=('boost' 'cmake' 'googletest')
 source=("https://github.com/indilib/indi/archive/v${pkgver}.tar.gz")
 options=('!libtool')
-md5sums=('171ba2c4133436dfbf692d25baa0ae29')
+md5sums=('c7d742665405eccbab2cf6e6eb167ba8')
 
 build() {
     mkdir -p build
@@ -23,7 +24,8 @@ build() {
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DUDEVRULES_INSTALL_DIR=/usr/lib/udev/rules.d \
-    -DCMAKE_INSTALL_LIBDIR=lib
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DINDI_BUILD_QT5_CLIENT=ON
     make
 }
 

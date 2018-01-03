@@ -22,7 +22,7 @@
  
  ; Error log file
  ; If it's set to "syslog", log is sent to syslogd instead of being written
- ; in a local file.
+ ; into a local file.
  ; Note: the default prefix is @EXPANDED_LOCALSTATEDIR@
  ; Default Value: log/php-fpm.log
 -;error_log = log/php-fpm.log
@@ -72,3 +72,4 @@
  ExecStart=@EXPANDED_SBINDIR@/php-fpm --nodaemonize --fpm-config @EXPANDED_SYSCONFDIR@/php-fpm.conf
  ExecReload=/bin/kill -USR2 $MAINPID
  
+PrivateTmp=true
