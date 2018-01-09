@@ -1,21 +1,21 @@
 
 pkgname=libgdiplus
-pkgver=4.2
+pkgver=5.6
 pkgrel=1
 pkgdesc="Open Source Implementation of the GDI+ API"
 arch=('x86_64')
 license=('MPL' 'LGPL')
 url="https://www.mono-project.com"
-depends=('libtiff' 'cairo' 'giflib' 'glib2' 'libexif')
+depends=('cairo' 'freetype2' 'giflib' 'glib2' 'libexif' 'libpng' 'libtiff')
 makedepends=('pkgconfig')
 options=('!libtool')
-source=("https://download.mono-project.com/sources/libgdiplus/${pkgname}-${pkgver}.tar.gz")
-md5sums=('3e68075aa0911d5ebc2b3739e85af0ea')
+source=("https://github.com/mono/libgdiplus/archive/${pkgver}.tar.gz")
+md5sums=('b35ae00bd1a4a997102faa24e9900a06')
 
 build() {
   cd ${pkgname}-${pkgver}
   
-  ./configure --prefix=/usr --with-cairo=system
+  ./autogen.sh --prefix=/usr
   make 
 }
 
