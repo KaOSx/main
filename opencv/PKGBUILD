@@ -1,8 +1,8 @@
 
 pkgname=opencv
-pkgver=3.3.1
-_pkgver=3.3.1
-pkgrel=2
+pkgver=3.4.0
+_pkgver=3.4.0
+pkgrel=1
 pkgdesc="Open Source Computer Vision Library"
 arch=('x86_64')
 license=('BSD')
@@ -19,8 +19,8 @@ source=("https://github.com/Itseez/opencv/archive/${_pkgver}.tar.gz"
         "opencv_contrib-${_pkgver}::https://github.com/Itseez/opencv_contrib/archive/${_pkgver}.tar.gz"
         "https://github.com/alalek/opencv/commit/24dbb43c096691d0333cacf231e22f1369f8c826.patch"
         'opengl.diff')
-md5sums=('b1ed9aea030bb5bd9df28524d97de84c'
-         '36648320af444437ee298f22f5b18136'
+md5sums=('170732dc760e5f7ddeccbe53ba5d16a6'
+         '315c3725234ec02fb4f6e55383376d00'
          '5bd9cd736b171c15cedee3a32a0c47ff'
          '20bc30c514f6f01cfbaaa7e1e0fcb39b')
 
@@ -35,6 +35,7 @@ build() {
 
   cmake .. -DCMAKE_BUILD_TYPE=Release \
         -DCMAKE_INSTALL_PREFIX=/usr \
+        -DCMAKE_INSTALL_LIBDIR=lib \
         -DCMAKE_SKIP_RPATH=ON \
         -DBUILD_TESTS=OFF \
         -DBUILD_EXAMPLES=ON \
