@@ -1,0 +1,37 @@
+
+_extramodules=extramodules-4.14
+_kver=$(cat /lib/modules/${_extramodules}/version)
+
+pkgname=rtl8192eu
+_pkgname=rtl8192eu-linux-driver
+pkgver=4.4.1
+_commit=c50f3f80b97a5ab2d2582021ae93e0a5f07118b7
+pkgrel=1
+pkgdesc="Drivers for the rtl8192eu chipset for wireless adapters (D-Link DWA-131 rev E1 included)"
+arch=('x86_64')
+url="https://github.com/Mange/rtl8192eu-linux-driver"
+license=('GPL')
+depends=('linux>=4.14' 'linux<4.15')
+makedepends=('linux-headers')
+install=rtl8192eu.install
+source=("https://github.com/Mange/rtl8192eu-linux-driver/archive/${_commit}.zip")
+md5sums=('9bb9ec8a5502dc8e6004cf3c00163947')
+
+
+build() {
+  cd ${_pkgname}-${_commit}
+  
+  make 
+}
+
+package() {
+  cd ${_pkgname}-${_commit}
+  
+  install -D -m644 8192eu.ko ${pkgdir}/lib/modules/${_kver}/kernel/drivers/net/wireless/8192eu.ko
+  #make DESTDIR=${pkgdir} install
+  
+  install -d -m755 ${pkgdir}/etc/modprobe.d
+  echo "blacklist rtl8xxxu" >> ${pkgdir}/etc/modprobe.d/rtl-blacklist.conf
+  echo "install rtl8xxxu /bin/false" >> ${pkgdir}/etc/modprobe.d/rtl-blacklist.conf
+  sed -i -e "s/EXTRAMODULES='.*'/EXTRAMODULES='${_extramodules}'/" "${startdir}/rtl8192eu.install"
+}
