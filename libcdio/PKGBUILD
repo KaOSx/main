@@ -1,28 +1,21 @@
 
 pkgname=libcdio
-pkgver=1.0.0
-pkgrel=2
+pkgver=2.0.0
+pkgrel=1
 pkgdesc="GNU Compact Disc Input and Control Library"
 arch=('x86_64')
 license=('GPL3')
 url="https://www.gnu.org/software/libcdio/"
 depends=('gcc-libs' 'ncurses' 'libcddb')
 options=('!libtool')
-source=("https://ftp.gnu.org/gnu/libcdio/${pkgname}-${pkgver}.tar.gz"
-        'libcdio-0.83-linking.patch'
-        'libcdio_version.patch'
-        'libcdio-1.0.0-cddb_compile.patch')
-md5sums=('05b6e95d7f0aa832446ce4875f9e5097'
-         '2826f89c78f09b0c0cbaeb47d507a55e'
-         '2e70f7b987f18a46e23bbe195d26239a'
-         'c5bbccdf74b9bce91fc9035322e44505')
+source=("https://ftp.gnu.org/gnu/libcdio/${pkgname}-${pkgver}.tar.gz")
+md5sums=('0cb25905113b930e4539d2f4eb6574b0')
 
 build() {
   cd ${pkgname}-${pkgver}
   
-  patch -p1 -i ${srcdir}/libcdio-0.83-linking.patch
-  patch -p1 -i ${srcdir}/libcdio_version.patch
-  patch -p1 -i ${srcdir}/libcdio-1.0.0-cddb_compile.patch
+  #patch -p1 -i ${srcdir}/libcdio-0.83-linking.patch
+  autoreconf -fi
   
   ./configure --prefix=/usr \
               --disable-vcd-info \

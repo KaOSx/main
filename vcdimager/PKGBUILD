@@ -8,14 +8,12 @@ license=('GPL')
 url="https://www.gnu.org/software/vcdimager/"
 depends=('libcdio' 'libxml2' 'popt')
 options=('!libtool')
-source=("https://nl.mirror.babylon.network/gnu/vcdimager/${pkgname}-${pkgver}.tar.gz"
-        'libcdio.patch')
-md5sums=('3890d73da62d0607c87962c41cd33a29'
-         'dde30a72fb13a825588450aefa3f4b72')
+source=("https://nl.mirror.babylon.network/gnu/vcdimager/${pkgname}-${pkgver}.tar.gz")
+md5sums=('3890d73da62d0607c87962c41cd33a29')
 
 build() {
   cd ${pkgname}-${pkgver}
-  #patch -p1 -i $srcdir/libcdio.patch
+  #patch -p1 -i ${srcdir}/libcdio.patch
   
   ./configure --prefix=/usr
   make
