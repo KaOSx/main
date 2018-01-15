@@ -1,16 +1,16 @@
 
 
-_extramodules=extramodules-4.14-next
+_extramodules=extramodules-4.15-rc8-next
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=nvidia-bumblebee-next
 _pkgname=nvidia-bumblebee
 pkgver=387.34
-pkgrel=12
+pkgrel=13
 pkgdesc="NVIDIA drivers for linux-next. Packaged for Bumblebee"
 arch=('x86_64')
 url="http://www.nvidia.com/"
-depends=('linux-next>=4.14' 'linux-next<4.15' "nvidia-utils-bumblebee")
+depends=('linux-next>=4.15RC8' 'linux-next<4.16' "nvidia-utils-bumblebee")
 makedepends=('linux-next-headers')
 provides=("nvidia-next=${pkgver}")
 conflicts=('nvidia-next')
@@ -20,16 +20,18 @@ options=('!strip')
 
 _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 #_pkg="NVIDIA-Linux-x86_64-${pkgver}"
-source=("ftp://download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}-no-compat32.run")
+source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}-no-compat32.run"
+        'linux-4.15.patch')
 #source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}.run")
-md5sums=('a009bbc502c30e4b483d71be9fa51790')
+md5sums=('a009bbc502c30e4b483d71be9fa51790'
+         '8199d52a02a6a758291c80a94f12008c')
 
 build() {
     cd "${srcdir}"
     sh "${_pkg}.run" --extract-only
     
     cd "${_pkg}"
-    #patch -p1 -i ${srcdir}/linux-4.10.patch
+    patch -p1 -i ${srcdir}/linux-4.15.patch
  
     cd "${srcdir}/${_pkg}/kernel" 
     make SYSSRC=/lib/modules/"${_kver}/build" module

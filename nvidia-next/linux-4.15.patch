@@ -1,0 +1,161 @@
+diff -u -r NVIDIA-Linux-x86_64-387.22/kernel/nvidia-drm/nvidia-drm-connector.c NVIDIA-Linux-x86_64-387.22.patched/kernel/nvidia-drm/nvidia-drm-connector.c
+--- a/kernel/nvidia-drm/nvidia-drm-connector.c	2017-10-26 09:29:25.000000000 +0200
++++ b/kernel/nvidia-drm/nvidia-drm-connector.c	2017-11-16 20:15:35.123121624 +0100
+@@ -107,7 +107,7 @@
+             break;
+         }
+ 
+-        encoder = drm_encoder_find(dev, id);
++        encoder = drm_encoder_find(dev, NULL, id);
+ 
+         if (encoder == NULL)
+         {
+diff -u -r NVIDIA-Linux-x86_64-387.22/kernel/nvidia-drm/nvidia-drm-linux.c NVIDIA-Linux-x86_64-387.22.patched/kernel/nvidia-drm/nvidia-drm-linux.c
+--- a/kernel/nvidia-drm/nvidia-drm-linux.c	2017-10-26 09:29:26.000000000 +0200
++++ b/kernel/nvidia-drm/nvidia-drm-linux.c	2017-11-14 01:47:40.815680166 +0100
+@@ -185,7 +185,7 @@
+ module_exit(nv_linux_drm_exit);
+ 
+ #if defined(MODULE_LICENSE)
+-  MODULE_LICENSE("MIT");
++  MODULE_LICENSE("GPL");
+ #endif
+ #if defined(MODULE_INFO)
+   MODULE_INFO(supported, "external");
+diff -u -r NVIDIA-Linux-x86_64-387.22/kernel/nvidia-drm/nvidia-drm-modeset.c NVIDIA-Linux-x86_64-387.22.patched/kernel/nvidia-drm/nvidia-drm-modeset.c
+--- a/kernel/nvidia-drm/nvidia-drm-modeset.c	2017-10-26 09:29:25.000000000 +0200
++++ b/kernel/nvidia-drm/nvidia-drm-modeset.c	2017-11-17 01:16:51.188958966 +0100
+@@ -252,7 +252,7 @@
+ 
+     /* Loops over all crtcs and fill head configuration for changes */
+ 
+-    for_each_crtc_in_state(state, crtc, crtc_state, i)
++    for_each_new_crtc_in_state(state, crtc, crtc_state, i)
+     {
+         struct nvidia_drm_crtc *nv_crtc;
+         struct NvKmsKapiHeadRequestedConfig *head_requested_config;
+@@ -303,7 +303,7 @@
+ 
+             head_requested_config->flags.displaysChanged = NV_TRUE;
+ 
+-            for_each_connector_in_state(state, connector, connector_state, j) {
++            for_each_new_connector_in_state(state, connector, connector_state, j) {
+                 if (connector_state->crtc != crtc) {
+                     continue;
+                 }
+@@ -324,7 +324,7 @@
+ 
+     /* Loops over all planes and fill plane configuration for changes */
+ 
+-    for_each_plane_in_state(state, plane, plane_state, i)
++    for_each_new_plane_in_state(state, plane, plane_state, i)
+     {
+         struct NvKmsKapiHeadRequestedConfig *head_requested_config;
+ 
+@@ -634,7 +634,7 @@
+          nvidia_drm_write_combine_flush();
+     }
+ 
+-    for_each_crtc_in_state(state, crtc, crtc_state, i) {
++    for_each_new_crtc_in_state(state, crtc, crtc_state, i) {
+         struct nvidia_drm_crtc *nv_crtc = DRM_CRTC_TO_NV_CRTC(crtc);
+         struct nv_drm_crtc_state *nv_crtc_state = to_nv_crtc_state(crtc->state);
+         struct nv_drm_flip *nv_flip = nv_crtc_state->nv_flip;
+diff -u -r NVIDIA-Linux-x86_64-387.22/kernel/nvidia-uvm/uvm8_va_block.c NVIDIA-Linux-x86_64-387.22.patched/kernel/nvidia-uvm/uvm8_va_block.c
+--- a/kernel/nvidia-uvm/uvm8_va_block.c	2017-10-26 09:29:23.000000000 +0200
++++ b/kernel/nvidia-uvm/uvm8_va_block.c	2017-11-14 01:43:56.176693556 +0100
+@@ -36,6 +36,8 @@
+ #include "uvm8_perf_prefetch.h"
+ #include "uvm8_mem.h"
+ 
++#include <linux/sched/task_stack.h>
++
+ typedef enum
+ {
+     BLOCK_PTE_OP_MAP,
+--- a/kernel/nvidia/nv.c	2017-11-25 07:14:29.000000000 -0600
++++ b/kernel/nvidia/nv.c	2017-11-27 00:09:01.948814571 -0600
+@@ -320,7 +320,7 @@
+ #else
+ static irqreturn_t   nvidia_isr             (int, void *);
+ #endif
+-static void          nvidia_rc_timer        (unsigned long);
++static void          nvidia_rc_timer        (struct timer_list *t);
+ 
+ static int           nvidia_ctl_open        (struct inode *, struct file *);
+ static int           nvidia_ctl_close       (struct inode *, struct file *);
+@@ -2472,10 +2472,10 @@
+ 
+ static void
+ nvidia_rc_timer(
+-    unsigned long data
++    struct timer_list *t 
+ )
+ {
+-    nv_linux_state_t *nvl = (nv_linux_state_t *) data;
++    nv_linux_state_t *nvl = from_timer(nvl, t, rc_timer);
+     nv_state_t *nv = NV_STATE_PTR(nvl);
+     nvidia_stack_t *sp = nvl->sp[NV_DEV_STACK_TIMER];
+ 
+@@ -3386,9 +3386,7 @@
+         return -1;
+ 
+     nv_printf(NV_DBG_INFO, "NVRM: initializing rc timer\n");
+-    init_timer(&nvl->rc_timer);
+-    nvl->rc_timer.function = nvidia_rc_timer;
+-    nvl->rc_timer.data = (unsigned long) nvl;
++    timer_setup(&nvl->rc_timer, nvidia_rc_timer, 0);
+     nv->rc_timer_enabled = 1;
+     mod_timer(&nvl->rc_timer, jiffies + HZ); /* set our timeout for 1 second */
+     nv_printf(NV_DBG_INFO, "NVRM: rc timer initialized\n");
+--- a/kernel/nvidia-modeset/nvidia-modeset-linux.c	2017-11-25 07:14:29.000000000 -0600
++++ b/kernel/nvidia-modeset/nvidia-modeset-linux.c	2017-11-27 00:19:36.006798982 -0600
+@@ -566,9 +566,9 @@
+     WARN_ON(!ret);
+ }
+ 
+-static void nvkms_timer_callback(unsigned long arg)
++static void nvkms_timer_callback(struct timer_list *t)
+ {
+-    struct nvkms_timer_t *timer = (struct nvkms_timer_t *) arg;
++    struct nvkms_timer_t *timer = from_timer(timer, t, kernel_timer);
+ 
+     /* In softirq context, so schedule nvkms_kthread_q_callback(). */
+     nvkms_queue_work(&nvkms_kthread_q, &timer->nv_kthread_q_item);
+@@ -606,10 +606,8 @@
+         timer->kernel_timer_created = NV_FALSE;
+         nvkms_queue_work(&nvkms_kthread_q, &timer->nv_kthread_q_item);
+     } else {
+-        init_timer(&timer->kernel_timer);
++        timer_setup(&timer->kernel_timer, nvkms_timer_callback, 0);
+         timer->kernel_timer_created = NV_TRUE;
+-        timer->kernel_timer.function = nvkms_timer_callback;
+-        timer->kernel_timer.data = (unsigned long) timer;
+         mod_timer(&timer->kernel_timer, jiffies + NVKMS_USECS_TO_JIFFIES(usec));
+     }
+     spin_unlock_irqrestore(&nvkms_timers.lock, flags);
+
+diff -Npur a/kernel/nvidia/nv-frontend.c b/kernel/nvidia/nv-frontend.c
+--- a/kernel/nvidia/nv-frontend.c	2017-07-19 22:43:50.000000000 -0400
++++ b/kernel/nvidia/nv-frontend.c	2017-09-13 10:00:07.552395161 -0400
+@@ -15,7 +15,7 @@
+ #include "nv-frontend.h"
+ 
+ #if defined(MODULE_LICENSE)
+-MODULE_LICENSE("NVIDIA");
++MODULE_LICENSE("GPL");
+ #endif
+ #if defined(MODULE_INFO)
+ MODULE_INFO(supported, "external");
+diff -Npur a/kernel/nvidia/nv.c b/kernel/nvidia/nv.c
+--- a/kernel/nvidia/nv.c	2017-07-19 22:43:50.000000000 -0400
++++ b/kernel/nvidia/nv.c	2017-09-13 09:59:32.984665063 -0400
+@@ -38,7 +38,7 @@
+ 
+ #if (NV_BUILD_MODULE_INSTANCES != 0)
+ #if defined(MODULE_LICENSE)
+-MODULE_LICENSE("NVIDIA");
++MODULE_LICENSE("GPL");
+ #endif
+ #if defined(MODULE_INFO)
+ MODULE_INFO(supported, "external");
