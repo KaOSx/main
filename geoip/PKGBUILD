@@ -1,6 +1,6 @@
 
 pkgname=geoip
-pkgver=1.6.11
+pkgver=1.6.12
 pkgrel=1
 pkgdesc="Non-DNS IP-to-country resolver C library & utils"
 arch=('x86_64')
@@ -11,7 +11,7 @@ backup=('etc/geoip/GeoIP.conf')
 options=('!libtool' '!emptydirs')
 #source=("http://www.maxmind.com/download/geoip/api/c/GeoIP-${pkgver}.tar.gz")
 source=("https://github.com/maxmind/geoip-api-c/releases/download/v${pkgver}/GeoIP-${pkgver}.tar.gz")
-md5sums=('1e08aeb2b87d8908249998b3019d0fd7')
+md5sums=('77d496cc40daa1dbc2b97365807d64d7')
 
 build() {
   cd GeoIP-${pkgver}
