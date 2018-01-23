@@ -2,11 +2,11 @@
 # include global config
 source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
 
-pkgname=qt5-wayland
+pkgname=qt5-wayland 
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=2
+pkgrel=3
 pkgdesc="Cross-platform application and UI framework (QtWayland)"
 arch=('x86_64')
 url="https://qt-project.org/"
@@ -19,14 +19,17 @@ replaces=('qtwayland')
 options=('debug')
 _pkgfqn="qtwayland-everywhere-src-${subver}"
 source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz"
-        "https://github.com/qt/qtwayland/commit/bf09c7a1493c01a65ee0f110b37a04e653edc08e.diff")
+        "https://github.com/qt/qtwayland/commit/bf09c7a1493c01a65ee0f110b37a04e653edc08e.diff"
+        "https://github.com/qt/qtwayland/commit/57c4af2b18c0fb1d266b245a107fa6cb876b9d9e.diff")
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
-         'a7749123a4c673e68413ac7b4b56b3b4')
+         'a7749123a4c673e68413ac7b4b56b3b4'
+         'bae768127ef3deead3acb8de3ff2d5a2')
 
 build() {
     cd ${_pkgfqn}
     patch -p1 -i ${srcdir}/bf09c7a1493c01a65ee0f110b37a04e653edc08e.diff
+    patch -p1 -i ${srcdir}/57c4af2b18c0fb1d266b245a107fa6cb876b9d9e.diff
 
     /usr/lib/qt5/bin/qmake
     make
