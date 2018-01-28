@@ -1,17 +1,21 @@
 
 pkgname=glm
-pkgver=0.9.8.4
+pkgver=0.9.8.5
 pkgrel=1
 pkgdesc="Header only C++ mathematics library for graphics software based on the OpenGL Shading Language (GLSL) specifications"
 arch=('x86_64')
 license=('MIT')
 url="http://glm.g-truc.net"
+makedepends=('cmake' 'clang')
 source=("https://github.com/g-truc/glm/releases/download/${pkgver}/glm-${pkgver}.zip")
-md5sums=('84a5b85fcfa9c105f4551d9b29cc80b3')
+md5sums=('456c9f54cf9da189733a74c173b840b5')
 
 build() {
   mkdir -p build
   cd build
+  
+  export CC=/usr/bin/clang
+  export CXX=/usr/bin/clang++
   
   cmake ../${pkgname} \
     -DCMAKE_BUILD_TYPE=Release \
