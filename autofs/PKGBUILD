@@ -6,7 +6,8 @@ pkgdesc='A kernel-based automounter for Linux.'
 arch=('x86_64')
 url='http://freshmeat.net/projects/autofs'
 license=('GPL2')
-depends=('libldap' 'libxml2' 'krb5' 'kmod')
+depends=('libldap' 'libxml2' 'krb5')
+makedepends=('kmod')
 backup=('etc/autofs/auto.master'
         'etc/autofs/auto.misc'
         'etc/autofs/auto.net'
