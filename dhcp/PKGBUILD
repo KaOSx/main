@@ -1,8 +1,8 @@
 
 pkgbase=dhcp
 pkgname=('dhcp' 'dhclient')
-pkgver=4.3.6
-_pkgver=4.3.5
+pkgver=4.4.0
+_pkgver=4.4.0
 pkgrel=1
 arch=('x86_64')
 license=('custom:isc-dhcp')
@@ -10,14 +10,11 @@ url="https://www.isc.org/software/dhcp"
 makedepends=('bash' 'iproute2')
 source=("ftp://ftp.isc.org/isc/dhcp/${pkgver}/${pkgbase}-${pkgver}.tar.gz"
         'dhcpd4.service'
-        'dhcpd6.service'
-        "http://www.linuxfromscratch.org/patches/blfs/svn/dhcp-${_pkgver}-client_script-1.patch"
-        "http://www.linuxfromscratch.org/patches/blfs/svn/dhcp-${_pkgver}-missing_ipv6-1.patch")
-md5sums=('afa6e9b3eb7539ea048421a82c668adc'
+        'dhcpd6.service')
+        #"http://www.linuxfromscratch.org/patches/blfs/svn/dhcp-${_pkgver}-missing_ipv6-1.patch")
+md5sums=('61c2a4f5675edb95d78038df6735ae8e'
          '7045e63a5d294c761ce306084eec2c67'
-         'a2ebf4460c049cbee3e49cb26a475f68'
-         'c02bddb6c6c33c5885e3dd072ee2ee40'
-         'da655f02f1cf4d95b4708e84e69edbc8')
+         'a2ebf4460c049cbee3e49cb26a475f68')
 
 build() {
   cd ${pkgname}-${pkgver}
