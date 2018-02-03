@@ -1,0 +1,29 @@
+
+pkgname=xf86-input-libinput
+pkgver=0.26.0
+pkgrel=1
+pkgdesc="X driver based on libinput."
+arch=('x86_64')
+url="https://cgit.freedesktop.org/xorg/driver/xf86-input-libinput/tree/README.md"
+license=('custom')
+depends=('libinput')
+makedepends=('xorg-server>=1.19.6' 'resourceproto' 'scrnsaverproto')
+options=('!libtool' '!makeflags')
+groups=('xorg-drivers' 'xorg')
+source=("https://xorg.freedesktop.org/releases/individual/driver/${pkgname}-${pkgver}.tar.bz2")
+sha256sums=('abca558fc2226f295691f1cf3412d4c0edeaa439f677ca25b5c9fab310d2387b')
+
+build() {
+  cd ${pkgname}-${pkgver}
+  
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd ${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install
+  
+  install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
+}
