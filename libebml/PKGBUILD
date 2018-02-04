@@ -1,25 +1,26 @@
 
 pkgname=libebml
 pkgver=1.3.5
-pkgrel=1
+pkgrel=2
 pkgdesc="Extensible Binary Meta Language library"
 arch=('x86_64')
-url="http://dl.matroska.org/downloads/libebml/"
+url="http://matroska-org.github.io/libebml/"
 license=('LGPL')
 depends=('gcc-libs')
 options=('!staticlibs')
-source=("http://dl.matroska.org/downloads/libebml/${pkgname}-${pkgver}.tar.xz")
-md5sums=('f1e8c8e4664abb9f51483ff95019eeed')
+source=("https://github.com/Matroska-Org/libebml/archive/release-${pkgver}.tar.gz")
+md5sums=('05e33eef4ccfcf4b391594f48ee60ddd')
 
 build() {
-  cd ${pkgname}-${pkgver}
+  cd ${pkgname}-release-${pkgver}
 
+  autoreconf -vi
   ./configure --prefix=/usr
   make
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
+  cd ${pkgname}-release-${pkgver}
 
   make prefix=${pkgdir}/usr install
 }
