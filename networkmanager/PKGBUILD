@@ -1,7 +1,7 @@
 
 pkgname=networkmanager
 _pkgname=NetworkManager
-pkgver=1.10.2
+pkgver=1.10.4
 _pkgver=1.10
 pkgrel=1
 pkgdesc="Network Management daemon"
@@ -9,28 +9,24 @@ arch=('x86_64')
 license=('GPL')
 url="https://wiki.gnome.org/Projects/NetworkManager"
 depends=('dbus-glib' 'iproute2' 'libnl' 'nss' 'polkit' 'systemd' 'wpa_supplicant' 'ppp' 'dhcpcd'
-         'modemmanager' 'libndp' 'libteam' 'libsoup') # 'libgudev' no longer needed for 1.8)
-makedepends=('intltool' 'dhclient' 'iptables' 'gobject-introspection' 'netctl' 'python2-gobject3')
+         'modemmanager' 'libndp' 'libteam' 'libsoup' 'iptables' 'bluez') # 'libgudev' no longer needed for 1.8)
+makedepends=('intltool' 'dhclient' 'gobject-introspection' 'netctl' 'python2-gobject3')
 optdepends=('dhclient: alternative DHCP/DHCPv6 client'
-            'iptables: Connection sharing'
-            'dnsmasq: Connection sharing'
-            'bluez: Bluetooth support'
-            'openresolv: openresolv support')
+            'dnsmasq: Connection sharing')
 options=('!libtool')
 backup=('etc/NetworkManager/NetworkManager.conf')
 install=networkmanager.install
 source=("https://download.gnome.org/sources/NetworkManager/${_pkgver}/${_pkgname}-${pkgver}.tar.xz"
         'NetworkManager.conf'
-        'nm_exported.patch')
-sha256sums=('169c34f50770e3c96b431f7d2cff654455246f2e6ccd46eccfb4454d4595625b'
+        'nmdevice.patch')
+sha256sums=('7de0a7b77c2590a44195da4630b55d61be907f69ea1f3f1bd38da076ebad35fe'
             '57a0d0fc875a0c6b1729eac7e50907cc60a6d6aa834adc56b8c851edacf5fbd4'
-            '13452fde1a87132835ad0fa3065744e3f30fa77c0ca27e84221805c4f2d2aa9e')
+            'f70cf461ec944f8234d47a69d1aa8505382c6161009c7dc5c1f66c86a505fe09')
 
 build() {
   cd ${_pkgname}-${pkgver}
 
-  # https://forum.kaosx.us/d/1593-new-networkmanager-1-4-0-1-and-plasma-nm-icon
-  #patch -p1 -i ${srcdir}/nm_exported.patch
+  patch -p1 -i ${srcdir}/nmdevice.patch
 
   ./configure \
     --prefix=/usr \
@@ -40,6 +36,7 @@ build() {
     --with-crypto=nss \
     --with-dhclient=/usr/sbin/dhclient \
     --with-dhcpcd=/usr/sbin/dhcpcd \
+    --with-dhcpcd-supports-ipv6 \
     --with-pppd=/usr/sbin/pppd \
     --with-iptables=/usr/sbin/iptables \
     --with-dnsmasq=/usr/bin/dnsmasq \

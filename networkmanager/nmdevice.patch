@@ -1,0 +1,12 @@
+diff --git a/src/devices/ovs/nm-device-ovs-interface.c b/src/devices/ovs/nm-device-ovs-interface.c
+index e746a3f..ce32c2d 100644
+--- a/src/devices/ovs/nm-device-ovs-interface.c
++++ b/src/devices/ovs/nm-device-ovs-interface.c
+@@ -50,7 +50,7 @@ struct _NMDeviceOvsInterfaceClass {
+ 
+ G_DEFINE_TYPE (NMDeviceOvsInterface, nm_device_ovs_interface, NM_TYPE_DEVICE)
+ 
+-#define NM_DEVICE_OVS_INTERFACE_GET_PRIVATE(self) _NM_GET_PRIVATE (self, NMDeviceOvsInterface, NM_IS_DEVICE_OVS_INTERFACE)
++#define NM_DEVICE_OVS_INTERFACE_GET_PRIVATE(self) _NM_GET_PRIVATE (self, NMDeviceOvsInterface, NM_IS_DEVICE_OVS_INTERFACE, NMDevice)
+ 
+ /*****************************************************************************/

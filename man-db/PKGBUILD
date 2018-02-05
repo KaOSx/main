@@ -1,10 +1,10 @@
 
 pkgname=man-db
-pkgver=2.7.6.1
-pkgrel=2
+pkgver=2.8.0
+pkgrel=1
 pkgdesc="A utility for reading man pages"
 arch=('x86_64')
-url="http://www.nongnu.org/man-db/"
+url="https://www.nongnu.org/man-db/"
 license=('GPL' 'LGPL')
 depends=( 'bash' 'gdbm' 'zlib' 'groff' 'less' 'libpipeline')
 optdepends=('gzip')
@@ -15,11 +15,11 @@ source=("http://savannah.nongnu.org/download/man-db/$pkgname-$pkgver.tar.xz"
         'man-db.service'
         'man-db.timer'
         'root_man.patch')
-md5sums=('2948d49d0ed7265f60f83aa4a9ac9268'
+md5sums=('2b7d6cf6350735544522859d93983fab'
          '2b7662a7d5b33fe91f9f3e034361a2f6'
          '36fb3f616e42a0e23cf7a4d284e640cd'
          'df6d4f432e3e16c255c785fca1447346'
-         '74550699da6429c4638e6ecb96eebe86')
+         '86a53b9d348f65aebdba0e65dce8da06')
                         
 build() {
   cd ${pkgname}-${pkgver}
