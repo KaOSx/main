@@ -1,30 +1,29 @@
 
 pkgname=xcb-util-keysyms
 pkgver=0.4.0
-pkgrel=2
+pkgrel=3
 pkgdesc="Utility libraries for XC Binding"
 arch=('x86_64')
-url="http://xcb.freedesktop.org"
+url="https://xcb.freedesktop.org"
 license=('custom')
 depends=('libxcb' 'xcb-util')
 makedepends=('gperf')
 options=('!libtool')
-source=("http://xcb.freedesktop.org/dist/${pkgname}-${pkgver}.tar.bz2"
+source=("https://xcb.freedesktop.org/dist/${pkgname}-${pkgver}.tar.bz2"
         'LICENSE')
 md5sums=('1022293083eec9e62d5659261c29e367'
          '2672c2e72dedb40f773e989dd622f298')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
   ./configure --prefix=/usr --disable-static
   make
 }
 
 package() { 
-  cd "${srcdir}/${pkgname}-${pkgver}"
-  make DESTDIR="${pkgdir}" install
+  cd ${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install
 
-  install -D -m644 "${srcdir}/LICENSE" \
-    "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+  install -D -m644 ../LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }

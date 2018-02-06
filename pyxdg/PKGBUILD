@@ -1,7 +1,7 @@
 
 pkgname=pyxdg
 pkgver=0.25
-pkgrel=3
+pkgrel=4
 pkgdesc="Python library to access freedesktop.org standards."
 arch=('x86_64')
 url="https://freedesktop.org/Software/pyxdg"
@@ -11,7 +11,7 @@ source=("https://www.freedesktop.org/~takluyver/${pkgname}-${pkgver}.tar.gz")
 md5sums=('bedcdb3a0ed85986d40044c87f23477c')
 
 package() {
-  cd ${srcdir}/${pkgname}-${pkgver}
+  cd ${pkgname}-${pkgver}
   
   python setup.py install --prefix=/usr --root=${pkgdir} 
 }

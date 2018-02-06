@@ -1,19 +1,19 @@
 
 pkgname=libomxil-bellagio
 pkgver=0.9.3
-pkgrel=2
+pkgrel=3
 pkgdesc="Opensource implementation of the OpenMAX Integration Layer --standard API to access Multimedia Components on mobile platforms"
 arch=('x86_64')
 url="http://omxil.sourceforge.net"
 license=('LGPL')
 depends=('glibc')
-source=("http://downloads.sourceforge.net/project/omxil/omxil/Bellagio%200.9.3/${pkgname}-${pkgver}.tar.gz"
+source=("https://downloads.sourceforge.net/project/omxil/omxil/Bellagio%200.9.3/${pkgname}-${pkgver}.tar.gz"
         'fedora-fixes.patch')
 md5sums=('a1de827fdb75c02c84e55f740ca27cb8'
          '39525202464b2306620395869766e0c3')
 
 build() {
-  cd ${srcdir}/${pkgname}-${pkgver}
+  cd ${pkgname}-${pkgver}
   patch -p1 -i ${srcdir}/fedora-fixes.patch
   autoreconf -fiv
 
@@ -24,7 +24,7 @@ build() {
 }
 
 package() {
-  cd ${srcdir}/${pkgname}-${pkgver}
+  cd ${pkgname}-${pkgver}
 
   make DESTDIR="${pkgdir}" install
 }

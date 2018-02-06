@@ -1,25 +1,25 @@
 
 pkgname=xbitmaps
 pkgver=1.1.1
-pkgrel=4
+pkgrel=5
 pkgdesc="X.org Bitmap files"
 arch=('x86_64')
-url="http://xorg.freedesktop.org/"
+url="https://xorg.freedesktop.org/"
 license=('custom')
 makedepends=('xorg-util-macros')
-source=("http://xorg.freedesktop.org/releases/individual/data/${pkgname}-${pkgver}.tar.bz2")
+source=("https://xorg.freedesktop.org/releases/individual/data/${pkgname}-${pkgver}.tar.bz2")
 md5sums=('7444bbbd999b53bec6a60608a5301f4c')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
   ./configure --prefix=/usr
   make
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
-  make DESTDIR="${pkgdir}" install
+  cd ${srcdir}/${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install
   
-  install -Dm644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/COPYING"
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
 }
