@@ -1,7 +1,7 @@
 
 pkgname=xkeyboard-config
 pkgver=2.23.1
-pkgrel=1
+pkgrel=2
 pkgdesc="X keyboard configuration files"
 arch=('x86_64')
 license=('custom')
@@ -9,14 +9,14 @@ url="https://www.freedesktop.org/wiki/Software/XKeyboardConfig"
 depends=('xorg-xkb-utils')
 makedepends=('intltool')
 source=("https://www.x.org/releases/individual/data/${pkgname}/${pkgname}-${pkgver}.tar.bz2"
-        'indian_keyboard.patch')
+        'pl_symbols.patch')
 md5sums=('875cbd09ab8394277fd16070326abbae'
-         '4cd1a8a9c50ab46e9518dd246c2de005')
+         '0ed9e9f9253d3a3932644b6ef547f40b')
 
 build() {
   cd ${pkgname}-${pkgver}
-  # https://forum.kaosx.us/d/2024-indic-languages-missing-from-xkb-layouts
-  #patch -p1 -i ${srcdir}/indian_keyboard.patch
+
+  patch -p1 -i ${srcdir}/pl_symbols.patch
   
   ./configure --prefix=/usr \
       --with-xkb-base=/usr/share/X11/xkb \

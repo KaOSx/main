@@ -1,27 +1,27 @@
 
 pkgname=libice
 pkgver=1.0.9
-pkgrel=2
+pkgrel=3
 pkgdesc="X11 Inter-Client Exchange library"
 arch=('x86_64')
-url="http://xorg.freedesktop.org/"
-depends=('glibc' 'xproto')
+url="https://xorg.freedesktop.org/"
+depends=('glibc' 'xorgproto')
 makedepends=('pkgconfig' 'xtrans')
 options=('!libtool')
-source=("http://xorg.freedesktop.org/releases/individual/lib/libICE-${pkgver}.tar.bz2")
+source=("https://xorg.freedesktop.org/releases/individual/lib/libICE-${pkgver}.tar.bz2")
 license=('custom')
 md5sums=('addfb1e897ca8079531669c7c7711726')
 
 build() {
-  cd "${srcdir}/libICE-${pkgver}"
+  cd libICE-${pkgver}
   
   ./configure --prefix=/usr --sysconfdir=/etc
   make
 }
 
 package() {
-  cd "${srcdir}/libICE-${pkgver}"
-  make DESTDIR="${pkgdir}" install
+  cd libICE-${pkgver}
+  make DESTDIR=${pkgdir} install
   
-  install -Dm644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/COPYING"
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
 }

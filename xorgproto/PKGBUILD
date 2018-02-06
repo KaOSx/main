@@ -1,0 +1,114 @@
+
+pkgname=xorgproto
+pkgver=2018.1
+pkgrel=1
+pkgdesc="X.Org combined protocol headers"
+arch=('x86_64')
+url="https://xorg.freedesktop.org/"
+license=('custom')
+makedepends=('xorg-util-macros' 'xmlto' 'docbook-xml')
+provides=('bigreqsproto'
+          'compositeproto'
+          'damageproto'
+          'dmxproto'
+          'dri2proto'
+          'dri3proto'
+          'fixesproto'
+          'fontsproto'
+          'glproto'
+          'inputproto'
+          'kbproto'
+          'presentproto'
+          'printproto'
+          'randrproto'
+          'recordproto'
+          'renderproto'
+          'resourceproto'
+          'scrnsaverproto'
+          'videoproto'
+          'xcmiscproto'
+          'xextproto'
+          'xf86dgaproto'
+          'xf86driproto'
+          'xf86vidmodeproto'
+          'xineramaproto'
+          'xproto')
+replaces=('bigreqsproto'
+          'compositeproto'
+          'damageproto'
+          'dmxproto'
+          'dri2proto'
+          'dri3proto'
+          'fixesproto'
+          'fontsproto'
+          'glproto'
+          'inputproto'
+          'kbproto'
+          'presentproto'
+          'printproto'
+          'randrproto'
+          'recordproto'
+          'renderproto'
+          'resourceproto'
+          'scrnsaverproto'
+          'videoproto'
+          'xcmiscproto'
+          'xextproto'
+          'xf86dgaproto'
+          'xf86driproto'
+          'xf86vidmodeproto'
+          'xineramaproto'
+          'xproto')
+conflicts=('bigreqsproto'
+          'compositeproto'
+          'damageproto'
+          'dmxproto'
+          'dri2proto'
+          'dri3proto'
+          'fixesproto'
+          'fontsproto'
+          'glproto'
+          'inputproto'
+          'kbproto'
+          'presentproto'
+          'printproto'
+          'randrproto'
+          'recordproto'
+          'renderproto'
+          'resourceproto'
+          'scrnsaverproto'
+          'videoproto'
+          'xcmiscproto'
+          'xextproto'
+          'xf86dgaproto'
+          'xf86driproto'
+          'xf86vidmodeproto'
+          'xineramaproto'
+          'xproto')
+source=("https://xorg.freedesktop.org/releases/individual/proto/${pkgname}-${pkgver}.tar.bz2")
+sha256sums=('7eb9ea8a204499d2d7a5958db82e57a56a63eb4ff12c19ebf3bd6b82d6ac1799')
+
+build() {
+  cd ${pkgname}-${pkgver}
+  
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd ${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install
+  
+  install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 COPYING-* ${pkgdir}/usr/share/licenses/${pkgname}/
+  
+  rm -f ${pkgdir}/usr/include/X11/extensions/applewm*
+  rm -f ${pkgdir}/usr/include/X11/extensions/windowswm*
+  
+  rm -f ${pkgdir}/usr/share/licenses/${pkgname}/COPYING-applewmproto
+  rm -f ${pkgdir}/usr/share/licenses/${pkgname}/COPYING-windowswmproto
+  
+  rm -f ${pkgdir}/usr/share/pkgconfig/applewmproto.pc
+  rm -f ${pkgdir}/usr/share/pkgconfig/windowswmproto.pc
+}
+
