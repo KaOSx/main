@@ -1,0 +1,47 @@
+--- a/meson.build	2018-02-12 17:18:57.000000000 +0100
++++ b/meson.build	2018-02-13 11:46:30.293126514 +0100
+@@ -75,12 +75,12 @@
+ 
+ if get_option('legacy') == true
+     legacy_pcs = [
+-        ['evieproto', '1.1.1'],
++        #['evieproto', '1.1.1'],
+         ['fontcacheproto', '0.1.3'],
+-        ['lg3dproto', '5.0'],
++        #['lg3dproto', '5.0'],
+         ['printproto', '1.0.5'],
+-        ['xcalibrateproto', '0.1.0'],
+-        ['xf86rushproto', '1.2.2'],
++        #['xcalibrateproto', '0.1.0'],
++        #['xf86rushproto', '1.2.2'],
+     ]
+     foreach pc : legacy_pcs
+         pkg.generate(
+--- a/include/X11/extensions/meson.build	2018-02-12 17:18:57.000000000 +0100
++++ b/include/X11/extensions/meson.build	2018-02-13 11:56:55.329849055 +0100
+@@ -105,18 +105,18 @@
+ 
+ if get_option('legacy') == true
+     install_headers(
+-        'evieproto.h',
++        #'evieproto.h',
+         'fontcache.h',
+         'fontcacheP.h',
+         'fontcachstr.h',
+-        'lgewire.h',
++        #'lgewire.h',
+         'Print.h',
+         'Printstr.h',
+-        'xcalibrateproto.h',
+-        'xcalibratewire.h',
+-        'Xeviestr.h',
+-        'xf86rush.h',
+-        'xf86rushstr.h',
++        #'xcalibrateproto.h',
++        #'xcalibratewire.h',
++        #'Xeviestr.h',
++        #'xf86rush.h',
++        #'xf86rushstr.h',
+         subdir : 'X11/extensions'
+     )
+ endif

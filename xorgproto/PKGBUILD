@@ -1,12 +1,12 @@
 
 pkgname=xorgproto
-pkgver=2018.1
-pkgrel=2
+pkgver=2018.2
+pkgrel=1
 pkgdesc="X.Org combined protocol headers"
 arch=('x86_64')
 url="https://xorg.freedesktop.org/"
 license=('custom')
-makedepends=('xorg-util-macros' 'xmlto' 'docbook-xml')
+makedepends=('xorg-util-macros' 'xmlto' 'docbook-xml' 'meson' 'ninja')
 provides=('bigreqsproto'
           'compositeproto'
           'damageproto'
@@ -15,6 +15,7 @@ provides=('bigreqsproto'
           'dri3proto'
           'fixesproto'
           'fontsproto'
+          'fontcacheproto'
           'glproto'
           'inputproto'
           'kbproto'
@@ -41,6 +42,7 @@ replaces=('bigreqsproto'
           'dri3proto'
           'fixesproto'
           'fontsproto'
+          'fontcacheproto'
           'glproto'
           'inputproto'
           'kbproto'
@@ -67,6 +69,7 @@ conflicts=('bigreqsproto'
           'dri3proto'
           'fixesproto'
           'fontsproto'
+          'fontcacheproto'
           'glproto'
           'inputproto'
           'kbproto'
@@ -85,19 +88,36 @@ conflicts=('bigreqsproto'
           'xf86vidmodeproto'
           'xineramaproto'
           'xproto')
-source=("https://xorg.freedesktop.org/releases/individual/proto/${pkgname}-${pkgver}.tar.bz2")
-sha256sums=('7eb9ea8a204499d2d7a5958db82e57a56a63eb4ff12c19ebf3bd6b82d6ac1799')
+source=("https://xorg.freedesktop.org/releases/individual/proto/${pkgname}-${pkgver}.tar.bz2"
+        'meson.patch')
+sha256sums=('9709c08b65d8371637605db97247782d1f0fa0bfd2111e37999088bb11996e64'
+            'ceb9390a446f8267f15cbf8567d55af7be5cc0aa8bd1e7a916a5bb1e976fcd7f')
 
-build() {
+prepare() {
   cd ${pkgname}-${pkgver}
   
-  ./configure --prefix=/usr
-  make
+  patch -p1 -i ${srcdir}/meson.patch
+}
+
+build() {
+  mkdir -p build
+  cd build
+  
+  export LANG=en_US.UTF-8
+  
+  meson ../${pkgname}-${pkgver} \
+    --prefix=/usr \
+    --buildtype=release \
+    --libexecdir=/usr/lib \
+    -Dlegacy=true
+    ninja
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
-  make DESTDIR=${pkgdir} install
+  cd build
+  DESTDIR=${pkgdir} ninja install
+  
+  cd ../${pkgname}-${pkgver}
   
   install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
   install -m644 COPYING-* ${pkgdir}/usr/share/licenses/${pkgname}/
@@ -112,8 +132,8 @@ package() {
   rm -f ${pkgdir}/usr/share/pkgconfig/windowswmproto.pc
   
   # temp fix to install printproto files
-  install -m644 include/X11/extensions/Print.h ${pkgdir}/usr/include/X11/extensions/Print.h
-  install -m644 include/X11/extensions/Printstr.h ${pkgdir}/usr/include/X11/extensions/Printstr.h
-  install -m644 printproto.pc ${pkgdir}//usr/share/pkgconfig/printproto.pc
+  #install -m644 include/X11/extensions/Print.h ${pkgdir}/usr/include/X11/extensions/Print.h
+  #install -m644 include/X11/extensions/Printstr.h ${pkgdir}/usr/include/X11/extensions/Printstr.h
+  #install -m644 printproto.pc.in ${pkgdir}/usr/share/pkgconfig/printproto.pc
 }
 
