@@ -7,7 +7,7 @@ pkgname=('qt5-base' 'qt5-base-docs')
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=2
+pkgrel=1
 arch=('x86_64')
 url='http://qt-project.org/'
 license=('GPL3' 'LGPL' 'FDL' 'custom')
@@ -23,7 +23,7 @@ source=("${_qtmirror}/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz"
         "https://github.com/qt/qtbase/commit/f45c6c180463ccb6620e1d273a264f14a1204a93.diff")
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
-         '0cd16ad7bc6b6e1b833d710f6fa5cc36')
+         'acc7975b94a6588a640cb4c34a9365c8')
 
 build() {
     cd ${srcdir}/${_pkgfqn}
