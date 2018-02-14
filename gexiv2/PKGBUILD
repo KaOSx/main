@@ -1,8 +1,8 @@
  
 pkgname=gexiv2
-pkgver=0.10.6
+pkgver=0.10.8
 _pkgver=0.10
-pkgrel=2
+pkgrel=1
 pkgdesc='GObject wrapper around the Exiv2 photo metadata library.'
 url='https://wiki.gnome.org/Projects/gexiv2'
 arch=('x86_64')
@@ -11,8 +11,8 @@ depends=('exiv2' 'glib2')
 makedepends=('python2-gobject3')
 source=("https://ftp.gnome.org/pub/gnome/sources/gexiv2/${_pkgver}/${pkgname}-${pkgver}.tar.xz"
         "https://github.com/GNOME/gexiv2/commit/7c47e3907c4888190138c3301232e198206217fb.diff")
-md5sums=('6045847bf08094cd147fcc49d31c0c1a'
-         '75d6e609193b299f28e8675d1c175b52')
+sha256sums=('81c528fd1e5e03577acd80fb77798223945f043fd1d4e06920c71202eea90801'
+            '82e177f8262670b7810680131a0ba63e6b79692bec5ef6a98b7a0bf09cf060ef')
 
 build() {
   cd ${pkgname}-${pkgver}
