@@ -1,6 +1,6 @@
 
 pkgname=hwinfo
-pkgver=21.50
+pkgver=21.52
 _minorver=1.1
 pkgrel=1
 pkgdesc="Simple program that lists results from the hardware detection library."
@@ -12,8 +12,8 @@ makedepends=('sysfsutils' 'rpmextract' 'flex')
 options=('!emptydirs')
 source=("https://download.opensuse.org/source/tumbleweed/repo/oss/suse/src/${pkgname}-${pkgver}-${_minorver}.src.rpm"
         "kbd.patch")
-md5sums=('84b9ca52ac8d01761b0a7f929411e2df'
-         '1500ecfa26f6aaf4d7967eea74e86e5d')
+sha256sums=('1e7eaef2a927683d6156d4a84fa0541a4e23008cc401d319fd298aaddbaa7aa0'
+            '6e83b50aa34f31db5fe6de938402e7c4dda6ffa9ffe1346c076e4779018fcf1d')
 
 build() {
   cd ${srcdir}

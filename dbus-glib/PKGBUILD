@@ -1,16 +1,16 @@
 
 pkgname=dbus-glib
-pkgver=0.108
+pkgver=0.110
 pkgrel=1
 pkgdesc="GLib bindings for DBUS"
 arch=('x86_64')
 license=('GPL')
 url="http://www.freedesktop.org/wiki/Software/DBusBindings"
 depends=('dbus' 'glib2')
-makedepends=('pkgconfig')
+makedepends=('pkgconfig' 'python3')
 options=('!libtool' '!emptydirs')
 source=("http://dbus.freedesktop.org/releases/dbus-glib/${pkgname}-${pkgver}.tar.gz")
-md5sums=('a66a613705870752ca9786e0359aea97')
+md5sums=('d7cebf1d69445cbd28b4983392145192')
 
 build() {
   cd ${pkgname}-${pkgver}
@@ -18,8 +18,8 @@ build() {
   ./configure --prefix=/usr \
               --sysconfdir=/etc \
               --localstatedir=/var \
-              --enable-static=no \
-              --enable-bash-completion=no
+              --disable-static \
+              --disable-bash-completion
   make
 }
 
