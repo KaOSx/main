@@ -1,19 +1,19 @@
 
 pkgname=xf86-video-vesa
-pkgver=2.3.4
-pkgrel=4
+pkgver=2.4.0
+pkgrel=1
 pkgdesc="X.org vesa video driver"
 arch=('x86_64')
 license=('custom')
 url="http://xorg.freedesktop.org/"
 depends=('glibc')
-makedepends=('pkg-config' 'xorg-server>=1.19.1' 'resourceproto' 'scrnsaverproto')
+makedepends=('pkg-config' 'xorg-server' 'xorgproto')
 groups=('xorg' 'xorg-video-drivers')
 options=('!libtool')
 source=("http://xorg.freedesktop.org/releases/individual/driver/${pkgname}-${pkgver}.tar.bz2"
         'revert-kernelcheck.patch')
-md5sums=('a893c37c589f7a31cea929a5d896a0e2'
-         '9a6a2c5fe01b96536f67495359c4bcf1')
+sha256sums=('bf443c94d7bf6cd4e248f8a3147f4647be04dc4c80250d9405006263bbdee38c'
+            'ef591a342cea65f1b08e84771ae0de84395c98ac8a71739dbf5c0a7f7a36543c')
 
 build() {
   cd ${pkgname}-${pkgver}
