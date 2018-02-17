@@ -1,17 +1,17 @@
 
 pkgname=libdrm
-pkgver=2.4.89
+pkgver=2.4.90
 pkgrel=1
 pkgdesc="Userspace interface to kernel DRM services"
 arch=('x86_64')
 url="https://dri.freedesktop.org/"
 license=('custom')
 depends=('glibc' 'libpciaccess')
-makedepends=('cairo' 'valgrind' 'xorg-util-macros')
+makedepends=('cairo' 'valgrind' 'xorg-util-macros' 'pkg-config')
 options=('!libtool')
 source=("https://dri.freedesktop.org/libdrm/${pkgname}-${pkgver}.tar.bz2"
         'COPYING')
-sha256sums=('629f9782aabbb4809166de5f24d26fe0766055255038f16935602d89f136a02e'
+sha256sums=('db37ec8f1dbaa2c192ad9903c8d0988b858ae88031e96f169bf76aaf705db68b'
             '9631d4f694952e3e6ae5a05534c2e93e994e47d3413677a3a00e45c8cef6db93')
 
 build() {
