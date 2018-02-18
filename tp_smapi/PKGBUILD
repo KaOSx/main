@@ -10,11 +10,14 @@ license=('GPL')
 depends=('linux>=4.15' 'linux<4.16')
 makedepends=('linux-headers')
 install="${pkgname}.install"
-source=("https://github.com/evgeni/tp_smapi/releases/download/tp-smapi%2F${pkgver}/${pkgname}-${pkgver}.tgz")
-md5sums=('9796e92c86a53dd84823ca503a69c49e')
+source=("https://github.com/evgeni/tp_smapi/releases/download/tp-smapi%2F${pkgver}/${pkgname}-${pkgver}.tgz"
+        "https://github.com/evgeni/tp_smapi/commit/76c5120f7be4880cf2c6801f872327e4e70c449f.diff")
+md5sums=('9796e92c86a53dd84823ca503a69c49e'
+         'feca3d1a2646d68d80ada2bd8e749e55')
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
+  patch -p1 -i ${srcdir}/76c5120f7be4880cf2c6801f872327e4e70c449f.diff
 
  _kernver=$(< "${_extramodules}/version")
 

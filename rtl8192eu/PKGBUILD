@@ -14,12 +14,15 @@ license=('GPL')
 depends=('linux>=4.15' 'linux<4.16')
 makedepends=('linux-headers')
 install=rtl8192eu.install
-source=("https://github.com/Mange/rtl8192eu-linux-driver/archive/${_commit}.zip")
-md5sums=('9bb9ec8a5502dc8e6004cf3c00163947')
+source=("https://github.com/Mange/rtl8192eu-linux-driver/archive/${_commit}.zip"
+        "https://github.com/Mange/rtl8192eu-linux-driver/pull/70/commits/80a0cb2c1aa10e52bc653e7455a6f1b64fdccd09.diff")
+md5sums=('9bb9ec8a5502dc8e6004cf3c00163947'
+         'f4bdf5763cf321e03555b1b830e6b972')
 
 
 build() {
   cd ${_pkgname}-${_commit}
+  patch -p1 -i ${srcdir}/80a0cb2c1aa10e52bc653e7455a6f1b64fdccd09.diff
   
   make 
 }
