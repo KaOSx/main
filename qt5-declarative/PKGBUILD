@@ -6,7 +6,7 @@ pkgname=('qt5-declarative' 'qt5-declarative-docs')
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 url='http://qt.nokia.com/'
 license=('GPL3' 'LGPL' 'FDL' 'custom')
@@ -14,14 +14,14 @@ makedepends=('qt5-xmlpatterns' 'mesa' 'python2' 'qt5-tools')
 options=('!libtool' 'debug')
 _pkgfqn="qtdeclarative-everywhere-src-${subver}"
 source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz"
-        "https://github.com/qt/qtdeclarative/commit/98358715930739ca8de172d88c5ce6941c275ff3.diff")
+        "https://github.com/qt/qtdeclarative/commit/f42f1366dcd4b070c69c9e7fe42a704ef23da14d.diff")
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
-         '6529d25e63640f8f27f47c088490d953')
+         '8ac7f4bbba645433169a27209f52cb5f')
 
 build() {
     cd $srcdir/$_pkgfqn
-    #patch -R -p1 -i $srcdir/98358715930739ca8de172d88c5ce6941c275ff3.diff
+    patch -R -p1 -i $srcdir/f42f1366dcd4b070c69c9e7fe42a704ef23da14d.diff
 
     /usr/lib/qt5/bin/qmake
     make
