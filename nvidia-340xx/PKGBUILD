@@ -1,13 +1,13 @@
 
-_extramodules=extramodules-4.14
+_extramodules=extramodules-4.15
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=('nvidia-340xx' 'khd-nvidia-340xx')
 pkgver=340.106
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 url="http://www.nvidia.com/"
-makedepends=('linux-headers' 'linux>=4.14' 'linux<4.15' "nvidia-340xx-utils=${pkgver}")
+makedepends=('linux-headers' 'linux>=4.15' 'linux<4.16' "nvidia-340xx-utils=${pkgver}")
 license=('custom')
 
 _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
@@ -34,7 +34,7 @@ build() {
 
 package_nvidia-340xx() {
     pkgdesc="NVIDIA drivers for linux."
-    depends=('linux>=4.14' 'linux<4.15' "nvidia-340xx-utils=${pkgver}")
+    depends=('linux>=4.15' 'linux<4.16' "nvidia-340xx-utils=${pkgver}")
     conflicts=('nvidia' 'nvidia-304xx')
     replaces=('nvidia-304xx')
     backup=('etc/X11/xorg.conf.d/20-nvidia.conf')
