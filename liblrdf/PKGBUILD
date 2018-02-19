@@ -1,7 +1,7 @@
 
 pkgname=liblrdf
-pkgver=0.5.0
-pkgrel=8
+pkgver=0.6.1
+pkgrel=1
 pkgdesc="A library for the manipulation of RDF file in LADSPA plugins"
 arch=('x86_64')
 url="https://github.com/swh/LRDF"
@@ -9,21 +9,22 @@ depends=('raptor' 'ladspa')
 makedepends=('pkgconfig')
 license=('GPL')
 options=('!libtool')
-source=("https://github.com/swh/LRDF/tarball/${pkgver}")
+source=("https://github.com/swh/LRDF/archive/v${pkgver}.tar.gz")
 groups=('ladspa-plugins')
-md5sums=('005ea24152620da7f2ee80a78e17f784')
+md5sums=('8bb0ac7e8fe1a5a90083c89776bd3deb')
 
 build() {
-  cd "${srcdir}/swh-LRDF-7ebc032"
+  cd LRDF-${pkgver}
 
   autoreconf -vfi
+  
   ./configure --prefix=/usr \
-              --disable-static
+    --disable-static
   make
 }
 
 package() {
-  cd "${srcdir}/swh-LRDF-7ebc032"
+  cd LRDF-${pkgver}
   
-  make DESTDIR="${pkgdir}" install
+  make DESTDIR=${pkgdir} install
 }

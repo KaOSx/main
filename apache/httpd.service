@@ -4,10 +4,9 @@ After=network.target remote-fs.target nss-lookup.target
 
 [Service]
 Type=forking
-PIDFile=/run/httpd/httpd.pid
-ExecStart=/usr/sbin/apachectl start
-ExecStop=/usr/sbin/apachectl graceful-stop
-ExecReload=/usr/sbin/apachectl graceful
+ExecStart=/usr/sbin/apachectl -k start
+ExecStop=/usr/sbin/apachectl -k graceful-stop
+ExecReload=/usr/sbin/apachectl -k graceful
 PrivateTmp=true
 LimitNOFILE=infinity
 KillMode=mixed
