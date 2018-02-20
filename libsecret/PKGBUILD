@@ -2,18 +2,18 @@
 pkgname=libsecret
 pkgver=0.18.5
 _pkgver=0.18
-pkgrel=1
+pkgrel=2
 pkgdesc='Library for storing and retrieving passwords and other secrets.'
 arch=('x86_64')
 license=('LGPL')
 url="https://wiki.gnome.org/Projects/Libsecret"
 depends=('glib2' 'libgcrypt')
 makedepends=('intltool' 'docbook-xsl' 'gobject-introspection' 'vala')
-source=("https://download.gnome.org/sources/libsecret/$_pkgver/$pkgname-$pkgver.tar.xz")
-md5sums=('2d688825921313da8731313b0a7f394c')
+source=("https://download.gnome.org/sources/libsecret/${_pkgver}/${pkgname}-${pkgver}.tar.xz")
+sha256sums=('9ce7bd8dd5831f2786c935d82638ac428fa085057cc6780aba0e39375887ccb3')
 
 build() {
-  cd "$pkgname-$pkgver"
+  cd ${pkgname}-${pkgver}
   
   ./configure --prefix=/usr \
       --sysconfdir=/etc \
@@ -23,7 +23,7 @@ build() {
 }
 
 package() {
-  cd "$pkgname-$pkgver" 
+  cd ${pkgname}-${pkgver} 
   
-  make DESTDIR="$pkgdir" install
+  make DESTDIR=${pkgdir} install
 }

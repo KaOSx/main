@@ -1,29 +1,26 @@
 
 pkgname=sdl_ttf
 pkgver=2.0.14
-pkgrel=1
+pkgrel=2
 pkgdesc="Library that allows you to use TrueType fonts in your SDL applications"
 arch=('x86_64')
 license=('custom')
-url="http://www.libsdl.org/projects/SDL_ttf/"
+url="https://www.libsdl.org/projects/SDL_ttf/"
 depends=('sdl2' 'freetype2')
 options=('!libtool')
-source=("http://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-$pkgver.tar.gz"
-        'bug1433.patch')
-md5sums=('e53c05e1e7f1382c316afd6c763388b1'
-         'ef05c69efe33d10f380181ad41a29b51')
+source=("https://www.libsdl.org/projects/SDL_ttf/release/SDL2_ttf-${pkgver}.tar.gz")
+md5sums=('e53c05e1e7f1382c316afd6c763388b1')
 
 build() {
-  cd "$srcdir/SDL2_ttf-$pkgver"
-  #patch -i "$srcdir/bug1433.patch"
+  cd SDL2_ttf-${pkgver}
  
   ./configure --prefix=/usr --disable-static
   make
 }
 
 package() {
-  cd "$srcdir/SDL2_ttf-$pkgver"
-  make DESTDIR="$pkgdir" install
+  cd SDL2_ttf-${pkgver}
+  make DESTDIR=${pkgdir} install
 
-  install -Dm644 COPYING.txt "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  install -Dm644 COPYING.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }

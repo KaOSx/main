@@ -1,19 +1,19 @@
 
 pkgname=apache-ant
-pkgver=1.10.0
+pkgver=1.10.2
 pkgrel=1
 pkgdesc="A java-based build tool."
 arch=('x86_64')
 license=('APACHE')
-url="http://ant.apache.org/"
+url="https://ant.apache.org/"
 depends=('java-runtime')
 optdepends=('junit: to have junit on the classpath in javac tasks')
-source=("http://mirror.olnevhost.net/pub/apache//ant/binaries/${pkgname}-${pkgver}-bin.tar.bz2"
+source=("https://mirror.olnevhost.net/pub/apache//ant/binaries/${pkgname}-${pkgver}-bin.tar.xz"
         "${pkgname}.sh"
         "${pkgname}.csh")
-md5sums=('ebb52b9556180c09d80a42ed7a0b519b'
-         '593ee6ebd9b8ec321534a028e686880f'
-         '475b684eb8202c09cbb51496cd8ee1e0')
+sha1sums=('f8b24adf1813b6411598c3085c91300b1bba562d'
+          '97e75a4648b6e091e55a3f665d2e82fe080d868e'
+          'f47782092043e59996e64e2f0e9e7d98d05d9a03')
 
 package() {
   # profile.d scripts
