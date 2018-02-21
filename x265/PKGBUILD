@@ -1,7 +1,7 @@
 
 # rebuild ffmpeg, gst-plugins-bad, vlc & avidemux on updates
 pkgname=x265
-pkgver=2.6
+pkgver=2.7
 _pkgver=11047
 pkgrel=1
 pkgdesc='H.265/HEVC encoder available anywhere, offering the highest compression efficiency and the highest performance.'
@@ -12,17 +12,17 @@ depends=('gcc-libs')
 makedepends=('cmake' 'yasm')
 options=('!staticlibs')
 source=("https://bitbucket.org/multicoreware/x265/downloads/${pkgname}_${pkgver}.tar.gz")
-md5sums=('4d318be1f19b58985432a144bd054572')
+md5sums=('b0d7d20da2a418fa4f53a559946ea079')
 
 build() {
-  cd ${pkgname}_v${pkgver}
+  cd ${pkgname}_${pkgver}
   
   cmake -DCMAKE_INSTALL_PREFIX=/usr -DHIGH_BIT_DEPTH=ON source
   make
 }
 
 package() {
-  cd ${pkgname}_v${pkgver}
+  cd ${pkgname}_${pkgver}
   
   make DESTDIR=${pkgdir} install
 }

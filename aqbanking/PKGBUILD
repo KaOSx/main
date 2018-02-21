@@ -1,17 +1,17 @@
 
 pkgname=aqbanking
-pkgver=5.6.12
-_dnrel=208
-pkgrel=2
+pkgver=5.7.8
+_dnrel=217
+pkgrel=1
 pkgdesc="A library for online banking and financial applications"
 arch=('x86_64')
 options=('!libtool')
-url="http://www.aquamaniac.de/aqbanking"
+url="https://www.aquamaniac.de/aqbanking"
 license=('GPL')
 depends=('gwenhywfar' 'ktoblzcheck' 'libofx')
 options=('!makeflags' '!libtool')
-source=("aqbanking-${pkgver}.tar.gz::http://www2.aquamaniac.de/sites/download/download.php?package=03&release=${_dnrel}&file=01&dummy=aqbanking-${pkgver}.tar.gz")
-md5sums=('f4476db215fe08c73d35b2018cf24739')
+source=("aqbanking-${pkgver}.tar.gz::https://www.aquamaniac.de/sites/download/download.php?package=03&release=${_dnrel}&file=02&dummy=aqbanking-${pkgver}.tar.gz")
+md5sums=('6aceeaad3a1000f22f08986e68946db3')
 
 build() {
   cd aqbanking-${pkgver}
