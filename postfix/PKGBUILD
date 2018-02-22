@@ -9,7 +9,7 @@ license=('custom')
 depends=('pcre' 'libsasl' 'mariadb' 'postgresql-libs' 'sqlite3' 'libldap' 'db' 'icu')
 backup=('etc/postfix/'{access,aliases,canonical,generic,header_checks,main.cf,master.cf,relocated,transport,virtual})
 install=${pkgname}.install
-source=("ftp://ftp.porcupine.org/mirrors/postfix-release/official/${pkgname}-${pkgver}.tar.gz"
+source=("https://mirror.myf.cloud/mirror/p/postfix-release/official/${pkgname}-${pkgver}.tar.gz"
         'aliases.patch'
         'postfix.service')
 md5sums=('d32f51b7178b12a87f2ac249e376ad38'
