@@ -1,7 +1,7 @@
 
 pkgname=libxshmfence
-pkgver=1.2
-pkgrel=3
+pkgver=1.3
+pkgrel=1
 pkgdesc="Tiny library that exposes a event API on top of Linux futexes"
 arch=('x86_64')
 url="https://xorg.freedesktop.org/"
@@ -9,7 +9,7 @@ license=('GPL')
 depends=('glibc')
 makedepends=('xorg-util-macros' 'xorgproto')
 source=("https://xorg.freedesktop.org/releases/individual/lib/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('66662e76899112c0f99e22f2fc775a7e')
+sha256sums=('b884300d26a14961a076fbebc762a39831cb75f92bed5ccf9836345b459220c7')
 
 build() {
 	cd ${pkgname}-${pkgver}
