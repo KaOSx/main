@@ -1,8 +1,8 @@
 
 pkgname=vlc
-pkgver=3.0.0
+pkgver=3.0.1
 _pkgver=3.0.0-20171213-0226-rc2
-pkgrel=4
+pkgrel=1
 epoch=1
 pkgdesc="Free and open source cross-platform multimedia player and framework that plays most multimedia files and various streaming protocols."
 arch=('x86_64')
@@ -26,7 +26,7 @@ options=('!libtool' 'debug')
 install="vlc.install"
 source=("https://download.videolan.org/pub/videolan/vlc/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 #source=("https://nightlies.videolan.org/build/source/${pkgname}-${_pkgver}.tar.xz")
-sha256sums=('68d587999f50d58df5ca3d69998bba910bdb5a82e5a1a39247179932fae0c19c')
+sha256sums=('ce700cdfb49d721b75581ee727e98cc60dae97407ccec0f82124d5e9a1cb1301')
 
 prepare() {
   cd ${pkgname}-${pkgver}
