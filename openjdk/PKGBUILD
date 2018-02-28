@@ -102,9 +102,9 @@ build() {
               --disable-downloading \
               --disable-Werror \
               --disable-bootstrap \
-              --disable-nss \
+              --enable-nss \
               --disable-system-sctp
-  make -j1
+  make
 }
 
 package_openjdk() {
