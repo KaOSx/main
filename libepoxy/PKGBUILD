@@ -1,7 +1,7 @@
 
 pkgname=libepoxy
-pkgver=1.4.3
-_pkgver=1.4
+pkgver=1.5.0
+_pkgver=1.5
 pkgrel=1
 pkgdesc="Library for handling OpenGL function pointer management for you"
 url="https://github.com/anholt/libepoxy"
@@ -11,7 +11,7 @@ depends=('glibc')
 makedepends=('xorg-util-macros' 'python3' 'libgl' 'meson' 'ninja')
 options=('!libtool')
 source=("https://github.com/anholt/libepoxy/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
-md5sums=('af4c3ce0fb1143bdc4e43f85695a9bed')
+md5sums=('63fe3847789258254dcd7e3fdb9e7f5e')
 
 build() {
     mkdir -p build
@@ -26,7 +26,7 @@ build() {
 check() {
     cd build
 
-    mesontest
+    meson test
 }
 
 package() {
