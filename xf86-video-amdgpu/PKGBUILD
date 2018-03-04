@@ -1,6 +1,6 @@
 
 pkgname=xf86-video-amdgpu
-pkgver=1.4.0
+pkgver=18.0.0
 pkgrel=1
 pkgdesc="Video driver forked from the xf86-video-ati radeon driver and modified to support the amdgpu kernel driver via libdrm_amdgpu"
 arch=('x86_64')
@@ -11,7 +11,7 @@ makedepends=('xorg-server' 'xf86driproto' 'resourceproto' 'scrnsaverproto')
 #groups=('xorg-video-drivers')
 options=('!libtool')
 source=("https://xorg.freedesktop.org/releases/individual/driver/${pkgname}-${pkgver}.tar.bz2")
-sha256sums=('f8cac4bf3dd795b93cc337e5c0c62618026f597890a10d996f09c73eb88ba67c')
+sha256sums=('e909b9707d2562dfc36d8075a8cbddbc93901aaa8f2522d9a429c3fc5ad66d94')
 
 build() { 
     cd ${pkgname}-${pkgver}

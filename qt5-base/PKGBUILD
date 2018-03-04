@@ -28,7 +28,7 @@ md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
 build() {
     cd ${srcdir}/${_pkgfqn}
     
-    # fix kexi crash with 5.10.1
+    # fix kexi crash with 5.10.1, https://codereview.qt-project.org/#/c/221703/
     patch -p1 -i ${srcdir}/kexi5.10.1.patch
     
     #sed -i 's|libs": "-lmysqlclient_r"|libs": "-lmariadb"|' src/sql/configure.json
