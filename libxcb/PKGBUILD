@@ -1,19 +1,19 @@
 
 pkgname=libxcb
-pkgver=1.12
-pkgrel=3
+pkgver=1.13
+pkgrel=1
 epoch=2
 pkgdesc="X11 client-side library"
 arch=('x86_64')
 url="https://xcb.freedesktop.org/"
-depends=('xcb-proto>=1.12' 'libxdmcp' 'libxau')
+depends=('xcb-proto>=1.13' 'libxdmcp' 'libxau')
 makedepends=('pkgconfig' 'libxslt' 'python3' 'xorg-util-macros')
 options=('!libtool')
 license=('custom')
 source=("https://xcb.freedesktop.org/dist/${pkgname}-${pkgver}.tar.bz2"
         'libxcb-1.1-no-pthread-stubs.patch')
-md5sums=('28e552bd78bc1050b6b26ca1db0e5bb6'
-         'aac27dd8c8fe19f33867537303128e30')
+sha256sums=('188c8752193c50ff2dbe89db4554c63df2e26a2e47b0fa415a70918b5b851daa'
+            '9addd62eef8d321584b579d00b8a31d4c11a1219aa7aa759a8fa15e5b8c13249')
 
 build() {
   cd ${pkgname}-${pkgver}
