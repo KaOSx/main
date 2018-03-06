@@ -1,6 +1,6 @@
 
 pkgname=librsvg
-pkgver=2.42.2
+pkgver=2.42.3
 _pkgver=2.42
 pkgrel=1
 pkgdesc="SAX-based renderer for SVG files into a GdkPixbuf"
@@ -11,12 +11,12 @@ depends=('gdk-pixbuf2' 'pango' 'libcroco')
 makedepends=('intltool' 'gobject-introspection' 'rust')
 options=('!libtool')
 source=("https://ftp.gnome.org/pub/gnome/sources/librsvg/${_pkgver}/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('0c550a0bffef768a436286116c03d9f6cd3f97f5021c13e7f093b550fac12562')
+sha256sums=('704f2c44b9b170fc5498de36a161d01ca8f584ba9c42654b98565a7b7bcbe657')
 
 build() {
   cd ${pkgname}-${pkgver}
   # issue with current cargo https://github.com/rust-lang/cargo/issues/3340#issuecomment-263699137
-  export SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
+  #export SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
   
   ./configure --prefix=/usr \
     --libexecdir=/usr/lib/${pkgname} \
