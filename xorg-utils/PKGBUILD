@@ -1,7 +1,7 @@
 
 pkgname=xorg-utils
-pkgver=7.9
-pkgrel=3
+pkgver=7.10
+pkgrel=1
 pkgdesc="Collection of client utilities used to query the X server"
 arch=('x86_64')
 url="https://xorg.freedesktop.org/"
@@ -11,7 +11,7 @@ depends=('libxxf86dga' 'libxi' 'libxtst' 'libxinerama' 'libxv' 'libdmx' 'libxft'
 makedepends=('pkgconfig' 'mesa' 'xorgproto')
 groups=('xorg')
 source=("https://xorg.freedesktop.org//releases/individual/app/xdpyinfo-1.3.2.tar.bz2"
-        "https://xorg.freedesktop.org//releases/individual/app/xdriinfo-1.0.5.tar.bz2"
+        "https://xorg.freedesktop.org//releases/individual/app/xdriinfo-1.0.6.tar.bz2"
         "https://xorg.freedesktop.org//releases/individual/app/xev-1.2.2.tar.bz2"
         "https://xorg.freedesktop.org//releases/individual/app/xfd-1.1.2.tar.bz2"
         "https://xorg.freedesktop.org//releases/individual/app/xfontsel-1.0.5.tar.bz2"
@@ -24,26 +24,26 @@ source=("https://xorg.freedesktop.org//releases/individual/app/xdpyinfo-1.3.2.ta
         'LICENSE.xdpyinfo' 'LICENSE.xfd' 'LICENSE.xlsclients' 
         'LICENSE.xprop' 'LICENSE.xwininfo' 'LICENSE.xev' 
         'LICENSE.xlsatoms' 'LICENSE.xlsfonts' 'LICENSE.xvinfo')
-md5sums=('8809037bd48599af55dad81c508b6b39'
-         'fceddaeb08e32e027d12a71490665866'
-         '249bdde90f01c0d861af52dc8fec379e'
-         'f19de745d181f5547ed59d6d9ed7a588'
-         'a40302b88c599b63e3d3d412e02871e6'
-         '5dcb6e6c4b28c8d7aeb45257f5a72a7d'
-         '9fbf6b174a5138a61738a42e707ad8f5'
-         '6f5711bef8c765857a0887a91476283b'
-         'fae3d2fda07684027a643ca783d595cc'
-         '558360176b718dee3c39bc0648c0d10c'
-         'b777bafb674555e48fd8437618270931'
-         'b43f731a9e2684728230ce8e33f63228'
-         '9e8a82b7e9898f36c378b80509f170a6'
-         '9e8a82b7e9898f36c378b80509f170a6'
-         '801f9850b29dad506e995d011efe2914'
-         '1c47d00801594a0e251694d70c7fb0b8'
-         'e84310edd65e120d85914350c795bfac'
-         '9ee99bda91248e945186090905db25d8'
-         '345d6e65d71fdde292cc27f93c15e4a1'
-         '67ea6bb3b11620c82ce4d24e78b4a0a9')
+sha256sums=('30238ed915619e06ceb41721e5f747d67320555cc38d459e954839c189ccaf51'
+            'd9ccd2c3e87899417acc9ea1f3e319a4198112babe1dc711273584f607449d51'
+            'd94ae62a6c1af56c2961d71f5782076ac4116f0fa4e401420ac7e0db33dc314f'
+            'c1a32222fbb891e46f9a82ebab005bc5e54ce006a2586195ec9ea7ab308e2759'
+            '170d8550b96fb47b04db6181b947e6f6b8b97f4df5d691c351a278480cc931bf'
+            '47e5dc7c3dbda6db2cf8c00cedac1722835c1550aa21cfdbc9ba83906694dea4'
+            '5d9666fcc6c3de210fc70d5a841a404955af709a616fde530fe4e8f7723e3d3d'
+            '40295bec35077cee93be2e4c26cc00268ed6ace779ae6e97766a866c1e3927fa'
+            '9bee88b1025865ad121f72d32576dd3027af1446774aa8300cce3c261d869bc6'
+            '9fba8b68daf53863e66d5004fa9c703fcecf69db4d151ea2d3d885d621e6e5eb'
+            '218eb0ea95bd8de7903dfaa26423820c523ad1598be0751d2d8b6a2c23b23ff8'
+            '51c98a0feafd5878eb66872476606fecf3636ca1609f57417de1a03bc6afda1e'
+            'd64c68f0c3778c4f7c3ddd4883fd1fb24ba8d3df40601b77b18f66196354d831'
+            'd64c68f0c3778c4f7c3ddd4883fd1fb24ba8d3df40601b77b18f66196354d831'
+            'd6ef63e1927114ff2598c3ea8dd923471a2a80be059179dbb16c85cea8ac465f'
+            'd001b100647b13c99916cbd11bec125eaa54a31ff175dfa05e863f67dda2de83'
+            'b7025c627bcc01ec83b491d8a28776cfa7e9087612a8f35e41d849e4e797255a'
+            '08faa724d9892fea6b61a186a44f879393dac5551a49300276a4b67c733d1760'
+            'd309d199f5a6a3096d1708bba48252e4cedd45f442df7b79fc284805fa087120'
+            '4859720734939acf2e7f81fb3f848afce7b8c1cfaa2d01968165344e320cb155')
 
 build() {
   cd ${srcdir}
