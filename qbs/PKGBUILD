@@ -1,0 +1,28 @@
+
+pkgname=qbs
+pkgver=1.10.1
+pkgrel=1
+pkgdesc='Build automation tool designed to conveniently manage the build process of software projects across multiple platforms.'
+arch=('x86_64')
+url='https://doc.qt.io/qbs/'
+license=('LGPL')
+depends=('qt5-script')
+conflicts=('qtcreator')
+source=("https://github.com/qbs/qbs/archive/v${pkgver}.tar.gz")
+md5sums=('7339d6aa4c16956940fa06aa57e13ae8')
+
+build() {
+  cd ${pkgname}-${pkgver}
+  
+  /usr/lib/qt5/bin/qmake -r QBS_INSTALL_PREFIX=/usr \
+    QBS_LIBEXEC_INSTALL_DIR=/usr/lib/qbs \
+    QBS_RELATIVE_LIBEXEC_PATH=../lib/qbs \
+    "CONFIG+=qbs_enable_project_file_updates qbs_no_man_install qbs_disable_rpath" qbs.pro
+  make
+}
+
+package() {
+  cd ${pkgname}-${pkgver}
+  
+  INSTALL_ROOT=${pkgdir} make install
+} 
