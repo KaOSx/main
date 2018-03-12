@@ -1,32 +1,29 @@
 
 pkgname=python2-dateutil
 _pkgname=python-dateutil
-pkgver=2.6.1
+pkgver=2.7.0
 pkgrel=1
 pkgdesc="Provides powerful extensions to the standard datetime module"
 arch=('x86_64')
-license=('custom:PYTHON')
+license=('Apache' 'BSD')
 url="https://github.com/dateutil/dateutil"
 depends=('python2' 'python2-six')
 makedepends=('python2-setuptools' )
-#source=("http://pypi.python.org/packages/source/p/python-dateutil/python-dateutil-${pkgver}.tar.gz")
 source=("https://github.com/dateutil/dateutil/releases/download/${pkgver}/${_pkgname}-${pkgver}.tar.gz")
-md5sums=('db38f6b4511cefd76014745bb0cc45a4')
+md5sums=('ba7d27d7788cc9dd04a07bd77203ffab')
 
-check() {
+build() {
   cd ${_pkgname}-${pkgver}
   
-  python2 updatezinfo.py
-  python2 setup.py test
+  python2 setup.py build
 }
 
 package() {
   cd ${_pkgname}-${pkgver}
-  python2 setup.py install --root=${pkgdir} --optimize=1
+  
+  python2 setup.py install --root=${pkgdir} --optimize=1 --skip-build
+  
   install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
-
-  chmod -R a+r ${pkgdir}/usr/lib/python2.7/
-  rm ${pkgdir}/usr/lib/python2.7/site-packages/dateutil/zoneinfo/dateutil-zoneinfo.tar.gz
 }
 
   
