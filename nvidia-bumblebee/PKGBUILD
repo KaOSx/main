@@ -4,11 +4,11 @@ _extramodules=extramodules-4.15
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=nvidia-bumblebee
-pkgver=390.25
-pkgrel=4
+pkgver=390.42
+pkgrel=1
 pkgdesc="NVIDIA drivers for linux. Packaged for Bumblebee"
 arch=('x86_64')
-url="http://www.nvidia.com/"
+url="https://www.nvidia.com/page/home.html"
 depends=('linux>=4.15' 'linux<4.16' "nvidia-utils-bumblebee")
 makedepends=('linux-headers')
 provides=("nvidia=${pkgver}")
@@ -22,7 +22,7 @@ _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 source=("ftp://download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}-no-compat32.run"
         'linux-4.10.patch')
 #source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}.run")
-md5sums=('e41e28d1f380c64ec2eacae344fb5017'
+md5sums=('2b2e4c8b4174b542774d82c66ba69e91'
          '4ab00fe5ab144083caa6c6994feea7e6')
 
 build() {
