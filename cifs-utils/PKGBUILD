@@ -1,6 +1,6 @@
 
 pkgname=cifs-utils
-pkgver=6.7
+pkgver=6.8
 pkgrel=1
 pkgdesc="CIFS filesystem user-space tools"
 arch=('x86_64')
@@ -10,7 +10,7 @@ depends=('libcap' 'keyutils' 'krb5' 'talloc')
 makedepends=('samba')
 opdepends=('samba: for cifs.idmap and cifsacl')
 source=("https://ftp.samba.org/pub/linux-cifs/cifs-utils/$pkgname-$pkgver.tar.bz2")
-md5sums=('af3ae1d27aca624c4daac5bf3eb0d4c1')
+md5sums=('a385d60293e6f9e4cb0d4ac2093990d8')
 
 build() {
   cd ${pkgname}-${pkgver}
