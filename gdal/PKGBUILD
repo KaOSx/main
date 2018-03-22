@@ -1,14 +1,14 @@
 
 pkgname=gdal
 pkgver=2.2.4
-pkgrel=1
+pkgrel=2
 pkgdesc="A translator library for raster geospatial data formats"
 arch=('x86_64')
 url="http://www.gdal.org/"
 license=('custom')
 depends=('curl' 'geos' 'giflib' 'hdf5' 'libgeotiff' 'libjpeg-turbo' 'libpng' 'libtiff' 'netcdf'
          'poppler' 'python2-numpy' 'sqlite3' 'mariadb' 'postgresql-libs' 'cfitsio'
-         'libspatialite' 'unixodbc')
+         'libspatialite' 'unixodbc' 'json-c')
 makedepends=('perl' 'swig')
 options=('!libtool' '!makeflags')
 source=("http://download.osgeo.org/gdal/${pkgver}/${pkgname}-${pkgver}.tar.xz")
