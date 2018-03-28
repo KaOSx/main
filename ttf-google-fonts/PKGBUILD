@@ -1,7 +1,7 @@
 
 pkgname=ttf-google-fonts
-pkgver=20161115
-_commit=d9f970f66c8a6d2f7ca683948401ce854a5844be
+pkgver=20180328
+_commit=699ce8c5ba535aed3beb907ebc141765a709ad5f
 pkgrel=1
 pkgdesc="TrueType fonts from the Google Fonts project"
 arch=('x86_64')
@@ -13,17 +13,18 @@ provides=('ttf-raleway')
 conflicts=('ttf-raleway')
 install=${pkgname}.install
 source=("https://github.com/google/fonts/archive/${_commit}.zip")
-md5sums=('b65e4c3c8d95bc1aa2ae6e542903da63')
+md5sums=('84bec4b5a83ce7198dec6c725f6b2c20')
 
 package() {
   install -dm755 ${pkgdir}/usr/share/fonts/TTF
   find . -type f -name \*.ttf -exec install -Dm644 '{}' \
     ${pkgdir}/usr/share/fonts/TTF \;
 
-  # remove droid, noto & cantarell font packages provided files
+  # remove droid, noto, cantarell & lohit font packages provided files
   find ${pkgdir}/usr/share/fonts/TTF -type f -name "Cantarell-*.ttf" -delete
   find ${pkgdir}/usr/share/fonts/TTF -type f -name "Droid*.ttf" -delete
   find ${pkgdir}/usr/share/fonts/TTF -type f -name "Noto*.ttf" -delete
+  find ${pkgdir}/usr/share/fonts/TTF -type f -name "Lohit*.ttf" -delete
   
   find . -type f -name OFL.txt -exec install -Dm644 '{}' \
     ${pkgdir}/usr/share/licenses/${pkgname}/{} \;

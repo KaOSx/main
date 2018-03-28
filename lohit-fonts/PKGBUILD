@@ -1,0 +1,69 @@
+
+pkgname=lohit-fonts
+pkgver=2.5.4
+pkgrel=1
+pkgdesc="Set of free high-quality TrueType fonts covering for every official Indian language"
+arch=('x86_64')
+url="https://pagure.io/lohit"
+license=('SIL Open Font License (OFL)')
+depends=('xorg-fonts-encodings' 'xorg-fonts-alias' 'xorg-font-utils' 'fontconfig')
+install=lohit.install
+conflicts=('ttf-indic-otf')
+replaces=('ttf-indic-otf')
+provides=('ttf-indic-otf')
+source=("https://releases.pagure.org/lohit/lohit-assamese-ttf-2.91.5.tar.gz"
+        "https://releases.pagure.org/lohit/lohit-bengali-ttf-2.91.5.tar.gz"
+        "https://releases.pagure.org/lohit/lohit-devanagari-ttf-2.95.4.tar.gz"
+        "https://releases.pagure.org/lohit/lohit-gujarati-ttf-2.92.4.tar.gz"
+        "https://releases.pagure.org/lohit/lohit-gurmukhi-ttf-2.91.2.tar.gz"
+        "https://releases.pagure.org/lohit/lohit-hindi-ttf-2.4.3.tar.gz"
+        "https://releases.pagure.org/lohit/lohit-kannada-ttf-2.5.4.tar.gz"
+        "https://releases.pagure.org/lohit/lohit-kashmiri-ttf-2.4.3.tar.gz"
+        "https://releases.pagure.org/lohit/lohit-konkani-ttf-2.4.3.tar.gz"
+        "https://releases.pagure.org/lohit/lohit-maithili-ttf-2.4.3.tar.gz"
+        "https://releases.pagure.org/lohit/lohit-malayalam-ttf-2.92.2.tar.gz"
+        "https://releases.pagure.org/lohit/lohit-marathi-ttf-2.94.2.tar.gz"
+        "https://releases.pagure.org/lohit/lohit-nepali-ttf-2.94.2.tar.gz"
+        "https://releases.pagure.org/lohit/lohit-oriya-ttf-2.5.4.1.tar.gz"
+        "https://releases.pagure.org/lohit/lohit-odia-ttf-2.91.2.tar.gz"
+        "https://releases.pagure.org/lohit/lohit-punjabi-ttf-2.5.3.tar.gz"
+        "https://releases.pagure.org/lohit/lohit-sindhi-ttf-2.4.3.tar.gz"
+        "https://releases.pagure.org/lohit/lohit-tamil-ttf-2.91.3.tar.gz"
+        "https://releases.pagure.org/lohit/lohit-tamil-classical-ttf-2.5.4.tar.gz"
+        "https://releases.pagure.org/lohit/lohit-telugu-ttf-2.5.5.tar.gz")
+md5sums=('4e5bfe6d23209bdff49167007085c7ba'
+         '7c8e0e7eac003aa387bb5ca777296c03'
+         '4e6d114916faa3d85ccbf778f344e088'
+         'a4fe11b55514af07fa0e76ab65fa2609'
+         '85d8bf52bda23c1cd422be54dee113a6'
+         'dbfcfee6fd10045e523decb7657e4a75'
+         '0c853d258fb9f36aa4587c2bd559db68'
+         '442a84402d7a7db8a4d76a97aeb650db'
+         'a9ddcde9f5a367063fc7db3eb075791c'
+         '57420207e4560b1b3798fdd429d34724'
+         '7b95bbf0ab6ad291c517eb9f07a818c1'
+         '252ca6bbc317b73e27656bd6f6d73dba'
+         '6f11930fc02228038cbb3f6782521c44'
+         'e79cd61631e2e8f70372a44859bc8d9b'
+         '066f83aa4bc855cce6a78539a193633e'
+         'deab8c052af328248e8f619178ff890d'
+         '8070d3e151e3ae0a9c3c05a25a38bc1f'
+         '972c4d992e8506e0af4604a52315b174'
+         '2695776fe2f53dd85f08264685603e62'
+         '0e5d926d893bc01870e020a92ef5cfd9')
+
+package() {
+    install -d ${pkgdir}/usr/share/fonts/TTF
+    install -m644 */*.ttf ${pkgdir}/usr/share/fonts/TTF
+    
+    install -d ${pkgdir}/etc/fonts/conf.avail
+    install -d ${pkgdir}/etc/fonts/conf.d
+    install -m644 */*.conf  ${pkgdir}/etc/fonts/conf.avail/
+    
+    install -D -m644 lohit-assamese-ttf-2.91.5/OFL.txt ${pkgdir}/usr/share/licenses/${pkgname}/OFL
+    
+    cd ${pkgdir}/etc/fonts/conf.d
+    for config in ../conf.avail/*.conf; do
+        ln -s ${config} .
+    done
+}
