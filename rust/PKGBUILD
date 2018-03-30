@@ -1,19 +1,19 @@
 
 pkgname=rust
-pkgver=1.24.1
+pkgver=1.25.0
 pkgrel=1
 arch=('x86_64')
 pkgdesc='Systems programming language that runs fast, prevents segfaults, and guarantees thread safety.'
-url='http://www.rust-lang.org/'
+url='https://www.rust-lang.org/'
 license=('MIT' 'Apache')
 depends=('gcc-libs')
 makedepends=('cmake' 'curl' 'libffi' 'make' 'python2' 'rust')
 conflicts=('cargo')
 options=('!strip')
 # https://static.rust-lang.org/dist/index.html
-source=("http://static.rust-lang.org/dist/rustc-${pkgver}-src.tar.xz"
+source=("https://static.rust-lang.org/dist/rustc-${pkgver}-src.tar.xz"
         'config.toml')
-sha256sums=('85d5d032a59ff91ae01e2b0b65607e763de8dc2729e4b3d28a69023bdd8f5718'
+sha256sums=('14fcb82d5959df758aaf422539359300917217fa8420e34bd596e3fb6ed2de87'
             '5fe5891fc393c049527555d8f52bb3a882a9237c0f49e81156d56ce259c75152')
 
 build() {
