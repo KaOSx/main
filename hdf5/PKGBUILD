@@ -1,9 +1,9 @@
 
 pkgname=hdf5
-pkgver=1.10.1
-_patchver=1.10.1
+pkgver=1.10.2
+_patchver=1.10.2
 _pkgver=1.10
-pkgrel=2
+pkgrel=1
 arch=('x86_64')
 pkgdesc="General purpose library and file format for storing scientific data"
 url="https://www.hdfgroup.org/HDF5/"
@@ -11,7 +11,7 @@ license=('custom')
 depends=('zlib' 'sh')
 options=('!libtool')
 source=("https://www.hdfgroup.org/ftp/HDF5/releases/hdf5-${_pkgver}/hdf5-${_patchver}/src/${pkgname}-${_patchver}.tar.bz2")
-md5sums=('d89893c05ee7ea8611b51bb39450d64e')
+md5sums=('41fb9347801b546fba323523a1c1af51')
 
 build() {
   cd ${pkgname}-${_patchver}
