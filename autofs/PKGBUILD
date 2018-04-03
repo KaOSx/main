@@ -7,7 +7,7 @@ arch=('x86_64')
 url='http://freshmeat.net/projects/autofs'
 license=('GPL2')
 depends=('libldap' 'libxml2' 'krb5')
-makedepends=('kmod')
+makedepends=('kmod' 'clang')
 backup=('etc/autofs/auto.master'
         'etc/autofs/auto.misc'
         'etc/autofs/auto.net'
@@ -20,6 +20,9 @@ sha256sums=('8fce30ee51ffd528fe1a4e8374ef57f43367e1f123030e175fb1b1cf15bc1722')
 
 build() {
   cd ${pkgname}-${pkgver}
+  
+  export CC="clang"
+  export CXX="clang++"
 
   sed -i -e 's|/etc/auto.misc|/etc/autofs/auto.misc|' \
          -e 's|/etc/auto.master.d|/etc/autofs/auto.master.d|' samples/auto.master
@@ -28,6 +31,7 @@ build() {
         --sysconfdir=/etc/autofs \
         --with-mapdir=/etc/autofs \
         --without-hesiod \
+        --disable-ext-env \
         --enable-ignore-busy \
         --with-systemd
   make
