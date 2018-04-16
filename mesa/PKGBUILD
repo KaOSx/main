@@ -3,7 +3,7 @@ pkgbase=mesa
 pkgname=('mesa' 'libgl')
 pkgver=17.3.8
 _pkgver=17.3.8
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 makedepends=('xorgproto' 'libdrm' 'libxxf86vm' 'libxdamage' 'libva' 'expat' 'llvm' 'libx11' 'libxt' 'gcc-libs'
              'python2' 'libxml2' 'imake' 'systemd' 'libvdpau' 'wayland' 
@@ -104,4 +104,9 @@ package_mesa() {
 
   install -m755 -d ${pkgdir}/usr/share/licenses/mesa
   install -m644 ${srcdir}/LICENSE ${pkgdir}/usr/share/licenses/mesa/
+  
+  # part of wayland, should be removed from mesa soon
+  rm ${pkgdir}/usr/lib/libwayland-egl.so
+  rm ${pkgdir}/usr/lib/libwayland-egl.so.1*
+  rm ${pkgdir}/usr/lib/pkgconfig/wayland-egl.pc
 }
