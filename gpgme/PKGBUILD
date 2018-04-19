@@ -1,6 +1,6 @@
 
 pkgname=gpgme
-pkgver=1.10.0
+pkgver=1.11.0
 pkgrel=1
 pkgdesc="A C wrapper library for GnuPG"
 arch=('x86_64')
@@ -13,7 +13,7 @@ replaces=('gpgmepp')
 conflicts=('gpgmepp')
 options=('!libtool' '!emptydirs')
 source=("https://www.gnupg.org/ftp/gcrypt/gpgme/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('78b1533c593478982ee2fc548260c563')
+sha1sums=('17772bf86eef70ab0c77cbb6df0b90f002af0030')
 
 build() {
   cd ${pkgname}-${pkgver}
@@ -29,7 +29,7 @@ build() {
 
 check() {
   cd ${pkgname}-${pkgver}
-  
+  # fails one test FAIL: t-verify
   make check
 }
 
