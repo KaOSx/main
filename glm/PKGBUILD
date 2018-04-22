@@ -7,10 +7,19 @@ arch=('x86_64')
 license=('MIT')
 url="http://glm.g-truc.net"
 makedepends=('cmake' 'clang')
-source=("https://github.com/g-truc/glm/releases/download/${pkgver}/glm-${pkgver}.zip")
-md5sums=('456c9f54cf9da189733a74c173b840b5')
+source=("https://github.com/g-truc/glm/releases/download/${pkgver}/glm-${pkgver}.zip"
+        'gcc7.3.patch')
+md5sums=('456c9f54cf9da189733a74c173b840b5'
+         '79dcb5274ecea3790a432262c4be8b2a')
+
+prepare() {
+  cd ${pkgname}
+  
+  patch -p1 -i ${srcdir}/gcc7.3.patch
+}
 
 build() {
+  cd ${pkgname}
   mkdir -p build
   cd build
   
@@ -26,7 +35,7 @@ build() {
 }
 
 package() {
-  cd build
+  cd ${pkgname}build
   make DESTDIR=${pkgdir} install
   
   install -Dm644 ../glm/copying.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE

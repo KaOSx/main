@@ -1,6 +1,6 @@
 
 pkgname=colord
-pkgver=1.4.2
+pkgver=1.4.3
 pkgrel=1
 pkgdesc="System service easily manage, install and generate color profiles to manage input and output devices"
 arch=('x86_64')
@@ -11,7 +11,7 @@ makedepends=('intltool' 'gobject-introspection' 'vala' 'docbook-xsl' 'sane' 'bas
 options=('!libtool')
 install=colord.install
 source=("https://www.freedesktop.org/software/colord/releases/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('4c70d5052a9c96da51fa57e80d6dc97ca642943d5b9940a196c990dfe84beca7')
+sha256sums=('9a8e669ee1ea31632bee636cc57353f703c2ea9b64cd6e02bbaabe9a1e549df7')
 
 build() {
   mkdir -p build
@@ -24,12 +24,12 @@ build() {
     --buildtype=release \
     --libexecdir=/usr/lib/colord \
     --localstatedir=/var \
-    -Denable-sane=true \
-    -Denable-vala=true \
-    -Denable-docs=false \
-    -Denable-man=false \
-    -Dwith-daemon-user=colord \
-    -Denable-argyllcms-sensor=false
+    -D sane=true \
+    -D vala=true \
+    -D docs=false \
+    -D man=false \
+    -D daemon_user=colord \
+    -D argyllcms_sensor=false
   ninja
 }
 
