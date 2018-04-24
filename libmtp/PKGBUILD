@@ -1,15 +1,17 @@
 
 pkgname=libmtp
 pkgver=1.1.15
-pkgrel=1
+pkgrel=2
 pkgdesc="Library implementation of the Media Transfer Protocol"
 arch=('x86_64')
 url="http://libmtp.sourceforge.net"
 license=('LGPL')
 depends=('libusb' 'libgcrypt')
 options=('!libtool')
-source=("https://downloads.sourceforge.net/libmtp/${pkgname}-${pkgver}.tar.gz")
-md5sums=('d9118944e746c44f5312f0b30ea2f6dd')
+source=("https://downloads.sourceforge.net/libmtp/${pkgname}-${pkgver}.tar.gz"
+        '69-libmtp.rules')
+md5sums=('d9118944e746c44f5312f0b30ea2f6dd'
+         'ac75769980e937022e9657777b7a5ac6')
 
 build() {
   cd ${pkgname}-${pkgver}
@@ -24,5 +26,7 @@ package() {
   make DESTDIR=${pkgdir} install
   # systemd errors, clean line in udev rules
   sed -i "/^Unable to open/d" ${pkgdir}/usr/lib/udev/rules.d/69-libmtp.rules
+  # android devices failed to use MTP since linux 4.14, use adjusted rules file until proper fix
+  install -D -m644 ${srcdir}/69-libmtp.rules ${pkgdir}/etc/udev/rules.d/69-libmtp.rules
 }
 
