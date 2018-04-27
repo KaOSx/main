@@ -1,16 +1,16 @@
 
-_extramodules=extramodules-4.15
+_extramodules=extramodules-4.16
 _kver="$(cat /lib/modules/${_extramodules}/version)"
 
 pkgname=acpi_call
 pkgver=1.1.0
-pkgrel=45
+pkgrel=46
 pkgdesc="A kernel module that enables you to call parameterless ACPI methods by writing the method name to /proc/acpi/call, e.g. to turn off discrete graphics card in a dual graphics environment (like NVIDIA Optimus)."
 arch=('x86_64')
 url="http://github.com/mkottman/acpi_call"
 license=('GPL')
-depends=('linux>=4.15' 'linux<4.16' 'linux-headers')
-makedepends=('git')
+depends=('linux>=4.16' 'linux<4.17' 'linux-headers')
+makedepends=('git' 'elfutils')
 install=acpi_call.install
 source=("https://github.com/mkottman/acpi_call/archive/v${pkgver}.tar.gz")
 md5sums=('f69d40e130b0e5ed17ce8adb19e6dda1')
