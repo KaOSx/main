@@ -3,7 +3,7 @@ pkgname=qtwebkit-tp
 pkgver=5.212.0.1
 _pkgver=5.212.0-alpha2
 #_commit=8bed62ae51870074d3bc8f48791b19911bfc4d10
-pkgrel=7
+pkgrel=8
 pkgdesc='Cross-platform application and UI framework, QtWebkit files (revived branch)'
 arch=('x86_64')
 url='https://github.com/annulen/webkit'
@@ -20,10 +20,14 @@ groups=('qt5')
 #source=("https://github.com/annulen/qtwebkit-snapshots/archive/${_commit}.zip"
 source=("https://github.com/annulen/webkit/archive/qtwebkit-${_pkgver}.tar.gz"
         "https://raw.githubusercontent.com/Alexpux/MINGW-packages/master/mingw-w64-qtwebkit/0012-install-additional-pri-files.patch"
-        "https://github.com/annulen/webkit/commit/f51554bf104ab0491370f66631fe46143a23d5c2.diff")
+        "https://github.com/annulen/webkit/commit/f51554bf104ab0491370f66631fe46143a23d5c2.diff"
+        "https://github.com/annulen/webkit/commit/6faf11215e1af27d35e921ae669aa0251a01a1ab.diff"
+        "https://github.com/annulen/webkit/commit/76420459a13d9440b41864c93cb4ebb404bdab55.diff")
 md5sums=('9216661f6626fe4224ac477adf8d4162'
          'd3997143a1b57cbbfbd4364713fea91d'
-         'b470e396e4bff74b104e98e1362d0161')
+         'b470e396e4bff74b104e98e1362d0161'
+         'f944742824da4d636204ae2689baa773'
+         'b5c629884a886c9175d2fb28d14969e4')
 
 prepare() {
   cd webkit-qtwebkit-${_pkgver}
@@ -31,6 +35,9 @@ prepare() {
   patch -p1 -i ${srcdir}/0012-install-additional-pri-files.patch
   # needed for cmake 3.10
   patch -p1 -i ${srcdir}/f51554bf104ab0491370f66631fe46143a23d5c2.diff
+  # trojita issues
+  patch -p1 -i ${srcdir}/6faf11215e1af27d35e921ae669aa0251a01a1ab.diff
+  patch -p1 -i ${srcdir}/76420459a13d9440b41864c93cb4ebb404bdab55.diff
 }
 
 build() {
