@@ -2,7 +2,7 @@
 pkgbase=nvidia-utils
 pkgname=('nvidia-utils' 'opencl-nvidia' 'nvidia-settings')
 # Edit hardware-detection/hooks/hwdetect_7_graphics and Installer job 11 on version jump from 39x.xx
-pkgver=390.48
+pkgver=396.24
 pkgrel=1
 arch=('x86_64')
 url="https://www.nvidia.com/page/home.html"
@@ -14,7 +14,7 @@ _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
 #source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}.run"
         'nvidia-restore-settings.desktop')
-md5sums=('8ed67fc67710b6cfd9c9273054e2117a'
+md5sums=('a441ff0a17b1db0d27855c6505de379d'
          '9237516792da7b6df32f8c7e8a98f475')
 
 create_links() {
@@ -70,7 +70,7 @@ package_nvidia-utils() {
   install -D -m755 "libnvidia-glcore.so.${pkgver}" "${pkgdir}/usr/lib/libnvidia-glcore.so.${pkgver}"
   install -D -m755 "libnvidia-eglcore.so.${pkgver}" "${pkgdir}/usr/lib/libnvidia-eglcore.so.${pkgver}"
   install -D -m755 "libnvidia-glsi.so.${pkgver}" "${pkgdir}/usr/lib/libnvidia-glsi.so.${pkgver}"
-  install -D -m755 "libnvidia-egl-wayland.so.1.0.2" "${pkgdir}/usr/lib/libnvidia-egl-wayland.so.1.0.2"
+  install -D -m755 "libnvidia-egl-wayland.so.1.0.3" "${pkgdir}/usr/lib/libnvidia-egl-wayland.so.1.0.3"
   install -D -m644 "10_nvidia_wayland.json" "${pkgdir}/usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json"
   install -D -m755 "libEGL_nvidia.so.${pkgver}" "${pkgdir}/usr/lib/libEGL_nvidia.so.${pkgver}"
   install -D -m644 "10_nvidia.json" "${pkgdir}/usr/share/glvnd/egl_vendor.d/10_nvidia.json"
