@@ -1,9 +1,9 @@
 
 pkgbase="llvm"
 pkgname=('llvm' 'clang' 'clang-analyzer' 'clang-tools-extra' 'lldb')
-pkgver=5.0.1
+pkgver=5.0.2
 _gcc_ver=7.3.0
-pkgrel=2
+pkgrel=1
 arch=('x86_64')
 url="https://llvm.org/"
 license=('custom:University of Illinois/NCSA Open Source License')
@@ -14,11 +14,11 @@ source=("https://llvm.org/releases/${pkgver}/${pkgbase}-${pkgver}.src.tar.xz"
         "https://releases.llvm.org/$pkgver/clang-tools-extra-$pkgver.src.tar.xz"
         "https://llvm.org/releases/${pkgver}/compiler-rt-${pkgver}.src.tar.xz"
         "https://llvm.org/releases/${pkgver}/lldb-${pkgver}.src.tar.xz")
-md5sums=('3a4ec6dcbc71579eeaec7cb157fe2168'
-         'e4daa278d8f252585ab73d196484bf11'
-         'c2bd3733c183b033b49f7a416c6dca36'
-         '6329380d643fb5dc5f5abdd0d5eecd70'
-         'd64078681215b5935614b6b83b2d1463')
+md5sums=('c5e980edf7f22d66f0f7561b35c1e195'
+         '1cd6ee1b74331fb37c27b4a2a1802c97'
+         'd4d0d9637fa1e47daf3f51e743d8f138'
+         '22728d702a64ffc6d073d1dda25a1eb9'
+         '9d0addd1a28a4c155b8f69919e7bbff7')
 
 prepare() {
     cd ${pkgbase}-${pkgver}.src
