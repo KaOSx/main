@@ -162,7 +162,7 @@ package() {
 	make -j1 INSTALL_ROOT=${pkgdir} install
 	#install -d -m755 ${pkgdir}/usr/share/pear
 	# install php.ini
-	install -D -m644 ${srcdir}/${pkgbase}-${pkgver}/php.ini-production ${pkgdir}/etc/php/php.ini
+	install -D -m644 php.ini-production ${pkgdir}/etc/php/php.ini
 	install -d -m755 ${pkgdir}/etc/php/conf.d/
 	
 	install -d -m755 ${pkgdir}/etc/php/fpm.d
