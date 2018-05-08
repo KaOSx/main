@@ -2,15 +2,15 @@
 # include global config
 source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
 
-pkgname=('qt5-declarative' 'qt5-declarative-docs')
+pkgname=('qt5-declarative') # 'qt5-declarative-docs')
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=2
+pkgrel=1
 arch=('x86_64')
 url='http://qt.nokia.com/'
 license=('GPL3' 'LGPL' 'FDL' 'custom')
-makedepends=('qt5-xmlpatterns' 'mesa' 'python2' 'qt5-tools')
+makedepends=('qt5-xmlpatterns' 'mesa' 'python2')
 options=('!libtool' 'debug')
 _pkgfqn="qtdeclarative-everywhere-src-${subver}"
 source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz"
@@ -21,11 +21,11 @@ md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
 
 build() {
     cd $srcdir/$_pkgfqn
-    patch -R -p1 -i $srcdir/f42f1366dcd4b070c69c9e7fe42a704ef23da14d.diff
+    #patch -R -p1 -i $srcdir/f42f1366dcd4b070c69c9e7fe42a704ef23da14d.diff
 
     /usr/lib/qt5/bin/qmake
     make
-    make docs
+    #make docs
 }
 
 package_qt5-declarative() {

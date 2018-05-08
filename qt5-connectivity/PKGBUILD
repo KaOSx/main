@@ -12,7 +12,7 @@ arch=('x86_64')
 url='http://qt.nokia.com/'
 license=('GPL3' 'LGPL')
 depends=('qt5-declarative' 'bluez')
-makedepends=('python2' 'qt5-tools')
+makedepends=('python2')
 groups=('qt5')
 options=('!libtool')
 _pkgfqn="qtconnectivity-everywhere-src-${subver}"
@@ -25,13 +25,13 @@ build() {
 
     /usr/lib/qt5/bin/qmake
     make
-    make docs
+    #make docs
 }
 
 package() {
     cd $srcdir/$_pkgfqn
     make INSTALL_ROOT=$pkgdir install
-    make INSTALL_ROOT=$pkgdir install_docs
+    #make INSTALL_ROOT=$pkgdir install_docs
     
     mkdir -p ${pkgdir}/usr/bin
     for i in $(ls ${pkgdir}/usr/lib/qt5/bin); do

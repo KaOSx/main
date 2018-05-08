@@ -13,7 +13,7 @@ url='http://qt.nokia.com/'
 license=('GPL3' 'LGPL' 'FDL' 'custom')
 depends=('qt5-declarative' 'desktop-file-utils' 'qt5-location' 'hicolor-icon-theme' 'xdg-utils'
          'qt5-translations')
-makedepends=('qtwebkit-tp' 'qt5-tools')
+makedepends=('qtwebkit-tp')
 optdepends=('qt5-doc: offline help documentation')
 groups=('qt5')
 options=('!libtool')
@@ -31,13 +31,13 @@ build() {
 
     /usr/lib/qt5/bin/qmake # INCLUDEPATH="/usr/include/QtWebKit /usr/include/QtWebKitWidgets"
     make
-    make docs
+    #make docs
 }
 
 package() {
     cd $srcdir/$_pkgfqn
     make INSTALL_ROOT=$pkgdir install
-    make INSTALL_ROOT=$pkgdir install_docs
+    #make INSTALL_ROOT=$pkgdir install_docs
 	
     install -d ${pkgdir}/usr/share/applications
     install -m644 ${srcdir}/assistant.desktop ${pkgdir}/usr/share/applications/

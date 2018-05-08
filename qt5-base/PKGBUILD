@@ -3,20 +3,23 @@
 source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
 
 # build twice on icu updates, first without qt5-tools/make docs
-pkgname=('qt5-base' 'qt5-base-docs')
+pkgname='qt5-base'
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=2
+pkgrel=1
+pkgdesc="A cross-platform application and UI framework"
 arch=('x86_64')
 url='http://qt-project.org/'
 license=('GPL3' 'LGPL' 'FDL' 'custom')
-makedepends=('sqlite' 'xcb-util-keysyms' 'xcb-util-wm' 'xcb-util-image' 'xcb-util-renderutil'
-         'glib2' 'dbus' 'fontconfig' 'libsm' 'libxrandr' 'libxv' 'libxi' 'unixodbc' 'libjpeg-turbo'
-         'alsa-lib' 'xdg-utils' 'hicolor-icon-theme' 'desktop-file-utils' 'mesa' 'systemd'
-         'libxcursor' 'libxrender' 'libpng' 'mariadb' 'icu' 'libgl' 'libxfixes' 'libxinerama'
-         'libxkbcommon' 'libinput' 'harfbuzz' 'mtdev'
-         'postgresql-libs' 'cups' 'python2' 'gperf' 'ruby' 'pulseaudio' 'qt5-tools')
+depends=('sqlite' 'xcb-util-keysyms' 'xcb-util-wm' 'xcb-util-image' 'xcb-util-renderutil'
+        'glib2' 'dbus' 'fontconfig' 'libsm' 'libxrandr' 'libxv' 'libxi' 'unixodbc' 'libjpeg-turbo'
+        'alsa-lib' 'xdg-utils' 'hicolor-icon-theme' 'desktop-file-utils' 'mesa' 'systemd'
+        'libxcursor' 'libxrender' 'libpng' 'mariadb' 'icu' 'libgl' 'libxfixes' 'libxinerama'
+        'libxkbcommon' 'libinput' 'harfbuzz' 'mtdev' 'libproxy')
+optdepends=('postgresql-libs: PostgreSQL driver')
+groups=('qt5')
+makedepends=('postgresql-libs' 'cups' 'python2' 'gperf' 'ruby' 'pulseaudio')
 options=('!libtool' 'debug')
 _pkgfqn="qtbase-everywhere-src-${subver}"
 source=("${_qtmirror}/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz"
@@ -29,7 +32,7 @@ build() {
     cd ${srcdir}/${_pkgfqn}
     
     # fix kexi crash with 5.10.1, https://codereview.qt-project.org/#/c/221703/
-    patch -p1 -i ${srcdir}/kexi5.10.1.patch
+    #patch -p1 -i ${srcdir}/kexi5.10.1.patch
     
     #sed -i 's|libs": "-lmysqlclient_r"|libs": "-lmariadb"|' src/sql/configure.json
     #sed -i 's|libs": "-lmysqlclient"|libs": "-lmariadb"|' src/sql/configure.json
@@ -69,10 +72,9 @@ build() {
                 #-no-use-gold-linker
                 #-opengl es2
      make
-     make docs
 }
 
-package_qt5-base() {
+package() {
     pkgdesc="A cross-platform application and UI framework"
     depends=('sqlite' 'xcb-util-keysyms' 'xcb-util-wm' 'xcb-util-image' 'xcb-util-renderutil'
              'glib2' 'dbus' 'fontconfig' 'libsm' 'libxrandr' 'libxv' 'libxi' 'unixodbc' 'libjpeg-turbo'

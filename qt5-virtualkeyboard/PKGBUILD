@@ -27,9 +27,9 @@ build() {
     /usr/lib/qt5/bin/qmake CONFIG+="lang-all handwriting"
     make
     
-    cd examples
-    /usr/lib/qt5/bin/qmake
-    make
+    #cd examples
+    #/usr/lib/qt5/bin/qmake
+    #make
 }
 
 package() {
@@ -38,8 +38,8 @@ package() {
     
     install -D -m644 LICENSE.GPL3 ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.GPL3
     # install a QML example
-    install -D -m755 examples/virtualkeyboard/basic/basic ${pkgdir}/usr/bin/basic
-    install -D -m644 ${srcdir}/virtualkeyboard.desktop ${pkgdir}/usr/share/applications/virtualkeyboard.desktop
+    #install -D -m755 examples/virtualkeyboard/basic/basic ${pkgdir}/usr/bin/basic
+    #install -D -m644 ${srcdir}/virtualkeyboard.desktop ${pkgdir}/usr/share/applications/virtualkeyboard.desktop
     
 }
 
