@@ -14,11 +14,11 @@ md5sums=('99c80f9229554953a868127cda44e7e3'
          'b0f489ae4b3e36dc8827dc53a76047aa'
          '444e1670977bd18e85658016eabc7cfa')
 
-build() {
-  cd ${srcdir}
-  gcc -Wall ${CFLAGS} -o intel-microcode2ucode intel-microcode2ucode.c
-  ./intel-microcode2ucode ./microcode.dat
-}
+#build() {
+#  cd ${srcdir}
+#  gcc -Wall ${CFLAGS} -o intel-microcode2ucode intel-microcode2ucode.c
+#  ./intel-microcode2ucode ./microcode.dat
+#}
 
 package() {
   cd ${srcdir}
