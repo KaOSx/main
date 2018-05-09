@@ -13,13 +13,16 @@ url='http://qt.nokia.com/'
 license=('GPL3' 'LGPL')
 depends=('qt5-tools')
 options=('!libtool')
-_pkgfqn="qtdoc-everywhere-src-${subver}"
-source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
-#source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
-md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`)
+conflicts=('qt5-base-docs' 'qt5-declarative-docs')
+provides=('qt5-base-docs' 'qt5-declarative-docs')
+replaces=('qt5-base-docs' 'qt5-declarative-docs')
+_pkgfqn="qt-everywhere-src-${subver}"
+source=("${_qtmirror}/${_pkgver}/${subver}/single/${_pkgfqn}.tar.xz")
+#source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz")
+md5sums=('3b34161255fb012d13850890edcd5259')
 
 build() {
-    cd $srcdir/$_pkgfqn
+    cd ${_pkgfqn}
  
     /usr/lib/qt5/bin/qmake
     make
@@ -27,7 +30,7 @@ build() {
 }
 
 package() {
-    cd $srcdir/$_pkgfqn
+    cd ${_pkgfqn}
     
     make INSTALL_ROOT=$pkgdir install
     make INSTALL_ROOT=$pkgdir install_docs

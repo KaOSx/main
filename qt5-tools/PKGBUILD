@@ -13,21 +13,26 @@ url='http://qt.nokia.com/'
 license=('GPL3' 'LGPL' 'FDL' 'custom')
 depends=('qt5-declarative' 'desktop-file-utils' 'qt5-location' 'hicolor-icon-theme' 'xdg-utils'
          'qt5-translations')
-makedepends=('qtwebkit-tp')
+makedepends=('qtwebkit-tp' 'clang')
 optdepends=('qt5-doc: offline help documentation')
 groups=('qt5')
 options=('!libtool')
 _pkgfqn="qttools-everywhere-src-${subver}"
 source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz"
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz"
-        'assistant.desktop' 'designer.desktop' 'linguist.desktop')
+        'assistant.desktop'
+        'designer.desktop'
+        'linguist.desktop'
+        'libclang.patch')
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
          '892d3632bdcd9a22f191aa8f28a3c0e1'
          '208921efc9e4c11fae762e9580ca23aa'
-         '59cbeef3e6090dcb7d2a7d32cd62ea08')
+         '59cbeef3e6090dcb7d2a7d32cd62ea08'
+         'b15e39c404d83261aa3b9aa233e7f4fd')
 
 build() {
-    cd $srcdir/$_pkgfqn
+    cd ${srcdir}/${_pkgfqn}
+    patch -R -p1 -i ${srcdir}/libclang.patch
 
     /usr/lib/qt5/bin/qmake # INCLUDEPATH="/usr/include/QtWebKit /usr/include/QtWebKitWidgets"
     make
@@ -35,7 +40,7 @@ build() {
 }
 
 package() {
-    cd $srcdir/$_pkgfqn
+    cd ${srcdir}/${_pkgfqn}
     make INSTALL_ROOT=$pkgdir install
     #make INSTALL_ROOT=$pkgdir install_docs
 	
