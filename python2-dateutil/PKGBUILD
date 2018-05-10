@@ -1,16 +1,16 @@
 
 pkgname=python2-dateutil
 _pkgname=python-dateutil
-pkgver=2.7.2
+pkgver=2.7.3
 pkgrel=1
 pkgdesc="Provides powerful extensions to the standard datetime module"
 arch=('x86_64')
 license=('Apache' 'BSD')
-url="https://github.com/dateutil/dateutil"
+url="https://dateutil.readthedocs.io/en/stable/"
 depends=('python2' 'python2-six')
 makedepends=('python2-setuptools')
-source=("https://github.com/dateutil/dateutil/releases/download/${pkgver}/${_pkgname}-${pkgver}.tar.gz")
-md5sums=('03a08c8bcf0a2b29f1cd21b9de4d12fb')
+source=("https://files.pythonhosted.org/packages/source/p/${_pkgname}/${_pkgname}-${pkgver}.tar.gz")
+md5sums=('175b7c1a3cc0cb01151eced07c61c0b8')
 
 build() {
   cd ${_pkgname}-${pkgver}
