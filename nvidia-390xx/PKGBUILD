@@ -2,12 +2,12 @@
 _extramodules=extramodules-4.16
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
-pkgname=('nvidia' 'khd-nvidia')
-pkgver=396.24
-pkgrel=3
+pkgname=('nvidia-390xx' 'khd-nvidia-390xx')
+pkgver=390.48
+pkgrel=1
 arch=('x86_64')
 url="https://www.nvidia.com/page/home.html"
-makedepends=('linux-headers' 'linux>=4.16' 'linux<4.17' "nvidia-utils=${pkgver}")
+makedepends=('linux-headers' 'linux>=4.16' 'linux<4.17' "nvidia-390xx-utils=${pkgver}")
 license=('custom')
 
 _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
@@ -15,7 +15,7 @@ _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
         'nvidia_supported'
         'linux-4.10.patch')
-md5sums=('a441ff0a17b1db0d27855c6505de379d'
+md5sums=('8ed67fc67710b6cfd9c9273054e2117a'
          '282f73f1a7326339a7b0e0716eee4f76'
          '4ab00fe5ab144083caa6c6994feea7e6')
 
@@ -32,10 +32,10 @@ build() {
     make SYSSRC=/lib/modules/"${_kver}/build" module
 }
 
-package_nvidia() {
-    pkgdesc="NVIDIA drivers for linux."
+package_nvidia-390xx() {
+    pkgdesc="NVIDIA drivers for linux, 390xx legacy version."
     depends=('linux>=4.16' 'linux<4.17' "nvidia-utils=${pkgver}")
-    conflicts=('nvidia-340xx')
+    conflicts=('nvidia' 'nvidia-340xx')
     install=nvidia.install
     
     install -D -m644 "${srcdir}/${_pkg}/kernel/nvidia.ko" "${pkgdir}/lib/modules/${_extramodules}/nvidia.ko"
@@ -48,15 +48,13 @@ package_nvidia() {
     sed -i -e "s/EXTRAMODULES='.*'/EXTRAMODULES='${_extramodules}'/" "${startdir}/nvidia.install"
 }
 
-package_khd-nvidia() {
-    pkgdesc="KHD ids for nvidia $pkgver"
+package_khd-nvidia-390xx() {
+    pkgdesc="KHD ids for nvidia-390xx $pkgver"
     arch=('x86_64')
-    conflicts=('chd-nvidia')
-    replaces=('chd-nvidia')
 
     cd "${srcdir}/${_pkg}"
 
     install -dm755 "${pkgdir}/opt/kdeos/hwdb"
     sh -e "${srcdir}/nvidia_supported" README.txt kernel/nv-xxx.o \
-        > "${pkgdir}/opt/kdeos/hwdb/hw_nvidia_hwdb"
+        > "${pkgdir}/opt/kdeos/hwdb/hw_nvidia390xx_hwdb"
 }
