@@ -15,7 +15,7 @@ post_upgrade() {
     
     kdialog --warningyesno "NVIDIA 396.xx driver drops support for Fermi-based GPUs<br>
             To see the list of Fermi cards go to http://nvidia.custhelp.com/app/answers/detail/a_id/4656 <br>
-            If you own such an NVIDIA card you either need to switch to <strong>Nouveau.</strong><br><br>
+            If you own such an NVIDIA card you need to switch to <strong>Nouveau.</strong><br><br>
             sudo pacman -Rdd nvidia-utils nvidia<br>
             Then:<br>
             sudo pacman -S libgl nouveau<br><br>
@@ -30,7 +30,7 @@ post_upgrade() {
                 else
 
                     echo "NVIDIA 396.xx driver drops support for Fermi-based GPUs<br>
-                        If you own such an NVIDIA card you either need to switch to Nouveau.<br>
+                        If you own such an NVIDIA card you need to switch to Nouveau.<br>
                         sudo pacman -Rdd nvidia-utils nvidia</b>
                         Then:<br>
                         sudo pacman -S libgl nouveau" > /var/log/nvidia_install${timestamp}.txt
