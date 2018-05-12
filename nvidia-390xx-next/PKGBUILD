@@ -1,23 +1,23 @@
 
-_extramodules=extramodules-4.16
+_extramodules=extramodules-4.16-next
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
-pkgname=('nvidia' 'khd-nvidia')
-pkgver=396.24
-pkgrel=3
+pkgname=nvidia-390xx-next
+pkgver=390.48
+pkgrel=1
+pkgdesc="NVIDIA drivers for linux-next, 390xx legacy version."
 arch=('x86_64')
 url="https://www.nvidia.com/page/home.html"
-makedepends=('linux-headers' 'linux>=4.16' 'linux<4.17' "nvidia-utils=${pkgver}")
+depends=('linux-next>=4.16' 'linux-next<4.17' "nvidia-390xx-utils=${pkgver}")
+makedepends=('linux-next-headers') 
+conflicts=('nvidia-next')
+install=nvidia-next.install
 license=('custom')
 
 _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 
-source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
-        'nvidia_supported'
-        'linux-4.10.patch')
-md5sums=('a441ff0a17b1db0d27855c6505de379d'
-         '282f73f1a7326339a7b0e0716eee4f76'
-         '4ab00fe5ab144083caa6c6994feea7e6')
+source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run")
+md5sums=('8ed67fc67710b6cfd9c9273054e2117a')
 
 build() {
     cd "${srcdir}"
@@ -32,11 +32,8 @@ build() {
     make SYSSRC=/lib/modules/"${_kver}/build" module
 }
 
-package_nvidia() {
-    pkgdesc="NVIDIA drivers for linux."
-    depends=('linux>=4.16' 'linux<4.17' "nvidia-utils=${pkgver}")
-    conflicts=('nvidia-340xx')
-    install=nvidia.install
+package() {
+    cd "${srcdir}" 
     
     install -D -m644 "${srcdir}/${_pkg}/kernel/nvidia.ko" "${pkgdir}/lib/modules/${_extramodules}/nvidia.ko"
     install -D -m644 "${srcdir}/${_pkg}/kernel/nvidia-modeset.ko" "${pkgdir}/lib/modules/${_extramodules}/nvidia-modeset.ko"
@@ -45,18 +42,6 @@ package_nvidia() {
     gzip "${pkgdir}/lib/modules/${_extramodules}/"*.ko
     install -d -m755 "${pkgdir}/etc/modprobe.d"
     echo "blacklist nouveau" >> "${pkgdir}/etc/modprobe.d/nouveau_blacklist.conf"
-    sed -i -e "s/EXTRAMODULES='.*'/EXTRAMODULES='${_extramodules}'/" "${startdir}/nvidia.install"
+    sed -i -e "s/EXTRAMODULES='.*'/EXTRAMODULES='${_extramodules}'/" "${startdir}/nvidia-next.install"
 }
 
-package_khd-nvidia() {
-    pkgdesc="KHD ids for nvidia $pkgver"
-    arch=('x86_64')
-    conflicts=('chd-nvidia')
-    replaces=('chd-nvidia')
-
-    cd "${srcdir}/${_pkg}"
-
-    install -dm755 "${pkgdir}/opt/kdeos/hwdb"
-    sh -e "${srcdir}/nvidia_supported" README.txt kernel/nv-xxx.o \
-        > "${pkgdir}/opt/kdeos/hwdb/hw_nvidia_hwdb"
-}
