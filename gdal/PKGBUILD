@@ -1,7 +1,7 @@
 
 pkgname=gdal
-pkgver=2.2.4
-pkgrel=5
+pkgver=2.3.0
+pkgrel=1
 pkgdesc="A translator library for raster geospatial data formats"
 arch=('x86_64')
 url="http://www.gdal.org/"
@@ -11,14 +11,15 @@ depends=('curl' 'geos' 'giflib' 'hdf5' 'libgeotiff' 'libjpeg-turbo' 'libpng' 'li
          'libspatialite' 'unixodbc' 'json-c')
 makedepends=('perl' 'swig')
 options=('!libtool' '!makeflags')
-source=("http://download.osgeo.org/gdal/${pkgver}/${pkgname}-${pkgver}.tar.xz")
-md5sums=('51b1df61dbdf81473689fab3075e7a5e')
+#source=("http://download.osgeo.org/gdal/${pkgver}/${pkgname}-${pkgver}.tar.xz")
+source=("https://github.com/OSGeo/gdal/archive/v${pkgver}.tar.gz")
+md5sums=('591ddc9c6ffaa14abd932a7222bcd3fa')
 
 build() {
   export CFLAGS="$CFLAGS -fno-strict-aliasing"
   export LDFLAGS="$LDFLAGS -Wl,--as-needed"
 
-  cd ${pkgname}-${pkgver}
+  cd ${pkgname}-${pkgver}/gdal
 
   ./configure --prefix=/usr \
     --sysconfdir=/etc \
@@ -43,7 +44,7 @@ build() {
 }
 
 package () {
-  cd ${pkgname}-${pkgver}
+  cd ${pkgname}-${pkgver}/gdal
   make DESTDIR=${pkgdir} install
 
   install -D -m644 LICENSE.TXT ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
