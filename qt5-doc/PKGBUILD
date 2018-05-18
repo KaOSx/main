@@ -12,6 +12,7 @@ arch=('x86_64')
 url='http://qt.nokia.com/'
 license=('GPL3' 'LGPL')
 depends=('qt5-tools')
+makedepends=('clang' 'gperf' 'nss')
 options=('!libtool')
 conflicts=('qt5-base-docs' 'qt5-declarative-docs')
 provides=('qt5-base-docs' 'qt5-declarative-docs')
@@ -19,20 +20,41 @@ replaces=('qt5-base-docs' 'qt5-declarative-docs')
 _pkgfqn="qt-everywhere-src-${subver}"
 source=("${_qtmirror}/${_pkgver}/${subver}/single/${_pkgfqn}.tar.xz")
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz")
-md5sums=('3b34161255fb012d13850890edcd5259')
+md5sums=('3a6752d54823506cf24dd530fb29be17')
 
 build() {
     cd ${_pkgfqn}
- 
-    /usr/lib/qt5/bin/qmake
-    make
-    make docs
+    
+    ln -s /usr/lib/qt5/bin qttools/
+    ln -s /usr/lib/qt5/bin/moc qtbase/bin/
+    ln -s /usr/lib/qt5/bin/rcc qtbase/bin/
+    ln -s /usr/lib/qt5/bin/uic qtbase/bin/
+        
+    #unset QTDIR
+    export PATH="$srcdir/bin:$PATH"
+
+    ./configure -confirm-license -opensource \
+                -prefix /usr \
+                -bindir /usr/lib/qt5/bin \
+                -headerdir /usr/include/qt5 \
+                -archdatadir /usr/lib/qt5 \
+                -docdir /usr/share/doc/qt5 \
+                -plugindir /usr/lib/qt5/plugins \
+                -importdir /usr/lib/qt5/imports \
+                -qmldir /usr/lib/qt5/qml \
+                -datadir /usr/share/qt5 \
+                -testsdir /usr/share/qt5/tests \
+                -translationdir /usr/share/qt5/translations \
+                -sysconfdir /etc/xdg/qt5 \
+                -examplesdir /usr/share/qt5/examples
+     make docs
 }
 
 package() {
     cd ${_pkgfqn}
     
-    make INSTALL_ROOT=$pkgdir install
     make INSTALL_ROOT=$pkgdir install_docs
+    
+    install -D -m644 LICENSE.LGPLv3 ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.LGPL3
 }
 
