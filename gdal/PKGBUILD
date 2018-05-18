@@ -1,16 +1,19 @@
 
 pkgname=gdal
 pkgver=2.3.0
-pkgrel=1
+pkgrel=2
 pkgdesc="A translator library for raster geospatial data formats"
 arch=('x86_64')
 url="http://www.gdal.org/"
 license=('custom')
 depends=('curl' 'geos' 'giflib' 'hdf5' 'libgeotiff' 'libjpeg-turbo' 'libpng' 'libtiff' 'netcdf'
-         'poppler' 'python2-numpy' 'sqlite3' 'mariadb' 'postgresql-libs' 'cfitsio'
+         'poppler' 'python3-numpy' 'sqlite3' 'mariadb' 'postgresql-libs' 'cfitsio'
          'libspatialite' 'unixodbc' 'json-c')
 makedepends=('perl' 'swig')
 options=('!libtool' '!makeflags')
+provides=('python3-gdal')
+replaces=('python3-gdal')
+conflicts=('python3-gdal')
 #source=("http://download.osgeo.org/gdal/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 source=("https://github.com/OSGeo/gdal/archive/v${pkgver}.tar.gz")
 md5sums=('591ddc9c6ffaa14abd932a7222bcd3fa')
@@ -28,7 +31,7 @@ build() {
     --with-sqlite3 \
     --with-geotiff \
     --with-mysql \
-    --with-python \
+    --with-python=/usr/bin/python3 \
     --with-curl \
     --with-hdf5 \
     --with-perl \

@@ -1,8 +1,8 @@
 
 # check tdb & ldb for updates before building, use libxml2 2.9.4/libxslt 1.1.29 or older
 pkgname=samba
-pkgver=4.7.7
-_pkgver=4.7.7
+pkgver=4.8.2
+_pkgver=4.8.2
 pkgrel=1
 arch=('x86_64')
 pkgdesc="The standard Windows interoperability suite of programs for Linux and Unix."
@@ -21,31 +21,17 @@ backup=(etc/logrotate.d/samba
 source=("https://us1.samba.org/samba/ftp/stable/${pkgname}-${_pkgver}.tar.gz"
         'samba.logrotate'
         'samba.pam'
-        'samba.service'
-        'smbd.service'
-        'smbd.socket'
-        'smbd@.service'
-        'nmbd.service'
-        'winbindd.service'
         'samba.conf'
         'samba.conf.d')
-md5sums=('e22d9447b9f5eabfcc61b8f9050b99ba'
-         '5697da77590ec092cc8a883bae06093c'
+md5sums=('417c065455f8948d1de2be4edd074390'
+         '995621522c6ec9b68c1b858ceed627ed'
          '96f82c38f3f540b53f3e5144900acf17'
-         'ee4763a656cf00d92bfda31b6bb2c5cb'
-         '621a3c8ec9f05667c20ab4d5a04a86c9'
-         'a78b9aa93eb14b0ac445897395693225'
-         '70186fa43510bf99e3afd5951e814fbf'
-         '90845b89f2321cb19c0b13f385f1782a'
-         '64a52bc798033aeabfae3410bd559aa4'
          '49abd7b719e3713a3f75a8a50958e381'
          '6c447748a064d631435dbef0a3dcf32f')
 
 build() {
   cd ${pkgname}-${_pkgver}
   #patch -p1 -i ${srcdir}/gnutls34.patch
-  # fix for forcing build with tevent 0.9.31
-  #cp /usr/include/tevent_internal.h lib/tevent/
   
   _samba4_idmap_modules=idmap_ad,idmap_rid,idmap_adex,idmap_hash,idmap_tdb2
   _samba4_pdb_modules=pdb_tdbsam,pdb_ldap,pdb_ads,pdb_smbpasswd,pdb_wbc_sam,pdb_samba4
@@ -68,6 +54,8 @@ build() {
               --with-winbind \
               --enable-gnutls \
               --disable-avahi \
+              --with-systemd \
+              --systemd-install-services \
               --with-shared-modules=${_samba4_idmap_modules},${_samba4_pdb_modules},${_samba4_auth_modules} \
               --disable-rpath-install
   make
@@ -91,7 +79,6 @@ package() {
   
   # spool directory
   install -d -m1777 ${pkgdir}/var/spool/samba
-  #sed -i 's|/usr/spool/samba|/var/spool/samba|g' ${pkgdir}/etc/samba/smb.conf.default
   
   # fix logrotate
   sed -i -e 's|log.%m|%m.log|g' ${pkgdir}/etc/samba/smb.conf.default
@@ -100,13 +87,11 @@ package() {
   mkdir -p ${pkgdir}/usr/lib/krb5/plugins/libkrb5
   mv  ${pkgdir}/usr/lib/winbind_krb5_locator.so ${pkgdir}/usr/lib/krb5/plugins/libkrb5/
   
-  # systemd files
-  install -d -m755 ${pkgdir}/usr/lib/systemd/system
-
-  install -m644 ${srcdir}/*.service ${pkgdir}/usr/lib/systemd/system/
-  install -m644 ${srcdir}/*.socket ${pkgdir}/usr/lib/systemd/system/
+  # systemd files use /etc/conf.d
+  sed -i -e 's|/usr/etc/sysconfig|/etc/conf.d|g' ${pkgdir}/usr/lib/systemd/system/*.service
+  
   install -d -m755  ${pkgdir}/etc/conf.d
-  install -m644 ${srcdir}/samba.conf.d ${pkgdir}/etc/conf.d/samba
+  install -m644 packaging/systemd/samba.sysconfig ${pkgdir}/etc/conf.d/samba
 
   # create non-persistent dirs via tmpfiles instead of shipping packaged-in
   install -D -m644 ${srcdir}/samba.conf ${pkgdir}/usr/lib/tmpfiles.d/samba.conf

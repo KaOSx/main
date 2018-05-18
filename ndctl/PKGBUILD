@@ -1,0 +1,35 @@
+ 
+pkgname=ndctl
+pkgver=60.3
+pkgrel=1
+pkgdesc='Utility library for managing the libnvdimm (non-volatile memory device) sub-system in the Linux kernel'
+arch=('x86_64')
+url="https://github.com/pmem/ndctl"
+license=('GPLv2')
+depends=('json-c' 'systemd')
+makedepends=('asciidoc' 'xmlto' 'bash-completion')
+source=("https://github.com/pmem/ndctl/archive/v${pkgver}.tar.gz")
+md5sums=('dee019ae314020f3799b14dd8acb3e9a')
+
+build() {
+  cd ${pkgname}-${pkgver}
+  
+  ./autogen.sh
+  ./configure --prefix=/usr \
+    --sysconfdir=/etc \
+    --libdir=/usr/lib
+  make
+}
+
+# needs nfit_test.ko to run any tests, disable for now
+#check() {
+#  cd ${pkgname}-${pkgver}
+  
+#  make check
+#}
+
+package() {
+  cd ${pkgname}-${pkgver}
+  
+  make DESTDIR=${pkgdir} install
+}

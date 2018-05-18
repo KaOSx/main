@@ -1,25 +1,32 @@
 
 pkgname=libmatroska
-pkgver=1.4.8
+pkgver=1.4.9
 pkgrel=1
 pkgdesc="C++ libary to parse Matroska files"
 arch=('x86_64')
 url="https://www.matroska.org/"
 license=('LGPL')
 depends=('libebml')
+makedepends=('cmake')
 options=('!staticlibs')
 source=("https://dl.matroska.org/downloads/libmatroska/${pkgname}-${pkgver}.tar.xz")
-md5sums=('45ffda84badb4e3da5d8f2535e54d511')
+md5sums=('cb1671e4045e1f36c7e055baba7af9d5')
 
 build() {
-  cd ${pkgname}-${pkgver}
-
-  ./configure --prefix=/usr
+  mkdir -p build
+  cd build
+  
+  cmake ../${pkgname}-${pkgver} \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_LIBDIR=/usr/lib \
+    -DBUILD_SHARED_LIBS=YES \
+    -DDISABLE_PKGCONFIG=NO # .pc file needed for mkvtoolnix?
   make
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
+  cd build
 
-  make prefix=${pkgdir}/usr install
+  make DESTDIR=${pkgdir} install
 }
