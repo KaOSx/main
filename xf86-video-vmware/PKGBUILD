@@ -1,7 +1,7 @@
 
 pkgname=xf86-video-vmware
-pkgver=13.2.1
-pkgrel=5
+pkgver=13.3.0
+pkgrel=1
 pkgdesc="X.org vmware video driver"
 arch=('x86_64')
 url="https://xorg.freedesktop.org/"
@@ -11,7 +11,7 @@ makedepends=('xorg-server' 'resourceproto' 'scrnsaverproto')
 groups=('xorg-video-drivers')
 options=('!libtool' '!emptydirs')
 source=("https://xorg.freedesktop.org/releases/individual/driver/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('4c3912e4d8947f6c2fc1ee9e2f211d74')
+sha256sums=('47971924659e51666a757269ad941a059ef5afe7a47b5101c174a6022ac4066c')
 
 build() {
   cd ${pkgname}-${pkgver}
