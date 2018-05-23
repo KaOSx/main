@@ -1,17 +1,17 @@
 
 pkgname=pyxdg
-pkgver=0.25
-pkgrel=4
+pkgver=0.26
+pkgrel=1
 pkgdesc="Python library to access freedesktop.org standards."
 arch=('x86_64')
 url="https://freedesktop.org/Software/pyxdg"
 license=("LGPL")
-depends=('python2')
-source=("https://www.freedesktop.org/~takluyver/${pkgname}-${pkgver}.tar.gz")
-md5sums=('bedcdb3a0ed85986d40044c87f23477c')
+depends=('python3')
+source=("https://files.pythonhosted.org/packages/source/p/pyxdg/${pkgname}-${pkgver}.tar.gz")
+sha256sums=('fe2928d3f532ed32b39c32a482b54136fe766d19936afc96c8f00645f9da1a06')
 
 package() {
   cd ${pkgname}-${pkgver}
   
-  python setup.py install --prefix=/usr --root=${pkgdir} 
+  python3 setup.py install --prefix=/usr --root=${pkgdir} 
 }
