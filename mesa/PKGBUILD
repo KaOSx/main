@@ -69,6 +69,8 @@ build() {
   
   # use order in meson_options.txt to list build options, fill options from meson.build
   meson ../${pkgname}-${pkgver} \
+    --prefix=/usr \
+    --sysconfdir=/etc \
     --buildtype=release \
     -Db_ndebug=true \
     -Dplatforms=x11,wayland,drm,surfaceless \
@@ -100,8 +102,7 @@ build() {
     -Dbuild-tests=false \
     -Dtexture-float=true \
     -Dosmesa=gallium \
-    -Dswr-arches=avx,avx2 \
-    -Dtools=nouveau
+    -Dswr-arches=avx,avx2 
     ninja
 }
 
@@ -132,8 +133,6 @@ package_mesa() {
   replaces=('libglapi' 'libgles' 'libegl' 'khrplatform-devel' 'ati-dri' 'intel-dri' 'svga-dri' 'nouveau-dri')
 
   cd build  
-  #cd "${srcdir}/mesa"
-  #make DESTDIR=${pkgdir} install
   DESTDIR=${pkgdir} ninja install
 
   # rename libgl.so to make it possible to package separately 
