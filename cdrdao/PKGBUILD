@@ -1,7 +1,7 @@
 
 pkgname=cdrdao
-pkgver=1.2.3
-pkgrel=13
+pkgver=1.2.4
+pkgrel=1
 arch=('x86_64')
 license=('GPL')
 url="http://cdrdao.sourceforge.net/"
@@ -12,16 +12,16 @@ source=("http://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tar.bz
 	'cdrdao-1.2.3-autoconf-update.patch'
         'cdrdao-1.2.3-k3b.patch'
         'cdrdao-1.2.3-stat.patch')
-md5sums=('8d15ba6280bb7ba2f4d6be31d28b3c0c'
+md5sums=('2ada887d1b30b440867b8df0d3023cf7'
          '8e53dfc174f7c0882194caa05e68b85e'
          '696f6ca01e1eeb9b6a5be88e535d9398'
          '0fce05542ebad283f36fa1c4d62992a0')
 
 build() {
 	cd ${srcdir}/${pkgbase}-${pkgver}
-	patch -p1 -i "${srcdir}/cdrdao-1.2.3-autoconf-update.patch"
-	patch -p1 -i "${srcdir}/cdrdao-1.2.3-k3b.patch"
-	patch -p1 -i "${srcdir}/cdrdao-1.2.3-stat.patch"
+	#patch -p1 -i "${srcdir}/cdrdao-1.2.3-autoconf-update.patch"
+	#patch -p1 -i "${srcdir}/cdrdao-1.2.3-k3b.patch"
+	#patch -p1 -i "${srcdir}/cdrdao-1.2.3-stat.patch"
   
 	./configure --prefix=/usr \
 	   --mandir=/usr/share/man \

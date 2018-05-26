@@ -1,19 +1,20 @@
 
 pkgname=eclipse-ecj
-pkgver=4.6.3
+pkgver=4.7.3.1
+_pkgver=4.7.3a
 pkgrel=1
-_date=201703010400
+_date=201803300640
 pkgdesc='Eclipse java bytecode compiler'
 arch=('x86_64')
 license=('EPL')
 url='https://www.eclipse.org/'
 depends=('java-runtime')
 makedepends=('apache-ant' 'java-environment')
-source=("http://download.eclipse.org/eclipse/downloads/drops4/R-${pkgver}-${_date}/ecjsrc-${pkgver}.jar"
+source=("http://download.eclipse.org/eclipse/downloads/drops4/R-${_pkgver}-${_date}/ecjsrc-${_pkgver}.jar"
         '01-ecj-include-props.patch'
         '02-buildxml-fix-manifest.patch'
         'ecj')
-md5sums=('b7936c49962a505a7cb5cd091f3fd2d6'
+md5sums=('c26bf8626cc7dc0ce6c858b574ee1ec2'
          '01cb1036969700ebd1b85a417d6d4a0e'
          'b23452f46edf0b2662b5b5865776d319'
          '997d67f1d3e97f65e42e8ace7aba7260')
@@ -28,7 +29,7 @@ build() {
 }
 
 package() {
-  install -Dm644 ${srcdir}/ecj.jar ${pkgdir}/usr/share/java/eclipse-ecj-${pkgver}.jar
+  install -Dm644 ${srcdir}/ecj.jar ${pkgdir}/usr/share/java/eclipse-ecj-${_pkgver}.jar
   
   ln -s eclipse-ecj-${pkgver}.jar ${pkgdir}/usr/share/java/ecj.jar
   ln -s eclipse-ecj-${pkgver}.jar ${pkgdir}/usr/share/java/eclipse-ecj.jar
