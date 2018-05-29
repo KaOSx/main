@@ -1,7 +1,7 @@
 
 pkgname=emacs-nox
-pkgver=25.3
-pkgrel=2
+pkgver=26.1
+pkgrel=1
 pkgdesc='The Emacs Editor, without X11 support'
 arch=('x86_64')
 url="https://www.gnu.org/software/emacs/emacs.html"
@@ -11,7 +11,7 @@ provides=('emacs')
 conflicts=('emacs' 'emacs-cvs')
 options=('docs')
 source=("https://ftp.gnu.org/gnu/emacs/emacs-${pkgver}.tar.xz")
-md5sums=('05da38e18da75c98d48ad69b5ab74e71')
+md5sums=('649ec46965a8b842bdb2cbf7764c2a9a')
 
 build() {
   cd emacs-$pkgver
@@ -40,10 +40,4 @@ package() {
   find ${pkgdir}/usr/share/emacs/$pkgver -exec chown root.root {} \;
   #remove .desktop file and icons
   rm -rf ${pkgdir}/usr/share/{applications,icons}
-
-  # fix perms on /var/games
-  chmod 775 ${pkgdir}/var/games
-  chmod 775 ${pkgdir}/var/games/emacs
-  chmod 664 ${pkgdir}/var/games/emacs/*
-  chown -R root:games ${pkgdir}/var/games
 }
