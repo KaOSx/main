@@ -1,6 +1,6 @@
 
 pkgname=netcdf
-pkgver=4.6.0
+pkgver=4.6.1
 pkgrel=1
 pkgdesc="Network Common Data Form interface for array-oriented data access and corresponding library."
 arch=("x86_64")
@@ -9,7 +9,7 @@ license=('custom')
 depends=('gcc-libs' 'hdf5' 'curl')
 options=('!libtool' '!makeflags')
 source=("https://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-${pkgver}.tar.gz")
-md5sums=('d41515e03b0376eebcec0ddc40ef9fe6')
+md5sums=('ee81c593efc8a6229d9bcb350b6d7849')
 
 build() {
   cd ${pkgname}-${pkgver}
@@ -29,8 +29,6 @@ check() {
 package() {
   cd ${pkgname}-${pkgver}
 
-  install -m755 -d ${pkgdir}/usr/lib
-  install -m755 -d ${pkgdir}/usr/share/man
   make DESTDIR=${pkgdir} install
 
   install -Dm644 COPYRIGHT ${pkgdir}/usr/share/licenses/${pkgname}/COPYRIGHT

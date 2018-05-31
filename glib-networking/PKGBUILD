@@ -1,37 +1,41 @@
 
 pkgname=glib-networking
-pkgver=2.54.1
-_pkgver=2.54
-pkgrel=2
+pkgver=2.56.1
+_pkgver=2.56
+pkgrel=1
 pkgdesc="Network-related giomodules for glib"
 arch=('x86_64')
 url="http://www.gtk.org/"
 license=('GPL2')
 depends=('glib2' 'libproxy' 'gnutls' 'ca-certificates' 'libtasn1' 'libidn')
-makedepends=('intltool')
+makedepends=('intltool' 'meson' 'ninja')
 source=("https://download.gnome.org/sources/glib-networking/${_pkgver}/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('eaa787b653015a0de31c928e9a17eb57b4ce23c8cf6f277afaec0d685335012f')
+sha256sums=('df47b0e0a037d2dcf6b1846cbdf68dd4b3cc055e026bb40c4a55f19f29f635c8')
 
 build() {
-  cd ${pkgname}-${pkgver}
+  mkdir -p build
+  cd build
   
-  ./configure --prefix=/usr \
-        --sysconfdir=/etc \
-        --libexecdir=/usr/lib/${pkgname} \
-        --disable-static \
-        --disable-installed-tests
-  make
+  meson ../${pkgname}-${pkgver} \
+    --prefix=/usr \
+    --buildtype=release \
+    --libexecdir=/usr/lib/${pkgname} \
+    -Dinstalled_tests=false \
+    -Dstatic_modules=false \
+    -Dgnome_proxy_support=false
+  ninja
 }
 
 check() {
-  cd ${pkgname}-${pkgver}
+  cd build
   
-  make -k check
+  meson test
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
+  cd build
   
-  make DESTDIR=${pkgdir} install testfiles_DATA=
+  DESTDIR=${pkgdir} ninja install
 }
+
 
