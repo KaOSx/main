@@ -1,19 +1,19 @@
 
 pkgname=modemmanager
 _pkgname=ModemManager
-pkgver=1.6.12
-pkgrel=4
+pkgver=1.8.0
+pkgrel=1
 pkgdesc="Mobile broadband modem management service"
 arch=('x86_64')
 url="https://www.freedesktop.org/wiki/Software/ModemManager/"
 license=('GPL2' 'LGPL2.1')
 depends=('dbus-glib' 'systemd' 'libgudev' 'ppp' 'polkit' 'hicolor-icon-theme' 'libqmi' 'libmbim')
-makedepends=('intltool' 'python3')
+makedepends=('python3')
 optdepends=('usb_modeswitch: install if your modem shows up as a storage drive')
 options=('!libtool')
 install=modemmanager.install
 source=("https://www.freedesktop.org/software/ModemManager/${_pkgname}-${pkgver}.tar.xz")
-md5sums=('d21c280220ee647e62eeb4e1df642fe3')
+md5sums=('89d9d6b230bbdd5e54a7c44f423cf34c')
 
 build() {
   cd ${_pkgname}-${pkgver}
@@ -25,7 +25,8 @@ build() {
 	--disable-static \
 	--disable-gtk-doc \
 	--with-polkit=strict \
-	--with-suspend-resume=systemd
+	--with-suspend-resume=systemd \
+	--with-systemd-journal
   make
 }
 
