@@ -26,24 +26,17 @@ source=("${_qtmirror}/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz"
         'demobrowser.desktop'
         'quicknanobrowser.desktop'
         'markdowneditor.desktop'
-        "https://github.com/qt/qtwebengine/commit/af0c47b1307e74d3ed575f57111eb33900417199.diff"
-        "https://github.com/qt/qtwebengine/commit/9397251b76b89b7ca244ec5225dc17dd3b9afc0b.diff"
         "https://github.com/qt/qtwebengine/commit/a66d4cd82972996d76edff52d17464c150dec6a6.diff")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
          '5c297bd337ffab4a2d075a7c85d55ef3'
          'f11d24801322ef41f8a44eedc5e104c2'
          '6d62ba455c7d70870fb28c9362c9c591'
          '5ea5aa48c198a8de1398fc9e7a4abd14'
-         '4a5dd6f2f200e004785b20ed9f911166'
-         '66bcdc6999b12c51fdac2c9fb103b1d1'
          '907bd7678477737f09daa64936e7f70a')
 
 build() {
    cd $_pkgfqn/
-   # Copy action greyed out on Qtwebengine browsers
-   patch -p1 -i ${srcdir}/af0c47b1307e74d3ed575f57111eb33900417199.diff
    # Nouveau & Wayland Qtwebengine crashes, OpenGl/no GPU rendering chnages
-   patch -p1 -i ${srcdir}/9397251b76b89b7ca244ec5225dc17dd3b9afc0b.diff
    patch -p1 -i ${srcdir}/a66d4cd82972996d76edff52d17464c150dec6a6.diff
    
    mkdir -p build   
