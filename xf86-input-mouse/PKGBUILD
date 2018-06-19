@@ -1,17 +1,17 @@
 
 pkgname=xf86-input-mouse
-pkgver=1.9.2
-pkgrel=2
+pkgver=1.9.3
+pkgrel=1
 pkgdesc="X.org mouse input driver"
 arch=('x86_64')
 license=('custom')
-url="http://xorg.freedesktop.org/"
-depends=('glibc' 'resourceproto' 'scrnsaverproto')
+url="https://xorg.freedesktop.org/"
+depends=('glibc' 'xorgproto')
 makedepends=('xorg-server')
 options=('!libtool')
 groups=('xorg-drivers' 'xorg')
-source=("http://xorg.freedesktop.org/releases/individual/driver/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('ce2d679283a22c8e0dccdd9248594845')
+source=("https://xorg.freedesktop.org/releases/individual/driver/${pkgname}-${pkgver}.tar.bz2")
+sha256sums=('93ecb350604d05be98b7d4e5db3b8155a44890069a7d8d6b800c0bea79c85cc5')
 
 build() {
   cd ${pkgname}-${pkgver}
