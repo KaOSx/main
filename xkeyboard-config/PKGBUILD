@@ -1,7 +1,7 @@
 
 pkgname=xkeyboard-config
-pkgver=2.23.1
-pkgrel=2
+pkgver=2.24
+pkgrel=1
 pkgdesc="X keyboard configuration files"
 arch=('x86_64')
 license=('custom')
@@ -10,13 +10,13 @@ depends=('xorg-xkb-utils')
 makedepends=('intltool')
 source=("https://www.x.org/releases/individual/data/${pkgname}/${pkgname}-${pkgver}.tar.bz2"
         'pl_symbols.patch')
-md5sums=('875cbd09ab8394277fd16070326abbae'
+md5sums=('74c4bdf52382127cb5802c3f2ab441e0'
          '0ed9e9f9253d3a3932644b6ef547f40b')
 
 build() {
   cd ${pkgname}-${pkgver}
 
-  patch -p1 -i ${srcdir}/pl_symbols.patch
+  #patch -p1 -i ${srcdir}/pl_symbols.patch
   
   ./configure --prefix=/usr \
       --with-xkb-base=/usr/share/X11/xkb \

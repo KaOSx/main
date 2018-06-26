@@ -20,20 +20,24 @@ makedepends=('qt5-declarative' 'python2-jinja' 'mesa' 'systemd' 'pango' 'nss' 's
          'qt5-location' 'qt5-webchannel' 'ffmpeg' 'libxss' 'protobuf' 'opus' 'libvpx'
          'gperf' 'yasm' 'openssh' 'icu' 'qtwebengine' 'qt5-tools')
 _pkgfqn="qtwebengine-everywhere-src-${subver}"
-source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz"
+source=("${_qtmirror}/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz"
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz"
         'nss321.diff'
         'demobrowser.desktop'
         'quicknanobrowser.desktop'
-        'markdowneditor.desktop')
+        'markdowneditor.desktop'
+        "https://github.com/qt/qtwebengine/commit/a66d4cd82972996d76edff52d17464c150dec6a6.diff")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
          '5c297bd337ffab4a2d075a7c85d55ef3'
          'f11d24801322ef41f8a44eedc5e104c2'
          '6d62ba455c7d70870fb28c9362c9c591'
-         '5ea5aa48c198a8de1398fc9e7a4abd14')
+         '5ea5aa48c198a8de1398fc9e7a4abd14'
+         '907bd7678477737f09daa64936e7f70a')
 
 build() {
-   cd $_pkgfqn/   
+   cd $_pkgfqn/
+   # Nouveau & Wayland Qtwebengine crashes, OpenGl/no GPU rendering chnages
+   patch -p1 -i ${srcdir}/a66d4cd82972996d76edff52d17464c150dec6a6.diff
    
    mkdir -p build   
    cd build 

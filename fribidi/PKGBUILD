@@ -1,15 +1,15 @@
 
 pkgname=fribidi
-pkgver=1.0.1
+pkgver=1.0.4
 pkgrel=1
 pkgdesc="A Free Implementation of the Unicode Bidirectional Algorithm"
 arch=('x86_64')
 license=('LGPL')
 url="https://github.com/fribidi/fribidi/"
-depends=('glib2')
+depends=('glibc')
 options=('!libtool')
 source=("https://github.com/fribidi/fribidi/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('43dc37bd95551d69a7b04c05f1d95721')
+md5sums=('00d058ac76e6c0f46a6671a63d31cf67')
 
 build() {
   cd ${pkgname}-${pkgver}
