@@ -1,8 +1,8 @@
 
 pkgname=networkmanager
 _pkgname=NetworkManager
-pkgver=1.10.10
-_pkgver=1.10
+pkgver=1.12.0
+_pkgver=1.12
 pkgrel=1
 pkgdesc="Network Management daemon"
 arch=('x86_64')
@@ -19,7 +19,7 @@ install=networkmanager.install
 source=("https://download.gnome.org/sources/NetworkManager/${_pkgver}/${_pkgname}-${pkgver}.tar.xz"
         'NetworkManager.conf'
         'nmdevice.patch')
-sha256sums=('244e29c0d1a57492df9aaf2d8c31e4a1b76bdfa8e862ae106239862e1c78c3ca'
+sha256sums=('38feb97ded3e68047508ea1b1de0b7ee077f8c220ab609cb2d5c1fe5f2947f95'
             '57a0d0fc875a0c6b1729eac7e50907cc60a6d6aa834adc56b8c851edacf5fbd4'
             'f70cf461ec944f8234d47a69d1aa8505382c6161009c7dc5c1f66c86a505fe09')
 
@@ -46,6 +46,8 @@ build() {
     --with-resolvconf=/usr/sbin/resolvconf \
     --with-session-tracking=systemd \
     --with-modem-manager-1 \
+    --with-libnm-glib \
+    --with-libpsl \
     --disable-static \
     --enable-more-warnings=no \
     --enable-modify-system \
