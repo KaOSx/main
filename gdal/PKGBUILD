@@ -1,7 +1,7 @@
 
 pkgname=gdal
-pkgver=2.3.0
-pkgrel=2
+pkgver=2.3.1
+pkgrel=1
 pkgdesc="A translator library for raster geospatial data formats"
 arch=('x86_64')
 url="http://www.gdal.org/"
@@ -16,7 +16,7 @@ replaces=('python3-gdal')
 conflicts=('python3-gdal')
 #source=("http://download.osgeo.org/gdal/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 source=("https://github.com/OSGeo/gdal/archive/v${pkgver}.tar.gz")
-md5sums=('591ddc9c6ffaa14abd932a7222bcd3fa')
+md5sums=('a46a3cd4935fa18eb4b76a2ea6f12d44')
 
 build() {
   export CFLAGS="$CFLAGS -fno-strict-aliasing"
