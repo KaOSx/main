@@ -6,7 +6,7 @@ pkgname=qt5-tools
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=1
+pkgrel=2
 pkgdesc="A cross-platform application and UI framework, development tools and help files"
 arch=('x86_64')
 url='http://qt.nokia.com/'
@@ -36,13 +36,11 @@ build() {
 
     /usr/lib/qt5/bin/qmake # INCLUDEPATH="/usr/include/QtWebKit /usr/include/QtWebKitWidgets"
     make
-    #make docs
 }
 
 package() {
     cd ${srcdir}/${_pkgfqn}
     make INSTALL_ROOT=$pkgdir install
-    #make INSTALL_ROOT=$pkgdir install_docs
 	
     install -d ${pkgdir}/usr/share/applications
     install -m644 ${srcdir}/assistant.desktop ${pkgdir}/usr/share/applications/
