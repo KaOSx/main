@@ -1,7 +1,7 @@
 
 pkgbase="llvm"
 pkgname=('llvm' 'clang' 'clang-analyzer' 'clang-tools-extra' 'lldb')
-pkgver=5.0.2
+pkgver=6.0.1
 _gcc_ver=7.3.0
 pkgrel=1
 arch=('x86_64')
@@ -14,11 +14,11 @@ source=("https://llvm.org/releases/${pkgver}/${pkgbase}-${pkgver}.src.tar.xz"
         "https://releases.llvm.org/$pkgver/clang-tools-extra-$pkgver.src.tar.xz"
         "https://llvm.org/releases/${pkgver}/compiler-rt-${pkgver}.src.tar.xz"
         "https://llvm.org/releases/${pkgver}/lldb-${pkgver}.src.tar.xz")
-md5sums=('c5e980edf7f22d66f0f7561b35c1e195'
-         '1cd6ee1b74331fb37c27b4a2a1802c97'
-         'd4d0d9637fa1e47daf3f51e743d8f138'
-         '22728d702a64ffc6d073d1dda25a1eb9'
-         '9d0addd1a28a4c155b8f69919e7bbff7')
+md5sums=('c88c98709300ce2c285391f387fecce0'
+         '4e419bd4e3b55aa06d872320f754bd85'
+         '431cba2b652e9c227a59a6d681388160'
+         '99bf8bcb68ba96dda74f6aee6c55f639'
+         '482eba39e78c75a83216cf2d5b7a54b4')
 
 prepare() {
     cd ${pkgbase}-${pkgver}.src
