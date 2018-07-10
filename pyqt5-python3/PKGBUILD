@@ -1,7 +1,7 @@
 
 pkgname=pyqt5-python3
-pkgver=5.10.1
-pkgrel=3
+pkgver=5.11.2
+pkgrel=1
 pkgdesc="A set of Python3 bindings for the Qt toolkit"
 arch=('x86_64')
 url="https://riverbankcomputing.co.uk/software/pyqt/intro"
@@ -11,18 +11,19 @@ makedepends=('qt5-tools')
 source=("https://sourceforge.net/projects/pyqt/files/PyQt5/PyQt-${pkgver}/PyQt5_gpl-${pkgver}.tar.gz"
         'qt5.11.patch')
 #source=("https://www.riverbankcomputing.com/static/Downloads/PyQt5/PyQt5_gpl-5.6.1.${_commit}.tar.gz")
-sha1sums=('638a80519f3250e813ebd5a669651f43f416f14b'
+sha1sums=('c865073fb614520b18c4f44bc4cbea711a0ab2a4'
           '08042e74dba21f48cb7055970c9da028b9fd140c')
 
 build() {
   cd PyQt5_gpl-${pkgver}
-  patch -p1 -i ${srcdir}/qt5.11.patch 
+  #patch -p1 -i ${srcdir}/qt5.11.patch 
 
   python3 configure.py \
     --confirm-license \
     --qsci-api \
     -q /usr/lib/qt5/bin/qmake \
-    --designer-plugindir /usr/lib/qt5/plugins/designer 
+    --designer-plugindir /usr/lib/qt5/plugins/designer \
+    --no-dist-info
 
   #find -name 'Makefile' | xargs sed -i 's|-Wl,-rpath,/usr/lib||g;s|-Wl,-rpath,.* ||g'
 
