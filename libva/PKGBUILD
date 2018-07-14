@@ -1,6 +1,6 @@
 
 pkgname=libva
-pkgver=2.1.0
+pkgver=2.2.0
 pkgrel=1
 pkgdesc="Libva with patches to extend VA API with data needed for VDPAU and XvBA backends."
 arch=('x86_64')
@@ -10,7 +10,7 @@ depends=('libgl' 'libdrm' 'libxfixes')
 makedepends=('mesa')
 options=('!libtool')
 source=("https://github.com/01org/libva/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.bz2")
-sha1sums=('9ecde2b6c9deda16e895a0b00b8aef3a765acb4c')
+sha1sums=('5b19d2fbf532f14e24c3bedb4074238a1d7f1686')
 
 build() {
   cd ${pkgname}-${pkgver}
