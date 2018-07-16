@@ -1,6 +1,6 @@
 
 pkgname=apache
-pkgver=2.4.33
+pkgver=2.4.34
 pkgrel=1
 pkgdesc='A high performance Unix-based HTTP server'
 arch=('x86_64')
@@ -20,7 +20,7 @@ source=("https://www.apache.org/dist/httpd/httpd-${pkgver}.tar.bz2"
         'kaos.layout'
         'httpd.service'
         'httpd-tmpfile.conf')
-sha256sums=('de02511859b00d17845b9abdd1f975d5ccb5d0b280c567da5bf2ad4b70846f05'
+sha256sums=('fa53c95631febb08a9de41fd2864cfff815cf62d9306723ab0d4b8d7aa1638f0'
             '0bbbfae23a917b2fce0bf8f900f60319b50769224a96314e9301a75ccd078e16'
             '39db659371f1058aad51e1ed9f1969169574ec5febc3fb917b959ebd087f90b8'
             'bbdc4be98cd9968b5cfd278b4b46ad58c8fe4a9e1eff80469828ca3f030fe511'
@@ -50,7 +50,7 @@ build() {
         --with-suexec-docroot=/srv/http \
         --with-suexec-logfile=/var/log/httpd/suexec.log \
         --with-suexec-bin=/usr/sbin/suexec \
-        --with-suexec-uidmin=99 --with-suexec-gidmin=99 \
+        --enable-suexec-capabilites \
         --enable-ldap --enable-authnz-ldap \
         --enable-cache --enable-disk-cache --enable-mem-cache --enable-file-cache \
         --enable-ssl --with-ssl \
@@ -62,13 +62,14 @@ build() {
         --with-apr-util=/usr/bin/apu-1-config \
         --with-pcre=/usr 
         #--with-mpm="${mpm}"
+        #--with-suexec-uidmin=99 --with-suexec-gidmin=99 \
 
     make
 }
 
 package() {
   cd httpd-${pkgver}
-  make DESTDIR=${pkgdir} install
+  make -j1 DESTDIR=${pkgdir} install
 
   install -D -m644 ${srcdir}/httpd.logrotate ${pkgdir}/etc/logrotate.d/httpd
 

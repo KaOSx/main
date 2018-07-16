@@ -2,6 +2,7 @@
 pkgname=pulseaudio
 pkgdesc="A featureful, general-purpose sound server"
 pkgver=12.1
+_commit=613c2994af42ff08fe0a9d0e4bfce42ef781e8f6
 pkgrel=1
 arch=('x86_64')
 url="https://www.freedesktop.org/wiki/Software/PulseAudio/"
@@ -10,21 +11,22 @@ depends=('dbus' 'xcb-util' 'libasyncns' 'libcap' 'libxtst' 'libsm'
          'libsndfile' 'rtkit' 'libltdl' 'speex' 'tdb'
          'fftw' 'orc' 'webrtc-audio-processing' 'systemd' 'sbc' 'libsoxr') # 'gconf')
 makedepends=('attr' 'libltdl' 'avahi' 'bluez' 'intltool' 'jack' 'openssl'
-             'pkgconfig' 'sh')
+             'pkgconfig' 'sh' 'meson' 'ninja')
 optdepends=('avahi: zeroconf support'
             'bluez: bluetooth support'
             'jack: jack support'
             'openssl: RAOP support')
 backup=(etc/pulse/{daemon.conf,default.pa,system.pa})
-provides=("libpulse=${pkgver}")
 options=('!emptydirs' '!libtool' '!makeflags')
 source=("https://freedesktop.org/software/pulseaudio/releases/${pkgname}-${pkgver}.tar.xz")
-#source=("$pkgname-$pkgver::git://anongit.freedesktop.org/pulseaudio/pulseaudio#commit=50186d7")
-sha1sums=('3d8ecff70b7b47d82fd8a262755ce24dd956bef1')
+#source=("${pkgname}-${pkgver}::git://anongit.freedesktop.org/pulseaudio/pulseaudio#commit=50186d7")
+#source=("https://github.com/pulseaudio/pulseaudio/archive/${_commit}.zip")
+sha1sums=('115b5881121677ae7a94760351f8b822829cbfdf')
 
 build() {
   cd ${pkgname}-${pkgver}
 
+  ./bootstrap.sh
   ./configure --prefix=/usr \
     --sysconfdir=/etc \
     --libexecdir=/usr/lib \
@@ -34,8 +36,18 @@ build() {
     --disable-rpath \
     --disable-bluez4 \
     --disable-default-build-tests
-
   make
+  
+  #mkdir -p build
+  #cd build
+    
+  #export LANG=en_US.UTF-8
+
+  #meson ../${pkgname}-${_commit} \
+  #    --prefix=/usr \
+  #    --buildtype=release \
+  #    --libexecdir=/usr/lib 
+  #ninja    
 }
 
 package() {
