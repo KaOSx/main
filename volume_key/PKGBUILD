@@ -1,15 +1,15 @@
 
 pkgname=volume_key
-pkgver=0.3.10
+pkgver=0.3.11
 pkgrel=1
 pkgdesc="Library for manipulating storage volume encryption keys and storing them separately from volumes"
 arch=('x86_64')
 url="https://pagure.io/volume_key"
 license=('GPL')
-depends=('cryptsetup' 'nss' 'util-linux' 'gpgme')
+depends=('cryptsetup' 'nss' 'util-linux' 'gpgme' 'python3')
 source=("https://releases.pagure.org/volume_key/${pkgname}-${pkgver}.tar.xz"
         "https://pagure.io/volume_key/c/ecef526a51c5a276681472fd6df239570c9ce518.patch")
-sha256sums=('c5729de7e33e39c8674e9aae2337d2719f9298d6499f1656d0d25a065a7e98a7'
+sha256sums=('e6b279c25ae477b555f938db2e41818f90c8cde942b0eec92f70b6c772095f6d'
             'f544ec62d74a1c739978cdc79cfcb95243cf06c0f68f435c6cc1256fc7ca3ab3')
 
 build() {
