@@ -1,7 +1,7 @@
 
 pkgname=texlive-bin
-pkgver=2017.44590
-pkgrel=9
+pkgver=2018.47465
+pkgrel=1
 pkgdesc="TeX Live binaries"
 url='https://tug.org/texlive/'
 license=('GPL')
@@ -16,18 +16,21 @@ options=('!libtool' '!strip')
 source=("https://mirrors.kernel.org/archlinux/other/texlive/texlive-bin-source-${pkgver}.tar.xz"
         'poppler0.59.patch'
         'poppler0.64.patch')
-md5sums=('aef593aa0021ececdaeb0845e85ec70b'
+md5sums=('d2c777e6468a0b9e2931f45d6e0f5ec3'
          '555722f2912c01f18ace4f6b1996403c'
-         '794ba80ebfea46fee4f2745c9d8bb9cf')
+         '644cb6efffcb889b2606b339aa951de1')
 
 prepare() {
    cd source
-   patch -p1 -i ${srcdir}/poppler0.59.patch
+   #patch -p1 -i ${srcdir}/poppler0.59.patch
    patch -p1 -i ${srcdir}/poppler0.64.patch
    # t4ht expects to be in /usr/share/texmf/bin/t4ht
    sed -i s/SELFAUTOPARENT/TEXMFROOT/ texk/tex4htk/t4ht.c
    ## prevent compiling Xdvi with libXp
    sed -i~ 's|-lXp ||' texk/xdvik/configure
+   
+   cp -pv texk/web2c/pdftexdir/pdftoepdf{-newpoppler.cc,.cc}
+   cp -pv texk/web2c/pdftexdir/pdftosrc{-newpoppler.cc,.cc}
 }
 
 build() {
@@ -138,10 +141,13 @@ package() {
    # remove dangling symlinks
    _bibtexextra_scripts="
 bbl2bib
+bib2gls
 bibdoiadd
 bibexport
 bibmradd
+biburl2doi
 bibzbladd
+convertgls2bib
 listbib
 ltx2crossrefxml
 multibibliography
@@ -167,6 +173,7 @@ context
 contextjit
 ctanify
 ctanupload
+ctan-o-mat
 de-macro
 depythontex
 deweb
@@ -174,6 +181,7 @@ dosepsbin
 dtxgen
 dvi2fax
 dviasm
+dviinfox
 dvired
 e2pall
 epstopdf
@@ -192,6 +200,7 @@ httexi
 htxelatex
 htxetex
 installfont-tl
+jfmutil
 kpsepath
 kpsetool
 kpsewhere
@@ -200,6 +209,7 @@ latex-git-log
 latex-papersize
 latex2man
 latex2nemeth
+latexdef
 latexdiff
 latexdiff-vc
 latexfileversion
@@ -277,6 +287,8 @@ texosquery
 texosquery-jre5
 texosquery-jre8
 thumbpdf
+tlcockpit
+tlshell
 typeoutfileinfo
 updmap
 updmap-sys
@@ -301,6 +313,7 @@ kanji-config-updmap-user
    _latexextra_scripts="
 authorindex
 exceltex
+l3build
 makedtx
 makeglossaries
 makeglossaries-lite
@@ -310,6 +323,7 @@ ps4pdf
 splitindex
 svn-multi
 vpe
+wordcount
 yplan"
    _music_scripts="lily-glyph-commands lily-image-commands lily-rebuild-pdfs m-tx musixtex musixflx pmxchords"
    _pictures_scripts="cachepic epspdf epspdftk fig4latex getmapdl mathspic mkpic pn2pdf"

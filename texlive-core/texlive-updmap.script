@@ -9,5 +9,6 @@ if [[ -f "$UPDMAPLOCAL" ]]; then
     cat "$UPDMAPLOCAL" >> $UPDMAP
 fi
 
+/usr/bin/mktexlsr
 /usr/bin/updmap-sys --quiet --nohash
 

@@ -1,7 +1,7 @@
 
 pkgname=texlive-core
-pkgver=2017.44515
-_revnr=${pkgver#2017.}
+pkgver=2018.47471
+_revnr=${pkgver#2018.}
 pkgrel=1
 pkgdesc="TeX Live core distribution"
 license=('GPL')
@@ -32,15 +32,15 @@ source=("https://sources.archlinux.org/other/texlive/${pkgname}-${pkgver}-src.zi
         '09-texlive-fonts.conf')
 options=('!strip')
 #install=texlive.install
-md5sums=('7bb0c130342622479466693912236539'
+md5sums=('98f4e1ee11bc941b41511605a097b737'
          'ae4f25a5e69e3debd0e662bd2231ff95'
          'a4e54f0cb05f401728b2b230fd63b300'
          '2bbbef810687f4b2804a4b8cb91ce02f'
          '0ecdbd88cae12dbeb5d0d63127c5fc38'
-         'c64d77b5111a26b9995263b49df4937c'
+         'f23e6cfe29615e81d6aa090e6ac06652'
          '582af708588fd09eeaa0f08111e60091'
          '3f05fa08f84b94fcb3a76be271116a95'
-         'c59f1074a749056b53d36a5892a47e1a'
+         '6462eccdfc15104b5030c3e913cab930'
          '16ad4dc53deb00029baef1b01ba1d984'
          '393a4bf67adc7ca5df2b386759d1a637')
 
@@ -193,6 +193,7 @@ fontools/autoinst
 fontools/ot2kpx
 fragmaster/fragmaster.pl
 installfont/installfont-tl
+jfmutil/jfmutil.pl
 latex-git-log/latex-git-log
 latex-papersize/latex-papersize.py
 latex2man/latex2man
@@ -303,4 +304,5 @@ xindy/xindy.pl
     ln -s epstopdf ${pkgdir}/usr/bin/repstopdf
     ln -s pdfcrop ${pkgdir}/usr/bin/rpdfcrop
     ln -s luaotfload-tool ${pkgdir}/usr/bin/mkluatexfontdb
+    ln -s texdef ${pkgdir}/usr/bin/latexdef
 }
