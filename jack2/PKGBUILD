@@ -1,28 +1,26 @@
 
 pkgname=jack2
-pkgver=1.9.10
-pkgrel=3
+pkgver=1.9.12
+pkgrel=1
 _commit=ce825c6
 pkgdesc="The next-generation JACK with SMP support"
 arch=('x86_64')
 url="http://jackaudio.org/"
 backup=(etc/security/limits.d/99-audio.conf)
 license=('GPL')
-depends=('libsamplerate' 'celt' 'libffado' 'dbus' 'opus' 'dbus-python2' 'portaudio-svn')
+depends=('libsamplerate' 'celt' 'libffado' 'dbus' 'opus' 'dbus-python2')
 makedepends=('python2' 'doxygen')
 optdepends=('dbus-python2: jack_control')
 provides=('jack' 'jack2-dbus')
 source=("https://github.com/jackaudio/jack2/archive/v${pkgver}.tar.gz"
         '99-audio.conf'
         '40-hpet-permissions.rules')
-md5sums=('2db990e7c09e4cc163f40add01f6867d'
+md5sums=('6cb5dfea0586bcf009c733c4e4b04a03'
          '4d928a76e3f3d77d037c42ab75ac0f0b'
          '23eba69d2dbbb800f68176e5d38b9af5')
 
 build() {
   cd ${pkgname}-${pkgver}
-  # fix doxygen dir
-  sed -i 's|build/default/html|html|' wscript
   
   LDFLAGS="$LDFLAGS,--no-as-needed -lm" python2 ./waf configure \
     --prefix=/usr \
@@ -30,8 +28,7 @@ build() {
     --classic \
     --dbus \
     --firewire \
-    --doxygen \
-    --portaudio
+    --doxygen
 
   python2 ./waf build
 
