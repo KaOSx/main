@@ -1,10 +1,10 @@
 
 pkgname=libjpeg-turbo
-pkgver=1.5.3
+pkgver=2.0.0
 pkgrel=1
 pkgdesc="libjpeg derivative with accelerated baseline JPEG compression and decompression"
 arch=('x86_64')
-url="http://libjpeg-turbo.virtualgl.org/"
+url="https://libjpeg-turbo.org/"
 license=('GPL' 'custom')
 makedepends=('nasm')
 provides=('libjpeg=8.0.2' 'libjpeg6')
@@ -12,23 +12,28 @@ replaces=('libjpeg' 'libjpeg6')
 conflicts=('libjpeg' 'libjpeg6')
 options=('!libtool')
 source=("https://sourceforge.net/projects/libjpeg-turbo/files/${pkgver}/${pkgname}-${pkgver}.tar.gz")
-sha1sums=('87ebf4cab2bb27fcb8e7ccb18ec4eb680e1f2c2d')
+sha1sums=('fe49aea935617748c21ecbe46c986d6c1b98f39b')
 
 build() {
-  cd ${pkgname}-${pkgver}
-
-  ./configure --prefix=/usr --with-jpeg8 --mandir=/usr/share/man
+  mkdir -p build
+  cd build
+  
+  cmake ../${pkgname}-${pkgver} \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_DEFAULT_LIBDIR=lib \
+    -DWITH_JPEG8=TRUE
   make
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
+  cd build
 
   make DESTDIR=${pkgdir}/ install
 
   # provide jpegint.h as it is required by various software
-  install -m644 jpegint.h ${pkgdir}/usr/include/
+  install -m644 ../${pkgname}-${pkgver}/jpegint.h ${pkgdir}/usr/include/
 
-  install -Dm644 LICENSE.md ${pkgdir}/usr/share/licenses/libjpeg-turbo/LICENSE.md
-  install -Dm644 README.md ${pkgdir}/usr/share/licenses/libjpeg-turbo/README.md
+  install -Dm644 ../${pkgname}-${pkgver}/LICENSE.md ${pkgdir}/usr/share/licenses/libjpeg-turbo/LICENSE.md
+  install -Dm644 ../${pkgname}-${pkgver}/README.md ${pkgdir}/usr/share/licenses/libjpeg-turbo/README.md
 }
