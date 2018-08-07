@@ -1,8 +1,8 @@
 
 pkgname=vlc
-pkgver=3.0.3
-_pkgver=3.0.0-20171213-0226-rc2
-pkgrel=2
+pkgver=3.0.3.1
+_pkgver=3.0.3
+pkgrel=1
 epoch=1
 pkgdesc="Free and open source cross-platform multimedia player and framework that plays most multimedia files and various streaming protocols."
 arch=('x86_64')
@@ -24,14 +24,14 @@ backup=('usr/share/vlc/http/.hosts'
 groups=('multimedia')
 options=('!libtool' 'debug')
 install="vlc.install"
-source=("https://download.videolan.org/pub/videolan/vlc/${pkgver}/${pkgname}-${pkgver}.tar.xz"
+source=("https://download.videolan.org/pub/videolan/vlc/${pkgver}./${pkgname}-3.0.3-1.tar.xz"
         'qt5.11.patch')
 #source=("https://nightlies.videolan.org/build/source/${pkgname}-${_pkgver}.tar.xz")
-sha256sums=('9ba8b04bdb13f7860a2041768ac83b47b397a36549c71c530b94028a3cfd5b51'
+sha256sums=('bc9dde8d11ecb5a999e4fb4dec0ec7034fc7f53216fec936fa94f0f476dbf8dc'
             '7a1288e5b308ed78e616f215bb502d7b2432801d7816e628996d5764836824e7')
 
 prepare() {
-  cd ${pkgname}-${pkgver}
+  cd ${pkgname}-${_pkgver}
   
   patch -p1 -i ${srcdir}/qt5.11.patch
   #sed -i -e 's|5.5.0|5.5.4|' configure.ac
@@ -39,7 +39,7 @@ prepare() {
 }
 
 build() {
-  cd ${pkgname}-${pkgver}
+  cd ${pkgname}-${_pkgver}
   
   #CXXFLAGS="-std=c++11"
 
@@ -67,12 +67,12 @@ build() {
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
+  cd ${pkgname}-${_pkgver}
 
   make DESTDIR=${pkgdir} install
 
   for res in 16 32 48 128; do
-    install -D -m644 ${srcdir}/vlc-${pkgver}/share/icons/${res}x${res}/vlc.png \
+    install -D -m644 ${srcdir}/vlc-${_pkgver}/share/icons/${res}x${res}/vlc.png \
         ${pkgdir}/usr/share/icons/hicolor/${res}x${res}/apps/vlc.png
   done
 }
