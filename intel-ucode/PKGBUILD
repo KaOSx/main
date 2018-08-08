@@ -1,7 +1,7 @@
 
 pkgname=intel-ucode
-pkgver=20180703
-_pkgver=27945
+pkgver=20180807
+_pkgver=28039
 pkgrel=1
 pkgdesc="Microcode update files for Intel CPUs"
 arch=('x86_64')
@@ -10,15 +10,9 @@ license=('custom')
 source=("https://downloadmirror.intel.com/${_pkgver}/eng/microcode-${pkgver}.tgz"
         'LICENSE'
         'intel-microcode2ucode.c')
-md5sums=('873f2bdd7c0edf317f416f54fee74b42'
+md5sums=('49f534f1079d3c5bc178a150c1c105aa'
          'b0f489ae4b3e36dc8827dc53a76047aa'
          '444e1670977bd18e85658016eabc7cfa')
-
-#build() {
-#  cd ${srcdir}
-#  gcc -Wall ${CFLAGS} -o intel-microcode2ucode intel-microcode2ucode.c
-#  ./intel-microcode2ucode ./microcode.dat
-#}
 
 package() {
   cd ${srcdir}
