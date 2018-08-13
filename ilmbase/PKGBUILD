@@ -8,7 +8,7 @@ arch=('x86_64')
 license=('custom')
 depends=('gcc-libs')
 options=('!libtool')
-source=("http://download.savannah.nongnu.org/releases/openexr/$pkgname-$pkgver.tar.gz"
+source=("http://download.savannah.nongnu.org/releases/openexr/${pkgname}-${pkgver}.tar.gz"
         'pkgconfig.patch'
         'undefined.patch')
 md5sums=('7b86128b04f0541b6bb33633e299cb44'
@@ -16,7 +16,7 @@ md5sums=('7b86128b04f0541b6bb33633e299cb44'
          '27ff3915e03964f85a9e9fb896a93479')
 
 build() {
-  cd $pkgname-$pkgver
+  cd ${pkgname}-${pkgver}
   patch -p1 -i  ${srcdir}/pkgconfig.patch
   patch -p1 -i  ${srcdir}/undefined.patch
 
@@ -25,14 +25,14 @@ build() {
 }
 
 check() {
-  cd $pkgname-$pkgver
+  cd ${pkgname}-${pkgver}
 
   make check || true
 }
 
 package() {
-  cd $pkgname-$pkgver
+  cd ${pkgname}-${pkgver}
   
   make DESTDIR=${pkgdir} install
-  install -D -m644 COPYING $pkgdir/usr/share/licenses/$pkgname/COPYING
+  install -D -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
 }
