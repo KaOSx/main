@@ -1,16 +1,15 @@
 
 pkgname=xf86-video-intel
-pkgver=2.99.917.25
+pkgver=2.99.917.26
 pkgrel=1
-_commit=af36a4ab78cc0e2a85fa40d442bfb92df75dd217
+_commit=3d395062ce73f85e8340218df01c2ebf4bc25023
 pkgdesc="X.org Intel i810/i830/i915/945G/G965+ video drivers"
 arch=('x86_64')
 url="https://xorg.freedesktop.org"
 license=('custom')
 depends=('mesa' 'libxvmc' 'libpciaccess' 'libdrm' 'xcb-util' 'libxfixes' 'systemd'
          'libxrandr' 'libxinerama' 'libxcursor' 'libxtst')
-makedepends=('xorg-server>=1.18.1' 'libx11' 'xf86driproto' 'glproto' 'libxrender'
-             'resourceproto' 'scrnsaverproto')
+makedepends=('xorg-server' 'libx11' 'libxrender' 'xorgproto')
 options=('!libtool')
 groups=('xorg-drivers' 'xorg')
 install=xf86-video-intel.install
@@ -24,7 +23,7 @@ build() {
   ./autogen.sh
   ./configure --prefix=/usr \
               --libexecdir=/usr/lib \
-              --enable-dri \
+              --with-default-dri=3 \
               --enable-sna \
               --enable-uxa \
               --with-default-accel=sna

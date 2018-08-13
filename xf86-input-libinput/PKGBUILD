@@ -1,13 +1,13 @@
 
 pkgname=xf86-input-libinput
 pkgver=0.28.0
-pkgrel=1
+pkgrel=2
 pkgdesc="X driver based on libinput."
 arch=('x86_64')
 url="https://cgit.freedesktop.org/xorg/driver/xf86-input-libinput/tree/README.md"
 license=('custom')
 depends=('libinput')
-makedepends=('xorg-server>=1.19.6' 'resourceproto' 'scrnsaverproto')
+makedepends=('xorg-server' 'xorgproto')
 options=('!libtool' '!makeflags')
 groups=('xorg-drivers' 'xorg')
 source=("https://xorg.freedesktop.org/releases/individual/driver/${pkgname}-${pkgver}.tar.bz2")
