@@ -1,6 +1,6 @@
 
 pkgname=openexr
-pkgver=2.2.1
+pkgver=2.3.0
 pkgrel=1
 pkgdesc="openexr library for EXR images"
 url="http://www.openexr.org"
@@ -8,8 +8,8 @@ arch=('x86_64')
 license=('custom')
 depends=('zlib' 'ilmbase')
 options=('!libtool')
-source=("http://download.savannah.nongnu.org/releases/${pkgname}/${pkgname}-${pkgver}.tar.gz")
-md5sums=('421815c32989e1b98fc4798ee754c433')
+source=("https://github.com/openexr/openexr/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
+md5sums=('a157e8a46596bc185f2472a5a4682174')
 
 build() {
   cd ${pkgname}-${pkgver}
@@ -22,5 +22,5 @@ package() {
   cd ${pkgname}-${pkgver}
   
   make DESTDIR=${pkgdir} install
-  install -D -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+  install -D -m644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
