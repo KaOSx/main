@@ -10,11 +10,15 @@ license=('GPL3' 'LGPL3')
 depends=('babl' 'ffmpeg' 'openexr' 'librsvg' 'jasper' 'json-glib' 'libwebp' 'libraw' 'gexiv2')
 makedepends=('ruby' 'lua' 'exiv2' 'intltool' 'gobject-introspection')
 options=('!libtool')
-source=("https://download.gimp.org/pub/gegl/${_pkgver}/${pkgname}-${pkgver}.tar.bz2")
-sha256sums=('719468eec56ac5b191626a0cb6238f3abe9117e80594890c246acdc89183ae49')
+source=("https://download.gimp.org/pub/gegl/${_pkgver}/${pkgname}-${pkgver}.tar.bz2"
+        "https://gitlab.gnome.org/GNOME/gegl/commit/c1c3541caab485384087bbbcf1c83ef2d5bd4d43.diff")
+sha256sums=('719468eec56ac5b191626a0cb6238f3abe9117e80594890c246acdc89183ae49'
+            'd69bb05a4327c2c1bc2bd1b6a4c938eb035ece37f8ea3ce6840d415dea4234e5')
 
 build() {
   cd ${pkgname}-${pkgver}
+  # fix build with ilmbase 2.3.0
+  patch -p1 -i ${srcdir}/c1c3541caab485384087bbbcf1c83ef2d5bd4d43.diff
 
   ./configure --prefix=/usr \
     --with-sdl \
