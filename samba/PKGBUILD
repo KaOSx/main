@@ -85,7 +85,7 @@ package() {
   
   # winbind krb5 locator
   mkdir -p ${pkgdir}/usr/lib/krb5/plugins/libkrb5
-  mv  ${pkgdir}/usr/lib/winbind_krb5_locator.so ${pkgdir}/usr/lib/krb5/plugins/libkrb5/
+  mv  ${pkgdir}/usr/lib/samba/krb5/winbind_krb5_locator.so ${pkgdir}/usr/lib/krb5/plugins/libkrb5/
   
   # systemd files use /etc/conf.d
   sed -i -e 's|/usr/etc/sysconfig|/etc/conf.d|g' ${pkgdir}/usr/lib/systemd/system/*.service
