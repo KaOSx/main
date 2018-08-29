@@ -11,20 +11,19 @@ makedepends=('asciidoc' 'xmlto')
 backup=('etc/default/cpupower')
 options=('!strip')
 source=("https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-${pkgver}.tar.xz"
-        "https://cdn.kernel.org/pub/linux/kernel/v4.x/patch-${pkgver}.1.xz"
+        "https://cdn.kernel.org/pub/linux/kernel/v4.x/patch-${pkgver}.5.xz"
         'cpupower.conf'
         'cpupower.service'
         'cpupower.systemd')
 md5sums=('bee5fe53ee1c3142b8f0c12c0d3348f9'
-         'bc8d68c9508576e62008c186a4c13668'
+         'c49635fe383e69a7a134d633912d646a'
          'fb4b3d184850f5972c5a1bba3ead4e05'
          '2450e8ff41b30eb58d43b5fffbfde1f4'
          'e02e88977fbdde29a2ae38aa064a367d')
 
 build() {
   if (( NOEXTRACT == 0 )) && [[ -e ${srcdir}/patch-* ]]; then
-    msg2 'Applying stable patch set'
-    patch -N -p1 -i ${srcdir}/patch-*
+    patch -p1 -i ${srcdir}/patch-*
   fi
 
   pushd linux-${pkgver}/tools/power/cpupower
@@ -40,6 +39,7 @@ package() {
     DESTDIR=${pkgdir} \
     mandir='/usr/share/man' \
     docdir='/usr/share/doc/cpupower' \
+    libdir='/usr/lib' \
     install install-man
   popd
 
