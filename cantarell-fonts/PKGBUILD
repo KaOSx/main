@@ -1,26 +1,31 @@
 
 pkgname=cantarell-fonts
-pkgver=0.0.25
-_pkgver=0.0
+pkgver=0.110
+_pkgver=0.110
 pkgrel=1
 pkgdesc="The Cantarell typeface family is a contemporary Humanist sans serif"
 arch=('x86_64')
-url="https://git.gnome.org/browse/cantarell-fonts/tree/README"
+url="https://git.gnome.org/browse/cantarell-fonts/"
 license=('GPL2')
-depends=('fontconfig')
+depends=('fontconfig' 'python3')
+makedepends=('meson' 'ninja')
 install=cantarell-fonts.install
-source=("http://download.gnome.org/sources/cantarell-fonts/${_pkgver}/${pkgname}-${pkgver}.tar.xz")
-md5sums=('8fa68460bb292b9c9441af10f99d99d7')
+source=("https://download.gnome.org/sources/cantarell-fonts/${_pkgver}/${pkgname}-${pkgver}.tar.xz")
+sha256sums=('a454d75db51ab5b76b4c5fa2d779e8796ee01102847d50311dc8ca4e20a034a7')
 
 build() {
-  cd ${pkgname}-${pkgver}
-
-  ./configure --prefix=/usr --with-configdir=/etc/fonts/conf.avail
-  make
+  mkdir -p build
+  cd build
+  
+  meson ../${pkgname}-${pkgver} \
+    --prefix=/usr \
+    --buildtype=release \
+    -Dbuildappstream=false 
+  ninja
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
-
-  make DESTDIR=${pkgdir} install
+  cd build
+  
+  DESTDIR=${pkgdir} ninja install
 }
