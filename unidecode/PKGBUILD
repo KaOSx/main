@@ -1,0 +1,25 @@
+
+pkgname=unidecode
+pkgver=1.0.22
+pkgrel=1
+pkgdesc="Lossy ASCII transliterations of Unicode text"
+arch=('x86_64')
+url="https://github.com/avian2/unidecode"
+license=('MIT')
+depends=('python3')
+makedepends=('python3-setuptools')
+source=("https://github.com/avian2/unidecode/archive/${pkgname}-${pkgver}.tar.gz")
+md5sums=('1a3e566e446a875ed15cb8e79614531c')
+
+
+build() {
+  cd ${pkgname}-${pkgname}-${pkgver}
+  
+  python3 setup.py build
+}
+
+package() {
+  cd ${pkgname}-${pkgname}-${pkgver}
+
+  python3 setup.py install --optimize=1 --skip-build --prefix=/usr --root=${pkgdir}
+}
