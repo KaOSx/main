@@ -1,7 +1,7 @@
 
 pkgname=gdb
 pkgver=8.2
-pkgrel=2
+pkgrel=3
 pkgdesc="The GNU Debugger"
 arch=('x86_64')
 url="https://www.gnu.org/software/gdb/"
@@ -32,7 +32,7 @@ package() {
   touch $pkgdir/etc/gdb/gdbinit
 
   # files in binutils
-  rm ${pkgdir}/usr/include/{ansidecl,bfd,bfdlink,diagnostics,dis-asm,symcat,plugin-api}.h
+  rm ${pkgdir}/usr/include/{ansidecl,bfd,bfdlink,dis-asm,symcat,plugin-api}.h
   rm ${pkgdir}/usr/lib/{libbfd,libopcodes}.a
   rm ${pkgdir}/usr/share/info/bfd.info
 }
