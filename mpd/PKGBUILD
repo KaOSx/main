@@ -2,15 +2,15 @@
 pkgname=mpd
 pkgver=0.20.21
 _pkgver=0.20
-pkgrel=3
+pkgrel=2
 pkgdesc="Music daemon that plays MP3, FLAC, and Ogg Vorbis files"
 arch=('x86_64')
 license=('GPL')
 url="https://www.musicpd.org/"
 depends=('libao' 'ffmpeg' 'libmodplug' 'audiofile' 'libshout' 'libmad' 'curl' 'faad2'
          'sqlite' 'jack' 'libmms' 'wavpack' 'avahi' 'libid3tag' 'libmpdclient'
-         'pulseaudio' 'mpg123' 'yajl' 'sdl_sound' 'boost-libs'
-         'libsoxr' 'libnfs' 'zziplib' 'zip' 'libupnp' 'libgme' 'opus') #'fluidsynth' 
+         'pulseaudio' 'mpg123' 'yajl' 'sdl_sound' 'fluidsynth' 'boost-libs'
+         'libsoxr' 'libnfs' 'zziplib' 'zip' 'libupnp' 'libgme' 'opus')
 makedepends=('boost' 'xmlto') #'doxygen' 
 install=${pkgname}.install
 backup=('etc/mpd.conf')
