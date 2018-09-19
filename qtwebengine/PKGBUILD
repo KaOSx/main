@@ -37,7 +37,7 @@ md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
 build() {
    cd $_pkgfqn/
    # Nouveau & Wayland Qtwebengine crashes, OpenGl/no GPU rendering chnages
-   patch -p1 -i ${srcdir}/a66d4cd82972996d76edff52d17464c150dec6a6.diff
+   #patch -p1 -i ${srcdir}/a66d4cd82972996d76edff52d17464c150dec6a6.diff
    
    mkdir -p build   
    cd build 
