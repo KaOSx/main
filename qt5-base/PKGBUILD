@@ -6,7 +6,7 @@ pkgname='qt5-base'
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=3
+pkgrel=1
 pkgdesc="A cross-platform application and UI framework"
 arch=('x86_64')
 url='http://qt-project.org/'
@@ -31,7 +31,7 @@ build() {
     cd ${srcdir}/${_pkgfqn}
     
     # fix build with glib 2.28
-    patch -p1 -i ${srcdir}/25feee4e061b99edab79503d81f5bd045c6c8e3d.diff
+    #patch -p1 -i ${srcdir}/25feee4e061b99edab79503d81f5bd045c6c8e3d.diff
     
     #sed -i 's|libs": "-lmysqlclient_r"|libs": "-lmariadb"|' src/sql/configure.json
     #sed -i 's|libs": "-lmysqlclient"|libs": "-lmariadb"|' src/sql/configure.json
