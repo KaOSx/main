@@ -1,24 +1,24 @@
 
-pkgname=python2-cycler
+pkgname=python3-cycler
 pkgver=0.10.0
 pkgrel=1
 pkgdesc="Create a new Cycler object from a property name and iterable of values."
 arch=('x86_64')
 license=('BSD')
 url="https://matplotlib.org/cycler/"
-depends=('python2-six')
-makedepends=('python2-setuptools')
+depends=('python3-six')
+makedepends=('python3-setuptools')
 source=("https://pypi.python.org/packages/source/C/Cycler/cycler-${pkgver}.tar.gz")
 md5sums=('4cb42917ac5007d1cdff6cccfe2d016b')
 
 build() {
   cd cycler-${pkgver}
   
-  python setup.py build
+  python3 setup.py build
 }
 
 package() {
   cd cycler-${pkgver}
   
-  python2 setup.py install --root="${pkgdir}" --optimize=1
+  python3 setup.py install --root=${pkgdir} --optimize=1
 }
