@@ -1,18 +1,18 @@
 
 pkgname=soundtouch
-pkgver=2.0.0
+pkgver=2.1.0
 pkgrel=1
 pkgdesc="SoundTouch is an open-source audio processing library for changing the Tempo, Pitch and Playback Rates of audio streams or audio files."
 arch=('x86_64')
-url="http://www.surina.net/soundtouch/"
+url="https://www.surina.net/soundtouch/"
 license=('LGPL')
 depends=('gcc-libs')
 options=('!libtool')
-source=("http://www.surina.net/soundtouch/${pkgname}-${pkgver}.tar.gz")
-md5sums=('9f5eaf7b767970c2dbc75b7a443ec15a')
+source=("https://gitlab.com/soundtouch/soundtouch/-/archive/${pkgver}/${pkgname}-${pkgver}.tar.bz2")
+md5sums=('4f55124b6931eb82b5c783cd311ad3d2')
 
 build() {
-  cd ${pkgname}
+  cd ${pkgname}-${pkgver}
 
   ./bootstrap
   ./configure --prefix=/usr --enable-shared --with-pic 
@@ -21,7 +21,7 @@ build() {
 }
 
 package() {
-  cd ${pkgname}
+  cd ${pkgname}-${pkgver}
 
   make DESTDIR=${pkgdir} pkgdocdir=/usr/share/doc/soundtouch install
 }
