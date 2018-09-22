@@ -1,14 +1,14 @@
 
 pkgbase=mesa
 pkgname=('mesa' 'libgl')
-pkgver=18.1.8
-_pkgver=18.1.8
+pkgver=18.2.1
+_pkgver=18.2.1
 pkgrel=1
 arch=('x86_64')
 makedepends=('xorgproto' 'libdrm' 'libxxf86vm' 'libxdamage' 'libva' 'expat' 'llvm' 'libx11' 'libxt' 'gcc-libs'
              'python2' 'libxml2' 'imake' 'systemd' 'libvdpau' 'wayland' 
              'libxshmfence' 'elfutils' 'libomxil-bellagio' 'libxvmc' 'clang' 'python2-mako'
-             'lm_sensors' 'libunwind' 'wayland-protocols' 'meson' 'ninja')
+             'lm_sensors' 'libunwind' 'wayland-protocols' 'meson' 'ninja' 'libxrandr')
 url="https://www.mesa3d.org/"
 license=('custom')
 source=("https://mesa.freedesktop.org/archive/${pkgname}-${pkgver}.tar.xz"
@@ -18,7 +18,7 @@ source=("https://mesa.freedesktop.org/archive/${pkgname}-${pkgver}.tar.xz"
        'nouveau_locking_2.patch'
        'nouveau_locking_3.patch'
        'swr.patch')
-sha256sums=('bd1be67fe9c73b517765264ac28911c84144682d28dbff140e1c2deb2f44c21b'
+sha256sums=('9636dc6f3d188abdcca02da97cedd73640d9035224efd5db724187d062c81056'
             '7fdc119cf53c8ca65396ea73f6d10af641ba41ea1dd2bd44a824726e01c8b3f2'
             '00b7c369de787ad6cdcd01ffc1e8b7ef81106d174b6c21b27090e84539984467'
             '5532d795b32ebaf875d75a2d76059fef4f88da0efab14855dc797d9b2a2df6cf'
@@ -28,44 +28,6 @@ sha256sums=('bd1be67fe9c73b517765264ac28911c84144682d28dbff140e1c2deb2f44c21b'
 build() {
     mkdir -p build
     cd build
-    # http://www.linuxfromscratch.org/blfs/view/svn/x/mesa.html 
-    # libpthread-stubs package is useless on Linux
-    #sed -i -e 's|pthread_stubs_possible="yes"|pthread_stubs_possible="no"|' configure.ac
-    
-    # work in progress for nouveau fixes in qtwebengine
-    #patch -p1 -i ${srcdir}/nouveau_locking_1.patch
-    #patch -p1 -i ${srcdir}/nouveau_locking_2.patch
-    #patch -p1 -i ${srcdir}/nouveau_locking_3.patch
-    # https://cgit.freedesktop.org/mesa/mesa/commit/src/gallium/drivers/swr/rasterizer/core/utils.h?id=21e271024d8e050b75361c2da2e5783100f2e87b
-    #patch -p1 -i ${srcdir}/swr.patch
-    
-    #./autogen.sh --prefix=/usr \
-    #--sysconfdir=/etc \
-    #--with-gallium-drivers=r300,r600,nouveau,radeonsi,svga,swrast,virgl,swr \
-    #--with-dri-drivers=i915,i965,r200,radeon,nouveau,swrast \
-    #--with-vulkan-drivers=intel,radeon \
-    #--enable-llvm \
-    #--with-platforms=x11,drm,wayland \
-    #--enable-llvm-shared-libs \
-    #--with-clang-libdir=/usr/lib \
-    #--enable-shared-glapi \
-    #--enable-gbm \
-    #--enable-glx-tls \
-    #--enable-dri \
-    #--enable-glx \
-    #--enable-nine \
-    #--enable-gallium-osmesa \
-    #--enable-gles1 \
-    #--enable-gles2 \
-    #--enable-egl \
-    #--enable-texture-float \
-    #--enable-xa \
-    #--enable-vdpau \
-    #--enable-dri3 \
-    #--enable-omx-bellagio \
-    #--enable-lmsensors
-    ##--enable-openvg currently not ported yet with gallium-egl removal
-  #make
   
   # use order in meson_options.txt to list build options, fill options from meson.build
   meson ../${pkgname}-${pkgver} \
@@ -75,8 +37,8 @@ build() {
     -Db_ndebug=true \
     -Dplatforms=x11,wayland,drm,surfaceless \
     -Ddri3=true \
-    -Ddri-drivers=i915,i965,r200,radeon,nouveau \
-    -Dgallium-drivers=r300,r600,nouveau,radeonsi,svga,swrast,virgl,swr \
+    -Ddri-drivers=i915,i965,r200,nouveau \
+    -Dgallium-drivers=r300,r600,nouveau,radeonsi,svga,swrast,virgl \
     -Dgallium-extra-hud=true \
     -Dgallium-vdpau=true \
     -Dgallium-xvmc=true \
@@ -126,7 +88,7 @@ package_libgl() {
 package_mesa() {
   depends=('libx11' 'libxt' 'gcc-libs' 'libvdpau' 'xorgproto' 'wayland' 'elfutils'
            'libdrm' 'libxxf86vm' 'libxdamage' 'expat' 'libxshmfence' 'libomxil-bellagio' 'llvm'
-           'lm_sensors' 'libunwind' 'libxvmc') 
+           'lm_sensors' 'libunwind' 'libxvmc' 'libxrandr') 
   pkgdesc="Mesa 3-D graphics libraries and include files"
   provides=('libglapi''libgles' 'libegl' 'khrplatform-devel' 'ati-dri' 'intel-dri' 'svga-dri' 'nouveau-dri')
   conflicts=('libglapi' 'libgles' 'libegl' 'khrplatform-devel' 'ati-dri' 'intel-dri' 'svga-dri' 'nouveau-dri')
@@ -141,9 +103,4 @@ package_mesa() {
 
   install -m755 -d ${pkgdir}/usr/share/licenses/mesa
   install -m644 ${srcdir}/LICENSE ${pkgdir}/usr/share/licenses/mesa/
-  
-  # part of wayland, should be removed from mesa soon
-  rm ${pkgdir}/usr/lib/libwayland-egl.so
-  rm ${pkgdir}/usr/lib/libwayland-egl.so.1*
-  rm ${pkgdir}/usr/lib/pkgconfig/wayland-egl.pc
 }
