@@ -3,7 +3,7 @@ pkgbase=nvidia-390xx-utils
 pkgname=('nvidia-390xx-utils' 'nvidia-390xx-settings')
 # Edit hardware-detection/hooks/hwdetect_7_graphics and Installer job 11 on version jump from 39x.xx
 pkgver=390.87
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 url="https://www.nvidia.com/page/home.html"
 license=('custom')
@@ -104,7 +104,7 @@ package_nvidia-390xx-utils() {
 
 package_nvidia-390xx-settings() {
   pkgdesc="Gtk Graphical User Interface for nVidia"
-  depends=('nvidia-utils' 'gtk2')
+  depends=('nvidia-390xx-utils' 'gtk2')
 
   cd "${srcdir}/${_pkg}"
 
