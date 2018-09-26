@@ -1,6 +1,6 @@
 
 pkgname=gutenprint
-pkgver=5.2.14
+pkgver=5.3.1
 pkgrel=1
 pkgdesc="Top quality printer drivers for POSIX systems."
 arch=('x86_64')
@@ -11,8 +11,8 @@ makedepends=('foomatic-db-engine' )
 optdepends=('foomatic-db-engine:	to use foomatic spooler')
 options=('!libtool' '!emptydirs')
 install=gutenprint.install
-source=("https://downloads.sourceforge.net/gimp-print/$pkgname-$pkgver.tar.bz2")
-sha1sums=('821707451bd6c8602ff9273bd9531bc5550e81c9')
+source=("https://downloads.sourceforge.net/gimp-print/$pkgname-$pkgver.tar.xz")
+sha1sums=('f7e03d5c7070035ef0acba62973f57bbc505ef68')
 
 build() {
   cd ${pkgname}-${pkgver}
