@@ -1,20 +1,20 @@
 
 pkgname=networkmanager-openvpn
 _pkgname=NetworkManager-openvpn
-pkgver=1.8.4
+pkgver=1.8.6
 _pkgver=1.8
 pkgrel=1
 pkgdesc="NetworkManager VPN plugin for OpenVPN"
 arch=('x86_64')
 license=('GPL')
-url="https://wiki.gnome.org/Projects/NetworkManager"
+url="https://gitlab.gnome.org/GNOME/NetworkManager-openvpn"
 depends=('networkmanager' 'openvpn')
 makedepends=('intltool') 
 options=('!libtool')
 install=${pkgname}.install
 source=("https://ftp.gnome.org/pub/GNOME/sources/NetworkManager-openvpn/${_pkgver}/${_pkgname}-${pkgver}.tar.xz"
         'nm-openvpn.conf')
-sha256sums=('79b7252a4af51381824816ea13223457ad7e3fc14c6144aac727cc040dd9d93f'
+sha256sums=('9025237f7176e4828a4957e18eeb9346c9ae1c95f820f126cf543834489251cf'
             '04a8f6f8ea581e2c9d57ad904f75a7ac896ea122ee29d6eea2533592bc1d5a73')
 
 build() {
