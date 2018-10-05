@@ -1,26 +1,31 @@
 
 pkgname=muparser
-pkgver=2.2.5
-pkgrel=2
+pkgver=2.2.6
+pkgrel=1
 pkgdesc="Fast math parser library"
 arch=('x86_64')
 url="http://muparser.beltoforion.de/"
 depends=('gcc-libs')
+makedepends=('cmake')
 license=('custom')
 options=('!makeflags')
 source=("https://github.com/beltoforion/muparser/archive/v${pkgver}.tar.gz")
-md5sums=('02dae671aa5ad955fdcbcd3fee313fb7')
+md5sums=('f197b2815ca0422b2091788a78f2dc8a')
 
 build() {
-  cd ${pkgname}-${pkgver}
+  mkdir -p build
+  cd build
   
-  sh ./configure --prefix=/usr
+  cmake ../${pkgname}-${pkgver} \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib
   make
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
+  cd build
   make DESTDIR=${pkgdir} install
 
-  install -D -m644 License.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+  install -D -m644 ../${pkgname}-${pkgver}/License.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
