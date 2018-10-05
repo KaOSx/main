@@ -1,18 +1,18 @@
 
 pkgname=networkmanager-pptp
-pkgver=1.2.6
+pkgver=1.2.8
 _pkgver=1.2
 _pppver=2.4.7
 pkgrel=1
 pkgdesc="NetworkManager VPN plugin for pptp "
 arch=('x86_64')
 license=('GPL')
-url="https://www.gnome.org/projects/NetworkManager/"
+url="https://gitlab.gnome.org/GNOME/NetworkManager-pptp"
 depends=('networkmanager' 'pptpclient')
 makedepends=('intltool' 'python3')
 options=('!libtool')
 source=("https://ftp.gnome.org/pub/GNOME/sources/NetworkManager-pptp/${_pkgver}/NetworkManager-pptp-${pkgver}.tar.xz")
-sha256sums=('c3292ec8769c391f9179e5aa74d01c2bbb697c91598e9485ac2e97fafc4745b4')
+sha256sums=('f8e35e4a9a76312975c317cd315e5e9bd23bba2b5c31c3259c8c150583dc1953')
 
 build() {
   cd NetworkManager-pptp-${pkgver}
