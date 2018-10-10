@@ -1,7 +1,7 @@
 
 pkgname=libsm
-pkgver=1.2.2
-pkgrel=4
+pkgver=1.2.3
+pkgrel=1
 pkgdesc="X11 Session Management library"
 arch=('x86_64')
 license=('custom')
@@ -10,7 +10,7 @@ depends=('libice' 'util-linux')
 makedepends=('xorg-util-macros' 'xtrans')
 options=('!libtool')
 source=("https://xorg.freedesktop.org/releases/individual/lib/libSM-${pkgver}.tar.bz2")
-md5sums=('499a7773c65aba513609fe651853c5f3')
+sha256sums=('2d264499dcb05f56438dee12a1b4b71d76736ce7ba7aa6efbf15ebb113769cbb')
 
 build() {
   cd libSM-${pkgver}
