@@ -1,0 +1,29 @@
+diff --git a/src/upower.service.in b/src/upower.service.in
+index 8838655..4566ad3 100644
+--- a/src/upower.service.in
++++ b/src/upower.service.in
+@@ -10,7 +10,8 @@ Restart=on-failure
+ 
+ # Filesystem lockdown
+ ProtectSystem=strict
+-ProtectKernelTunables=true
++# Needed by keyboard backlight support
++ProtectKernelTunables=false
+ ProtectControlGroups=true
+ ReadWritePaths=@historydir@
+ ProtectHome=true
+ 
+diff --git a/src/upower.service.in b/src/upower.service.in
+index 835529a..8838655 100644
+--- a/src/upower.service.in
++++ b/src/upower.service.in
+@@ -17,7 +17,8 @@ ProtectHome=true
+ PrivateTmp=true
+ 
+ # Network
+-PrivateNetwork=true
++# PrivateNetwork=true would block udev's netlink socket
++RestrictAddressFamilies=AF_UNIX AF_NETLINK
+ 
+ # Execute Mappings
+ MemoryDenyWriteExecute=true
