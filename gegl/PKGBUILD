@@ -1,8 +1,8 @@
 
 pkgname=gegl
-pkgver=0.4.8
+pkgver=0.4.10
 _pkgver=0.4
-pkgrel=2
+pkgrel=1
 pkgdesc="Graph based image processing framework."
 arch=('x86_64')
 url="http://www.gegl.org/"
@@ -12,13 +12,13 @@ makedepends=('ruby' 'lua' 'exiv2' 'intltool' 'gobject-introspection')
 options=('!libtool')
 source=("https://download.gimp.org/pub/gegl/${_pkgver}/${pkgname}-${pkgver}.tar.bz2"
         "https://gitlab.gnome.org/GNOME/gegl/commit/c1c3541caab485384087bbbcf1c83ef2d5bd4d43.diff")
-sha256sums=('719468eec56ac5b191626a0cb6238f3abe9117e80594890c246acdc89183ae49'
+sha256sums=('1c419659bde1aa8bb7845231a7132bd7dcdaa4ed724adf676b07478b41f0c5d3'
             'd69bb05a4327c2c1bc2bd1b6a4c938eb035ece37f8ea3ce6840d415dea4234e5')
 
 build() {
   cd ${pkgname}-${pkgver}
   # fix build with ilmbase 2.3.0
-  patch -p1 -i ${srcdir}/c1c3541caab485384087bbbcf1c83ef2d5bd4d43.diff
+  #patch -p1 -i ${srcdir}/c1c3541caab485384087bbbcf1c83ef2d5bd4d43.diff
 
   ./configure --prefix=/usr \
     --with-sdl \
