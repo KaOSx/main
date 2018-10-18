@@ -37,8 +37,8 @@ package() {
     # X driver
     install -D -m755 nvidia_drv.so "${pkgdir}/usr/lib/xorg/modules/drivers/nvidia_drv.so"
     # GLX extension module for X
-    install -D -m755 "libglx.so.${pkgver}" "${pkgdir}/usr/lib/nvidia/xorg/modules/extensions/libglx.so.${pkgver}"
-    ln -s "libglx.so.${pkgver}" "${pkgdir}/usr/lib/nvidia/xorg/modules/extensions/libglx.so"	# X doesn't find glx otherwise
+    install -D -m755 libglxserver_nvidia.so.${pkgver} ${pkgdir}/usr/lib/xorg/modules/extensions/libglxserver_nvidia.so.${pkgver}
+    ln -s libglxserver_nvidia.so.${pkgver} ${pkgdir}/usr/lib/xorg/modules/extensions/libglxserver_nvidia.so # X doesn't find glx otherwise
     # OpenGL library
     install -D -m755 "libGL.so.${pkgver}" "${pkgdir}/usr/lib/nvidia/libGL.so.${pkgver}"
     install -D -m755 "libOpenGL.so.0" "${pkgdir}/usr/lib/libOpenGL.so.0"
@@ -47,7 +47,7 @@ package() {
     install -D -m755 "libnvidia-glcore.so.${pkgver}" "${pkgdir}/usr/lib/libnvidia-glcore.so.${pkgver}"
     install -D -m755 "libnvidia-eglcore.so.${pkgver}" "${pkgdir}/usr/lib/libnvidia-eglcore.so.${pkgver}"
     install -D -m755 "libnvidia-glsi.so.${pkgver}" "${pkgdir}/usr/lib/libnvidia-glsi.so.${pkgver}"
-    install -D -m755 "libnvidia-egl-wayland.so.1.0.3" "${pkgdir}/usr/lib/libnvidia-egl-wayland.so.1.0.3"
+    install -D -m755 "libnvidia-egl-wayland.so.1.1.0" "${pkgdir}/usr/lib/libnvidia-egl-wayland.so.1.1.0"
     install -D -m644 "10_nvidia_wayland.json" "${pkgdir}/usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json"
     install -D -m755 "libEGL_nvidia.so.${pkgver}" "${pkgdir}/usr/lib/libEGL_nvidia.so.${pkgver}"
     install -D -m644 "10_nvidia.json" "${pkgdir}/usr/share/glvnd/egl_vendor.d/10_nvidia.json"
@@ -78,6 +78,12 @@ package() {
     # nvidia-smi
     install -D -m755 nvidia-smi "${pkgdir}/usr/bin/nvidia-smi"
     install -D -m644 nvidia-smi.1.gz "${pkgdir}/usr/share/man/man1/nvidia-smi.1.gz"
+    # OptiX ray tracing
+    install -D -m755 libnvoptix.so.${pkgver} ${pkgdir}/usr/lib/libnvoptix.so.${pkgver}
+    
+    # Vulkan real-time ray tracing
+    install -D -m755 libnvidia-rtcore.so.${pkgver} ${pkgdir}/usr/lib/libnvidia-rtcore.so.${pkgver}
+    install -D -m755 libnvidia-cbl.so.${pkgver} ${pkgdir}/usr/lib/libnvidia-cbl.so.${pkgver}
 
 
     install -D -m644 LICENSE "${pkgdir}/usr/share/licenses/nvidia/LICENSE"
