@@ -1,7 +1,7 @@
 
 pkgname=mpd
-pkgver=0.20.23
-_pkgver=0.20
+pkgver=0.21
+_pkgver=0.21
 pkgrel=1
 pkgdesc="Music daemon that plays MP3, FLAC, and Ogg Vorbis files"
 arch=('x86_64')
@@ -10,38 +10,47 @@ url="https://www.musicpd.org/"
 depends=('libao' 'ffmpeg' 'libmodplug' 'audiofile' 'libshout' 'libmad' 'curl' 'faad2'
          'sqlite' 'jack' 'libmms' 'wavpack' 'avahi' 'libid3tag' 'libmpdclient'
          'pulseaudio' 'mpg123' 'yajl' 'sdl_sound' 'fluidsynth' 'boost-libs'
-         'libsoxr' 'libnfs' 'zziplib' 'zip' 'libupnp' 'libgme' 'opus')
-makedepends=('boost' 'xmlto') #'doxygen' 
+         'libsoxr' 'libnfs' 'zziplib' 'zip' 'libupnp' 'libgme' 'opus' 'udisks2')
+makedepends=('boost' 'xmlto' 'meson' 'ninja') # 'python3-sphinx')  
 install=${pkgname}.install
 backup=('etc/mpd.conf')
 source=("https://www.musicpd.org/download/mpd/${_pkgver}/mpd-${pkgver}.tar.xz"
         'tmpfiles.d'
         'conf')
-md5sums=('a722432b53af45413d9b405b2e8e831f'
+md5sums=('7a5bf4c4ea5b4fa03b8485608db371a7'
          'e5cdccd201610a41e957d684ebc38985'
          'ca16fc9ce20ca382b620cd366c95647e')
 
 build() {
-  cd ${pkgname}-${pkgver}
+  mkdir -p build
+  cd build
+  
+  meson ../${pkgname}-${pkgver} \
+    --prefix=/usr \
+    --buildtype=release \
+    --libexecdir=/usr/lib \
+    -Dsystemd_system_unit_dir=/usr/lib/systemd/system \
+    -Dsystemd_user_unit_dir=/usr/lib/systemd/user \
+    -Ddocumentation=false
+  ninja
 
-  ./configure --prefix=/usr \
-    --sysconfdir=/etc \
-    --enable-jack \
-    --enable-pulse \
-    --enable-libmpdclient \
-    --disable-documentation \
-    --enable-pipe-output \
-    --disable-libwrap \
-    --disable-sidplay \
-    --enable-zzip \
-    --with-systemdsystemunitdir=/usr/lib/systemd/system \
-    --with-systemduserunitdir=/usr/lib/systemd/user
-  make
+  #./configure --prefix=/usr \
+  #  --sysconfdir=/etc \
+  #  --enable-jack \
+  #  --enable-pulse \
+  #  --enable-libmpdclient \
+  #  --disable-documentation \
+  #  --enable-pipe-output \
+  #  --disable-libwrap \
+  #  --disable-sidplay \
+  #  --enable-zzip \
+  #  --with-systemdsystemunitdir=/usr/lib/systemd/system \
+  #  --with-systemduserunitdir=/usr/lib/systemd/user
 }
 
 package() {
-   cd ${pkgname}-${pkgver}
-   make DESTDIR=${pkgdir} install
+   cd build
+   DESTDIR=${pkgdir} ninja install
    
    install -Dm644 ../conf ${pkgdir}/etc/mpd.conf
    install -Dm644 ../tmpfiles.d ${pkgdir}/usr/lib/tmpfiles.d/mpd.conf
