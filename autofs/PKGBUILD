@@ -1,6 +1,6 @@
 
 pkgname=autofs
-pkgver=5.1.4
+pkgver=5.1.5
 pkgrel=1
 pkgdesc='A kernel-based automounter for Linux.'
 arch=('x86_64')
@@ -16,7 +16,7 @@ backup=('etc/autofs/auto.master'
         'etc/default/autofs')
 options=('!makeflags')
 source=("https://www.kernel.org/pub/linux/daemons/autofs/v5/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('8fce30ee51ffd528fe1a4e8374ef57f43367e1f123030e175fb1b1cf15bc1722')
+sha256sums=('23afdad9e2fd6d41b1900be8cfecfd5aae0ad174c7708ff685ec27e280f9c0da')
 
 build() {
   cd ${pkgname}-${pkgver}
@@ -41,6 +41,5 @@ package() {
   cd ${pkgname}-${pkgver}
   make INSTALLROOT=${pkgdir} install
   
-  rm -r $pkgdir/run
   install -dm755 ${pkgdir}/etc/autofs/auto.master.d
 }
