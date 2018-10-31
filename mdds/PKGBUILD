@@ -1,6 +1,6 @@
 
 pkgname=mdds
-pkgver=1.4.2
+pkgver=1.4.3
 pkgrel=1
 pkgdesc="Collection of multi-dimensional data structures and indexing algorithm"
 arch=('x86_64')
@@ -8,8 +8,8 @@ url="https://gitlab.com/mdds/mdds"
 license=('MIT')
 checkdepends=('boost')
 #source=("https://gitlab.com/mdds/mdds/repository/archive.tar.gz?ref=${pkgver}")
-source=("http://kohei.us/files/mdds/src/mdds-${pkgver}.tar.bz2")
-sha256sums=('82f38750248c007956c38ffefcc549932c8b257b76c72fb79a06eabc50107369')
+source=("https://kohei.us/files/mdds/src/mdds-${pkgver}.tar.bz2")
+sha256sums=('25ce3d5af9f6609e1de05bb22b2316e57b74a72a5b686fbb2da199da72349c81')
 
 build() {
   cd ${pkgname}-${pkgver}
@@ -29,5 +29,5 @@ package() {
   cd ${pkgname}-${pkgver}
   make DESTDIR=${pkgdir} install
 
-  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }

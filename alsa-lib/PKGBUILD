@@ -1,7 +1,7 @@
 
 pkgname=alsa-lib
 pkgver=1.1.7
-pkgrel=1
+pkgrel=2
 pkgdesc="An alternative implementation of Linux sound support"
 arch=('x86_64')
 url="https://www.alsa-project.org"
@@ -10,8 +10,19 @@ makedepends=('python2')
 optdepends=('python2')
 license=('GPL')
 options=('!libtool')
-source=("ftp://ftp.alsa-project.org/pub/lib/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('51ca1283e27e7dc10207ccce33919cf2')
+source=("ftp://ftp.alsa-project.org/pub/lib/${pkgname}-${pkgver}.tar.bz2"
+        "https://github.com/alsa-project/alsa-lib/commit/b420056604f06117c967b65d43d01536c5ffcbc9.diff"
+        "https://github.com/alsa-project/alsa-lib/commit/6eced6b4b6dca9f62ea3d13a40c5991231df3c5c.diff")
+md5sums=('51ca1283e27e7dc10207ccce33919cf2'
+         'e605f54657c14da5e15c1e2cf7a75415'
+         '66f879b6a21e4b010e0fa0ecbd59ef5d')
+
+prepare() {
+  cd ${pkgname}-${pkgver}
+  # https://forum.kaosx.us/d/2240-pulse-audio-problem-after-last-update/
+  patch -p1 -i ${srcdir}/b420056604f06117c967b65d43d01536c5ffcbc9.diff
+  patch -p1 -i ${srcdir}/6eced6b4b6dca9f62ea3d13a40c5991231df3c5c.diff
+}
 
 build() {
   cd ${pkgname}-${pkgver}
