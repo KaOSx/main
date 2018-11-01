@@ -28,24 +28,11 @@ build() {
   meson ../${pkgname}-${pkgver} \
     --prefix=/usr \
     --buildtype=release \
-    --libexecdir=/usr/lib \
+    --sysconfdir=/etc \
     -Dsystemd_system_unit_dir=/usr/lib/systemd/system \
     -Dsystemd_user_unit_dir=/usr/lib/systemd/user \
     -Ddocumentation=false
   ninja
-
-  #./configure --prefix=/usr \
-  #  --sysconfdir=/etc \
-  #  --enable-jack \
-  #  --enable-pulse \
-  #  --enable-libmpdclient \
-  #  --disable-documentation \
-  #  --enable-pipe-output \
-  #  --disable-libwrap \
-  #  --disable-sidplay \
-  #  --enable-zzip \
-  #  --with-systemdsystemunitdir=/usr/lib/systemd/system \
-  #  --with-systemduserunitdir=/usr/lib/systemd/user
 }
 
 package() {
