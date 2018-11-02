@@ -1,6 +1,6 @@
 
 pkgname=libaccounts-glib
-pkgver=1.23
+pkgver=1.24
 #_pkgver=VERSION_1.21-00254a604a7c7bd38c41794a80ad8930e90f21aa
 pkgrel=1
 pkgdesc="Glib-based client library for accessing the online accounts database"
@@ -8,26 +8,30 @@ arch=('x86_64')
 url="https://gitlab.com/groups/accounts-sso"
 license=('LGPL')
 depends=('dbus-glib' 'libxml2' 'sqlite')
-makedepends=('python2-gobject' 'docbook-xsl' 'gtk-doc')
+makedepends=('python3-gobject3' 'docbook-xsl' 'meson' 'ninja' 'vala' 'check' 'gtk-doc')
 options=('!libtool')
 # check https://groups.google.com/forum/#!forum/accounts-sso-announce
 source=("https://gitlab.com/accounts-sso/libaccounts-glib/repository/archive.tar.bz2?ref=VERSION_${pkgver}")
-md5sums=('f71c0393fb7cd6397b145fe4ad0ebba9')
+md5sums=('5f0e584939b8f1a56fc1cad984011c9c')
 
 build() {
-  cd ${pkgname}-VERSION_${pkgver}-*
+  mkdir -p build
+  cd build
   
-  ./autogen.sh
-  ./configure \
+  meson ../${pkgname}-VERSION_${pkgver}-* \
     --prefix=/usr \
-    --disable-static \
-    --enable-gcov=no \
-    --disable-gtk-doc
-  make
+    --buildtype=release
+  ninja
 }
 
+    #--prefix=/usr \
+    #--disable-static \
+    #--enable-gcov=no \
+    #--disable-gtk-doc
+
+
 package() {
-  cd ${pkgname}-VERSION_${pkgver}-*
+  cd build
   
-  make DESTDIR=${pkgdir} install
+  DESTDIR=${pkgdir} ninja install
 }
