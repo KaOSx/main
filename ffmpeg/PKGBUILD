@@ -1,20 +1,20 @@
 
 # rebuild mpv on any update
 pkgname=ffmpeg
-pkgver=3.4.5
+pkgver=4.0.3
 pkgrel=1
 pkgdesc="Complete and free Internet live audio and video broadcasting solution for Linux/Unix"
 arch=('x86_64')
 url="https://ffmpeg.org/"
 license=('GPL')
 depends=('bzip2' 'lame' 'sdl2' 'libvorbis' 'xvidcore' 'zlib' 'x264' 'libtheora' 'celt' 'fribidi'
-         'opencore-amr' 'alsa-lib' 'libvdpau' 'libxfixes' 'libvpx>=1.7.0' 'libwebp'
+         'opencore-amr' 'alsa-lib' 'libvdpau' 'libxfixes' 'libvpx' 'libwebp'
          'libva' 'openjpeg' 'rtmpdump' 'speex' 'gsm' 'pulseaudio' 'v4l-utils' 'gnutls' 'x265'
          'libass' 'dcadec' 'opus')
 makedepends=('yasm')
 source=("https://ffmpeg.org/releases/${pkgname}-${pkgver}.tar.xz"
         'openjpeg2.2.patch')
-md5sums=('b91ca21ff8ff6912226516fede49b0cb'
+md5sums=('91b52d8cacbb9693e29c8d2d95c21a9d'
          'e70179f9572035a655c297a2892fae08')
 
 build() {
@@ -23,7 +23,6 @@ build() {
 
   ./configure --prefix=/usr \
               --enable-avisynth \
-              --enable-avresample \
               --enable-libmp3lame \
               --enable-libvorbis \
               --enable-libxvid \
@@ -56,11 +55,12 @@ build() {
 
   make
   make tools/qt-faststart
-  make doc/ff{mpeg,play,server}.1
+  make doc/ff{mpeg,play}.1
 }
 
 package() {
   cd ${pkgname}-${pkgver}
+  
   make DESTDIR=${pkgdir} install install-man
   install -D -m755 tools/qt-faststart ${pkgdir}/usr/bin/qt-faststart
 }
