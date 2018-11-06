@@ -7,16 +7,23 @@ arch=('x86_64')
 url='https://gitlab.com/accounts-sso/libsignon-glib'
 license=('LGPL2.1')
 depends=('signonqt')
-makedepends=('python3-gobject3' 'gtk-doc' 'meson' 'ninja' 'vala')
+makedepends=('python3-gobject3' 'gtk-doc' 'meson' 'ninja' 'vala' 'git')
 # check https://groups.google.com/forum/#!forum/accounts-sso-announce
-source=("https://gitlab.com/accounts-sso/libsignon-glib/repository/archive.tar.bz2?ref=VERSION_${pkgver}")
-md5sums=('5892e919356f8a1d579959fc0f6441f6')
+source=("git+https://gitlab.com/accounts-sso/libsignon-glib#tag=VERSION_${pkgver}")
+md5sums=('SKIP')
+
+prepare() {
+  cd ${pkgname}
+  
+  git submodule init
+  git submodule update
+}
 
 build() {
   mkdir -p build
   cd build
   
-  meson ../${pkgname}-VERSION_${pkgver}-* \
+  meson ../${pkgname} \
     --prefix=/usr \
     --buildtype=release \
     --libexecdir=/usr/lib/${pkgname} \
