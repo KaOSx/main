@@ -1,0 +1,13 @@
+[Unit]
+Description=PManager webserver API
+After=syslog.target
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/pmanager serve
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

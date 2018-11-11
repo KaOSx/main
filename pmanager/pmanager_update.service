@@ -1,0 +1,9 @@
+[Unit]
+Description=PManager webserver update functions
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/pmanager update-all
+
+[Install]
+WantedBy=multi-user.target
