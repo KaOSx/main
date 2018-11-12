@@ -1,6 +1,6 @@
 
 pkgname=libtiff
-pkgver=4.0.9
+pkgver=4.0.10
 pkgrel=1
 pkgdesc="Library for manipulation of TIFF images"
 arch=('x86_64')
@@ -10,8 +10,8 @@ depends=('libjpeg-turbo' 'zlib' 'xz')
 makedepends=('freeglut' 'glu' 'mesa')
 optdepends=('freeglut: for using tiffgt')
 options=('!libtool')
-source=("ftp://download.osgeo.org/libtiff/tiff-${pkgver}.tar.gz")
-md5sums=('54bad211279cc93eb4fca31ba9bfdc79')
+source=("https://download.osgeo.org/libtiff/tiff-${pkgver}.tar.gz")
+md5sums=('114192d7ebe537912a2b97408832e7fd')
 
 build() {
   cd tiff-${pkgver}

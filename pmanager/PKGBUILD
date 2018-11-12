@@ -1,8 +1,8 @@
 
 pkgname=pmanager
-pkgver=0.1
-pkgrel=2
-_commit=c8b89eee5de6c8757cca48631ee1746afd3693f7
+pkgver=0.1.2
+pkgrel=1
+_commit=98242cf56d035cd7961750717659cede0f60abda
 pkgdesc="Packages viewer & Mirrors status used by KaOS"
 arch=('x86_64')
 url="https://github.com/KaOSx/pmanager"
@@ -13,10 +13,10 @@ source=("https://github.com/KaOSx/pmanager/archive/${_commit}.zip"
         'pmanager.service'
         'pmanager_update.service'
         'pmanager_update.timer')
-md5sums=('951287f99c376e6af6031ac400ecd54c'
+md5sums=('c1dba70570951d51d2e8a6d3e855ec61'
          '680f391419f6ced62a6984f9a1eb69ef'
          '4d340e0496cc1c69fb0a319ba460d39b'
-         '6cbfa118333fa2dfe26f55d8f88c75d3')
+         '9ae0fe194f318cff49054bf6d57d4978')
  
 build() {
   cd ${pkgname}-${_commit}
@@ -32,7 +32,7 @@ package() {
   
   install -Dm644 ../pmanager.service ${pkgdir}/usr/lib/systemd/system/pmanager.service
   install -Dm644 ../pmanager_update.service ${pkgdir}/usr/lib/systemd/system/pmanager_update.service
-  install -Dm644 ../pmanager.service ${pkgdir}/usr/lib/systemd/system/pmanager_update.timer
+  install -Dm644 ../pmanager_update.timer ${pkgdir}/usr/lib/systemd/system/pmanager_update.timer
 
   install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
