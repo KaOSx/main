@@ -6,7 +6,7 @@ pkgname=qt5-virtualkeyboard
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=2
+pkgrel=3
 pkgdesc="Virtual keyboard framework that consists of a C++ backend as well as a UI frontend implemented in QML."
 arch=('x86_64')
 url='https://www.qt.io/'
@@ -16,13 +16,17 @@ groups=('qt5')
 options=('!libtool')
 _pkgfqn="qtvirtualkeyboard-everywhere-src-${subver}"
 source=("${_qtmirror}/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz"
-        'virtualkeyboard.desktop')
+        'virtualkeyboard.desktop'
+        "https://github.com/qt/qtvirtualkeyboard/commit/c7a94110987672308ed04b40fd8ed207d1c8d93b.diff")
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
-         'd5f233aa149751819c2e8dfcd2fc13e2')
+         'd5f233aa149751819c2e8dfcd2fc13e2'
+         'e49c186eccddb816bd6a38a65babfdff')
 
 build() {
     cd $srcdir/$_pkgfqn
+    # Security warning KDE ml
+    patch -p1 -i ${srcdir}/c7a94110987672308ed04b40fd8ed207d1c8d93b.diff
 
     /usr/lib/qt5/bin/qmake CONFIG+="lang-all handwriting"
     make
