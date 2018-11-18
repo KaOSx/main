@@ -3,8 +3,8 @@ _extramodules=extramodules-4.19-next
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=nvidia-next
-pkgver=410.73
-pkgrel=3
+pkgver=410.78
+pkgrel=1
 pkgdesc="NVIDIA drivers for linux."
 arch=('x86_64')
 url="https://www.nvidia.com/page/home.html"
@@ -17,7 +17,7 @@ _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 #_pkg="NVIDIA-Linux-x86_64-${pkgver}"
 source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
         'linux-4.15.patch')
-md5sums=('94136b69cfb243027c12f0addbf69137'
+md5sums=('4203b9a37ef6e8582ea3a202bb01b27a'
          '8199d52a02a6a758291c80a94f12008c')
 
 build() {
