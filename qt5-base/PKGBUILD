@@ -87,8 +87,7 @@ package() {
     make INSTALL_ROOT=$pkgdir install
 	
     cd ${srcdir}
-    install -D -m644 ${_pkgfqn}/LGPL_EXCEPTION.txt \
-    ${pkgdir}/usr/share/licenses/qt5/LGPL_EXCEPTION.txt
+    install -D -m644 ${_pkgfqn}/LICENSE* -t ${pkgdir}/usr/share/licenses/${pkgname}
     
     mkdir -p ${pkgdir}/usr/bin
     for i in $(ls ${pkgdir}/usr/lib/qt5/bin); do

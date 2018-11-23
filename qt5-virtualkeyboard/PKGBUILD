@@ -26,7 +26,7 @@ md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
 build() {
     cd $srcdir/$_pkgfqn
     # Security warning KDE ml
-    patch -p1 -i ${srcdir}/c7a94110987672308ed04b40fd8ed207d1c8d93b.diff
+    #patch -p1 -i ${srcdir}/c7a94110987672308ed04b40fd8ed207d1c8d93b.diff
 
     /usr/lib/qt5/bin/qmake CONFIG+="lang-all handwriting"
     make
