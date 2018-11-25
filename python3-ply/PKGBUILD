@@ -1,0 +1,19 @@
+
+pkgname=python3-ply
+_pkgname=ply
+pkgver=3.11
+pkgrel=1
+pkgdesc="Another implementation of lex and yacc for Python"
+arch=('x86_64')
+url="https://www.dabeaz.com/ply/"
+license=('LGPL')
+depends=('python3')
+makedepends=('python3-setuptools')
+source=("https://www.dabeaz.com/ply/ply-${pkgver}.tar.gz")
+md5sums=('6465f602e656455affcd7c5734c638f8')
+
+package() {
+    cd ${_pkgname}-${pkgver}
+
+    python3 setup.py install --root=${pkgdir}
+}
