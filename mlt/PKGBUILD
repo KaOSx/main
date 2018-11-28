@@ -2,8 +2,8 @@
 # NOTE: Disabled the gtk2 module so no gtk-preview
 
 pkgname=mlt
-pkgver=6.10.0
-pkgrel=2
+pkgver=6.12.0
+pkgrel=1
 pkgdesc="An open source multimedia framework"
 arch=('x86_64')
 url="http://www.mltframework.org"
@@ -16,7 +16,7 @@ provides=('mlt-python-bindings' 'mlt-qt5')
 replaces=('mlt-python-bindings' 'mlt-qt5')
 #source=("http://downloads.sourceforge.net/sourceforge/mlt/$pkgname-$pkgver.tar.gz")
 source=("https://github.com/mltframework/mlt/releases/download/v${pkgver}/mlt-${pkgver}.tar.gz")
-md5sums=('28a6f40ea76c167b6bb9d8baf985c4c2')
+md5sums=('df43d6b6ecc298bf8bb8e3b2bf9ada8f')
 
 build() {
   cd mlt-${pkgver}
@@ -30,7 +30,7 @@ build() {
               --qt-includedir=/usr/include/qt \
               --disable-gtk2 \
               --avformat-swscale \
-              --disable-opencv
+              --enable-opencv
   make
 
   # mlt python bindings
