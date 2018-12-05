@@ -20,7 +20,7 @@ replaces=('qt5-base-docs' 'qt5-declarative-docs')
 _pkgfqn="qt-everywhere-src-${subver}"
 source=("${_qtmirror}/${_pkgver}/${subver}/single/${_pkgfqn}.tar.xz")
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz")
-md5sums=('e9609370527bf24ecc4927574fb897b8')
+md5sums=('af569de3eb42da4457b0897e5759dc91')
 
 build() {
     cd ${_pkgfqn}
@@ -53,7 +53,7 @@ build() {
 package() {
     cd ${_pkgfqn}
     
-    make INSTALL_ROOT=$pkgdir install_docs
+    make -j1 INSTALL_ROOT=$pkgdir install_docs
     
     install -D -m644 LICENSE.LGPLv3 ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.LGPL3
 }
