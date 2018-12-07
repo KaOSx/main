@@ -1,8 +1,8 @@
 
 pkgbase=nvidia-utils
 pkgname=('nvidia-utils' 'opencl-nvidia' 'nvidia-settings')
-# Edit hardware-detection/hooks/hwdetect_7_graphics and Installer job 11 on version jump from 39x.xx
-pkgver=410.78
+# Edit hardware-detection/hooks/hwdetect_7_graphics and Installer job 11 on version jump from 41x.xx
+pkgver=415.22
 pkgrel=1
 arch=('x86_64')
 url="https://www.nvidia.com/page/home.html"
@@ -14,7 +14,7 @@ _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
 #source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}.run"
         'nvidia-restore-settings.desktop')
-md5sums=('4203b9a37ef6e8582ea3a202bb01b27a'
+md5sums=('fb06169820995d684d900a921acb140b'
          '9237516792da7b6df32f8c7e8a98f475')
 
 create_links() {
@@ -83,7 +83,7 @@ package_nvidia-utils() {
   install -D -m755 "libvdpau_nvidia.so.${pkgver}" "${pkgdir}/usr/lib/vdpau/libvdpau_nvidia.so.${pkgver}"
 
   # nvidia-tls library
-  install -D -m755 "tls/libnvidia-tls.so.${pkgver}" "${pkgdir}/usr/lib/libnvidia-tls.so.${pkgver}"
+  #install -D -m755 "tls/libnvidia-tls.so.${pkgver}" "${pkgdir}/usr/lib/libnvidia-tls.so.${pkgver}"
   install -D -m755 "libnvidia-cfg.so.${pkgver}" "${pkgdir}/usr/lib/libnvidia-cfg.so.${pkgver}"
 
   install -D -m755 "libnvidia-ml.so.${pkgver}" "${pkgdir}/usr/lib/libnvidia-ml.so.${pkgver}"
