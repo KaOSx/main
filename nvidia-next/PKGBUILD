@@ -4,7 +4,7 @@ _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=nvidia-next
 pkgver=415.22
-pkgrel=1
+pkgrel=2
 pkgdesc="NVIDIA drivers for linux."
 arch=('x86_64')
 url="https://www.nvidia.com/page/home.html"
@@ -28,7 +28,7 @@ build() {
   #patch -p1 -i ${srcdir}/linux-4.15.patch
   
   cd "${srcdir}/${_pkg}/kernel"
-  make SYSSRC=/lib/modules/"${_kver}/build" IGNORE_CC_MISMATCH=1 module
+  make SYSSRC=/lib/modules/"${_kver}/build" module
 }
 
 package() {
