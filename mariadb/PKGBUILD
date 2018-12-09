@@ -2,7 +2,7 @@
 pkgname=mariadb
 pkgver=10.1.37
 _pkgver=10.1.37
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 license=('GPL')
 url='https://mariadb.org/'
@@ -60,7 +60,7 @@ build() {
     -DWITH_PCRE=bundled \
     -DWITH_READLINE=ON \
     -DWITH_ZLIB=system \
-    -DWITH_SSL=system \
+    -DWITH_SSL=bundled \
     -DWITH_LIBWRAP=OFF \
     -DWITH_EXTRA_CHARSETS=complex \
     -DWITH_EMBEDDED_SERVER=ON \
