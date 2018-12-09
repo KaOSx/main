@@ -2,7 +2,7 @@
 pkgbase=hspell
 pkgname=('hspell' 'hunspell-he')
 pkgver=1.4
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 license=('GPL')
 url="http://www.ivrix.org.il/projects/spell-checker/"
@@ -14,6 +14,7 @@ md5sums=('55d9cdc4fe576db8515945e663ef4791')
 build() {
   cd ${pkgname}-${pkgver}
   
+  export PERLLIB="$PWD"
   ./configure --prefix=/usr \
         --mandir=/usr/share/man \
         --enable-linginfo \
