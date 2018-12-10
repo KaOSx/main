@@ -2,19 +2,20 @@
 pkgname=qca-qt5
 _pkgname=qca
 pkgver=2.1.3
-pkgrel=1
+pkgrel=2
+_commit=da4d1d06d4f67104738cb027b215eb41293c85cd
 pkgdesc="Qt Cryptographic Architecture"
 arch=('x86_64')
-url="http://delta.affinix.com/qca/"
+url="https://userbase.kde.org/QCA"
 license=('LGPL')
 depends=('qt5-base' 'ca-certificates' 'nss')
 makedepends=('cmake')
-#source=("http://delta.affinix.com/download/qca/2.0/${_pkgname}-${pkgver}.tar.gz")
-source=("http://download.kde.org/stable/qca/${pkgver}/src/${_pkgname}-${pkgver}.tar.xz")
-md5sums=('5019cc29efcf828681cd93164238ce26')
+#source=("https://download.kde.org/stable/qca/${pkgver}/src/${_pkgname}-${pkgver}.tar.xz")
+source=("https://github.com/KDE/qca/archive/${_commit}.zip")
+md5sums=('68914fa5e5a8e63d0907030286fb10e7')
 
 prepare() {
-  cd ${_pkgname}-${pkgver}
+  cd ${_pkgname}-${_commit}
   #patch -p1 -i ${srcdir}/qt5.5.diff
 }
 
@@ -22,7 +23,7 @@ build() {
   mkdir -p build
   cd build
   
-  cmake ../${_pkgname}-${pkgver} \
+  cmake ../${_pkgname}-${_commit} \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_BUILD_TYPE=Release \
     -DQCA_SUFFIX=qt5 \
