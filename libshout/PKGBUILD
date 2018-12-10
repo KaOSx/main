@@ -1,25 +1,29 @@
 
 pkgname=libshout
 pkgver=2.4.1
-pkgrel=2
+pkgrel=3
 pkgdesc="Library for accessing a shoutcast/icecast server"
 arch=('x86_64')
 depends=('libvorbis' 'libtheora' 'speex')
-url="http://www.icecast.org/"
+url="https://www.icecast.org/"
 options=('!libtool')
 license=('LGPL')
-source=("http://downloads.xiph.org/releases/libshout/${pkgname}-${pkgver}.tar.gz")
+source=("https://downloads.xiph.org/releases/libshout/${pkgname}-${pkgver}.tar.gz")
 md5sums=('89cebf8cb0197f639cde69c95177fe47')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
+  sed -e 's|SSLeay_add_all_algorithms|OpenSSL_add_all_algorithms|g' -i src/tls.c
   
-  ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var
+  ./configure --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var
+    
   make LDFLAGS+=-lspeex
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
   make DESTDIR="${pkgdir}" install
 }

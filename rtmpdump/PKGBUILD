@@ -2,20 +2,23 @@
 pkgname=rtmpdump
 pkgver=2.4.2
 _commit=dc76f0a8461e6c8f1277eba58eae201b2dc1d06a
-pkgrel=4
+pkgrel=5
 pkgdesc="A tool to download rtmp streams"
 arch=('x86_64')
-url="http://rtmpdump.mplayerhq.hu/"
+url="https://rtmpdump.mplayerhq.hu/"
 license=('GPL2' 'LGPL2.1')
 depends=('openssl')
 groups=('network')
 #source=("http://rtmpdump.mplayerhq.hu/download/${pkgname}-${pkgver}.tar.gz")
 # from http://repo.or.cz/w/rtmpdump.git/snapshot/dc76f0a8461e6c8f1277eba58eae201b2dc1d06a.tar.gz
-source=("https://sourceforge.net/projects/kaosx/files/sources/${pkgname}/${pkgname}-${_commit}.tar.gz")
-md5sums=('ca05d7b93d9910cf2da4d96e7c2859bb')
+source=("https://sourceforge.net/projects/kaosx/files/sources/${pkgname}/${pkgname}-${_commit}.tar.gz"
+        "https://raw.githubusercontent.com/xbmc/inputstream.rtmp/master/depends/common/librtmp/0003-openssl-1.1.patch")
+md5sums=('ca05d7b93d9910cf2da4d96e7c2859bb'
+         '6bfb6453bccdf07c9c77960573e49b70')
 
 build() {
   cd ${pkgname}
+  patch -p1 -i ${srcdir}/0003-openssl-1.1.patch
   
   make
 }

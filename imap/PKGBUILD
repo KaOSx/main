@@ -10,12 +10,14 @@ depends=('openssl' 'pam')
 source=("http://ftp.ntua.gr/pub/net/mail/imap/${pkgname}-${pkgver}.tar.gz"
         'imap'
         'ipop2'
-        'ipop3')
+        'ipop3'
+        'openssl1.1.patch')
 backup=(etc/xinetd.d/{imap,ipop2,ipop3} etc/ssl/certs/{imapd,ipop3d}.pem)
 md5sums=('2126fd125ea26b73b20f01fcd5940369'
          'e77dedb80c2fec9bf2ef784ed5f976fb'
          'cc3eba6453242aa0b1bc8881160b2136'
-         '0a5e27183a9b7e8ec5f6703125371e0a')
+         '0a5e27183a9b7e8ec5f6703125371e0a'
+         'cc8cc4df43f73bc144b9a41c55ef5991')
 
 build() {
   # fix Makefile
@@ -26,6 +28,7 @@ build() {
     -i ${srcdir}/${pkgname}-${pkgver}/src/osdep/unix/Makefile
 	
   cd ${pkgname}-${pkgver}
+  patch -p1 -i ${srcdir}/openssl1.1.patch
 
   make lnp SPECIALAUTHENTICATORS=ssl SSLTYPE=unix EXTRACFLAGS="${CFLAGS} -fPIC"
 
