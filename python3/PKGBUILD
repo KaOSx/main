@@ -1,7 +1,7 @@
 
 pkgname=python3
 pkgver=3.6.7
-pkgrel=1
+pkgrel=2
 _pybasever=3.6
 pkgdesc="Next generation of the python high-level scripting language"
 arch=('x86_64')
@@ -39,7 +39,7 @@ build() {
 
 check() {
   cd Python-${pkgver}
-
+  # test_ssl fails
   LD_LIBRARY_PATH=${srcdir}/Python-${pkgver}:${LD_LIBRARY_PATH} \
      ${srcdir}/Python-${pkgver}/python -m test.regrtest -x test_posixpath test_logging test_site test_urllib2_localnet test_pyexpat
 }
