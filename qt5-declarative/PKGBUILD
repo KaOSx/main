@@ -6,11 +6,11 @@ pkgname=('qt5-declarative') # 'qt5-declarative-docs')
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 url='http://qt.nokia.com/'
 license=('GPL3' 'LGPL' 'FDL' 'custom')
-makedepends=('qt5-xmlpatterns' 'mesa' 'python2')
+makedepends=('qt5-base' 'mesa' 'python2')
 options=('!libtool' 'debug')
 _pkgfqn="qtdeclarative-everywhere-src-${subver}"
 source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz"
@@ -30,7 +30,7 @@ build() {
 
 package_qt5-declarative() {
     pkgdesc="A cross-platform application and UI framework, QtDeclarative files"
-    depends=('qt5-xmlpatterns' 'mesa')
+    depends=('qt5-base' 'mesa')
     groups=('qt5')
     
     cd $srcdir/$_pkgfqn
