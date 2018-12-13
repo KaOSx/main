@@ -1,16 +1,16 @@
 
 pkgname=telepathy-mission-control
 pkgver=5.16.4
-pkgrel=1
+pkgrel=2
 pkgdesc="Telepathy component implementing both the Account Manager and Channel Dispatcher specifications."
 arch=('x86_64')
 url="https://telepathy.freedesktop.org/wiki/Components/Mission_Control/"
 license=('LGPL2.1')
 depends=('telepathy-glib' 'networkmanager')
-makedepends=('libxslt' 'python2')
+makedepends=('libxslt' 'python3')
 groups=('telepathy')
 options=('!libtool')
-source=("http://telepathy.freedesktop.org/releases/telepathy-mission-control/${pkgname}-${pkgver}.tar.gz")
+source=("https://telepathy.freedesktop.org/releases/telepathy-mission-control/${pkgname}-${pkgver}.tar.gz")
 md5sums=('eab6c941038702edeece1168f395300c')
 
 build() {

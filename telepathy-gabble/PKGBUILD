@@ -1,21 +1,24 @@
 
 pkgname=telepathy-gabble
 pkgver=0.18.4
-pkgrel=1
+pkgrel=2
 pkgdesc="A Jabber/XMPP connection manager that handles single- and multi-user chats and voice/video calls."
 arch=('x86_64')
-url="http://telepathy.freedesktop.org/"
+url="https://telepathy.freedesktop.org/"
 license=('GPL')
-depends=('telepathy-glib' 'libsoup' 'libnice' 'util-linux' 'sqlite')
-makedepends=('libxslt' 'python2')
+depends=('telepathy-glib' 'libsoup' 'libnice' 'util-linux' 'sqlite' 'openssl')
+makedepends=('libxslt' 'python3')
 groups=('telepathy')
 install=telepathy-gabble.install
 options=('!libtool' '!emptydirs')
-source=("http://telepathy.freedesktop.org/releases/${pkgname}/${pkgname}-${pkgver}.tar.gz")
-md5sums=('64334f42b1822dbc22b823f22f9e968f')
+source=("https://telepathy.freedesktop.org/releases/${pkgname}/${pkgname}-${pkgver}.tar.gz"
+        "https://raw.githubusercontent.com/gentoo/gentoo/master/net-voip/telepathy-gabble/files/telepathy-gabble-0.18.4-openssl-1.1.patch")
+md5sums=('64334f42b1822dbc22b823f22f9e968f'
+         '087bdcdc95abb756429bb9650c872f51')
 
 build() {
   cd ${pkgname}-${pkgver}
+  patch -p1 -i ${srcdir}/telepathy-gabble-0.18.4-openssl-1.1.patch
   
   ./configure --prefix=/usr \
     --libexecdir=/usr/lib/telepathy \
