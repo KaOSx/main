@@ -1,5 +1,5 @@
 
-pkgname=python2-mako
+pkgname=python3-mako
 _pkgname=mako
 pkgver=1.0.7
 _pkgver=1_0_7
@@ -8,19 +8,19 @@ arch=('x86_64')
 pkgdesc="Template library written in Python to provide a familiar, non-XML syntax which compiles into Python modules for maximum performance"
 url="http://www.makotemplates.org/"
 license=('MIT')
-depends=('python2-setuptools' 'python2-markupsafe')
+depends=('python3-setuptools' 'python3-markupsafe')
 source=("https://github.com/zzzeek/mako/archive/rel_${_pkgver}.tar.gz")
 md5sums=('1a445da57bfed0263bcf17886a2e816d')
 
 build() {
     cd ${_pkgname}-rel_${_pkgver}
 
-    python2 setup.py build
+    python3 setup.py build
 }
 
 package() {
     cd ${_pkgname}-rel_${_pkgver}
-    python2 setup.py install --root=${pkgdir} --optimize=1
+    python3 setup.py install --root=${pkgdir} --optimize=1
 
     install -D LICENSE ${pkgdir}/usr/share/licenses/python-mako/COPYING
 }
