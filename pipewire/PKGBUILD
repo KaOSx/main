@@ -1,0 +1,29 @@
+pkgname=pipewire
+
+pkgver=0.2.4
+pkgrel=1
+pkgdesc="Project that aims to greatly improve handling of audio and video under Linux"
+url="https://pipewire.org"
+arch=("x86_64")
+license=('LGPL2.1')
+depends=('gst-plugins-base' 'v4l-utils' 'sbc' 'ffmpeg' 'rtkit')
+makedepends=('meson' 'ninja')
+install=pipewire.install
+source=("https://github.com/PipeWire/pipewire/archive/0.2.4.tar.gz")
+md5sums=('4d495e9bf8cea5de9515e386b5e29ead')
+
+build() {
+  mkdir -p build
+  cd build
+  
+  meson ../${pkgname}-${pkgver} \
+    --prefix=/usr \
+    --buildtype=release
+  ninja
+}
+
+package() {
+  cd build
+  
+  DESTDIR=${pkgdir} ninja install
+} 

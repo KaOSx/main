@@ -1,0 +1,10 @@
+ post_install() {
+
+  systemctl --global enable pipewire.socket
+}
+
+
+pre_remove() {
+
+  systemctl --global disable pipewire.socket
+}
