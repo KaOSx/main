@@ -4,9 +4,9 @@ _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=rtl8192eu
 _pkgname=rtl8192eu-linux-driver
-pkgver=4.4.1
-_commit=c50f3f80b97a5ab2d2582021ae93e0a5f07118b7
-pkgrel=13
+pkgver=4.4.1.1
+_commit=63154169085566f879085678b5447bae12f8d69c
+pkgrel=1
 pkgdesc="Drivers for the rtl8192eu chipset for wireless adapters (D-Link DWA-131 rev E1 included)"
 arch=('x86_64')
 url="https://github.com/Mange/rtl8192eu-linux-driver"
@@ -16,13 +16,14 @@ makedepends=('linux-headers' 'elfutils')
 install=rtl8192eu.install
 source=("https://github.com/Mange/rtl8192eu-linux-driver/archive/${_commit}.zip"
         "https://github.com/Mange/rtl8192eu-linux-driver/pull/70/commits/80a0cb2c1aa10e52bc653e7455a6f1b64fdccd09.diff")
-md5sums=('9bb9ec8a5502dc8e6004cf3c00163947'
+md5sums=('b92d1b936bde4122111071ab63efe9da'
          'f4bdf5763cf321e03555b1b830e6b972')
 
 
 build() {
   cd ${_pkgname}-${_commit}
-  patch -p1 -i ${srcdir}/80a0cb2c1aa10e52bc653e7455a6f1b64fdccd09.diff
+  
+  #patch -p1 -i ${srcdir}/80a0cb2c1aa10e52bc653e7455a6f1b64fdccd09.diff
   
   make 
 }
