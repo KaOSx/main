@@ -1,18 +1,18 @@
 
 pkgname=hunspell-hu
-pkgver=1.6.1
-pkgrel=2
+pkgver=1.7
+pkgrel=1
 pkgdesc="Hungarian hunspell dictionary"
 arch=('x86_64')
-url="http://extensions.services.openoffice.org/project/hu_dicts"
+url="https://github.com/laszlonemeth/magyarispell/"
 license=('LGPL' 'GPL' 'MPL')
 depends=('hunspell')
-source=("http://sourceforge.net/projects/aoo-extbeta/files/1283/9/dict-hu.oxt")
+source=("https://sourceforge.net/projects/magyarispell/files/Magyar%20Ispell/1.7/magyarispell-1.7-2.tar.gz")
 md5sums=('d320e43e815c2dfd599dbfb7cd0e41fb')
 
 
 package() {
-  cd "$srcdir"
+  cd ${srcdir}
   install -dm755 ${pkgdir}/usr/share/hunspell
   install -m644 -t $pkgdir/usr/share/hunspell hu_HU.dic hu_HU.aff
 
@@ -25,4 +25,3 @@ package() {
   
   install -Dm644 README_hu_HU.txt $pkgdir/usr/share/doc/$pkgname/README_hu_HU.txt
 }
-
