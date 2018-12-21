@@ -1,6 +1,7 @@
+
 pkgname=pipewire
 
-pkgver=0.2.4
+pkgver=0.2.5
 pkgrel=1
 pkgdesc="Project that aims to greatly improve handling of audio and video under Linux"
 url="https://pipewire.org"
@@ -9,8 +10,8 @@ license=('LGPL2.1')
 depends=('gst-plugins-base' 'v4l-utils' 'sbc' 'ffmpeg' 'rtkit')
 makedepends=('meson' 'ninja')
 install=pipewire.install
-source=("https://github.com/PipeWire/pipewire/archive/0.2.4.tar.gz")
-md5sums=('4d495e9bf8cea5de9515e386b5e29ead')
+source=("https://github.com/PipeWire/pipewire/archive/${pkgver}.tar.gz")
+md5sums=('558660cd68f7119ba9477dd996e7d041')
 
 build() {
   mkdir -p build
