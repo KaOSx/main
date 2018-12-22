@@ -1,28 +1,35 @@
 
 pkgname=exiv2
-pkgver=0.26
+pkgver=0.27.0
 pkgrel=1
 pkgdesc="Exif and Iptc metadata manipulation library and tools."
 arch=('x86_64')
 url="http://exiv2.org"
 license=('GPL')
 depends=('gcc-libs' 'zlib' 'expat')
+makedepends=('cmake')
 options=('!libtool')
-source=("http://exiv2.org/builds/${pkgname}-${pkgver}-trunk.tar.gz")
-md5sums=('5399e3b570d7f9205f0e76d47582da4c')
+source=("http://exiv2.org/builds/${pkgname}-${pkgver}-Source.tar.gz")
+md5sums=('57d58c9cef127c5fa24bf0e1fbbd1f8c')
 
 build() {
-  cd ${pkgname}-trunk
+  mkdir -p build
+  cd build
   
-  #CPPFLAGS="-D_FILE_OFFSET_BITS=64" 
-  ./configure --prefix=/usr \
-    --enable-video 
-    #--enable-webready
+  cmake ../${pkgname}-${pkgver}-Source \
+    -DEXIV2_BUILD_UNIT_TESTS=OFF \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DEXIV2_ENABLE_VIDEO=ON \
+    -DEXIV2_BUILD_SAMPLES=OFF \
+    -DEXIV2_BUILD_PO=ON
+    
   make
 }
 
 package() {
-  cd ${pkgname}-trunk
+  cd build
   
   make DESTDIR=${pkgdir} install
 }

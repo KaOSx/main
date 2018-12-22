@@ -1,7 +1,7 @@
 
 pkgname=gdal
-pkgver=2.3.2
-pkgrel=2
+pkgver=2.4.0
+pkgrel=1
 pkgdesc="A translator library for raster geospatial data formats"
 arch=('x86_64')
 url="http://www.gdal.org/"
@@ -16,12 +16,9 @@ replaces=('python3-gdal')
 conflicts=('python3-gdal')
 #source=("http://download.osgeo.org/gdal/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 source=("https://github.com/OSGeo/gdal/archive/v${pkgver}.tar.gz")
-md5sums=('9d5ec9fb7934f98f5c94c405ff60d8f7')
+md5sums=('932db9538df41dd80221f91a90dff8ae')
 
 build() {
-  export CFLAGS="$CFLAGS -fno-strict-aliasing"
-  export LDFLAGS="$LDFLAGS -Wl,--as-needed"
-
   cd ${pkgname}-${pkgver}/gdal
 
   ./configure --prefix=/usr \
@@ -39,9 +36,6 @@ build() {
     --with-png \
     --with-poppler \
     --with-spatialite
-
-  sed -i 's|PY_HAVE_SETUPTOOLS=1|PY_HAVE_SETUPTOOLS=|g' ./GDALmake.opt
-  sed -i 's|EXE_DEP_LIBS|KILL_EXE_DEP_LIBS|' apps/GNUmakefile
 
   make
 }
