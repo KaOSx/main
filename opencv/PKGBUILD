@@ -1,7 +1,7 @@
 
 pkgname=opencv
-pkgver=3.4.4
-_pkgver=3.4.4
+pkgver=3.4.5
+_pkgver=3.4.5
 pkgrel=1
 pkgdesc="Open Source Computer Vision Library"
 arch=('x86_64')
@@ -16,15 +16,15 @@ source=("https://github.com/Itseez/opencv/archive/${_pkgver}.tar.gz"
         "opencv_contrib-${_pkgver}::https://github.com/Itseez/opencv_contrib/archive/${_pkgver}.tar.gz"
         "https://github.com/alalek/opencv/commit/24dbb43c096691d0333cacf231e22f1369f8c826.patch"
         "https://github.com/opencv/opencv_contrib/commit/c4419e4e65a8d9e0b5a15e9a5242453f261bee46.diff")
-md5sums=('d4b03579405a69ef765e4c79f42c7c82'
-         '171801354ce8c37c3ed9f795c8c03914'
+md5sums=('4002be887e8cd918486684de76a4ca7f'
+         'c9701c158f916401ba9a9e8fd481ff6f'
          'fea946fad4f25b47e8c8db37d5843863'
          'de1f1ad27a3da356706ba6a6fa74622b')
 
 prepare () {
   cd opencv_contrib-${_pkgver}
   
-  patch -p1 -i ${srcdir}/c4419e4e65a8d9e0b5a15e9a5242453f261bee46.diff
+  #patch -p1 -i ${srcdir}/c4419e4e65a8d9e0b5a15e9a5242453f261bee46.diff
 }
          
 build() {
