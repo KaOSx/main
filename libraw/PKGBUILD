@@ -1,6 +1,6 @@
 
 pkgname=libraw
-pkgver=0.19.1
+pkgver=0.19.2
 pkgrel=1
 pkgdesc="Library for reading RAW files obtained from digital photo cameras (CRW/CR2, NEF, RAF, DNG, and others)."
 arch=('x86_64')
@@ -9,11 +9,12 @@ license=('CDDL' 'LGPL')
 depends=('lcms2' 'jasper')
 options=('!makeflags' '!libtool')
 source=("https://www.libraw.org/data/LibRaw-${pkgver}.tar.gz")
-md5sums=('9d9f062308d8f274217977a0da4d3bb4')
+md5sums=('8b370eb6716c01abb312d414318b7ef2')
 
 build() {
   cd LibRaw-${pkgver}
 
+  autoreconf -i
   ./configure --prefix=/usr
   make
 }
