@@ -1,7 +1,7 @@
 
 pkgname=groff
-pkgver=1.22.3
-pkgrel=15
+pkgver=1.22.4
+pkgrel=1
 pkgdesc="GNU troff text-formatting system"
 arch=('x86_64')
 url="https://www.gnu.org/software/groff/groff.html"
@@ -14,14 +14,14 @@ source=("https://ftp.gnu.org/gnu/groff/${pkgname}-${pkgver}.tar.gz"
         'site.tmac'
         'gropdf.patch')
 options=('!docs' '!emptydirs')
-md5sums=('cc825fa64bc7306a885f2fb2268d3ec5'
+md5sums=('08fb04335e2f5e73f23ea4c3adbf0c5f'
          'a1fedafd7863b37968d32ad9ae1d8c13'
          '96f261605bd4b31c1f0b56cf590cf459')
 
 build() {
   cd ${pkgname}-${pkgver}
   # https://savannah.gnu.org/bugs/index.php?43581
-  patch -p1 -i ${srcdir}/gropdf.patch
+  #patch -p1 -i ${srcdir}/gropdf.patch
   
   
   ./configure --prefix=/usr --without-x
