@@ -6,10 +6,9 @@ pkgdesc="A documentation system for C++, C, Java, IDL and PHP"
 license=('GPL')
 arch=('x86_64')
 url="http://www.doxygen.org/"
-depends=('gcc-libs')
-makedepends=('flex' 'texlive-core' 'ghostscript' 'texlive-latexextra' 'python2' 'qt5-base' 'cmake')
-optdepends=('qt5-base: for doxywizard')
-source=("https://ftp.stack.nl/pub/users/dimitri/${pkgname}-${pkgver}.src.tar.gz"
+depends=('gcc-libs' 'qt5-base')
+makedepends=('flex' 'texlive-core' 'ghostscript' 'texlive-latexextra' 'python2' 'cmake' 'clang-tools-extra')
+source=("http://doxygen.nl/files/${pkgname}-${pkgver}.src.tar.gz"
         "https://github.com/doxygen/doxygen/commit/850f0ce7eaf0a689a8e8ef7f3ca05b7a152ab0ad.diff")
 md5sums=('41d8821133e8d8104280030553e2b42b'
          '71c1ef8a67ea48b98d523b9029d60049')
@@ -29,9 +28,9 @@ build() {
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -Dbuild_wizard=YES \
-    -Dbuild_doc=OFF
+    -Dbuild_doc=OFF \
+    -Duse_libclang=ON
   make
-  #make docs
 }
 
 package() {
