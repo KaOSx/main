@@ -1,8 +1,8 @@
 
 pkgname=vlc
-pkgver=3.0.4
-_pkgver=3.0.4
-pkgrel=3
+pkgver=3.0.5
+_pkgver=3.0.5
+pkgrel=1
 epoch=1
 pkgdesc="Free and open source cross-platform multimedia player and framework that plays most multimedia files and various streaming protocols."
 arch=('x86_64')
@@ -27,13 +27,13 @@ install="vlc.install"
 source=("https://download.videolan.org/pub/videolan/vlc/${pkgver}/${pkgname}-${pkgver}.tar.xz"
         'qt5.11.patch')
 #source=("https://nightlies.videolan.org/build/source/${pkgname}-${_pkgver}.tar.xz")
-sha256sums=('01f3db3790714038c01f5e23c709e31ecd6f1c046ac93d19e1dde38b3fc05a9e'
+sha256sums=('f5c087dfebd4827052bf3b97996b3a05c79ae336dcb60a9e8d1a010f270072db'
             '7a1288e5b308ed78e616f215bb502d7b2432801d7816e628996d5764836824e7')
 
 prepare() {
   cd ${pkgname}-${_pkgver}
   
-  patch -p1 -i ${srcdir}/qt5.11.patch
+  #patch -p1 -i ${srcdir}/qt5.11.patch
   #sed -i -e 's|5.5.0|5.5.4|' configure.ac
   #autoreconf -fi
 }
