@@ -1,29 +1,34 @@
 
 pkgname=python3-gobject3 
 pkgbase=pygobject
-pkgver=3.28.3
-_pkgver=3.28
+pkgver=3.30.4
+_pkgver=3.30
 pkgrel=1
 pkgdesc="Python3 bindings for GObject"
 arch=('x86_64')
 url="https://pygobject.readthedocs.io/en/latest/"
 license=('LGPL')
 depends=('python3' 'python3-cairo' 'gobject-introspection' 'python2-gobject3')
+makedepends=('meson' 'ninja')
 source=("https://ftp.gnome.org/pub/gnome/sources/pygobject/${_pkgver}/${pkgbase}-${pkgver}.tar.xz")
 options=('!libtool')
-sha256sums=('3dd3e21015d06e00482ea665fc1733b77e754a6ab656a5db5d7f7bfaf31ad0b0')
+sha256sums=('2dc1a1a444b82955e65b81c2a2511ecf8032404beba4ef1d48144168f2f64c43')
 
 build() {
-    cd ${pkgbase}-${pkgver}
-    sed -i '/Werror=format/d' configure 
-
-    ./configure --prefix=/usr --with-python=/usr/bin/python3
-    make
+  mkdir -p build
+  cd build
+  
+  meson ../${pkgbase}-${pkgver} \
+    --prefix=/usr \
+    --buildtype=release \
+    -D python=/usr/bin/python3
+  ninja
 }
 
 package() {
-  cd ${pkgbase}-${pkgver}
-  make DESTDIR=${pkgdir} install
+  cd build
+  
+  DESTDIR=${pkgdir} ninja install
   
   rm -r ${pkgdir}/usr/{include,lib/pkgconfig}
 }
