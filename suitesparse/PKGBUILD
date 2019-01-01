@@ -14,7 +14,6 @@ md5sums=('4a6d4e74fc44c503f52996ae95cad03a')
 
 build() {
    cd SuiteSparse
-   #sed -i -e "s|Mongoose  && $(MAKE) CMAKE_OPTIONS=|Mongoose  && $(MAKE) library CMAKE_OPTIONS=|g" Makefile
    
    make BLAS=-lblas
 }
