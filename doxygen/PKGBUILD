@@ -1,13 +1,13 @@
 
 pkgname=doxygen
 pkgver=1.8.15
-pkgrel=2
+pkgrel=3
 pkgdesc="A documentation system for C++, C, Java, IDL and PHP"
 license=('GPL')
 arch=('x86_64')
 url="http://www.doxygen.org/"
 depends=('gcc-libs' 'qt5-base' 'clang')
-makedepends=('flex' 'texlive-core' 'ghostscript' 'texlive-latexextra' 'python2' 'cmake' 'clang-tools-extra')
+makedepends=('flex' 'texlive-core' 'ghostscript' 'texlive-latexextra' 'python2' 'cmake') # 'clang-tools-extra')
 source=("http://doxygen.nl/files/${pkgname}-${pkgver}.src.tar.gz"
         "https://github.com/doxygen/doxygen/commit/850f0ce7eaf0a689a8e8ef7f3ca05b7a152ab0ad.diff")
 md5sums=('2c98c73eba392d334f5bbaf15e09bae3'
@@ -29,7 +29,7 @@ build() {
     -DCMAKE_INSTALL_PREFIX=/usr \
     -Dbuild_wizard=YES \
     -Dbuild_doc=OFF \
-    -Duse_libclang=ON
+    -Duse_libclang=OFF
   make
 }
 
