@@ -1,5 +1,6 @@
 
-pkgname=lua 
+pkgname=lua
+# adjust lua.pc when moving from 5.2
 pkgver=5.2.4
 pkgrel=1
 pkgdesc="A powerful light-weight programming language designed for extending applications." 
@@ -13,12 +14,11 @@ source=("https://www.lua.org/ftp/${pkgname}-${pkgver}.tar.gz"
         'lua.pc')
 sha1sums=('ef15259421197e3d85b7d6e4871b8c26fd82c1cf'
           '84bf5c3fed26e6a3e317a8f29cbdc68fc3607cf5'
-          'efdf59c5f914eaae26877491ea882e7f41ab866f')
+          '51626bcde2dcbba70f15e99b43b04344164b5fdf')
 
 build() { 
   cd ${pkgname}-${pkgver}
   patch -p1 -i ${srcdir}/lua-arch.patch
-  #patch -p1 -i ${srcdir}/lua-5.1-cflags.diff
   
   export CFLAGS="$CFLAGS -fPIC"
   make MYCFLAGS="$CFLAGS" MYLDFLAGS="$LDFLAGS" linux
@@ -34,6 +34,10 @@ package() {
     
   install -D -m644 ../../lua.pc ${pkgdir}/usr/lib/pkgconfig/lua.pc
   install -D -m644 doc/readme.html ${pkgdir}/usr/share/licenses/${pkgname}/readme.html
+  
+  ln -sf /usr/bin/lua ${pkgdir}/usr/bin/lua5.2
+  ln -s liblua.so.${pkgver} ${pkgdir}/usr/lib/liblua5.2.so
+  ln -s liblua.so.${pkgver} ${pkgdir}/usr/lib/liblua${pkgver}.so
 
   install -d ${pkgdir}/usr/share/doc/lua
   install -m644 doc/*.{gif,png,css,html} ${pkgdir}/usr/share/doc/lua
