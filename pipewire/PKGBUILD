@@ -2,7 +2,7 @@
 pkgname=pipewire
 
 pkgver=0.2.5
-pkgrel=1
+pkgrel=2
 pkgdesc="Project that aims to greatly improve handling of audio and video under Linux"
 url="https://pipewire.org"
 arch=("x86_64")
@@ -10,8 +10,16 @@ license=('LGPL2.1')
 depends=('gst-plugins-base' 'v4l-utils' 'sbc' 'ffmpeg' 'rtkit')
 makedepends=('meson' 'ninja')
 install=pipewire.install
-source=("https://github.com/PipeWire/pipewire/archive/${pkgver}.tar.gz")
-md5sums=('558660cd68f7119ba9477dd996e7d041')
+source=("https://github.com/PipeWire/pipewire/archive/${pkgver}.tar.gz"
+        "https://github.com/PipeWire/pipewire/commit/371da358d1580dc06218d18a12a99611cac39e4e.diff")
+md5sums=('558660cd68f7119ba9477dd996e7d041'
+         'd37fd4104172591c01acdef9d08a1dc1')
+
+prepare() {
+  cd ${pkgname}-${pkgver}
+  # build failure in xdg-desktop-portal-kde, upstream fix
+  patch -p1 -i ${srcdir}/371da358d1580dc06218d18a12a99611cac39e4e.diff
+}
 
 build() {
   mkdir -p build
