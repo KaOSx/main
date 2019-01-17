@@ -1,0 +1,27 @@
+ 
+pkgname=libsass
+pkgver=3.5.5
+pkgrel=1
+pkgdesc="C/C++ implementation of a Sass compiler"
+arch=('x86_64')
+url="http://libsass.org/"
+license=('MIT')
+source=("https://github.com/sass/libsass/archive/${pkgver}.tar.gz")
+md5sums=("3685f6f58282e06d82f3171063797a90")
+
+
+build() {
+    cd ${pkgname}-${pkgver}
+
+    autoreconf -i
+    ./configure --prefix=/usr
+    make
+}
+
+package() {
+    cd ${pkgname}-${pkgver}
+
+    make DESTDIR=${pkgdir}/ install
+    
+    install -D -m644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
