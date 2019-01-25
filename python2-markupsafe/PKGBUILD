@@ -1,15 +1,15 @@
 
 pkgname=python2-markupsafe
-pkgver=1.0
+pkgver=1.1.0
 pkgrel=1
 pkgdesc="Implements a XML/HTML/XHTML Markup safe string for Python"
 arch=('x86_64')
-url="http://pypi.python.org/pypi/MarkupSafe"
+url="https://pypi.python.org/pypi/MarkupSafe"
 license=('custom')
 depends=('python2')
 makedepends=('python2-setuptools')
-source=("https://pypi.python.org/packages/4d/de/32d741db316d8fdb7680822dd37001ef7a448255de9699ab4bfcbdf4172b/MarkupSafe-${pkgver}.tar.gz")
-md5sums=('2fcedc9284d50e577b5192e8e3578355')
+source=("https://files.pythonhosted.org/packages/ac/7e/1b4c2e05809a4414ebce0892fe1e32c14ace86ca7d50c70f00979ca9b3a3/MarkupSafe-${pkgver}.tar.gz")
+md5sums=('49e3f3230cedb7ae34faf06913db83fc')
 
 check() {
   cd MarkupSafe-${pkgver}
@@ -21,5 +21,5 @@ package() {
   cd MarkupSafe-${pkgver}
   python2 setup.py install --root=${pkgdir} --optimize=1
 
-  install -D -m644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+  install -D -m644 LICENSE.rst ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.rst
 }
