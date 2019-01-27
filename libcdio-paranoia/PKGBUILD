@@ -1,16 +1,16 @@
 
 pkgname=libcdio-paranoia
-pkgver=10.2.3
-_pkgver=10.2+0.94+2
-pkgrel=3
+pkgver=10.2.3.1
+_pkgver=10.2+2.0.0
+pkgrel=1
 pkgdesc="CD paranoia libraries from libcdio"
 arch=('x86_64')
 license=('GPL' 'LGPL')
 url="https://www.gnu.org/software/libcdio/"
 depends=('libcdio')
 options=('!libtool')
-source=("https://ftp.gnu.org/gnu/libcdio/${pkgname}-${_pkgver}.tar.gz")
-md5sums=('34ac925c9b903bd40b90ff25b81744a6')
+source=("https://ftp.gnu.org/gnu/libcdio/${pkgname}-${_pkgver}.tar.bz2")
+md5sums=('d655346728fb369f35cb2df87bd4349b')
 
 build() {
   cd ${pkgname}-${_pkgver}
