@@ -1,14 +1,14 @@
 
 pkgname=lv2
-pkgver=1.14.0
-pkgrel=2
+pkgver=1.16.0
+pkgrel=1
 pkgdesc="Successor to the LADSPA audio plug-in standard"
 url="http://lv2plug.in/"
 license=('LGPL' 'custom')
 arch=('x86_64')
-makedepends=('python2' 'libsndfile')
+depends=('python2' 'libsndfile' 'cairo')
 source=("http://lv2plug.in/spec/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('0b56285a77aac3c93b50c36203aa91ee')
+md5sums=('14b614a0e3d06df6b81ebbe8a15ee431')
 
 build() {
 	cd ${pkgname}-${pkgver}
