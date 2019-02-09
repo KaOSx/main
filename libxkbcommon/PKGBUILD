@@ -1,6 +1,6 @@
 
 pkgname=libxkbcommon
-pkgver=0.8.2
+pkgver=0.8.3
 pkgrel=1
 pkgdesc="Keyboard handling library using XKB data"
 arch=('x86_64')
@@ -11,7 +11,7 @@ makedepends=('doxygen' 'meson' 'ninja')
 options=('!libtool')
 #source=("https://xkbcommon.org/download/${pkgname}-${pkgver}.tar.xz")
 source=("https://github.com/xkbcommon/libxkbcommon/archive/xkbcommon-${pkgver}.tar.gz")
-sha256sums=('fd19874aefbcbc9da751292ba7abee8952405cd7d9042466e41a9c6ed3046322')
+sha256sums=('aefea423f6f18422f0a80395f36404d9dbcbc45b881d3e70ceea95c623559069')
 
 build() {
   mkdir -p build
@@ -30,5 +30,5 @@ package() {
   cd build
   DESTDIR=${pkgdir} ninja install
   
-  install -Dm644 ../${pkgname}-${pkgver}/LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+  install -Dm644 ../${pkgname}-xkbcommon-${pkgver}/LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
