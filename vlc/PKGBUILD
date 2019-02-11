@@ -2,7 +2,7 @@
 pkgname=vlc
 pkgver=3.0.6
 _pkgver=3.0.6
-pkgrel=3
+pkgrel=4
 epoch=1
 pkgdesc="Free and open source cross-platform multimedia player and framework that plays most multimedia files and various streaming protocols."
 arch=('x86_64')
@@ -25,15 +25,15 @@ groups=('multimedia')
 options=('!libtool' 'debug')
 install="vlc.install"
 source=("https://download.videolan.org/pub/videolan/vlc/${pkgver}/${pkgname}-${pkgver}.tar.xz"
-        'qt5.11.patch')
+        'vpx1.8.patch')
 #source=("https://nightlies.videolan.org/build/source/${pkgname}-${_pkgver}.tar.xz")
 sha256sums=('18c16d4be0f34861d0aa51fbd274fb87f0cab3b7119757ead93f3db3a1f27ed3'
-            '7a1288e5b308ed78e616f215bb502d7b2432801d7816e628996d5764836824e7')
+            '12bb2613e6c683944b7f96f21e73bca8587c94c20cf495f3bfadaca47e8c4aa6')
 
 prepare() {
   cd ${pkgname}-${_pkgver}
   
-  #patch -p1 -i ${srcdir}/qt5.11.patch
+  patch -p1 -i ${srcdir}/vpx1.8.patch
   #sed -i -e 's|5.5.0|5.5.4|' configure.ac
   #autoreconf -fi
 }
@@ -62,7 +62,7 @@ build() {
               --enable-chromecast \
               --enable-microdns \
               --disable-fribidi \
-              --disable-vpx \
+              --enable-vpx \
               RCC=/usr/bin/rcc-qt5
   make
 }
