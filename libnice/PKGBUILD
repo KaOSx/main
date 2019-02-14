@@ -1,15 +1,16 @@
 
 pkgname=libnice
-pkgver=0.1.14
-pkgrel=4
+pkgver=0.1.15
+pkgrel=1
 pkgdesc="An implementation of the IETF's draft ICE (for p2p UDP data streams)"
 arch=('x86_64')
 url="https://nice.freedesktop.org"
 license=('LGPL')
-depends=('gstreamer' 'libtasn1' 'libidn')
+depends=('gstreamer' 'libtasn1' 'libidn2' 'gnutls')
+makedepends=('python3')
 options=('!libtool')
 source=("https://nice.freedesktop.org/releases/${pkgname}-${pkgver}.tar.gz")
-md5sums=('c9b9b74b8ae1b3890e4bd93f1b70e8ff')
+md5sums=('5f58f305d23158651ab509b25420d353')
 
 build() {
   cd ${pkgname}-${pkgver}
