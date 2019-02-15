@@ -1,7 +1,7 @@
 
 pkgname=openconnect
 pkgver=8.02
-pkgrel=2
+pkgrel=3
 pkgdesc="Open client for Cisco AnyConnect VPN"
 arch=('x86_64')
 license=('GPL')
@@ -15,7 +15,9 @@ md5sums=('e723c92b0d435df2a521549edbe1fe3e')
 build() {
   cd ${pkgname}-${pkgver}
   
-  ./configure --prefix=/usr --disable-static
+  ./configure --prefix=/usr \
+    --disable-static \
+    --libexecdir=/usr/lib
   make
 }
 
