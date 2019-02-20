@@ -1,6 +1,6 @@
 
 pkgname=upower
-pkgver=0.99.9
+pkgver=0.99.10
 pkgrel=1
 pkgdesc="Abstraction for enumerating power devices, listening to device events and querying history and statistics"
 arch=('x86_64')
@@ -10,10 +10,10 @@ depends=('systemd' 'libgudev' 'libusb' 'polkit' 'dbus-glib' 'libimobiledevice')
 makedepends=('pkg-config' 'intltool' 'docbook-xsl')
 options=('!libtool')
 install=upower.install
-source=("https://gitlab.freedesktop.org/upower/upower/uploads/2282c7c0e53fb31816b824c9d1f547e8/${pkgname}-${pkgver}.tar.xz"
+source=("https://gitlab.freedesktop.org/upower/upower/uploads/c438511024b9bc5a904f8775cfc8e4c4/${pkgname}-${pkgver}.tar.xz"
         '0.99.8.patch')
-md5sums=('3b2f729ab05afa5df70d0c387194c9fc'
-         'e5e28160e596722f72dbc112e09ea2f0')
+sha1sums=('9b452bc3d85d749d63644c51cc2fa0465890f659'
+          '0ead0e6f972cf03e532d10d267e210f6296d1632')
 
 build() {
   cd ${pkgname}-${pkgver}
