@@ -3,8 +3,8 @@ _extramodules=extramodules-4.20
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=('nvidia-390xx' 'khd-nvidia-390xx')
-pkgver=390.87
-pkgrel=10
+pkgver=390.116
+pkgrel=1
 arch=('x86_64')
 url="https://www.nvidia.com/page/home.html"
 makedepends=('linux-headers' 'linux>=4.20' 'linux<4.21' "nvidia-390xx-utils=${pkgver}")
@@ -15,7 +15,7 @@ _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
         'nvidia_supported'
         'linux-4.10.patch')
-md5sums=('b787bc161651e5f87620fd1bfa349d4d'
+md5sums=('2bf2f9b7dcaea8cb2c30813ab4e57f71'
          '282f73f1a7326339a7b0e0716eee4f76'
          '4ab00fe5ab144083caa6c6994feea7e6')
 
@@ -26,12 +26,12 @@ build() {
     cd "${_pkg}"
     #patch -p1 -i ${srcdir}/linux-4.10.patch
     # linux 4.19 needed
-    sed -i -e 's|drm_mode_connector_attach_encoder|drm_connector_attach_encoder|g' kernel/nvidia-drm/nvidia-drm-encoder.c
-    sed -i -e 's|drm_mode_connector_update_edid_property|drm_connector_update_edid_property|g' kernel/nvidia-drm/nvidia-drm-connector.c
+    #sed -i -e 's|drm_mode_connector_attach_encoder|drm_connector_attach_encoder|g' kernel/nvidia-drm/nvidia-drm-encoder.c
+    #sed -i -e 's|drm_mode_connector_update_edid_property|drm_connector_update_edid_property|g' kernel/nvidia-drm/nvidia-drm-connector.c
     # linux 4.20 needed
-    sed -i -e 's|ipmi_user_t         p_user;|struct ipmi_user    *p_user;|g' kernel/nvidia/os-interface.c
-    sed -i -e 's|ipmi_user_t     user,|struct ipmi_user *user,|g' kernel/nvidia/os-interface.c
-    sed -i -e 's|vm_insert_pfn|vmf_insert_pfn|g' kernel/nvidia-drm/nvidia-drm-gem-nvkms-memory.c
+    #sed -i -e 's|ipmi_user_t         p_user;|struct ipmi_user    *p_user;|g' kernel/nvidia/os-interface.c
+    #sed -i -e 's|ipmi_user_t     user,|struct ipmi_user *user,|g' kernel/nvidia/os-interface.c
+    #sed -i -e 's|vm_insert_pfn|vmf_insert_pfn|g' kernel/nvidia-drm/nvidia-drm-gem-nvkms-memory.c
     
     export IGNORE_CC_MISMATCH=yes
 
