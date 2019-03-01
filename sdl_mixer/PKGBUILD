@@ -1,20 +1,18 @@
 
 pkgname=sdl_mixer
 pkgver=1.2.12
-pkgrel=10
+pkgrel=11
 pkgdesc="A simple multi-channel audio mixer"
 arch=('x86_64')
 url="http://www.libsdl.org/projects/SDL_mixer/"
 license=('custom')
-depends=('sdl' 'libvorbis' 'libmikmod' 'smpeg')
-makedepends=('fluidsynth')
-optdepends=('fluidsynth: MIDI software synth, replaces built-in timidity')
+depends=('sdl' 'libvorbis' 'libmikmod' 'smpeg' 'fluidsynth')
 options=('!libtool')
-source=("http://www.libsdl.org/projects/SDL_mixer/release/SDL_mixer-$pkgver.tar.gz")
+source=("https://www.libsdl.org/projects/SDL_mixer/release/SDL_mixer-${pkgver}.tar.gz")
 md5sums=('e03ff73d77a55e3572ad0217131dc4a1')
 
 build() {
-  cd "$srcdir/SDL_mixer-$pkgver"
+  cd SDL_mixer-${pkgver}
 
   sed -e "/CONFIG_FILE_ETC/s|/etc/timidity.cfg|/etc/timidity++/timidity.cfg|" \
       -e "/DEFAULT_PATH/s|/etc/timidity|/etc/timidity++|" \
@@ -26,8 +24,8 @@ build() {
 }
 
 package() {
-  cd "$srcdir/SDL_mixer-$pkgver"
-  make DESTDIR="$pkgdir" install
+  cd SDL_mixer-${pkgver}
+  make DESTDIR=${pkgdir} install
 
-  install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
