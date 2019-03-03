@@ -1,6 +1,6 @@
 
 pkgname=xorg-mkfontscale
-pkgver=1.1.3
+pkgver=1.2.0
 pkgrel=1
 pkgdesc="Create an index of scalable font files for X"
 arch=('x86_64')
@@ -8,9 +8,12 @@ url="https://xorg.freedesktop.org/"
 license=('custom')
 depends=('freetype2' 'libfontenc')
 makedepends=('xorg-util-macros' 'xorgproto')
+provides=('xorg-mkfontdir')
+replaces=('xorg-mkfontdir')
+conflicts=('xorg-mkfontdir')
 groups=('xorg-apps' 'xorg')
 source=("https://xorg.freedesktop.org/archive/individual/app/mkfontscale-${pkgver}.tar.bz2")
-sha256sums=('1e98df69ee5f4542d711e140e1d93e2c3f2775407ccbb7849110d52b91782a6a')
+sha256sums=('282b77be9f130d43d308287f87ed551ace2c64fee4447b5c4389870dea10c4be')
 
 build() {
   cd mkfontscale-${pkgver}
