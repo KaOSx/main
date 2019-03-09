@@ -25,10 +25,10 @@ post_upgrade(){
   getent group mysql >/dev/null 2>&1 || groupadd -g 89 mysql &>/dev/null
   getent passwd mysql >/dev/null 2>&1 || useradd -u 89 -g mysql -d $datadir -s /bin/false mysql &>/dev/null
   
-  if [[ "$(vercmp $2 10.2)" -eq 1 ]]; then
+  if [ $(vercmp "${1%.*}" "${2%.*}") -ne 0 ]; then 
     echo -e '\e[1;31m ==> This is a major MariaDB update'
-    echo -e '\e[1;34m ==> make sure to restart mysqld.service: '
-    echo -e '\e[1;34m ==> sudo systemctl restart mysqld.service '
+    echo -e '\e[1;34m ==> make sure to restart mariadb.service: '
+    echo -e '\e[1;34m ==> sudo systemctl restart mariadb.service '
     echo -e '\e[1;34m ==> and you might consider running: '
     echo -e '\e[1;34m ==> sudo mysql_upgrade -u root -p afterwards. \e[0m'
    fi

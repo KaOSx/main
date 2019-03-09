@@ -1,7 +1,7 @@
 
 pkgname=mariadb
-pkgver=10.1.38
-_pkgver=10.1.38
+pkgver=10.3.13
+_pkgver=10.3.13
 pkgrel=1
 arch=('x86_64')
 license=('GPL')
@@ -19,20 +19,17 @@ source=("https://ftp.heanet.ie/mirrors/mariadb/mariadb-${_pkgver}/source/mariadb
         'mariadb.service'
         'mariadb-post.sh'
         'mariadb-tmpfile.conf'
-        "https://github.com/MariaDB/server/commit/440157cbbe796b6b9a44a3de46bbb93d0cb5a77c.diff"
         "https://github.com/MariaDB/server/commit/8b18a44fa7e5ddf6c8caee37de4f6112c64dfc87.diff")
-sha256sums=('caf1f4fc237d143343995b6625375aef911dfc366433645d400727e7063f077f'
+sha256sums=('b2aa857ef5b84f85a7ea60a1eac7b34c0ca5151c71a0d44ce2d7fb028d71459a'
             '56badfd5a654f212566154cd4c1ecc8c88d4e8c0b7e5935b6ad6853ef745da01'
             '368f9fd2454d80eb32abb8f29f703d1cf9553353fb9e1ae4529c4b851cb8c5dd'
             '2af318c52ae0fe5428e8a9245d1b0fc3bc5ce153842d1563329ceb1edfa83ddd'
-            '7fb14a4cb8e6e0c5865b8d52940fe9342ad0f186eabf8f12e0c4bafb830a0eed'
             '1368fb10582edb123a23fe9005f53a42f848852cddb738713f32d6c1cc96b6fe')
 
 prepare() {
   cd ${pkgname}-${pkgver}
   
   #sed -i 's|MARIADB_CLIENT_VERSION_PATCH "5"|MARIADB_CLIENT_VERSION_PATCH "6"|' libmariadb/CMakeLists.txt
-  #patch -p1 -R -i ${srcdir}/440157cbbe796b6b9a44a3de46bbb93d0cb5a77c.diff
   #patch -p1 -R -i ${srcdir}/8b18a44fa7e5ddf6c8caee37de4f6112c64dfc87.diff
 }
          
@@ -43,8 +40,10 @@ build() {
   cmake ../${pkgname}-${_pkgver} \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
+    -DINSTALL_SYSCONFDIR=/etc/mysql \
+    -DINSTALL_SYSCONF2DIR=/etc/mysql/my.cnf.d \
     -DMYSQL_DATADIR=/var/lib/mysql \
-    -DMYSQL_UNIX_ADDR=/run/mysqld/mysqld.sock \
+    -DINSTALL_UNIX_ADDRDIR=/run/mysqld/mysqld.sock \
     -DDEFAULT_CHARSET=utf8 \
     -DDEFAULT_COLLATION=utf8_general_ci \
     -DENABLED_LOCAL_INFILE=ON \
@@ -71,8 +70,8 @@ build() {
     -DWITHOUT_EXAMPLE_STORAGE_ENGINE=1 \
     -DWITHOUT_FEDERATED_STORAGE_ENGINE=1 \
     -DWITHOUT_TOKUDB_STORAGE_ENGINE=1 \
-    -DCMAKE_C_FLAGS="-fPIC ${CFLAGS} -fno-strict-aliasing -DBIG_JOINS=1 -fomit-frame-pointer" \
-    -DCMAKE_CXX_FLAGS="-fPIC ${CXXFLAGS} -fno-strict-aliasing -DBIG_JOINS=1 -felide-constructors -fno-rtti" \
+    -DCMAKE_C_FLAGS="-fPIC ${CFLAGS} -fno-strict-aliasing -fomit-frame-pointer" \
+    -DCMAKE_CXX_FLAGS="-fPIC ${CXXFLAGS} -fno-strict-aliasing -felide-constructors -fno-rtti" \
     -DWITH_MYSQLD_LDFLAGS="${LDFLAGS}"
 
 
@@ -83,7 +82,7 @@ package() {
   cd build
   make DESTDIR=${pkgdir} install
 
-  install -Dm644 ${pkgdir}/usr/share/mysql/my-medium.cnf ${pkgdir}/etc/mysql/my.cnf
+  #install -Dm644 ${pkgdir}/usr/share/mysql/my-medium.cnf ${pkgdir}/etc/mysql/my.cnf
   install -Dm755 ${srcdir}/mariadb-post.sh ${pkgdir}/usr/bin/mysqld-post
   install -Dm644 ${srcdir}/mariadb.service ${pkgdir}/usr/lib/systemd/system/mariadb.service
   ln -s mariadb.service ${pkgdir}/usr/lib/systemd/system/mysqld.service
