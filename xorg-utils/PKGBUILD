@@ -1,24 +1,24 @@
 
 pkgname=xorg-utils
 pkgver=7.12
-pkgrel=1
+pkgrel=2
 pkgdesc="Collection of client utilities used to query the X server"
 arch=('x86_64')
 url="https://xorg.freedesktop.org/"
 license=('custom')
 depends=('libxxf86dga' 'libxi' 'libxtst' 'libxinerama' 'libxv' 'libdmx' 'libxft' 'libxaw'
-         'libgl' 'libxcomposite' 'xorg-util-macros' 'xcb-util' 'libxrandr')
+         'libgl' 'libxcomposite' 'xorg-util-macros' 'xcb-util' 'libxrandr' 'libxkbfile')
 makedepends=('pkgconfig' 'mesa' 'xorgproto')
 groups=('xorg')
 source=("https://xorg.freedesktop.org//releases/individual/app/xdpyinfo-1.3.2.tar.bz2"
         "https://xorg.freedesktop.org//releases/individual/app/xdriinfo-1.0.6.tar.bz2"
         "https://xorg.freedesktop.org//releases/individual/app/xev-1.2.3.tar.bz2"
-        "https://xorg.freedesktop.org//releases/individual/app/xfd-1.1.2.tar.bz2"
+        "https://xorg.freedesktop.org//releases/individual/app/xfd-1.1.3.tar.bz2"
         "https://xorg.freedesktop.org//releases/individual/app/xfontsel-1.0.6.tar.bz2"
         "https://xorg.freedesktop.org//releases/individual/app/xlsatoms-1.1.3.tar.bz2"
         "https://xorg.freedesktop.org//releases/individual/app/xlsclients-1.1.4.tar.bz2"
         "https://xorg.freedesktop.org//releases/individual/app/xlsfonts-1.0.6.tar.bz2"
-        "https://xorg.freedesktop.org//releases/individual/app/xprop-1.2.3.tar.bz2"
+        "https://xorg.freedesktop.org//releases/individual/app/xprop-1.2.4.tar.bz2"
         "https://xorg.freedesktop.org//releases/individual/app/xvinfo-1.1.4.tar.bz2"
         "https://xorg.freedesktop.org//releases/individual/app/xwininfo-1.1.4.tar.bz2"
         'LICENSE.xdpyinfo' 'LICENSE.xfd' 'LICENSE.xlsclients' 
@@ -27,12 +27,12 @@ source=("https://xorg.freedesktop.org//releases/individual/app/xdpyinfo-1.3.2.ta
 sha256sums=('30238ed915619e06ceb41721e5f747d67320555cc38d459e954839c189ccaf51'
             'd9ccd2c3e87899417acc9ea1f3e319a4198112babe1dc711273584f607449d51'
             '66bc4f1cfa1946d62612737815c34164e4ce40fcebd2c9e1d7e7a1117ad3ad09'
-            'c1a32222fbb891e46f9a82ebab005bc5e54ce006a2586195ec9ea7ab308e2759'
+            '192f938ba5830e84cc807d8ead2ad9655b43eaed6500c830f3e083aad10ed958'
             '25aa0b7c4262f5e99c07c2b96e00e4eb25b7e53f94fa803942af9d0e8da3001c'
             '57868f958c263976727881f3078e55b86b4a109dc578d2b92f5c6d690850a382'
             '773f2af49c7ea2c44fba4213bee64325875c1b3c9bc4bbcd8dac9261751809c1'
             '89b80b3a030006ab6cef717be286c12f2477894b227158b1e6133274f6ebd368'
-            'd22afb28c86d85fff10a50156a7d0fa930c80ae865d70b26d805fd28a17a521b'
+            '8c77fb096e46c60032b7e2bde9492c3ffcc18734f50b395085a5f10bfd3cf753'
             '0353220d6606077ba42363db65f50410759f9815352f77adc799e2adfa76e73f'
             '839498aa46b496492a5c65cd42cd2e86e0da88149b0672e90cb91648f8cd5b01'
             '51c98a0feafd5878eb66872476606fecf3636ca1609f57417de1a03bc6afda1e'

@@ -2,7 +2,7 @@
 pkgname=mariadb
 pkgver=10.3.13
 _pkgver=10.3.13
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 license=('GPL')
 url='https://mariadb.org/'
@@ -41,7 +41,7 @@ build() {
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DINSTALL_SYSCONFDIR=/etc/mysql \
-    -DINSTALL_SYSCONF2DIR=/etc/mysql/my.cnf.d \
+    -DINSTALL_SYSCONF2DIR=/etc/my.cnf.d \
     -DMYSQL_DATADIR=/var/lib/mysql \
     -DINSTALL_UNIX_ADDRDIR=/run/mysqld/mysqld.sock \
     -DDEFAULT_CHARSET=utf8 \
@@ -59,7 +59,7 @@ build() {
     -DWITH_PCRE=bundled \
     -DWITH_READLINE=ON \
     -DWITH_ZLIB=system \
-    -DWITH_SSL=bundled \
+    -DWITH_SSL=system \
     -DWITH_LIBWRAP=OFF \
     -DWITH_EXTRA_CHARSETS=complex \
     -DWITH_EMBEDDED_SERVER=ON \
