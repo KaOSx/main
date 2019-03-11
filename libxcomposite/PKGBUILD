@@ -1,7 +1,7 @@
 
 pkgname=libxcomposite
-pkgver=0.4.4
-pkgrel=3
+pkgver=0.4.5
+pkgrel=1
 pkgdesc="X11 Composite extension library"
 arch=('x86_64')
 url="http://xorg.freedesktop.org/"
@@ -10,7 +10,7 @@ depends=('libxfixes' 'compositeproto')
 makedepends=('xorg-util-macros')
 options=('!libtool')
 source=("http://xorg.freedesktop.org/releases/individual/lib/libXcomposite-${pkgver}.tar.bz2")
-md5sums=('f7a218dcbf6f0848599c6c36fc65c51a')
+sha256sums=('b3218a2c15bab8035d16810df5b8251ffc7132ff3aa70651a1fba0bfe9634e8f')
 
 build() {
   cd "${srcdir}/libXcomposite-${pkgver}"
