@@ -1,7 +1,7 @@
 
 pkgname=libxrandr
-pkgver=1.5.1
-pkgrel=2
+pkgver=1.5.2
+pkgrel=1
 pkgdesc="X11 RandR extension library"
 arch=('x86_64')
 license=('custom')
@@ -10,7 +10,7 @@ depends=('libxext' 'libxrender' 'xorgproto')
 makedepends=('xorg-util-macros')
 options=('!libtool')
 source=("http://xorg.freedesktop.org/releases/individual/lib/libXrandr-${pkgver}.tar.bz2")
-md5sums=('28e486f1d491b757173dd85ba34ee884')
+sha256sums=('8aea0ebe403d62330bb741ed595b53741acf45033d3bda1792f1d4cc3daee023')
 
 build() {
   cd libXrandr-${pkgver}
