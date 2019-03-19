@@ -1,7 +1,7 @@
 
 pkgname=freetds
-pkgver=1.00.96
-pkgrel=3
+pkgver=1.1.1
+pkgrel=1
 pkgdesc='Library for accessing Sybase and MS SQL Server databases'
 url='http://www.freetds.org'
 arch=('x86_64')
@@ -12,7 +12,7 @@ backup=('etc/freetds/freetds.conf'
         'etc/freetds/locales.conf'
         'etc/freetds/pool.conf')
 source=("ftp://ftp.freetds.org/pub/freetds/stable/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('7447e73e0c22f1fb2f676b8061c7c62d')
+md5sums=('b501d36d9bb7826788371405aa5abfb6')
 
 build() {
 	cd ${pkgname}-${pkgver}
@@ -21,7 +21,7 @@ build() {
 	      --sysconfdir=/etc/freetds \
 	      --mandir=/usr/share/man \
 	      --enable-msdblib \
-	      --with-tdsver=7.0 \
+	      --with-tdsver=7.2 \
 	      --with-openssl \
 	      --with-unixodbc=/usr
 	make
