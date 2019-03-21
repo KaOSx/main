@@ -13,15 +13,15 @@ source=("http://xorg.freedesktop.org/releases/individual/lib/libXcomposite-${pkg
 sha256sums=('b3218a2c15bab8035d16810df5b8251ffc7132ff3aa70651a1fba0bfe9634e8f')
 
 build() {
-  cd "${srcdir}/libXcomposite-${pkgver}"
+  cd libXcomposite-${pkgver}
   
   ./configure --prefix=/usr --sysconfdir=/etc --disable-static
   make
 }
 
 package() {
-  cd "${srcdir}/libXcomposite-${pkgver}"
-  make DESTDIR="${pkgdir}" install
+  cd libXcomposite-${pkgver}
+  make DESTDIR=${pkgdir} install
 
-  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
+  install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
 }
