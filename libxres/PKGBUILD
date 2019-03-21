@@ -1,15 +1,15 @@
 
 pkgname=libxres
 pkgver=1.2.0
-pkgrel=1
+pkgrel=2
 pkgdesc='X11 Resource extension library'
 arch=('x86_64')
-url="http://xorg.freedesktop.org"
+url="https://xorg.freedesktop.org"
 license=('custom')
 depends=('libxext')
-makedepends=('resourceproto' 'damageproto' 'compositeproto' 'scrnsaverproto' 'xorg-util-macros')
+makedepends=('xorgproto' 'xorg-util-macros')
 options=('!libtool')
-source=("http://xorg.freedesktop.org/releases/individual/lib/libXres-${pkgver}.tar.bz2")
+source=("https://xorg.freedesktop.org/releases/individual/lib/libXres-${pkgver}.tar.bz2")
 sha256sums=('ff75c1643488e64a7cfbced27486f0f944801319c84c18d3bd3da6bf28c812d4')
 
 build() {
