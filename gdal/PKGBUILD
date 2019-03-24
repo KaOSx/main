@@ -1,8 +1,8 @@
 
 # fails to find perl bindings without running -make generate- in gdal/swig/perl on error
 pkgname=gdal
-pkgver=2.4.0
-pkgrel=4
+pkgver=2.4.1
+pkgrel=1
 pkgdesc="A translator library for raster geospatial data formats"
 arch=('x86_64')
 url="http://www.gdal.org/"
@@ -17,7 +17,7 @@ replaces=('python3-gdal')
 conflicts=('python3-gdal')
 #source=("http://download.osgeo.org/gdal/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 source=("https://github.com/OSGeo/gdal/archive/v${pkgver}.tar.gz")
-md5sums=('932db9538df41dd80221f91a90dff8ae')
+md5sums=('f24451baf53a4bbf21ba3fc4d80322de')
 
 build() {
   cd ${pkgname}-${pkgver}/gdal
