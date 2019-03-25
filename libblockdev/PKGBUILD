@@ -2,7 +2,7 @@
 pkgname=libblockdev
 pkgver=2.21
 _pkgver=2.21-1
-pkgrel=1
+pkgrel=2
 pkgdesc="C library supporting GObject introspection for manipulation of block devices."
 arch=('x86_64')
 url="http://storaged.org/libblockdev/"
@@ -27,6 +27,7 @@ build() {
     ./configure --prefix=/usr \
         --sysconfdir=/etc \
         --with-python3=yes \
+        --with-python2=no \
         --without-dm 
         #--without-mdraid
         #--without-lvm \

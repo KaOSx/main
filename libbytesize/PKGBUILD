@@ -1,7 +1,7 @@
 
 pkgname=libbytesize
 pkgver=1.4
-pkgrel=2
+pkgrel=3
 pkgdesc="Tiny library that would facilitate the common operations with sizes in bytes."
 arch=('x86_64')
 url="https://github.com/storaged-project/libbytesize"
@@ -15,7 +15,8 @@ build() {
     cd ${pkgname}-${pkgver}
     
     ./configure --prefix=/usr \
-        --with-python3=yes
+        --with-python3=yes \
+        --with-python2=no
         
     make
 }
