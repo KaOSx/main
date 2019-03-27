@@ -1,6 +1,6 @@
 
 pkgname=pcsclite
-pkgver=1.8.24
+pkgver=1.8.25
 _pkgver=4235
 pkgrel=1
 pkgdesc="PC/SC Architecture smartcard middleware library"
@@ -11,17 +11,17 @@ depends=('python2' 'systemd')
 makedepends=('pkg-config')
 options=('!docs')
 source=("https://pcsclite.apdu.fr/files/pcsc-lite-${pkgver}.tar.bz2")
-md5sums=('3113e8cdddf3dc42ea35f3cac040624f')
+md5sums=('c20650a36062ab1689f37f3302c988f2')
 
 build() {
   cd pcsc-lite-${pkgver}
 
   ./configure --prefix=/usr \
-              --enable-libudev \
-              --sysconfdir=/etc \
-              --enable-ipcdir=/run/pcscd \
-              --enable-usbdropdir=/usr/lib/pcsc/drivers \
-              --with-systemdsystemunitdir=/usr/lib/systemd/system
+    --enable-libudev \
+    --sysconfdir=/etc \
+    --enable-ipcdir=/run/pcscd \
+    --enable-usbdropdir=/usr/lib/pcsc/drivers \
+    --with-systemdsystemunitdir=/usr/lib/systemd/system
 
   make
 }
