@@ -1,17 +1,19 @@
 
 pkgname=alkimia
-pkgver=7.0.2
+pkgver=8.0.0
 pkgrel=1
 arch=('x86_64')
 pkgdesc="A library with common classes and functionality used by finance applications for the KDE SC."
-url="http://kde-apps.org/content/show.php/libalkimia?content=137323"
-depends=('kcoreaddons')
+url="https://community.kde.org/Alkimia/libalkimia"
+depends=('kconfig' 'kcoreaddons' 'kcompletion' 'ki18n' 'kpackage' 'plasma-framework' 'knewstuff' 'kio'
+         'kiconthemes' 'ktextwidgets' 'qtwebkit-tp')
 makedepends=('extra-cmake-modules' 'kdoctools' 'doxygen')
 conflicts=('kf5-alkimia')
 replaces=('kf5-alkimia')
 license=('LGPL')
-source=("https://download.kde.org/stable/alkimia/${pkgver}/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('59e6b10d819479bc8dde53a8b10e6ec05e9d465c5e035528a5c0b036456a2454')
+#source=("https://download.kde.org/stable/alkimia/${pkgver}/${pkgname}-${pkgver}.tar.xz")
+source=("https://github.com/KDE/alkimia/archive/${pkgver}.tar.gz")
+sha256sums=('24f1921f2c125876e546227ee673e9a671fb9ea81264d980ec07d9d14a4e15b4')
 
 build() {
   mkdir -p build
