@@ -1,6 +1,6 @@
 
 pkgname=fakechroot
-pkgver=2.19
+pkgver=2.20.1
 pkgrel=1
 pkgdesc="Gives a fake chroot environment"
 arch=('x86_64')
@@ -8,8 +8,8 @@ url="https://github.com/dex4er/fakechroot"
 license=('LGPL')
 options=('!libtool')
 install=fakechroot.install
-source=("http://ftp.debian.org/debian/pool/main/f/fakechroot/${pkgname}_${pkgver}.orig.tar.gz")
-md5sums=('db6378420c769232e69508bb78612c34')
+source=("https://github.com/dex4er/fakechroot/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+md5sums=('bf67c9b3a5f282f310ba8beda2fc6057')
 
 build() {
   cd ${pkgname}-${pkgver}
