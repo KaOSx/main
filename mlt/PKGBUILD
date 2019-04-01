@@ -2,7 +2,7 @@
 # NOTE: Disabled the gtk2 module so no gtk-preview
 
 pkgname=mlt
-pkgver=6.12.0
+pkgver=6.14.0
 pkgrel=1
 pkgdesc="An open source multimedia framework"
 arch=('x86_64')
@@ -11,12 +11,9 @@ license=('GPL')
 depends=('sdl_image' 'libsamplerate' 'libdv' 'sox' 'libxml2' 'ffmpeg' 'python2' 'jack' 'ladspa' 'qt5-svg'
          'frei0r-plugins' 'libexif' 'opencv')
 makedepends=('swig')
-conflicts=('mlt-python-bindings' 'mlt-qt5')
-provides=('mlt-python-bindings' 'mlt-qt5')
-replaces=('mlt-python-bindings' 'mlt-qt5')
 #source=("http://downloads.sourceforge.net/sourceforge/mlt/$pkgname-$pkgver.tar.gz")
 source=("https://github.com/mltframework/mlt/releases/download/v${pkgver}/mlt-${pkgver}.tar.gz")
-md5sums=('df43d6b6ecc298bf8bb8e3b2bf9ada8f')
+md5sums=('d4eb88984d7151c2608f4fd0a4aadbb0')
 
 build() {
   cd mlt-${pkgver}
