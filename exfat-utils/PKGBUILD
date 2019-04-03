@@ -1,0 +1,25 @@
+ 
+pkgname=exfat-utils
+pkgver=1.3.0
+pkgrel=1
+pkgdesc="Provides a full-featured exFAT file system implementation for Unix-like systems."
+arch=('x86_64')
+url="https://github.com/relan/exfat"
+license=('GPL2')
+depends=('glibc' 'fuse')
+source=("https://github.com/relan/exfat/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
+md5sums=('f8928571b152455e828ca0bd42af8b73')
+
+build() {
+    cd ${pkgname}-${pkgver}
+
+    ./configure --prefix=/usr \
+        --sbindir=/usr/bin
+    make
+}
+
+package() {
+    cd ${pkgname}-${pkgver}
+    
+    make DESTDIR=${pkgdir} install
+}
