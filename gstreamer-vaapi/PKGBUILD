@@ -1,0 +1,37 @@
+
+pkgname=gstreamer-vaapi
+pkgver=1.14.4
+pkgrel=1
+pkgdesc="GStreamer Multimedia Framework Vaapi Plugin"
+arch=('x86_64')
+license=('LGPL')
+url="https://gstreamer.freedesktop.org/"
+depends=('gst-plugins-bad' 'libva' 'libxrandr')
+makedepends=('python3' 'gobject-introspection')
+options=('!libtool')
+source=("https://gstreamer.freedesktop.org/src/gstreamer-vaapi/${pkgname}-${pkgver}.tar.xz")
+sha256sums=('ce18dbfe961c6a8d31270231686075586bf7a7df62b778c8e7f5ec148251d0a3')
+
+build() {
+  cd ${pkgname}-${pkgver}
+  
+    ./configure --prefix=/usr \
+      --sysconfdir=/etc \
+      --localstatedir=/var \
+      --libexecdir=/usr/lib \
+      --disable-static \
+      PYTHON=/usr/bin/python3
+  make
+}
+
+check() {
+  cd ${pkgname}-${pkgver}
+  
+  make check
+}
+
+package() {
+  cd ${pkgname}-${pkgver}
+  
+  make DESTDIR=${pkgdir} install
+}
