@@ -7,8 +7,7 @@ arch=('x86_64')
 license=('LGPL')
 url="https://gstreamer.freedesktop.org/"
 depends=('libxml2' 'glib2')
-optdepends=('sh: feedback script')
-makedepends=('intltool' 'pkgconfig' 'gobject-introspection')
+makedepends=('intltool' 'pkgconfig' 'gobject-introspection' 'python3')
 options=('!libtool')
 source=("https://gstreamer.freedesktop.org/src/gstreamer/gstreamer-${pkgver}.tar.xz")
 sha256sums=('f94f6696c5f05a3b3a9183e39c5f5c0b779f75a04c0efa497e7920afa985ffc7')
@@ -22,7 +21,8 @@ build() {
       --libexecdir=/usr/lib \
       --with-package-name="GStreamer (KaOS)" \
       --with-package-origin="https://kaosx.us/" \
-      --disable-static
+      --disable-static \
+      PYTHON=/usr/bin/python3
   make
 }
 

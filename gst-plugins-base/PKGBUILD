@@ -8,7 +8,7 @@ url="https://gstreamer.freedesktop.org/"
 license=('LGPL')
 depends=("gstreamer>=${pkgver}" 'orc' 'libxv' 'alsa-lib' 'cdparanoia' 'libvisual'
          'libvorbis' 'libtheora' 'pango' 'opus' 'iso-codes')
-makedepends=('pkgconfig' 'gobject-introspection' 'qt5-base')
+makedepends=('pkgconfig' 'gobject-introspection' 'qt5-base' 'python3')
 options=('!libtool' '!emptydirs')
 source=("https://gstreamer.freedesktop.org/src/gst-plugins-base/${pkgname}-${pkgver}.tar.xz")
 sha256sums=('ca6139490e48863e7706d870ff4e8ac9f417b56f3b9e4b3ce490c13b09a77461')
@@ -22,7 +22,8 @@ build() {
     --disable-static \
     --enable-experimental \
     --with-package-name="GStreamer Base (KaOS)" \
-    --with-package-origin="https://kaosx.us/" 
+    --with-package-origin="https://kaosx.us/" \
+    PYTHON=/usr/bin/python3
   make
 }
 
