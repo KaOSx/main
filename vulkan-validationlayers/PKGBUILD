@@ -1,0 +1,47 @@
+
+pkgname=vulkan-validationlayers
+pkgver=1.1.102
+pkgrel=1
+pkgdesc="Project provides the Khronos official Vulkan validation layers"
+arch=('x86_64')
+url="https://www.khronos.org/vulkan/"
+license=('APACHE')
+depends=('vulkan-headers' 'vulkan-loader' 'mesa' 'wayland' 'libx11' 'libxkbcommon' 'libxrandr')
+makedepends=('cmake' 'vulkan-headers' 'python3-lxml')
+source=("https://github.com/KhronosGroup/Vulkan-ValidationLayers/archive/v${pkgver}.tar.gz")
+md5sums=('0b2f6d19ca371a22450b4f37c645c8f0')
+
+prepare() {
+  cd Vulkan-ValidationLayers-${pkgver}
+  
+  sed -i -e 's|bin/env python|bin/env python3|' scripts/update_deps.py
+}
+
+build() {
+  cd Vulkan-ValidationLayers-${pkgver}
+  
+  mkdir -p build
+  cd build
+
+  ../scripts/update_deps.py
+  
+  cmake -C helper.cmake \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_SKIP_RPATH=TRUE \
+    -DBUILD_TESTS=OFF \
+    -DBUILD_WSI_XCB_SUPPORT=ON \
+    -DBUILD_WSI_XLIB_SUPPORT=ON \
+    -DBUILD_WSI_WAYLAND_SUPPORT=ON \
+    ..
+  make
+}
+
+package() {
+  cd Vulkan-ValidationLayers-${pkgver}/build
+  
+  make DESTDIR=${pkgdir} install
+  
+  install -Dm644 ../LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.txt
+} 
