@@ -1,6 +1,6 @@
 
 pkgname=libva
-pkgver=2.4.0
+pkgver=2.4.1
 _commit=25b33076849e68bebae87771fb482c5ab929e18b
 pkgrel=1
 pkgdesc="Libva with patches to extend VA API with data needed for VDPAU and XvBA backends."
@@ -10,15 +10,15 @@ license=('MIT')
 depends=('libgl' 'libdrm' 'libxext' 'libxfixes' 'wayland')
 makedepends=('mesa' 'meson' 'ninja')
 options=('!libtool')
-#source=("https://github.com/intel/libva/archive/${pkgver}.tar.gz")
-source=("https://github.com/intel/libva/archive/${_commit}.zip")
-sha1sums=('76aaf41e9983888525deda4dc439d5b54a35ab83')
+source=("https://github.com/intel/libva/archive/${pkgver}.tar.gz")
+#source=("https://github.com/intel/libva/archive/${_commit}.zip")
+sha1sums=('5f80e1c8deb7b4491ea4965dc9946844f1bbf979')
 
 build() {
   mkdir -p build
   cd build
   
-  meson ../${pkgname}-${_commit} \
+  meson ../${pkgname}-${pkgver} \
     --prefix=/usr \
     --buildtype=release 
   ninja
@@ -29,6 +29,6 @@ package() {
   
   DESTDIR=${pkgdir} ninja install
   
-  install -m644 -D ../${pkgname}-${_commit}/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
+  install -m644 -D ../${pkgname}-${pkgver}/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
 }
 
