@@ -1,21 +1,21 @@
 
 pkgname=qca-qt5
 _pkgname=qca
-pkgver=2.1.3
-pkgrel=2
+pkgver=2.2.0
+pkgrel=1
 _commit=da4d1d06d4f67104738cb027b215eb41293c85cd
 pkgdesc="Qt Cryptographic Architecture"
 arch=('x86_64')
 url="https://userbase.kde.org/QCA"
 license=('LGPL')
 depends=('qt5-base' 'ca-certificates' 'nss')
-makedepends=('cmake')
-#source=("https://download.kde.org/stable/qca/${pkgver}/src/${_pkgname}-${pkgver}.tar.xz")
-source=("https://github.com/KDE/qca/archive/${_commit}.zip")
-md5sums=('68914fa5e5a8e63d0907030286fb10e7')
+makedepends=('cmake' 'doxygen')
+source=("https://download.kde.org/stable/qca/${pkgver}/${_pkgname}-${pkgver}.tar.xz")
+#source=("https://github.com/KDE/qca/archive/${_commit}.zip")
+md5sums=('293e3bfe67ef72e36becba0e4c068f7e')
 
 prepare() {
-  cd ${_pkgname}-${_commit}
+  cd ${_pkgname}-${pkgver}
   #patch -p1 -i ${srcdir}/qt5.5.diff
 }
 
@@ -23,11 +23,13 @@ build() {
   mkdir -p build
   cd build
   
-  cmake ../${_pkgname}-${_commit} \
+  cmake ../${_pkgname}-${pkgver} \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_BUILD_TYPE=Release \
     -DQCA_SUFFIX=qt5 \
-    -DQCA_INSTALL_IN_QT_PREFIX=ON
+    -DQCA_FEATURE_INSTALL_DIR=${CMAKE_INSTALL_PREFIX}/usr/lib/qt5/mkspecs/features/ \
+    -DQCA_PLUGINS_INSTALL_DIR=${CMAKE_INSTALL_PREFIX}/usr/lib/qt5/plugins/
+    #-DQCA_INSTALL_IN_QT_PREFIX=ON
   make 
 }
 
