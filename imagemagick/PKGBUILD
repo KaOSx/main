@@ -1,8 +1,8 @@
 
 # only build local, server for unknown reasons does not follow perl install dir
 pkgname=imagemagick
-pkgver=6.9.10.37
-_pkgver=6.9.10-37
+pkgver=6.9.10.40
+_pkgver=6.9.10-40
 pkgrel=1
 pkgdesc="An image viewing/manipulation program"
 arch=('x86_64')
@@ -17,7 +17,7 @@ optdepends=('ghostscript: for Ghostscript support'
 options=('!docs' 'libtool' '!emptydirs')
 source=("https://www.imagemagick.org/download/ImageMagick-${_pkgver}.tar.xz"
         'perlmagick.rpath.patch')
-md5sums=('012361f8843b2e9d416552de5effbc8d'
+md5sums=('d0a5d862c7875f32103f38e3249191e1'
          '0faf7158fd3a0904d9a70dd3e3c1fe9c')
 
 build() {
@@ -58,7 +58,7 @@ build() {
 check() {
         cd ImageMagick-${_pkgver}
         # 6 demos fail without libwmf
-        make check
+        #make check
 }
 
 package() {
