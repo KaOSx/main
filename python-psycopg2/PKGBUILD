@@ -1,14 +1,15 @@
 
 pkgname=python3-psycopg2
-pkgver=2.7.7
+pkgver=2.8.2
 pkgrel=1
 pkgdesc="A PostgreSQL database adapter for the Python programming language."
 arch=('x86_64')
 url="http://initd.org/psycopg/"
 license=('LGPL3')
 depends=('python3' 'postgresql-libs')
-source=("http://initd.org/psycopg/tarballs/PSYCOPG-2-7/psycopg2-${pkgver}.tar.gz")
-md5sums=('598e2f43c1b26361ae2d3a3254dae414')
+makedepends=('python3-setuptools')
+source=("http://initd.org/psycopg/tarballs/PSYCOPG-2-8/psycopg2-${pkgver}.tar.gz")
+md5sums=('74cbe0f09a6ebafd107f89c858120bd5')
 
 build() {
   cd psycopg2-${pkgver}
