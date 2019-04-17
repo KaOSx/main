@@ -2,12 +2,12 @@
 pkgname=mariadb
 pkgver=10.3.14
 _pkgver=10.3.14
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 license=('GPL')
 url='https://mariadb.org/'
 pkgdesc='Open Source database to support today’s enterprise needs from OLTP to analytics from a single SQL compliant interface.'
-depends=('openssl' 'pcre' 'inetutils' 'lz4')
+depends=('openssl' 'pcre' 'inetutils' 'lz4' 'zstd')
 makedepends=('cmake' 'zlib')
 options=('!libtool' 'emptydirs')
 conflicts=('libmariadbclient' 'mariadb-clients')
