@@ -1,13 +1,13 @@
 
-_extramodules=extramodules-4.20
+_extramodules=extramodules-5.0
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=('nvidia' 'khd-nvidia')
 pkgver=418.56
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 url="https://www.nvidia.com/page/home.html"
-makedepends=('linux-headers' 'linux>=4.20' 'linux<4.21' "nvidia-utils=${pkgver}")
+makedepends=('linux-headers' 'linux>=5.0.8' 'linux<5.1' "nvidia-utils=${pkgver}")
 license=('custom')
 
 _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
@@ -34,7 +34,7 @@ build() {
 
 package_nvidia() {
     pkgdesc="NVIDIA drivers for linux."
-    depends=('linux>=4.20' 'linux<4.21' "nvidia-utils=${pkgver}")
+    depends=('linux>=5.0.8' 'linux<5.1' "nvidia-utils=${pkgver}")
     conflicts=('nvidia-340xx' 'nvidia-390xx')
     install=nvidia.install
     
