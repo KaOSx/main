@@ -16,12 +16,10 @@ groups=('qt5')
 options=('!libtool')
 _pkgfqn="qtvirtualkeyboard-everywhere-src-${subver}"
 source=("${_qtmirror}/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz"
-        'virtualkeyboard.desktop'
-        "https://github.com/qt/qtvirtualkeyboard/commit/c7a94110987672308ed04b40fd8ed207d1c8d93b.diff")
+        'virtualkeyboard.desktop')
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
-         'd5f233aa149751819c2e8dfcd2fc13e2'
-         'e49c186eccddb816bd6a38a65babfdff')
+         'd5f233aa149751819c2e8dfcd2fc13e2')
 
 build() {
     cd $srcdir/$_pkgfqn
