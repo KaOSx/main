@@ -1,24 +1,24 @@
 
 pkgbase="llvm"
 pkgname=('llvm' 'clang' 'clang-analyzer' 'clang-tools-extra' 'lldb')
-pkgver=7.0.1
+pkgver=7.1.0
 _gcc_ver=8.3.0
-pkgrel=2
+pkgrel=1
 arch=('x86_64')
 url="https://llvm.org/"
 license=('custom:University of Illinois/NCSA Open Source License')
-makedepends=('gcc-libs' 'libffi' 'python2' 'ocaml' "gcc=${_gcc_ver}" 'groff'
+makedepends=('gcc-libs' 'libffi' 'python3' 'ocaml' "gcc=${_gcc_ver}" 'groff'
              'swig' 'cmake') # 'ocaml-ctypes' 'findlib' needed to have CMake build find ocaml
 source=("https://llvm.org/releases/${pkgver}/${pkgbase}-${pkgver}.src.tar.xz"
         "https://llvm.org/releases/${pkgver}/cfe-${pkgver}.src.tar.xz"
         "https://releases.llvm.org/$pkgver/clang-tools-extra-$pkgver.src.tar.xz"
         "https://llvm.org/releases/${pkgver}/compiler-rt-${pkgver}.src.tar.xz"
         "https://llvm.org/releases/${pkgver}/lldb-${pkgver}.src.tar.xz")
-md5sums=('79f1256f97d52a054da8660706deb5f6'
-         '8583c9fb2af0ce61a7154fd9125363c1'
-         'f0a94f63cc3d717f8f6662e0bf9c7330'
-         '697b70141ae7cc854e4fbde1a07b7287'
-         '9ea3dc5cb9a1d9e390652d42ef1ccf41')
+md5sums=('26844e21dbad09dc7f9b37b89d7a2e48'
+         '2a3651e54e1a9c512d4ee6bd84183cf6'
+         '1116b2db54aabf25564120c50ff8e09d'
+         '2c454d67f82b32cb7e42773e053cc542'
+         '73b1937ba8146bf25a7636362b85f7ee')
 
 prepare() {
     cd ${pkgbase}-${pkgver}.src
@@ -108,7 +108,7 @@ package_clang() {
 package_clang-analyzer() {
     pkgdesc="Tool that automatically finds bugs in your code, example tool that can be built using the Clang frontend as a library to parse C/C++ code."
     url="https://clang-analyzer.llvm.org/"
-    depends=("clang=${pkgver}-${pkgrel}" 'python2')
+    depends=("clang=${pkgver}-${pkgrel}" 'python3')
 
     cd ${srcdir}/${pkgbase}-${pkgver}.src/tools/clang
 
@@ -119,8 +119,8 @@ package_clang-analyzer() {
     done
 
     # Python scripts
-    python2 -m compileall ${pkgdir}/usr/lib/clang-analyzer
-    python2 -O -m compileall ${pkgdir}/usr/lib/clang-analyzer
+    python3 -m compileall ${pkgdir}/usr/lib/clang-analyzer
+    python3 -O -m compileall ${pkgdir}/usr/lib/clang-analyzer
 
     install -D -m644 ${srcdir}/${pkgbase}-${pkgver}.src/LICENSE.TXT ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
@@ -128,16 +128,16 @@ package_clang-analyzer() {
 package_lldb() {
     pkgdesc="Next generation, high-performance debugger, built as a set of reusable components in the LLVM Project."
     url="https://lldb.llvm.org/"
-    depends=("llvm=${pkgver}-${pkgrel}" 'libedit' 'libxml2' 'ncurses' 'python2')
+    depends=("llvm=${pkgver}-${pkgrel}" 'libedit' 'libxml2' 'ncurses' 'python3')
     
     cd build/tools/lldb
     make DESTDIR=${pkgdir} install
     
     # Python scripts
-    python2 -m compileall ${pkgdir}/usr/lib/python2.7/site-packages/lldb
-    python2 -O -m compileall ${pkgdir}/usr/lib/python2.7/site-packages/lldb
+    python3 -m compileall ${pkgdir}/usr/lib/python3.7/site-packages/lldb
+    python3 -O -m compileall ${pkgdir}/usr/lib/python3.7/site-packages/lldb
     # part of LLVM
-    rm ${pkgdir}/usr/lib/python2.7/site-packages/six.py
+    rm ${pkgdir}/usr/lib/python3.7/site-packages/six.py
     
     install -D -m644 ${srcdir}/${pkgbase}-${pkgver}.src/LICENSE.TXT ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE    
 }
