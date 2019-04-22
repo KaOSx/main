@@ -1,7 +1,7 @@
 
 pkgname=rust
 pkgver=1.34.0
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 pkgdesc='Systems programming language that runs fast, prevents segfaults, and guarantees thread safety.'
 url='https://www.rust-lang.org/'
@@ -18,7 +18,7 @@ sha256sums=('a510b3b7ceca370a4b395065039b2a70297e3fb4103b7ff67b1eff771fd98504'
 
 build() {
   cd rustc-${pkgver}-src
-  #cp ${srcdir}/config.toml config.toml
+  cp ${srcdir}/config.toml config.toml
 
   ./x.py build
 }
