@@ -1,7 +1,7 @@
 
 pkgname=qca-qt5
 _pkgname=qca
-pkgver=2.2.0
+pkgver=2.2.1
 pkgrel=1
 _commit=da4d1d06d4f67104738cb027b215eb41293c85cd
 pkgdesc="Qt Cryptographic Architecture"
@@ -12,7 +12,7 @@ depends=('qt5-base' 'ca-certificates' 'nss')
 makedepends=('cmake' 'doxygen')
 source=("https://download.kde.org/stable/qca/${pkgver}/${_pkgname}-${pkgver}.tar.xz")
 #source=("https://github.com/KDE/qca/archive/${_commit}.zip")
-md5sums=('293e3bfe67ef72e36becba0e4c068f7e')
+sha256sums=('d716d2d8e3ed8d95bbdb061f03081d7d032206f746a30a4d29d72196f50e7b02')
 
 prepare() {
   cd ${_pkgname}-${pkgver}
