@@ -1,6 +1,6 @@
 
 pkgname=bash-completion
-pkgver=2.8
+pkgver=2.9
 pkgrel=1
 pkgdesc="Programmable completion for the bash shell"
 arch=('x86_64')
@@ -8,7 +8,7 @@ url="https://github.com/scop/bash-completion"
 license=('GPL')
 depends=('bash')
 source=("https://github.com/scop/bash-completion/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
-md5sums=('201b6ae62f7d5fb5b1b25e34427db919')
+md5sums=('60139333b25c4d54ad40323b701be130')
 
 build() {
   cd ${pkgname}-${pkgver}
@@ -28,8 +28,5 @@ package() {
   rm -r ${pkgdir}/etc/profile.d
   # provided by pacman
   rm ${pkgdir}/usr/share/bash-completion/completions/makepkg
-  # provided by util-linux since 2.28
-  rm ${pkgdir}/usr/share/bash-completion/completions/mount
-  rm ${pkgdir}/usr/share/bash-completion/completions/umount
 }
 

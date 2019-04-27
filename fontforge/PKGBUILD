@@ -1,7 +1,7 @@
 
 pkgname=fontforge
-pkgver=20190317
-_pkgver=20190317
+pkgver=20190413
+_pkgver=20190413
 pkgrel=1
 pkgdesc="An outline and bitmap font editor"
 arch=('x86_64')
@@ -10,16 +10,16 @@ license=('BSD')
 depends=('libxkbui' 'libxi' 'libxml2' 'pango' 'giflib' 'libpng' 'libtiff' 'libjpeg-turbo' 'python3'
          'libtool' 'desktop-file-utils' 'hicolor-icon-theme')
 options=('!libtool' '!makeflags')
-source=("https://github.com/fontforge/fontforge/archive/${_pkgver}.tar.gz"
+source=("https://github.com/fontforge/fontforge/releases/download/${_pkgver}/fontforge-${_pkgver}.tar.gz"
         'https://fontforge.github.io/cidmaps.tgz')
-md5sums=('e461181fb446b90b96fcb773da6d87ce'
+md5sums=('ac60705cfb74a5b0e266d8455690cd51'
          '063691163e592515b31514515bb3ce8c')
 
 build() {
   cd ${pkgname}-${_pkgver}
   #sed '/fontforge_package_name/s/^#//' -i configure.ac
   
-  ./bootstrap
+  #./bootstrap
   ./configure --prefix=/usr \
               --mandir=/usr/share/man
   make 
