@@ -9,8 +9,8 @@ arch=('x86_64')
 url="http://www.gdal.org/"
 license=('custom')
 depends=('curl' 'geos' 'giflib' 'hdf5' 'libgeotiff' 'libjpeg-turbo' 'libpng' 'libtiff' 'netcdf'
-         'poppler' 'python3-numpy' 'sqlite3' 'mariadb' 'postgresql-libs' 'cfitsio'
-         'libspatialite' 'unixodbc' 'json-c')
+         'poppler' 'python3-numpy' 'sqlite3' 'mariadb' 'postgresql-libs' 'cfitsio' 'unixodbc'
+         'json-c') # not ready for proj6, no release since 2015 'libspatialite'
 makedepends=('perl' 'swig')
 options=('!libtool' '!makeflags')
 provides=('python3-gdal')
@@ -45,7 +45,7 @@ build() {
     --with-geos \
     --with-png \
     --with-poppler \
-    --with-spatialite
+    --without-spatialite
 
   make
 }
