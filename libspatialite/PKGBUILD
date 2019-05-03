@@ -7,7 +7,7 @@ pkgdesc="SQLite extension to support spatial data types and operations"
 arch=('x86_64')
 url="https://www.gaia-gis.it/fossil/libspatialite/index"
 license=('MPL')
-depends=('geos' 'proj' 'sqlite3' 'libfreexl' 'zlib')
+depends=('geos' 'sqlite3' 'libfreexl' 'zlib') # 'proj' 
 options=('!libtool')
 source=("http://www.gaia-gis.it/gaia-sins/${pkgname}-sources/${pkgname}-${_pkgver}.tar.gz")
 md5sums=('6b380b332c00da6f76f432b10a1a338c')
@@ -15,7 +15,8 @@ md5sums=('6b380b332c00da6f76f432b10a1a338c')
 build() {
   cd ${pkgname}-${_pkgver}
   
-  ./configure --prefix=/usr
+  ./configure --prefix=/usr \
+    --disable-proj
   make
 }
 
