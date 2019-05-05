@@ -1,16 +1,16 @@
 
 pkgname=libgsf
-pkgver=1.14.44
+pkgver=1.14.46
 pkgrel=1
 arch=('x86_64')
 pkgdesc="The GNOME Structured File Library is a utility library for reading and writing structured file formats"
-url="https://git.gnome.org/browse/libgsf/tree/README"
+url="https://gitlab.gnome.org/GNOME/libgsf/blob/master/README"
 license=('GPL' 'LGPL')
 depends=('libxml2' 'glib2' 'bzip2')
-makedepends=('intltool' 'pkgconfig' 'python2' 'gobject-introspection')
+makedepends=('intltool' 'pkgconfig' 'gobject-introspection')
 options=('!libtool')
 source=("https://ftp.gnome.org/pub/GNOME/sources/libgsf/1.14/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('68bede10037164764992970b4cb57cd6add6986a846d04657af9d5fac774ffde')
+sha256sums=('ea36959b1421fc8e72caa222f30ec3234d0ed95990e2bf28943a85f33eadad2d')
 
 build() {
   cd ${pkgname}-${pkgver}
