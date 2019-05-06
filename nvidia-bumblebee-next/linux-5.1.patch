@@ -1,0 +1,127 @@
+diff --git a/kernel/conftest.sh b/kernel/conftest.sh
+index 2dd63b4..a01d877 100755
+--- a/kernel/conftest.sh
++++ b/kernel/conftest.sh
+@@ -107,6 +107,7 @@ test_headers() {
+     FILES="$FILES drm/drm_drv.h"
+     FILES="$FILES drm/drm_framebuffer.h"
+     FILES="$FILES drm/drm_connector.h"
++    FILES="$FILES drm/drm_probe_helper.h"
+     FILES="$FILES generated/autoconf.h"
+     FILES="$FILES generated/compile.h"
+     FILES="$FILES generated/utsrelease.h"
+diff --git a/kernel/nvidia-drm/nvidia-drm-gem-nvkms-memory.c b/kernel/nvidia-drm/nvidia-drm-gem-nvkms-memory.c
+index 998fcc2..a25664f 100644
+--- a/kernel/nvidia-drm/nvidia-drm-gem-nvkms-memory.c
++++ b/kernel/nvidia-drm/nvidia-drm-gem-nvkms-memory.c
+@@ -24,6 +24,8 @@
+ 
+ #if defined(NV_DRM_ATOMIC_MODESET_AVAILABLE)
+ 
++#include <linux/version.h>
++
+ #include "nvidia-drm-gem-nvkms-memory.h"
+ #include "nvidia-drm-ioctl.h"
+ 
+@@ -330,15 +332,24 @@ done:
+ 
+ /* XXX Move these vma operations to os layer */
+ 
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 1, 0)
++static vm_fault_t __nv_drm_vma_fault(struct vm_area_struct *vma,
++                                     struct vm_fault *vmf)
++#else
+ static int __nv_drm_vma_fault(struct vm_area_struct *vma,
+                               struct vm_fault *vmf)
++#endif
+ {
+     unsigned long address = nv_page_fault_va(vmf);
+     struct drm_gem_object *gem = vma->vm_private_data;
+     struct nv_drm_gem_nvkms_memory *nv_nvkms_memory = to_nv_nvkms_memory(
+         to_nv_gem_object(gem));
+     unsigned long page_offset, pfn;
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 1, 0)
++    vm_fault_t ret = VM_FAULT_SIGBUS;
++#else
+     int ret = -EINVAL;
++#endif
+ 
+     pfn = (unsigned long)(uintptr_t)nv_nvkms_memory->pPhysicalAddress;
+     pfn >>= PAGE_SHIFT;
+@@ -377,7 +388,11 @@ static int __nv_drm_vma_fault(struct vm_area_struct *vma,
+  */
+ 
+ #if defined(NV_VM_OPS_FAULT_REMOVED_VMA_ARG)
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 1, 0)
++static vm_fault_t nv_drm_vma_fault(struct vm_fault *vmf)
++#else
+ static int nv_drm_vma_fault(struct vm_fault *vmf)
++#endif
+ {
+     return __nv_drm_vma_fault(vmf->vma, vmf);
+ }
+diff --git a/kernel/nvidia-drm/nvidia-drm-priv.h b/kernel/nvidia-drm/nvidia-drm-priv.h
+index f16bea9..7ea1bca 100644
+--- a/kernel/nvidia-drm/nvidia-drm-priv.h
++++ b/kernel/nvidia-drm/nvidia-drm-priv.h
+@@ -33,6 +33,10 @@
+ #include <drm/drm_gem.h>
+ #endif
+ 
++#if defined(NV_DRM_DRM_PROBE_HELPER_H_PRESENT)
++#include <drm/drm_probe_helper.h>
++#endif
++
+ #include "nvidia-drm-os-interface.h"
+ 
+ #include "nvkms-kapi.h"
+diff --git a/kernel/nvidia-uvm/uvm8.c b/kernel/nvidia-uvm/uvm8.c
+index 4446798..8cf3d51 100644
+--- a/kernel/nvidia-uvm/uvm8.c
++++ b/kernel/nvidia-uvm/uvm8.c
+@@ -166,13 +166,21 @@ static void uvm_destroy_vma_semaphore_pool(struct vm_area_struct *vma)
+ // If a fault handler is not set, paths like handle_pte_fault in older kernels
+ // assume the memory is anonymous. That would make debugging this failure harder
+ // so we force it to fail instead.
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 1, 0)
++static vm_fault_t uvm_vm_fault_sigbus(struct vm_area_struct *vma, struct vm_fault *vmf)
++#else
+ static int uvm_vm_fault_sigbus(struct vm_area_struct *vma, struct vm_fault *vmf)
++#endif
+ {
+     UVM_DBG_PRINT_RL("Fault to address 0x%lx in disabled vma\n", nv_page_fault_va(vmf));
+     return VM_FAULT_SIGBUS;
+ }
+ 
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 1, 0)
++static vm_fault_t uvm_vm_fault_sigbus_wrapper(struct vm_fault *vmf)
++#else
+ static int uvm_vm_fault_sigbus_wrapper(struct vm_fault *vmf)
++#endif
+ {
+ #if defined(NV_VM_OPS_FAULT_REMOVED_VMA_ARG)
+     return uvm_vm_fault_sigbus(vmf->vma, vmf);
+@@ -390,7 +398,11 @@ static void uvm_vm_close_managed(struct vm_area_struct *vma)
+         uvm_record_unlock_mmap_sem_write(&current->mm->mmap_sem);
+ }
+ 
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 1, 0)
++static vm_fault_t uvm_vm_fault(struct vm_area_struct *vma, struct vm_fault *vmf)
++#else
+ static int uvm_vm_fault(struct vm_area_struct *vma, struct vm_fault *vmf)
++#endif
+ {
+     uvm_va_space_t *va_space = uvm_va_space_get(vma->vm_file);
+     uvm_va_block_t *va_block;
+@@ -507,7 +519,11 @@ convert_error:
+     }
+ }
+ 
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 1, 0)
++static vm_fault_t uvm_vm_fault_wrapper(struct vm_fault *vmf)
++#else
+ static int uvm_vm_fault_wrapper(struct vm_fault *vmf)
++#endif
+ {
+ #if defined(NV_VM_OPS_FAULT_REMOVED_VMA_ARG)
+     return uvm_vm_fault(vmf->vma, vmf);

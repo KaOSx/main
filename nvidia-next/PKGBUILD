@@ -1,14 +1,14 @@
 
-_extramodules=extramodules-5.0-next
+_extramodules=extramodules-5.1-next
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=nvidia-next
 pkgver=418.56
-pkgrel=11
+pkgrel=12
 pkgdesc="NVIDIA drivers for linux."
 arch=('x86_64')
 url="https://www.nvidia.com/page/home.html"
-depends=('linux-next>=5.0' 'linux-next<5.1' "nvidia-utils=${pkgver}")
+depends=('linux-next>=5.1' 'linux-next<5.2' "nvidia-utils=${pkgver}")
 makedepends=('linux-next-headers')
 license=('custom')
 install=nvidia-next.install
@@ -16,16 +16,16 @@ options=('!strip')
 _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 #_pkg="NVIDIA-Linux-x86_64-${pkgver}"
 source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
-        'linux-4.15.patch')
+        'linux-5.1.patch')
 md5sums=('a644b5b7507b8edbfa6977640032d566'
-         '8199d52a02a6a758291c80a94f12008c')
+         '234d53510e52ff90d1cf8dac3cf07d56')
 
 build() {
   cd "${srcdir}" 
   sh "${_pkg}.run" --extract-only
   
   cd "${_pkg}"
-  #patch -p1 -i ${srcdir}/linux-4.15.patch
+  patch -p1 -i ${srcdir}/linux-5.1.patch
   
   cd "${srcdir}/${_pkg}/kernel"
   make SYSSRC=/lib/modules/"${_kver}/build" module
