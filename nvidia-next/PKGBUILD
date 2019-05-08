@@ -3,8 +3,8 @@ _extramodules=extramodules-5.1-next
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=nvidia-next
-pkgver=418.56
-pkgrel=12
+pkgver=418.74
+pkgrel=1
 pkgdesc="NVIDIA drivers for linux."
 arch=('x86_64')
 url="https://www.nvidia.com/page/home.html"
@@ -17,7 +17,7 @@ _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 #_pkg="NVIDIA-Linux-x86_64-${pkgver}"
 source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
         'linux-5.1.patch')
-md5sums=('a644b5b7507b8edbfa6977640032d566'
+md5sums=('108f464e53f7a30ae1a9ff44d4f5a878'
          '234d53510e52ff90d1cf8dac3cf07d56')
 
 build() {
@@ -25,7 +25,7 @@ build() {
   sh "${_pkg}.run" --extract-only
   
   cd "${_pkg}"
-  patch -p1 -i ${srcdir}/linux-5.1.patch
+  #patch -p1 -i ${srcdir}/linux-5.1.patch
   
   cd "${srcdir}/${_pkg}/kernel"
   make SYSSRC=/lib/modules/"${_kver}/build" module
