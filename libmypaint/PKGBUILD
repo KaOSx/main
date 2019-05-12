@@ -9,13 +9,17 @@ url="https://github.com/mypaint/libmypaint"
 license=('ISC')
 depends=('gegl' 'gobject-introspection' 'json-c')
 makedepends=('intltool' 'python3')
-source=("https://github.com/mypaint/libmypaint/releases/download/v${_pkgver}/${pkgname}-${_pkgver}.tar.xz")
-sha256sums=('6a07d9d57fea60f68d218a953ce91b168975a003db24de6ac01ad69dcc94a671')
+source=("https://github.com/mypaint/libmypaint/releases/download/v${_pkgver}/${pkgname}-${_pkgver}.tar.xz"
+        'gegl0.4.x.patch')
+sha256sums=('6a07d9d57fea60f68d218a953ce91b168975a003db24de6ac01ad69dcc94a671'
+            'beb4f87a37bd8b36138710541d890e505aa3d73ddfded0c16e321f01aae7e170')
 
 build() {
   cd ${pkgname}-${_pkgver}
+  #patch -p1 -i ${srcdir}/gegl0.4.x.patch
+  #sed -i -e 's|gegl-0.3 >= 0.3|gegl-0.4 >= 0.4.16|g' configure
 
-  ./configure --prefix=/usr --enable-gegl
+  ./configure --prefix=/usr --disable-gegl
   make
 }
 
