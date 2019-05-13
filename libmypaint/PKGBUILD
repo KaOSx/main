@@ -19,6 +19,7 @@ build() {
   #patch -p1 -i ${srcdir}/gegl0.4.x.patch
   #sed -i -e 's|gegl-0.3 >= 0.3|gegl-0.4 >= 0.4.16|g' configure
 
+  # re-enable gegl with 2.0.0
   ./configure --prefix=/usr --disable-gegl
   make
 }
