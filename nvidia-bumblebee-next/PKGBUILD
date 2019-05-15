@@ -5,8 +5,8 @@ _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=nvidia-bumblebee-next
 _pkgname=nvidia-bumblebee
-pkgver=418.74
-pkgrel=3
+pkgver=430.14
+pkgrel=1
 pkgdesc="NVIDIA drivers for linux-next. Packaged for Bumblebee"
 arch=('x86_64')
 url="https://www.nvidia.com/page/home.html"
@@ -23,7 +23,7 @@ _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}-no-compat32.run"
         'linux-5.1.patch')
 #source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}.run")
-md5sums=('108f464e53f7a30ae1a9ff44d4f5a878'
+md5sums=('650c5ecde899e919f3e738e6b7e84a18'
          '234d53510e52ff90d1cf8dac3cf07d56')
 
 build() {
