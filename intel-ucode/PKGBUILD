@@ -2,20 +2,20 @@
 pkgname=intel-ucode
 pkgver=20190514
 _pkgver=28039
-pkgrel=1
+pkgrel=2
 pkgdesc="Microcode update files for Intel CPUs"
 arch=('x86_64')
 url="https://downloadcenter.intel.com/product/873/Processors"
 license=('custom')
-source=("https://github.com/intel/Intel-Linux-Processor-Microcode-Data-Files/archive/microcode-${pkgver}.tar.gz"
+source=("https://github.com/intel/Intel-Linux-Processor-Microcode-Data-Files/archive/microcode-${pkgver}a.tar.gz"
         'LICENSE'
         'intel-microcode2ucode.c')
-md5sums=('ad5fe712f54387c0737caef8131b4770'
+md5sums=('5fbd38133448ce2952f7ccd58af37651'
          'b0f489ae4b3e36dc8827dc53a76047aa'
          '444e1670977bd18e85658016eabc7cfa')
 
 package() {
-  cd Intel-Linux-Processor-Microcode-Data-Files-microcode-${pkgver}
+  cd Intel-Linux-Processor-Microcode-Data-Files-microcode-${pkgver}a
   install -d -m755 ${pkgdir}/lib/firmware/intel-ucode/
   
   cp intel-ucode/* ${pkgdir}/lib/firmware/intel-ucode/
