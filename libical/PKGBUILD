@@ -1,7 +1,7 @@
 
 pkgname=libical
-pkgver=3.0.4
-pkgrel=2
+pkgver=3.0.5
+pkgrel=1
 epoch=1
 pkgdesc="An Open Source implementation of the iCalendar protocols and protocol data units."
 arch=('x86_64')
@@ -11,7 +11,7 @@ depends=('glibc' 'icu')
 makedepends=('cmake' 'pkg-config')
 options=('!libtool')
 source=("https://github.com/libical/libical/archive/v${pkgver}.tar.gz")
-md5sums=('bc4258748323dee3083e21280fa85f96')
+md5sums=('7080af6b386955f161f26866a9741de5')
 
 build() {
   cd ${pkgname}-${pkgver}
@@ -20,7 +20,8 @@ build() {
   cd build
   cmake .. \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_INSTALL_LIBDIR=lib
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DENABLE_GTK_DOC=OFF
   make
 }
 
