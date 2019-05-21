@@ -1,18 +1,18 @@
 
 pkgname=python2-gobject3 
 pkgbase=pygobject
-pkgver=3.30.4
-_pkgver=3.30
+pkgver=3.32.1
+_pkgver=3.32
 pkgrel=1
 pkgdesc="Python2 bindings for GObject, including all introspection files"
 arch=('x86_64')
 url="https://pygobject.readthedocs.io/en/latest/"
 license=('LGPL')
-depends=('python2-cairo' 'gobject-introspection')
+depends=('python2-cairo' 'gobject-introspection' 'python3-gobject3')
 makedepends=('meson' 'ninja')
 source=("https://ftp.gnome.org/pub/gnome/sources/${pkgbase}/${_pkgver}/pygobject-${pkgver}.tar.xz")
 options=('!libtool')
-sha256sums=('2dc1a1a444b82955e65b81c2a2511ecf8032404beba4ef1d48144168f2f64c43')
+sha256sums=('32c99def94b8dea5ce9e4bc99576ef87591ea779b4db77cfdca7af81b76d04d8')
 
 build() {
   mkdir -p build
@@ -29,5 +29,7 @@ package() {
   cd build
   
   DESTDIR=${pkgdir} ninja install
+  
+  rm -r ${pkgdir}/usr/{include,lib/pkgconfig}
 }
 
