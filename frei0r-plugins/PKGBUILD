@@ -10,17 +10,18 @@ license=('GPL')
 depends=('gcc-libs' 'gavl' 'opencv')
 makedepends=('doxygen')
 options=('!emptydirs')
-source=("https://files.dyne.org/frei0r/${pkgname}-${pkgver}.tar.gz")
-#source=("git://code.dyne.org/frei0r.git"
+source=("https://files.dyne.org/frei0r/${pkgname}-${pkgver}.tar.gz"
+        "https://github.com/dyne/frei0r/commit/e1ecb144ca58cb4d68ef326d0ae224025a171fef.diff")
 #source=("https://files.dyne.org/frei0r/snapshots/frei0r-${_pkgver}.tar.gz"
 #        "http://www.linuxfromscratch.org/patches/blfs/7.9/frei0r-snapshot-27-01-15-gcc5_fix-1.patch"
 #        'facedetect.diff')
-md5sums=('bb85573340029e5d0ae1c21d0685461d')
+md5sums=('bb85573340029e5d0ae1c21d0685461d'
+         'dfe72d29c42657fefa76273c38b59c2b')
 
 prepare() {
   cd ${pkgname}-${pkgver}
   
-  #patch -p1 -i ${srcdir}/frei0r-snapshot-27-01-15-gcc5_fix-1.patch
+  patch -p1 -i ${srcdir}/e1ecb144ca58cb4d68ef326d0ae224025a171fef.diff
   touch README AUTHORS ChangeLog TODO
   sed -i -e 's|AC_INIT(frei0r-plugins, [1.5.0]|AC_INIT(frei0r-plugins, [1.6.0]|g' configure.ac
   sed -i -e 's|AM_INIT_AUTOMAKE|AM_INIT_AUTOMAKE([foreign])|g' configure.ac
