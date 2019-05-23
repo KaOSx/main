@@ -1,7 +1,7 @@
 
 pkgname=cfitsio
-pkgver=3.450
-_pkgver=3450
+pkgver=3.470
+_pkgver=3.47
 pkgrel=1
 pkgdesc="Library for reading and writing data files in FITS (Flexible Image Transport System) data format."
 arch=('x86_64')
@@ -10,18 +10,18 @@ license=('GPL2')
 depends=('glibc')
 makedepends=('pkgconfig')
 options=('!libtool')
-source=("https://heasarc.gsfc.nasa.gov/FTP/software/fitsio/c/${pkgname}${_pkgver}.tar.gz")
-md5sums=('f470849bb43561d9a9b1925eeb7f7f0d')
+source=("https://heasarc.gsfc.nasa.gov/FTP/software/fitsio/c/${pkgname}-${_pkgver}.tar.gz")
+md5sums=('a2b266abb75ddbf71a29362a599a86ba')
 
 build() {
-  cd ${pkgname}
+  cd ${pkgname}-${_pkgver}
   
   ./configure --prefix=/usr
   make shared
 }
 
 package() {
-  cd ${pkgname}
+  cd ${pkgname}-${_pkgver}
   make DESTDIR=${pkgdir} install
   
   install -D -m644 License.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
