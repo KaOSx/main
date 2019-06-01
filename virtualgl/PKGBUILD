@@ -1,15 +1,15 @@
 
 pkgname=virtualgl
-pkgver=2.5.2
+pkgver=2.6.2
 pkgrel=1
 pkgdesc="Redirects 3D commands from an OpenGL application onto a server-side 3D graphics card."
 arch=('x86_64')
-url="http://virtualgl.org"
+url="https://virtualgl.org"
 license=('LGPL')
 depends=('mesa' 'libxv' 'libjpeg-turbo' 'glu')
-makedepends=('cmake')
-source=("http://sourceforge.net/projects/virtualgl/files/${pkgver}/VirtualGL-${pkgver}.tar.gz")
-md5sums=('1a9f404f4a35afa9f56381cb33ed210c')
+makedepends=('cmake' 'libxtst')
+source=("https://sourceforge.net/projects/virtualgl/files/${pkgver}/VirtualGL-${pkgver}.tar.gz")
+md5sums=('6db53a3ed799e70fa613f8bbc28ba67e')
 
 build() {
   mkdir -p build
