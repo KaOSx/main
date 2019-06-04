@@ -1,7 +1,7 @@
 
 pkgname=xkeyboard-config
-pkgver=2.26
-pkgrel=2
+pkgver=2.27
+pkgrel=1
 pkgdesc="X keyboard configuration files"
 arch=('x86_64')
 license=('custom')
@@ -10,13 +10,13 @@ depends=('xorg-xkb-utils')
 makedepends=('intltool')
 source=("https://www.x.org/releases/individual/data/${pkgname}/${pkgname}-${pkgver}.tar.bz2"
         "https://gitlab.freedesktop.org/xkeyboard-config/xkeyboard-config/commit/af6c0f29dbee1cc7b280eed891592797c2e31220.patch")
-md5sums=('e2e980629bfeb9f40a7d44488b18ba12'
+md5sums=('316753e35d3906d042c74230612eab9f'
          '18f531be273d3572efd55dbb4cd99a59')
 
 build() {
   cd ${pkgname}-${pkgver}
 
-  patch -p1 -i ${srcdir}/af6c0f29dbee1cc7b280eed891592797c2e31220.patch
+  #patch -p1 -i ${srcdir}/af6c0f29dbee1cc7b280eed891592797c2e31220.patch
   
   ./configure --prefix=/usr \
       --with-xkb-base=/usr/share/X11/xkb \
