@@ -1,28 +1,28 @@
 
 pkgname=suil
-pkgver=0.10.0
-pkgrel=2
+pkgver=0.10.4
+pkgrel=1
 pkgdesc="A lightweight C library for loading and wrapping LV2 plugin UIs"
 arch=('x86_64')
 url="https://drobilla.net/software/suil/"
 license=('custom:ISC')
 depends=('lv2')
-makedepends=('python2')
+makedepends=('python3')
 source=("https://download.drobilla.net/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('ba2f6bf631d8f3686772c2b5c9467628')
+md5sums=('b5a0ccb70ec0791531ee69f3a5b86ab6')
 
 build() {
   cd ${pkgname}-${pkgver}
   sed -i "/ldconfig/d" wscript
 
-  python2 waf configure --prefix=/usr
-  python2 waf
+  python3 waf configure --prefix=/usr
+  python3 waf
 }
 
 package() {
   cd ${pkgname}-${pkgver}
 
-  python2 waf install --destdir=${pkgdir}
+  python3 waf install --destdir=${pkgdir}
 
   install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
