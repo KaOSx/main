@@ -22,7 +22,7 @@ makedepends=('postgresql-libs' 'cups' 'python2' 'gperf' 'ruby' 'pulseaudio')
 options=('!libtool' 'debug')
 _pkgfqn="qtbase-everywhere-src-${subver}"
 source=("${_qtmirror}/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz"
-        "https://github.com/qt/qtbase/commit/25feee4e061b99edab79503d81f5bd045c6c8e3d.diff")
+        "https://github.com/qt/qtbase/commit/90aefe0843a50aede26b8d411f46f3828dae25f1.diff")
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
          '44452bb9860dd7424b710334cfc7d016')
@@ -30,8 +30,8 @@ md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
 build() {
     cd ${srcdir}/${_pkgfqn}
     
-    # fix build with glib 2.28
-    #patch -p1 -i ${srcdir}/25feee4e061b99edab79503d81f5bd045c6c8e3d.diff
+    # fix cmake issues in qt5-tools 5.13
+    patch -p1 -i ${srcdir}/90aefe0843a50aede26b8d411f46f3828dae25f1.diff
     
     #sed -i 's|libs": "-lmysqlclient_r"|libs": "-lmariadb"|' src/sql/configure.json
     #sed -i 's|libs": "-lmysqlclient"|libs": "-lmariadb"|' src/sql/configure.json
