@@ -1,6 +1,6 @@
 
 pkgname=libshout
-pkgver=2.4.2
+pkgver=2.4.3
 pkgrel=1
 pkgdesc="Library for accessing a shoutcast/icecast server"
 arch=('x86_64')
@@ -9,11 +9,11 @@ url="https://www.icecast.org/"
 options=('!libtool')
 license=('LGPL')
 source=("https://downloads.xiph.org/releases/libshout/${pkgname}-${pkgver}.tar.gz")
-md5sums=('b7a33377d716a95c9159f0922d04e596')
+md5sums=('2623ebf5bdf00517d2a7fd17d70c31aa')
 
 build() {
   cd ${pkgname}-${pkgver}
-  sed -e 's|SSLeay_add_all_algorithms|OpenSSL_add_all_algorithms|g' -i src/tls.c
+  #sed -e 's|SSLeay_add_all_algorithms|OpenSSL_add_all_algorithms|g' -i src/tls.c
   
   ./configure --prefix=/usr \
     --sysconfdir=/etc \
