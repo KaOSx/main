@@ -1,8 +1,8 @@
 
 # rebuild facile on any update
 pkgname=ocaml	
-pkgver=4.07.1
-_pkgver=4.07
+pkgver=4.08.0
+_pkgver=4.08
 pkgrel=1
 pkgdesc="A functional language with OO extensions"
 arch=('x86_64')
@@ -13,18 +13,19 @@ makedepends=('tk' 'ncurses>=5.6-7' 'libx11')
 optdepends=('ncurses: advanced ncurses features' 'tk: advanced tk features')
 options=('!makeflags' '!emptydirs')
 source=("http://caml.inria.fr/distrib/ocaml-${_pkgver}/${pkgname}-${pkgver}.tar.xz")
-md5sums=('c3250eaad4d63e92efb21456a7a46a13')
+md5sums=('af45a32be0e81795d404d0151e3eff97')
 
 build() {
   cd ${pkgname}-${pkgver}
   
-  ./configure -prefix /usr 
+  ./configure --prefix=/usr \
+    --mandir=/usr/share/man
   make world.opt 
 }
 
 package_ocaml() {
   cd ${pkgbase}-${pkgver}
-  make PREFIX=${pkgdir}/usr MANDIR=${pkgdir}/usr/share/man install 
+  make DESTDIR=${pkgdir} install 
 
   install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
   install -m644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/
