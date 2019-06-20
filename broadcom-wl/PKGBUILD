@@ -1,17 +1,17 @@
 
 # Find the kernel name inside the chroot
-_extramodules=extramodules-5.0
+_extramodules=extramodules-5.1
 _kver="$(cat /lib/modules/${_extramodules}/version)"
 
 pkgname=broadcom-wl
 pkgver=6.30.223.271
 _pkgver=6_30_223_271
-pkgrel=54
+pkgrel=55
 pkgdesc='Broadcom 802.11abgn hybrid Linux networking device driver'
 arch=('x86_64')
 url='https://www.broadcom.com/support/802.11/'
 license=('custom')
-depends=('linux>=5.0.8' 'linux<5.1')
+depends=('linux>=5.1.12' 'linux<5.2')
 makedepends=('linux-headers' 'elfutils')
 source=("https://docs.broadcom.com/docs-and-downloads/docs/linux_sta/hybrid-v35_64-nodebug-pcoem-${_pkgver}.tar.gz"
         'modprobe.d'
@@ -32,6 +32,8 @@ build() {
 	patch -p1 -i linux-recent.patch
 	
 	sed -i 's|BRCM_WLAN_IFNAME eth|BRCM_WLAN_IFNAME wlan|' src/wl/sys/wl_linux.c
+	sed -i 's|get_ds()|KERNEL_DS|g' src/wl/sys/wl_iw.c
+    sed -i 's|get_ds()|KERNEL_DS|g' src/wl/sys/wl_cfg80211_hybrid.c
 
 	make -C /lib/modules/"${_kver}"/build M=`pwd`
 }

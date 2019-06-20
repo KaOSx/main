@@ -1,30 +1,30 @@
 
-_extramodules=extramodules-5.0
+_extramodules=extramodules-5.1
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=('nvidia-390xx' 'khd-nvidia-390xx')
 pkgver=390.116
-pkgrel=4
+pkgrel=5
 arch=('x86_64')
 url="https://www.nvidia.com/page/home.html"
-makedepends=('linux-headers' 'linux>=5.0.8' 'linux<5.1' "nvidia-390xx-utils=${pkgver}")
+makedepends=('linux-headers' 'linux>=5.1.12' 'linux<5.2' "nvidia-390xx-utils=${pkgver}")
 license=('custom')
 
 _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 
 source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
         'nvidia_supported'
-        'linux-4.10.patch')
+        'linux-5.1.patch')
 md5sums=('2bf2f9b7dcaea8cb2c30813ab4e57f71'
          '282f73f1a7326339a7b0e0716eee4f76'
-         '4ab00fe5ab144083caa6c6994feea7e6')
+         '1f6ddbda9e0f6d9da944064a5c42b3af')
 
 build() {
     cd "${srcdir}"
     sh "${_pkg}.run" --extract-only
     
     cd "${_pkg}"
-    #patch -p1 -i ${srcdir}/linux-4.10.patch
+    patch -p1 -i ${srcdir}/linux-5.1.patch
     # linux 4.19 needed
     #sed -i -e 's|drm_mode_connector_attach_encoder|drm_connector_attach_encoder|g' kernel/nvidia-drm/nvidia-drm-encoder.c
     #sed -i -e 's|drm_mode_connector_update_edid_property|drm_connector_update_edid_property|g' kernel/nvidia-drm/nvidia-drm-connector.c
@@ -41,7 +41,7 @@ build() {
 
 package_nvidia-390xx() {
     pkgdesc="NVIDIA drivers for linux, 390xx legacy version."
-    depends=('linux>=5.0.8' 'linux<5.1' "nvidia-390xx-utils=${pkgver}")
+    depends=('linux>=5.1.12' 'linux<5.2' "nvidia-390xx-utils=${pkgver}")
     conflicts=('nvidia' 'nvidia-340xx')
     install=nvidia.install
     
