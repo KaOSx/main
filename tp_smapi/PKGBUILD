@@ -1,13 +1,13 @@
 
 pkgname=tp_smapi
 pkgver=0.43
-pkgrel=19
-_extramodules=/lib/modules/extramodules-5.0
+pkgrel=20
+_extramodules=/lib/modules/extramodules-5.1
 pkgdesc="Modules for ThinkPad's SMAPI functionality"
 arch=('x86_64')
 url='https://github.com/evgeni/tp_smapi'
 license=('GPL')
-depends=('linux>=5.0.8' 'linux<5.1')
+depends=('linux>=5.1.12' 'linux<5.2')
 makedepends=('linux-headers' 'elfutils')
 install="${pkgname}.install"
 source=("https://github.com/evgeni/tp_smapi/releases/download/tp-smapi%2F${pkgver}/${pkgname}-${pkgver}.tgz"
