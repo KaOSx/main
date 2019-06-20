@@ -1,16 +1,16 @@
 
 pkgname=libxi
-pkgver=1.7.9
+pkgver=1.7.10
 pkgrel=1
 pkgdesc="X11 Input extension library"
 arch=('x86_64')
 url="https://xorg.freedesktop.org"
-depends=('libxext' 'inputproto' 'libxfixes')
+depends=('libxext' 'xorgproto' 'libxfixes')
 makedepends=('pkgconfig' 'xorg-util-macros')
 options=('!libtool')
 license=('custom')
 source=("https://xorg.freedesktop.org/releases/individual/lib/libXi-${pkgver}.tar.bz2")
-md5sums=('1f0f2719c020655a60aee334ddd26d67')
+sha256sums=('36a30d8f6383a72e7ce060298b4b181fd298bc3a135c8e201b7ca847f5f81061')
 
 
 build() {
