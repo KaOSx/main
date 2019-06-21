@@ -1,12 +1,12 @@
 
 # fails to find perl bindings without running -make generate- in gdal/swig/perl on error
 pkgname=gdal
-pkgver=2.4.90
-_pkgver=2.5.0RC1
-pkgrel=4
+pkgver=3.0.0
+_pkgver=3.0.0
+pkgrel=1
 pkgdesc="A translator library for raster geospatial data formats"
 arch=('x86_64')
-url="http://www.gdal.org/"
+url="https://www.gdal.org/"
 license=('custom')
 depends=('curl' 'geos' 'giflib' 'hdf5' 'libgeotiff' 'libjpeg-turbo' 'libpng' 'libtiff' 'netcdf'
          'poppler' 'python3-numpy' 'sqlite3' 'mariadb' 'postgresql-libs' 'cfitsio' 'unixodbc'
@@ -16,11 +16,10 @@ options=('!libtool' '!makeflags')
 provides=('python3-gdal')
 replaces=('python3-gdal')
 conflicts=('python3-gdal')
-#source=("http://download.osgeo.org/gdal/${pkgver}/${pkgname}-${pkgver}.tar.xz")
-source=("https://github.com/OSGeo/gdal/archive/v${_pkgver}.tar.gz"
-        "https://github.com/OSGeo/gdal/commit/8958528f9b5737581afa7249b0e16f2ff89d727e.diff")
-md5sums=('8afbcc3dd34c7ad4238afd0806cc4679'
-         'e7d0d5a2d2cc64f2d6ded7f386b1e59b')
+source=("https://download.osgeo.org/gdal/${pkgver}/${pkgname}-${pkgver}.tar.xz")
+#source=("https://github.com/OSGeo/gdal/archive/v${_pkgver}.tar.gz"
+#        "https://github.com/OSGeo/gdal/commit/8958528f9b5737581afa7249b0e16f2ff89d727e.diff")
+md5sums=('80728b8a98c0cd6eab3d2bc023956619')
 
 prepare() {
   cd ${pkgname}-${_pkgver}
@@ -29,7 +28,7 @@ prepare() {
 }
 
 build() {
-  cd ${pkgname}-${_pkgver}/gdal
+  cd ${pkgname}-${_pkgver}
 
   ./configure --prefix=/usr \
     --sysconfdir=/etc \
@@ -51,7 +50,7 @@ build() {
 }
 
 package () {
-  cd ${pkgname}-${_pkgver}/gdal
+  cd ${pkgname}-${_pkgver}
   make DESTDIR=${pkgdir} install
 
   install -D -m644 LICENSE.TXT ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
