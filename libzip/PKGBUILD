@@ -1,12 +1,12 @@
 
 pkgname=libzip
 pkgver=1.5.2
-pkgrel=1
+pkgrel=2
 pkgdesc="A C library for reading, creating, and modifying zip archives"
 url="https://libzip.org/"
 license=('GPL2')
 arch=('x86_64')
-depends=('zlib' 'openssl')
+depends=('zlib' 'openssl' 'nettle')
 makedepends=('cmake')
 options=('!libtool')
 source=("https://libzip.org/download/${pkgname}-${pkgver}.tar.xz")

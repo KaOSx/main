@@ -2,12 +2,12 @@
 # rebuild kodi on every update
 pkgname=libmicrohttpd
 pkgver=0.9.64
-pkgrel=1
+pkgrel=2
 pkgdesc="Small C library that is supposed to make it easy to run an HTTP server as part of another application."
 arch=('x86_64')
 url="https://www.gnu.org/software/libmicrohttpd/"
 license=('LGPL')
-depends=('gnutls')
+depends=('gnutls' 'nettle')
 options=('!libtool')
 source=("https://ftp.gnu.org/gnu/libmicrohttpd/${pkgname}-${pkgver}.tar.gz")
 md5sums=('ab2aa715125619c0f996489b47836eea')
