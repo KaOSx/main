@@ -1,15 +1,15 @@
 
 pkgname=vulkan-validationlayers
-pkgver=1.1.108
+pkgver=1.1.112
 pkgrel=1
 pkgdesc="Project provides the Khronos official Vulkan validation layers"
 arch=('x86_64')
 url="https://www.khronos.org/vulkan/"
 license=('APACHE')
 depends=('vulkan-headers' 'vulkan-loader' 'mesa' 'wayland' 'libx11' 'libxkbcommon' 'libxrandr')
-makedepends=('cmake' 'vulkan-headers' 'python3-lxml')
+makedepends=('cmake' 'vulkan-headers' 'python3-lxml' 'python2')
 source=("https://github.com/KhronosGroup/Vulkan-ValidationLayers/archive/v${pkgver}.tar.gz")
-md5sums=('3409b290013a79e4115908da84b9fbea')
+md5sums=('a10e9c6f78345fe3a656a60b8a5705a8')
 
 prepare() {
   cd Vulkan-ValidationLayers-${pkgver}
