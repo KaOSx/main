@@ -1,12 +1,12 @@
 
 pkgname=qtwebkit-tp
-pkgver=5.212.0.2
-_pkgver=5.212.0-alpha2
+pkgver=5.212.0.3
+_pkgver=5.212.0-alpha3
 _commit=5ccca3a720f7c2251c4ac8b28f25bd73524081f0
 pkgrel=1
 pkgdesc='Cross-platform application and UI framework, QtWebkit files (revived branch)'
 arch=('x86_64')
-url='https://github.com/annulen/webkit'
+url='https://github.com/qtwebkit/qtwebkit'
 license=('LGPLv2')
 depends=('qt5-sensors' 'qt5-location' 'icu' 'libxslt' 'libxcomposite' 
          'gst-plugins-base' 'gst-plugins-good' 'libwebp' 'mesa' 'qt5-serialport' 'qt5-webchannel'
@@ -18,19 +18,19 @@ replaces=('qt5-webkit')
 conflicts=('qt5-webkit')
 groups=('qt5')
 #source=("https://github.com/annulen/qtwebkit-snapshots/archive/${_commit}.zip"
-source=("https://github.com/annulen/webkit/archive/${_commit}.zip"
+source=("https://github.com/qtwebkit/qtwebkit/releases/download/qtwebkit-${_pkgver}/qtwebkit-${_pkgver}.tar.xz"
         "https://raw.githubusercontent.com/Alexpux/MINGW-packages/master/mingw-w64-qtwebkit/0012-install-additional-pri-files.patch"
         "https://github.com/annulen/webkit/commit/f51554bf104ab0491370f66631fe46143a23d5c2.diff"
         "https://github.com/annulen/webkit/commit/6faf11215e1af27d35e921ae669aa0251a01a1ab.diff"
         "https://github.com/annulen/webkit/commit/76420459a13d9440b41864c93cb4ebb404bdab55.diff")
-md5sums=('b1884bea0d02fa0659b50b39f2290841'
+md5sums=('5e7ade75ad0df9047826e625e4f262fc'
          'd3997143a1b57cbbfbd4364713fea91d'
          'b470e396e4bff74b104e98e1362d0161'
          'f944742824da4d636204ae2689baa773'
          'b5c629884a886c9175d2fb28d14969e4')
 
 prepare() {
-  cd webkit-${_commit}
+  cd qtwebkit-${_pkgver}
 
   #patch -p1 -i ${srcdir}/0012-install-additional-pri-files.patch
   # needed for cmake 3.10
@@ -41,10 +41,10 @@ prepare() {
 }
 
 build() {
-  #mkdir -p build
+  mkdir -p build
   cd build
   
-  cmake ../webkit-${_commit} \
+  cmake ../qtwebkit-${_pkgver} \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DKDE_INSTALL_INCLUDEDIR=/usr/include/qt5 \

@@ -1,8 +1,8 @@
 
 pkgname=qhull
-pkgver=2015.2
-_pkgver=2015-src-7.2.0
-pkgrel=2
+pkgver=2019.1
+_pkgver=2019-src-7.3.2
+pkgrel=1
 pkgdesc="A general dimension code for computing convex hulls and related structures"
 arch=('x86_64')
 url="http://www.qhull.org/"
@@ -11,7 +11,7 @@ depends=('glibc')
 makedepends=('cmake')
 options=('!libtool')
 source=("http://www.qhull.org/download/${pkgname}-${_pkgver}.tgz")
-md5sums=('e6270733a826a6a7c32b796e005ec3dc')
+md5sums=('53c04f9c89b491b17b10c7ea1eaa4cc8')
 
 build() {
   mkdir -p build
@@ -19,8 +19,7 @@ build() {
   
   cmake ../${pkgname}-${pkgver} \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_CXX_FLAGS=-fPIC \
-    -DCMAKE_C_FLAGS=-fPIC 
+    -DCMAKE_BUILD_TYPE=Release
   make
 }
 
