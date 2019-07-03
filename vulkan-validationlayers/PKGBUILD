@@ -1,7 +1,7 @@
 
 pkgname=vulkan-validationlayers
 pkgver=1.1.112
-pkgrel=1
+pkgrel=2
 pkgdesc="Project provides the Khronos official Vulkan validation layers"
 arch=('x86_64')
 url="https://www.khronos.org/vulkan/"
@@ -30,6 +30,7 @@ build() {
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_LIBDIR=lib \
     -DCMAKE_INSTALL_INCLUDEDIR=/usr/include/vulkan/ \
+    -DBUILD_LAYER_SUPPORT_FILES=ON \
     -DCMAKE_SKIP_RPATH=TRUE \
     -DBUILD_TESTS=OFF \
     -DBUILD_WSI_XCB_SUPPORT=ON \
