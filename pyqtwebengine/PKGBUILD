@@ -1,15 +1,15 @@
 
 pkgname=pyqtwebengine
 _pkgname=PyQtWebEngine
-pkgver=5.12.1
+pkgver=5.13.0
 pkgrel=1
 pkgdesc="A set of Python3 bindings for the Qt Company's Qt WebEngine libraries"
 arch=('x86_64')
 url="https://www.riverbankcomputing.com/software/pyqtwebengine/intro"
 license=('GPL')
 depends=('sip3' 'qtwebengine' 'pyqt5-python3')
-source=("https://www.riverbankcomputing.com/static/Downloads/PyQtWebEngine/${_pkgname}_gpl-${pkgver}.tar.gz")
-sha1sums=('737acf93ecf39e5e2136e094a8b0a9ffa47bd2de')
+source=("https://www.riverbankcomputing.com/static/Downloads/PyQtWebEngine/${pkgver}/${_pkgname}_gpl-${pkgver}.tar.gz")
+sha1sums=('dc793469c5d2edea8eb0b67f377d69e2b1f4f696')
 
 build() {
   cd ${_pkgname}_gpl-${pkgver}
