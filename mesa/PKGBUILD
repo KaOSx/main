@@ -1,8 +1,8 @@
 
 pkgbase=mesa
 pkgname=('mesa' 'libgl')
-pkgver=19.0.8
-_pkgver=19.0.8
+pkgver=19.1.2
+_pkgver=19.1.2
 pkgrel=1
 arch=('x86_64')
 makedepends=('xorgproto' 'libdrm' 'libxxf86vm' 'libxdamage' 'libva' 'expat' 'llvm' 'libx11' 'libxt' 'gcc-libs'
@@ -13,17 +13,9 @@ url="https://www.mesa3d.org/"
 license=('custom')
 source=("https://mesa.freedesktop.org/archive/${pkgname}-${pkgver}.tar.xz"
 #source=("mesa::git://anongit.freedesktop.org/mesa/mesa#branch=master"
-       'LICENSE'
-       'nouveau_locking_1.patch'
-       'nouveau_locking_2.patch'
-       'nouveau_locking_3.patch'
-       'swr.patch')
-sha256sums=('d017eb53a810c32dabeedf6ca2238ae1e897ce9090e470e9ce1d6c9e3f1b0862'
-            '7fdc119cf53c8ca65396ea73f6d10af641ba41ea1dd2bd44a824726e01c8b3f2'
-            '00b7c369de787ad6cdcd01ffc1e8b7ef81106d174b6c21b27090e84539984467'
-            '5532d795b32ebaf875d75a2d76059fef4f88da0efab14855dc797d9b2a2df6cf'
-            '752a293974781bb7c57f2631d5f5282be30c75a1c625dfa90cf4ae6537d8b54d'
-            '14ea2e883d4a26d8f00dbb5b933661a18dd3984c6f7cb36eda96aa47c7091980')
+       'LICENSE')
+sha256sums=('813a144ea8ebefb7b48b6733f3f603855b0f61268d86cc1cc26a6b4be908fcfd'
+            '7fdc119cf53c8ca65396ea73f6d10af641ba41ea1dd2bd44a824726e01c8b3f2')
   
 build() {
     mkdir -p build
@@ -38,7 +30,7 @@ build() {
     -Dplatforms=x11,wayland,drm,surfaceless \
     -Ddri3=true \
     -Ddri-drivers=i915,i965,r200,nouveau \
-    -Dgallium-drivers=r300,r600,nouveau,radeonsi,svga,swrast,virgl \
+    -Dgallium-drivers=r300,r600,nouveau,radeonsi,svga,swr,swrast,virgl \
     -Dgallium-extra-hud=true \
     -Dgallium-vdpau=true \
     -Dgallium-xvmc=true \
@@ -48,6 +40,7 @@ build() {
     -Dgallium-nine=true \
     -Dgallium-opencl=disabled \
     -Dvulkan-drivers=amd,intel \
+    -Dvulkan-overlay-layer=false \
     -Dshared-glapi=true \
     -Dgles1=true \
     -Dgles2=true \
