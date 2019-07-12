@@ -1,26 +1,26 @@
 
 pkgname=iso-codes
-pkgver=4.1
+pkgver=4.3
 pkgrel=1
 pkgdesc="Lists of various ISO standards (e.g. country,language, language scripts, and currency names) in one place"
 arch=('x86_64')
-url="https://pkg-isocodes.alioth.debian.org/"
+url="https://salsa.debian.org/iso-codes-team/iso-codes/"
 license=('LGPL')
 pkgdesc="Lists of the country, language, and currency names"
 makedepends=('python3')
 #source=("https://pkg-isocodes.alioth.debian.org/downloads/${pkgname}-${pkgver}.tar.xz")
-source=("https://salsa.debian.org/iso-codes-team/iso-codes/uploads/049ce6aac94d842be809f4063950646c/${pkgname}-${pkgver}.tar.xz")
-md5sums=('7d994bab4b0b7156e82ee7e117eb686b')
+source=("https://salsa.debian.org/iso-codes-team/iso-codes/-/archive/${pkgname}-${pkgver}/iso-codes-${pkgname}-${pkgver}.tar.bz2")
+md5sums=('a3ec7e3382d2ff6a997307ec3fdf67fa')
 
 build() {
-  cd ${pkgname}-${pkgver}
+  cd ${pkgname}-${pkgname}-${pkgver}
   
   ./configure --prefix=/usr
   make
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
+  cd ${pkgname}-${pkgname}-${pkgver}
   
   make DESTDIR=${pkgdir} pkgconfigdir=/usr/lib/pkgconfig install
 }
