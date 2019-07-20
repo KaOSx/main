@@ -1,20 +1,20 @@
 
 pkgname=phonon-qt5-backend-gstreamer
 _pkgname=phonon-backend-gstreamer
-pkgver=4.9.0
-pkgrel=4
+pkgver=4.9.1
+pkgrel=1
 pkgdesc="Phonon GStreamer backend Qt5 version"
 arch=('x86_64')
 url='http://phonon.kde.org'
 license=('LGPL')
 depends=('gst-plugins-base' 'qt5-x11extras')
-makedepends=('pkg-config' 'extra-cmake-modules' 'mesa' 'phonon-qt5')
+makedepends=('pkg-config' 'extra-cmake-modules' 'mesa' 'phonon-qt5' 'qt5-tools')
 provides=('phonon-backend-qt5')
 groups=('kde-complete' 'kde-uninstall')
 source=("https://download.kde.org/stable/phonon/${_pkgname}/${pkgver}/${_pkgname}-${pkgver}.tar.xz"
         "https://github.com/KDE/phonon-gstreamer/commit/fca0714fd37b2276eb663f649b6b9871a3973fa4.diff")
 #source=("git://anongit.kde.org/phonon-gstreamer#branch=1.0-porting-for-merge")
-sha256sums=('cec3e5ece1261d344b68363ef0606ebf49772628ba94bb55b0c0d18773b885f1'
+sha256sums=('3fcca9cb284ff12de70a65ffc1f85ddf8f278cd4ba06021e11666ac8bffb6ea2'
             'f64ef452d3753776c4827d25bbb2b52cdff3d3f54722141d3cf1cb3c9e61b4cb')
 
 prepare() {
