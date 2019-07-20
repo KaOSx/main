@@ -1,7 +1,7 @@
 
 pkgbase="llvm"
 pkgname=('llvm' 'clang' 'clang-analyzer' 'clang-tools-extra' 'lldb')
-pkgver=7.1.0
+pkgver=8.0.1
 _gcc_ver=8.3.0
 pkgrel=1
 arch=('x86_64')
@@ -9,16 +9,16 @@ url="https://llvm.org/"
 license=('custom:University of Illinois/NCSA Open Source License')
 makedepends=('gcc-libs' 'libffi' 'python3' 'python2' 'ocaml' "gcc=${_gcc_ver}" 'groff'
              'swig' 'cmake') # 'ocaml-ctypes' 'findlib' needed to have CMake build find ocaml
-source=("https://llvm.org/releases/${pkgver}/${pkgbase}-${pkgver}.src.tar.xz"
-        "https://llvm.org/releases/${pkgver}/cfe-${pkgver}.src.tar.xz"
-        "https://releases.llvm.org/$pkgver/clang-tools-extra-$pkgver.src.tar.xz"
-        "https://llvm.org/releases/${pkgver}/compiler-rt-${pkgver}.src.tar.xz"
-        "https://llvm.org/releases/${pkgver}/lldb-${pkgver}.src.tar.xz")
-md5sums=('26844e21dbad09dc7f9b37b89d7a2e48'
-         '2a3651e54e1a9c512d4ee6bd84183cf6'
-         '1116b2db54aabf25564120c50ff8e09d'
-         '2c454d67f82b32cb7e42773e053cc542'
-         '73b1937ba8146bf25a7636362b85f7ee')
+source=("https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver}/${pkgbase}-${pkgver}.src.tar.xz"
+        "https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver}/cfe-${pkgver}.src.tar.xz"
+        "https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver}/clang-tools-extra-$pkgver.src.tar.xz"
+        "https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver}/compiler-rt-${pkgver}.src.tar.xz"
+        "https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver}/lldb-${pkgver}.src.tar.xz")
+md5sums=('9a3b63df01c52556f7afb5617934e79e'
+         '28db72b57ca99307259773e4ac74a6d3'
+         'b7c55438f792a1d5698696100a8731e0'
+         'c251e582862f9fcc880802f8f2920096'
+         'c2777536fe0d4151c6aa30773f51af20')
 
 prepare() {
     cd ${pkgbase}-${pkgver}.src
@@ -34,7 +34,7 @@ prepare() {
 }
   
 build() {
-    mkdir -p build
+    #mkdir -p build
     cd build
     
     export PKG_CONFIG_PATH='/usr/lib/pkgconfig'
@@ -137,7 +137,7 @@ package_lldb() {
     python2 -m compileall ${pkgdir}/usr/lib/python2.7/site-packages/lldb
     python2 -O -m compileall ${pkgdir}/usr/lib/python2.7/site-packages/lldb
     # part of LLVM
-    rm ${pkgdir}/usr/lib/python3.7/site-packages/six.py
+    #rm ${pkgdir}/usr/lib/python3.7/site-packages/six.py
     
     install -D -m644 ${srcdir}/${pkgbase}-${pkgver}.src/LICENSE.TXT ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE    
 }
