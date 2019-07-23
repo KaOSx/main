@@ -2,14 +2,14 @@
 pkgname=libblockdev
 pkgver=2.22
 _pkgver=2.22-1
-pkgrel=1
+pkgrel=2
 pkgdesc="C library supporting GObject introspection for manipulation of block devices."
 arch=('x86_64')
 url="http://storaged.org/libblockdev/"
 license=('LGPL')
 depends=('btrfs-progs' 'cryptsetup' 'kmod' 'libbytesize' 'lvm2' 'nss' 'parted' 
-         'python3' 'systemd' 'util-linux' 'volume_key' 'mpfr' 'ndctl' 'libyaml')
-makedepends=('gobject-introspection' 'python3-six') # 'dmraid')
+         'python3' 'systemd' 'util-linux' 'volume_key' 'mpfr' 'ndctl' 'libyaml' 'dmraid')
+makedepends=('gobject-introspection' 'python3-six')
 source=("https://github.com/storaged-project/libblockdev/releases/download/${_pkgver}/${pkgname}-${pkgver}.tar.gz"
         "https://github.com/rhinstaller/libblockdev/commit/50dec146ddd6c77f5989aa359a545ab676437169.diff")
 md5sums=('f0572a52532e3016da9ff85bf941a9bd'
@@ -27,8 +27,8 @@ build() {
     ./configure --prefix=/usr \
         --sysconfdir=/etc \
         --with-python3=yes \
-        --with-python2=no \
-        --without-dm 
+        --with-python2=no
+        #--without-dm 
         #--without-mdraid
         #--without-lvm \
         #--without-lvm_dbus \
