@@ -1,26 +1,31 @@
 
 pkgname=babl
-pkgver=0.1.66
+pkgver=0.1.68
 _pkgver=0.1
 pkgrel=1
 pkgdesc="Dynamic, any to any, pixel format conversion library"
 arch=('x86_64')
 url="http://gegl.org/babl/"
 license=('LGPL3')
-depends=('glibc')
+depends=('lcms2')
+makedepends=('meson' 'ninja' 'python2')
 options=('!libtool' '!makeflags')
-source=("https://ftp.gimp.org/pub/babl/${_pkgver}/${pkgname}-${pkgver}.tar.bz2")
-sha256sums=('369dd89345489a3949e83d5ad63295029088230626f64a05e530761b176fa163')
+source=("https://ftp.gimp.org/pub/babl/${_pkgver}/${pkgname}-${pkgver}.tar.xz")
+sha256sums=('412dc8356b1e200e0f3aaa41bc6c317b9e489936c17c4e92cc5db9d34ca1e94c')
 
 build() {
-  cd ${pkgname}-${pkgver}
+  mkdir -p build
+  cd build
   
-  ./configure --prefix=/usr
-  make
+  meson ../${pkgname}-${pkgver} \
+    --prefix=/usr \
+    --buildtype=release \
+    -Dwith-docs=false
+  ninja
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
+  cd build
   
-  make DESTDIR=${pkgdir} install
+  DESTDIR=${pkgdir} ninja install
 }
