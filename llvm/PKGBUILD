@@ -3,7 +3,7 @@ pkgbase="llvm"
 pkgname=('llvm' 'clang' 'clang-analyzer' 'clang-tools-extra' 'lldb')
 pkgver=8.0.1
 _gcc_ver=8.3.0
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 url="https://llvm.org/"
 license=('custom:University of Illinois/NCSA Open Source License')
@@ -34,7 +34,7 @@ prepare() {
 }
   
 build() {
-    #mkdir -p build
+    mkdir -p build
     cd build
     
     export PKG_CONFIG_PATH='/usr/lib/pkgconfig'
@@ -128,7 +128,7 @@ package_clang-analyzer() {
 package_lldb() {
     pkgdesc="Next generation, high-performance debugger, built as a set of reusable components in the LLVM Project."
     url="https://lldb.llvm.org/"
-    depends=("llvm=${pkgver}-${pkgrel}" 'libedit' 'libxml2' 'ncurses' 'python3')
+    depends=("llvm=${pkgver}-${pkgrel}" 'libedit' 'libxml2' 'ncurses' 'python2')
     
     cd build/tools/lldb
     make DESTDIR=${pkgdir} install
@@ -137,7 +137,7 @@ package_lldb() {
     python2 -m compileall ${pkgdir}/usr/lib/python2.7/site-packages/lldb
     python2 -O -m compileall ${pkgdir}/usr/lib/python2.7/site-packages/lldb
     # part of LLVM
-    #rm ${pkgdir}/usr/lib/python3.7/site-packages/six.py
+    rm ${pkgdir}/usr/lib/python2.7/site-packages/six.py
     
     install -D -m644 ${srcdir}/${pkgbase}-${pkgver}.src/LICENSE.TXT ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE    
 }
