@@ -1,7 +1,7 @@
 
 pkgname=aspell
-pkgver=0.60.6.90
-_pkgver=0.60.7-rc1
+pkgver=0.60.7
+_pkgver=0.60.7
 pkgrel=1
 pkgdesc="A spell checker designed to eventually replace Ispell"
 url="http://aspell.net/"
@@ -10,8 +10,8 @@ license=('LGPL')
 depends=('gcc-libs' 'ncurses')
 optdepends=('perl: to import old dictionaries')
 options=('!libtool')
-source=("ftp://alpha.gnu.org/gnu/aspell/${pkgname}-${_pkgver}.tar.gz")
-md5sums=('f05691eada7ad04b26c1a5a6ef27182a')
+source=("ftp://ftp.gnu.org/gnu/aspell/${pkgname}-${_pkgver}.tar.gz")
+md5sums=('8ef2252609c511cd2bb26f3a3932ef28')
 
 build() {
   cd ${pkgname}-${_pkgver}

@@ -1,6 +1,6 @@
 
 pkgname=desktop-file-utils
-pkgver=0.23
+pkgver=0.24
 pkgrel=1
 pkgdesc="Command line utilities for working with desktop entries"
 arch=('x86_64')
@@ -9,8 +9,8 @@ license=('GPL')
 depends=('glib2')
 source=("http://www.freedesktop.org/software/desktop-file-utils/releases/desktop-file-utils-${pkgver}.tar.xz"
         'update-desktop-database.hook')
-md5sums=('599133d51cc9a41bfec186414906b6f1'
-         '63b2a090a303cbf9e244dc79b40fd81b')
+sha256sums=('a1de5da60cbdbe91e5c9c10ac9afee6c3deb019e0cee5fdb9a99dddc245f83d9'
+            '2be5efa6c93f89691d106c086ef392e5dbf2839e2de2afc43a7f616f55b2a81d')
 
 build() {
   cd desktop-file-utils-${pkgver}
