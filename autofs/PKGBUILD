@@ -1,13 +1,13 @@
 
 pkgname=autofs
 pkgver=5.1.5
-pkgrel=2
+pkgrel=3
 pkgdesc='A kernel-based automounter for Linux.'
 arch=('x86_64')
-url='http://freshmeat.net/projects/autofs'
+url='https://git.kernel.org/pub/scm/linux/storage/autofs/autofs.git'
 license=('GPL2')
 depends=('libldap' 'libxml2' 'krb5')
-makedepends=('kmod' 'clang')
+makedepends=('kmod') # 'clang')
 backup=('etc/autofs/auto.master'
         'etc/autofs/auto.misc'
         'etc/autofs/auto.net'
@@ -21,11 +21,12 @@ sha256sums=('23afdad9e2fd6d41b1900be8cfecfd5aae0ad174c7708ff685ec27e280f9c0da')
 build() {
   cd ${pkgname}-${pkgver}
   
-  export CC="clang"
-  export CXX="clang++"
+  #export CC="clang"
+  #export CXX="clang++"
 
   sed -i -e 's|/etc/auto.misc|/etc/autofs/auto.misc|' \
          -e 's|/etc/auto.master.d|/etc/autofs/auto.master.d|' samples/auto.master
+  sed -i -e "/^SUBDIRS/s/$/ samples/g" Makefile.rules
 
   ./configure --prefix=/usr \
         --sysconfdir=/etc/autofs \
