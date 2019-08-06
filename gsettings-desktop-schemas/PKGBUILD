@@ -1,29 +1,29 @@
 
 pkgname=gsettings-desktop-schemas
-pkgver=3.28.1
+pkgver=3.32.0
+_pkgver=3.32
 pkgrel=1
 pkgdesc="Collection of GSettings schemas for settings shared by various components of a desktop"
 arch=('x86_64')
 url="https://git.gnome.org/browse/gsettings-desktop-schemas"
 license=('GPL')
 depends=('dconf' 'glib2')
-makedepends=('gobject-introspection' 'intltool')
-source=("https://download.gnome.org/sources/gsettings-desktop-schemas/3.28/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('f88ea6849ffe897c51cfeca5e45c3890010c82c58be2aee18b01349648e5502f')
+makedepends=('gobject-introspection' 'meson' 'ninja')
+source=("https://download.gnome.org/sources/gsettings-desktop-schemas/${_pkgver}/${pkgname}-${pkgver}.tar.xz")
+sha256sums=('2d59b4b3a548859dfae46314ee4666787a00d5c82db382e97df7aa9d0e310a35')
 
 build() {
-  cd ${pkgname}-${pkgver}
+  mkdir -p build
+  cd build
   
-  ./configure --prefix=/usr \
-    --sysconfdir=/etc \
-    --localstatedir=/var \
-    --disable-schemas-compile
-    
-  make
+  meson ../${pkgname}-${pkgver} \
+    --prefix=/usr \
+    --buildtype=release 
+  ninja
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
+  cd build
   
-  make DESTDIR=${pkgdir} install
-} 
+  DESTDIR=${pkgdir} ninja install
+}

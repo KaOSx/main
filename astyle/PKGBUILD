@@ -6,30 +6,23 @@ pkgrel=1
 pkgdesc="Artistic Style is a source code indenter, formatter, and beautifier for the C, C++, C# and Java programming languages."
 arch=('x86_64')
 url="http://astyle.sourceforge.net/"
+makedepends=('cmake')
 license=('LGPL')
 source=("https://downloads.sourceforge.net/sourceforge/astyle/${pkgname}_${pkgver}_linux.tar.gz")
 md5sums=('7712622f62661b1d8cb1062d7fedc390')
 
 build() {
-  cd ${pkgname}/build/gcc
+  mkdir -p build
+  cd build
   
-  make release shared
+  cmake ../${pkgname} \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release
+    #-DBUILD_SHARED_LIBS=1
 }
 
 package() {
-  cd ${pkgname}/build/gcc/bin
-  install -D -m755 -o root -g root astyle ${pkgdir}/usr/bin/astyle
-  install -Dm0755 libastyle.so.${_pkgver} ${pkgdir}/usr/lib/libastyle.so
-
-  for files in `find ${srcdir}/${pkgname}/doc -name *.html`
-	do
-	    mkdir -p ${pkgdir}/usr/share/astyle
-	    cp $files ${pkgdir}/usr/share/astyle
-	done
-
-  for files in `find ${srcdir}/${pkgname}/doc -name *.css`
-	do
-	    mkdir -p ${pkgdir}/usr/share/astyle
-	    cp $files ${pkgdir}/usr/share/astyle
-	done
+  cd build
+  
+  make DESTDIR=${pkgdir} install
 }
