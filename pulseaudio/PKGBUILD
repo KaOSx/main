@@ -1,17 +1,17 @@
 
 pkgname=pulseaudio
 pkgdesc="A featureful, general-purpose sound server"
-pkgver=12.2
+pkgver=12.99.2
 _commit=613c2994af42ff08fe0a9d0e4bfce42ef781e8f6
-pkgrel=2
+pkgrel=1
 arch=('x86_64')
 url="https://www.freedesktop.org/wiki/Software/PulseAudio/"
 license=('GPL' 'LGPL')
 depends=('dbus' 'xcb-util' 'libasyncns' 'libcap' 'libxtst' 'libsm'
-         'libsndfile' 'rtkit' 'libltdl' 'speex' 'tdb'
-         'fftw' 'orc' 'webrtc-audio-processing' 'systemd' 'sbc' 'libsoxr') # 'gconf')
+         'libsndfile' 'rtkit' 'speex' 'tdb' 'fftw' 'orc' 
+         'webrtc-audio-processing' 'systemd' 'sbc' 'libsoxr') # 'gconf')
 makedepends=('attr' 'libltdl' 'avahi' 'bluez' 'intltool' 'jack' 'openssl'
-             'pkgconfig' 'sh' 'meson' 'ninja')
+             'pkgconfig' 'sh' 'meson' 'ninja' 'check')
 optdepends=('avahi: zeroconf support'
             'bluez: bluetooth support'
             'jack: jack support'
@@ -21,38 +21,42 @@ options=('!emptydirs' '!libtool' '!makeflags')
 source=("https://freedesktop.org/software/pulseaudio/releases/${pkgname}-${pkgver}.tar.xz")
 #source=("${pkgname}-${pkgver}::git://anongit.freedesktop.org/pulseaudio/pulseaudio#commit=50186d7")
 #source=("https://github.com/pulseaudio/pulseaudio/archive/${_commit}.zip")
-sha256sums=('809668ffc296043779c984f53461c2b3987a45b7a25eb2f0a1d11d9f23ba4055')
+sha256sums=('a8f29c719fc317d7e4b86a468d82a8f7619a49e024748606a2f2d3d68b3a4a3f')
 
 build() {
-  cd ${pkgname}-${pkgver}
+  #cd ${pkgname}-${pkgver}
 
   #./bootstrap.sh
-  ./configure --prefix=/usr \
-    --sysconfdir=/etc \
-    --libexecdir=/usr/lib \
-    --localstatedir=/var \
-    --with-udev-rules-dir=/usr/lib/udev/rules.d \
-    --with-database=tdb \
-    --disable-rpath \
-    --disable-bluez4 \
-    --disable-default-build-tests
-  make
+  #./configure --prefix=/usr \
+  #  --sysconfdir=/etc \
+  #  --libexecdir=/usr/lib \
+  #  --localstatedir=/var \
+  #  --with-udev-rules-dir=/usr/lib/udev/rules.d \
+  #  --with-database=tdb \
+  #  --disable-rpath \
+  #  --disable-bluez4 \
+  #  --disable-default-build-tests
+  #make
   
-  #mkdir -p build
-  #cd build
+  mkdir -p build
+  cd build
     
   #export LANG=en_US.UTF-8
 
-  #meson ../${pkgname}-${_commit} \
-  #    --prefix=/usr \
-  #    --buildtype=release \
-  #    --libexecdir=/usr/lib 
-  #ninja    
+  meson ../${pkgname}-${pkgver} \
+      --prefix=/usr \
+      --buildtype=release \
+      --libexecdir=/usr/lib \
+      -Dudevrulesdir=/usr/lib/udev/rules.d
+  ninja    
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
-  make DESTDIR=${pkgdir} install
+  #cd ${pkgname}-${pkgver}
+  #make DESTDIR=${pkgdir} install
+  
+  cd build
+  DESTDIR=${pkgdir} ninja install
 
   # Disable cork-request module
   sed -e 's|/usr/bin/pactl load-module module-x11-cork-request|#&|' \

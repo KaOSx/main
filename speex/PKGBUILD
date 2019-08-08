@@ -1,15 +1,16 @@
 
 pkgname=speex
 pkgver=1.2.0
-pkgrel=1
+pkgrel=2
 pkgdesc="A free codec for free speech"
 arch=('x86_64')
+url="https://www.speex.org/"
 license=('BSD')
 depends=('libogg' 'speexdsp')
 options=('!libtool')
-source=("http://downloads.us.xiph.org/releases/speex/${pkgname}-${pkgver}.tar.gz")
-md5sums=('8ab7bb2589110dfaf0ed7fa7757dc49c')
-url="http://www.speex.org/"
+source=("https://downloads.us.xiph.org/releases/speex/${pkgname}-${pkgver}.tar.gz")
+sha256sums=('eaae8af0ac742dc7d542c9439ac72f1f385ce838392dc849cae4536af9210094')
+
 
 build() {
   cd ${pkgname}-${pkgver}
