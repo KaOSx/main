@@ -3,7 +3,7 @@ pkgbase=nvidia-utils
 pkgname=('nvidia-utils' 'opencl-nvidia' 'nvidia-settings')
 # Edit hardware-detection/hooks/hwdetect_7_graphics and Installer job 11 on version jump from 41x.xx
 pkgver=430.40
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 url="https://www.nvidia.com/page/home.html"
 license=('custom')
@@ -119,6 +119,14 @@ package_nvidia-utils() {
   # Vulkan real-time ray tracing
   install -D -m755 libnvidia-rtcore.so.${pkgver} ${pkgdir}/usr/lib/libnvidia-rtcore.so.${pkgver}
   install -D -m755 libnvidia-cbl.so.${pkgver} ${pkgdir}/usr/lib/libnvidia-cbl.so.${pkgver}
+  
+  # Systemd suspend/hibernate/resume service files
+  # http://us.download.nvidia.com/XFree86/Linux-x86_64/430.40/README/powermanagement.html
+  install -D -m644 nvidia-suspend.service "${pkgdir}/usr/lib/systemd/system/nvidia-suspend.service"
+  install -D -m644 nvidia-hibernate.service "${pkgdir}/usr/lib/systemd/system/nvidia-hibernate.service"
+  install -D -m644 nvidia-resume.service "${pkgdir}/usr/lib/systemd/system/nvidia-resume.service"
+  install -D -m755 nvidia "${pkgdir}/usr/lib/systemd/system-sleep/nvidia"
+  install -D -m755 nvidia-sleep.sh "${pkgdir}/usr/bin/nvidia-sleep.sh"
 
   create_links
 }
