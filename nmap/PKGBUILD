@@ -1,15 +1,15 @@
 
 pkgname=nmap
-pkgver=7.70
-pkgrel=3
+pkgver=7.80
+pkgrel=1
 pkgdesc="Network exploration tool and security/port scanner"
 arch=('x86_64')
 url="https://nmap.org"
 license=('GPL2')
-depends=('pcre' 'openssl' 'libpcap>=1.0.0' 'lua')
+depends=('pcre' 'openssl' 'libpcap' 'lua')
 makedepends=('python2')
 source=("https://nmap.org/dist/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('84eb6fbe788e0d4918c2b1e39421bf79')
+md5sums=('d37b75b06d1d40f27b76d60db420a1f5')
 
 build() {
   cd ${pkgname}-${pkgver}

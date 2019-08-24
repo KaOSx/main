@@ -1,16 +1,16 @@
 
 pkgname=openconnect
-pkgver=8.02
-pkgrel=4
+pkgver=8.04
+pkgrel=1
 pkgdesc="Open client for Cisco AnyConnect VPN"
 arch=('x86_64')
 license=('GPL')
 url="http://www.infradead.org/openconnect.html"
 depends=('libxml2' 'gnutls' 'libproxy' 'vpnc' 'libtasn1' 'libidn2' 'nettle')
-makedepends=('intltool' 'python2')
+makedepends=('intltool' 'python3')
 options=('!libtool' '!emptydirs')
 source=("ftp://ftp.infradead.org/pub/${pkgname}/${pkgname}-${pkgver}.tar.gz")
-md5sums=('e723c92b0d435df2a521549edbe1fe3e')
+md5sums=('4b61425a06a4ed723fcd075c336a5513')
 
 build() {
   cd ${pkgname}-${pkgver}
