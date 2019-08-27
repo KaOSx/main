@@ -1,7 +1,7 @@
 
 pkgname=phonon-qt5
 _pkgname=phonon
-pkgver=4.10.3
+pkgver=4.11.0
 pkgrel=1
 arch=('x86_64')
 url="https://phonon.kde.org"
@@ -10,19 +10,17 @@ pkgdesc="The multimedia framework for KDE"
 depends=('phonon-backend-qt5' 'pulseaudio' 'qt5-base')
 makedepends=('extra-cmake-modules' 'qt5-tools')
 source=("https://download.kde.org/stable/phonon/${pkgver}/${_pkgname}-${pkgver}.tar.xz")
-sha256sums=('2e8b145669afa0e93833e4064b657677abc9413e4007fa5ddc91397c9bddc295')
+sha256sums=('91250a38feb0adb62385ad9bacc0ea0e67bbba3e0ceb3c2111d83803fb52582e')
 
 build() {
   mkdir -p build
-  
   cd build
+  
   cmake ../${_pkgname}-${pkgver} \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_SKIP_RPATH=ON \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_INSTALL_LIBDIR=lib \
-    -DPHONON_BUILD_PHONON4QT5=ON \
-    -DPHONON_INSTALL_QT_EXTENSIONS_INTO_SYSTEM_QT=ON 
+    -DCMAKE_INSTALL_LIBDIR=lib 
   make
 }
 
