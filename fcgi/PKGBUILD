@@ -1,42 +1,27 @@
 
 pkgname=fcgi
-pkgver=2.4.0
-#_pkgver=2.4.1-SNAP-03111112127
-pkgrel=3
+pkgver=2.4.2
+pkgrel=1
 depends=('gcc-libs')
 pkgdesc="FASTCgi (fcgi) is a language independent, high performant extension to CGI"
+url="https://fastcgi-archives.github.io/"
 arch=('x86_64')
 license=('custom')
 options=('!makeflags')
-url="http://www.fastcgi.com"
-source=("https://sourceforge.net/projects/slackbuildsdirectlinks/files/fcgi/${pkgname}-${pkgver}.tar.gz"
-        'gcc44-fix-include.patch'
-        '2.4.0build.patch')
-md5sums=('d15060a813b91383a9f3c66faf84867e'
-         'a8028462163755f3ce457a5c641f237b'
-         '1e6f791c530c41aaa9994364fbc94a3c')
-
-prepare() {
-  cd ${pkgname}-${pkgver}
-  patch -p1 -i ${srcdir}/gcc44-fix-include.patch
-  patch -p1 -i ${srcdir}/2.4.0build.patch
-  
-  libtoolize --force --automake --copy
-  aclocal
-  autoheader
-  automake --copy --add-missing --force-missing
-  autoconf
-}
+#source=("https://sourceforge.net/projects/slackbuildsdirectlinks/files/fcgi/${pkgname}-${pkgver}.tar.gz"
+source=("https://github.com/FastCGI-Archives/fcgi2/archive/${pkgver}.tar.gz")
+md5sums=('146376d5c5c059b9184755db76505fab')
 
 build() {
-  cd ${pkgname}-${pkgver}
+  cd ${pkgname}2-${pkgver}
   
+  ./autogen.sh
   ./configure --prefix=/usr
   make
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
+  cd ${pkgname}2-${pkgver}
   make DESTDIR=${pkgdir} install
   
   install -Dm644 LICENSE.TERMS ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
