@@ -1,7 +1,7 @@
 
 pkgname=php-apache
 _pkgname=php
-pkgver=7.2.21
+pkgver=7.2.22
 pkgrel=1
 arch=('x86_64')
 pkgdesc='Apache SAPI for PHP'
@@ -13,7 +13,7 @@ backup=('etc/httpd/conf/extra/php5_module.conf')
 source=("http://www.php.net/distributions/${_pkgname}-${pkgver}.tar.xz"
         'apache.conf'
         'enchant2.patch')
-sha256sums=('de06aff019d8f5079115795bd7d8eedd4cd03daecb62d58abb18f492dd995c95'
+sha256sums=('eb597fcf8dc0a6211a42a6346de4f63ee166829a6df6d8ed767fe14be8d1c3a3'
             'ebc0af1ef3a6baccb013d0ccb29923895a7b22ff2d032e3bba802dc6328301ce'
             '190998e5980c9a105c5bde4dd197f3aa0a97466640b71d184c6705894f754012')
 
@@ -45,7 +45,6 @@ build() {
 		--enable-dba=shared \
 		--enable-exif=shared \
 		--enable-ftp=shared \
-		--enable-gd-native-ttf \
 		--enable-intl=shared \
 		--enable-mbstring \
 		--enable-shmop=shared \
@@ -75,7 +74,6 @@ build() {
 		--with-ldap=shared \
 		--with-ldap-sasl \
 		--with-libzip \
-		--with-mcrypt=shared \
 		--with-mhash \
 		--with-mysql-sock=/run/mysqld/mysqld.sock \
 		--with-mysqli=shared,mysqlnd \
