@@ -1,32 +1,33 @@
 
 pkgname=spatialindex
-pkgver=1.8.5
-pkgrel=2
+pkgver=1.9.0
+pkgrel=1
 pkgdesc="Extensible framework that will support robust spatial indexing methods."
 arch=('x86_64')
-url="http://libspatialindex.github.com/"
+url="https://libspatialindex.org/"
 license=('MIT')
 depends=('gcc-libs')
-source=("http://download.osgeo.org/libspatialindex/${pkgname}-src-${pkgver}.tar.gz"
+source=("https://github.com/libspatialindex/libspatialindex/archive/${pkgver}.tar.gz"
         'LICENSE')
-md5sums=('4065c6218ce3d1c4906beb3a313470db'
-         '6a9a7d8158edbf1529ca46aae5a76752')
+sha256sums=('7c8809cd7e827efdc8bd80f786cf2a2d4f25adb92f954d46f7f28ad410bd46e2'
+            '170961cdd7754bed14e465eff7d4f22c5df11d8d104310a56a7ee3ab201bc279')
 
 build() {
-  cd ${pkgname}-src-${pkgver}
+  cd libspatialindex-${pkgver}
   
+  ./autogen.sh
   ./configure --prefix=/usr
   make
 }
 
 check() {
-  cd ${pkgname}-src-${pkgver}
+  cd libspatialindex-${pkgver}
   
   make -k check
 }
 
 package() {
-  cd ${pkgname}-src-${pkgver}
+  cd libspatialindex-${pkgver}
   make DESTDIR=${pkgdir}/ install
   
   install -D -m644 ${srcdir}/LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
