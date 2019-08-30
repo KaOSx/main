@@ -20,6 +20,5 @@ package() {
   cd ${pkgname}
 
   make DESTDIR=${pkgdir}/usr install
-  #install -Dm755 unrar ${pkgdir}/usr/bin/unrar 
   install -Dm644 license.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE 
 }

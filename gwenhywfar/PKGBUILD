@@ -1,8 +1,8 @@
 
 pkgname=gwenhywfar
-pkgver=4.20.0
+pkgver=4.20.2
 _pkgver=208
-pkgrel=2
+pkgrel=1
 pkgdesc="OS abstraction functions for various projects"
 arch=('x86_64')
 url="https://www.aquamaniac.de"
@@ -10,9 +10,9 @@ options=('!libtool')
 license=("LGPL")
 depends=('openssl' 'gnutls' 'libgcrypt' 'qt5-base')
 makedepends=('qt5-tools')
-source=("gwenhywfar-${pkgver}.tar.gz::https://www.aquamaniac.de/sites/download/download.php?package=01&release=${_pkgver}&file=02&dummy=gwenhywfar-${pkgver}.tar.gz"
+source=("https://www.aquamaniac.de/rdm/attachments/download/${_pkgver}/gwenhywfar-${pkgver}.tar.gz"
         'gnutls34.patch')
-md5sums=('0744255cae68adca6dff81d3a9f3932d'
+md5sums=('9fd70486ca12918ecce5842c26f5949f'
          '1197ac1f8378b3b3a8ed12169fcb57f9')
 
 build() {
