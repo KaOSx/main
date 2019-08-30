@@ -1,14 +1,14 @@
 
 pkgname=unrar
-pkgver=5.7.5
+pkgver=5.8.1
 pkgrel=1
 pkgdesc="The RAR uncompression program"
 arch=('x86_64')
 url="https://www.rarlab.com/rar_add.htm"
 license=('custom')
 depends=('gcc-libs')
-source=("http://www.rarlab.com/rar/unrarsrc-${pkgver}.tar.gz")
-md5sums=('d9cfc39dab7f65a53f097e3846323aef')
+source=("https://www.rarlab.com/rar/unrarsrc-${pkgver}.tar.gz")
+md5sums=('3e7c1c18c040a6e83f69e248579d78ba')
 
 build() {
   cd ${pkgname}
@@ -19,7 +19,7 @@ build() {
 package() {
   cd ${pkgname}
 
-  install -Dm755 unrar ${pkgdir}/usr/bin/unrar 
-  # install license
+  make DESTDIR=${pkgdir}/usr install
+  #install -Dm755 unrar ${pkgdir}/usr/bin/unrar 
   install -Dm644 license.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE 
 }
