@@ -37,8 +37,8 @@ package() {
   install -D -m644 "${srcdir}/${_pkg}/kernel/nvidia-uvm.ko" "${pkgdir}/lib/modules/${_extramodules}/nvidia-uvm.ko"
   install -D -m644 "${srcdir}/${_pkg}/kernel/nvidia-drm.ko" "${pkgdir}/lib/modules/${_extramodules}/nvidia-drm.ko"
   gzip "${pkgdir}/lib/modules/${_extramodules}/"*.ko
-  install -d -m755 "${pkgdir}/lib/modprobe.d"
+  install -d -m755 "${pkgdir}/etc/modprobe.d"
   
-  echo "blacklist nouveau" >> "${pkgdir}/lib/modprobe.d/nvidia.conf"
+  echo "blacklist nouveau" >> "${pkgdir}/etc/modprobe.d/nvidia.conf"
   sed -i -e "s/EXTRAMODULES='.*'/EXTRAMODULES='${_extramodules}'/" "${startdir}/nvidia-next.install"
 }
