@@ -1,7 +1,7 @@
 
 pkgname=upower
 pkgver=0.99.11
-pkgrel=1
+pkgrel=2
 pkgdesc="Abstraction for enumerating power devices, listening to device events and querying history and statistics"
 arch=('x86_64')
 url="https://upower.freedesktop.org"
@@ -12,13 +12,13 @@ options=('!libtool')
 install=upower.install
 #source=("https://gitlab.freedesktop.org/upower/upower/uploads/c438511024b9bc5a904f8775cfc8e4c4/${pkgname}-${pkgver}.tar.xz"
 source=("https://upower.freedesktop.org/releases/${pkgname}-${pkgver}.tar.xz"
-        '0.99.8.patch')
+        "https://gitlab.freedesktop.org/upower/upower/commit/1c6a6bfbbb01aa92b4550c1e3a087b1c0f7ef310.diff")
 sha1sums=('5a023b29d64a6ce41cc6901bc46a279041784a9b'
-          '0ead0e6f972cf03e532d10d267e210f6296d1632')
+          '803bde9f6996ac81fc5c6e9750e1bebde20a4829')
 
 build() {
   cd ${pkgname}-${pkgver}
-  #patch -p1 -i ${srcdir}/0.99.8.patch
+  patch -p1 -R -i ${srcdir}/1c6a6bfbbb01aa92b4550c1e3a087b1c0f7ef310.diff
 
   ./configure --prefix=/usr \
       --sysconfdir=/etc \
