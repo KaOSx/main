@@ -6,7 +6,7 @@ pkgname='qt5-base'
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=3
+pkgrel=1
 pkgdesc="A cross-platform application and UI framework"
 arch=('x86_64')
 url='http://qt-project.org/'
@@ -22,24 +22,18 @@ makedepends=('postgresql-libs' 'cups' 'python2' 'gperf' 'ruby' 'pulseaudio')
 options=('!libtool' 'debug')
 _pkgfqn="qtbase-everywhere-src-${subver}"
 source=("${_qtmirror}/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz"
-        "https://github.com/qt/qtbase/commit/cbdc9a7786278c31fdb6eb465f32d0374349c1ef.diff"
-        "https://github.com/qt/qtbase/commit/b55fac3f3763ffae3bf99f2afea7e5d5f8b7c2a8.diff")
+        "https://github.com/qt/qtbase/commit/cbdc9a7786278c31fdb6eb465f32d0374349c1ef.diff")
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
-         'f160d7c6a90e011193835a383286d1df'
-         '91bed2b328fbff9174a9e080093ba73a')
+         'f160d7c6a90e011193835a383286d1df')
 
 build() {
     cd ${srcdir}/${_pkgfqn}
     
     # move back to zlib compression, zstd is for Qt 6
-    patch -p1 -i ${srcdir}/cbdc9a7786278c31fdb6eb465f32d0374349c1ef.diff
-    # fix vbox focus stealing
-    patch -p1 -i ${srcdir}/b55fac3f3763ffae3bf99f2afea7e5d5f8b7c2a8.diff
+    #patch -p1 -i ${srcdir}/cbdc9a7786278c31fdb6eb465f32d0374349c1ef.diff
     
     #sed -i 's|libs": "-lmysqlclient_r"|libs": "-lmariadb"|' src/sql/configure.json
-    #sed -i 's|libs": "-lmysqlclient"|libs": "-lmariadb"|' src/sql/configure.json
-    #sed -i 's|use_libmysqlclient_r|use_libmariadb|' src/sql/configure.json
         
     unset QTDIR
     export PATH="$PWD/qtbase/bin:$PWD/qtrepotools/bin:$PATH"
