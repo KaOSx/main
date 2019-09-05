@@ -1,29 +1,31 @@
 
 pkgname=libsecret
-pkgver=0.18.8
-_pkgver=0.18
+pkgver=0.19.0
+_pkgver=0.19
 pkgrel=1
 pkgdesc='Library for storing and retrieving passwords and other secrets.'
 arch=('x86_64')
 license=('LGPL')
 url="https://wiki.gnome.org/Projects/Libsecret"
 depends=('glib2' 'libgcrypt')
-makedepends=('intltool' 'docbook-xsl' 'gobject-introspection' 'vala')
+makedepends=('intltool' 'docbook-xsl' 'gobject-introspection' 'vala' 'meson' 'ninja' 'valgrind')
 source=("https://download.gnome.org/sources/libsecret/${_pkgver}/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('3bfa889d260e0dbabcf5b9967f2aae12edcd2ddc9adc365de7a5cc840c311d15')
+sha256sums=('8049b09a4e737911aa647e50aee3d06b5db7aa902608ca43a0dd10d83e1d67f9')
 
 build() {
-  cd ${pkgname}-${pkgver}
+  mkdir -p build
+  cd build
   
-  ./configure --prefix=/usr \
-      --sysconfdir=/etc \
-      --localstatedir=/var \
-      --disable-static
-  make
+  meson ../${pkgname}-${pkgver} \
+    --prefix=/usr \
+    --buildtype=release \
+    --sysconfdir=/etc \
+    -Dgtk_doc=false
+  ninja
 }
 
 package() {
-  cd ${pkgname}-${pkgver} 
+  cd build
   
-  make DESTDIR=${pkgdir} install
+  DESTDIR=${pkgdir} ninja install
 }
