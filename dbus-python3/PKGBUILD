@@ -1,17 +1,17 @@
 
 pkgname=dbus-python3
 _pkgname=dbus-python
-pkgver=1.2.8
-pkgrel=2
+pkgver=1.2.10
+pkgrel=1
 pkgdesc="Python3 bindings for DBUS"
 arch=('x86_64')
 license=('GPL' 'LGPL')
 url="http://www.freedesktop.org/wiki/Software/DBusBindings"
-depends=('dbus-glib' 'python3' 'dbus-python2')
+depends=('dbus-glib' 'python3')
 makedepends=('pkg-config' 'python3-docutils')
 options=('!libtool')
 source=("https://dbus.freedesktop.org/releases/${_pkgname}/${_pkgname}-${pkgver}.tar.gz")
-md5sums=('7379db774c10904f27e7e2743d90fb43')
+md5sums=('5d21d5ae6423f0e41caa3400af44edac')
 
 build() {
   cd ${_pkgname}-${pkgver}
@@ -23,9 +23,6 @@ build() {
 
 package() {
   cd ${_pkgname}-${pkgver}
+  
   make DESTDIR=${pkgdir} install
-
-  rm -rf ${pkgdir}/usr/share
-  rm -rf ${pkgdir}/usr/include
-  rm -rf ${pkgdir}/usr/lib/pkgconfig
 }
