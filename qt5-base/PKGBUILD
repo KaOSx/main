@@ -6,7 +6,7 @@ pkgname='qt5-base'
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=1
+pkgrel=2
 pkgdesc="A cross-platform application and UI framework"
 arch=('x86_64')
 url='http://qt-project.org/'
@@ -22,16 +22,16 @@ makedepends=('postgresql-libs' 'cups' 'python2' 'gperf' 'ruby' 'pulseaudio')
 options=('!libtool' 'debug')
 _pkgfqn="qtbase-everywhere-src-${subver}"
 source=("${_qtmirror}/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz"
-        "https://github.com/qt/qtbase/commit/cbdc9a7786278c31fdb6eb465f32d0374349c1ef.diff")
+        "http://www.davidfaure.fr/2019/debugoutput_and_setFocusProxy.diff")
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
-         'f160d7c6a90e011193835a383286d1df')
+         '7773c30c589a86f0792d175e7234c496')
 
 build() {
     cd ${srcdir}/${_pkgfqn}
     
-    # move back to zlib compression, zstd is for Qt 6
-    #patch -p1 -i ${srcdir}/cbdc9a7786278c31fdb6eb465f32d0374349c1ef.diff
+    # https://bugreports.qt.io/browse/QTBUG-77364 https://forum.kaosx.us/d/2456-falkon-qt-5-13-1
+    patch -p1 -i ${srcdir}/debugoutput_and_setFocusProxy.diff
     
     #sed -i 's|libs": "-lmysqlclient_r"|libs": "-lmariadb"|' src/sql/configure.json
         
