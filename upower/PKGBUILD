@@ -1,7 +1,7 @@
 
 pkgname=upower
 pkgver=0.99.11
-pkgrel=2
+pkgrel=3
 pkgdesc="Abstraction for enumerating power devices, listening to device events and querying history and statistics"
 arch=('x86_64')
 url="https://upower.freedesktop.org"
@@ -18,7 +18,8 @@ sha1sums=('5a023b29d64a6ce41cc6901bc46a279041784a9b'
 
 build() {
   cd ${pkgname}-${pkgver}
-  patch -p1 -R -i ${srcdir}/1c6a6bfbbb01aa92b4550c1e3a087b1c0f7ef310.diff
+  #patch -p1 -R -i ${srcdir}/1c6a6bfbbb01aa92b4550c1e3a087b1c0f7ef310.diff
+  sed -e "s|PrivateUsers=yes|PrivateUsers=no|" -i src/upower.service.in
 
   ./configure --prefix=/usr \
       --sysconfdir=/etc \
