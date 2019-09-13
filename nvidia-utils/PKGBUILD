@@ -2,8 +2,8 @@
 pkgbase=nvidia-utils
 pkgname=('nvidia-utils' 'opencl-nvidia' 'nvidia-settings')
 # Edit hardware-detection/hooks/hwdetect_7_graphics and Installer job 11 on version jump from 43x.xx
-pkgver=430.50
-pkgrel=1
+pkgver=435.21
+pkgrel=2
 epoch=1
 arch=('x86_64')
 url="https://www.nvidia.com/page/home.html"
@@ -15,7 +15,7 @@ _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
 #source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}.run"
         'nvidia-restore-settings.desktop')
-md5sums=('109ceddfb13dff4168c1dfdef24fcc7b'
+md5sums=('7f65c51324ab650448a86b05a0106c60'
          '9237516792da7b6df32f8c7e8a98f475')
 
 create_links() {
@@ -27,8 +27,12 @@ create_links() {
 }
 
 build() {
-  cd "${srcdir}"
-  sh "$_pkg.run" --extract-only
+  cd ${srcdir}
+  sh ${_pkg}.run --extract-only
+  # https://download.nvidia.com/XFree86/Linux-x86_64/396.51/README/nvidia-persistenced.html
+  cd ${_pkg}
+  bsdtar -xf nvidia-persistenced-init.tar.bz2
+  
 }
 
 package_opencl-nvidia() {
@@ -60,10 +64,17 @@ package_nvidia-utils() {
   
   # GLX extension module for X
   install -D -m755 libglxserver_nvidia.so.${pkgver} ${pkgdir}/usr/lib/xorg/modules/extensions/libglxserver_nvidia.so.${pkgver}
-  ln -s libglxserver_nvidia.so.${pkgver} ${pkgdir}/usr/lib/xorg/modules/extensions/libglxserver_nvidia.so # X doesn't find glx otherwise
-
+  # X doesn't find glx otherwise:
+  ln -s libglxserver_nvidia.so.${pkgver} ${pkgdir}/usr/lib/xorg/modules/extensions/libglxserver_nvidia.so 
+  ln -s libglxserver_nvidia.so.${pkgver} ${pkgdir}/usr/lib/nvidia/xorg/libglx.so
+  
+  # GLVND vendor implementation libraries for GLX
+  install -D -m755 libGLX_nvidia.so.${pkgver} ${pkgdir}/usr/lib/libGLX_nvidia.so.${pkgver}
+  install -D -m755 libGLX.so.0 ${pkgdir}/lib/xorg/modules/extensions/libgGLX.so 
+  
   # OpenGL library
-  install -D -m755 "libGL.so.${pkgver}" "${pkgdir}/usr/lib/libGL.so.${pkgver}"
+  install -D -m755 "libGL.so.1.7.0" "${pkgdir}/usr/lib/libGL.so.1.7.0"
+  #install -D -m755 "libGL.la" "${pkgdir}/usr/lib/libGL.la"
   install -D -m755 "libOpenGL.so.0" "${pkgdir}/usr/lib/libOpenGL.so.0"
   install -D -m755 "libGLdispatch.so.0" "${pkgdir}/usr/lib/libGLdispatch.so.0"
   
@@ -71,7 +82,7 @@ package_nvidia-utils() {
   install -D -m755 "libnvidia-glcore.so.${pkgver}" "${pkgdir}/usr/lib/libnvidia-glcore.so.${pkgver}"
   install -D -m755 "libnvidia-eglcore.so.${pkgver}" "${pkgdir}/usr/lib/libnvidia-eglcore.so.${pkgver}"
   install -D -m755 "libnvidia-glsi.so.${pkgver}" "${pkgdir}/usr/lib/libnvidia-glsi.so.${pkgver}"
-  install -D -m755 "libnvidia-egl-wayland.so.1.1.2" "${pkgdir}/usr/lib/libnvidia-egl-wayland.so.1.1.2"
+  install -D -m755 "libnvidia-egl-wayland.so.1.1.3" "${pkgdir}/usr/lib/libnvidia-egl-wayland.so.1.1.3"
   install -D -m644 "10_nvidia_wayland.json" "${pkgdir}/usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json"
   install -D -m755 "libEGL_nvidia.so.${pkgver}" "${pkgdir}/usr/lib/libEGL_nvidia.so.${pkgver}"
   install -D -m644 "10_nvidia.json" "${pkgdir}/usr/share/glvnd/egl_vendor.d/10_nvidia.json"
@@ -128,6 +139,12 @@ package_nvidia-utils() {
   install -D -m644 nvidia-resume.service "${pkgdir}/usr/lib/systemd/system/nvidia-resume.service"
   install -D -m755 nvidia "${pkgdir}/usr/lib/systemd/system-sleep/nvidia"
   install -D -m755 nvidia-sleep.sh "${pkgdir}/usr/bin/nvidia-sleep.sh"
+  
+  # nvidia-persistenced
+  install -D -m755 nvidia-persistenced ${pkgdir}/usr/bin/nvidia-persistenced
+  install -D -m644 nvidia-persistenced.1.gz ${pkgdir}/usr/share/man/man1/nvidia-persistenced.1.gz
+  install -D -m644 nvidia-persistenced-init/systemd/nvidia-persistenced.service.template ${pkgdir}/usr/lib/systemd/system/nvidia-persistenced.service
+  sed -i 's/__USER__/nvidia-persistenced/' ${pkgdir}/usr/lib/systemd/system/nvidia-persistenced.service
 
   create_links
 }
