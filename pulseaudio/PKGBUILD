@@ -1,7 +1,7 @@
 
 pkgname=pulseaudio
 pkgdesc="A featureful, general-purpose sound server"
-pkgver=12.99.3
+pkgver=13.0
 _commit=613c2994af42ff08fe0a9d0e4bfce42ef781e8f6
 pkgrel=1
 arch=('x86_64')
@@ -21,23 +21,9 @@ options=('!emptydirs' '!libtool' '!makeflags')
 source=("https://freedesktop.org/software/pulseaudio/releases/${pkgname}-${pkgver}.tar.xz")
 #source=("${pkgname}-${pkgver}::git://anongit.freedesktop.org/pulseaudio/pulseaudio#commit=50186d7")
 #source=("https://github.com/pulseaudio/pulseaudio/archive/${_commit}.zip")
-sha256sums=('5d93bccbfedc2510bd1766a0e66a5f0c3da8064d3464248c8c9b979f36a6612b')
+sha256sums=('961b23ca1acfd28f2bc87414c27bb40e12436efcf2158d29721b1e89f3f28057')
 
 build() {
-  #cd ${pkgname}-${pkgver}
-
-  #./bootstrap.sh
-  #./configure --prefix=/usr \
-  #  --sysconfdir=/etc \
-  #  --libexecdir=/usr/lib \
-  #  --localstatedir=/var \
-  #  --with-udev-rules-dir=/usr/lib/udev/rules.d \
-  #  --with-database=tdb \
-  #  --disable-rpath \
-  #  --disable-bluez4 \
-  #  --disable-default-build-tests
-  #make
-  
   mkdir -p build
   cd build
     
@@ -52,9 +38,6 @@ build() {
 }
 
 package() {
-  #cd ${pkgname}-${pkgver}
-  #make DESTDIR=${pkgdir} install
-  
   cd build
   DESTDIR=${pkgdir} ninja install
 
