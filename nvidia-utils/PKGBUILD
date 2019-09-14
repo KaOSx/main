@@ -3,7 +3,7 @@ pkgbase=nvidia-utils
 pkgname=('nvidia-utils' 'opencl-nvidia' 'nvidia-settings')
 # Edit hardware-detection/hooks/hwdetect_7_graphics and Installer job 11 on version jump from 43x.xx
 pkgver=435.21
-pkgrel=2
+pkgrel=3
 epoch=1
 arch=('x86_64')
 url="https://www.nvidia.com/page/home.html"
@@ -66,11 +66,12 @@ package_nvidia-utils() {
   install -D -m755 libglxserver_nvidia.so.${pkgver} ${pkgdir}/usr/lib/xorg/modules/extensions/libglxserver_nvidia.so.${pkgver}
   # X doesn't find glx otherwise:
   ln -s libglxserver_nvidia.so.${pkgver} ${pkgdir}/usr/lib/xorg/modules/extensions/libglxserver_nvidia.so 
-  ln -s libglxserver_nvidia.so.${pkgver} ${pkgdir}/usr/lib/nvidia/xorg/libglx.so
+  #ln -s libglxserver_nvidia.so.${pkgver} ${pkgdir}/usr/lib/nvidia/xorg/libglx.so
   
   # GLVND vendor implementation libraries for GLX
   install -D -m755 libGLX_nvidia.so.${pkgver} ${pkgdir}/usr/lib/libGLX_nvidia.so.${pkgver}
-  install -D -m755 libGLX.so.0 ${pkgdir}/lib/xorg/modules/extensions/libgGLX.so 
+  #install -D -m755 libGLX.so.0 ${pkgdir}/lib/xorg/modules/extensions/libgGLX.so
+  install -D -m755 libGLX.so.0 ${pkgdir}/lib/libgGLX.so
   
   # OpenGL library
   install -D -m755 "libGL.so.1.7.0" "${pkgdir}/usr/lib/libGL.so.1.7.0"
@@ -138,6 +139,8 @@ package_nvidia-utils() {
   install -D -m644 nvidia-hibernate.service "${pkgdir}/usr/lib/systemd/system/nvidia-hibernate.service"
   install -D -m644 nvidia-resume.service "${pkgdir}/usr/lib/systemd/system/nvidia-resume.service"
   install -D -m755 nvidia "${pkgdir}/usr/lib/systemd/system-sleep/nvidia"
+  
+  sed -i 's|/bin|/usr/bin|g' nvidia-sleep.sh
   install -D -m755 nvidia-sleep.sh "${pkgdir}/usr/bin/nvidia-sleep.sh"
   
   # nvidia-persistenced

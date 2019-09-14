@@ -1,18 +1,18 @@
  
 pkgname=libxfont2
-pkgver=2.0.3
+pkgver=2.0.4
 pkgrel=1
 pkgdesc="X11 font rasterisation library, version 2"
 arch=('x86_64')
-url="http://xorg.freedesktop.org/"
+url="https://xorg.freedesktop.org/"
 license=('custom')
-depends=('freetype2' 'libfontenc' 'xproto' 'fontsproto')
+depends=('freetype2' 'libfontenc' 'xorgproto')
 makedepends=('xorg-util-macros' 'xtrans')
 options=('!libtool')
-source=("http://xorg.freedesktop.org/archive/individual/lib/libXfont2-${pkgver}.tar.bz2")
+source=("https://xorg.freedesktop.org/archive/individual/lib/libXfont2-${pkgver}.tar.bz2")
 # git build for http://lists.freedesktop.org/archives/xorg/2014-May/056616.html
 #source=("git://anongit.freedesktop.org/xorg/lib/libXfont")
-sha256sums=('0e8ab7fd737ccdfe87e1f02b55f221f0bd4503a1c5f28be4ed6a54586bac9c4e')
+sha256sums=('6d151b3368e5035efede4b6264c0fdc6662c1c99dbc2de425e3480cababc69e6')
 
 build() {
   cd libXfont2-${pkgver}
