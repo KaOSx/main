@@ -1,12 +1,12 @@
 
 pkgname=gdb
 pkgver=8.3
-pkgrel=1
+pkgrel=2
 pkgdesc="The GNU Debugger"
 arch=('x86_64')
 url="https://www.gnu.org/software/gdb/"
 license=('GPL3')
-depends=('ncurses' 'expat' 'python2' 'guile')
+depends=('ncurses' 'expat' 'python3' 'guile')
 makedepends=('texinfo')
 backup=('etc/gdb/gdbinit')
 options=('!libtool' '!buildflags')
@@ -19,7 +19,7 @@ build() {
   ./configure --prefix=/usr \
     --disable-nls \
     --with-system-readline \
-    --with-python=/usr/bin/python2 \
+    --with-python=/usr/bin/python3 \
     --with-system-gdbinit=/etc/gdb/gdbinit
   make
 }
