@@ -1,12 +1,12 @@
 
 pkgname=libproxy
 pkgver=0.4.15
-pkgrel=4
+pkgrel=5
 pkgdesc="A library that provides automatic proxy configuration management"
 arch=('x86_64')
 url="http://libproxy.github.io/libproxy"
 license=('LGPL')
-depends=('gcc-libs' 'python2')
+depends=('gcc-libs' 'python3')
 makedepends=('cmake' 'networkmanager' 'perl')
 optdepends=('networkmanager: NetworkManager configuration module'
             'perl: Perl bindings')
@@ -26,6 +26,7 @@ build() {
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_CXX_FLAGS="${CXXFLAGS}" \
     -DCMAKE_C_FLAGS="${CFLAGS}" \
+    -DPYTHON3_EXECUTABLE=/usr/bin/python3 \
     ..
   make
 }
