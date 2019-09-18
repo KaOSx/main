@@ -1,6 +1,6 @@
 
 pkgbase="llvm"
-pkgname=('llvm' 'clang' 'clang-analyzer' 'clang-tools-extra' 'lldb')
+pkgname=('llvm' 'clang' 'clang-analyzer' 'clang-tools-extra')
 pkgver=8.0.1
 _gcc_ver=8.3.0
 pkgrel=2
@@ -12,8 +12,7 @@ makedepends=('gcc-libs' 'libffi' 'python3' 'python2' 'ocaml' "gcc=${_gcc_ver}" '
 source=("https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver}/${pkgbase}-${pkgver}.src.tar.xz"
         "https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver}/cfe-${pkgver}.src.tar.xz"
         "https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver}/clang-tools-extra-$pkgver.src.tar.xz"
-        "https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver}/compiler-rt-${pkgver}.src.tar.xz"
-        "https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver}/lldb-${pkgver}.src.tar.xz")
+        "https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver}/compiler-rt-${pkgver}.src.tar.xz")
 md5sums=('9a3b63df01c52556f7afb5617934e79e'
          '28db72b57ca99307259773e4ac74a6d3'
          'b7c55438f792a1d5698696100a8731e0'
@@ -27,7 +26,6 @@ prepare() {
     mv ${srcdir}/cfe-${pkgver}.src tools/clang
     mv ${srcdir}/clang-tools-extra-${pkgver}.src tools/clang/tools/extra
     mv ${srcdir}/compiler-rt-${pkgver}.src projects/compiler-rt
-    mv ${srcdir}/lldb-${pkgver}.src tools/lldb
     
     # http://llvm.org/bugs/show_bug.cgi?id=22742
     chmod -R u=rwX,go=rX ${srcdir}/llvm-${pkgver}.src
@@ -62,8 +60,6 @@ build() {
     # install in clang packaging
     sed -i '/clang\/cmake_install.cmake/d' tools/cmake_install.cmake
     sed -i '/compiler-rt\/cmake_install.cmake/d' projects/cmake_install.cmake
-    # install in lldb
-    sed -i '/\(clang\|lldb\)\/cmake_install.cmake/d' tools/cmake_install.cmake
     # install in clang-tools-extra
     sed -i '/extra\/cmake_install.cmake/d' tools/clang/tools/cmake_install.cmake
 }
@@ -123,23 +119,6 @@ package_clang-analyzer() {
     python2 -O -m compileall ${pkgdir}/usr/lib/clang-analyzer
 
     install -D -m644 ${srcdir}/${pkgbase}-${pkgver}.src/LICENSE.TXT ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
-}
-
-package_lldb() {
-    pkgdesc="Next generation, high-performance debugger, built as a set of reusable components in the LLVM Project."
-    url="https://lldb.llvm.org/"
-    depends=("llvm=${pkgver}-${pkgrel}" 'libedit' 'libxml2' 'ncurses' 'python2')
-    
-    cd build/tools/lldb
-    make DESTDIR=${pkgdir} install
-    
-    # Python scripts
-    python2 -m compileall ${pkgdir}/usr/lib/python2.7/site-packages/lldb
-    python2 -O -m compileall ${pkgdir}/usr/lib/python2.7/site-packages/lldb
-    # part of LLVM
-    rm ${pkgdir}/usr/lib/python2.7/site-packages/six.py
-    
-    install -D -m644 ${srcdir}/${pkgbase}-${pkgver}.src/LICENSE.TXT ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE    
 }
 
 package_clang-tools-extra() {

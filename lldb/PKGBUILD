@@ -1,0 +1,41 @@
+
+pkgname=lldb
+pkgver=8.0.1
+_gcc_ver=8.3.0
+pkgrel=3
+pkgdesc="Next generation, high-performance debugger, built as a set of reusable components in the LLVM Project."
+arch=('x86_64')
+url="https://llvm.org/"
+license=('custom:University of Illinois/NCSA Open Source License')
+depends=("llvm=${pkgver}" 'libedit' 'libxml2' 'ncurses' 'python3-six')
+makedepends=('groff' 'swig' 'cmake' 'clang-tools-extra')
+source=("https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver}/lldb-${pkgver}.src.tar.xz")
+md5sums=('c2777536fe0d4151c6aa30773f51af20')
+
+build() {
+    mkdir -p build
+    cd build
+    
+    cmake -G 'Unix Makefiles' \
+            -DCMAKE_BUILD_TYPE:STRING=Release \
+            -DCMAKE_INSTALL_PREFIX:PATH=/usr \
+            -DLLVM_LINK_LLVM_DYLIB:BOOL=ON \
+            -DLLDB_INCLUDE_TESTS=OFF \
+            "../${pkgname}-${pkgver}.src"
+
+    make
+}
+
+package() {
+    cd build
+    make DESTDIR=${pkgdir} install
+    
+    # Python scripts
+    #python3 -m compileall ${pkgdir}/usr/lib/python3.7/site-packages/lldb
+    #python3 -O -m compileall ${pkgdir}/usr/lib/python3.7/site-packages/lldb
+    # part of six
+    #rm ${pkgdir}/usr/lib/python3.7/site-packages/six.py
+    
+    install -D -m644 ../${pkgname}-${pkgver}.src/LICENSE.TXT ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE    
+}
+
