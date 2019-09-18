@@ -1,12 +1,12 @@
 
 pkgname=mercurial
 pkgver=5.1.1
-pkgrel=1
+pkgrel=2
 pkgdesc="A scalable distributed SCM tool"
 arch=('x86_64')
 url="http://www.selenic.com/mercurial"
 license=('GPL')
-depends=('python2')
+depends=('python3')
 optdepends=('tk: for the hgk GUI')
 source=("https://www.mercurial-scm.org/release/${pkgname}-${pkgver}.tar.gz"
         'mercurial.profile')
@@ -15,7 +15,8 @@ md5sums=('3ba8caa5198fec0df036fb7d591e2ca2'
 
 package() {
   cd ${pkgname}-${pkgver}
-  python2 setup.py install --root=${pkgdir} --optimize=1 
+  # python3 support https://www.mercurial-scm.org/wiki/Python3
+  HGPYTHON3=1 python3 setup.py install --root=${pkgdir} --optimize=1 
 
   install -d ${pkgdir}/usr/share/man/{man1,man5}
   install -m644 doc/hg.1 ${pkgdir}/usr/share/man/man1 

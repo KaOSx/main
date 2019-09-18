@@ -3,7 +3,7 @@ pkgname=hplip
 pkgver=3.19.8
 # incase a or b is used in hplip rls:
 _pkgver=3.19.8
-pkgrel=1
+pkgrel=2
 pkgdesc="Drivers for HP DeskJet, OfficeJet, Photosmart, Business Inkjet and some LaserJet."
 arch=('x86_64')
 url="https://developers.hp.com/hp-linux-imaging-and-printing"
@@ -23,21 +23,14 @@ md5sums=('2ab9e909981aeaaeb5c7df509aa648a9'
 
 build() {
   cd ${pkgname}-${_pkgver}
-  find . -type f -exec sed -i 's~^#.*env python~#!/usr/bin/env python3~' {} +
-  sed -i '1s|#!/usr/bin/python|#!/usr/bin/python3|' doctor.py setup.py makeuri.py logcapture.py base/magic.py
-  sed -i '1s|#!/usr/bin/python|#!/usr/bin/python3|' ui/upgradeform.py uninstall.py upgrade.py config_usb_printer.py
-  sed -i 's|python ./print.py|python3 ./print.py|' scan.py
-  sed -i 's|python ./testpage.py|python3 ./testpage.py|' setup.py
-  sed -i 's|python %HOME%|python3 %HOME%|' base/utils.py
-  sed -i 's|python ./plugin.py|python3 ./plugin.py|' base/pkit.py
-  sed -i 's|/usr/bin/python|/usr/bin/python3|' data/rules/hplip-printer@.service
+  
   # https://github.com/KaOSx/main/issues/31, patch file prnt/filters/hpps
   #patch -p2 -i ${srcdir}/patch
   # https://bugs.launchpad.net/hplip/+bug/1785230, remove closed source parts, breaking hplip > 3.18.6
   patch -p1 -i ${srcdir}/imageprocessor.patch
 
   export AUTOMAKE='automake --foreign'
-  export PYTHON=/usr/bin/python3
+  
   autoreconf --force --install
 
 	./configure --prefix=/usr \
