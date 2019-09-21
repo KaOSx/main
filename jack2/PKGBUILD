@@ -1,17 +1,16 @@
 
 pkgname=jack2
 pkgver=1.9.12
-pkgrel=2
+pkgrel=3
 _commit=ce825c6
 pkgdesc="The next-generation JACK with SMP support"
 arch=('x86_64')
 url="http://jackaudio.org/"
 backup=(etc/security/limits.d/99-audio.conf)
 license=('GPL')
-depends=('libsamplerate' 'celt' 'libffado' 'dbus' 'opus' 'dbus-python2')
+depends=('libsamplerate' 'celt' 'libffado' 'dbus' 'opus')
 makedepends=('python2' 'doxygen')
-optdepends=('dbus-python2: jack_control')
-provides=('jack' 'jack2-dbus')
+provides=('jack')
 source=("https://github.com/jackaudio/jack2/archive/v${pkgver}.tar.gz"
         '99-audio.conf'
         '40-hpet-permissions.rules')
