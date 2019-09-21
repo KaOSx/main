@@ -1,31 +1,32 @@
 
 pkgname=telepathy-qt5
 _pkgname=telepathy-qt
-pkgver=0.9.7
-pkgrel=5
+pkgver=0.9.7.90
+_commit=336ff2a4b4f9a12bd0ff525f836ed37e564121a7
+pkgrel=1
 pkgdesc="A library for Qt-based Telepathy clients."
 arch=('x86_64')
 url="https://telepathy.freedesktop.org"
 groups=('telepathy')
 license=('LGPL')
 options=('!libtool')
-depends=('qt5-base' 'telepathy-farstream' 'dbus-python2')
-makedepends=('libxslt' 'python2' 'cmake' 'doxygen' 'qt5-tools')
-source=("https://telepathy.freedesktop.org/releases/telepathy-qt/$_pkgname-$pkgver.tar.gz")
-#source=("git://anongit.freedesktop.org/telepathy/telepathy-qt")
-md5sums=('86470dd3d7f6de8b8f4f36165486d42f')
+depends=('qt5-base' 'telepathy-farstream' 'dbus-python3')
+makedepends=('libxslt' 'python3' 'cmake' 'doxygen' 'qt5-tools')
+#source=("https://telepathy.freedesktop.org/releases/telepathy-qt/$_pkgname-$pkgver.tar.gz")
+source=("https://github.com/TelepathyIM/telepathy-qt/archive/${_commit}.zip")
+md5sums=('b9380fdf1c55a790d1e1d4e192f3d5bf')
 
 prepare() {
-  cd ${_pkgname}-${pkgver}
+  cd ${_pkgname}-${_commit}
   
-  #sed -i -e 's|add_definitions(-D_BSD_SOURCE)|add_definitions(-D_BSD_SOURCE -D_DEFAULT_SOURCE)|' ${srcdir}/${_pkgname}-${pkgver}/cmake/modules/TelepathyDefaults.cmake
+  #sed -i -e 's|add_definitions(-D_BSD_SOURCE)|add_definitions(-D_BSD_SOURCE -D_DEFAULT_SOURCE)|' cmake/modules/TelepathyDefaults.cmake
 }
 
 build() {
     mkdir -p build
     cd build
     
-    cmake ../${_pkgname}-${pkgver} \
+    cmake ../${_pkgname}-${_commit} \
         -DCMAKE_BUILD_TYPE=Release \
         -DCMAKE_INSTALL_PREFIX=/usr \
         -DQT_QMAKE_EXECUTABLE=/usr/lib/qt5/bin/qmake \
