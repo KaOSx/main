@@ -1,36 +1,33 @@
 
 pkgname=gwenhywfar
-pkgver=4.20.2
-_pkgver=208
+pkgver=4.99.16
+_pkgver=140
 pkgrel=1
 pkgdesc="OS abstraction functions for various projects"
 arch=('x86_64')
 url="https://www.aquamaniac.de"
 options=('!libtool')
 license=("LGPL")
-depends=('openssl' 'gnutls' 'libgcrypt' 'qt5-base')
-makedepends=('qt5-tools')
-source=("https://www.aquamaniac.de/rdm/attachments/download/${_pkgver}/gwenhywfar-${pkgver}.tar.gz"
+depends=('openssl' 'gnutls' 'libgcrypt') # 'qt5-base')
+#makedepends=('qt5-tools')
+source=("https://www.aquamaniac.de/rdm/attachments/download/${_pkgver}/gwenhywfar-${pkgver}beta.tar.gz"
         'gnutls34.patch')
-md5sums=('9fd70486ca12918ecce5842c26f5949f'
+md5sums=('be67ed26f2e83cb44e4d4abb7bec467b'
          '1197ac1f8378b3b3a8ed12169fcb57f9')
 
 build() {
-  cd gwenhywfar-${pkgver}
+  cd gwenhywfar-${pkgver}beta
   #patch -p1 -i ${srcdir}/gnutls34.patch
   
   ./configure --prefix=/usr \
         --sysconfdir=/etc \
         --enable-ssl \
-        --with-qt5-qmake=/usr/lib/qt5/bin/qmake \
-        --with-qt5-moc=/usr/lib/qt5/bin/moc \
-        --with-qt5-uic=/usr/lib/qt5/bin/uic \
-        --with-guis="qt5"
+        --with-guis=""
   make
 }
 
 package() {
-  cd gwenhywfar-${pkgver}
+  cd gwenhywfar-${pkgver}beta
   
   make DESTDIR=${pkgdir} install
 }
