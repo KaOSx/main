@@ -1,7 +1,7 @@
 
 pkgname=fontforge
-pkgver=20190413
-_pkgver=20190413
+pkgver=20190801
+_pkgver=20190801
 pkgrel=1
 pkgdesc="An outline and bitmap font editor"
 arch=('x86_64')
@@ -12,7 +12,7 @@ depends=('libxkbui' 'libxi' 'libxml2' 'pango' 'giflib' 'libpng' 'libtiff' 'libjp
 options=('!libtool' '!makeflags')
 source=("https://github.com/fontforge/fontforge/releases/download/${_pkgver}/fontforge-${_pkgver}.tar.gz"
         'https://fontforge.github.io/cidmaps.tgz')
-md5sums=('ac60705cfb74a5b0e266d8455690cd51'
+md5sums=('5d845f6092b8c3342473ff64bc8ee70c'
          '063691163e592515b31514515bb3ce8c')
 
 build() {
@@ -21,7 +21,8 @@ build() {
   
   #./bootstrap
   ./configure --prefix=/usr \
-              --mandir=/usr/share/man
+              --mandir=/usr/share/man \
+              --without-libuninameslist
   make 
 }
 
