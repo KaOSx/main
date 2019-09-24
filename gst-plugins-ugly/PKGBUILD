@@ -1,7 +1,7 @@
 
 pkgname=gst-plugins-ugly
-pkgver=1.16.0
-pkgrel=3
+pkgver=1.16.1
+pkgrel=1
 pkgdesc="GStreamer Multimedia Framework Ugly Plugins"
 arch=('x86_64')
 license=('LGPL')
@@ -11,7 +11,7 @@ depends=('gst-plugins-base' 'libdvdread' 'lame' 'libmpeg2' 'a52dec'
 makedepends=('python3')
 options=('!libtool' '!emptydirs')
 source=("https://gstreamer.freedesktop.org/src/gst-plugins-ugly/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('e30964c5f031c32289e0b25e176c3c95a5737f2052dfc81d0f7427ef0233a4c2')
+sha256sums=('4bf913b2ca5195ac3b53b5e3ade2dc7c45d2258507552ddc850c5fa425968a1d')
 
 build() {
   cd ${pkgname}-${pkgver}
@@ -22,8 +22,7 @@ build() {
     --disable-static \
     --enable-experimental \
     --with-package-name="GStreamer (KaOS)" \
-    --with-package-origin="https://kaosx.us" \
-    PYTHON=/usr/bin/python3
+    --with-package-origin="https://kaosx.us" 
   make
 }
 
