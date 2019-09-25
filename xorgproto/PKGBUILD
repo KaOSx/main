@@ -1,7 +1,7 @@
 
 pkgname=xorgproto
 pkgver=2019.1
-pkgrel=1
+pkgrel=2
 pkgdesc="X.Org combined protocol headers"
 arch=('x86_64')
 url="https://xorg.freedesktop.org/"
@@ -131,9 +131,7 @@ package() {
   rm -f ${pkgdir}/usr/share/pkgconfig/applewmproto.pc
   rm -f ${pkgdir}/usr/share/pkgconfig/windowswmproto.pc
   
-  # temp fix to install printproto files
-  #install -m644 include/X11/extensions/Print.h ${pkgdir}/usr/include/X11/extensions/Print.h
-  #install -m644 include/X11/extensions/Printstr.h ${pkgdir}/usr/include/X11/extensions/Printstr.h
-  #install -m644 printproto.pc.in ${pkgdir}/usr/share/pkgconfig/printproto.pc
+  # Moved to libxvmc itself, will be fixed in next release
+  rm -f ${pkgdir}/usr/include/X11/extensions/vldXvMC.h
 }
 
