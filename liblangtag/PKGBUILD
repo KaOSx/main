@@ -1,16 +1,16 @@
 
 pkgname=liblangtag
-pkgver=0.6.2
+pkgver=0.6.3
 pkgrel=1
 pkgdesc="Interface library to access/deal with tags for identifying languages, which is described in RFC 5646."
 arch=('x86_64')
-url="http://tagoh.bitbucket.org/liblangtag/"
+url="https://bitbucket.org/tagoh/liblangtag/wiki/Home"
 license=('GPL3' 'Mozilla Public License, v. 2.0')
 options=('!libtool')
 depends=('gobject-introspection' 'libxml2')
 makedepends=('boost' 'glm' 'cppunit' 'mdds')
 source=("https://bitbucket.org/tagoh/liblangtag/downloads/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('284f120247323a35122ab32b4b359c45')
+md5sums=('015274eb284b1dc82bf7af1d1774ec64')
 
 build() {
   cd ${pkgname}-${pkgver}
