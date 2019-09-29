@@ -1,0 +1,40 @@
+
+pkgname=fuse3
+pkgver=3.7.0
+pkgrel=1
+pkgdesc="A library that makes it possible to implement a filesystem in a userspace program, libfuse 3.x version."
+arch=('x86_64')
+url="https://github.com/libfuse/libfuse"
+license=('GPL2')
+depends=('glibc')
+makedepends=('pkgconfig' 'meson' 'ninja')
+backup=('etc/fuse.conf')
+options=('!libtool')
+source=("https://github.com/libfuse/libfuse/releases/download/fuse-${pkgver}/fuse-${pkgver}.tar.xz")
+md5sums=('b9e6558aa25f66c0f1a95d1c7455b944')
+
+build() {
+  mkdir -p build
+  cd build
+  
+  meson ../fuse-${pkgver} \
+    --prefix=/usr \
+    --buildtype=release \
+    -Dexamples=false
+  ninja
+}
+
+package() {
+  cd build
+  
+  DESTDIR=${pkgdir} ninja install
+  
+  #install -D -m644 ../fuse.conf ${pkgdir}/etc/fuse.conf
+
+  rm -rf ${pkgdir}/dev
+  # Remove init script
+  rm -rf ${pkgdir}/etc/init.d
+  # remove duplicate udev rules
+  rm -rf ${pkgdir}/etc/udev
+}
+

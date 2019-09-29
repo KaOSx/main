@@ -18,7 +18,7 @@ build() {
     cmake ../${pkgname}-${pkgname}-${pkgver} \
         -DCMAKE_BUILD_TYPE=Release \
         -DCMAKE_INSTALL_PREFIX=/usr \
-        -DBUILD_SHARED_LIBS=ON \
+        -DYAML_BUILD_SHARED_LIBS=ON \
         -DYAML_CPP_BUILD_TOOLS=OFF \
         -DYAML_CPP_BUILD_TESTS=OFF
     make
