@@ -1,7 +1,7 @@
 
 pkgname=imagemagick
-pkgver=6.9.10.66
-_pkgver=6.9.10-66
+pkgver=6.9.10.67
+_pkgver=6.9.10-67
 pkgrel=1
 pkgdesc="An image viewing/manipulation program"
 arch=('x86_64')
@@ -16,7 +16,7 @@ optdepends=('ghostscript: for Ghostscript support'
 options=('!docs' 'libtool' '!emptydirs')
 source=("https://www.imagemagick.org/download/ImageMagick-${_pkgver}.tar.xz"
         'perlmagick.rpath.patch')
-md5sums=('e40f4a5e2b326235fef46246f219f9f1'
+md5sums=('85c8f316fee26998e39c8a95c9560d27'
          '0faf7158fd3a0904d9a70dd3e3c1fe9c')
 
 build() {
@@ -57,7 +57,7 @@ build() {
 check() {
         cd ImageMagick-${_pkgver}
         # 6 demos fail without libwmf
-        #make check
+        make check
 }
 
 package() {
