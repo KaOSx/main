@@ -2,8 +2,8 @@
 pkgbase="llvm"
 pkgname=('llvm' 'clang' 'clang-analyzer' 'clang-tools-extra')
 pkgver=8.0.1
-_gcc_ver=8.3.0
-pkgrel=2
+_gcc_ver=9.2.0
+pkgrel=3
 arch=('x86_64')
 url="https://llvm.org/"
 license=('custom:University of Illinois/NCSA Open Source License')
@@ -16,8 +16,7 @@ source=("https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver
 md5sums=('9a3b63df01c52556f7afb5617934e79e'
          '28db72b57ca99307259773e4ac74a6d3'
          'b7c55438f792a1d5698696100a8731e0'
-         'c251e582862f9fcc880802f8f2920096'
-         'c2777536fe0d4151c6aa30773f51af20')
+         'c251e582862f9fcc880802f8f2920096')
 
 prepare() {
     cd ${pkgbase}-${pkgver}.src
@@ -85,7 +84,7 @@ package_clang() {
     pkgdesc="C/C++/Objective-C compiler, which aims to deliver amazingly fast compiles, extremely useful error and warning messages and to provide a platform for building great source level tools."
     url="https://clang.llvm.org/"
     # http://old.nabble.com/%22clang--v%22-shows-a-GCC-call-td28378453.html
-    depends=("llvm=${pkgver}-${pkgrel}" "gcc=${_gcc_ver}")
+    depends=("llvm=${pkgver}-${pkgrel}" 'gcc')
 
     cd build/tools/clang
     make DESTDIR=${pkgdir} install

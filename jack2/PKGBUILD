@@ -1,15 +1,15 @@
 
 pkgname=jack2
-pkgver=1.9.12
-pkgrel=3
+pkgver=1.9.14
+pkgrel=1
 _commit=ce825c6
 pkgdesc="The next-generation JACK with SMP support"
 arch=('x86_64')
-url="http://jackaudio.org/"
+url="https://jackaudio.org/"
 backup=(etc/security/limits.d/99-audio.conf)
 license=('GPL')
 depends=('libsamplerate' 'celt' 'libffado' 'dbus' 'opus')
-makedepends=('python2' 'doxygen')
+makedepends=('python3')
 provides=('jack')
 source=("https://github.com/jackaudio/jack2/archive/v${pkgver}.tar.gz"
         '99-audio.conf'
@@ -21,15 +21,14 @@ md5sums=('6cb5dfea0586bcf009c733c4e4b04a03'
 build() {
   cd ${pkgname}-${pkgver}
   
-  LDFLAGS="$LDFLAGS,--no-as-needed -lm" python2 ./waf configure \
+  LDFLAGS="$LDFLAGS,--no-as-needed -lm" python3 ./waf configure \
     --prefix=/usr \
     --alsa \
     --classic \
     --dbus \
-    --firewire \
-    --doxygen
+    --firewire 
 
-  python2 ./waf build
+  python3 ./waf build
 
 
 }
@@ -37,7 +36,7 @@ build() {
 package() {
   cd ${pkgname}-${pkgver}
 
-  python2 waf install --destdir=${pkgdir}
+  python3 waf install --destdir=${pkgdir}
 
   # configure realtime access/scheduling
   install -Dm644 ${srcdir}/99-audio.conf ${pkgdir}/etc/security/limits.d/99-audio.conf
