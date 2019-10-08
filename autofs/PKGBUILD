@@ -1,7 +1,7 @@
 
 pkgname=autofs
-pkgver=5.1.5
-pkgrel=3
+pkgver=5.1.6
+pkgrel=1
 pkgdesc='A kernel-based automounter for Linux.'
 arch=('x86_64')
 url='https://git.kernel.org/pub/scm/linux/storage/autofs/autofs.git'
@@ -16,7 +16,7 @@ backup=('etc/autofs/auto.master'
         'etc/default/autofs')
 options=('!makeflags')
 source=("https://www.kernel.org/pub/linux/daemons/autofs/v5/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('23afdad9e2fd6d41b1900be8cfecfd5aae0ad174c7708ff685ec27e280f9c0da')
+sha256sums=('dddee3d9b7388ce6cb7432832dfade25b07ef68ad48dcce01cf247b26a10caef')
 
 build() {
   cd ${pkgname}-${pkgver}
