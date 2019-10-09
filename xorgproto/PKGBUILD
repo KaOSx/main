@@ -1,7 +1,7 @@
 
 pkgname=xorgproto
 pkgver=2019.1
-pkgrel=2
+pkgrel=3
 pkgdesc="X.Org combined protocol headers"
 arch=('x86_64')
 url="https://xorg.freedesktop.org/"
@@ -133,5 +133,7 @@ package() {
   
   # Moved to libxvmc itself, will be fixed in next release
   rm -f ${pkgdir}/usr/include/X11/extensions/vldXvMC.h
+  # Moved to libx11, will be fixed in next release
+  rm -f ${pkgdir}/usr/include/X11/extensions/XKBgeom.h
 }
 
