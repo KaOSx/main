@@ -1,7 +1,7 @@
 
 pkgname=cairo
-pkgver=1.16.0
-pkgrel=2
+pkgver=1.17.2
+pkgrel=1
 pkgdesc="Cairo vector graphics library"
 arch=('x86_64')
 license=('LGPL' 'MPL')
@@ -10,8 +10,8 @@ depends=('libpng' 'libxrender' 'libxext' 'fontconfig' 'pixman' 'glib2' 'sh' 'mes
          'libgl' 'lzo2')
 makedepends=('librsvg' 'poppler-glib' 'libspectre')
 options=('!libtool')
-source=("https://www.cairographics.org/releases/${pkgname}-${pkgver}.tar.xz")
-sha1sums=('00e81842ae5e81bb0343108884eb5205be0eac14')
+source=("https://www.cairographics.org/snapshots/${pkgname}-${pkgver}.tar.xz")
+sha1sums=('c5d6f12701f23b2dc2988a5a5586848e70e858fe')
 
 build() {
   cd ${pkgname}-${pkgver}
