@@ -1,7 +1,7 @@
 
 pkgbase=libofx
 pkgname=('libofx' 'libofx-doc')
-pkgver=0.9.14
+pkgver=0.9.15
 pkgrel=1
 pkgdesc="API for the OFX banking standard"
 arch=('x86_64')
@@ -9,13 +9,16 @@ url="https://github.com/libofx/libofx"
 license=('GPL')
 depends=('opensp' 'curl' 'libxml++')
 checkdepends=('gnupg')
-source=("https://downloads.sourceforge.net/libofx/${pkgbase}-${pkgver}.tar.gz")
-md5sums=('b92b35b6f90e2a9d693367af397670f9' )
+#source=("https://downloads.sourceforge.net/libofx/${pkgbase}-${pkgver}.tar.gz")
+source=("https://github.com/libofx/libofx/archive/${pkgver}.tar.gz")
+md5sums=('ee4567bf8ceb1db81f81d38ff446d833' )
 
 build() {
   cd ${pkgbase}-${pkgver}
 
-  ./configure --prefix=/usr
+  ./autogen.sh
+  ./configure --prefix=/usr \
+  --disable-gengetopt
   make CXXFLAGS="-std=c++11"
 }
 
