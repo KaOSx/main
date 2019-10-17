@@ -1,7 +1,7 @@
 
 pkgname=v4l-utils
 pkgver=1.16.7
-pkgrel=1
+pkgrel=2
 pkgdesc="Userspace tools and conversion library for Video 4 Linux"
 arch=('x86_64')
 url="https://linuxtv.org/"
@@ -23,4 +23,5 @@ package() {
   MAKEFLAGS="-j1" make install DESTDIR=${pkgdir}/
   
   rm -f ${pkgdir}/usr/bin/ivtv-ctl
+  rm -f ${pkgdir}/usr/share/applications/qvidcap.desktop
 }
