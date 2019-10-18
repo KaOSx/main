@@ -1,6 +1,7 @@
 
 pkgname=faac
-pkgver=1.29.9.2
+pkgver=1.30
+_pkgver=1_30
 pkgrel=1
 pkgdesc="MPEG-4 and MPEG-2 AAC encoder."
 arch=('x86_64')
@@ -9,18 +10,20 @@ license=('GPL' 'custom')
 depends=('libmp4v2' 'glibc')
 makedepends=('automake' 'autoconf' 'libtool')
 options=('!libtool')
-source=("https://downloads.sourceforge.net/faac/${pkgname}-${pkgver}.tar.gz")
-md5sums=('2b58d621fad8fda879f07b7cad8bfe10')
+#source=("https://downloads.sourceforge.net/faac/${pkgname}-${pkgver}.tar.gz")
+source=("https://github.com/knik0/faac/archive/${_pkgver}.tar.gz")
+md5sums=('8d61e6d55088e599aa91532d5e6995b0')
 
 build() {
-  cd ${pkgname}-${pkgver}
+  cd ${pkgname}-${_pkgver}
   
+  ./bootstrap
   ./configure --prefix=/usr 
   make 
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
+  cd ${pkgname}-${_pkgver}
   make DESTDIR=${pkgdir} install
 
   install -Dm644 COPYING ${pkgdir}/usr/share/licenses/faac/LICENSE
