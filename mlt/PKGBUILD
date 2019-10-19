@@ -22,6 +22,7 @@ md5sums=('e3872267232aae89f5182fd567be2596'
 
 build() {
   cd mlt-${pkgver}
+  # make python3 default
   patch -p1 -i ${srcdir}/12d4f46a957ab4eba155940b44bb31c35697da26.diff
   patch -p1 -i ${srcdir}/3dbe5bcb87a26895ffc80aad3d6eac3539c161dd.diff
   patch -p1 -i ${srcdir}/1ece7ea5906e6ed06d364390234f3ca355f9850f.diff
