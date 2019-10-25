@@ -1,11 +1,11 @@
 
 pkgname=mpv
-pkgver=0.29.1
-pkgrel=11
+pkgver=0.30.0
+pkgrel=1
 pkgdesc='Video player based on MPlayer/mplayer2'
 arch=('x86_64')
 license=('GPL')
-url='http://mpv.io'
+url='https://mpv.io'
 depends=('ffmpeg' 'lcms2' 'libdvdread' 'libcdio' 'libcdio-paranoia' 'libgl' 'libxinerama'
          'libxv' 'libxkbcommon' 'libva' 'wayland' 'desktop-file-utils' 'hicolor-icon-theme'
          'xdg-utils' 'libdvdnav' 'youtube-dl' 'libass' 'libbluray' 'lua' 'libxrandr' 'jack'
@@ -15,7 +15,7 @@ options=('!emptydirs' '!buildflags')
 source=("https://github.com/mpv-player/mpv/archive/v${pkgver}.tar.gz"
         "https://github.com/mpv-player/mpv/commit/2ecf240b1cd20875991a5b18efafbe799864ff7f.patch")
 #source=("https://github.com/mpv-player/mpv/archive/${_commit}.zip")
-md5sums=('2cd070c6aed980786177b7cb5b73664b'
+md5sums=('254fdcd356561b30cb0ecb61b4873689'
          'ec43562bba26f19c55ab6ba47731ab50')
 
 prepare() {
@@ -34,13 +34,12 @@ build() {
 	--enable-libmpv-shared \
 	--enable-cdda \
 	--enable-sdl2 \
-	--enable-zsh-comp \
 	--enable-libarchive \
 	--enable-dvdnav \
-	--enable-dvdread \
 	--enable-libbluray \
 	--enable-cdda \
-	--enable-tv
+	--enable-tv \
+	--disable-tvos
 		
     ./waf build
 }
