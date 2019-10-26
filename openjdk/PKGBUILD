@@ -1,11 +1,11 @@
 # fails with gcc 6.4.0, builds with gcc 6.3.1
 pkgname=('openjdk' 'openjdk-src')
 pkgbase='openjdk'
-_icedtea_release="3.10.0"
+_icedtea_release="3.13.0"
 _icedtea_jdkver="8"
 # ${srcdir}/build/ChangeLog for versions
-_openjdk_build="b12"
-_pkgver="8u191"
+_openjdk_build="b10"
+_pkgver="8u222"
 pkgver="${_pkgver}_${_openjdk_build}_${_icedtea_release}"
 pkgrel=1
 pkgdesc="An open-source implementation of the seventh edition of the Java SE Platform."
@@ -13,10 +13,10 @@ arch=('x86_64')
 url="http://icedtea.classpath.org/"
 license=('GPL2 with Classpath exception')
 makedepends=('java-environment=8' 'apache-ant' 'zip' 'unzip'
-             'fastjar' 'cpio' 'cups' 'gtk2' 'coreutils'
+             'fastjar' 'cpio' 'cups' 'coreutils'
              'wget' 'gzip' 'alsa-lib' 'pulseaudio' 'zlib' 'libjpeg-turbo'
              'libpng' 'lcms2' 'freetype2' 'rhino' 'nss' 'libxt' 'pkg-config'
-             'libxtst' 'libxp' 'libxrender' 'ca-certificates-java' 'pcsclite') #'giflib' 
+             'libxtst' 'libxp' 'libxrender' 'libxinerama' 'libxcomposite' 'ca-certificates-java' 'pcsclite') #'giflib' 
 
 _hg_url="http://icedtea.wildebeest.org/download/drops/icedtea8/${_icedtea_release}"
 _jvmdir="/usr/lib/jvm/java-8-openjdk"
@@ -35,15 +35,15 @@ source=("http://icedtea.classpath.org/download/source/icedtea-${_icedtea_release
         'command_path.diff'
         'openjdk.profile.sh'
         'openjdk.profile.csh')
-md5sums=('da2edd777e4b6722d8d8d38fc9292acc'
-         '7009e4d076a363309081d3e17052147c'
-         '10aac41eb5ca669921b65b6f57666f3a'
-         'ca31c39f0e30ce947c121df7fc2a5c74'
-         'e2676fa776d0d4ea8481978dbf86677a'
-         '38b51a1f3c5fcaef4fdbd6c7ffe71ff2'
-         '0947e53d816019d096ba0a57251b5c31'
-         '0944e7313bd2b7c9324c50626d84d9a3'
-         '63b0e7bbf86ae742d5d77108312ef2a1'
+md5sums=('6179d3b6c6ea468081adaa561aad9fe7'
+         'bb3c3825352ca50e104d8e871f72aed5'
+         'd18fe62f73cfeb403db205a4fb5950e3'
+         'e0521c962a051790636bdd5c8dc3d098'
+         '32928a839f7d711c09ff03a11fd60036'
+         '3304542bfcd2fa2474ac489e16ee0e64'
+         '6ca0d831f2e7c7aa2c7f90005eb6bb42'
+         '51b622871d03b271a85bbdff465eb92e'
+         'f2625e6b7e3f555af155533e8239ad9a'
          'ee1afda124d5927345014ab382ef581e'
          '986131efd2636724ae37870a5cca6d43'
          '05afd9c7fedcc05d4ebbb3427e068dba'
@@ -59,11 +59,11 @@ noextract=("openjdk.tar.xz"
            "hotspot.tar.xz")
            
 prepare() {
-  cd icedtea-3.10.0
+  cd icedtea-${_icedtea_release}
   
   #patch -p1 -i ${srcdir}/makefile.diff
   # sed line needed to make it look for automake-1.16
-  sed -i 's|1.15|1.16|' configure
+  #sed -i 's|1.15|1.16|' configure
 }
 
 build() {
