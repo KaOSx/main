@@ -1,38 +1,40 @@
 
 pkgname=gegl
-pkgver=0.4.16
+pkgver=0.4.18
 _pkgver=0.4
-pkgrel=2
+pkgrel=1
 pkgdesc="Graph based image processing framework."
 arch=('x86_64')
 url="http://www.gegl.org/"
 license=('GPL3' 'LGPL3')
 depends=('babl' 'ffmpeg' 'openexr' 'librsvg' 'jasper' 'json-glib' 'libwebp' 'libraw' 'gexiv2')
-makedepends=('ruby' 'lua' 'exiv2' 'intltool' 'gobject-introspection')
+makedepends=('ruby' 'lua' 'exiv2' 'intltool' 'gobject-introspection' 'meson' 'ninja')
 options=('!libtool')
-source=("https://download.gimp.org/pub/gegl/${_pkgver}/${pkgname}-${pkgver}.tar.bz2"
+source=("https://download.gimp.org/pub/gegl/${_pkgver}/${pkgname}-${pkgver}.tar.xz"
         "https://gitlab.gnome.org/GNOME/gegl/commit/c1c3541caab485384087bbbcf1c83ef2d5bd4d43.diff")
-sha256sums=('0112df690301d9eb993cc48965fc71b7751c9021a4f4ee08fcae366c326b5e5a'
+sha256sums=('c946dfb45beb7fe0fb95b89a25395b449eda2b205ba3e8a1ffb1ef992d9eca64'
             'd69bb05a4327c2c1bc2bd1b6a4c938eb035ece37f8ea3ce6840d415dea4234e5')
 
-build() {
-  cd ${pkgname}-${pkgver}
-  # fix build with ilmbase 2.3.0
-  #patch -p1 -i ${srcdir}/c1c3541caab485384087bbbcf1c83ef2d5bd4d43.diff
 
-  ./configure --prefix=/usr \
-    --with-sdl \
-    --with-openexr \
-    --with-librsvg \
-    --with-libavformat \
-    --with-jasper \
-    --disable-docs 
-  make
+build() {
+  mkdir -p build
+  cd build
+  
+  meson ../${pkgname}-${pkgver} \
+    --prefix=/usr \
+    --buildtype=release \
+    -Ddocs=false \
+    -Dlibav=enabled \
+    -Dlibrsvg=enabled \
+    -Djasper=enabled \
+    -Dopenexr=enabled \
+    -Dsdl2=enabled
+  ninja
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
+  cd build
   
-  make install DESTDIR=${pkgdir}
+  DESTDIR=${pkgdir} ninja install
 }
 
