@@ -6,7 +6,7 @@ pkgname='qt5-base'
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=2
+pkgrel=1
 pkgdesc="A cross-platform application and UI framework"
 arch=('x86_64')
 url='http://qt-project.org/'
@@ -31,7 +31,7 @@ build() {
     cd ${srcdir}/${_pkgfqn}
     
     # https://bugreports.qt.io/browse/QTBUG-77364 https://forum.kaosx.us/d/2456-falkon-qt-5-13-1
-    patch -p1 -i ${srcdir}/debugoutput_and_setFocusProxy.diff
+    #patch -p1 -i ${srcdir}/debugoutput_and_setFocusProxy.diff
     
     #sed -i 's|libs": "-lmysqlclient_r"|libs": "-lmariadb"|' src/sql/configure.json
         
