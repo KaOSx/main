@@ -1,18 +1,18 @@
 
 pkgname=pyqtwebengine
 _pkgname=PyQtWebEngine
-pkgver=5.13.1
+pkgver=5.13.2
 pkgrel=1
 pkgdesc="A set of Python3 bindings for the Qt Company's Qt WebEngine libraries"
 arch=('x86_64')
 url="https://www.riverbankcomputing.com/software/pyqtwebengine/intro"
 license=('GPL')
 depends=('sip3' 'qtwebengine' 'pyqt5-python3')
-source=("https://www.riverbankcomputing.com/static/Downloads/PyQtWebEngine/${pkgver}/${_pkgname}_gpl-${pkgver}.tar.gz")
-sha1sums=('14906398a4d662972c1d7801e584b8c3d9782d7b')
+source=("https://www.riverbankcomputing.com/static/Downloads/PyQtWebEngine/${pkgver}/${_pkgname}-${pkgver}.tar.gz")
+sha1sums=('9e2cf170d50f0b65269b06869f9057eb6259237b')
 
 build() {
-  cd ${_pkgname}_gpl-${pkgver}
+  cd ${_pkgname}-${pkgver}
 
   python3 configure.py \
   -q /usr/lib/qt5/bin/qmake
@@ -21,7 +21,7 @@ build() {
 }
 
 package(){
-  cd ${_pkgname}_gpl-${pkgver}
+  cd ${_pkgname}-${pkgver}
 
   make DESTDIR=${pkgdir} INSTALL_ROOT=${pkgdir} install -j1
 }

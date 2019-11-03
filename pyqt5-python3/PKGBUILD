@@ -1,6 +1,6 @@
 
 pkgname=pyqt5-python3
-pkgver=5.13.1
+pkgver=5.13.2
 pkgrel=1
 pkgdesc="A set of Python3 bindings for the Qt toolkit"
 arch=('x86_64')
@@ -8,14 +8,14 @@ url="https://riverbankcomputing.co.uk/software/pyqt/intro"
 license=('GPL')
 depends=('sip3' 'dbus-python3' 'qt5-multimedia' 'qt5-serialport' 'qt5-svg' 'qtwebkit-tp')
 makedepends=('qt5-tools')
-source=("https://www.riverbankcomputing.com/static/Downloads/PyQt5/${pkgver}/PyQt5_gpl-${pkgver}.tar.gz"
+source=("https://www.riverbankcomputing.com/static/Downloads/PyQt5/${pkgver}/PyQt5-${pkgver}.tar.gz"
         'qt5.11.patch')
 #source=("https://www.riverbankcomputing.com/static/Downloads/PyQt5/PyQt5_gpl-5.6.1.${_commit}.tar.gz")
-sha1sums=('7be4319ca785305677509a928dd29a484cd5873a'
+sha1sums=('90951813d3186fb2b76d134d90541e373889ccfc'
           '08042e74dba21f48cb7055970c9da028b9fd140c')
 
 build() {
-  cd PyQt5_gpl-${pkgver}
+  cd PyQt5-${pkgver}
   #patch -p1 -i ${srcdir}/qt5.11.patch 
 
   python3 configure.py \
@@ -31,7 +31,7 @@ build() {
 }
 
 package(){
-  cd PyQt5_gpl-${pkgver}
+  cd PyQt5-${pkgver}
   # INSTALL_ROOT is needed for the QtDesigner module, the other Makefiles use DESTDIR
   make DESTDIR=${pkgdir} INSTALL_ROOT=${pkgdir} install
 }
