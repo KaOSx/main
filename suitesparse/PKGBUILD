@@ -1,7 +1,7 @@
 
 pkgname=suitesparse
-pkgver=5.4.0
-pkgrel=3
+pkgver=5.6.0
+pkgrel=1
 epoch=1
 pkgdesc="A collection of sparse matrix libraries"
 url="http://faculty.cse.tamu.edu/davis/suitesparse.html"
@@ -9,26 +9,26 @@ arch=('x86_64')
 depends=('lapack')
 makedepends=('cmake')
 license=('GPL')
-source=("http://faculty.cse.tamu.edu/davis/SuiteSparse/SuiteSparse-${pkgver}.tar.gz")
-md5sums=('4a6d4e74fc44c503f52996ae95cad03a')
+source=("https://github.com/DrTimothyAldenDavis/SuiteSparse/archive/v${pkgver}.tar.gz")
+md5sums=('af8b97cbded4cd5c6672e878bc0c37c2')
 
 build() {
-   cd SuiteSparse
+   cd SuiteSparse-${pkgver}
    
-   make BLAS=-lblas
+   make BLAS=-lblas 
 }
 
 
 package() {
-   cd SuiteSparse
+   cd SuiteSparse-${pkgver}
    install -dm755 ${pkgdir}/usr
    
    cd metis-5.1.0
    make install DESTDIR=${pkgdir}
-   mv ${pkgdir}/buildsys/main/suitesparse/src/SuiteSparse/* ${pkgdir}/usr
+   mv ${pkgdir}/buildsys/main/suitesparse/src/SuiteSparse-${pkgver}/* ${pkgdir}/usr
    rm -r ${pkgdir}/buildsys
    
    cd ..
    
-   make BLAS=-lblas install INSTALL=${pkgdir}/usr INSTALL_LIB=${pkgdir}/usr/lib
+   make BLAS=-lblas install INSTALL=${pkgdir}/usr INSTALL_LIB=${pkgdir}/usr/lib 
 }
