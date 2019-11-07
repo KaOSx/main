@@ -8,11 +8,9 @@ arch=('x86_64')
 url="https://www.imagemagick.org/"
 license=('custom')
 depends=('libtool' 'lcms2' 'libxt' 'gcc-libs' 'bzip2' 'freetype2' 'fontconfig'
-         'libxext' 'fftw' 'liblqr' 'libraw' 'librsvg' 'libxml2' 'perl' 'libwebp' 'libcl')
-makedepends=('ghostscript' 'openexr' 'jasper' 'opencl-headers' 'subversion')
-optdepends=('ghostscript: for Ghostscript support' 
-            'openexr: for OpenEXR support'  
-            'jasper: for JPEG-2000 support')
+         'libxext' 'fftw' 'liblqr' 'libraw' 'librsvg' 'libxml2' 'perl' 'libwebp'
+         'libcl' 'ghostscript' 'openexr' 'jasper')
+makedepends=('opencl-headers' 'subversion')
 options=('!docs' 'libtool' '!emptydirs')
 source=("https://www.imagemagick.org/download/ImageMagick-${_pkgver}.tar.xz"
         'perlmagick.rpath.patch')
