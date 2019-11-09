@@ -3,8 +3,8 @@ _extramodules=extramodules-5.3
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=('nvidia-390xx' 'khd-nvidia-390xx')
-pkgver=390.129
-pkgrel=8
+pkgver=390.132
+pkgrel=1
 arch=('x86_64')
 url="https://www.nvidia.com/page/home.html"
 makedepends=('linux-headers' 'linux>=5.3.6' 'linux<5.4' "nvidia-390xx-utils=${pkgver}")
@@ -15,7 +15,7 @@ _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
         'nvidia_supported'
         'linux-5.1.patch')
-md5sums=('f3659b1603ba3e421d05c8e744dc3a5a'
+md5sums=('dcc8f272fef30c43a68d21b3379d99aa'
          '282f73f1a7326339a7b0e0716eee4f76'
          '1f6ddbda9e0f6d9da944064a5c42b3af')
 
