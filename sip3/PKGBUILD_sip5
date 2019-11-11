@@ -8,8 +8,7 @@ pkgdesc="Tool that makes it easy to create Python3 bindings for C and C++ librar
 arch=('x86_64')
 url="https://www.riverbankcomputing.com/software/sip/"
 license=('custom:"sip"')
-depends=('python3' 'gcc-libs')
-makedepends=('python3-setuptools')
+depends=('python3-setuptools' 'gcc-libs')
 #source=("https://www.riverbankcomputing.com/static/Downloads/sip/${pkgver}/${_pkgname}-${pkgver}.tar.gz")
 source=("https://files.pythonhosted.org/packages/source/s/${_pkgname}/${_pkgname}-${pkgver}.tar.gz")
 sha1sums=('7f2fe2cf306caf04d2c3796264f43cdd6faecd47')
@@ -17,7 +16,7 @@ sha1sums=('7f2fe2cf306caf04d2c3796264f43cdd6faecd47')
 build() {
   cd ${_pkgname}-${pkgver}
   
-  python3 setup.py sipbuild
+  python3 setup.py build
   
   #cd ..
   
@@ -29,7 +28,7 @@ build() {
 package() {
   cd ${_pkgname}-${pkgver}
   
-  python3 setup.py sip-install
+  python3 setup.py install --prefix=/usr --root=${pkgdir} --optimize=1 --skip-build
   
   #cd ..
   
