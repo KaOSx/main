@@ -2,8 +2,8 @@
 # NOTE: Disabled the gtk2 module so no gtk-preview
 
 pkgname=mlt
-pkgver=6.16.0
-pkgrel=2
+pkgver=6.18.0
+pkgrel=1
 pkgdesc="An open source multimedia framework"
 arch=('x86_64')
 url="http://www.mltframework.org"
@@ -15,7 +15,7 @@ source=("https://github.com/mltframework/mlt/releases/download/v${pkgver}/mlt-${
         "https://github.com/mltframework/mlt/commit/12d4f46a957ab4eba155940b44bb31c35697da26.diff"
         "https://github.com/mltframework/mlt/commit/3dbe5bcb87a26895ffc80aad3d6eac3539c161dd.diff"
         "https://github.com/mltframework/mlt/commit/1ece7ea5906e6ed06d364390234f3ca355f9850f.diff")
-md5sums=('e3872267232aae89f5182fd567be2596'
+md5sums=('5b21f29883db6580987c58bda8b2b927'
          '57f093194bdacdafe197bf8036c0336f'
          '837b140a842f5746d2c0245d341a2fb4'
          '602b6ad7185d40f081ba92d027d9ea4f')
@@ -23,9 +23,9 @@ md5sums=('e3872267232aae89f5182fd567be2596'
 build() {
   cd mlt-${pkgver}
   # make python3 default
-  patch -p1 -i ${srcdir}/12d4f46a957ab4eba155940b44bb31c35697da26.diff
-  patch -p1 -i ${srcdir}/3dbe5bcb87a26895ffc80aad3d6eac3539c161dd.diff
-  patch -p1 -i ${srcdir}/1ece7ea5906e6ed06d364390234f3ca355f9850f.diff
+  #patch -p1 -i ${srcdir}/12d4f46a957ab4eba155940b44bb31c35697da26.diff
+  #patch -p1 -i ${srcdir}/3dbe5bcb87a26895ffc80aad3d6eac3539c161dd.diff
+  #patch -p1 -i ${srcdir}/1ece7ea5906e6ed06d364390234f3ca355f9850f.diff
   
   #CXXFLAGS="-std=c++11"
 
