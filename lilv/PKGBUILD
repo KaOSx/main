@@ -1,7 +1,7 @@
 
 pkgname=lilv
-pkgver=0.24.4
-pkgrel=2
+pkgver=0.24.6
+pkgrel=1
 pkgdesc="A library to make the use of LV2 plugins as simple as possible for applications"
 arch=('x86_64')
 url="https://drobilla.net/software/lilv/"
@@ -9,7 +9,7 @@ license=('custom:ISC')
 depends=('sratom' 'jack' 'python3')
 makedepends=('swig')
 source=("http://download.drobilla.net/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('fb340958a6df5a683bf25e291493dc4d')
+md5sums=('26768e5bdf3601f280e97c86dcbda79f')
 
 build() {
   cd ${pkgname}-${pkgver}
@@ -17,8 +17,7 @@ build() {
 
   python3 waf configure --prefix=/usr \
                         --configdir=/etc \
-                        --dyn-manifest \
-                        --bindings
+                        --dyn-manifest
 
   python3 waf build $MAKEFLAGS
 }
