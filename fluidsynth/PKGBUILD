@@ -1,33 +1,35 @@
 
 pkgname=fluidsynth
-pkgver=2.0.8
+pkgver=2.0.9
 pkgrel=1
 pkgdesc="A real-time software synthesizer based on the SoundFont 2 specifications"
 arch=('x86_64')
 url="http://www.fluidsynth.org/"
-depends=('glib2' 'jack' 'dbus' 'pulseaudio')
+depends=('glib2' 'jack' 'dbus' 'pulseaudio' 'portaudio')
 makedepends=('cmake' 'ladspa' 'doxygen')
 license=('LGPL')
 backup=('etc/conf.d/fluidsynth')
-source=("https://github.com/FluidSynth/fluidsynth/archive/v${pkgver}.tar.gz"
-        'fluidsynth.service')
-md5sums=('ee2637ec37141d99a65d8ceff51a6033'
-         'e0406748a154409907df62292be32e8a')
+source=("https://github.com/FluidSynth/fluidsynth/archive/v${pkgver}.tar.gz")
+md5sums=('322b9be2b3d982688ec6bfd895b3051a')
 
 build() {
-  cd ${pkgname}-${pkgver}
+  mkdir -p build
+  cd build
 
-  cmake . -DCMAKE_INSTALL_PREFIX=/usr \
-          -DCMAKE_BUILD_TYPE=Release \
-          -Denable-ladspa=ON \
-          -DLIB_SUFFIX="" \
-          -DFLUID_DAEMON_ENV_FILE=/etc/conf.d/fluidsynth
+  cmake ../${pkgname}-${pkgver} \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release \
+    -Denable-ladspa=ON \
+    -Denable-portaudio=ON \
+    -DLIB_SUFFIX="" \
+    -DFLUID_DAEMON_ENV_FILE=/etc/conf.d/fluidsynth
   make
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
+  cd build
   make DESTDIR=${pkgdir}/ install
 
   install -Dm644 fluidsynth.service ${pkgdir}/usr/lib/systemd/system/fluidsynth.service
+  install -Dm644 fluidsynth.conf ${pkgdir}/etc/conf.d/fluidsynth.conf
 }
