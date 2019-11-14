@@ -1,7 +1,7 @@
 
 pkgname=gwenhywfar
-pkgver=4.99.16
-_pkgver=140
+pkgver=4.99.25
+_pkgver=223
 pkgrel=1
 pkgdesc="OS abstraction functions for various projects"
 arch=('x86_64')
@@ -10,19 +10,16 @@ options=('!libtool')
 license=("LGPL")
 depends=('openssl' 'gnutls' 'libgcrypt' 'qt5-base')
 makedepends=('qt5-tools')
-source=("https://www.aquamaniac.de/rdm/attachments/download/${_pkgver}/gwenhywfar-${pkgver}beta.tar.gz"
+source=("https://www.aquamaniac.de/rdm/attachments/download/${_pkgver}/gwenhywfar-${pkgver}rc9.tar.gz"
         "https://github.com/aqbanking/gwenhywfar/commit/de8b3c5a755975edfa3dd3ef229820e8ff2eb9c8.diff")
-md5sums=('be67ed26f2e83cb44e4d4abb7bec467b'
+md5sums=('6e1de05abae74f9880e9f7bc9f2820a0'
          '58a17bdb9de688e51272d71cc053c170')
 
 build() {
-  cd gwenhywfar-${pkgver}beta
+  cd gwenhywfar-${pkgver}rc9
   #patch -R -p1 -i ${srcdir}/de8b3c5a755975edfa3dd3ef229820e8ff2eb9c8.diff
-  sed -i -e 's|qmake|qmake-qt5|' configure
-  sed -i -e 's|which moc|which moc-qt5|' configure
-  sed -i -e 's|which uic|which uic-qt5|' configure
-  sed -i -e 's|which lrelease|which lrelease-qt5|' configure
-  sed -i -e 's|which lupdate|which lupdate-qt5|' configure
+  #sed -i -e 's|which lrelease|which lrelease-qt5|' configure
+  #sed -i -e 's|which lupdate|which lupdate-qt5|' configure
   
   ./configure --prefix=/usr \
         --sysconfdir=/etc \
@@ -35,7 +32,7 @@ build() {
 }
 
 package() {
-  cd gwenhywfar-${pkgver}beta
+  cd gwenhywfar-${pkgver}rc9
   
   make DESTDIR=${pkgdir} install
 }
