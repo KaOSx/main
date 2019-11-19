@@ -2,7 +2,7 @@
 pkgname=openmpi
 pkgver=4.0.2
 _pkgver=4.0
-pkgrel=1
+pkgrel=2
 pkgdesc="High performance message passing library (MPI)"
 arch=('x86_64')
 url="https://www.open-mpi.org"
@@ -23,7 +23,6 @@ build() {
         --libdir=/usr/lib/${pkgname} \
         --enable-mpi-cxx \
         --enable-builtin-atomics \
-        --enable-mpi-thread-multiple \
         --with-valgrind \
         --enable-memchecker \
         --enable-debug \

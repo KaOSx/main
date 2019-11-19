@@ -1,8 +1,8 @@
 
 pkgname=xf86-video-intel
-pkgver=2.99.917.32
+pkgver=2.99.917.33
 pkgrel=1
-_commit=c6cb1b199598c572484fb4e30e1026be9d4ccc31
+_commit=e628d22673dfa494230e6f79ceff7d178137c71a
 pkgdesc="X.org Intel i810/i830/i915/945G/G965+ video drivers"
 arch=('x86_64')
 url="https://xorg.freedesktop.org"
@@ -14,6 +14,7 @@ options=('!libtool')
 groups=('xorg-drivers' 'xorg')
 install=xf86-video-intel.install
 #source=("http://xorg.freedesktop.org/releases/individual/driver/${pkgname}-${pkgver}.tar.bz2")
+# check at https://cgit.freedesktop.org/xorg/driver/xf86-video-intel/
 source=("git://anongit.freedesktop.org/git/xorg/driver/xf86-video-intel.git#commit=${_commit}")
 md5sums=('SKIP')
 

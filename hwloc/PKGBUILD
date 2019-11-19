@@ -1,6 +1,7 @@
 
 pkgname=hwloc
-pkgver=1.11.13
+pkgver=2.1.0
+_pkgver=2.1
 pkgrel=1
 pkgdesc="Portable Hardware Locality is a portable abstraction of hierarchical architectures"
 arch=('x86_64')
@@ -9,13 +10,14 @@ license=('BSD')
 depends=('sh' 'pciutils' 'libxml2' 'cairo')
 makedepends=('pkg-config')
 options=('!libtool' '!docs')
-source=("https://www.open-mpi.org/software/hwloc/v1.11/downloads/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('3c792e23c209e9e1bafe9bdbc613d401')
+source=("https://www.open-mpi.org/software/hwloc/v${_pkgver}/downloads/${pkgname}-${pkgver}.tar.bz2")
+sha1sums=('d5bac5428effd842b51adb3f8041a4147a3a1889')
 
 build() {
    cd ${pkgname}-${pkgver}
    
-   ./configure --prefix=/usr
+   ./configure --prefix=/usr \
+     --sysconfdir=/etc
    make
 }
 
