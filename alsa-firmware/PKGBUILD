@@ -1,11 +1,12 @@
 
 pkgname=alsa-firmware
 pkgver=1.2.1
-pkgrel=1
+pkgrel=2
 pkgdesc="ALSA firmware package"
 arch=('x86_64')
 url="https://alsa-project.org/"
 license=('GPL')
+depends=('alsa-topology-conf' 'alsa-ucm-conf')
 options=('!strip')
 source=("ftp://ftp.alsa-project.org/pub/firmware/${pkgname}-${pkgver}.tar.bz2")
 md5sums=('f8458efd25e6d6600dbc7aedf98f83a3')
