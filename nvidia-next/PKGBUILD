@@ -3,8 +3,8 @@ _extramodules=extramodules-5.3-next
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=nvidia-next
-pkgver=440.31
-pkgrel=5
+pkgver=440.36
+pkgrel=1
 epoch=1
 pkgdesc="NVIDIA drivers for linux."
 arch=('x86_64')
@@ -18,7 +18,7 @@ _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 #_pkg="NVIDIA-Linux-x86_64-${pkgver}"
 source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
         'linux-5.1.patch')
-md5sums=('383aaf65c926649435c4575fa3a8e6c3'
+md5sums=('52c480e1e14bc6b2ffe7ad9482d519f1'
          '234d53510e52ff90d1cf8dac3cf07d56')
 
 build() {
