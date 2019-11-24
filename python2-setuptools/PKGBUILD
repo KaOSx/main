@@ -1,6 +1,6 @@
 
 pkgname=python2-setuptools
-pkgver=41.6.0
+pkgver=42.0.0
 pkgrel=1
 pkgdesc="Easily download, build, install, upgrade, and uninstall Python packages"
 arch=('x86_64')
@@ -12,10 +12,11 @@ provides=('python2-distribute' 'setuptools')
 replaces=('python2-distribute' 'setuptools')
 conflicts=('python2-distribute')
 source=("https://github.com/pypa/setuptools/archive/v${pkgver}.tar.gz")
-md5sums=('d7219a3d3198aab362e511ad2d1758ce')
+md5sums=('7b7f9975a4e97f8ee739bc68450663fd')
 
 build() {
    cd setuptools-${pkgver}
+   sed -i -e "s|^#\!.*/usr/bin/env python|#!/usr/bin/env python2|" setuptools/command/easy_install.py
    sed -i '/pip.main(args)/d' bootstrap.py
    
    python2 bootstrap.py
