@@ -2,7 +2,7 @@
 pkgname=python2-gobject
 _pkgname=pygobject
 pkgver=2.28.7
-pkgrel=4
+pkgrel=5
 pkgdesc="Python bindings for GObject"
 arch=('x86_64')
 url="http://www.pygtk.org/"
@@ -15,7 +15,9 @@ sha256sums=('bb9d25a3442ca7511385a7c01b057492095c263784ef31231ffe589d83a96a5a')
 build() {
   cd ${_pkgname}-${pkgver}
   
-  ./configure --disable-introspection --prefix=/usr 
+  ./configure --disable-introspection \
+    --prefix=/usr \
+    PYTHON=/usr/bin/python2
   make
 }
 
