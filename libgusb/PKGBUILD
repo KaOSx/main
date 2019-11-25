@@ -1,27 +1,31 @@
 
 pkgname=libgusb
-pkgver=0.2.11
-pkgrel=2
+pkgver=0.3.1
+pkgrel=1
 pkgdesc="GLib wrapper around libusb1"
 arch=('x86_64')
 url="https://github.com/hughsie/libgusb"
 license=('LGPL2.1')
 depends=('systemd' 'libusb')
-makedepends=('gobject-introspection' 'vala')
+makedepends=('gobject-introspection' 'vala' 'meson' 'ninja')
 source=("https://people.freedesktop.org/~hughsient/releases/${pkgname}-${pkgver}.tar.xz")
 options=('!libtool')
-md5sums=('fa2b41b828c749f9190edf888948a77b')
+sha256sums=('4b677a372e97748970b1bb3dac076da2d051e4376c5960e77b7159701c851fed')
 
 build() {
-  cd ${pkgname}-${pkgver}
+  mkdir -p build
+  cd build
   
-  ./configure --prefix=/usr --disable-static
-  make
+  meson ../${pkgname}-${pkgver} \
+    --prefix=/usr \
+    --buildtype=release \
+    -Ddocs=false
+  ninja
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
+  cd build
   
-  make DESTDIR=${pkgdir} install
+  DESTDIR=${pkgdir} ninja install
 }
 
