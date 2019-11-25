@@ -1,8 +1,8 @@
 
 pkgname=libqalculate
-pkgver=3.5.0
-_pkgver=3.5.0
-pkgrel=2
+pkgver=3.6.0
+_pkgver=3.6.0
+pkgrel=1
 pkgdesc="Multi-purpose desktop calculator"
 arch=('x86_64')
 url="http://qalculate.github.io/"
@@ -11,8 +11,8 @@ depends=('libxml2' 'gmp' 'mpfr' 'icu' 'ncurses' 'readline' 'curl')
 makedepends=('perl-xml-parser' 'intltool')
 optdepends=('gnuplot: for plotting support')
 options=('!libtool' '!makeflags')
-source=("https://github.com/Qalculate/libqalculate/releases/download/v${_pkgver}/${pkgname}-${pkgver}a.tar.gz")
-md5sums=('ee7e85d7155baba4c1fc5ca73c1f92c0')
+source=("https://github.com/Qalculate/libqalculate/releases/download/v${_pkgver}/${pkgname}-${pkgver}.tar.gz")
+md5sums=('72002cad21bc8bc10f1b8f5cb760215e')
 
 build() {
   cd ${pkgname}-${pkgver}

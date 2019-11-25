@@ -1,6 +1,6 @@
 
 pkgname=postfix
-pkgver=3.4.7
+pkgver=3.4.8
 pkgrel=1
 pkgdesc='Secure, fast, easy to administer alternative to Sendmail'
 url='http://www.postfix.org/'
@@ -11,16 +11,18 @@ backup=('etc/postfix/'{access,aliases,canonical,generic,header_checks,main.cf,ma
 install=${pkgname}.install
 source=("https://mirror.myf.cloud/mirror/p/postfix-release/official/${pkgname}-${pkgver}.tar.gz"
         'aliases.patch'
-        'postfix.service')
-md5sums=('b29ab85e8f6ef7fae132b004e777671b'
+        'postfix.service'
+        'glibc.patch')
+md5sums=('6944b946887077a28e3dcb375ff53701'
          '9cc2ee3c72e134c2da5a895abaa56f30'
-         '24af169de13c34dac03d787c3e607ec5')
+         '24af169de13c34dac03d787c3e607ec5'
+         '33c2f08318f3caa6d7b9f5c68bbd2602')
 
 build() {
   cd ${pkgname}-${pkgver}
   
   #sed -i -e 's|34].*)|345].*)|g' makedefs
-  #sed -i -e 's|LINUX2|LINUX5|g' src/util/sys_defs.h
+  patch -p1 -i ${srcdir}/glibc.patch
 
 	make makefiles DEBUG='' CCARGS=' \
 		-DUSE_SASL_AUTH -DUSE_CYRUS_SASL -I/usr/include/sasl \
