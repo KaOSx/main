@@ -1,19 +1,22 @@
 
 pkgname=python2-pygments
-pkgver=2.4.2
+pkgver=2.5.1
 pkgrel=1
 pkgdesc="Python syntax highlighter"
 arch=('x86_64')
-url="http://pygments.org/"
+url="https://pygments.org/"
 license=('BSD')
 depends=('python2-setuptools')
 source=("https://pypi.org/packages/source/P/Pygments/Pygments-${pkgver}.tar.gz")
-md5sums=('5ecc3fbb2a783e917b369271fc0e6cd1')
+md5sums=('98bc810d0217d776a66494031e4f7ebf')
 
 package() {
   cd Pygments-${pkgver}
   python2 setup.py install --root=${pkgdir} -O1
+  
+  #part of python3-pygments
+  rm ${pkgdir}/usr/bin/pygmentize
 
-  install -Dm644 external/pygments.bashcomp ${pkgdir}/etc/bash_completion.d/pygments
+  #install -Dm644 external/pygments.bashcomp ${pkgdir}/etc/bash_completion.d/pygments
   install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
