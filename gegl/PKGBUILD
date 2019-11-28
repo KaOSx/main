@@ -2,12 +2,12 @@
 pkgname=gegl
 pkgver=0.4.18
 _pkgver=0.4
-pkgrel=1
+pkgrel=2
 pkgdesc="Graph based image processing framework."
 arch=('x86_64')
 url="http://www.gegl.org/"
 license=('GPL3' 'LGPL3')
-depends=('babl' 'ffmpeg' 'openexr' 'librsvg' 'jasper' 'json-glib' 'libwebp' 'libraw' 'gexiv2')
+depends=('babl' 'ffmpeg' 'openexr' 'librsvg' 'json-glib' 'libwebp' 'libraw' 'gexiv2')
 makedepends=('ruby' 'lua' 'exiv2' 'intltool' 'gobject-introspection' 'meson' 'ninja')
 options=('!libtool')
 source=("https://download.gimp.org/pub/gegl/${_pkgver}/${pkgname}-${pkgver}.tar.xz"
@@ -26,7 +26,7 @@ build() {
     -Ddocs=false \
     -Dlibav=enabled \
     -Dlibrsvg=enabled \
-    -Djasper=enabled \
+    -Djasper=disabled \
     -Dopenexr=enabled \
     -Dsdl2=enabled
   ninja
