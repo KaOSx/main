@@ -2,16 +2,19 @@
 # include global config
 source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
 
-pkgname=('qt5-declarative') # 'qt5-declarative-docs')
+pkgname=qt5-declarative
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
 pkgrel=1
+pkgdesc="A cross-platform application and UI framework, QtDeclarative files"
 arch=('x86_64')
 url='http://qt.nokia.com/'
 license=('GPL3' 'LGPL' 'FDL' 'custom')
-makedepends=('qt5-base' 'mesa' 'python3')
+depends=('qt5-base' 'mesa')
+makedepends=('python3' 'vulkan-headers')
 options=('!libtool' 'debug')
+groups=('qt5')
 _pkgfqn="qtdeclarative-everywhere-src-${subver}"
 source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz"
         "https://github.com/qt/qtdeclarative/commit/f42f1366dcd4b070c69c9e7fe42a704ef23da14d.diff")
@@ -28,11 +31,7 @@ build() {
     #make docs
 }
 
-package_qt5-declarative() {
-    pkgdesc="A cross-platform application and UI framework, QtDeclarative files"
-    depends=('qt5-base' 'mesa')
-    groups=('qt5')
-    
+package() {
     cd $srcdir/$_pkgfqn
     make INSTALL_ROOT=$pkgdir install
     
@@ -42,11 +41,3 @@ package_qt5-declarative() {
     done
 }
 
-package_qt5-declarative-docs() {
-    pkgdesc="Documentation files for QtDeclarative"
-    depends=('qt5-base')
-    groups=('qt5-docs')
-    
-    cd $srcdir/$_pkgfqn
-    make INSTALL_ROOT=$pkgdir install_docs
-}

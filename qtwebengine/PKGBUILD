@@ -39,7 +39,7 @@ build() {
    # Nouveau & Wayland Qtwebengine crashes, OpenGl/no GPU rendering chnages
    #patch -p1 -i ${srcdir}/a66d4cd82972996d76edff52d17464c150dec6a6.diff
    # workaround posted in https://bugreports.qt.io/browse/QTBUG-77037 for new pulseaudio
-   sed -i 's|gn_args += use_pulseaudio=true|gn_args += use_pulseaudio=true link_pulseaudio=true|' src/core/config/linux.pri
+   #sed -i 's|gn_args += use_pulseaudio=true|gn_args += use_pulseaudio=true link_pulseaudio=true|' src/core/config/linux.pri
    
    mkdir -p build   
    cd build 

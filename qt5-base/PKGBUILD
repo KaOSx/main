@@ -16,9 +16,9 @@ depends=('sqlite' 'xcb-util-keysyms' 'xcb-util-wm' 'xcb-util-image' 'xcb-util-re
         'alsa-lib' 'xdg-utils' 'hicolor-icon-theme' 'desktop-file-utils' 'mesa' 'systemd'
         'libxcursor' 'libxrender' 'libpng' 'mariadb' 'icu' 'libgl' 'libxfixes' 'libxinerama'
         'libxkbcommon' 'libinput' 'harfbuzz' 'mtdev' 'libproxy')
+makedepends=('postgresql-libs' 'cups' 'gperf' 'ruby' 'pulseaudio' 'vulkan-headers')
 optdepends=('postgresql-libs: PostgreSQL driver')
 groups=('qt5')
-makedepends=('postgresql-libs' 'cups' 'gperf' 'ruby' 'pulseaudio')
 options=('!libtool' 'debug')
 _pkgfqn="qtbase-everywhere-src-${subver}"
 source=("${_qtmirror}/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz"

@@ -1,0 +1,41 @@
+
+# include global config
+source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+
+pkgname=qt5-quicktimeline
+pkgver=${qtver}
+subver=${subver}
+_pkgver=${_qtver}
+pkgrel=1
+pkgdesc="Module for keyframe-based timeline construction."
+arch=('x86_64')
+url='https://github.com/qt/qtquicktimeline'
+license=('GPL3' 'LGPL')
+depends=('qt5-declarative')
+groups=('qt5')
+options=('!libtool')
+_pkgfqn="qtquicktimeline-everywhere-src-${subver}"
+source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
+#source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
+md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`)
+
+build() {
+    cd $srcdir/$_pkgfqn
+
+    /usr/lib/qt5/bin/qmake
+    make
+}
+
+package() {
+    cd $srcdir/$_pkgfqn
+    make INSTALL_ROOT=$pkgdir install
+    
+    mkdir -p ${pkgdir}/usr/bin
+    for i in $(ls ${pkgdir}/usr/lib/qt5/bin); do
+        ln -s /usr/lib/qt5/bin/${i} ${pkgdir}/usr/bin/${i}-qt5
+    done
+    
+    install -D -m644 LICENSE.GPL3 \
+    ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.GPL3
+}
+
