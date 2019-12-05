@@ -1,7 +1,7 @@
 
 pkgname=libraw1394
 pkgver=2.1.2
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 license=('LGPL2.1')
 pkgdesc="Provides an API to the Linux IEEE1394 (FireWire) driver"
@@ -9,8 +9,8 @@ depends=('glibc')
 makedepends=('pkgconfig')
 url="https://ieee1394.wiki.kernel.org/index.php/Main_Page"
 options=('!libtool')
-source=("ftp://ftp.kernel.org/pub/linux/libs/ieee1394/${pkgname}-${pkgver}.tar.xz")
-md5sums=('118060584c04f1aa5e29c4d22c1c235a')
+source=("https://www.kernel.org/pub/linux/libs/ieee1394/${pkgname}-${pkgver}.tar.xz")
+sha256sums=('03ccc69761d22c7deb1127fc301010dd13e70e44bb7134b8ff0d07590259a55e')
 
 build() {
    cd ${pkgname}-${pkgver}

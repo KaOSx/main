@@ -7,14 +7,23 @@ arch=('x86_64')
 url="https://github.com/laszlonemeth/magyarispell/"
 license=('LGPL' 'GPL' 'MPL')
 depends=('hunspell')
+makedepends=('recode')
 source=("https://sourceforge.net/projects/magyarispell/files/Magyar%20Ispell/1.7/magyarispell-1.7-2.tar.gz")
-md5sums=('d320e43e815c2dfd599dbfb7cd0e41fb')
+md5sums=('929a236b0efd155d4fe87910e6d34661')
 
+build() {
+  cd magyarispell-${pkgver}
+
+  make myspell PREFIX=/usr
+}
 
 package() {
-  cd ${srcdir}
+  cd magyarispell-${pkgver}
+  
   install -dm755 ${pkgdir}/usr/share/hunspell
   install -m644 -t $pkgdir/usr/share/hunspell hu_HU.dic hu_HU.aff
+  
+  #make DESTDIR=${pkgdir} install_myspell
 
   install -dm755 ${pkgdir}/usr/share/myspell/dicts
   pushd $pkgdir/usr/share/myspell/dicts
@@ -23,5 +32,5 @@ package() {
     done
   popd
   
-  install -Dm644 README_hu_HU.txt $pkgdir/usr/share/doc/$pkgname/README_hu_HU.txt
+  install -Dm644 README ${pkgdir}/usr/share/doc/$pkgname/README
 }
