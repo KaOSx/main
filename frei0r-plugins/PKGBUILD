@@ -1,44 +1,43 @@
 
 pkgname=frei0r-plugins
-pkgver=1.6.1
-_pkgver=snapshot-27-01-15
-pkgrel=5
+pkgver=1.7.0
+pkgrel=1
 pkgdesc="Large collection of free and portable video plugins"
 arch=('x86_64')
 url="https://www.dyne.org/software/frei0r/"
 license=('GPL')
 depends=('gcc-libs' 'gavl' 'opencv')
-makedepends=('doxygen')
+makedepends=('doxygen' 'cmake')
 options=('!emptydirs')
 source=("https://files.dyne.org/frei0r/${pkgname}-${pkgver}.tar.gz"
         "https://github.com/dyne/frei0r/commit/e1ecb144ca58cb4d68ef326d0ae224025a171fef.diff")
-#source=("https://files.dyne.org/frei0r/snapshots/frei0r-${_pkgver}.tar.gz"
-#        "http://www.linuxfromscratch.org/patches/blfs/7.9/frei0r-snapshot-27-01-15-gcc5_fix-1.patch"
-#        'facedetect.diff')
-md5sums=('bb85573340029e5d0ae1c21d0685461d'
-         'dfe72d29c42657fefa76273c38b59c2b')
+sha256sums=('1b1ff8f0f9bc23eed724e94e9a7c1d8f0244bfe33424bb4fe68e6460c088523a'
+            'f242ab2b0753002308d9d6cde98fca0e03f0a681f4a8b4f1a6590d2f11d02479')
 
 prepare() {
   cd ${pkgname}-${pkgver}
   
-  patch -p1 -i ${srcdir}/e1ecb144ca58cb4d68ef326d0ae224025a171fef.diff
-  touch README AUTHORS ChangeLog TODO
-  sed -i -e 's|AC_INIT(frei0r-plugins, [1.5.0]|AC_INIT(frei0r-plugins, [1.6.0]|g' configure.ac
-  sed -i -e 's|AM_INIT_AUTOMAKE|AM_INIT_AUTOMAKE([foreign])|g' configure.ac
+  #patch -p1 -i ${srcdir}/e1ecb144ca58cb4d68ef326d0ae224025a171fef.diff
+ 
+  #sed -i -e 's|AM_INIT_AUTOMAKE|AM_INIT_AUTOMAKE([foreign])|g' configure.ac
 }
          
-build() {
-  cd ${pkgname}-${pkgver}
+build() {  
+  mkdir -p build
+  cd build
 
-  ./autogen.sh
-  ./configure --prefix=/usr 
+  cmake ../${pkgname}-${pkgver} \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr 
   make
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
-  
-  make DESTDIR=${pkgdir} install 
+  cd build
+
+  make DESTDIR=${pkgdir} install
+  install -Dm644 ../${pkgname}-${pkgver}/COPYING.txt ${pkgdir}/usr/share/licenses/${pkgname}/COPYING.txt
 }
+
 
 
