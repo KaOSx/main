@@ -1,8 +1,8 @@
 
 pkgname=opencv
-pkgver=3.4.8
-_pkgver=3.4.8
-pkgrel=2
+pkgver=4.1.2
+_pkgver=4.1.2
+pkgrel=1
 pkgdesc="Open Source Computer Vision Library"
 arch=('x86_64')
 license=('BSD')
@@ -16,8 +16,8 @@ source=("https://github.com/Itseez/opencv/archive/${_pkgver}.tar.gz"
         "opencv_contrib-${_pkgver}::https://github.com/Itseez/opencv_contrib/archive/${_pkgver}.tar.gz"
         "https://github.com/alalek/opencv/commit/24dbb43c096691d0333cacf231e22f1369f8c826.patch"
         "https://github.com/opencv/opencv_contrib/commit/c4419e4e65a8d9e0b5a15e9a5242453f261bee46.diff")
-md5sums=('5aa8240c28c00a7dacdf51698e0ced77'
-         '9c9f239364669b3315f9cae12dafb7b7'
+md5sums=('631f23b142665072969debbe39e1c958'
+         'ad545ffe9ea32b0a8a718207e4c72438'
          'fea946fad4f25b47e8c8db37d5843863'
          'de1f1ad27a3da356706ba6a6fa74622b')
 
@@ -30,7 +30,7 @@ prepare () {
 build() {
   cd ${pkgname}-${_pkgver}
   # known Eigen3 issue upstream https://github.com/opencv/opencv/pull/15247
-  sed -e "s|include <Eigen/Core>|include <eigen3/Eigen/Core>|" -i modules/core/include/opencv2/core/private.hpp
+  #sed -e "s|include <Eigen/Core>|include <eigen3/Eigen/Core>|" -i modules/core/include/opencv2/core/private.hpp
  
   mkdir -p build 
   cd build
@@ -51,9 +51,9 @@ build() {
         -DWITH_CUDA=OFF \
         -DWITH_GTK=OFF \
         -DENABLE_FAST_MATH=ON \
-        -DOPENCV_EXTRA_MODULES_PATH=${srcdir}/opencv_contrib-${_pkgver}/modules
-        #-DOPENCV_GENERATE_PKGCONFIG=ON \
-        #-DOPENCV_ENABLE_NONFREE=ON
+        -DOPENCV_EXTRA_MODULES_PATH=${srcdir}/opencv_contrib-${_pkgver}/modules \
+        -DOPENCV_GENERATE_PKGCONFIG=ON \
+        -DOPENCV_ENABLE_NONFREE=ON
   make
 }
 
