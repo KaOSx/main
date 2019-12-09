@@ -1,13 +1,13 @@
 
 pkgname=nmap
 pkgver=7.80
-pkgrel=1
+pkgrel=2
 pkgdesc="Network exploration tool and security/port scanner"
 arch=('x86_64')
 url="https://nmap.org"
 license=('GPL2')
 depends=('pcre' 'openssl' 'libpcap' 'lua')
-makedepends=('python2')
+makedepends=('python3')
 source=("https://nmap.org/dist/${pkgname}-${pkgver}.tar.bz2")
 md5sums=('d37b75b06d1d40f27b76d60db420a1f5')
 
@@ -23,10 +23,10 @@ package() {
   make DESTDIR=${pkgdir} install
 
   # remove zenmap uninstall script
-  rm ${pkgdir}/usr/bin/uninstall_zenmap
+  #rm ${pkgdir}/usr/bin/uninstall_zenmap
   # zenmap needs gtk
-  rm ${pkgdir}/usr/share/applications/zenmap-root.desktop
-  rm ${pkgdir}/usr/share/applications/zenmap.desktop
+  #rm ${pkgdir}/usr/share/applications/zenmap-root.desktop
+  #rm ${pkgdir}/usr/share/applications/zenmap.desktop
 
   install -D -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }

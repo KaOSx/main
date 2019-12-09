@@ -2,22 +2,25 @@
 pkgname=avahi
 pkgver=0.7
 _pkgver=0.7
-pkgrel=3
+pkgrel=4
 pkgdesc="A multicast/unicast DNS-SD framework"
 arch=('x86_64')
 url="http://www.avahi.org/"
 license=('LGPL')
 depends=('dbus' 'libcap' 'libdaemon' 'gdbm' 'glib2' 'expat')
-makedepends=('dbus-python2' 'gobject-introspection' 'intltool')
+makedepends=('dbus-python3' 'gobject-introspection' 'intltool')
 backup=(etc/avahi/avahi-daemon.conf etc/avahi/services/{sftp-,}ssh.service)
 install=avahi.install
 options=('!libtool')
 #source=("http://www.avahi.org/download/avahi-${pkgver}.tar.gz")
-source=("https://github.com/lathiat/avahi/releases/download/v${_pkgver}/${pkgname}-${_pkgver}.tar.gz")
-md5sums=('d76c59d0882ac6c256d70a2a585362a6')
+source=("https://github.com/lathiat/avahi/releases/download/v${_pkgver}/${pkgname}-${_pkgver}.tar.gz"
+        'python_gdbm.diff')
+md5sums=('d76c59d0882ac6c256d70a2a585362a6'
+         'cec7fdc431598e210a269f701e49e346')
 
 prepare() {
   cd ${pkgname}-${_pkgver}
+  patch -p1 -i ${srcdir}/python_gdbm.diff
   
   NOCONFIGURE=1 ./autogen.sh
 }

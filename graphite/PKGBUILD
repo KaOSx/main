@@ -1,13 +1,13 @@
 
 pkgname=graphite
 pkgver=1.3.13
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 url="https://scripts.sil.org/cms/scripts/page.php?site_id=projects&item_id=graphite_home"
 pkgdesc='Reimplementation of the SIL Graphite text processing engine'
 license=('custom_SIL Dual license')
 depends=('gcc-libs')
-makedepends=('cmake' 'freetype2' 'python2')
+makedepends=('cmake' 'freetype2' 'python3-fonttools')
 replaces=('libgraphite' 'pango-graphite')
 options=('!libtool' '!emptydirs')
 source=("https://github.com/silnrsi/graphite/releases/download/${pkgver}/graphite2-${pkgver}.tgz"
