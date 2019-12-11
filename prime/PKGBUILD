@@ -1,0 +1,20 @@
+ 
+pkgname=prime
+pkgver=1
+pkgrel=1
+pkgdesc="NVIDIA PRIME render offload utility, adds the ability to have an X screen rendered by one GPU, but choose certain applications within that X screen to be rendered on a different GPU"
+arch=('x86_64')
+url="https://download.nvidia.com/XFree86/Linux-x86_64/435.21/README/primerenderoffload.html"
+license=('GPL2')
+depends=('bash')
+#replaces=('nvidia-utils-bumblebee' 'bumblebee')
+conflicts=('xf86-video-intel')
+source=('20-nvidia.conf'
+        'prime')
+md5sums=('ffe202975804e6aae7b9c74fc963818d'
+         'b94bca41f054ab6bdd1e44063bd9acf3')
+
+package() {
+  install -Dm644 ../20-nvidia.conf ${pkgdir}/usr/share/X11/xorg.conf.d/20-nvidia.conf
+  install -Dm755 ../prime ${pkgdir}/usr/bin/prime
+}
