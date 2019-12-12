@@ -20,21 +20,21 @@ replaces=('qt5-base-docs' 'qt5-declarative-docs')
 _pkgfqn="qt-everywhere-src-${subver}"
 source=("${_qtmirror}/${_pkgver}/${subver}/single/${_pkgfqn}.tar.xz")
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz")
-md5sums=('7c04c678d4ecd9e9c06747e7c17e0bb9')
+md5sums=('e7ea948ab99a2ef0726db5eac8e4fd8e')
 
 build() {
     cd ${_pkgfqn}
     
-    ln -s /usr/lib/qt5/bin qttools/
-    ln -s /usr/lib/qt5/bin/moc qtbase/bin/
-    ln -s /usr/lib/qt5/bin/rcc qtbase/bin/
-    ln -s /usr/lib/qt5/bin/uic qtbase/bin/
+    ln -sf /usr/lib/qt5/bin qttools/
+    ln -sf /usr/lib/qt5/bin/moc qtbase/bin/
+    ln -sf /usr/lib/qt5/bin/rcc qtbase/bin/
+    ln -sf /usr/lib/qt5/bin/uic qtbase/bin/
     
     ln -s /usr/lib/libQt5Help.so qttools/lib/
-    ln -s /usr/lib/libQt5Widgets.so qtbase/lib/
-    ln -s /usr/lib/libQt5Gui.so qtbase/lib/
-    ln -s /usr/lib/libQt5Sql.so qtbase/lib/
-    ln -s /usr/lib/libQt5Core.so qtbase/lib/
+    ln -sf /usr/lib/libQt5Widgets.so qtbase/lib/
+    ln -sf /usr/lib/libQt5Gui.so qtbase/lib/
+    ln -sf /usr/lib/libQt5Sql.so qtbase/lib/
+    ln -sf /usr/lib/libQt5Core.so qtbase/lib/
         
     #unset QTDIR
     #export PATH="$srcdir/bin:$PATH"

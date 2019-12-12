@@ -20,14 +20,14 @@ replaces=('qtwayland')
 options=('debug')
 _pkgfqn="qtwayland-everywhere-src-${subver}"
 source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz"
-        "https://github.com/qt/qtwayland/commit/bf09c7a1493c01a65ee0f110b37a04e653edc08e.diff")
+        "https://github.com/qt/qtwayland/commit/36974955d13578071387695adb13a47be33e4d32.diff")
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
-         'a7749123a4c673e68413ac7b4b56b3b4')
+         'd3c9711dbc3a021d2cecfb52635b602e')
 
 build() {
     cd ${_pkgfqn}
-    #patch -p1 -i ${srcdir}/bf09c7a1493c01a65ee0f110b37a04e653edc08e.diff
+    patch -p1 -i ${srcdir}/36974955d13578071387695adb13a47be33e4d32.diff
 
     /usr/lib/qt5/bin/qmake
     make
