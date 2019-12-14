@@ -20,12 +20,10 @@ options=('!makeflags' '!emptydirs' '!buildflags')
 source=("https://repo.or.cz/syslinux.git/snapshot/05ac953c23f90b2328d393f7eecde96e41aed067.tar.gz"
 #source=("https://www.kernel.org/pub/linux/utils/boot/syslinux/Testing/6.04/${pkgname}-${_pkgver}.tar.xz"
         'syslinux.cfg'
-        'syslinux-install_update'
-        'syslinux-upgrade-to-6.04-pre2.patch')
+        'syslinux-install_update')
 md5sums=('c6dd88430a14d89cce256ec38f0ebeef'
          '049abfd5b26432f89e8fe3a370fd35fc'
-         '3fcba3efe6beda6fc4935c1914393377'
-         'd18acc70c3bd0642be465019d2e94646')
+         '3fcba3efe6beda6fc4935c1914393377')
          
 prepare() {
     cd ${pkgname}-${_pkgver}
