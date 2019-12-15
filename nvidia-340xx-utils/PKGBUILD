@@ -3,7 +3,7 @@ pkgbase=nvidia-340xx-utils
 pkgname=('nvidia-340xx-utils' 'nvidia-340xx-settings')
 # Edit hardware-detection/hooks/hwdetect_7_graphics on version jump from 3xx.xx
 pkgver=340.107
-pkgrel=2
+pkgrel=3
 arch=('x86_64')
 url="http://www.nvidia.com/"
 license=('custom')
@@ -44,10 +44,10 @@ package_nvidia-340xx-utils() {
   # X driver
   install -D -m755 nvidia_drv.so "${pkgdir}/usr/lib/xorg/modules/drivers/nvidia_drv.so"
   # GLX extension module for X
-  install -D -m755 "libglx.so.${pkgver}" "${pkgdir}/usr/lib/xorg/modules/extensions/libglx.so.${pkgver}"
-  ln -s "libglx.so.${pkgver}" "${pkgdir}/usr/lib/xorg/modules/extensions/libglx.so" # X doesn't find glx otherwise
+  #install -D -m755 "libglx.so.${pkgver}" "${pkgdir}/usr/lib/xorg/modules/extensions/libglx.so.${pkgver}"
+  #ln -s "libglx.so.${pkgver}" "${pkgdir}/usr/lib/xorg/modules/extensions/libglx.so" # X doesn't find glx otherwise
   # OpenGL library
-  install -D -m755 "libGL.so.${pkgver}" "${pkgdir}/usr/lib/libGL.so.${pkgver}"
+  #install -D -m755 "libGL.so.${pkgver}" "${pkgdir}/usr/lib/libGL.so.${pkgver}"
   # OpenGL core library
   install -D -m755 "libnvidia-glcore.so.${pkgver}" "${pkgdir}/usr/lib/libnvidia-glcore.so.${pkgver}"
   # VDPAU

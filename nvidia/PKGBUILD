@@ -4,7 +4,7 @@ _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=('nvidia' 'khd-nvidia')
 pkgver=440.44
-pkgrel=1
+pkgrel=2
 epoch=1
 arch=('x86_64')
 url="https://www.nvidia.com/page/home.html"
@@ -36,7 +36,9 @@ build() {
 package_nvidia() {
     pkgdesc="NVIDIA drivers for linux."
     depends=('linux>=5.3.6' 'linux<5.4' "nvidia-utils=1:${pkgver}")
-    conflicts=('nvidia-340xx' 'nvidia-390xx')
+    conflicts=('nvidia-340xx' 'nvidia-390xx' 'nvidia-bumblebee')
+    provides=('nvidia-bumblebee')
+    replaces=('nvidia-bumblebee')
     install=nvidia.install
     
     install -D -m644 "${srcdir}/${_pkg}/kernel/nvidia.ko" "${pkgdir}/lib/modules/${_extramodules}/nvidia.ko"
