@@ -3,7 +3,7 @@ pkgbase=nvidia-utils
 pkgname=('nvidia-utils' 'opencl-nvidia' 'nvidia-settings')
 # Edit hardware-detection/hooks/hwdetect_7_graphics and Installer job 11 on version jump from 43x.xx
 pkgver=440.44
-pkgrel=1
+pkgrel=2
 epoch=1
 arch=('x86_64')
 url="https://www.nvidia.com/page/home.html"
@@ -55,8 +55,8 @@ package_nvidia-utils() {
   optdepends=('pkg-config: nvidia-xconfig'
               'opencl-nvidia: OpenCL support'
               'nvidia-settings: Gtk GUI')
-  conflicts=('libgl')
-  provides=('libgl')
+  conflicts=('nvidia-utils-bumblebee')
+  provides=('nvidia-utils-bumblebee')
 	      
   cd ${srcdir}/${_pkg}
   # X driver
@@ -64,20 +64,21 @@ package_nvidia-utils() {
   
   # GLX extension module for X
   install -D -m755 libglxserver_nvidia.so.${pkgver} ${pkgdir}/usr/lib/xorg/modules/extensions/libglxserver_nvidia.so.${pkgver}
+  install -D -m755 libglxserver_nvidia.so.${pkgver} ${pkgdir}/usr/lib/nvidia/xorg/libglxserver_nvidia.so.${pkgver}
   # X doesn't find glx otherwise:
   ln -s libglxserver_nvidia.so.${pkgver} ${pkgdir}/usr/lib/xorg/modules/extensions/libglxserver_nvidia.so 
-  #ln -s libglxserver_nvidia.so.${pkgver} ${pkgdir}/usr/lib/nvidia/xorg/libglx.so
+  ln -s libglxserver_nvidia.so.${pkgver} ${pkgdir}/usr/lib/nvidia/xorg/libglx.so
   
   # GLVND vendor implementation libraries for GLX
   install -D -m755 libGLX_nvidia.so.${pkgver} ${pkgdir}/usr/lib/libGLX_nvidia.so.${pkgver}
   #install -D -m755 libGLX.so.0 ${pkgdir}/lib/xorg/modules/extensions/libgGLX.so
-  install -D -m755 libGLX.so.0 ${pkgdir}/lib/libgGLX.so
+  #install -D -m755 libGLX.so.0 ${pkgdir}/lib/libgGLX.so
   
   # OpenGL library
-  install -D -m755 "libGL.so.1.7.0" "${pkgdir}/usr/lib/libGL.so.1.7.0"
+  #install -D -m755 "libGL.so.1.7.0" "${pkgdir}/usr/lib/libGL.so.1.7.0"
   #install -D -m755 "libGL.la" "${pkgdir}/usr/lib/libGL.la"
-  install -D -m755 "libOpenGL.so.0" "${pkgdir}/usr/lib/libOpenGL.so.0"
-  install -D -m755 "libGLdispatch.so.0" "${pkgdir}/usr/lib/libGLdispatch.so.0"
+  #install -D -m755 "libOpenGL.so.0" "${pkgdir}/usr/lib/libOpenGL.so.0"
+  #install -D -m755 "libGLdispatch.so.0" "${pkgdir}/usr/lib/libGLdispatch.so.0"
   
   # OpenGL core library
   install -D -m755 "libnvidia-glcore.so.${pkgver}" "${pkgdir}/usr/lib/libnvidia-glcore.so.${pkgver}"

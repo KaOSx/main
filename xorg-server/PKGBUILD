@@ -2,7 +2,7 @@
 pkgname=xorg-server
 pkgver=1.20.6
 # major updates build xorg-server/xf86-input-evdev/xorg-server again
-pkgrel=1
+pkgrel=2
 pkgdesc="X.Org X servers"
 arch=('x86_64')
 license=('custom')
@@ -12,7 +12,7 @@ depends=('xorgproto' 'xorg-util-macros' 'pixman'
          'libxrender' 'libdmx' 'libdrm' 'libxfixes' 'libxext' 'libxdmcp' 'libxshmfence'
          'systemd' 'xf86-input-evdev' 'xkeyboard-config' 'xorg-xkb-utils'
          'xorg-fonts-misc' 'xcb-util' 'xcb-util-image' 'xcb-util-keysyms'
-         'xcb-util-renderutil' 'xcb-util-wm' 'libepoxy' 'libgl' 'wayland-protocols' 'nettle')
+         'xcb-util-renderutil' 'xcb-util-wm' 'libepoxy' 'libglvnd' 'wayland-protocols' 'nettle')
 makedepends=('libx11' 'xtrans' 'libxkbfile' 'libxmu' 'libxtst' 'libxres' 'links')
 #backup=('etc/X11/xorg.conf.d/10-evdev.conf' 'etc/X11/xorg.conf.d/10-quirks.conf')
 options=('!libtool')
@@ -82,10 +82,6 @@ package() {
   install -m644 ${srcdir}/nvidia-drm-outputclass.conf ${pkgdir}/etc/X11/xorg.conf.d/
 
   rmdir ${pkgdir}/usr/share/X11
-
-  # Needed for non-mesa drivers, libgl will restore it
-  mv ${pkgdir}/usr/lib/xorg/modules/extensions/libglx.so \
-     ${pkgdir}/usr/lib/xorg/modules/extensions/libglx.xorg
 
   rm -rf ${pkgdir}/var/log
 

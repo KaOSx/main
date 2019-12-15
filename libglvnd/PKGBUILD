@@ -1,0 +1,34 @@
+ 
+pkgname=libglvnd
+pkgver=1.3.0
+pkgrel=1
+pkgdesc="The GL Vendor-Neutral Dispatch library"
+arch=('x86_64')
+url="https://github.com/NVIDIA/libglvnd"
+license=('MIT')
+depends=('libx11' 'libxext' 'xorgproto')
+makedepends=('python3' 'meson' 'ninja')
+provides=('libgl')
+conflicts=('libgl')
+replaces=('libgl')
+source=("https://gitlab.freedesktop.org/glvnd/libglvnd/-/archive/v${pkgver}/libglvnd-v${pkgver}.tar.bz2")
+sha256sums=('aad56b39a718abc65516485cc358e39348288fcd0b4f13ecb430486ab6d07630')
+
+build() {
+  mkdir -p build
+  cd build
+  
+  meson ../${pkgname}-v${pkgver} \
+    --prefix=/usr \
+    --buildtype=release
+
+  ninja
+}
+
+package() {
+  cd build
+  
+  DESTDIR=${pkgdir} ninja install
+  
+  install -Dm644 ../${pkgname}-v${pkgver}/README.md ${pkgdir}/usr/share/licenses/$pkgname/README.md
+}

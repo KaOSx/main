@@ -1,14 +1,15 @@
 
-pkgbase=mesa
-pkgname=('mesa' 'libgl')
+#pkgbase=mesa
+pkgname=mesa
 pkgver=19.2.7
 _pkgver=19.2.7
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
-makedepends=('xorgproto' 'libdrm' 'libxxf86vm' 'libxdamage' 'libva' 'expat' 'llvm' 'libx11' 'libxt' 'gcc-libs'
-             'libxml2' 'imake' 'systemd' 'libvdpau' 'wayland' 
-             'libxshmfence' 'elfutils' 'libomxil-bellagio' 'libxvmc' 'clang' 'python3-mako'
-             'lm_sensors' 'libunwind' 'wayland-protocols' 'meson' 'ninja' 'libxrandr')
+depends=('libx11' 'libxt' 'gcc-libs' 'libvdpau' 'xorgproto' 'wayland' 'elfutils'
+           'libdrm' 'libxxf86vm' 'libxdamage' 'expat' 'libxshmfence' 'libomxil-bellagio' 'llvm'
+           'lm_sensors' 'libunwind' 'libxvmc' 'libxrandr' 'libglvnd') 
+makedepends=('libva' 'llvm' 'libxml2' 'imake' 'clang' 'python3-mako'
+             'wayland-protocols' 'meson' 'ninja')
 url="https://www.mesa3d.org/"
 license=('custom')
 source=("https://mesa.freedesktop.org/archive/${pkgname}-${pkgver}.tar.xz"
@@ -48,7 +49,7 @@ build() {
     -Dgbm=true \
     -Dglx=dri \
     -Degl=true \
-    -Dglvnd=false \
+    -Dglvnd=true \
     -Dllvm=true \
     -Dvalgrind=false \
     -Dlibunwind=true \
@@ -60,7 +61,7 @@ build() {
 }
 
 package_libgl() {
-  depends=("mesa=${pkgver}")
+  #depends=("mesa=${pkgver}")
   pkgdesc="Mesa 3-D graphics library and DRI software rasterizer"
 
   install -m755 -d ${pkgdir}/usr/lib
@@ -77,9 +78,6 @@ package_libgl() {
 }
 
 package_mesa() {
-  depends=('libx11' 'libxt' 'gcc-libs' 'libvdpau' 'xorgproto' 'wayland' 'elfutils'
-           'libdrm' 'libxxf86vm' 'libxdamage' 'expat' 'libxshmfence' 'libomxil-bellagio' 'llvm'
-           'lm_sensors' 'libunwind' 'libxvmc' 'libxrandr') 
   pkgdesc="Mesa 3-D graphics libraries and include files"
   provides=('libglapi''libgles' 'libegl' 'khrplatform-devel' 'ati-dri' 'intel-dri' 'svga-dri' 'nouveau-dri')
   conflicts=('libglapi' 'libgles' 'libegl' 'khrplatform-devel' 'ati-dri' 'intel-dri' 'svga-dri' 'nouveau-dri')
@@ -89,8 +87,8 @@ package_mesa() {
   DESTDIR=${pkgdir} ninja install
 
   # rename libgl.so to make it possible to package separately 
-  mv ${pkgdir}/usr/lib/libGL.so.1.2.0 	${pkgdir}/usr/lib/mesa-libGL.so.1.2.0
-  rm ${pkgdir}/usr/lib/libGL.so{,.1}
+  #mv ${pkgdir}/usr/lib/libGL.so.1.2.0 	${pkgdir}/usr/lib/mesa-libGL.so.1.2.0
+  #rm ${pkgdir}/usr/lib/libGL.so{,.1}
 
   install -m755 -d ${pkgdir}/usr/share/licenses/mesa
   install -m644 ${srcdir}/LICENSE ${pkgdir}/usr/share/licenses/mesa/
