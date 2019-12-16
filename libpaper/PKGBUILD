@@ -1,18 +1,18 @@
 
 pkgname=libpaper
-pkgver=1.1.24
-_pkgver=1.1.24+nmu5
-pkgrel=3
+pkgver=1.1.28
+#_pkgver=1.1.24+nmu5
+pkgrel=1
 pkgdesc='Library for handling paper characteristics'
 arch=('x86_64')
 url='https://packages.debian.org/unstable/source/libpaper'
 license=('GPL')
 depends=('sh' 'run-parts')
-source=("http://ftp.de.debian.org/debian/pool/main/libp/libpaper/${pkgname}_${_pkgver}.tar.gz")
-md5sums=('38bc55688c0fc5544edaa5a951a45fbd')
+source=("http://deb.debian.org/debian/pool/main/libp/libpaper/${pkgname}_${pkgver}.tar.gz")
+md5sums=('58dcdb3e1074f571b86d0ee937ed0072')
 
 build() {
-  cd ${pkgname}-${_pkgver}
+  cd ${pkgname}-${pkgver}
 
   autoreconf -vi
   ./configure --prefix=/usr --sysconfdir=/etc 
@@ -20,5 +20,5 @@ build() {
 }
 
 package() {
-  make -C ${pkgname}-${_pkgver} DESTDIR=${pkgdir} install
+  make -C ${pkgname}-${pkgver} DESTDIR=${pkgdir} install
 }
