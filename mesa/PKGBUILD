@@ -1,21 +1,24 @@
 
-#pkgbase=mesa
 pkgname=mesa
-pkgver=19.2.7
-_pkgver=19.2.7
-pkgrel=2
+pkgver=19.2.8
+_pkgver=19.2.8
+pkgrel=1
 arch=('x86_64')
+pkgdesc="Mesa 3-D graphics libraries and include files"
 depends=('libx11' 'libxt' 'gcc-libs' 'libvdpau' 'xorgproto' 'wayland' 'elfutils'
            'libdrm' 'libxxf86vm' 'libxdamage' 'expat' 'libxshmfence' 'libomxil-bellagio' 'llvm'
            'lm_sensors' 'libunwind' 'libxvmc' 'libxrandr' 'libglvnd') 
 makedepends=('libva' 'llvm' 'libxml2' 'imake' 'clang' 'python3-mako'
              'wayland-protocols' 'meson' 'ninja')
+provides=('libglapi''libgles' 'libegl' 'khrplatform-devel' 'ati-dri' 'intel-dri' 'svga-dri' 'nouveau-dri')
+conflicts=('libglapi' 'libgles' 'libegl' 'khrplatform-devel' 'ati-dri' 'intel-dri' 'svga-dri' 'nouveau-dri')
+replaces=('libglapi' 'libgles' 'libegl' 'khrplatform-devel' 'ati-dri' 'intel-dri' 'svga-dri' 'nouveau-dri')
 url="https://www.mesa3d.org/"
 license=('custom')
 source=("https://mesa.freedesktop.org/archive/${pkgname}-${pkgver}.tar.xz"
 #source=("mesa::git://anongit.freedesktop.org/mesa/mesa#branch=master"
        'LICENSE')
-sha256sums=('e3799fb7896fd9ed2f90f651fb907b95cdebfbd494968ff116e6bf1be143579e'
+sha256sums=('cffa8fa755c7422ce014c39ca0b770a092d9e0bbae537ceb2609c106916e5a57'
             '7fdc119cf53c8ca65396ea73f6d10af641ba41ea1dd2bd44a824726e01c8b3f2')
   
 build() {
@@ -60,35 +63,9 @@ build() {
     ninja
 }
 
-package_libgl() {
-  #depends=("mesa=${pkgver}")
-  pkgdesc="Mesa 3-D graphics library and DRI software rasterizer"
-
-  install -m755 -d ${pkgdir}/usr/lib
-  install -m755 -d ${pkgdir}/usr/lib/xorg/modules/extensions
-
-  ln -s libglx.xorg ${pkgdir}/usr/lib/xorg/modules/extensions/libglx.so
-  
-  ln -s mesa-libGL.so.1.2.0      ${pkgdir}/usr/lib/libGL.so
-  ln -s mesa-libGL.so.1.2.0      ${pkgdir}/usr/lib/libGL.so.1
-  ln -s mesa-libGL.so.1.2.0      ${pkgdir}/usr/lib/libGL.so.1.2.0
-
-  install -m755 -d ${pkgdir}/usr/share/licenses/libgl
-  install -m644 ${srcdir}/LICENSE ${pkgdir}/usr/share/licenses/libgl/
-}
-
-package_mesa() {
-  pkgdesc="Mesa 3-D graphics libraries and include files"
-  provides=('libglapi''libgles' 'libegl' 'khrplatform-devel' 'ati-dri' 'intel-dri' 'svga-dri' 'nouveau-dri')
-  conflicts=('libglapi' 'libgles' 'libegl' 'khrplatform-devel' 'ati-dri' 'intel-dri' 'svga-dri' 'nouveau-dri')
-  replaces=('libglapi' 'libgles' 'libegl' 'khrplatform-devel' 'ati-dri' 'intel-dri' 'svga-dri' 'nouveau-dri')
-
+package() {
   cd build  
   DESTDIR=${pkgdir} ninja install
-
-  # rename libgl.so to make it possible to package separately 
-  #mv ${pkgdir}/usr/lib/libGL.so.1.2.0 	${pkgdir}/usr/lib/mesa-libGL.so.1.2.0
-  #rm ${pkgdir}/usr/lib/libGL.so{,.1}
 
   install -m755 -d ${pkgdir}/usr/share/licenses/mesa
   install -m644 ${srcdir}/LICENSE ${pkgdir}/usr/share/licenses/mesa/
