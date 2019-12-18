@@ -3,7 +3,7 @@ pkgbase=nvidia-340xx-utils
 pkgname=('nvidia-340xx-utils' 'nvidia-340xx-settings')
 # Edit hardware-detection/hooks/hwdetect_7_graphics on version jump from 3xx.xx
 pkgver=340.107
-pkgrel=3
+pkgrel=4
 arch=('x86_64')
 url="http://www.nvidia.com/"
 license=('custom')
@@ -35,9 +35,7 @@ package_nvidia-340xx-utils() {
   optdepends=('gtk2: nvidia-settings' 'pkg-config: nvidia-xconfig'
               'opencl-nvidia: OpenCL support'
 	      'nvidia-settings: Gtk GUI')
-  conflicts=('libgl' 'nvidia-utils' 'nvidia-304xx-utils')
-  replaces=('nvidia-304xx-utils')
-  provides=('libgl')
+  conflicts=('nvidia-utils' 'nvidia-390xx-utils')
 
   cd "${srcdir}/${_pkg}"
 

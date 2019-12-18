@@ -4,7 +4,7 @@ _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=nvidia-390xx-next
 pkgver=390.132
-pkgrel=8
+pkgrel=9
 pkgdesc="NVIDIA drivers for linux-next, 390xx legacy version."
 arch=('x86_64')
 url="https://www.nvidia.com/page/home.html"
@@ -24,10 +24,10 @@ md5sums=('dcc8f272fef30c43a68d21b3379d99aa'
          '7c649739c356459e30b6197f38e415a0')
 
 build() {
-    cd "${srcdir}"
-    sh "${_pkg}.run" --extract-only
+    cd ${srcdir}
+    sh ${_pkg}.run --extract-only
     
-    cd "${_pkg}"
+    cd ${_pkg}
     #patch -p1 -i ${srcdir}/linux-5.1.patch
     #patch -p1 -i ${srcdir}/linux-5.2.patch
     # linux 4.19 needed
@@ -41,20 +41,30 @@ build() {
     
     export IGNORE_CC_MISMATCH=yes
 
-    cd "${srcdir}/${_pkg}/kernel"  
-    make SYSSRC=/lib/modules/"${_kver}/build" module
+    cd ${srcdir}/${_pkg}/kernel  
+    make SYSSRC=/lib/modules/${_kver}/build module
 }
 
 package() {
-    cd "${srcdir}" 
+    cd ${srcdir} 
     
-    install -D -m644 "${srcdir}/${_pkg}/kernel/nvidia.ko" "${pkgdir}/lib/modules/${_extramodules}/nvidia.ko"
-    install -D -m644 "${srcdir}/${_pkg}/kernel/nvidia-modeset.ko" "${pkgdir}/lib/modules/${_extramodules}/nvidia-modeset.ko"
-    install -D -m644 "${srcdir}/${_pkg}/kernel/nvidia-uvm.ko" "${pkgdir}/lib/modules/${_extramodules}/nvidia-uvm.ko"
-    install -D -m644 "${srcdir}/${_pkg}/kernel/nvidia-drm.ko" "${pkgdir}/lib/modules/${_extramodules}/nvidia-drm.ko"
-    gzip "${pkgdir}/lib/modules/${_extramodules}/"*.ko
-    install -d -m755 "${pkgdir}/etc/modprobe.d"
-    echo "blacklist nouveau" >> "${pkgdir}/etc/modprobe.d/nouveau_blacklist.conf"
-    sed -i -e "s/EXTRAMODULES='.*'/EXTRAMODULES='${_extramodules}'/" "${startdir}/nvidia-next.install"
+    install -D -m644 ${srcdir}/${_pkg}/kernel/nvidia.ko ${pkgdir}/lib/modules/${_extramodules}/nvidia.ko
+    install -D -m644 ${srcdir}/${_pkg}/kernel/nvidia-modeset.ko ${pkgdir}/lib/modules/${_extramodules}/nvidia-modeset.ko
+    install -D -m644 ${srcdir}/${_pkg}/kernel/nvidia-uvm.ko ${pkgdir}/lib/modules/${_extramodules}/nvidia-uvm.ko
+    install -D -m644 ${srcdir}/${_pkg}/kernel/nvidia-drm.ko ${pkgdir}/lib/modules/${_extramodules}/nvidia-drm.ko
+    # sign the module
+    _file=/usr/src/linux-${_kver}/scripts/sign-file
+    _pem=/$HOME/signing_key.pem
+    _key=/$HOME/signing_key.x509
+    
+    ${_file} sha256 ${_pem} ${_key} ${pkgdir}/lib/modules/${_extramodules}/nvidia.ko
+    ${_file} sha256 ${_pem} ${_key} ${pkgdir}/lib/modules/${_extramodules}/nvidia-modeset.ko
+    ${_file} sha256 ${_pem} ${_key} ${pkgdir}/lib/modules/${_extramodules}/nvidia-uvm.ko
+    ${_file} sha256 ${_pem} ${_key} ${pkgdir}/lib/modules/${_extramodules}/nvidia-drm.ko
+    
+    gzip ${pkgdir}/lib/modules/${_extramodules}/*.ko
+    install -d -m755 ${pkgdir}/etc/modprobe.d
+    echo "blacklist nouveau" >> ${pkgdir}/etc/modprobe.d/nouveau_blacklist.conf
+    sed -i -e "s/EXTRAMODULES='.*'/EXTRAMODULES='${_extramodules}'/" ${startdir}/nvidia-next.install
 }
 

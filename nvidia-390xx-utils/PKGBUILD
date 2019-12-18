@@ -3,7 +3,7 @@ pkgbase=nvidia-390xx-utils
 pkgname=('nvidia-390xx-utils' 'nvidia-390xx-settings')
 # Edit hardware-detection/hooks/hwdetect_7_graphics and Installer job 11 on version jump from 39x.xx
 pkgver=390.132
-pkgrel=2
+pkgrel=3
 arch=('x86_64')
 url="https://www.nvidia.com/page/home.html"
 license=('custom')
@@ -36,8 +36,7 @@ package_nvidia-390xx-utils() {
   optdepends=('gtk2: nvidia-settings' 'pkg-config: nvidia-xconfig'
               'opencl-nvidia: OpenCL support'
               'nvidia-settings: Gtk GUI')
-  conflicts=('libgl' 'nvidia-utils' 'nvidia-340xx-utils')
-  provides=('libgl')
+  conflicts=('nvidia-utils' 'nvidia-340xx-utils')
 	      
   cd "${srcdir}/$_pkg"
   # X driver

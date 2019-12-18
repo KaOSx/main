@@ -6,7 +6,7 @@ pkgname=rtl8192eu-next
 _pkgname=rtl8192eu-linux-driver
 pkgver=4.4.1.4
 _commit=e7361e951c15d998f8c63b45478ef320d447f769
-pkgrel=14
+pkgrel=15
 pkgdesc="Drivers for the rtl8192eu chipset for wireless adapters (D-Link DWA-131 rev E1 included)"
 arch=('x86_64')
 url="https://github.com/Mange/rtl8192eu-linux-driver"
@@ -33,8 +33,8 @@ package() {
   install -D -m644 8192eu.ko ${pkgdir}/lib/modules/${_kver}/kernel/drivers/net/wireless/8192eu.ko
   # sign the module
   _file=/usr/src/linux-${_kver}/scripts/sign-file
-  _pem=~/signing_key.pem
-  _key=~/signing_key.x509
+  _pem=/$HOME/signing_key.pem
+  _key=/$HOME/signing_key.x509
   
   ${_file} sha256 ${_pem} ${_key} ${pkgdir}/lib/modules/${_kver}/kernel/drivers/net/wireless/8192eu.ko
   
