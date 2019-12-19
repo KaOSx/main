@@ -13,6 +13,7 @@ url="https://github.com/Mange/rtl8192eu-linux-driver"
 license=('GPL')
 depends=('linux-next>=5.4.0' 'linux-next<5.5')
 makedepends=('linux-next-headers' 'elfutils')
+options=('!strip')
 install=rtl8192eu-next.install
 source=("https://github.com/Mange/rtl8192eu-linux-driver/archive/${_commit}.zip"
         "https://github.com/Mange/rtl8192eu-linux-driver/pull/70/commits/80a0cb2c1aa10e52bc653e7455a6f1b64fdccd09.diff")
