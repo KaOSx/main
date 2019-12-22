@@ -1,14 +1,15 @@
 
-_extramodules=extramodules-5.3
+_extramodules=extramodules-5.4
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=('nvidia-390xx' 'khd-nvidia-390xx')
 pkgver=390.132
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 url="https://www.nvidia.com/page/home.html"
-makedepends=('linux-headers' 'linux>=5.3.6' 'linux<5.4' "nvidia-390xx-utils=${pkgver}")
+makedepends=('linux-headers' 'linux>=5.4.6' 'linux<5.5' "nvidia-390xx-utils=${pkgver}")
 license=('custom')
+options=('!strip')
 
 _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 
@@ -27,11 +28,6 @@ build() {
     #patch -p1 -i ${srcdir}/linux-5.1.patch
     # linux 4.19 needed
     #sed -i -e 's|drm_mode_connector_attach_encoder|drm_connector_attach_encoder|g' kernel/nvidia-drm/nvidia-drm-encoder.c
-    #sed -i -e 's|drm_mode_connector_update_edid_property|drm_connector_update_edid_property|g' kernel/nvidia-drm/nvidia-drm-connector.c
-    # linux 4.20 needed
-    #sed -i -e 's|ipmi_user_t         p_user;|struct ipmi_user    *p_user;|g' kernel/nvidia/os-interface.c
-    #sed -i -e 's|ipmi_user_t     user,|struct ipmi_user *user,|g' kernel/nvidia/os-interface.c
-    #sed -i -e 's|vm_insert_pfn|vmf_insert_pfn|g' kernel/nvidia-drm/nvidia-drm-gem-nvkms-memory.c
     
     export IGNORE_CC_MISMATCH=yes
 
@@ -41,7 +37,7 @@ build() {
 
 package_nvidia-390xx() {
     pkgdesc="NVIDIA drivers for linux, 390xx legacy version."
-    depends=('linux>=5.3.6' 'linux<5.4' "nvidia-390xx-utils=${pkgver}")
+    depends=('linux>=5.4.6' 'linux<5.5' "nvidia-390xx-utils=${pkgver}")
     conflicts=('nvidia' 'nvidia-340xx')
     install=nvidia.install
     
@@ -49,6 +45,17 @@ package_nvidia-390xx() {
     install -D -m644 "${srcdir}/${_pkg}/kernel/nvidia-modeset.ko" "${pkgdir}/lib/modules/${_extramodules}/nvidia-modeset.ko"
     install -D -m644 "${srcdir}/${_pkg}/kernel/nvidia-uvm.ko" "${pkgdir}/lib/modules/${_extramodules}/nvidia-uvm.ko"
     install -D -m644 "${srcdir}/${_pkg}/kernel/nvidia-drm.ko" "${pkgdir}/lib/modules/${_extramodules}/nvidia-drm.ko"
+    
+    # sign the module
+    _file=/usr/src/linux-${_kver}/scripts/sign-file
+    _pem=/$HOME/signing_key.pem
+    _key=/$HOME/signing_key.x509
+
+    ${_file} sha256 ${_pem} ${_key} ${pkgdir}/lib/modules/${_extramodules}/nvidia.ko
+    ${_file} sha256 ${_pem} ${_key} ${pkgdir}/lib/modules/${_extramodules}/nvidia-modeset.ko
+    ${_file} sha256 ${_pem} ${_key} ${pkgdir}/lib/modules/${_extramodules}/nvidia-uvm.ko
+    ${_file} sha256 ${_pem} ${_key} ${pkgdir}/lib/modules/${_extramodules}/nvidia-drm.ko
+    
     gzip "${pkgdir}/lib/modules/${_extramodules}/"*.ko
     install -d -m755 "${pkgdir}/etc/modprobe.d"
     echo "blacklist nouveau" >> "${pkgdir}/etc/modprobe.d/nouveau_blacklist.conf"
