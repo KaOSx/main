@@ -1,0 +1,15 @@
+--- a/src/qml/qml/qqmlcontext.cpp	2019-12-05 11:23:52.000000000 +0100
++++ b/src/qml/qml/qqmlcontext.cpp	2019-12-23 11:46:54.487226378 +0100
+@@ -317,12 +317,6 @@
+         d->propertyValues[idx] = value;
+         QMetaObject::activate(this, d->notifyIndex, idx, nullptr);
+     }
+-
+-    if (auto *obj = qvariant_cast<QObject *>(value)) {
+-        connect(obj, &QObject::destroyed, this, [d, name](QObject *destroyed) {
+-            d->dropDestroyedQObject(name, destroyed);
+-        });
+-    }
+ }
+ 
+ /*!

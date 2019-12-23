@@ -6,7 +6,7 @@ pkgname=qt5-declarative
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=1
+pkgrel=2
 pkgdesc="A cross-platform application and UI framework, QtDeclarative files"
 arch=('x86_64')
 url='http://qt.nokia.com/'
@@ -17,14 +17,14 @@ options=('!libtool' 'debug')
 groups=('qt5')
 _pkgfqn="qtdeclarative-everywhere-src-${subver}"
 source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz"
-        "https://github.com/qt/qtdeclarative/commit/f42f1366dcd4b070c69c9e7fe42a704ef23da14d.diff")
+        'qqmlcontext.diff')
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
-         '8ac7f4bbba645433169a27209f52cb5f')
+         '4f5ececc114c720e3cf84f97ebfc1951')
 
 build() {
     cd $srcdir/$_pkgfqn
-    #patch -R -p1 -i $srcdir/f42f1366dcd4b070c69c9e7fe42a704ef23da14d.diff
+    patch -p1 -i $srcdir/qqmlcontext.diff
 
     /usr/lib/qt5/bin/qmake
     make
