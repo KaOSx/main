@@ -1,7 +1,7 @@
 
 pkgname=udisks2
 pkgver=2.8.4
-pkgrel=1
+pkgrel=2
 pkgdesc="Disk Management Service"
 arch=('x86_64')
 url="https://www.freedesktop.org/wiki/Software/udisks"
@@ -10,6 +10,7 @@ depends=('systemd' 'libgudev' 'sg3_utils' 'glib2' 'dbus-glib' 'polkit' 'parted' 
          'libatasmart' 'lsof' 'lvm2' 'util-linux' 'libblockdev' 'gptfdisk')
 makedepends=('docbook-xsl' 'python3')
 options=('!libtool')
+backup=(etc/udisks2/udisks2.conf)
 source=("https://github.com/storaged-project/udisks/releases/download/udisks-${pkgver}/udisks-${pkgver}.tar.bz2"
         '10-enable-mount.rules')
 md5sums=('ee74a32fe2a7ab3dd3aa9e2283b844ea'
