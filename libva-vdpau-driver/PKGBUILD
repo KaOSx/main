@@ -1,7 +1,7 @@
 
 pkgname=libva-vdpau-driver
 pkgver=0.7.4
-pkgrel=3
+pkgrel=4
 pkgdesc="VDPAU backend for VA API"
 arch=('x86_64')
 url="https://freedesktop.org/wiki/Software/vaapi"
@@ -9,29 +9,32 @@ license=('GPL')
 depends=('libva' 'libvdpau')
 makedepends=('mesa')
 options=('!libtool')
-source=("https://www.freedesktop.org/software/vaapi/releases/$pkgname/$pkgname-$pkgver.tar.bz2"
+source=("https://www.freedesktop.org/software/vaapi/releases/${pkgname}/${pkgname}-${pkgver}.tar.bz2"
         'utils_glx.diff'
         'libvdpau.patch'
-        'vdpau_dump.patch')
+        'vdpau_dump.patch'
+        'videodev2.patch')
 sha1sums=('224318f4ea8bafca6a0fec770e388b7d1a1a66b3'
           'd0eae557e6320e92e5963def9b3e5a0d683b4e75'
           'f465fbf5dfc32459b060f320b9b2fe15a13e6d9d'
-          '219a01631e2791fa3c3e077a9176c141aaf5f69b')
+          '219a01631e2791fa3c3e077a9176c141aaf5f69b'
+          'b82d0781bdbea1c04eefea4200e9e97ad641a7aa')
 
 build() {
-  cd ${srcdir}/${pkgname}-${pkgver}
+  cd ${pkgname}-${pkgver}
   patch -p1 -i ${srcdir}/utils_glx.diff
   patch -p1 -i ${srcdir}/libvdpau.patch
   patch -p1 -i ${srcdir}/vdpau_dump.patch
+  patch -p1 -i ${srcdir}/videodev2.patch
   
   ./configure --prefix=/usr 
   make
 }
 
 package() {
-  cd ${srcdir}/${pkgname}-${pkgver}
+  cd ${pkgname}-${pkgver}
   
-  make DESTDIR="${pkgdir}" install
+  make DESTDIR=${pkgdir} install
 }
 
 

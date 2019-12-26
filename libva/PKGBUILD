@@ -1,18 +1,18 @@
 
 pkgname=libva
-pkgver=2.5.0
+pkgver=2.6.0
 _commit=25b33076849e68bebae87771fb482c5ab929e18b
-pkgrel=2
+pkgrel=1
 pkgdesc="Libva with patches to extend VA API with data needed for VDPAU and XvBA backends."
 arch=('x86_64')
-url="https://github.com/01org/libva"
+url="https://github.com/intel/libva"
 license=('MIT')
 depends=('libglvnd' 'libdrm' 'libxext' 'libxfixes' 'wayland')
 makedepends=('mesa' 'meson' 'ninja')
 options=('!libtool')
 source=("https://github.com/intel/libva/archive/${pkgver}.tar.gz")
 #source=("https://github.com/intel/libva/archive/${_commit}.zip")
-sha1sums=('fd8568aaa9dd6e7f9721ac335fc87ad3c6f0d34b')
+sha1sums=('1696b06b0ddd73365059b1533139367cf2298a14')
 
 build() {
   mkdir -p build
