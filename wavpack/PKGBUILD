@@ -1,6 +1,6 @@
 
 pkgname=wavpack
-pkgver=5.1.0
+pkgver=5.2.0
 pkgrel=1
 pkgdesc="Audio compression format with lossless, lossy, and hybrid compression modes"
 arch=('x86_64')
@@ -9,14 +9,13 @@ license=('custom')
 depends=('glibc')
 options=('!libtool')
 source=("http://www.wavpack.com/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('7f06272651f0c2292c1d0ba353386782')
+md5sums=('895142982710e7097c916663c7209ab5')
 
 build() {
 	cd ${pkgname}-${pkgver}
 	
 	./configure --prefix=/usr \
 	      --libdir=/usr/lib \
-	      --enable-mmx \
 	      --disable-static
 	make
 }
