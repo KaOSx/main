@@ -1,8 +1,7 @@
 
 pkgname=lldb
-pkgver=8.0.1
-_gcc_ver=8.3.0
-pkgrel=3
+pkgver=9.0.1
+pkgrel=1
 pkgdesc="Next generation, high-performance debugger, built as a set of reusable components in the LLVM Project."
 arch=('x86_64')
 url="https://llvm.org/"
@@ -10,7 +9,7 @@ license=('custom:University of Illinois/NCSA Open Source License')
 depends=("llvm=${pkgver}" 'libedit' 'libxml2' 'ncurses' 'python3-six')
 makedepends=('groff' 'swig' 'cmake' 'clang-tools-extra')
 source=("https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver}/lldb-${pkgver}.src.tar.xz")
-md5sums=('c2777536fe0d4151c6aa30773f51af20')
+md5sums=('b2b656b0c34a486c61e4891e374b1b2a')
 
 build() {
     mkdir -p build
