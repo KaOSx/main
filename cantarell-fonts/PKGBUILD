@@ -1,7 +1,7 @@
 
 pkgname=cantarell-fonts
-pkgver=0.111
-_pkgver=0.111
+pkgver=0.200
+_pkgver=0.200
 pkgrel=1
 pkgdesc="The Cantarell typeface family is a contemporary Humanist sans serif"
 arch=('x86_64')
@@ -11,7 +11,7 @@ depends=('fontconfig' 'python3')
 makedepends=('meson' 'ninja')
 install=cantarell-fonts.install
 source=("https://download.gnome.org/sources/cantarell-fonts/${_pkgver}/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('858b2bc196ee851c8e5a76376097bc75f23bc01b29591c30ed3a550e23b41716')
+sha256sums=('a30131f7ab9d78e70415a7f601cbcc443ff5bcc44b0332ddc84d8624ba177661')
 
 build() {
   mkdir -p build
@@ -20,7 +20,8 @@ build() {
   meson ../${pkgname}-${pkgver} \
     --prefix=/usr \
     --buildtype=release \
-    -Dbuildappstream=false 
+    -Dbuildappstream=false
+    # -Duseprebuilt=true
   ninja
 }
 
