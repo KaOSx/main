@@ -1,7 +1,8 @@
 
 pkgname=texlive-bin
-pkgver=2018.47465
-pkgrel=10
+pkgver=2019.51263
+_pkgver=build-svn51263
+pkgrel=1
 pkgdesc="TeX Live binaries"
 url='https://tug.org/texlive/'
 license=('GPL')
@@ -13,32 +14,18 @@ optdepends=('ed: for texconfig')
 options=('!libtool' '!strip')
 #install="texlive.install"
 # full credit for this PKGBUILD goes to Rémy Oudompheng <remy@archlinux.org>
-source=("https://mirrors.kernel.org/archlinux/other/texlive/texlive-bin-source-${pkgver}.tar.xz"
-        'poppler0.64.patch'
-        'poppler0.7x.patch'
+#source=("https://mirrors.kernel.org/archlinux/other/texlive/texlive-bin-source-${pkgver}.tar.xz"
+source=("https://github.com/TeX-Live/texlive-source/archive/${_pkgver}.tar.gz"
         'poppler0.7x2.patch')
-md5sums=('d2c777e6468a0b9e2931f45d6e0f5ec3'
-         '6c5fef7365aec97bc8b7ee65e8922d24'
-         '846d166713b3883ac47d853989ac04e2'
-         '12c4beb0e0c6780e3c03c5ebeb73dc8a')
+md5sums=('c5d340e900c3629a56a1f8daf580f3e1'
+         'f38b46eae0e2cdaa66e953791d2b5990')
 
 prepare() {
-   cd source
-   patch -p1 -i ${srcdir}/poppler0.64.patch
-   patch -p1 -i ${srcdir}/poppler0.7x.patch
+   cd texlive-source-${_pkgver}
    patch -p1 -i ${srcdir}/poppler0.7x2.patch
-   find texk/web2c/luatexdir -type f -exec sed -i \
-      -e 's|gTrue|true|g' \
-      -e 's|gFalse|false|g' \
-      -e 's|GBool|bool|g' \
-      -e 's|getCString|c_str|g' \
-      -e 's|Guint|unsigned int|g' \
-      -e 's|Guchar|unsigned char|g' \
-      {} +
+   
    # t4ht expects to be in /usr/share/texmf/bin/t4ht
    sed -i s/SELFAUTOPARENT/TEXMFROOT/ texk/tex4htk/t4ht.c
-   ## prevent compiling Xdvi with libXp
-   sed -i~ 's|-lXp ||' texk/xdvik/configure
    
    cp -pv texk/web2c/pdftexdir/pdftoepdf{-poppler0.76.0,}.cc
    cp -pv texk/web2c/pdftexdir/pdftosrc{-poppler0.76.0,}.cc
@@ -47,7 +34,7 @@ prepare() {
 build() {
    #############################################################
    ### configure
-   cd source
+   cd texlive-source-${_pkgver}
    mkdir -p Work
    cd Work
    
@@ -103,11 +90,10 @@ build() {
 }
 
 package() {
-   cd "$srcdir"
+   cd texlive-source-${_pkgver}
 
    #############################################################
    ### install
-   cd source
    # fixes for xindy
    find utils/xindy -name Makefile -exec sed -i -e "s|^prefix =.\+$|prefix = $pkgdir/usr|" -e "s|^mandir =.\+$|mandir = \${prefix}/share/man|" -e "s|^datadir =.\+$|datadir = \${datarootdir}/texmf|" -e "s|^docdir =.\+$|docdir = \${datadir}/doc/xindy|" '{}' \;
 
@@ -180,8 +166,10 @@ checkcites
 checklistings
 chkweb
 cjk-gs-integrate
+cluttex
 context
 contextjit
+ctanbib
 ctanify
 ctanupload
 ctan-o-mat
@@ -262,6 +250,7 @@ pdfjoin
 pdflatexpicscale
 pdfnup
 pdfpun
+pdftex-quiet
 pdfxup
 pfarrei
 pkfix
@@ -307,6 +296,7 @@ updmap-user
 vpl2ovp
 vpl2vpl
 xhlatex
+xindex
 xindy
 "
    _games_scripts="rubikrotation"
@@ -334,6 +324,7 @@ ps4pdf
 splitindex
 svn-multi
 vpe
+webquiz
 wordcount
 yplan"
    _music_scripts="lily-glyph-commands lily-image-commands lily-rebuild-pdfs m-tx musixtex musixflx pmxchords"
