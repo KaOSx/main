@@ -1,33 +1,19 @@
 
-pkgname=('python2-cython' 'python3-cython')
-pkgbase=cython
+pkgname=python3-cython
 pkgver=0.29.14
 pkgrel=1
 arch=('x86_64')
 url="https://www.cython.org"
 license=('APACHE')
-makedepends=('python2-setuptools' 'python3-setuptools')
+pkgdesc="C-Extensions for Python 3"
+depends=('python3')
+makedepends=('python3-setuptools')
 #source=("http://cython.org/release/Cython-${pkgver}.tar.gz")
 source=("https://files.pythonhosted.org/packages/source/C/Cython/Cython-${pkgver}.tar.gz")
 sha256sums=('e4d6bb8703d0319eb04b7319b12ea41580df44fd84d83ccda13ea463c6801414')
 
-package_python2-cython() {
-  depends=('python2' 'python2-setuptools')
-  pkgdesc="C-Extensions for Python 2"
-  provides=('python2-c')
-  
+package() {
   cd Cython-${pkgver}
-  python2 -O setup.py install --root=${pkgdir}
   
-  mv ${pkgdir}/usr/bin/cygdb ${pkgdir}/usr/bin/cygdb2
-  mv ${pkgdir}/usr/bin/cython ${pkgdir}/usr/bin/cython2
-  mv $pkgdir/usr/bin/cythonize $pkgdir/usr/bin/cythonize2
-}
-
-package_python3-cython() {
-  depends=('python3' 'python3-setuptools')
-  pkgdesc="C-Extensions for Python 3"
-
-  cd Cython-${pkgver}
   python3 setup.py install --root=${pkgdir}
 }
