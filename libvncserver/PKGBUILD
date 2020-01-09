@@ -1,7 +1,7 @@
 
 pkgname=libvncserver
 pkgver=0.9.12
-pkgrel=1
+pkgrel=2
 pkgdesc="The vnc library"
 arch=('x86_64')
 url="https://libvnc.github.io/"
@@ -9,8 +9,19 @@ license=('GPL')
 depends=('libjpeg-turbo' 'zlib' 'gnutls' 'libgcrypt' 'libpng')
 makedepends=('sdl2' 'cmake')
 options=('!libtool')
-source=("https://github.com/LibVNC/libvncserver/archive/LibVNCServer-${pkgver}.tar.gz")
-md5sums=('dc2ae6433d2ce45b9f60034c7fb9c10a')
+source=("https://github.com/LibVNC/libvncserver/archive/LibVNCServer-${pkgver}.tar.gz"
+        "https://github.com/LibVNC/libvncserver/commit/d0a76539835d11c0f4723499f8be4bc9c7724eb9.diff"
+        "https://github.com/LibVNC/libvncserver/commit/5261c1ecabd8acde06fbfbf088c3c390d0d3afca.diff")
+md5sums=('dc2ae6433d2ce45b9f60034c7fb9c10a'
+         '78601ffd18237fd8ce34240242ee31ee'
+         '51a2f4302a06f8faed8ae95d3eb0cf33')
+
+prepare () {
+  cd ${pkgname}-LibVNCServer-${pkgver}
+
+  patch -p1 -i ${srcdir}/d0a76539835d11c0f4723499f8be4bc9c7724eb9.diff
+  patch -p1 -i ${srcdir}/5261c1ecabd8acde06fbfbf088c3c390d0d3afca.diff
+}    
 
 build() {
   mkdir -p build
