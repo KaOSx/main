@@ -1,7 +1,7 @@
 
 pkgname=cantarell-fonts
-pkgver=0.200
-_pkgver=0.200
+pkgver=0.201
+_pkgver=0.201
 pkgrel=1
 pkgdesc="The Cantarell typeface family is a contemporary Humanist sans serif"
 arch=('x86_64')
@@ -20,8 +20,8 @@ build() {
   meson ../${pkgname}-${pkgver} \
     --prefix=/usr \
     --buildtype=release \
-    -Dbuildappstream=false
-    # -Duseprebuilt=true
+    -Dbuildappstream=false \
+    -Duseprebuilt=true
   ninja
 }
 
