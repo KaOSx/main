@@ -1,7 +1,7 @@
 
 pkgname=gwenhywfar
-pkgver=4.99.25
-_pkgver=223
+pkgver=5.0.0
+_pkgver=228
 pkgrel=1
 pkgdesc="OS abstraction functions for various projects"
 arch=('x86_64')
@@ -10,13 +10,13 @@ options=('!libtool')
 license=("LGPL")
 depends=('openssl' 'gnutls' 'libgcrypt' 'qt5-base')
 makedepends=('qt5-tools')
-source=("https://www.aquamaniac.de/rdm/attachments/download/${_pkgver}/gwenhywfar-${pkgver}rc9.tar.gz"
+source=("https://www.aquamaniac.de/rdm/attachments/download/${_pkgver}/gwenhywfar-${pkgver}.tar.gz"
         "https://github.com/aqbanking/gwenhywfar/commit/de8b3c5a755975edfa3dd3ef229820e8ff2eb9c8.diff")
-md5sums=('6e1de05abae74f9880e9f7bc9f2820a0'
+md5sums=('9a44c664b4252eb6a7377094984857ef'
          '58a17bdb9de688e51272d71cc053c170')
 
 build() {
-  cd gwenhywfar-${pkgver}rc9
+  cd gwenhywfar-${pkgver}
   #patch -R -p1 -i ${srcdir}/de8b3c5a755975edfa3dd3ef229820e8ff2eb9c8.diff
   #sed -i -e 's|which lrelease|which lrelease-qt5|' configure
   #sed -i -e 's|which lupdate|which lupdate-qt5|' configure
@@ -32,7 +32,7 @@ build() {
 }
 
 package() {
-  cd gwenhywfar-${pkgver}rc9
+  cd gwenhywfar-${pkgver}
   
   make DESTDIR=${pkgdir} install
 }
