@@ -1,8 +1,8 @@
 
 pkgname=aqbanking
-pkgver=5.99.44
-_pkgver=224
-pkgrel=2
+pkgver=5.99.45
+_pkgver=232
+pkgrel=1
 pkgdesc="A library for online banking and financial applications"
 arch=('x86_64')
 options=('!libtool')
@@ -10,11 +10,11 @@ url="https://www.aquamaniac.de/rdm/projects/aqbanking"
 license=('GPL')
 depends=('gwenhywfar' 'ktoblzcheck' 'libofx')
 options=('!makeflags' '!libtool')
-source=("https://www.aquamaniac.de/rdm/attachments/download/${_pkgver}/aqbanking-${pkgver}beta.tar.gz")
-md5sums=('022fe6136847b5dc89fc5cfe7c961e4e')
+source=("https://www.aquamaniac.de/rdm/attachments/download/${_pkgver}/aqbanking-${pkgver}.tar.gz")
+md5sums=('4bdd32363716dc41857870098ad8bae8')
 
 build() {
-  cd aqbanking-${pkgver}beta
+  cd aqbanking-${pkgver}
   export PKG_CONFIG=/usr/bin/pkg-config
   
   ./configure --prefix=/usr \
@@ -24,7 +24,7 @@ build() {
 }
 
 package() {
-  cd aqbanking-${pkgver}beta
+  cd aqbanking-${pkgver}
   
   make DESTDIR=${pkgdir} install
 }
