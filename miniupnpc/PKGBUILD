@@ -1,7 +1,7 @@
 
 pkgname=miniupnpc
 pkgver=2.1
-pkgrel=1
+pkgrel=2
 pkgdesc="Small UPnP client library/tool to access Internet Gateway Devices"
 arch=('x86_64')
 url="https://miniupnp.tuxfamily.org/"
@@ -21,8 +21,8 @@ build() {
 
 package() {
   cd ${pkgname}-${pkgver}
-  make PREFIX=${pkgdir}/ install
+  make PREFIX=${pkgdir}/usr/ install
   
-  install -Dm644 man3/miniupnpc.3 ${pkgdir}/usr/share/man/man3/miniupnpc.3
+  #install -Dm644 man3/miniupnpc.3 ${pkgdir}/usr/share/man/man3/miniupnpc.3
   install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
