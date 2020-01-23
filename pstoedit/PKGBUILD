@@ -1,6 +1,6 @@
 
 pkgname=pstoedit
-pkgver=3.73
+pkgver=3.75
 pkgrel=1
 pkgdesc="Translates PostScript and PDF graphics into other vector formats"
 arch=('x86_64')
@@ -10,11 +10,11 @@ depends=('gcc-libs' 'plotutils' 'gd' 'imagemagick')
 makedepends=('ghostscript')
 options=('!libtool' '!makeflags')
 source=("https://downloads.sourceforge.net/sourceforge/pstoedit/pstoedit-${pkgver}.tar.gz")
-md5sums=('aec93415ede08505e950ec7fee4289ff')
+md5sums=('a1965d0fcc4e151a265907865078d2c4')
 
 build() {
   cd ${pkgname}-${pkgver}
-  sed -i 's|-pedantic||' configure
+  #sed -i 's|-pedantic||' configure
 
   ./configure --prefix=/usr
   make
