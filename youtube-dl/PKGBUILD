@@ -1,15 +1,15 @@
 
 pkgname=youtube-dl
-pkgver=2020.01.15
+pkgver=2020.01.24
 pkgrel=1
 pkgdesc='Small command-line program to download videos from YouTube.com and other video sites'
 arch=('x86_64')
-url="http://rg3.github.com/youtube-dl"
+url="https://ytdl-org.github.io/youtube-dl/index.html"
 license=('custom')
 depends=('python3')
 makedepends=('zip')
-source=("https://github.com/rg3/youtube-dl/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.gz")
-sha256sums=('556711f8dc827910096fd648d7ead051ddadb81b90ae4abdf0393ddf2d62d237')
+source=("https://github.com/ytdl-org/youtube-dl/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+sha256sums=('0b1dcc96d204984df1ee364e81cddd5645421f6065d2815472258ccdad5c36ff')
 
 build() {
     cd ${pkgname}
