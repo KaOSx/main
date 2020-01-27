@@ -27,7 +27,7 @@ md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
 
 build() {
     cd ${_pkgfqn}
-    patch -p1 -i ${srcdir}/36974955d13578071387695adb13a47be33e4d32.diff
+    #patch -p1 -i ${srcdir}/36974955d13578071387695adb13a47be33e4d32.diff
 
     /usr/lib/qt5/bin/qmake
     make
