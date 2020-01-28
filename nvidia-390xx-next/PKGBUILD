@@ -18,19 +18,16 @@ license=('custom')
 _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 
 source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
-        'linux-5.1.patch'
-        'linux-5.2.patch')
+        'linux-5.5.patch')
 md5sums=('dcc8f272fef30c43a68d21b3379d99aa'
-         '1f6ddbda9e0f6d9da944064a5c42b3af'
-         '7c649739c356459e30b6197f38e415a0')
+         'b222f69ba99eecf90e81db550685ffc2')
 
 build() {
     cd ${srcdir}
     sh ${_pkg}.run --extract-only
     
     cd ${_pkg}
-    #patch -p1 -i ${srcdir}/linux-5.1.patch
-    #patch -p1 -i ${srcdir}/linux-5.2.patch
+    patch -p1 -i ${srcdir}/linux-5.5.patch
     # linux 4.19 needed
     #sed -i -e 's|drm_mode_connector_attach_encoder|drm_connector_attach_encoder|g' kernel/nvidia-drm/nvidia-drm-encoder.c
     #sed -i -e 's|drm_mode_connector_update_edid_property|drm_connector_update_edid_property|g' kernel/nvidia-drm/nvidia-drm-connector.c

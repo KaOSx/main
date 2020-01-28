@@ -1,5 +1,5 @@
 
-_extramodules=extramodules-5.4-next
+_extramodules=extramodules-5.5-next
 _kver="$(cat /lib/modules/${_extramodules}/version)"
 
 pkgname=bbswitch-next
@@ -11,7 +11,7 @@ arch=('x86_64')
 url="http://github.com/Bumblebee-Project/bbswitch"
 license=('GPL')
 install=bbswitch-next.install
-depends=('linux-next>=5.4.0' 'linux-next<5.5')
+depends=('linux-next>=5.5.0' 'linux-next<5.6')
 makedepends=('linux-next-headers' 'elfutils')
 source=("https://github.com/Bumblebee-Project/bbswitch/archive/v${pkgver}.tar.gz")
 md5sums=('5b116b31ace3604ddf9d1fc1f4bc5807')
