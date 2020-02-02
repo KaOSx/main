@@ -1,17 +1,17 @@
 
 pkgname=xkeyboard-config
-pkgver=2.28
+pkgver=2.29
 pkgrel=1
 pkgdesc="X keyboard configuration files"
 arch=('x86_64')
 license=('custom')
 url="https://www.freedesktop.org/wiki/Software/XKeyboardConfig"
 depends=('xorg-xkb-utils')
-makedepends=('intltool')
+makedepends=('intltool' 'python3')
 source=("https://www.x.org/releases/individual/data/${pkgname}/${pkgname}-${pkgver}.tar.bz2"
         "https://gitlab.freedesktop.org/xkeyboard-config/xkeyboard-config/commit/af6c0f29dbee1cc7b280eed891592797c2e31220.patch")
-md5sums=('5a968ab77846ff85a04242410b2a61de'
-         '18f531be273d3572efd55dbb4cd99a59')
+md5sums=('b5980bdc6c7d79f6dcccba8c76bb6c5d'
+         '0f8367937501641fcf31f83030f6870b')
 
 build() {
   cd ${pkgname}-${pkgver}
