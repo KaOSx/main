@@ -1,7 +1,7 @@
 
 pkgname=octave
-pkgver=5.1.0
-pkgrel=3
+pkgver=5.2.0
+pkgrel=1
 pkgdesc="A high-level language, primarily intended for numerical computations."
 arch=('x86_64')
 url="https://www.octave.org"
@@ -11,7 +11,7 @@ depends=('fftw' 'curl' 'graphicsmagick' 'glpk' 'hdf5' 'gcc-libs' 'qhull' 'fltk' 
 makedepends=('texlive-core' 'gcc-fortran' 'qt5-tools')
 options=('!emptydirs')
 source=("https://ftp.gnu.org/gnu/octave/octave-${pkgver}.tar.lz")
-md5sums=('2eb0d159b60c3fc2eb9068b2c7395050')
+md5sums=('3c621e85026d4a807f5639901a41ae71')
 
 build() {
   cd ${pkgname}-${pkgver}
@@ -36,6 +36,4 @@ package(){
   # add path to ld.so.conf.d
   install -d ${pkgdir}/etc/ld.so.conf.d
   echo /usr/lib/${pkgname}/${pkgver} > ${pkgdir}/etc/ld.so.conf.d/${pkgname}.conf
-  # remove .desktop until ported to Qt 5
-  #rm ${pkgdir}/usr/share/applications/www.octave.org-octave.desktop
 }
