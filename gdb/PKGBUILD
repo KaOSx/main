@@ -1,7 +1,7 @@
 
 pkgname=gdb
-pkgver=8.3.1
-pkgrel=2
+pkgver=9.1
+pkgrel=1
 pkgdesc="The GNU Debugger"
 arch=('x86_64')
 url="https://www.gnu.org/software/gdb/"
@@ -11,12 +11,15 @@ makedepends=('texinfo')
 backup=('etc/gdb/gdbinit')
 options=('!libtool' '!buildflags')
 source=("https://ftp.gnu.org/gnu/gdb/${pkgname}-${pkgver}.tar.xz")
-md5sums=('73b6a5d8141672c62bf851cd34c4aa83')
+md5sums=('f7e9f6236c425097d9e5f18a6ac40655')
 
 build() {
   cd ${pkgname}-${pkgver}
   
-  ./configure --prefix=/usr \
+  mkdir -p build
+  cd build
+  
+  ../configure --prefix=/usr \
     --disable-nls \
     --with-system-readline \
     --with-python=/usr/bin/python3 \
@@ -25,7 +28,7 @@ build() {
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
+  cd ${pkgname}-${pkgver}/build
   make DESTDIR=${pkgdir} install
 
   install -dm755 $pkgdir/etc/gdb
