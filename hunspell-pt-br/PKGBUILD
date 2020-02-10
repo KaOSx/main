@@ -1,22 +1,20 @@
 
 pkgname=hunspell-pt-br
 pkgver=3.2
-pkgrel=2
+pkgrel=3
 pkgdesc="Portuguese (Brazil) dictionary."
 arch=('x86_64')
-url="http://www.broffice.org/verortografico/"
+url="https://pt-br.libreoffice.org/projetos/vero"
 license=('LGPL-2.1')
 depends=('hunspell')
-source=('http://pt-br.libreoffice.org/assets/Uploads/PT-BR-Documents/VERO/VeroptBRV320AOC.oxt')
+source=("https://pt-br.libreoffice.org/assets/Uploads/PT-BR-Documents/VERO/VeroptBRV320AOC.oxt")
 md5sums=('9a9ac174c401406604bfcf101de2a7ba')
 
 package() {
-  cd "${srcdir}"
+  install -D -m644 pt_BR.dic ${pkgdir}/usr/share/hunspell/pt_BR.dic
+  install -D -m644 pt_BR.aff ${pkgdir}/usr/share/hunspell/pt_BR.aff
 
-  install -D -m644 pt_BR.dic "${pkgdir}/usr/share/hunspell/pt_BR.dic"
-  install -D -m644 pt_BR.aff "${pkgdir}/usr/share/hunspell/pt_BR.aff"
-
-  install -d -m755 "${pkgdir}/usr/share/myspell/dicts"
+  install -d -m755 ${pkgdir}/usr/share/myspell/dicts
   ln -s /usr/share/hunspell/pt_BR.dic ${pkgdir}/usr/share/myspell/dicts/pt_BR.dic
   ln -s /usr/share/hunspell/pt_BR.aff ${pkgdir}/usr/share/myspell/dicts/pt_BR.aff
 }
