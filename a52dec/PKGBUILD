@@ -1,30 +1,35 @@
 
 pkgname=a52dec
-pkgver=0.7.4.1
+pkgver=0.7.4
+_commit=5ba914eb8b16392c9863dae5a2f6fb95036ce738
 pkgrel=1
+epoch=1
 pkgdesc="liba52 is a free library for decoding ATSC A/52 streams."
 url="http://liba52.sourceforge.net/"
 arch=('x86_64')
 license=('GPL2')
 depends=('glibc')
 options=('!libtool')
-#source=("http://liba52.sourceforge.net/files/${pkgname}-${pkgver}.tar.gz"
-source=("http://liba52.cvs.sourceforge.net/viewvc/liba52/?view=tar"
+source=("http://liba52.sourceforge.net/files/${pkgname}-${pkgver}.tar.gz"
+#source=("https://github.com/Distrotech/a52dec/archive/${_commit}.zip"
         'a52dec-0.7.4-build.patch')
-md5sums=('63970bf30401b6dea08178b65c2ff28c'
+md5sums=('caa9f5bc44232dc8aeea773fea56be80'
          'fa16f224a7dceb7613824380abef0052')
 
 build() {
-  cd liba52/${pkgname}
+  cd ${pkgname}-${pkgver}
   #patch -p1 -i ${srcdir}/a52dec-0.7.4-build.patch
   
   ./bootstrap
-  ./configure --prefix=/usr --enable-shared
+  ./configure --prefix=/usr \
+    --enable-shared \
+    --disable-static \
+    CFLAGS="-g -O2 $([ $(uname -m) = x86_64 ] && echo -fPIC)" &&
   make
 }
 
 package() {
-  cd liba52/${pkgname}
+  cd ${pkgname}-${pkgver}
   make DESTDIR=${pkgdir} install
   
   install -m644 liba52/a52_internal.h ${pkgdir}/usr/include/a52dec/

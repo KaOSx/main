@@ -2,12 +2,12 @@
 # rebuild mpv on any update
 pkgname=ffmpeg
 pkgver=4.2.2
-pkgrel=2
+pkgrel=3
 pkgdesc="Complete and free Internet live audio and video broadcasting solution for Linux/Unix"
 arch=('x86_64')
 url="https://ffmpeg.org/"
 license=('GPL')
-depends=('bzip2' 'lame' 'sdl2' 'libvorbis' 'xvidcore' 'zlib' 'x264' 'libtheora' 'celt' 'fribidi'
+depends=('bzip2' 'lame' 'sdl2' 'libvorbis' 'xvidcore' 'zlib' 'x264' 'libtheora' 'fribidi'
          'opencore-amr' 'alsa-lib' 'libvdpau' 'libxfixes' 'libvpx' 'libwebp'
          'libva' 'openjpeg' 'rtmpdump' 'speex' 'gsm' 'pulseaudio' 'v4l-utils' 'gnutls' 'x265'
          'libass' 'dcadec' 'opus' 'dav1d')
@@ -47,7 +47,6 @@ build() {
               --enable-swresample \
               --enable-libspeex \
               --enable-libv4l2 \
-              --enable-libcelt \
               --enable-libfribidi \
               --enable-libass \
               --enable-libdav1d \

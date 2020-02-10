@@ -1,18 +1,18 @@
 
 pkgname=jack
 pkgver=0.125.0
-pkgrel=4
+pkgrel=5
 pkgdesc="A low-latency audio server"
 arch=('x86_64')
-url="http://jackaudio.org/"
+url="https://jackaudio.org/"
 license=('GPL2' 'custom:LGPL2')
-depends=('readline' 'libsamplerate' 'celt' 'libffado')
+depends=('readline' 'libsamplerate' 'opus' 'libffado')
 makedepends=('doxygen')
 conflicts=('jack2')
 backup=(etc/conf.d/jack-audio-connection-kit)
 options=('!libtool')
 install=${pkgname}.install
-source=("http://jackaudio.org/downloads/jack-audio-connection-kit-${pkgver}.tar.gz"
+source=("https://mirror.sobukus.de/files/grimoire/audio-drivers/jack-audio-connection-kit-${pkgver}.tar.gz"
         "99-audio.conf"
         "40-hpet-permissions.rules")
 md5sums=('d9b7e230aeae2d5b45c7a822b2d2dd15'
@@ -23,7 +23,7 @@ build() {
   cd jack-audio-connection-kit-${pkgver}
 
   ./configure --prefix=/usr \
-              --libdir=/usr/lib
+        --libdir=/usr/lib
   make
 }
 
