@@ -1,23 +1,19 @@
 
 pkgname=sox
 pkgver=14.4.2
-pkgrel=3
+pkgrel=4
 pkgdesc="The Swiss Army knife of sound processing tools"
 arch=('x86_64')
 url="http://sox.sourceforge.net/"
-license=('GPL' 'LGPL')
-depends=('libltdl' 'file' 'libsndfile' 'libpng' 'lame' 'opencore-amr' 'gsm' 'pulseaudio')
-makedepends=('libao' 'libmad' 'libid3tag' 'wavpack')
-optdepends=('libao: for ao plugin'
-            'libmad: for mp3 plugin'
-            'libid3tag: for mp3 plugin'
-            'wavpack: for wavpack plugin')
+license=('GPL2' 'LGPL2.1')
+depends=('libltdl' 'file' 'libsndfile' 'libpng' 'lame' 'opencore-amr' 'gsm' 'pulseaudio' 
+         'libao' 'libmad' 'libid3tag' 'wavpack')
 options=('!libtool')
-source=("http://downloads.sourceforge.net/sox/${pkgname}-${pkgver}.tar.bz2")
+source=("https://downloads.sourceforge.net/sox/${pkgname}-${pkgver}.tar.bz2")
 md5sums=('ba804bb1ce5c71dd484a102a5b27d0dd')
 
 build() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   sed -i 's/(sox_.*|lsx_(check_read_params|/(sox_.*|lsx_(error|flush|check_read_params|/' src/Makefile.am
   
   aclocal
@@ -31,7 +27,7 @@ build() {
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd ${pkgname}-${pkgver}
   
-  make DESTDIR="${pkgdir}" install
+  make DESTDIR=${pkgdir} install
 }

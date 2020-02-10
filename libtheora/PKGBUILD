@@ -1,28 +1,28 @@
 
 pkgname=libtheora
 pkgver=1.1.1
-pkgrel=13
+pkgrel=14
 pkgdesc="An open video codec developed by the Xiph.org"
 arch=('x86_64')
-url="http://www.xiph.org"
+url="https://www.xiph.org"
 license=('BSD')
 depends=('libogg')
 makedepends=('libvorbis')
 options=('!libtool')
-source=("http://downloads.xiph.org/releases/theora/libtheora-${pkgver}.tar.bz2")
+source=("https://downloads.xiph.org/releases/theora/libtheora-${pkgver}.tar.bz2")
 md5sums=('292ab65cedd5021d6b7ddd117e07cd8e')
 
 build() {
-  cd "${srcdir}/libtheora-${pkgver}"
+  cd libtheora-${pkgver}
   
   ./configure --prefix=/usr --enable-shared --disable-static
   make
 }
 
 package() {
-  cd "${srcdir}/libtheora-${pkgver}"
-  make DESTDIR="${pkgdir}" install
+  cd libtheora-${pkgver}
+  make DESTDIR=${pkgdir} install
 
-  install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
-  install -m644 LICENSE COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
+  install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 LICENSE COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
 }

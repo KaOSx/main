@@ -1,7 +1,7 @@
 
 pkgname=vorbis-tools
-pkgver=1.4.0.1
-pkgrel=2
+pkgver=1.4.0.2
+pkgrel=1
 pkgdesc="Extra tools for Ogg-Vorbis"
 arch=('x86_64')
 url='http://www.xiph.org/vorbis/'
@@ -13,7 +13,7 @@ source=('svn+http://svn.xiph.org/trunk/vorbis-tools/')
 md5sums=('SKIP')
 
 build() {
-  cd ${srcdir}/${pkgname}
+  cd ${pkgname}
   
   ./autogen.sh
   ./configure --prefix=/usr \
@@ -23,7 +23,7 @@ build() {
 }
 
 package() {
-  cd ${srcdir}/${pkgname}
+  cd ${pkgname}
   
   make DESTDIR=${pkgdir} install 
 }
