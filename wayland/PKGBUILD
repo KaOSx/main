@@ -1,29 +1,31 @@
 
 pkgname=wayland
-pkgver=1.17.0
-pkgrel=2
+pkgver=1.18.0
+pkgrel=1
 pkgdesc="Wayland the modern display server."
 arch=('x86_64')
 url="https://wayland.freedesktop.org"
 license=('MIT')
 depends=('libffi' 'expat')
-#makedepends=('doxygen' 'xmlto') requires graphviz for documentation
+makedepends=('doxygen' 'xmlto' 'graphviz' 'meson' 'ninja')
 options=('!makeflags' '!libtool' 'debug')
 source=("https://wayland.freedesktop.org/releases/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('72aa11b8ac6e22f4777302c9251e8fec7655dc22f9d94ee676c6b276f95f91a4')
+sha256sums=('4675a79f091020817a98fd0484e7208c8762242266967f55a67776936c2e294d')
 
 build() {
-	cd ${pkgname}-${pkgver}
-
-	./configure --prefix=/usr \
-        --disable-static \
-        --disable-documentation
-	make 
+  mkdir -p build
+  cd build
+  
+  meson ../${pkgname}-${pkgver} \
+    --prefix=/usr \
+    --buildtype=release 
+  ninja
 }
 
 package() {
-     cd ${pkgname}-${pkgver}
-     make DESTDIR=${pkgdir} install
-     
-     install -Dm 644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
+  cd build
+  
+  DESTDIR=${pkgdir} ninja install
+  install -Dm 644 ../${pkgname}-${pkgver}/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
 }
+
