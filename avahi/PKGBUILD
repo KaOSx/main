@@ -7,22 +7,25 @@ pkgdesc="A multicast/unicast DNS-SD framework"
 arch=('x86_64')
 url="http://www.avahi.org/"
 license=('LGPL')
-depends=('dbus' 'libcap' 'libdaemon' 'gdbm' 'glib2' 'expat' 'qt5-base')
+depends=('dbus' 'libcap' 'libdaemon' 'gdbm' 'glib2' 'expat' 'qt5-base' 'python3-gobject3')
 makedepends=('dbus-python3' 'gobject-introspection' 'intltool')
 backup=(etc/avahi/avahi-daemon.conf etc/avahi/services/{sftp-,}ssh.service)
 install=avahi.install
 options=('!libtool')
 #source=("http://www.avahi.org/download/avahi-${pkgver}.tar.gz")
 source=("https://github.com/lathiat/avahi/releases/download/v${_pkgver}/${pkgname}-${_pkgver}.tar.gz"
-        'python_gdbm.diff')
+        'python_gdbm.diff'
+        'build-db')
 md5sums=('229c6aa30674fc43c202b22c5f8c2be7'
-         'cec7fdc431598e210a269f701e49e346')
+         'cec7fdc431598e210a269f701e49e346'
+         '426c69131ae0ac0c9813bd103ff98203')
 
 prepare() {
   cd ${pkgname}-${_pkgver}
   #patch -p1 -i ${srcdir}/python_gdbm.diff
+  cp ${srcdir}/build-db service-type-database/
   
-  NOCONFIGURE=1 ./autogen.sh
+  #NOCONFIGURE=1 ./autogen.sh
 }
 
 build() {
@@ -32,7 +35,6 @@ build() {
     --sysconfdir=/etc \
     --localstatedir=/var \
     --disable-static \
-    --disable-qt3 \
     --disable-qt4 \
     --disable-mono \
     --disable-monodoc \
@@ -41,11 +43,10 @@ build() {
     --disable-manpages \
     --disable-gtk \
     --disable-gtk3 \
-    --disable-pygobject \
+    --enable-pygobject \
     --disable-tests \
     --disable-libevent \
     --enable-compat-libdns_sd \
-    --enable-compat-howl \
     --with-distro=none \
     --with-avahi-priv-access-group=network \
     --with-autoipd-user=avahi \
