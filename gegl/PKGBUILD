@@ -1,18 +1,18 @@
 
 pkgname=gegl
-pkgver=0.4.20
+pkgver=0.4.22
 _pkgver=0.4
 pkgrel=1
 pkgdesc="Graph based image processing framework."
 arch=('x86_64')
 url="http://www.gegl.org/"
 license=('GPL3' 'LGPL3')
-depends=('babl' 'ffmpeg' 'openexr' 'librsvg' 'json-glib' 'libwebp' 'libraw' 'gexiv2')
-makedepends=('ruby' 'lua' 'exiv2' 'intltool' 'gobject-introspection' 'meson' 'ninja')
+depends=('babl' 'ffmpeg' 'openexr' 'librsvg' 'json-glib' 'libwebp' 'libraw' 'gexiv2' 'lensfun' 'poppler')
+makedepends=('ruby' 'lua' 'exiv2' 'intltool' 'gobject-introspection' 'meson' 'ninja' 'python3-gobject3')
 options=('!libtool')
 source=("https://download.gimp.org/pub/gegl/${_pkgver}/${pkgname}-${pkgver}.tar.xz"
         "https://gitlab.gnome.org/GNOME/gegl/commit/c1c3541caab485384087bbbcf1c83ef2d5bd4d43.diff")
-sha256sums=('23bd8bb42b20de7c2a8c314eeb5301dc20141feda20a4b1ed455020b69b73dff'
+sha256sums=('1888ec41dfd19fe28273795c2209efc1a542be742691561816683990dc642c61'
             'd69bb05a4327c2c1bc2bd1b6a4c938eb035ece37f8ea3ce6840d415dea4234e5')
 
 
