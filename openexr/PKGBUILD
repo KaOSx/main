@@ -1,26 +1,36 @@
 
 pkgname=openexr
-pkgver=2.4.0
+pkgver=2.4.1
 pkgrel=1
 pkgdesc="openexr library for EXR images"
 url="http://www.openexr.org"
 arch=('x86_64')
 license=('custom')
-depends=('zlib' 'ilmbase')
+depends=('boost' 'fltk' 'python3' 'zlib')
+makedepends=('cmake' 'freeglut' 'python3-numpy')
+conflicts=('ilmbase')
+provides=('ilmbase')
+replaces=('ilmbase')
 options=('!libtool')
-source=("https://github.com/openexr/openexr/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
-md5sums=('a157e8a46596bc185f2472a5a4682174')
+source=("https://github.com/AcademySoftwareFoundation/openexr/archive/v${pkgver}.tar.gz")
+md5sums=('f7f7f893cf38786f88c306dec127113f')
 
 build() {
-  cd ${pkgname}-${pkgver}
-
-  ./configure --prefix=/usr
+  mkdir -p build
+  cd build
+  
+  cmake ../${pkgname}-${pkgver} \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr 
   make
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
+  cd build
   
   make DESTDIR=${pkgdir} install
-  install -D -m644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+  # missed lib in cmake install
+  install -Dm755 python3_7/imathnumpy.so -t ${pkgdir}/usr/lib/python3.7/site-packages/
+  
+  install -D -m644 ../${pkgname}-${pkgver}/LICENSE.md ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.md
 }
