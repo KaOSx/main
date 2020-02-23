@@ -1,30 +1,27 @@
 
 pkgname=libxcb
-pkgver=1.13.1
-pkgrel=3
+pkgver=1.14
+pkgrel=1
 epoch=2
 pkgdesc="X11 client-side library"
 arch=('x86_64')
 url="https://xcb.freedesktop.org/"
-depends=('xcb-proto>=1.13' 'libxdmcp' 'libxau')
+depends=('xcb-proto' 'libxdmcp' 'libxau')
 makedepends=('pkgconfig' 'libxslt' 'python3' 'xorg-util-macros')
 options=('!libtool')
 license=('custom')
-source=("https://xcb.freedesktop.org/dist/${pkgname}-${pkgver}.tar.bz2"
-        'libxcb-1.1-no-pthread-stubs.patch')
-sha256sums=('a89fb7af7a11f43d2ce84a844a4b38df688c092bf4b67683aef179cdf2a647c4'
-            '9addd62eef8d321584b579d00b8a31d4c11a1219aa7aa759a8fa15e5b8c13249')
+source=("https://xorg.freedesktop.org/archive/individual/lib/${pkgname}-${pkgver}.tar.xz")
+sha256sums=('a55ed6db98d43469801262d81dc2572ed124edc3db31059d4e9916eb9f844c34')
 
 build() {
   cd ${pkgname}-${pkgver}
-  patch -p1 -i ${srcdir}/libxcb-1.1-no-pthread-stubs.patch
   
   autoreconf -vfi
   
   ./configure --prefix=/usr \
-              --enable-xinput \
-              --enable-xkb \
-              --disable-static
+    --enable-xinput \
+    --enable-xkb \
+    --disable-static
   make
 }
 

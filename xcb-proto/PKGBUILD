@@ -1,14 +1,14 @@
 
 pkgname=xcb-proto
-pkgver=1.13
-pkgrel=2
+pkgver=1.14
+pkgrel=1
 pkgdesc="XML-XCB protocol descriptions"
 arch=('x86_64')
 url="https://xcb.freedesktop.org/"
 license=('custom')
 makedepends=('python3' 'libxml2')
-source=("https://xcb.freedesktop.org/dist/${pkgname}-${pkgver}.tar.bz2")
-sha256sums=('7b98721e669be80284e9bbfeab02d2d0d54cd11172b72271e47a2fe875e2bde1')
+source=("https://xorg.freedesktop.org/archive/individual/proto/${pkgname}-${pkgver}.tar.xz")
+sha256sums=('186a3ceb26f9b4a015f5a44dcc814c93033a5fc39684f36f1ecc79834416a605')
 
 build() {
   cd ${pkgname}-${pkgver}
