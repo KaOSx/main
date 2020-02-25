@@ -2,7 +2,7 @@
 pkgname=avahi
 pkgver=0.8
 _pkgver=0.8
-pkgrel=1
+pkgrel=2
 pkgdesc="A multicast/unicast DNS-SD framework"
 arch=('x86_64')
 url="http://www.avahi.org/"
@@ -60,13 +60,12 @@ package() {
 	cd ${pkgname}-${_pkgver}
 	make DESTDIR=${pkgdir} install
 	
-	rm ${pkgdir}/var -rfv
-	rm -fr ${pkgdir}/etc/rc.d
+	rm -r ${pkgdir}/run
+	# avahi-discover is not build (gtk2), but installs files
+	rm ${pkgdir}/usr/bin/avahi-discover
+	rm -r ${pkgdir}/usr/share/applications
 
-	cd ${pkgdir}
-	sed -i '1c #!/usr/bin/python2' usr/bin/avahi-bookmarks
-	# howl and mdnsresponder compatability
-	(cd usr/include; ln -s avahi-compat-libdns_sd/dns_sd.h dns_sd.h; ln -s avahi-compat-howl howl)
-	(cd usr/lib/pkgconfig; ln -s avahi-compat-howl.pc howl.pc)
+	# mdnsresponder compatability
+	 ln -s avahi-compat-libdns_sd/dns_sd.h ${pkgdir}/usr/include/dns_sd.h
 }
 
