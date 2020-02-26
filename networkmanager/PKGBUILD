@@ -3,7 +3,7 @@ pkgname=networkmanager
 _pkgname=NetworkManager
 pkgver=1.22.8
 _pkgver=1.22
-pkgrel=1
+pkgrel=2
 pkgdesc="Network Management daemon"
 arch=('x86_64')
 license=('GPL')
@@ -50,7 +50,7 @@ build() {
     --disable-static \
     --enable-more-warnings=no \
     --enable-modify-system \
-    --with-pppd-plugin-dir=/usr/lib/pppd/2.4.7
+    --with-pppd-plugin-dir=/usr/lib/pppd/2.4.8
 
   make
 }
