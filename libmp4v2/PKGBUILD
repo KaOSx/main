@@ -1,18 +1,21 @@
 
 pkgname=libmp4v2
 pkgver=2.0.0
-pkgrel=4
+pkgrel=5
 pkgdesc="MPEG-4 library"
 arch=('x86_64')
 license=('MPL')
-url="http://code.google.com/p/mp4v2/"
+url="https://code.google.com/archive/p/mp4v2/"
 depends=('gcc-libs')
 options=('!libtool')
-source=("http://mp4v2.googlecode.com/files/mp4v2-${pkgver}.tar.bz2")
-md5sums=('c91f06711225b34b4c192c9114887b14')
+source=("https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/mp4v2/mp4v2-${pkgver}.tar.bz2"
+        "https://github.com/sergiomb2/libmp4v2/commit/855e9674232808ff3be7191b697dfb56917db21f.diff")
+md5sums=('c91f06711225b34b4c192c9114887b14'
+         '6ee4ff89ff7cc61dd94199eb41734580')
 
 build() {
   cd mp4v2-${pkgver}
+  patch -p1 -i ${srcdir}/855e9674232808ff3be7191b697dfb56917db21f.diff
 
   ./configure --prefix=/usr
   make
