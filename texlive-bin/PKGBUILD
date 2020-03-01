@@ -2,7 +2,7 @@
 pkgname=texlive-bin
 pkgver=2019.51263
 _pkgver=build-svn51263
-pkgrel=1
+pkgrel=2
 pkgdesc="TeX Live binaries"
 url='https://tug.org/texlive/'
 license=('GPL')
@@ -16,19 +16,23 @@ options=('!libtool' '!strip')
 # full credit for this PKGBUILD goes to Rémy Oudompheng <remy@archlinux.org>
 #source=("https://mirrors.kernel.org/archlinux/other/texlive/texlive-bin-source-${pkgver}.tar.xz"
 source=("https://github.com/TeX-Live/texlive-source/archive/${_pkgver}.tar.gz"
-        'poppler0.7x2.patch')
+        'poppler0.7x2.patch'
+        'poppler0.8x.patch')
 md5sums=('c5d340e900c3629a56a1f8daf580f3e1'
-         'f38b46eae0e2cdaa66e953791d2b5990')
+         'f38b46eae0e2cdaa66e953791d2b5990'
+         '6a470caa1077db602a1229d4d4f2f516')
 
 prepare() {
    cd texlive-source-${_pkgver}
-   patch -p1 -i ${srcdir}/poppler0.7x2.patch
    
    # t4ht expects to be in /usr/share/texmf/bin/t4ht
    sed -i s/SELFAUTOPARENT/TEXMFROOT/ texk/tex4htk/t4ht.c
    
+   patch -p1 -i ${srcdir}/poppler0.7x2.patch
    cp -pv texk/web2c/pdftexdir/pdftoepdf{-poppler0.76.0,}.cc
    cp -pv texk/web2c/pdftexdir/pdftosrc{-poppler0.76.0,}.cc
+   
+   patch -p1 -i ${srcdir}/poppler0.8x.patch
 }
 
 build() {
