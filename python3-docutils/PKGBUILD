@@ -1,15 +1,15 @@
 
 pkgname=python3-docutils
 _pkgname=docutils
-pkgver=0.15
-pkgrel=2
+pkgver=0.16
+pkgrel=1
 pkgdesc="Set of tools for processing plaintext docs into formats such as HTML, XML, or LaTeX"
 arch=('x86_64')
 url="http://docutils.sourceforge.net"
 license=('custom')
 depends=('python3')
-source=("https://downloads.sourceforge.net/docutils/${_pkgname}-${pkgver}.tar.gz")
-sha1sums=('2fe4b3761a05c89ffccee6f7b4279696d4a7ebfe')
+source=("https://files.pythonhosted.org/packages/source/D/Docutils/${_pkgname}-${pkgver}.tar.gz")
+sha256sums=('c2de3a60e9e7d07be26b7f2b00ca0309c207e06c100f9cc2a94931fc75a478fc')
 
 build() {
   cd ${_pkgname}-${pkgver}
