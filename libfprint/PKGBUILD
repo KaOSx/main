@@ -1,25 +1,32 @@
 
 pkgname=libfprint
-pkgver=0.6.0
+pkgver=1.90.1
 pkgrel=1
-pkgdesc="Library for fingerprint readers"
+pkgdesc="Project that aims to add support for consumer fingerprint reader devices, in Linux, as well as other free Unices."
 arch=('x86_64')
-url="http://www.freedesktop.org/wiki/Software/fprint/libfprint"
+url="https://fprint.freedesktop.org/"
 license=('LGPL')
-depends=('libusb' 'nss' 'pixman')
+depends=('libgusb' 'nss' 'pixman')
+makedepends=('gobject-introspection' 'meson' 'ninja')
 options=('!emptydirs' '!libtool')
-source=("http://people.freedesktop.org/~hadess/${pkgname}-${pkgver}.tar.xz")
-md5sums=('1e66f6e786348b46075368cc682450a8')
+source=("https://gitlab.freedesktop.org/libfprint/libfprint/-/archive/v${pkgver}/libfprint-v${pkgver}.tar.bz2")
+md5sums=('446d8c3473ffa43d8c1a06988d4ef5cf')
 
 build() {
-  cd ${pkgname}-${pkgver}
+  mkdir -p build
+  cd build
   
-  ./configure --prefix=/usr --sysconfdir=/etc --disable-static
-  make
+  meson ../${pkgname}-v${pkgver} \
+    --prefix=/usr \
+    --buildtype=release \
+    -Ddoc=false
+  ninja
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
+  cd build
   
-  make DESTDIR=${pkgdir} install
+  DESTDIR=${pkgdir} ninja install
 }
+
+

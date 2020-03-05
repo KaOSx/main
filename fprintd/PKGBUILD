@@ -1,0 +1,42 @@
+
+pkgname=fprintd
+pkgver=1.90.1
+pkgrel=1
+pkgdesc="Daemon that provides fingerprint scanning functionality over D-Bus."
+arch=('x86_64')
+url="https://fprint.freedesktop.org/"
+license=('LGPL')
+depends=('libfprint' 'glib2' 'polkit' 'dbus-glib')
+makedepends=('meson' 'ninja' 'dbus-python3' 'python3-cairo')
+options=('!emptydirs' '!libtool')
+source=("https://gitlab.freedesktop.org/libfprint/fprintd/-/archive/${pkgver}/fprintd-${pkgver}.tar.bz2")
+md5sums=('d4233e061129d9e027241c938f35ba52')
+
+prepare() {
+  cd ${pkgname}-${pkgver}
+  
+  sed -i -e "s|'dbusmock': true|'dbusmock': false|g" meson.build
+  sed -i -e "s|'gi': true|'gi': false|g" meson.build
+  sed -i -e "s|subdir('tests')|#subdir('tests')|g" meson.build
+}
+
+build() {
+  mkdir -p build
+  cd build
+  
+  meson ../${pkgname}-${pkgver} \
+    --prefix=/usr \
+    --buildtype=release \
+    --libexecdir=lib \
+    -Dman=false \
+    -Dpam=false
+  ninja
+}
+
+package() {
+  cd build
+  
+  DESTDIR=${pkgdir} ninja install
+}
+
+
