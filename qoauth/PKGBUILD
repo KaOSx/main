@@ -1,19 +1,20 @@
 
 pkgname=qoauth
-pkgver=2.0.1
+pkgver=2.0.0
 _commit=02fbc13
-pkgrel=2
+pkgrel=1
+epoch=1
 pkgdesc="Support with OAuth-powered network services"
 url="http://github.com/ayoy/qoauth"
 license=('GPL')
 arch=('x86_64')
 depends=('qca-qt5')
 makedepends=('cmake')
-source=("https://github.com/ayoy/qoauth/tarball/master/qoauth-${pkgver}.tar.gz")
-md5sums=('66e73344eba0007a50a35833d9b6a309')
+source=("https://github.com/ayoy/qoauth/archive/v${pkgver}.tar.gz")
+md5sums=('a30ab54144bcdb5b5adaf4d45b59a7d4')
 
 build() {
-  cd ayoy-qoauth-${_commit}/
+  cd qoauth-${pkgver}/
   # Move libraries from /usr/lib64 to /usr/lib
   sed -i 's|lib64|lib|' src/src.pro
   
@@ -22,7 +23,7 @@ build() {
 }
 
 package() {
-  cd ayoy-qoauth-${_commit}/
+  cd qoauth-${pkgver}/
   
   make INSTALL_ROOT=${pkgdir} install
 
