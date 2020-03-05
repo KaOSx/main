@@ -1,7 +1,8 @@
 
 pkgname=zip
 pkgver=3.0
-pkgrel=5
+_pkgver=30
+pkgrel=6
 pkgdesc="Creates PKZIP-compatible .zip files"
 arch=('x86_64')
 url="http://www.info-zip.org/pub/infozip/Zip.html"
@@ -9,16 +10,16 @@ license=('BSD')
 depends=('glibc' 'bzip2')
 makedepends=('unzip')
 options=('!makeflags')
-source=("ftp://ftp.info-zip.org/pub/infozip/src/zip30.zip")
-md5sums=('e88492c8abd68fa9cfba72bc08757dba')
+source=("https://downloads.sourceforge.net/infozip/${pkgname}${_pkgver}.tar.gz")
+md5sums=('7b74551e63f8ee6aab6fbc86676c0d37')
 
 build() {
-   cd ${pkgname}30
+   cd ${pkgname}${_pkgver}
    make -f unix/Makefile LOCAL_ZIP="$CFLAGS" prefix=/usr generic_gcc 
 }
 
 package() {
-   cd ${pkgname}30
+   cd ${pkgname}${_pkgver}
    
    make -f unix/Makefile INSTALL=/bin/install prefix=${pkgdir}/usr \
      MANDIR=${pkgdir}/usr/share/man/man1 install

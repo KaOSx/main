@@ -1,18 +1,19 @@
 
 pkgname=libfakekey
-pkgver=0.1
-pkgrel=2
+pkgver=0.3
+pkgrel=1
 pkgdesc='X virtual keyboard library.'
 arch=('x86_64')
-url='http://matchbox-project.org/'
+url='https://www.yoctoproject.org/software-item/matchbox/'
 license=('GPL')
 depends=('libxtst')
-source=("http://downloads.yoctoproject.org/releases/matchbox/libfakekey/${pkgver}/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('83dbde4d77e8baf0176fe4291d8a2303')
+source=("https://git.yoctoproject.org/cgit/cgit.cgi/libfakekey/snapshot/${pkgname}-${pkgver}.tar.bz2")
+md5sums=('3e30e3bcfd5e1b1a467bdb008ae7aa46')
 
 build() {
   cd ${pkgname}-${pkgver}
 
+  ./autogen.sh
   ./configure --prefix=/usr \
         --sysconfdir=/etc \
         --localstatedir=/var \
