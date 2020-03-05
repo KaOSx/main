@@ -1,28 +1,28 @@
 
 pkgname=libxxf86vm
 pkgver=1.1.4
-pkgrel=2
+pkgrel=3
 pkgdesc="X11 XFree86 video mode extension library"
 arch=('x86_64')
 license=('custom')
-url="http://xorg.freedesktop.org/"
-depends=('libxext' 'xf86vidmodeproto')
+url="https://xorg.freedesktop.org/"
+depends=('libxext' 'xorgproto')
 makedepends=('xorg-util-macros')
 options=('!libtool')
-source=("http://xorg.freedesktop.org/releases/individual/lib/libXxf86vm-${pkgver}.tar.bz2")
+source=("https://xorg.freedesktop.org/releases/individual/lib/libXxf86vm-${pkgver}.tar.bz2")
 md5sums=('298b8fff82df17304dfdb5fe4066fe3a')
 
 build() {
-  cd "${srcdir}/libXxf86vm-${pkgver}"
+  cd libXxf86vm-${pkgver}
   
   ./configure --prefix=/usr --disable-static
   make
 }
 
 package() {
-  cd "${srcdir}/libXxf86vm-${pkgver}"
-  make DESTDIR="${pkgdir}" install
+  cd libXxf86vm-${pkgver}
+  make DESTDIR=${pkgdir} install
 
-  install -d -m755 "${pkgdir}/usr/share/licenses/${pkgname}"
-  install -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/"
+  install -d -m755 ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
 }

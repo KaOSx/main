@@ -8,11 +8,14 @@ url="https://www.breakfastquay.com/rubberband/"
 license=('GPL')
 depends=('libsamplerate' 'fftw' 'vamp-plugin-sdk')
 makedepends=('ladspa')
-source=("https://code.breakfastquay.com/attachments/download/34/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('db0ecb4f1a647bdaf7e43ef2ca2f7883')
+source=("https://code.breakfastquay.com/attachments/download/34/${pkgname}-${pkgver}.tar.bz2"
+        "https://github.com/breakfastquay/rubberband/commit/419a9bcf7066473b0d31e9a8a81fe0b2a8e41fed.diff")
+md5sums=('db0ecb4f1a647bdaf7e43ef2ca2f7883'
+         '26bb1bf86fcfbd897a665ead4aec4613')
 
 build() {
   cd ${pkgname}-${pkgver}
+  patch -p1 -i ${srcdir}/419a9bcf7066473b0d31e9a8a81fe0b2a8e41fed.diff
 
   ./configure --prefix=/usr
   make

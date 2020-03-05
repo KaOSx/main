@@ -1,7 +1,7 @@
 
 pkgname=libmpeg2
 pkgver=0.5.1
-pkgrel=5
+pkgrel=6
 pkgdesc="libmpeg2 is a library for decoding MPEG-1 and MPEG-2 video streams."
 arch=('x86_64')
 url="http://libmpeg2.sourceforge.net/"
@@ -14,8 +14,8 @@ md5sums=('0f92c7454e58379b4a5a378485bbd8ef'
          '062c4913e528c4e83e3ac3d284ff8bcb')
 
 build() {
-  cd ${srcdir}/${pkgname}-${pkgver}
-  patch -p1 -i "${srcdir}/gcc.patch"
+  cd ${pkgname}-${pkgver}
+  patch -p1 -i ${srcdir}/gcc.patch
   
   sed '/AC_PATH_XTRA/d' -i configure.ac
   autoreconf --force --install
@@ -27,7 +27,7 @@ build() {
 }
 
 package() {
-  cd ${srcdir}/${pkgname}-${pkgver}
+  cd ${pkgname}-${pkgver}
   
   make DESTDIR=${pkgdir} install
 }
