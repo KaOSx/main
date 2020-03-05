@@ -1,15 +1,15 @@
 
 pkgname=mjpegtools
 pkgver=2.1.0
-pkgrel=3
+pkgrel=4
 pkgdesc="Set of tools that can do recording of videos and playback, simple cut-and-paste editing and the MPEG compression of audio and video"
 arch=('x86_64')
 license=('GPL')
 url="http://mjpeg.sourceforge.net/"
-depends=('libjpeg-turbo' 'libpng>=1.6.17' 'sdl' 'gcc-libs' 'libdv')
+depends=('libjpeg-turbo' 'libpng' 'sdl' 'gcc-libs' 'libdv')
 makedeends=('v4l-utils')
 options=('!makeflags' '!libtool')
-source=("http://downloads.sourceforge.net/sourceforge/mjpeg/${pkgname}-${pkgver}.tar.gz")
+source=("https://downloads.sourceforge.net/sourceforge/mjpeg/${pkgname}-${pkgver}.tar.gz")
 md5sums=('57bf5dd78976ca9bac972a6511b236f3')
 
 build() {

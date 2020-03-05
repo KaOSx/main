@@ -1,0 +1,52 @@
+--- a/examples/wavefile.cpp	2016-09-16 16:26:59.000000000 +0200
++++ b/examples/wavefile.cpp	2020-03-05 12:17:19.164257851 +0100
+@@ -11,6 +11,7 @@
+ #include "io.h"
+ #endif
+ #include <fcntl.h>
++#include <unistd.h>
+ 
+ static bool readBytes(int fd, unsigned char *buf, int size) {
+     int ct = 0;
+--- a/lib/signal_op.cpp	2016-09-16 16:26:59.000000000 +0200
++++ b/lib/signal_op.cpp	2020-03-05 12:18:16.490011326 +0100
+@@ -12,6 +12,7 @@
+ // DATE CREATED: 1/12/06
+ 
+ 
++#include <cstdlib>
+ #include <math.h>
+ #include "signal_op.h"
+ #include "AFLIB/aflibConverter.h"
+--- a/examples/uselame.cpp	2016-09-16 16:26:59.000000000 +0200
++++ b/examples/uselame.cpp	2020-03-05 12:15:09.134080254 +0100
+@@ -12,6 +12,8 @@
+ #else
+ #include <sys/wait.h>
+ #endif
++#include <unistd.h>
++#include <cstdio>
+ 
+ AudioData *loadWaveFile(char *file);
+ 
+--- a/examples/protocol.cpp	2016-09-16 16:26:59.000000000 +0200
++++ b/examples/protocol.cpp	2020-03-05 12:16:25.485423906 +0100
+@@ -8,6 +8,7 @@
+ -------------------------------------------------------------------*/
+ #include <stdio.h>
+ #include <stdlib.h>
++#include <cstring>
+ #include <string>
+ #include <map>
+ #include <expat.h>
+--- a/examples/example.cpp	2016-09-16 16:26:59.000000000 +0200
++++ b/examples/example.cpp	2020-03-05 12:13:51.855753657 +0100
+@@ -9,6 +9,8 @@
+ 
+ #include "protocol.h"
+ 
++#include <string.h>
++
+ AudioData* loadWaveFile(char *file);
+ AudioData* loadDataUsingLAME(char *file);
+ 

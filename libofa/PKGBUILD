@@ -1,42 +1,33 @@
 
 pkgname=libofa
 pkgver=0.9.3
+_commit=a395abfd37df5faa97f82e942f87b1dfa55e8a48
 pkgrel=5
 pkgdesc="Open Fingerprint Architecture"
 arch=('x86_64')
-url="http://code.google.com/p/musicip-libofa/"
+url="https://github.com/tanob/libofa"
 license=('GPL2' 'custom')
 depends=('expat' 'curl' 'fftw' 'gcc-libs')
 makedepends=('pkgconfig')
 options=('!libtool')
-source=("https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/musicip-libofa/$pkgname-$pkgver.tar.gz"
-        'gcc-4.patch' 
-        'libofa-0.9.3-gcc-4.3.patch'
-        'gcc4.5.patch'
-        'libofa-0.9.3-curl-7.21.patch'
-        'gcc-47.patch')
-md5sums=('51507d2c4b432bd2755f48d58471696e'
-         'a6f78b90bd0f4354d022a71c3e58ef6c'
+#source=("https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/musicip-libofa/$pkgname-$pkgver.tar.gz"
+source=("https://github.com/tanob/libofa/archive/${_commit}.zip"
+        'gcc.diff')
+md5sums=('16c156a73fb68e76721affab7b005a90'
          'dd57db13770b8f8d196e8a3d3a50e713'
-         'c245363368d0e6fa2b4676364b81b74f'
-         '2e1579d74613cfbb1799d0ab5f1a4cba'
-         '69cb2996c984adc80e368109e17e48ea')
+         '92d17e57c9e1b7d2cbe1d883c01c404e')
 
 build() {
-  cd ${pkgname}-${pkgver}
+  cd ${pkgname}-${_commit}
 
-  patch -p0 -i ${srcdir}/gcc-4.patch
-  patch -p1 -i ${srcdir}/libofa-0.9.3-gcc-4.3.patch
-  patch -p1 -i ${srcdir}/gcc4.5.patch
-  patch -p1 -i ${srcdir}/libofa-0.9.3-curl-7.21.patch
-  patch -p1 -i ${srcdir}/gcc-47.patch
+  patch -p1 -i ${srcdir}/gcc.diff
   
   ./configure --prefix=/usr
   make
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
+  cd ${pkgname}-${_commit}
   make DESTDIR=${pkgdir} install
   
   install -D -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE

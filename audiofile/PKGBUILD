@@ -1,25 +1,28 @@
 
 pkgname=audiofile
 pkgver=0.3.6
-pkgrel=2
+_commit=b62c902dd258125cac86cd2df21fc898035a43d3
+pkgrel=3
 pkgdesc="Silicon Graphics Audio File Library"
 arch=('x86_64')
 url="http://www.68k.org/~michael/audiofile/"
-license=('LGPL')
+license=('LGPL2.1')
 depends=('gcc-libs' 'alsa-lib' 'flac')
 options=('!libtool')
-source=("http://pkgs.fedoraproject.org/repo/pkgs/audiofile/audiofile-0.3.6.tar.gz/2731d79bec0acef3d30d2fc86b0b72fd/${pkgname}-${pkgver}.tar.gz")
-md5sums=('2731d79bec0acef3d30d2fc86b0b72fd')
+#source=("https://pkgs.fedoraproject.org/repo/pkgs/audiofile/audiofile-0.3.6.tar.gz/2731d79bec0acef3d30d2fc86b0b72fd/${pkgname}-${pkgver}.tar.gz")
+source=("https://github.com/mpruett/audiofile/archive/${_commit}.zip")
+md5sums=('9dc28eb4da09929cd42ecdcae0db30ce')
 
 build() {
-  cd ${pkgname}-${pkgver}
+  cd ${pkgname}-${_commit}
 
-  ./configure --prefix=/usr
+  ./autogen.sh
+  ./configure --prefix=/usr --disable-docs
   make
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
+  cd ${pkgname}-${_commit}
 
   make DESTDIR=${pkgdir} install
 }
