@@ -1,7 +1,7 @@
 
 pkgname=libid3tag
 pkgver=0.15.1b
-pkgrel=7
+pkgrel=8
 pkgdesc="library for id3 tagging"
 arch=('x86_64')
 url="https://www.underbit.com/products/mad/"
@@ -26,6 +26,11 @@ build() {
   patch -p1 -i ${srcdir}/10_utf16.diff
   patch -p1 -i ${srcdir}/11_unknown_encoding.diff
   patch -p0 -i ${srcdir}/CVE-2008-2109.patch
+  
+  sed -i -e 's|register unsigned int)|register size_t)|' frametype.h
+  sed -i -e 's|register unsigned int)|register size_t)|' compat.h
+  
+  rm compat.c frametype.c # regenerate these files to make it build
   
   ./configure --prefix=/usr
   make
