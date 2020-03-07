@@ -1,0 +1,35 @@
+ 
+pkgname=libqtolm
+pkgver=0.1.0
+pkgrel=1
+_commit=f2d8e235a4af0625fdedaaf727fef5d51293bf1b
+pkgdesc="Qt wrapper for libolm."
+arch=('x86_64')
+url="https://gitlab.com/b0/libqtolm"
+license=('GPLv3')
+depends=('qt5-base' 'olm')
+makedepends=('cmake')
+source=("https://gitlab.com/b0/libqtolm/-/archive/${_commit}/${pkgname}-${_commit}.tar.bz2")
+sha256sums=('73e7b8ed417aa827c84bf01879752fdb815e4e37f6e260f011528e2867718f89')
+
+build() {
+    mkdir -p build
+    cd build
+
+    cmake ../${pkgname}-${_commit} \
+        -DCMAKE_INSTALL_PREFIX=/usr \
+        -DCMAKE_INSTALL_LIBDIR=lib \
+        -DCMAKE_INSTALL_INCLUDEDIR=include \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DBUILD_SHARED_LIBS=ON
+
+    make
+}
+
+package() {
+    cd build
+    
+    make DESTDIR=${pkgdir} install
+    # conflict with cdparanoia
+    mv ${pkgdir}/usr/include/utils.h ${pkgdir}/usr/include/utils_libqtolm.h
+}
