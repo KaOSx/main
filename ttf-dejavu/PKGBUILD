@@ -1,15 +1,15 @@
 
 pkgname=ttf-dejavu
 pkgver=2.37
-pkgrel=1
+pkgrel=2
 pkgdesc="Font family based on the Bitstream Vera Fonts with a wider range of characters"
 arch=('x86_64')
-url="http://dejavu.sourceforge.net/"
+url="https://dejavu-fonts.github.io/"
 license=('custom')
 depends=('fontconfig' 'xorg-fonts-encodings')
 install=ttf-dejavu.install
-source=("http://downloads.sourceforge.net/project/dejavu/dejavu/${pkgver}/dejavu-fonts-ttf-${pkgver}.tar.bz2")
-md5sums=('d0efec10b9f110a32e9b8f796e21782c')
+source=("https://downloads.sourceforge.net/project/dejavu/dejavu/${pkgver}/dejavu-fonts-ttf-${pkgver}.tar.bz2")
+sha256sums=('fa9ca4d13871dd122f61258a80d01751d603b4d3ee14095d65453b4e846e17d7')
 
 package() {
   install -dm755 ${pkgdir}/etc/fonts/conf.avail
