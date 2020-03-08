@@ -1,9 +1,9 @@
 
 pkgname=libao
 pkgver=1.2.2
-pkgrel=1
+pkgrel=2
 pkgdesc="A cross-platform audio output library and plugins"
-url="http://www.xiph.org/ao"
+url="https://www.xiph.org/ao"
 arch=('x86_64')
 license=('GPL')
 depends=('glibc' 'alsa-lib' 'pulseaudio')
@@ -20,9 +20,9 @@ build() {
 
   ./autogen.sh
   ./configure --prefix=/usr \
-              --enable-alsa-mmap \
-              --enable-pulse \
-              --disable-nas
+    --enable-alsa-mmap \
+    --enable-pulse \
+    --disable-nas
   make
 }
 

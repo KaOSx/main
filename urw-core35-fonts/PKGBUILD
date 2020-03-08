@@ -1,26 +1,30 @@
 
 pkgname=urw-core35-fonts
-pkgver=20160712
-_commit=79bcdfb
+_pkgname=urw-base35-fonts
+pkgver=20180327
+_commit=b758567463df532414c520cf008e27d9448b55a4
 pkgrel=1
-pkgdesc="Ghostscript standard Type1 fonts from URW+"
+pkgdesc="URW++ base 35 font set"
 arch=('x86_64')
-url="http://git.ghostscript.com/?p=urw-core35-fonts.git;a=summary"
+url="https://github.com/ArtifexSoftware/urw-base35-fonts"
 license=('AGPL3')
-depends=('xorg-font-utils' 'fontconfig')
+depends=('xorg-font-utils')
 provides=('urw-fonts' 'gsfonts')
 replaces=('urw-fonts' 'gsfonts')
 provides=('urw-fonts' 'gsfonts')
 install=fonts.install
-source=("http://git.ghostscript.com/?p=urw-core35-fonts.git;a=snapshot;h=79bcdfb34fbce12b592cce389fa7a19da6b5b018;sf=tgz")
-md5sums=('559f1a14899c32401ac044e90648c5d5')
+source=("https://github.com/ArtifexSoftware/urw-base35-fonts/archive/${_commit}.zip")
+md5sums=('a1a05a6131aed58e443f408438b8c5dc')
 
 package() {
-  cd ${pkgname}-${_commit}
+  cd ${_pkgname}-${_commit}
   
   install -d ${pkgdir}/usr/share/fonts/OTF
-  install -m644 *.otf ${pkgdir}/usr/share/fonts/OTF
+  install -m644 fonts/*.otf ${pkgdir}/usr/share/fonts/OTF
   
   install -d ${pkgdir}/usr/share/fonts/TTF
-  install -m644 *.ttf ${pkgdir}/usr/share/fonts/TTF
+  install -m644 fonts/*.ttf ${pkgdir}/usr/share/fonts/TTF
+  
+  install -d ${pkgdir}/etc/fonts/conf.avail
+  install -m644 fontconfig/*.conf ${pkgdir}/etc/fonts/conf.avail
 }
