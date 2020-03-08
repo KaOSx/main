@@ -3,31 +3,31 @@ pkgname=pulseaudio
 pkgdesc="A featureful, general-purpose sound server"
 pkgver=13.0
 _commit=613c2994af42ff08fe0a9d0e4bfce42ef781e8f6
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 url="https://www.freedesktop.org/wiki/Software/PulseAudio/"
 license=('GPL' 'LGPL')
-depends=('dbus' 'xcb-util' 'libasyncns' 'libcap' 'libxtst' 'libsm'
-         'libsndfile' 'rtkit' 'speex' 'tdb' 'fftw' 'orc' 
-         'webrtc-audio-processing' 'systemd' 'sbc' 'libsoxr') # 'gconf')
-makedepends=('attr' 'libltdl' 'avahi' 'bluez' 'intltool' 'jack' 'openssl'
+depends=('dbus' 'xcb-util' 'libasyncns' 'libcap' 'libxtst' 'libsm' 'libsndfile' 
+         'rtkit' 'speex' 'tdb' 'fftw' 'orc' 'webrtc-audio-processing' 'systemd'
+         'sbc' 'libsoxr' 'openssl' 'bluez' 'alsa-plugins')
+makedepends=('attr' 'libltdl' 'avahi' 'intltool' 'jack'
              'pkgconfig' 'sh' 'meson' 'ninja' 'check')
 optdepends=('avahi: zeroconf support'
-            'bluez: bluetooth support'
-            'jack: jack support'
-            'openssl: RAOP support')
-backup=(etc/pulse/{daemon.conf,default.pa,system.pa})
+            'jack: jack support')
+provides=('pulseaudio-alsa')
+conflicts=('pulseaudio-alsa')
+replaces=('pulseaudio-alsa')
+backup=('etc/pulse/{daemon.conf,default.pa,system.pa}' 'etc/asound.conf')
 options=('!emptydirs' '!libtool' '!makeflags')
-source=("https://freedesktop.org/software/pulseaudio/releases/${pkgname}-${pkgver}.tar.xz")
-#source=("${pkgname}-${pkgver}::git://anongit.freedesktop.org/pulseaudio/pulseaudio#commit=50186d7")
+source=("https://freedesktop.org/software/pulseaudio/releases/${pkgname}-${pkgver}.tar.xz"
+        'asound.conf')
 #source=("https://github.com/pulseaudio/pulseaudio/archive/${_commit}.zip")
-sha256sums=('961b23ca1acfd28f2bc87414c27bb40e12436efcf2158d29721b1e89f3f28057')
+sha256sums=('961b23ca1acfd28f2bc87414c27bb40e12436efcf2158d29721b1e89f3f28057'
+            '65166739e5b799da225ad8ae057f5958637afb9dbec15d28be7a5ea54fb8db25')
 
 build() {
   mkdir -p build
   cd build
-    
-  #export LANG=en_US.UTF-8
 
   meson ../${pkgname}-${pkgver} \
       --prefix=/usr \
@@ -51,4 +51,7 @@ package() {
   # fix no sound after logout https://github.com/KaOSx/apps/issues/112
   sed -e 's|load-module module-esound-protocol-unix|##load-module module-esound-protocol-unix|' \
     -i ${pkgdir}/etc/pulse/default.pa
+    
+  # former pulseaudio-alsa, integrated into pulseaudio
+  install -Dm644 ../asound.conf ${pkgdir}/etc/asound.conf
 }
