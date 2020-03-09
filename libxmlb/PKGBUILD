@@ -1,0 +1,31 @@
+
+pkgname=libxmlb
+pkgver=0.1.15
+pkgrel=1
+pkgdesc="Library to help create and query binary XML blobs"
+arch=('x86_64')
+url="https://github.com/hughsie/libxmlb"
+license=('LGPL2.1')
+depends=('glib2')
+makedepends=('gobject-introspection' 'meson' 'ninja')
+options=('!libtool')
+source=("https://people.freedesktop.org/~hughsient/releases/${pkgname}-${pkgver}.tar.xz")
+sha256sums=('e9625e609d20c491f37d0ab41f4c6edb59bc4b042ae9ba374390e9ef71c6ab98')
+
+build() {
+  mkdir -p build
+  cd build
+  
+  meson ../${pkgname}-${pkgver} \
+    --prefix=/usr \
+    --buildtype=release \
+    -Dgtkdoc=false \
+    -Dtests=false
+  ninja
+}
+
+package() {
+  cd build
+  
+  DESTDIR=${pkgdir} ninja install
+} 

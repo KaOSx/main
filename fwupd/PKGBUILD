@@ -1,0 +1,54 @@
+ 
+pkgname=fwupd
+pkgver=1.3.9
+pkgrel=1
+pkgdesc="Simple daemon to allow updating firmware on Linux automatic, safe and reliable"
+arch=('x86_64')
+url="https://fwupd.org/"
+license=('LGPL2.1')
+depends=('efivar' 'gcab' 'gpgme' 'json-glib' 'libarchive' 'libgudev' 'libgusb' 'libsoup'
+         'libxmlb' 'modemmanager' 'polkit' 'python3' 'shared-mime-info' 'udisks2')
+makedepends=('bash-completion' 'help2man' 'gnu-efi-libs' 'gobject-introspection' 
+             'linux-headers' 'meson' 'noto-fonts' 'ninja' 'python3-cairo' 'python3-gobject3'
+             'python3-pillow' 'vala')
+backup=('etc/fwupd/daemon.conf'
+        'etc/fwupd/redfish.conf'
+        'etc/fwupd/remotes.d/fwupd-tests.conf'
+        'etc/fwupd/remotes.d/lvfs-testing.conf'
+        'etc/fwupd/remotes.d/lvfs.conf'
+        'etc/fwupd/remotes.d/vendor-directory.conf'
+        'etc/fwupd/remotes.d/vendor.conf'
+        'etc/fwupd/thunderbolt.conf'
+        'etc/fwupd/upower.conf')
+source=("https://people.freedesktop.org/~hughsient/releases/${pkgname}-${pkgver}.tar.xz")
+sha256sums=('66e446f9437c79b5efe59f1f398593d1e0ad1f29065e807c62cbb7c007aac740')
+
+build() {
+    mkdir -p build
+    cd build
+    
+    meson ../${pkgname}-${pkgver} \
+        --prefix=/usr \
+        --buildtype=release \
+        --libexecdir=lib \
+        -Dplugin_tpm=false \
+        -Dgtkdoc=false \
+        -Dplugin_uefi=false \
+        -Dplugin_dell=false
+    ninja
+}
+
+check() {
+    cd build
+    
+    meson test
+}
+
+package() {
+    cd build
+  
+    DESTDIR=${pkgdir} ninja install
+
+    install -d -o root -g 102 -m 700 ${pkgdir}/usr/share/polkit-1/rules.d
+    rm -r ${pkgdir}/usr/share/installed-tests/
+}

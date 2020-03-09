@@ -1,0 +1,27 @@
+ 
+pkgname=xsettingsd
+pkgver=1.0.0
+pkgrel=1
+pkgdesc="Daemon that implements the XSETTINGS specification, used for GTK+ application configuration changes."
+arch=('x86_64')
+url="https://github.com/derat/xsettingsd"
+license=('custom:BSD')
+depends=('libx11')
+makedepends=('scons')
+source=("https://github.com/derat/xsettingsd/archive/v${pkgver}.tar.gz")
+md5sums=('7a1747dd1716cfa697f515e36308e8d4')
+
+build() {
+  cd ${pkgname}-${pkgver}
+    
+  scons xsettingsd dump_xsettings
+}
+
+package() {
+  cd ${pkgname}-${pkgver}
+
+  install -Dm755 xsettingsd dump_xsettings -t ${pkgdir}/usr/bin/
+  install -Dm644 xsettingsd.1 dump_xsettings.1 -t ${pkgdir}/usr/share/man/man1/
+  
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
+}
