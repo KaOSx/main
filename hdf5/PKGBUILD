@@ -3,36 +3,45 @@ pkgname=hdf5
 pkgver=1.10.6
 _patchver=1.10.6
 _pkgver=1.10
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 pkgdesc="General purpose library and file format for storing scientific data"
 url="https://www.hdfgroup.org/HDF5/"
 license=('custom')
 depends=('zlib' 'sh')
+makedepends=('cmake')
 options=('!libtool')
 source=("https://www.hdfgroup.org/ftp/HDF5/releases/hdf5-${_pkgver}/hdf5-${_patchver}/src/${pkgname}-${_patchver}.tar.bz2")
 md5sums=('03095102a6118c32a75a9b9b40be66f2')
 
 build() {
-  cd ${pkgname}-${_patchver}
+  mkdir -p build
+  cd build
   
-  ./configure --prefix=/usr \
-    --disable-static \
-    --enable-hl \
-    --enable-build-mode=production \
-    --with-pic \
-    --docdir=/usr/share/doc/hdf5/ \
-    --with-pthread=/usr/lib/ \
-    --disable-sharedlib-rpath
+  cmake ../${pkgname}-${_patchver} \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DONLY_SHARED_LIBS=ON \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DHDF5_INSTALL_LIB_DIR=lib \
+    -DHDF5_BUILD_HL_LIB=ON \
+    -DHDF5_BUILD_CPP_LIB=OFF \
+    -DHDF5_BUILD_FORTRAN=OFF \
+    -DHDF5_ENABLE_Z_LIB_SUPPORT=ON \
+    -DHDF5_ENABLE_SZIP_SUPPORT=OFF \
+    -DHDF5_ENABLE_SZIP_ENCODING=OFF \
+    -DHDF5_ENABLE_PARALLEL=OFF
   make 
 }
 
 package() {
-  cd ${pkgname}-${_patchver}
+  cd build
 
-  make -j1 prefix=${pkgdir}/usr install
+  make DESTDIR=${pkgdir} install
 
   install -d -m755 ${pkgdir}/usr/share/licenses/${pkgname}
-  install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE 
+  #install -m644 ../COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+  mv ${pkgdir}/usr/share/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+  rm ${pkgdir}/usr/share/RELEASE.txt
+  rm ${pkgdir}/usr/share/USING_HDF5_CMake.txt
 }
 
