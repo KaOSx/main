@@ -1,20 +1,23 @@
 
 pkgname=ttf-droid
 _pkgname=google-droid-fonts
-pkgver=20120715
-pkgrel=3
+pkgver=20200215
+pkgrel=1
 pkgdesc="A font created by Ascender Corporation for use by the Open Handset Alliance platform, Android."
 arch=('x86_64')
 license=('apache')
-url="http://www.cosmix.org/software/"
+url="https://www.cosmix.org/software/"
 depends=('fontconfig' 'xorg-fonts-encodings' 'xorg-font-utils')
 install=${pkgname}.install
-source=("http://pkgs.fedoraproject.org/repo/pkgs/google-droid-fonts/google-droid-fonts-20120715.tar.xz/b1aef1f9f9bf61f521aeb4efd1239dd8/$_pkgname-$pkgver.tar.xz")
-md5sums=('b1aef1f9f9bf61f521aeb4efd1239dd8')
+source=("https://src.fedoraproject.org/repo/pkgs/google-droid-fonts/google-droid-fonts-20200215.tar.xz/sha512/4ab5462819fbef043e4cc7df565a11da21e0f6afaee002576d52decbf43449053919a0787a1a06ce7187d5308afcf3c044cedf87ed2a6bb28ce18d981928d346/$_pkgname-$pkgver.tar.xz")
+sha512sums=('4ab5462819fbef043e4cc7df565a11da21e0f6afaee002576d52decbf43449053919a0787a1a06ce7187d5308afcf3c044cedf87ed2a6bb28ce18d981928d346')
 
 package() {
   cd ${_pkgname}-${pkgver}
   
   install -d ${pkgdir}/usr/share/fonts/TTF/
   install -m0644 *.ttf ${pkgdir}/usr/share/fonts/TTF/
+  
+  install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 ../${_pkgname}-${pkgver}/README.txt ${pkgdir}/usr/share/licenses/${pkgname}/
 }

@@ -1,8 +1,8 @@
 
 pkgname=mesa
-pkgver=19.3.4
-_pkgver=19.3.4
-pkgrel=2
+pkgver=19.3.5
+_pkgver=19.3.5
+pkgrel=1
 arch=('x86_64')
 pkgdesc="Mesa 3-D graphics libraries and include files"
 depends=('libx11' 'libxt' 'gcc-libs' 'libvdpau' 'xorgproto' 'wayland' 'elfutils'
@@ -15,14 +15,14 @@ license=('custom')
 source=("https://mesa.freedesktop.org/archive/${pkgname}-${pkgver}.tar.xz"
         "https://gitlab.freedesktop.org/mesa/mesa/commit/689817c9dfde9a0852f2b2489cb0fa93ffbcb215.diff"
         'LICENSE')
-sha256sums=('1da467e6ae2799a517e242462331eafd29ae77d9872f3a845df81f7c308e8fe4'
+sha256sums=('009895b055b971c82d7a0cd57227d414d323282605946e94e9b308a9cb49c6b6'
             'fe619c39cdcbff3e4d79ec673e35f6eceb8bcab56113868277ff8295a2623702'
             '7fdc119cf53c8ca65396ea73f6d10af641ba41ea1dd2bd44a824726e01c8b3f2')
 
 prepare() {
     cd ${pkgname}-${pkgver}
     
-    patch -p1 -i ${srcdir}/689817c9dfde9a0852f2b2489cb0fa93ffbcb215.diff
+    #patch -p1 -i ${srcdir}/689817c9dfde9a0852f2b2489cb0fa93ffbcb215.diff
 }
 
 build() {

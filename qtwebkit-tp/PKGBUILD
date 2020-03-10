@@ -1,9 +1,9 @@
 
 pkgname=qtwebkit-tp
-pkgver=5.212.0.3
-_pkgver=5.212.0-alpha3
+pkgver=5.212.0.4
+_pkgver=5.212.0-alpha4
 _commit=5ccca3a720f7c2251c4ac8b28f25bd73524081f0
-pkgrel=5
+pkgrel=1
 pkgdesc='Cross-platform application and UI framework, QtWebkit files (revived branch)'
 arch=('x86_64')
 url='https://github.com/qtwebkit/qtwebkit'
@@ -11,7 +11,7 @@ license=('LGPLv2')
 depends=('qt5-sensors' 'qt5-location' 'icu' 'libxslt' 'libxcomposite' 
          'gst-plugins-base' 'gst-plugins-good' 'libwebp' 'mesa' 'qt5-serialport' 'qt5-webchannel'
          'qt5-imageformats' 'gst-libav' 'gst-plugins-bad' 'hyphen')  
-makedepends=('gperf' 'sqlite' 'fontconfig' 'perl' 'python2' 'ruby' 'extra-cmake-modules' 'qt5-tools')
+makedepends=('gperf' 'sqlite' 'fontconfig' 'perl' 'python3' 'ruby' 'extra-cmake-modules' 'qt5-tools')
 options=('!libtool')
 provides=('qt5-webkit')
 replaces=('qt5-webkit')
@@ -23,7 +23,7 @@ source=("https://github.com/qtwebkit/qtwebkit/releases/download/qtwebkit-${_pkgv
         "https://github.com/annulen/webkit/commit/f51554bf104ab0491370f66631fe46143a23d5c2.diff"
         "https://github.com/annulen/webkit/commit/6faf11215e1af27d35e921ae669aa0251a01a1ab.diff"
         "https://github.com/annulen/webkit/commit/76420459a13d9440b41864c93cb4ebb404bdab55.diff")
-md5sums=('5e7ade75ad0df9047826e625e4f262fc'
+md5sums=('5b61a72497f06e51db09d57edc3c35fb'
          'd3997143a1b57cbbfbd4364713fea91d'
          'b470e396e4bff74b104e98e1362d0161'
          'f944742824da4d636204ae2689baa773'

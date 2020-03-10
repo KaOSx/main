@@ -1,22 +1,20 @@
 
 pkgname=bumblebee
 pkgver=3.2.1
-pkgrel=5
+pkgrel=6
 pkgdesc="Bumblebee brings Optimus Support for Linux Through VirtualGL."
 arch=('x86_64')
-url="http://www.Bumblebee-Project.org"
+url="https://www.Bumblebee-Project.org"
 license=("GPL3")
 depends=('virtualgl' 'glib2')
 makedepends=('help2man')
 optdepends=('xf86-video-nouveau: Nouveau driver' 
-            'bbswitch: switch on/off discrete card'
-            'nvidia-utils-bumblebee: Nvidia utils not breaking LibGL'
-            'nvidia-bumblebee: Nvidia kernel driver')
+            'bbswitch: switch on/off discrete card')
 install='bumblebee.install'
 backup=('etc/bumblebee/bumblebee.conf'
         'etc/bumblebee/xorg.conf.nouveau'
         'etc/bumblebee/xorg.conf.nvidia')
-source=("http://www.bumblebee-project.org/${pkgname}-${pkgver}.tar.gz"
+source=("https://www.bumblebee-project.org/${pkgname}-${pkgver}.tar.gz"
         'bumblebee.conf')
 md5sums=('30974e677bb13e8a3825fd6f3e7d3b24'
          '43c2c5c069ac8628bd86cd5865785639')
