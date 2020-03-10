@@ -1,0 +1,13 @@
+[Unit]
+Description=Implementation of the Layer 2 Tunnelling Protocol
+After=syslog.target network.target
+After=ipsec.service
+
+[Service]
+Type=simple
+PIDFile=/run/xl2tpd/xl2tpd.pid
+ExecStart=/usr/sbin/xl2tpd -D
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target
