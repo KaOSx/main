@@ -1,0 +1,51 @@
+#!/bin/bash
+
+desktop=$(ps -e | grep kwin)
+timestamp=$( date +%F-%T )
+
+post_install() {
+  echo "Enabling systemd service"
+         systemctl enable ufw.service
+}
+
+pre_remove() {
+   echo "Disabling systemd service"
+         systemctl disable ufw.service
+}
+
+post_upgrade() {
+  
+    if [[ -n ${desktop} ]]; then
+
+        kdialog --yesno "To make using UFW persistent after reboots make sure to enable the service:<br>
+        sudo systemctl enable ufw.<br>
+        This way running 'sudo enable ufw', will make UFW active on boot.<br>
+        Even when the systemd unit is enabled, UFW won't be running if set to 'sudo ufw disabled'.<br>
+        Do you want to save this output?"
+
+        save=${?}
+
+            if [[ ${save} == 1 ]]; then
+
+                kdialog --msgbox "Output not saved"
+
+            else
+
+                echo "To make using UFW persistent after reboots make sure to enable the service:<br>
+                sudo systemctl enable ufw.<br>
+                This way running 'sudo enable ufw', will make UFW active on boot.<br>
+                Even when the systemd unit is enabled, UFW won't be running if set to 'sudo ufw disabled'</b>" > /var/log/ufw_install${timestamp}.txt
+
+                kdialog --msgbox "Output is saved in /var/log/ufw_install${timestamp}.txt"
+                
+            fi   
+
+    else
+
+        echo -e "To make using UFW persistent after reboots make sure to enable the service:"
+        echo -e "sudo systemctl enable ufw."
+        echo -e "This way running 'sudo enable ufw', will make UFW active on boot."
+        echo -e "Even when the systemd unit is enabled, UFW won't be running if set to 'sudo ufw disabled'/ \e[0m"
+
+    fi
+}
