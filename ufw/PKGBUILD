@@ -1,7 +1,7 @@
-
+# re-add /etc/ufw/ufw.conf backup after 2020 04 ISO
 pkgname=ufw
 pkgver=0.36
-pkgrel=3
+pkgrel=4
 pkgdesc="Uncomplicated and easy to use CLI tool for managing a netfilter firewall"
 arch=('x86_64')
 url="https://launchpad.net/ufw"
@@ -11,13 +11,12 @@ backup=('etc/ufw/before.rules'
         'etc/ufw/before6.rules'
         'etc/ufw/after.rules'
         'etc/ufw/after6.rules'
-        'etc/ufw/ufw.conf'
         'etc/ufw/user.rules'
         'etc/ufw/sysctl.conf'
         'etc/default/ufw'
         'usr/lib/ufw/user.rules'
         'usr/lib/ufw/user6.rules')
-install=ufw.install
+#install=ufw.install
 categories=('network')
 source=("https://launchpad.net/ufw/${pkgver}/${pkgver}/+download/${pkgname}-${pkgver}.tar.gz"
         "${pkgname}.service")
@@ -36,5 +35,5 @@ package() {
   chmod 644 ${pkgdir}/etc/ufw/*.rules
 
   # Enable by default
-  sed -e 's|ENABLED=no|ENABLED=yes|' -i ${pkgdir}/etc/ufw/ufw.conf
+  #sed -e 's|ENABLED=no|ENABLED=yes|' -i ${pkgdir}/etc/ufw/ufw.conf
 }
