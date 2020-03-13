@@ -2,8 +2,8 @@
 pkgbase="llvm"
 pkgname=('llvm' 'clang' 'clang-analyzer' 'clang-tools-extra')
 pkgver=9.0.1
-_gcc_ver=9.2.0
-pkgrel=1
+_gcc_ver=9.3.0
+pkgrel=2
 arch=('x86_64')
 url="https://llvm.org/"
 license=('custom:University of Illinois/NCSA Open Source License')
@@ -28,6 +28,8 @@ prepare() {
     
     # http://llvm.org/bugs/show_bug.cgi?id=22742
     chmod -R u=rwX,go=rX ${srcdir}/llvm-${pkgver}.src
+    # https://www.mail-archive.com/blfs-dev@lists.linuxfromscratch.org/msg09727.html
+    sed -i "/ipc_perm, mode/s@^C@//C@" projects/compiler-rt/lib/sanitizer_common/sanitizer_platform_limits_posix.cc
 }
   
 build() {
