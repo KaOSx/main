@@ -1,6 +1,6 @@
 
 pkgname=postfix
-pkgver=3.4.9
+pkgver=3.4.10
 pkgrel=1
 pkgdesc='Secure, fast, easy to administer alternative to Sendmail'
 url='http://www.postfix.org/'
@@ -9,11 +9,11 @@ license=('custom')
 depends=('pcre' 'libsasl' 'mariadb' 'postgresql-libs' 'sqlite3' 'libldap' 'db' 'icu')
 backup=('etc/postfix/'{access,aliases,canonical,generic,header_checks,main.cf,master.cf,relocated,transport,virtual})
 install=${pkgname}.install
-source=("https://mirror.myf.cloud/mirror/p/postfix-release/official/${pkgname}-${pkgver}.tar.gz"
+source=("https://high5.nl/mirrors/postfix-release/official/${pkgname}-${pkgver}.tar.gz"
         'aliases.patch'
         'postfix.service'
         'glibc.patch')
-md5sums=('5dbe5f07b98903716f969dcff88c0775'
+md5sums=('c33e42a7540798d504b7cf794c66062d'
          '9cc2ee3c72e134c2da5a895abaa56f30'
          '24af169de13c34dac03d787c3e607ec5'
          '33c2f08318f3caa6d7b9f5c68bbd2602')
