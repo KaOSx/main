@@ -1,14 +1,15 @@
 
 pkgname=gst-plugins-good
 pkgver=1.16.2
-pkgrel=1
+pkgrel=2
 pkgdesc="GStreamer Multimedia Framework Good Plugins"
 arch=('x86_64')
 license=('LGPL')
 url="https://gstreamer.freedesktop.org/"
 depends=('pulseaudio' 'jack' 'libsoup' 'gst-plugins-base' 'wavpack' 'aalib' 'taglib' 'libdv' 'libshout'
-         'libvpx' 'gdk-pixbuf2' 'libcaca' 'libavc1394' 'libiec61883' 'libxdamage' 'v4l-utils' 'libgudev')
-makedepends=('gstreamer' 'speex' 'flac' 'libraw1394' 'python3')
+         'libvpx' 'gdk-pixbuf2' 'libcaca' 'libavc1394' 'libiec61883' 'libxdamage' 'v4l-utils' 'libgudev'
+         'qt5-x11extras' 'qt5-wayland')
+makedepends=('gstreamer' 'speex' 'flac' 'libraw1394' 'python3' 'meson' 'ninja' 'qt5-tools')
 options=('!libtool' '!emptydirs')
 source=("https://gstreamer.freedesktop.org/src/gst-plugins-good/${pkgname}-${pkgver}.tar.xz"
         "https://gitlab.freedesktop.org/gstreamer/gst-plugins-good/commit/c481cb5f2209087ffc0094490bacab46eda2d06b.diff")
@@ -16,28 +17,24 @@ sha256sums=('40bb3bafda25c0b739c8fc36e48380fccf61c4d3f83747e97ac3f9b0171b1319'
             'b499e9f62c127e7bea2c08bd683e4ac0513552a951e76e2c3219a766de23e61a')
 
 build() {
-  cd ${pkgname}-${pkgver}
-  # fix build with libvpx 1.8
-  #patch -p1 -i ${srcdir}/c481cb5f2209087ffc0094490bacab46eda2d06b.diff
- 
-  ./configure --prefix=/usr \
-    --sysconfdir=/etc \
-    --localstatedir=/var \
-    --disable-static \
-    --enable-experimental \
-    --with-package-name="GStreamer Good (KaOS)" \
-    --with-package-origin="https://kaosx.us/" 
-  make
+  mkdir -p build
+  cd build
+  
+  meson ../${pkgname}-${pkgver} \
+    --prefix=/usr \
+    --buildtype=release \
+    -Dpackage-name="GStreamer Good (KaOS)" \
+    -Dpackage-origin="https://kaosx.us/" 
+  ninja
 }
 
 check() {
-  cd ${pkgname}-${pkgver}
-
-  make check
+  cd build
+  ninja test
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
+  cd build
   
-  make DESTDIR=${pkgdir} install
+  DESTDIR=${pkgdir} ninja install
 }
