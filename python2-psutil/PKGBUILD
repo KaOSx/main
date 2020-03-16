@@ -1,0 +1,19 @@
+ 
+pkgname=python2-psutil
+pkgver=5.7.0
+pkgrel=1
+pkgdesc='Cross-platform process and system utilities module for Python'
+arch=('x86_64')
+url='https://github.com/giampaolo/psutil'
+license=('custom: BSD')
+depends=('python2-setuptools')
+source=("https://github.com/giampaolo/psutil/archive/release-${pkgver}.tar.gz")
+md5sums=('22a4725d66ea830966860264de8f241d')
+
+package() {
+  cd psutil-release-${pkgver}
+  
+  python2 setup.py install --root=${pkgdir} --optimize=1
+  
+  install -D -m 644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
