@@ -1,23 +1,23 @@
 
 pkgname=gd
-pkgver=2.2.5
-_pkgver=2.2.5
+pkgver=2.3.0
+_pkgver=2.3.0
 pkgrel=1
 pkgdesc="Library for the dynamic creation of images by programmers"
 arch=('x86_64')
-url="https://www.libgd.org/"
+url="https://libgd.github.io/"
 license=('custom')
-depends=('libpng' 'fontconfig' 'libjpeg-turbo' 'libtiff')
+depends=('libpng' 'fontconfig' 'libjpeg-turbo' 'libtiff' 'libxpm')
 #makedepends=('cmake')
 options=('!libtool')
 source=("https://github.com/libgd/libgd/archive/gd-${_pkgver}.tar.gz")
-md5sums=('9dfdd0b86477a329afec4238b7b450f5')
+md5sums=('001e0604989c6b4723787486438bcf20')
 
 build() {
   cd libgd-gd-${_pkgver}
 
   ./bootstrap.sh
-  ./configure --prefix=/usr --without-xpm
+  ./configure --prefix=/usr 
   make
 }
 
