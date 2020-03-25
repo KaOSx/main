@@ -1,27 +1,27 @@
 
 pkgname=microdns
-pkgver=0.1.0
+pkgver=0.1.2
 pkgrel=1
 pkgdesc="Minimal mDNS resolver (and announcer) library."
 arch=('x86_64')
 url="https://github.com/videolabs/libmicrodns"
 license=('LGPL')
-source=("https://github.com/videolabs/libmicrodns/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.gz")
-md5sums=('d64f4d93c9c935b37f0fe3b70b9caa83')
+makedepends=('meson' 'ninja')
+source=("https://github.com/videolabs/libmicrodns/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
+sha256sums=('666c4b9d86b5b3c37357bb78453c7e8b72cd65ade22d0a7963bfbefe51509b5c')
 
 build() {
-  cd ${pkgname}-${pkgver}
-  
   mkdir -p build
   cd build
   
-  ../configure prefix=/usr \
-    --enable-static=no
-  make
+  meson ../${pkgname}-${pkgver} \
+    --prefix=/usr \
+    --buildtype=release 
+  ninja
 }
 
 package() {
-  cd ${pkgname}-${pkgver}/build
+  cd build
   
-  make DESTDIR=${pkgdir} install
-} 
+  DESTDIR=${pkgdir} ninja install
+}
