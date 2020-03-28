@@ -1,7 +1,7 @@
 
 pkgname=cups-filters
 pkgver=1.27.3
-pkgrel=1
+pkgrel=2
 pkgdesc="OpenPrinting CUPS Filters"
 arch=('x86_64')
 url="http://www.linuxfoundation.org/collaborate/workgroups/openprinting"
@@ -20,7 +20,7 @@ options=('!libtool')
 source=("https://www.openprinting.org/download/cups-filters/${pkgname}-${pkgver}.tar.xz"
         "https://github.com/OpenPrinting/cups-filters/commit/50d984a621524c2e2857ad84eb4b71933c8821be.diff")
 md5sums=('4fc2cfb9d874a25453ae00443535270c'
-         '3ee1b8a708fb4bc3ef5a82604d758311')
+         '895186801ce1c988738e5306b09fe2c8')
 
 build() {
   cd ${pkgname}-${pkgver}

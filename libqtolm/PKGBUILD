@@ -1,6 +1,6 @@
  
 pkgname=libqtolm
-pkgver=0.1.0
+pkgver=3.0.0
 pkgrel=1
 _commit=f2d8e235a4af0625fdedaaf727fef5d51293bf1b
 pkgdesc="Qt wrapper for libolm."
@@ -9,14 +9,14 @@ url="https://gitlab.com/b0/libqtolm"
 license=('GPLv3')
 depends=('qt5-base' 'olm')
 makedepends=('cmake')
-source=("https://gitlab.com/b0/libqtolm/-/archive/${_commit}/${pkgname}-${_commit}.tar.bz2")
-sha256sums=('73e7b8ed417aa827c84bf01879752fdb815e4e37f6e260f011528e2867718f89')
+source=("https://gitlab.com/b0/libqtolm/-/archive/v${pkgver}/${pkgname}-v${pkgver}.tar.bz2")
+sha256sums=('b6713f8359f4d09bafda51b5bfc1083b2bf2fba735d98b07a4ea6c31609eef36')
 
 build() {
     mkdir -p build
     cd build
 
-    cmake ../${pkgname}-${_commit} \
+    cmake ../${pkgname}-v${pkgver} \
         -DCMAKE_INSTALL_PREFIX=/usr \
         -DCMAKE_INSTALL_LIBDIR=lib \
         -DCMAKE_INSTALL_INCLUDEDIR=include \
