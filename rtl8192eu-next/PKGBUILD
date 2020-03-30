@@ -1,17 +1,17 @@
 
-_extramodules=extramodules-5.5-next
+_extramodules=extramodules-5.6-next
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=rtl8192eu-next
 _pkgname=rtl8192eu-linux-driver
 pkgver=4.4.1.4
 _commit=e7361e951c15d998f8c63b45478ef320d447f769
-pkgrel=34
+pkgrel=35
 pkgdesc="Drivers for the rtl8192eu chipset for wireless adapters (D-Link DWA-131 rev E1 included)"
 arch=('x86_64')
 url="https://github.com/Mange/rtl8192eu-linux-driver"
 license=('GPL')
-depends=('linux-next>=5.5.0' 'linux-next<5.6')
+depends=('linux-next>=5.6.0' 'linux-next<5.7')
 makedepends=('linux-next-headers' 'elfutils')
 options=('!strip')
 install=rtl8192eu-next.install
