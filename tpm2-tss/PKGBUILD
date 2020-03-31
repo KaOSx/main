@@ -1,6 +1,6 @@
  
 pkgname=tpm2-tss
-pkgver=2.3.3
+pkgver=2.4.0
 pkgrel=1
 pkgdesc="OSS implementation of the TCG Trusted Platform Module 2.0 Software Stack (TSS2)"
 arch=('x86_64')
@@ -8,13 +8,17 @@ url="https://tpm2-software.github.io/"
 license=('BSD')
 depends=('openssl')
 source=("https://github.com/tpm2-software/tpm2-tss/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.gz")
-md5sums=('8dec49505bdb29acb61c837c5e8dce68')
+md5sums=('269e8122e0588d56092abe3f2e38c8b9')
 
 build() {
     cd ${pkgname}-${pkgver}
     
     ./configure --prefix=/usr \
         --with-udevrulesprefix=60- \
+        --localstatedir=/var \
+        --sysconfdir=/etc \
+        --with-tmpfilesdir=/etc/tmpfiles.d \
+        --with-sysusersdir=/etc/sysusers.d \
         --disable-static \
         --disable-doxygen-doc \
         --disable-doxygen-man
