@@ -1,38 +1,42 @@
 
 pkgname=libdrm
-pkgver=2.4.100
+pkgver=2.4.101
 pkgrel=1
 pkgdesc="Userspace interface to kernel DRM services"
 arch=('x86_64')
 url="https://dri.freedesktop.org/"
 license=('custom')
 depends=('glibc' 'libpciaccess')
-makedepends=('cairo' 'valgrind' 'xorg-util-macros' 'pkg-config')
+makedepends=('cairo' 'valgrind' 'xorg-util-macros' 'pkg-config' 'meson' 'ninja')
 options=('!libtool')
-source=("https://dri.freedesktop.org/libdrm/${pkgname}-${pkgver}.tar.bz2"
+source=("https://dri.freedesktop.org/libdrm/${pkgname}-${pkgver}.tar.xz"
         'COPYING')
-sha256sums=('c77cc828186c9ceec3e56ae202b43ee99eb932b4a87255038a80e8a1060d0a5d'
+sha256sums=('ddf31baa8e49473624860bd166ce654dc349873f7a6c7b3305964249315c78a7'
             '9631d4f694952e3e6ae5a05534c2e93e994e47d3413677a3a00e45c8cef6db93')
 
 build() {
-  cd ${pkgname}-${pkgver}
+  mkdir -p build
+  cd build
   
-  ./configure --prefix=/usr \
-      --enable-udev \
-      --enable-omap-experimental-api \
-      --enable-exynos-experimental-api 
-  make
+  meson ../${pkgname}-${pkgver} \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --buildtype=release \
+    -Dudev=true \
+    -Dexynos=true \
+    -Domap=true
+  ninja
 }
 
 check() {
-  cd ${pkgname}-${pkgver}
+  cd build
   
-  make -k check
+  meson test
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
-  make DESTDIR=${pkgdir} install
+  cd build  
+  DESTDIR=${pkgdir} ninja install
   
   install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
   install -m644 ${srcdir}/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
