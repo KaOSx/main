@@ -1,6 +1,6 @@
 
 pkgname=gl2ps
-pkgver=1.4.0
+pkgver=1.4.1
 pkgrel=1
 pkgdesc="C library providing high quality vector output for any OpenGL application."
 arch=('x86_64')
@@ -9,16 +9,16 @@ license=('LGPL')
 depends=('libpng' 'freeglut' 'glu')
 makedepends=('cmake' 'texlive-core')
 source=("http://geuz.org/gl2ps/src/${pkgname}-${pkgver}.tgz")
-md5sums=('3efb6e8fe4580fda23601b17161c189c')
+md5sums=('9ab36b90a20140af8583ebf46d976a12')
 
 build() {
   mkdir -p build
   cd build
 
-  cmake ../${pkgname}-$pkgver-source \
+  cmake ../${pkgname}-${pkgver} \
     -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_EXE_LINKER_FLAGS=-lm
+    -DCMAKE_INSTALL_PREFIX=/usr 
+    #-DCMAKE_EXE_LINKER_FLAGS=-lm
   make
 }
 
