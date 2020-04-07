@@ -1,8 +1,8 @@
 
 pkgname=xf86-video-intel
-pkgver=2.99.917.34
+pkgver=2.99.917.35
 pkgrel=1
-_commit=f66d39544bb8339130c96d282a80f87ca1606caf
+_commit=652d93cbbdc159c0883f1b626ea48e28bac63ae3
 pkgdesc="X.org Intel i810/i830/i915/945G/G965+ video drivers"
 arch=('x86_64')
 url="https://gitlab.freedesktop.org/xorg/driver/xf86-video-intel"
@@ -15,11 +15,11 @@ groups=('xorg-drivers' 'xorg')
 install=xf86-video-intel.install
 #source=("http://xorg.freedesktop.org/releases/individual/driver/${pkgname}-${pkgver}.tar.bz2")
 # check at https://cgit.freedesktop.org/xorg/driver/xf86-video-intel/
-source=("git://anongit.freedesktop.org/git/xorg/driver/xf86-video-intel.git#commit=${_commit}")
-md5sums=('SKIP')
+source=("https://gitlab.freedesktop.org/xorg/driver/xf86-video-intel/-/archive/${_commit}/xf86-video-intel-${_commit}.tar.bz2")
+md5sums=('1a07a2a27ef65e913cd2b4a068146984')
 
 build() {
-  cd ${pkgname}
+  cd ${pkgname}-${_commit}
 
   ./autogen.sh
   ./configure --prefix=/usr \
@@ -32,7 +32,7 @@ build() {
 }
 
 package() {
-  cd ${pkgname}
+  cd ${pkgname}-${_commit}
   make DESTDIR=${pkgdir} install
   
   install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
