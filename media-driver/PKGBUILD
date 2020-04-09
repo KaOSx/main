@@ -1,0 +1,33 @@
+
+pkgname=media-driver
+_pkgname=intel-media
+pkgver=20.1.1
+pkgrel=1
+pkgdesc="Intel Media Driver is a VA-API user mode driver for GEN based graphics hardware."
+arch=('x86_64')
+url="https://github.com/intel/media-driver/"
+license=('MIT' 'BSD-3')
+depends=('intel-gmmlib' 'libdrm' 'libpciaccess' 'libva' 'python3')
+makedepends=('cmake')
+options=('!libtool')
+source=("https://github.com/intel/media-driver/archive/${_pkgname}-${pkgver}.tar.gz")
+sha1sums=('c9d41fe4c0dd728da191e5a3df4ea75dd0e63e02')
+
+build() {
+  mkdir -p build 
+  cd build
+  
+  cmake ../${pkgname}-${_pkgname}-${pkgver} \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DMEDIA_RUN_TEST_SUITE=OFF
+  make
+}
+
+package() {
+  cd build
+  make install DESTDIR=${pkgdir}
+  
+  install -m644 -D ../${pkgname}-${_pkgname}-${pkgver}/LICENSE.md ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
+}
+
