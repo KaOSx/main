@@ -3,13 +3,13 @@ pkgname=networkmanager
 _pkgname=NetworkManager
 pkgver=1.22.10
 _pkgver=1.22
-pkgrel=1
+pkgrel=2
 pkgdesc="Network Management daemon"
 arch=('x86_64')
 license=('GPL')
 url="https://wiki.gnome.org/Projects/NetworkManager"
 depends=('dbus-glib' 'iproute2' 'libnl' 'nss' 'polkit' 'systemd' 'wpa_supplicant' 'ppp' 'dhcpcd'
-         'modemmanager' 'libndp' 'libteam' 'libsoup' 'iptables' 'bluez' 'iwd') # 'libgudev' no longer needed for 1.8)
+         'modemmanager' 'libndp' 'libteam' 'curl' 'iptables' 'bluez' 'iwd') # 'libgudev' no longer needed for 1.8)
 makedepends=('intltool' 'dhclient' 'gobject-introspection' 'netctl' 'python3-gobject3')
 optdepends=('dhclient: alternative DHCP/DHCPv6 client'
             'dnsmasq: Connection sharing')
