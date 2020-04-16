@@ -15,23 +15,17 @@ _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 
 source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
         "https://raw.github.com/KaOSx/hardware-detection/master/hwdb/nvidia_supported"
-        'linux-5.0.patch'
-        'linux-5.1.patch'
-        'linux-5.3.patch'
-        'linux-5.4.patch')
+        'linux-5.6.patch')
 md5sums=('e783e383bd4344d590ad429eb0883717'
          '62d0cdb856cfae64753c0f3acf729d47'
-         '66fdbc3ba583d2d01d72c5c41069c8d6'
-         'ce78f38f325e4a8200210c56f6561df8'
-         'f9206ff2a5b7a2aee3869e6e04f5cd73'
-         'bb085d126e2ce6c63cace4c2c15f23f7')
+         'e6d757a184fbadefa5f9915ee8e942a9')
 
 build() {
     cd "${srcdir}"
     sh "${_pkg}.run" --extract-only
     
     cd "${_pkg}"
-    #patch -p1 -i ${srcdir}/linux-5.4.patch
+    patch -p1 -i ${srcdir}/linux-5.6.patch
     # sed line needed for linux 4.9 & 340.101
     #sed -i 's/= DRIVER_GEM | DRIVER_PRIME,/= DRIVER_GEM | DRIVER_PRIME | DRIVER_LEGACY,/g' kernel/nv-drm.c
     
@@ -41,7 +35,7 @@ build() {
 
 package_nvidia-340xx() {
     pkgdesc="NVIDIA drivers for linux."
-    depends=('linux>=5.5.5' 'linux<5.6' "nvidia-340xx-utils=${pkgver}")
+    depends=('linux>=5.6.4' 'linux<5.7' "nvidia-340xx-utils=${pkgver}")
     conflicts=('nvidia' 'nvidia-304xx')
     replaces=('nvidia-304xx')
     backup=('etc/X11/xorg.conf.d/20-nvidia.conf')
