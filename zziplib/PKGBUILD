@@ -1,31 +1,31 @@
 
 pkgname=zziplib
-pkgver=0.13.69
+pkgver=0.13.71
 pkgrel=1
 pkgdesc="Library that provides read access on ZIP-archives and unpacked data."
 arch=('x86_64')
 url="https://github.com/gdraheim/zziplib"
 license=('LGPL' 'MPL')
 depends=('zlib')
-makedepends=('python2')
+makedepends=('python3' 'cmake' 'xmlto') 
 options=('!libtool')
 source=("https://github.com/gdraheim/zziplib/archive/v${pkgver}.tar.gz")
-md5sums=('df52161252aa17031bca82e2fd381a14')
+md5sums=('1aa094186cf2222e4cda1b91b8fb8f60')
 
 build() {
-    cd ${pkgname}-${pkgver}
-
-    ./configure --prefix=/usr \
-        --enable-maintainer-mode
+    mkdir -p build
+    cd build
+    
+    cmake ../${pkgname}-${pkgver} \
+        -DCMAKE_INSTALL_PREFIX=/usr \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DZZIPDOCS=ON \
+        -DZZIPTEST=OFF
     make
 }
 
 package() {
-    cd ${pkgname}-${pkgver}
+    cd build
+    
     make DESTDIR=${pkgdir} install
-
-    #fix permission
-    #chmod -s ${pkgdir}/usr/share/man/man3
-    #chmod 644 ${pkgdir}/usr/share/man/man3/*
-    #chown -R root:root ${pkgdir}/usr/share/man/man3
 }
