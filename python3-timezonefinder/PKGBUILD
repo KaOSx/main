@@ -1,0 +1,27 @@
+
+pkgname=python3-timezonefinder
+_pkgname=timezonefinder
+pkgver=4.2.0
+pkgrel=1
+arch=('x86_64')
+pkgdesc="Fast python package for finding the timezone of any point on earth (coordinates) offline"
+url="https://github.com/MrMinimal64/timezonefinder"
+license=('MIT')
+depends=('python3-numpy')
+makedepends=('python3-setuptools')
+source=("https://pypi.io/packages/source/t/timezonefinder/${_pkgname}-${pkgver}.tar.gz")
+sha256sums=('57e93f4aefacc450684a9d71e4130ea385495fee449ff0db0076299a8e681661')
+
+build() {
+    cd ${_pkgname}-${pkgver}
+
+    python3 setup.py build
+}
+
+package() {
+    cd ${_pkgname}-${pkgver}
+
+    python3 setup.py install --root=${pkgdir}/
+
+    install -D LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
