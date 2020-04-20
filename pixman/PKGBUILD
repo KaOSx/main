@@ -1,16 +1,16 @@
 
 # odd numbers rls skip....
 pkgname=pixman
-pkgver=0.38.4
+pkgver=0.40.0
 pkgrel=1
-pkgdesc="Pixman library"
+pkgdesc="Image processing and manipulation library"
 arch=('x86_64')
 url="https://gitlab.freedesktop.org/pixman/pixman"
 license=('custom')
 depends=('glibc')
 options=('!libtool')
-source=("https://www.x.org/releases/individual/lib/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('16a350a8a40116ddf67632a1d2623711')
+source=("https://www.x.org/releases/individual/lib/${pkgname}-${pkgver}.tar.xz")
+md5sums=('ee642c14f4f18934246c57a440da9ca2')
 
 build() {
   cd ${pkgname}-${pkgver}
