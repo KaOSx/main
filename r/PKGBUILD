@@ -1,22 +1,22 @@
 
 pkgname=r
-pkgver=3.6.3
-pkgrel=2
+pkgver=4.0.0
+pkgrel=1
 pkgdesc="Language and environment for statistical computing and graphics"
 arch=('x86_64')
 license=('GPL')
 url="https://www.r-project.org/"
 depends=('lapack' 'bzip2'  'libpng' 'libjpeg' 'libtiff' 'icu'
-         'ncurses' 'pcre' 'readline' 'zlib' 'perl' 'gcc-libs' 'zip' 'unzip'
+         'ncurses' 'pcre2' 'readline' 'zlib' 'perl' 'gcc-libs' 'zip' 'unzip'
          'tk' 'libxt' 'libxmu' 'pango' 'xz' 'desktop-file-utils')
 makedepends=('openjdk' 'gcc-fortran')
 backup=('etc/R/Makeconf' 'etc/R/Renviron' 'etc/R/ldpaths' 'etc/R/repositories')
 options=('!makeflags' '!emptydirs')
-source=("https://cran.r-project.org/src/base/R-3/R-${pkgver}.tar.gz"
+source=("https://cran.r-project.org/src/base/R-4/R-${pkgver}.tar.gz"
         'r.desktop'
         'r.png'
         'R.conf')
-md5sums=('506c9576ba33e1262ad5b5624db9d96a'
+md5sums=('48c487c68112cb3191f3015c6277a50b'
          'f6d54d32e510d90c748a0d16d2abcbdc'
          '00659f39e90627fe87f1645df5d4e3a7'
          '1dfa62c812aed9642f6e4ac34999b9fe')
