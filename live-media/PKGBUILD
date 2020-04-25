@@ -1,26 +1,28 @@
 
+# rebuild vlc on any update, move to shared libs might change ABI
 pkgname=live-media
-pkgver=2020.03.06
+pkgver=2020.04.24
 pkgrel=1
 pkgdesc="A set of C++ libraries for multimedia streaming"
 arch=('x86_64')
 license=('LGPL')
 url="http://live555.com/liveMedia"
 depends=('gcc-libs')
-source=("http://live555.com/liveMedia/public/live.${pkgver}.tar.gz")
-md5sums=('cfca528bda964d2167260b3ab6ee294e')
+source=("http://live555.com/liveMedia/public/live.${pkgver}.tar.gz"
+        'config.kaos')
+md5sums=('e3d352abacb8dffb709b1b45cff8be31'
+         '6ff1eab03314198badb96032a5299e2b')
 
+prepare() {
+  cd live
+  
+  cp ${srcdir}/config.kaos config.kaos
+}
+         
 build() {
   cd live
-
-  sed \
-      -e 's/$(INCLUDES) -I. -O2 -DSOCKLEN_T/$(INCLUDES) -I. -O2 -I. -fPIC -DRTSPCLIENT_SYNCHRONOUS_INTERFACE=1 -DSOCKLEN_T/g' \
-      -i config.linux
       
-  # https://sourceware.org/glibc/wiki/Release/2.26#Removal_of_.27xlocale.h.27
-  sed -i 's/#include <xlocale.h>.*/#include <locale.h>/' liveMedia/include/Locale.hh
-      
-  ./genMakefiles linux
+  ./genMakefiles kaos
   make
 }
 
@@ -29,7 +31,7 @@ package() {
 
   for dir in BasicUsageEnvironment groupsock liveMedia UsageEnvironment; do
     install -dm755 ${pkgdir}/usr/{bin,lib,include/${dir}}
-    install -m644 ${dir}/*.a "${pkgdir}/usr/lib"
+    install -m644 ${dir}/*.so "${pkgdir}/usr/lib"
     install -m644 ${dir}/include/*.h* "${pkgdir}/usr/include/${dir}"
   done
 
