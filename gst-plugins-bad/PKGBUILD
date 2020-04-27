@@ -1,7 +1,7 @@
 
 pkgname=gst-plugins-bad
 pkgver=1.16.2
-pkgrel=4
+pkgrel=5
 pkgdesc="GStreamer Multimedia Framework Bad Plugins"
 arch=('x86_64')
 license=('LGPL')
@@ -16,6 +16,13 @@ makedepends=('libexif' 'libvdpau' 'libmpeg2' 'python3' 'meson' 'ninja'
 options=('!libtool' '!emptydirs')
 source=("https://gstreamer.freedesktop.org/src/gst-plugins-bad/${pkgname}-${pkgver}.tar.xz")
 sha256sums=('f1cb7aa2389569a5343661aae473f0a940a90b872001824bc47fa8072a041e74')
+
+prepare() {
+  cd ${pkgname}-${pkgver}
+  # needed for neon 0.31 
+  # https://gitlab.freedesktop.org/gstreamer/gst-plugins-bad/-/commit/f10b424418e448211e3427a76fcd046e157ef0b7
+  sed -e "s|<= 0.30.99|<= 0.31.99|" -i ext/neon/meson.build
+}
 
 build() {
   mkdir -p build
