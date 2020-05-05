@@ -1,0 +1,31 @@
+
+pkgname=double-conversion
+pkgver=3.1.5
+pkgrel=1
+pkgdesc='Efficient binary-decimal and decimal-binary conversion routines for IEEE doubles.'
+arch=('x86_64')
+url='https://github.com/google/double-conversion'
+license=('BSD')
+depends=('gcc-libs')
+makedepends=('cmake')
+source=("https://github.com/google/double-conversion/archive/v${pkgver}.tar.gz")
+md5sums=('e94d3a33a417e692e5600e75019f0272')
+
+
+build() {
+  mkdir -p build
+  cd build
+  
+  cmake ../${pkgname}-${pkgver} \
+      -DCMAKE_INSTALL_PREFIX=/usr \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DBUILD_SHARED_LIBS=ON
+  make
+}
+
+package () {
+  cd build
+  make DESTDIR=${pkgdir} install
+
+  install -Dm644 ../${pkgname}-${pkgver}/LICENSE -t ${pkgdir}/usr/share/licenses/double-conversion
+}
