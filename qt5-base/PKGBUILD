@@ -6,7 +6,7 @@ pkgname='qt5-base'
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=2
+pkgrel=1
 pkgdesc="A cross-platform application and UI framework"
 arch=('x86_64')
 url='http://qt-project.org/'
@@ -31,7 +31,7 @@ build() {
     cd ${srcdir}/${_pkgfqn}
     
     # https://bugreports.qt.io/browse/QTBUG-83207
-    patch -p1 -i ${srcdir}/276fa8383a7535765be7182883ef4aade17ce013.diff
+    #patch -p1 -i ${srcdir}/276fa8383a7535765be7182883ef4aade17ce013.diff
     
     #sed -i 's|libs": "-lmysqlclient_r"|libs": "-lmariadb"|' src/sql/configure.json
         
@@ -72,15 +72,6 @@ build() {
 }
 
 package() {
-    pkgdesc="A cross-platform application and UI framework"
-    depends=('sqlite' 'xcb-util-keysyms' 'xcb-util-wm' 'xcb-util-image' 'xcb-util-renderutil'
-             'glib2' 'dbus' 'fontconfig' 'libsm' 'libxrandr' 'libxv' 'libxi' 'unixodbc' 'libjpeg-turbo'
-             'alsa-lib' 'xdg-utils' 'hicolor-icon-theme' 'desktop-file-utils' 'mesa' 'systemd'
-             'libxcursor' 'libxrender' 'libpng' 'mariadb' 'icu' 'libgl' 'libxfixes' 'libxinerama'
-             'libxkbcommon' 'libinput' 'harfbuzz' 'mtdev' 'libproxy')
-    optdepends=('postgresql-libs: PostgreSQL driver')
-    groups=('qt5')
-    
     cd ${srcdir}/${_pkgfqn}
     make INSTALL_ROOT=$pkgdir install
 	
@@ -93,11 +84,3 @@ package() {
     done
 }
 
-package_qt5-base-docs() {
-    pkgdesc="Documentation files for qt5-base"
-    depends=('qt5-base')
-    groups=('qt5-docs')
-    
-    cd ${srcdir}/${_pkgfqn}
-    make INSTALL_ROOT=${pkgdir} install_docs
-}

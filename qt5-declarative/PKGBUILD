@@ -6,7 +6,7 @@ pkgname=qt5-declarative
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=2
+pkgrel=1
 pkgdesc="A cross-platform application and UI framework, QtDeclarative files"
 arch=('x86_64')
 url='http://qt.nokia.com/'
@@ -24,7 +24,7 @@ md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
 
 build() {
     cd $srcdir/$_pkgfqn
-    patch -p1 -i $srcdir/c8bba05dc54231dbc5dc859f125d64b640e25a41.diff
+    #patch -p1 -i $srcdir/c8bba05dc54231dbc5dc859f125d64b640e25a41.diff
 
     /usr/lib/qt5/bin/qmake
     make
