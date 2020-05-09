@@ -1,14 +1,14 @@
 
 pkgname=libutempter
-pkgver=1.1.6
-pkgrel=4
+pkgver=1.2.0
+pkgrel=1
 pkgdesc="Library that allows non-privileged apps to write utmp (login) info, which need root access"
 arch=('x86_64')
-url="ftp://ftp.altlinux.org/pub/people/ldv/utempter"
+url="https://www.altlinux.org/index.php?module=sisyphus&package=libutempter"
 license=('LGPL')
 depends=('glibc')
-source=("ftp://ftp.altlinux.org/pub/people/ldv/utempter/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('b43827806923903aba2bc7cd3a2d45b7')
+source=("http://ftp.altlinux.org/pub/people/ldv/utempter/${pkgname}-${pkgver}.tar.gz")
+md5sums=('7cb4ec399dedaa9bb86ffc32c7021ee5')
 
 build() {
   cd ${pkgname}-${pkgver}
