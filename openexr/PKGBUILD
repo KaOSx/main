@@ -1,7 +1,7 @@
 
 pkgname=openexr
-pkgver=2.4.1
-pkgrel=4
+pkgver=2.5.0
+pkgrel=1
 pkgdesc="openexr library for EXR images"
 url="http://www.openexr.org"
 arch=('x86_64')
@@ -14,13 +14,13 @@ replaces=('ilmbase')
 options=('!libtool')
 source=("https://github.com/AcademySoftwareFoundation/openexr/archive/v${pkgver}.tar.gz"
         "https://github.com/AcademySoftwareFoundation/openexr/commit/0b26a9dedda4924841323677f1ce0bce37bfbeb4.diff")
-md5sums=('f7f7f893cf38786f88c306dec127113f'
+md5sums=('ad68612eca5d015a4fca6a421faa15dd'
          'a7317278535b1db734ac260c86906149')
 
 prepare() {
   cd ${pkgname}-${pkgver}
   
-  patch -p1 -i ${srcdir}/0b26a9dedda4924841323677f1ce0bce37bfbeb4.diff
+  #patch -p1 -i ${srcdir}/0b26a9dedda4924841323677f1ce0bce37bfbeb4.diff
 }
 
 build() {
