@@ -9,13 +9,13 @@ license=('custom:OPEN DATA LICENSE')
 # version: curl -sI https://geolite.maxmind.com/download/geoip/database/GeoIPv6.dat.gz | grep ^Last-Modified: | cut -d' ' -f2- | tr -d '\r'
 # https://mailfud.org/geoip-legacy/
 source=("GeoIP-${pkgver}.dat.gz::https://mailfud.org/geoip-legacy/GeoIP.dat.gz"
-        "GeoIPv6-${pkgver}.dat.gz::https://mailfud.org/geoip-legacy/GeoIPv6.dat.gz")
-        #"http://geolite.maxmind.com/download/geoip/database/LICENSE.txt")
+        "GeoIPv6-${pkgver}.dat.gz::https://mailfud.org/geoip-legacy/GeoIPv6.dat.gz"
+        "https://github.com/mschmitt/GeoLite2xtables/blob/master/LICENSE.txt")
 noextract=("GeoIP-${pkgver}.dat.gz"
            "GeoIPv6-${pkgver}.dat.gz")
 md5sums=('3fe4768581c8d6cc40d703cf5a939d30'
-         '73f150d410eb239099dc32cec67be660')
-         #'a1381bd1aa0a0c91dc31b3f1e847cf4a')
+         '73f150d410eb239099dc32cec67be660'
+         '3c183a07d9417065a5ad5735497a0963')
 
 build() {
   cd ${srcdir}
@@ -31,5 +31,5 @@ package() {
   install -d ${pkgdir}/usr/share/GeoIP
   install -m0644 -t ${pkgdir}/usr/share/GeoIP GeoIP.dat GeoIPv6.dat
 
-  #install -Dm0644 LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.txt
+  install -Dm0644 LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.txt
 }
