@@ -1,8 +1,8 @@
 
 pkgname=udisks2
-pkgver=2.8.4
-pkgrel=2
-pkgdesc="Disk Management Service"
+pkgver=2.9.0
+pkgrel=1
+pkgdesc="Provides a daemon, tools and libraries to access and manipulate disks, storage devices and technologies."
 arch=('x86_64')
 url="https://www.freedesktop.org/wiki/Software/udisks"
 license=('GPL')
@@ -13,7 +13,7 @@ options=('!libtool')
 backup=(etc/udisks2/udisks2.conf)
 source=("https://github.com/storaged-project/udisks/releases/download/udisks-${pkgver}/udisks-${pkgver}.tar.bz2"
         '10-enable-mount.rules')
-md5sums=('ee74a32fe2a7ab3dd3aa9e2283b844ea'
+md5sums=('6c9bc503c183c37f45bd8dafa86e5512'
          '5f6c7dcbc2e98b7814a91fbe7630ecfc')
 
 build() {
