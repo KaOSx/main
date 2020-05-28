@@ -10,13 +10,18 @@ depends=('python3' 'python3-setuptools')
 source=("https://github.com/encukou/py3c/archive/v${pkgver}.tar.gz")
 sha256sums=('c7ffc22bc92dded0ca859db53ef3a0b466f89a9f8aad29359c9fe4ff18ebdd20')
 
+build() {
+  cd py3c-${pkgver}
+  
+  python3 setup.py build
+}
+
 package() {
   cd py3c-${pkgver}
-  python3 setup.py build
-  python3 setup.py install --prefix=/usr --root=${pkgdir}
-  
-  #sed -i "s|#!/usr/bin/env python$|#!/usr/bin/env python3|" \
-   # ${pkgdir}/usr/lib/python3.7/site-packages/pip/__init__.py
 
+  python3 setup.py install --prefix=/usr --root=${pkgdir}
+
+  install -D -m644 include/py3c.h ${pkgdir}/usr/include/py3c.h
+  install -D -m644 py3c.pc.in ${pkgdir}/usr/lib/pkgconfig/py3c.pc
   install -D -m644 LICENSE.MIT ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
