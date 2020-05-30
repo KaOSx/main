@@ -2,7 +2,7 @@
 pkgname=mesa
 pkgver=20.0.7
 _pkgver=20.0.7
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 pkgdesc="Mesa 3-D graphics libraries and include files"
 depends=('libx11' 'libxt' 'gcc-libs' 'libvdpau' 'xorgproto' 'wayland' 'elfutils'
@@ -38,7 +38,7 @@ build() {
     -Dplatforms=x11,wayland,drm,surfaceless \
     -Ddri3=true \
     -Ddri-drivers=i915,i965,r200,nouveau \
-    -Dgallium-drivers=r300,r600,nouveau,radeonsi,svga,swr,swrast,virgl \
+    -Dgallium-drivers=iris,r300,r600,nouveau,radeonsi,svga,swr,swrast,virgl \
     -Dgallium-extra-hud=true \
     -Dgallium-vdpau=true \
     -Dgallium-xvmc=true \
