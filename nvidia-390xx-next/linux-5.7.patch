@@ -1,0 +1,22 @@
+diff --git a/kernel/conftest.sh b/kernel/conftest.sh
+index e0f937d..e2aa328 100755
+--- a/kernel/conftest.sh
++++ b/kernel/conftest.sh
+@@ -139,6 +139,7 @@ test_headers() {
+     # Arch specific headers which need testing
+     FILES_ARCH="asm/book3s/64/hash-64k.h"
+     FILES_ARCH="$FILES_ARCH asm/set_memory.h"
++    FILES_ARCH="$FILES_ARCH asm/pgtable.h"
+     FILES_ARCH="$FILES_ARCH asm/powernv.h"
+     FILES_ARCH="$FILES_ARCH asm/tlbflush.h"
+ 
+@@ -422,6 +423,9 @@ compile_test() {
+             # Determine if the set_memory_array_uc() function is present.
+             #
+             CODE="
++            #if defined(NV_ASM_PGTABLE_H_PRESENT)
++            #include <asm/pgtable.h>
++            #endif
+             #if defined(NV_ASM_SET_MEMORY_H_PRESENT)
+             #include <asm/set_memory.h>
+             #else

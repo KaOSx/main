@@ -1,14 +1,14 @@
 
-_extramodules=extramodules-5.6-next
+_extramodules=extramodules-5.7-next
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=nvidia-390xx-next
 pkgver=390.132
-pkgrel=48
+pkgrel=49
 pkgdesc="NVIDIA drivers for linux-next, 390xx legacy version."
 arch=('x86_64')
 url="https://www.nvidia.com/page/home.html"
-depends=('linux-next>=5.6.0' 'linux-next<5.7' "nvidia-390xx-utils=${pkgver}")
+depends=('linux-next>=5.7.0' 'linux-next<5.8' "nvidia-390xx-utils=${pkgver}")
 makedepends=('linux-next-headers')
 options=('!strip')
 conflicts=('nvidia-next')
@@ -19,10 +19,12 @@ _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 
 source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
         'linux-5.5.patch'
-        'linux-5.6.patch')
+        'linux-5.6.patch'
+        'linux-5.7.patch')
 md5sums=('dcc8f272fef30c43a68d21b3379d99aa'
          'b222f69ba99eecf90e81db550685ffc2'
-         'b35531366d51c6362893169830132abd')
+         'b35531366d51c6362893169830132abd'
+         '62207d7001f61700ddec890a4956a01b')
 
 build() {
     cd ${srcdir}
@@ -31,6 +33,7 @@ build() {
     cd ${_pkg}
     patch -p1 -i ${srcdir}/linux-5.5.patch
     patch -p1 -i ${srcdir}/linux-5.6.patch
+    patch -p1 -i ${srcdir}/linux-5.7.patch
     # linux 4.19 needed
     #sed -i -e 's|drm_mode_connector_attach_encoder|drm_connector_attach_encoder|g' kernel/nvidia-drm/nvidia-drm-encoder.c
     #sed -i -e 's|drm_mode_connector_update_edid_property|drm_connector_update_edid_property|g' kernel/nvidia-drm/nvidia-drm-connector.c
