@@ -1,33 +1,32 @@
 
 pkgname=clisp
-pkgver=2.49
-pkgrel=5
+pkgver=2.49.93
+_commit=c26de78733578fc38952d2485313065eba4f5caa
+pkgrel=1
 pkgdesc="ANSI Common Lisp interpreter, compiler and debugger"
 arch=('x86_64')
 license=('GPL')
 url="https://clisp.sourceforge.io/"
 depends=('readline' 'libsigsegv')
-provides=('common-lisp')
 makedepends=('ffcall')
 options=('!makeflags' '!emptydirs')
-source=("https://downloads.sourceforge.net/sourceforge/clisp/clisp-${pkgver}.tar.bz2")
-md5sums=('1962b99d5e530390ec3829236d168649')
+#source=("https://downloads.sourceforge.net/sourceforge/clisp/clisp-${pkgver}.tar.bz2")
+source=("https://gitlab.com/gnu-clisp/clisp/-/archive/${_commit}/clisp-${_commit}.tar.bz2")
+md5sums=('890870db816ce165a559ed01b1015902')
 
 build() {
-  cd ${pkgname}-${pkgver}
-  sed -i 's|(:name "rl_readline_state") (:type int)|(:name "rl_readline_state") (:type ulong)|g' modules/readline/readline.lisp
+  cd ${pkgname}-${_commit}
   
   ./configure --prefix=/usr --with-readline --with-ffcall src
   
   cd src
+  
   ./makemake --prefix=/usr --with-readline --with-ffcall --with-dynamic-ffi > Makefile
-  make 
-  sed -i 's|http://www.lisp.org/HyperSpec/|http://www.lispworks.com/reference/HyperSpec/|g' config.lisp
   make 
 }
 
 package() {
-  cd ${pkgname}-${pkgver}/src
+  cd ${pkgname}-${_commit}/src
   
-  make DESTDIR=$pkgdir install 
+  make DESTDIR=${pkgdir} install 
 }

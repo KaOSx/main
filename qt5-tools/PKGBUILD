@@ -6,14 +6,14 @@ pkgname=qt5-tools
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=1
+pkgrel=2
 pkgdesc="A cross-platform application and UI framework, development tools and help files"
 arch=('x86_64')
 url='http://qt.nokia.com/'
 license=('GPL3' 'LGPL' 'FDL' 'custom')
 depends=('qt5-declarative' 'desktop-file-utils' 'qt5-location' 'hicolor-icon-theme' 'xdg-utils'
          'qt5-translations')
-makedepends=('clang' 'vulkan-headers') # 'qtwebkit-tp' 
+makedepends=('clang' 'vulkan-headers' 'qtwebkit-tp')
 optdepends=('qt5-doc: offline help documentation')
 groups=('qt5')
 options=('!libtool')
@@ -23,16 +23,16 @@ source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz"
         'assistant.desktop'
         'designer.desktop'
         'linguist.desktop'
-        'libclang.patch')
+        "https://github.com/qt/qttools/commit/3c30956e65a98706d283d44e07fd481a1849f74e.diff")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
          '892d3632bdcd9a22f191aa8f28a3c0e1'
          '208921efc9e4c11fae762e9580ca23aa'
          '59cbeef3e6090dcb7d2a7d32cd62ea08'
-         'b15e39c404d83261aa3b9aa233e7f4fd')
+         '36b3dcbeb49105567ad44d8e57848052')
 
 build() {
     cd ${srcdir}/${_pkgfqn}
-    #patch -R -p1 -i ${srcdir}/libclang.patch
+    patch -p1 -i ${srcdir}/3c30956e65a98706d283d44e07fd481a1849f74e.diff
 
     /usr/lib/qt5/bin/qmake # INCLUDEPATH="/usr/include/QtWebKit /usr/include/QtWebKitWidgets"
     make
