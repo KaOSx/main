@@ -1,16 +1,16 @@
 
 pkgname=maxima
-pkgver=5.43.2
-pkgrel=5
+pkgver=5.44.0
+pkgrel=1
 pkgdesc="Maxima - a sophisticated Computer Algebra System."
 arch=('x86_64')
 license=('GPL')
 url="http://maxima.sourceforge.net"
-depends=('sbcl=2.0.4' 'texinfo' 'sh' 'gnuplot' 'tk')
+depends=('sbcl=2.0.5' 'texinfo' 'sh' 'gnuplot' 'tk')
 makedepends=('python3')
 options=('!makeflags' '!zipman') 
 source=("https://sourceforge.net/projects/maxima/files/Maxima-source/${pkgver}-source/${pkgname}-${pkgver}.tar.gz")
-md5sums=('ff334e89324dc4b1cd2aa89e1faaf436')
+md5sums=('75e040745161901968d9c99c7a258e5c')
 
 build() {
   cd ${pkgname}-${pkgver}
