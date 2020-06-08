@@ -1,0 +1,44 @@
+
+_extramodules=extramodules-5.6
+_kver=$(cat /lib/modules/${_extramodules}/version)
+
+pkgname=rtl8821ce
+pkgver=2020.06.06
+_commit=69765eb288a8dfad3b055b906760b53e02ab1dea
+pkgrel=1
+pkgdesc="ReatlTek 8821ce wifi driver."
+arch=('x86_64')
+url="https://github.com/tomaspinho/rtl8821ce"
+license=('GPL-2.0')
+depends=('linux>=5.6.5' 'linux<5.7' 'bc')
+makedepends=('linux-headers' 'elfutils')
+install=rtl8821ce.install
+options=('!strip')
+source=("https://github.com/tomaspinho/rtl8821ce/archive/${_commit}.zip")
+md5sums=('c9f883ae4272eb3a447473be46bedb4e')
+
+build() {
+  cd ${pkgname}-${_commit}
+  
+  sed -i -e 's|$(shell uname -r)|5.6.8-1|' Makefile
+  #patch -p1 -i ${srcdir}/80a0cb2c1aa10e52bc653e7455a6f1b64fdccd09.diff
+  
+  make 
+}
+
+package() {
+  cd ${pkgname}-${_commit}
+  
+  install -D -m644 8821ce.ko ${pkgdir}/lib/modules/${_kver}/kernel/drivers/net/wireless/8821ce.ko
+  
+  # sign the module
+  _file=/usr/src/linux-${_kver}/scripts/sign-file
+  _pem=/$HOME/signing_key.pem
+  _key=/$HOME/signing_key.x509
+  
+  ${_file} sha256 ${_pem} ${_key} ${pkgdir}/lib/modules/${_kver}/kernel/drivers/net/wireless/8821ce.ko
+  
+  install -d -m755 ${pkgdir}/etc/modules-load.d/
+  echo "8821ce" >> "${pkgdir}/etc/modules-load.d/rtl8821ce.conf"
+  sed -i -e "s/EXTRAMODULES='.*'/EXTRAMODULES='${_extramodules}'/" "${startdir}/rtl8821ce.install"
+}
