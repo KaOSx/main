@@ -1,7 +1,7 @@
 
 pkgname=octave
 pkgver=5.2.0
-pkgrel=1
+pkgrel=2
 pkgdesc="A high-level language, primarily intended for numerical computations."
 arch=('x86_64')
 url="https://www.octave.org"
@@ -23,7 +23,8 @@ build() {
        --enable-shared \
        --disable-static \
        --with-quantum-depth=16 \
-       --with-umfpack="-lumfpack -lsuitesparseconfig" 
+       --with-umfpack="-lumfpack -lsuitesparseconfig" \
+       --disable-docs
 
   LANG=C make
 }
