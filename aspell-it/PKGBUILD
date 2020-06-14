@@ -1,15 +1,15 @@
 
 pkgname=aspell-it
-pkgver=2.2_20050523
-_pkgver=2.2_20050523-0
-pkgrel=2
+pkgver=2.4_20070901
+_pkgver=2.4-20070901-0
+pkgrel=1
 pkgdesc="Italian dictionary for aspell"
 arch=('x86_64')
 url="http://aspell.net/"
 license=('GPL2')
 depends=('aspell')
-source=("ftp://ftp.gnu.org/gnu/aspell/dict/it/aspell6-it-${_pkgver}.tar.bz2")
-md5sums=('b1217299a0b67d1e121494d7ec18a88d')
+source=("https://sourceforge.net/projects/linguistico/files/Dizionario%20italiano%20per%20Aspell/${_pkgver}/aspell6-it-${_pkgver}.tar.bz2")
+md5sums=('e6037d18211afe8428186499ced30657')
 
 build() {
   cd aspell6-it-${_pkgver}
