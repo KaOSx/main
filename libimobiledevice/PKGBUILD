@@ -1,28 +1,29 @@
 
 pkgname=libimobiledevice
-pkgver=1.2.0.4
+pkgver=1.3.0
 pkgrel=1
 _commit=3d8d13f0a70cefc1b12571b7f6aa2d1d4c58cffb
 pkgdesc="Is a software library that talks the protocols to support iPhone and iPod Touch devices on Linux"
 url="http://libimobiledevice.org/"
 arch=('x86_64')
 license=('GPL2' 'LGPL2.1')
-depends=('gnutls'  'glib2' 'libplist' 'libusbmuxd' 'libgcrypt')
+depends=('gnutls' 'glib2' 'libplist' 'libusbmuxd' 'libgcrypt')
 makedepends=('python3')
 options=('!libtool')
-source=("https://github.com/libimobiledevice/libimobiledevice/archive/${_commit}.zip")
-md5sums=('c39ab1f4c34762cfc9c8e52f63b11028')
+#source=("https://github.com/libimobiledevice/libimobiledevice/archive/${_commit}.zip")
+source=("http://www.libimobiledevice.org/downloads/${pkgname}-${pkgver}.tar.bz2")
+md5sums=('c50a3a32acf33dc8c9ec88137ad12ec4')
 
 build() {
-  cd ${pkgname}-${_commit}
+  cd ${pkgname}-${pkgver}
 
-  ./autogen.sh
+  #./autogen.sh
   ./configure --prefix=/usr
   make
 }
 
 package() {
-  cd ${pkgname}-${_commit}
+  cd ${pkgname}-${pkgver}
   
   make DESTDIR=${pkgdir} install
 }

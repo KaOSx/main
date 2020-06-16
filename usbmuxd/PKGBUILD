@@ -2,31 +2,33 @@
 pkgname=usbmuxd
 pkgver=1.1.1
 _commit=9af2b12552693a47601347e1eafc1e94132d727e
-pkgrel=1
+pkgrel=2
 pkgdesc="A USB multiplexing daemon."
 url="http://libimobiledevice.org/"
 arch=('x86_64')
 license=('GPL2' 'GPL3')
 depends=('libimobiledevice')
 install='usbmuxd.install'
-source=("https://github.com/libimobiledevice/usbmuxd/archive/${_commit}.zip"
+#source=("https://github.com/libimobiledevice/usbmuxd/archive/${_commit}.zip"
+source=("http://www.libimobiledevice.org/downloads/${pkgname}-${pkgver}.tar.bz2"
         'usbmuxd.service'
         '39-usbmuxd.rules')
-md5sums=('6d81efafe70936562da548e90e0efecf'
+md5sums=('7450ab28776dcd10b593c9a4243e6755'
          'c846093c80108262d2fa442ee47433bf'
          'dc4b2893651149eccbf7b2c8467cd288')
 
 build() {
-    cd ${pkgname}-${_commit}
+    cd ${pkgname}-${pkgver}
     sed -i -e 's|udevrulesdir = /lib/udev/rules.d|udevrulesdir = /usr/lib/udev/rules.d|' Makefile.am
 
-    NOCONFIGURE=1 ./autogen.sh
+    #NOCONFIGURE=1 ./autogen.sh
+    autoreconf -vi
     ./configure --prefix=/usr
     make
 }
 
 package() {
-    cd ${pkgname}-${_commit}
+    cd ${pkgname}-${pkgver}
     make DESTDIR=${pkgdir} install  
 	
     install -D -m644 ${srcdir}/usbmuxd.service ${pkgdir}/usr/lib/systemd/system/usbmuxd.service
