@@ -1,7 +1,7 @@
 
 pkgname=upower
 pkgver=0.99.11
-pkgrel=3
+pkgrel=4
 pkgdesc="Abstraction for enumerating power devices, listening to device events and querying history and statistics"
 arch=('x86_64')
 url="https://upower.freedesktop.org"
@@ -20,6 +20,7 @@ build() {
   cd ${pkgname}-${pkgver}
   #patch -p1 -R -i ${srcdir}/1c6a6bfbbb01aa92b4550c1e3a087b1c0f7ef310.diff
   sed -e "s|PrivateUsers=yes|PrivateUsers=no|" -i src/upower.service.in
+  sed -e "s|libplist >= 0.12|libplist-2.0|" -i configure
 
   ./configure --prefix=/usr \
       --sysconfdir=/etc \
@@ -27,7 +28,8 @@ build() {
       --libexecdir=/usr/lib/upower \
       --with-systemdsystemunitdir=/usr/lib/systemd/system \
       --disable-static \
-      --enable-deprecated
+      --enable-deprecated \
+      --with-idevice
   make
 }
 
