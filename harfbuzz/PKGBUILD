@@ -1,17 +1,17 @@
 
 pkgname=harfbuzz
-pkgver=2.6.7
+pkgver=2.6.8
 pkgrel=1
 pkgdesc="OpenType text shaping engine."
 arch=('x86_64')
-url="https://www.freedesktop.org/wiki/Software/HarfBuzz"
+url="https://github.com/harfbuzz/harfbuzz"
 license=('MIT')
 depends=('icu' 'glib2' 'freetype2' 'graphite')
 makedepends=('cairo')
 optdepends=('cairo: hb-view program')
 options=('!libtool')
 source=("https://github.com/harfbuzz/harfbuzz/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('49e481d06cdff97bf68d99fa26bdf785331f411614485d892ea4c78eb479b218')
+sha256sums=('6648a571a27f186e47094121f0095e1b809e918b3037c630c7f38ffad86e3035')
 
 build() {
   cd ${pkgname}-${pkgver}
