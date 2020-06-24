@@ -3,8 +3,8 @@ _extramodules=extramodules-5.7-next
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=nvidia-390xx-next
-pkgver=390.132
-pkgrel=54
+pkgver=390.138
+pkgrel=1
 pkgdesc="NVIDIA drivers for linux-next, 390xx legacy version."
 arch=('x86_64')
 url="https://www.nvidia.com/page/home.html"
@@ -18,12 +18,8 @@ license=('custom')
 _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 
 source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
-        'linux-5.5.patch'
-        'linux-5.6.patch'
         'linux-5.7.patch')
-md5sums=('dcc8f272fef30c43a68d21b3379d99aa'
-         'b222f69ba99eecf90e81db550685ffc2'
-         'b35531366d51c6362893169830132abd'
+md5sums=('06e8b4f973719cb425a580542c861259'
          '62207d7001f61700ddec890a4956a01b')
 
 build() {
@@ -31,17 +27,9 @@ build() {
     sh ${_pkg}.run --extract-only
     
     cd ${_pkg}
-    patch -p1 -i ${srcdir}/linux-5.5.patch
-    patch -p1 -i ${srcdir}/linux-5.6.patch
-    patch -p1 -i ${srcdir}/linux-5.7.patch
-    # linux 4.19 needed
-    #sed -i -e 's|drm_mode_connector_attach_encoder|drm_connector_attach_encoder|g' kernel/nvidia-drm/nvidia-drm-encoder.c
-    #sed -i -e 's|drm_mode_connector_update_edid_property|drm_connector_update_edid_property|g' kernel/nvidia-drm/nvidia-drm-connector.c
+    #patch -p1 -i ${srcdir}/linux-5.7.patch
     # linux 4.20 needed
     #sed -i -e 's|ipmi_user_t         p_user;|struct ipmi_user    *p_user;|g' kernel/nvidia/os-interface.c
-    #sed -i -e 's|ipmi_user_t     user,|struct ipmi_user *user,|g' kernel/nvidia/os-interface.c
-    #sed -i -e 's|vm_insert_pfn|vmf_insert_pfn|g' kernel/nvidia-drm/nvidia-drm-gem-nvkms-memory.c
-    
     
     export IGNORE_CC_MISMATCH=yes
 
