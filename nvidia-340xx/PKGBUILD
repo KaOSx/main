@@ -1,13 +1,13 @@
 
-_extramodules=extramodules-5.6
+_extramodules=extramodules-5.7
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=('nvidia-340xx' 'khd-nvidia-340xx')
 pkgver=340.108
-pkgrel=9
+pkgrel=10
 arch=('x86_64')
 url="http://www.nvidia.com/"
-makedepends=('linux-headers' 'linux>=5.6.4' 'linux<5.7' "nvidia-340xx-utils=${pkgver}")
+makedepends=('linux-headers' 'linux>=5.7.7' 'linux<5.8' "nvidia-340xx-utils=${pkgver}")
 license=('custom')
 options=('!strip')
 
@@ -15,17 +15,17 @@ _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 
 source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
         "https://raw.github.com/KaOSx/hardware-detection/master/hwdb/nvidia_supported"
-        'linux-5.6.patch')
+        'linux-5.patch')
 md5sums=('e783e383bd4344d590ad429eb0883717'
          '62d0cdb856cfae64753c0f3acf729d47'
-         'e6d757a184fbadefa5f9915ee8e942a9')
+         '768a57cba24b1a1c075c5767a27bd44c')
 
 build() {
     cd "${srcdir}"
     sh "${_pkg}.run" --extract-only
     
     cd "${_pkg}"
-    patch -p1 -i ${srcdir}/linux-5.6.patch
+    patch -p1 -i ${srcdir}/linux-5.patch
     # sed line needed for linux 4.9 & 340.101
     #sed -i 's/= DRIVER_GEM | DRIVER_PRIME,/= DRIVER_GEM | DRIVER_PRIME | DRIVER_LEGACY,/g' kernel/nv-drm.c
     
@@ -35,7 +35,7 @@ build() {
 
 package_nvidia-340xx() {
     pkgdesc="NVIDIA drivers for linux."
-    depends=('linux>=5.6.4' 'linux<5.7' "nvidia-340xx-utils=${pkgver}")
+    depends=('linux>=5.7.7' 'linux<5.8' "nvidia-340xx-utils=${pkgver}")
     conflicts=('nvidia' 'nvidia-304xx')
     replaces=('nvidia-304xx')
     backup=('etc/X11/xorg.conf.d/20-nvidia.conf')

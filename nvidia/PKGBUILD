@@ -1,14 +1,14 @@
 
-_extramodules=extramodules-5.6
+_extramodules=extramodules-5.7
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=('nvidia' 'khd-nvidia')
 pkgver=440.100
-pkgrel=1
+pkgrel=2
 epoch=1
 arch=('x86_64')
 url="https://www.nvidia.com/page/home.html"
-makedepends=('linux-headers' 'linux>=5.6.4' 'linux<5.7' "nvidia-utils=1:${pkgver}")
+makedepends=('linux-headers' 'linux>=5.7.7' 'linux<5.8' "nvidia-utils=1:${pkgver}")
 options=('!strip')
 license=('custom')
 
@@ -36,7 +36,7 @@ build() {
 
 package_nvidia() {
     pkgdesc="NVIDIA drivers for linux."
-    depends=('linux>=5.6.4' 'linux<5.7' "nvidia-utils=1:${pkgver}")
+    depends=('linux>=5.7.7' 'linux<5.8' "nvidia-utils=1:${pkgver}")
     conflicts=('nvidia-340xx' 'nvidia-390xx' 'nvidia-bumblebee')
     provides=('nvidia-bumblebee')
     replaces=('nvidia-bumblebee')
