@@ -1,16 +1,16 @@
 
 pkgname=libmikmod
-pkgver=3.3.11
+pkgver=3.3.11.1
 pkgrel=1
 pkgdesc="A portable sound library"
 license=('GPL' 'LGPL')
-url="http://mikmod.shlomifish.org/"
+url="http://mikmod.sourceforge.net/"
 arch=('x86_64')
 depends=('glibc' 'sh' 'pulseaudio')
 makedepends=('alsa-lib')
 options=('!libtool')
 source=("https://downloads.sourceforge.net/mikmod/${pkgname}-${pkgver}.tar.gz")
-md5sums=('fc7557cdbd78692d1e64d057cba09992')
+md5sums=('f69d7dd06d307e888f466fc27f4f680b')
 
 build() {
   cd ${pkgname}-${pkgver}
