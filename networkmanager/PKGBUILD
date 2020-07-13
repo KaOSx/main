@@ -1,15 +1,15 @@
 
 pkgname=networkmanager
 _pkgname=NetworkManager
-pkgver=1.24.2
-_pkgver=1.24
+pkgver=1.26.0
+_pkgver=1.26
 pkgrel=1
 pkgdesc="Network Management daemon"
 arch=('x86_64')
 license=('GPL')
 url="https://wiki.gnome.org/Projects/NetworkManager"
 depends=('dbus-glib' 'iproute2' 'libnl' 'nss' 'polkit' 'systemd' 'wpa_supplicant' 'ppp' 'dhcpcd'
-         'modemmanager' 'libndp' 'libteam' 'curl' 'iptables' 'bluez' 'iwd') # 'libgudev' no longer needed for 1.8)
+         'modemmanager' 'libndp' 'libteam' 'curl' 'iptables' 'bluez' 'iwd' 'mobile-broadband-provider-info') # 'libgudev' no longer needed for 1.8)
 makedepends=('intltool' 'dhclient' 'gobject-introspection' 'netctl' 'python3-gobject3')
 optdepends=('dhclient: alternative DHCP/DHCPv6 client'
             'dnsmasq: Connection sharing')
@@ -19,7 +19,7 @@ install=networkmanager.install
 source=("https://download.gnome.org/sources/NetworkManager/${_pkgver}/${_pkgname}-${pkgver}.tar.xz"
         'NetworkManager.conf'
         'nmdevice.patch')
-sha256sums=('2cc6075c41354c3f3426a3f7664754c0264f47ccb80f815ce78550e02203ceb2'
+sha256sums=('5223276b5b81bd342549ffb0b39045a1788ee916f44c8db548f934542ec74d47'
             '57a0d0fc875a0c6b1729eac7e50907cc60a6d6aa834adc56b8c851edacf5fbd4'
             'f70cf461ec944f8234d47a69d1aa8505382c6161009c7dc5c1f66c86a505fe09')
 
