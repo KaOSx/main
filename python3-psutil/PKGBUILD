@@ -1,17 +1,17 @@
  
 pkgname=python3-psutil
-pkgver=5.7.0
+pkgver=5.7.2
 pkgrel=1
 pkgdesc='Cross-platform process and system utilities module for Python'
 arch=('x86_64')
 url='https://github.com/giampaolo/psutil'
 license=('custom: BSD')
 depends=('python3-setuptools')
-source=("https://github.com/giampaolo/psutil/archive/release-${pkgver}.tar.gz")
-md5sums=('22a4725d66ea830966860264de8f241d')
+source=("https://files.pythonhosted.org/packages/source/p/psutil/psutil-${pkgver}.tar.gz")
+sha256sums=('90990af1c3c67195c44c9a889184f84f5b2320dce3ee3acbd054e3ba0b4a7beb')
 
 package() {
-  cd psutil-release-${pkgver}
+  cd psutil-${pkgver}
   
   python3 setup.py install --root=${pkgdir} --optimize=1
   
