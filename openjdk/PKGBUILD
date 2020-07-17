@@ -1,11 +1,11 @@
 # fails with gcc 6.4.0, builds with gcc 6.3.1
 pkgname=('openjdk' 'openjdk-src')
 pkgbase='openjdk'
-_icedtea_release="3.13.0"
+_icedtea_release="3.16.0"
 _icedtea_jdkver="8"
 # ${srcdir}/build/ChangeLog for versions
-_openjdk_build="b10"
-_pkgver="8u222"
+_openjdk_build="b09"
+_pkgver="8u252"
 pkgver="${_pkgver}_${_openjdk_build}_${_icedtea_release}"
 pkgrel=1
 pkgdesc="An open-source implementation of the seventh edition of the Java SE Platform."
@@ -35,20 +35,20 @@ source=("http://icedtea.classpath.org/download/source/icedtea-${_icedtea_release
         'command_path.diff'
         'openjdk.profile.sh'
         'openjdk.profile.csh')
-md5sums=('6179d3b6c6ea468081adaa561aad9fe7'
-         'bb3c3825352ca50e104d8e871f72aed5'
-         'd18fe62f73cfeb403db205a4fb5950e3'
-         'e0521c962a051790636bdd5c8dc3d098'
-         '32928a839f7d711c09ff03a11fd60036'
-         '3304542bfcd2fa2474ac489e16ee0e64'
-         '6ca0d831f2e7c7aa2c7f90005eb6bb42'
-         '51b622871d03b271a85bbdff465eb92e'
-         'f2625e6b7e3f555af155533e8239ad9a'
-         'ee1afda124d5927345014ab382ef581e'
-         '986131efd2636724ae37870a5cca6d43'
-         '05afd9c7fedcc05d4ebbb3427e068dba'
-         '2113e8e67f7e11b925b366614721a3dc'
-         'd703a04c47c961b16154974b46cab12d')
+sha256sums=('b84bb7678baf09008670ce230a787b7bce7186cb5500d5a0664b8a369ad52500'
+            '45fbaefea10211f1efc17df5d1f2197583a119d2e8d1773ecd0f4fbc786813d3'
+            '030ee059bcb815934b4ea4fb1e6b8d4ee4d15fdad6f4ea8ce20f99ded80631b6'
+            'b529f8d44af3ed7588e51f8326da2ba47fb3ea79c23933b5a7e8ec1e5e4e0f1b'
+            'da14787acc99062ffb8b087eb27619eded0c84649b4a4e0f8d50d5c067533e8b'
+            'dd6978cce62c30bdeb2afeec865449d99e2a65a8555fdbecf9f7173c10022fcd'
+            'f08a768697cefd1bc2b358b075803d366d7023c7e84a78fc47fef66134bbc7e9'
+            '30086e392a365242c7c61eee18534bfc1583ced855fbb301f187fcd16403845c'
+            'a6b3e5379b95d6263d8d397cf181d6c07946400f1d5a424a8bc06c1cce9ef1e3'
+            '9ad943ceb3dbcdf45d72974fc3667886a7ed65c69ab9abc17be5412827551a7f'
+            'b23a0e6b6bd11e8db3c3a7040887bca955a9821fc11bf351e11d97b3e5fde05b'
+            '0ad6a9c361176a63537d14faf23c1a8100558f33f4aa222c29d7034a055a384c'
+            '5b13278d7a63712dbdc4cb4fb44ad9c00b6cfc65c63425fd84f3c7b7a98e81d1'
+            '08428358c22b5017623931dac6345f8cce7eb1293e50bc28e2ab9271a69a5fda')
 noextract=("openjdk.tar.xz"
            "corba.tar.xz"
            "jaxp.tar.xz"
@@ -63,7 +63,7 @@ prepare() {
   
   #patch -p1 -i ${srcdir}/makefile.diff
   # sed line needed to make it look for automake-1.16
-  #sed -i 's|1.15|1.16|' configure
+  sed -i 's|1.15|1.16|' configure
 }
 
 build() {
