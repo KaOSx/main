@@ -1,6 +1,6 @@
 
 pkgname=gnuplot 
-pkgver=5.2.8
+pkgver=5.4.0
 pkgrel=1
 pkgdesc="Plotting package which outputs to X11, PostScript, PNG, GIF, and others" 
 arch=('x86_64') 
@@ -10,7 +10,7 @@ depends=('readline' 'gd' 'pango' 'libjpeg-turbo' 'qt5-svg' 'gnutls')
 makedepends=('texinfo' 'texlive-core' 'texlive-latexextra' 'qt5-tools') 
 install=gnuplot.install 
 source=("https://downloads.sourceforge.net/sourceforge/gnuplot/${pkgname}-${pkgver}.tar.gz")
-md5sums=('2df8767c7399bee57a96296d46b4d5fb')
+md5sums=('ac586178f3b031dea82cd3890cefb21b')
 
 build() {
   cd ${pkgname}-${pkgver}
@@ -31,7 +31,8 @@ build() {
               --with-readline=gnu \
               --datadir=/usr/share \
               --without-lua \
-              --with-qt=qt5
+              --with-qt=qt5 \
+              --with-texdir=/usr/share/texmf/tex/latex/gnuplot
   make pkglibexecdir=/usr/bin
 }
 
