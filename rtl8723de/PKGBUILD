@@ -1,17 +1,17 @@
 
-_extramodules=extramodules-5.6
+_extramodules=extramodules-5.7
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=rtl8723de
 _pkgname=rtlwifi_new
 pkgver=2020.05.09
 _commit=0a751e30e3aed5e6e0f72123031012abda91ca1a
-pkgrel=1
+pkgrel=2
 pkgdesc="Drivers for the rtl8723de chipset for wireless adapters."
 arch=('x86_64')
 url="https://github.com/lwfinger/rtlwifi_new"
 license=('GPL-2.0')
-depends=('linux>=5.6.5' 'linux<5.7')
+depends=('linux>=5.7.8' 'linux<5.8')
 makedepends=('linux-headers' 'elfutils')
 install=rtl8723de.install
 options=('!strip')
@@ -22,6 +22,7 @@ md5sums=('2f76a624e61e087353b827909933cb20')
 
 build() {
   cd ${_pkgname}-${_commit}
+  sed -i -e 's|$(shell uname -r)|5.7.8-1|' Makefile
   
   #patch -p1 -i ${srcdir}/80a0cb2c1aa10e52bc653e7455a6f1b64fdccd09.diff
   
