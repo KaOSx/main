@@ -7,7 +7,7 @@ pkgrel=1
 arch=('x86_64')
 url="https://llvm.org/"
 license=('custom:University of Illinois/NCSA Open Source License')
-makedepends=('gcc-libs' 'libffi' 'python3' 'python2' 'ocaml' "gcc=${_gcc_ver}" 'groff'
+makedepends=('gcc-libs' 'libffi' 'python3' 'ocaml' "gcc=${_gcc_ver}" 'groff'
              'swig' 'cmake') # 'ocaml-ctypes' 'findlib' needed to have CMake build find ocaml
 source=("https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver}/${pkgbase}-${pkgver}.src.tar.xz"
         "https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver}/clang-${pkgver}.src.tar.xz"
@@ -29,7 +29,7 @@ prepare() {
     # http://llvm.org/bugs/show_bug.cgi?id=22742
     chmod -R u=rwX,go=rX ${srcdir}/llvm-${pkgver}.src
     # https://www.mail-archive.com/blfs-dev@lists.linuxfromscratch.org/msg09727.html
-    sed -i "/ipc_perm, mode/s@^C@//C@" projects/compiler-rt/lib/sanitizer_common/sanitizer_platform_limits_posix.cc
+    #sed -i "/ipc_perm, mode/s@^C@//C@" projects/compiler-rt/lib/sanitizer_common/sanitizer_platform_limits_posix.cc
 }
   
 build() {
@@ -116,8 +116,9 @@ package_clang-analyzer() {
     done
 
     # Python scripts
-    python2 -m compileall ${pkgdir}/usr/lib/clang-analyzer
-    python2 -O -m compileall ${pkgdir}/usr/lib/clang-analyzer
+    python3 -m compileall ${pkgdir}/usr/lib/clang-analyzer
+    python3 -O -m compileall ${pkgdir}/usr/lib/clang-analyzer
+    python3 -OO -m compileall ${pkgdir}/usr/lib/clang-analyzer
 
     install -D -m644 ${srcdir}/${pkgbase}-${pkgver}.src/LICENSE.TXT ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
