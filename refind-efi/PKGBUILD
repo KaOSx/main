@@ -3,7 +3,7 @@ _USE_GNU_EFI="1"
 
 pkgname=refind-efi
 pkgver=0.11.5
-pkgrel=1
+pkgrel=2
 pkgdesc="Rod Smith's fork of rEFIt UEFI Boot Manager"
 url="http://www.rodsbooks.com/refind/index.html"
 arch=('x86_64')
@@ -266,8 +266,8 @@ package() {
 	install -D -m0644 "${srcdir}/refind-${pkgver}/LICENSE.txt" "${pkgdir}/usr/share/licenses/refind/LICENSE"
 	
 	msg "Point refind dir paths to /usr/share/refind/ in refind-install script"
-	sed 's|^ThisDir=.*|ThisDir="/usr/share/refind/"|g' -i "${pkgdir}/usr/bin/refind-install"
-	sed 's|^RefindDir=.*|RefindDir="/usr/share/refind/"|g' -i "${pkgdir}/usr/bin/refind-install"
-	sed 's|^ThisScript=.*|ThisScript="/usr/bin/refind-install"|g' -i "${pkgdir}/usr/bin/refind-install"
+	#sed 's|^ThisDir=.*|ThisDir="/usr/share/refind/"|g' -i "${pkgdir}/usr/bin/refind-install"
+	sed 's|RefindDir=\"\$ThisDir/refind\"|RefindDir="/usr/share/refind/"|g' -i "${pkgdir}/usr/bin/refind-install"
+	#sed 's|^ThisScript=.*|ThisScript="/usr/bin/refind-install"|g' -i "${pkgdir}/usr/bin/refind-install"
 	
 }
