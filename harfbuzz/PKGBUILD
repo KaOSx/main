@@ -1,33 +1,32 @@
 
 pkgname=harfbuzz
-pkgver=2.6.8
+pkgver=2.7.0
 pkgrel=1
 pkgdesc="OpenType text shaping engine."
 arch=('x86_64')
 url="https://github.com/harfbuzz/harfbuzz"
 license=('MIT')
-depends=('icu' 'glib2' 'freetype2' 'graphite')
-makedepends=('cairo')
-optdepends=('cairo: hb-view program')
+depends=('icu' 'glib2' 'freetype2' 'graphite' 'cairo')
+makedepends=('meson' 'ninja')
 options=('!libtool')
-source=("https://github.com/harfbuzz/harfbuzz/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('6648a571a27f186e47094121f0095e1b809e918b3037c630c7f38ffad86e3035')
+source=("https://github.com/harfbuzz/harfbuzz/archive/${pkgver}.tar.gz")
+sha256sums=('4dba05de1fd44705f54c40d801e0e3d4833555d004cb611cc18675173feae75b')
 
 build() {
-  cd ${pkgname}-${pkgver}
-
-  ./configure --prefix=/usr \
-        --with-glib \
-        --with-freetype \
-        --with-cairo \
-        --with-icu \
-        --with-graphite2
-  make
+  mkdir -p build
+  cd build
+  
+  meson ../${pkgname}-${pkgver} \
+    --prefix=/usr \
+    --buildtype=release \
+    -Dgraphite=enabled
+  ninja
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
-
-  make DESTDIR=${pkgdir} install
-  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/harfbuzz/COPYING
+  cd build
+  
+  DESTDIR=${pkgdir} ninja install
+  install -Dm644 ../${pkgname}-${pkgver}/COPYING ${pkgdir}/usr/share/licenses/harfbuzz/COPYING
 }
+
