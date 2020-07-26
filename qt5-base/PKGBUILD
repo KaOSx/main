@@ -6,7 +6,7 @@ pkgname='qt5-base'
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=1
+pkgrel=2
 pkgdesc="A cross-platform application and UI framework"
 arch=('x86_64')
 url='http://qt-project.org/'
@@ -22,16 +22,16 @@ groups=('qt5')
 options=('!libtool' 'debug')
 _pkgfqn="qtbase-everywhere-src-${subver}"
 source=("${_qtmirror}/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz"
-        "https://github.com/qt/qtbase/commit/276fa8383a7535765be7182883ef4aade17ce013.diff")
+        "https://github.com/qt/qtbase/commit/9d2b474b5f6aa07ee731d28f9774d10dfaa49b32.diff")
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
-         '6d2e71132d4c0691c891e5220a7ae4ea')
+         'fe7ab906d173b5caffce43dad6740072')
 
 build() {
     cd ${srcdir}/${_pkgfqn}
     
-    # https://bugreports.qt.io/browse/QTBUG-83207
-    #patch -p1 -i ${srcdir}/276fa8383a7535765be7182883ef4aade17ce013.diff
+    # https://bugreports.qt.io/browse/QTBUG-84619
+    patch -p1 -i ${srcdir}/9d2b474b5f6aa07ee731d28f9774d10dfaa49b32.diff
     
     #sed -i 's|libs": "-lmysqlclient_r"|libs": "-lmariadb"|' src/sql/configure.json
         
