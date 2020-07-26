@@ -3,7 +3,7 @@ pkgname=python3-pycurl
 _pkgname=pycurl
 pkgver=7.43.0.5
 _pkgver=REL_7_43_0_5
-pkgrel=1
+pkgrel=2
 pkgdesc="A Python interface to libcurl."
 arch=('x86_64')
 url="http://pycurl.sourceforge.net"
@@ -18,7 +18,7 @@ md5sums=('665db279f937bf84cd9d28f4325d7131')
 build() {
   cd ${_pkgname}-${_pkgver}
   
-  make PYTHON=python3.7
+  make PYTHON=python3.8
   python3 setup.py build --with-openssl
 }
 

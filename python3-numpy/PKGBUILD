@@ -2,7 +2,7 @@
 pkgname=python3-numpy
 pkgver=1.19.1
 _pkgver=1.19.1
-pkgrel=1
+pkgrel=2
 pkgdesc="Scientific tools for Python"
 arch=('x86_64')
 license=('custom')
@@ -26,6 +26,6 @@ package() {
   install -m755 -d ${pkgdir}/usr/share/licenses/python3-numpy
   install -m644 LICENSE.txt ${pkgdir}/usr/share/licenses/python3-numpy/
   
-  install -m755 -d ${pkgdir}/usr/include/python3.6
-  ln -sf /usr/lib/python3.6/site-packages/numpy/core/include/numpy ${pkgdir}/usr/include/python3.6/numpy
+  install -m755 -d ${pkgdir}/usr/include/python3.8
+  ln -sf /usr/lib/python3.8/site-packages/numpy/core/include/numpy ${pkgdir}/usr/include/python3.8/numpy
 }
