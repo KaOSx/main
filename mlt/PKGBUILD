@@ -3,7 +3,7 @@
 
 pkgname=mlt
 pkgver=6.20.0
-pkgrel=1
+pkgrel=2
 pkgdesc="An open source multimedia framework"
 arch=('x86_64')
 url="http://www.mltframework.org"
@@ -12,20 +12,14 @@ depends=('sdl_image' 'libsamplerate' 'libdv' 'sox' 'libxml2' 'ffmpeg' 'python3' 
          'frei0r-plugins' 'libexif' 'opencv' 'rubberband')
 makedepends=('swig')
 source=("https://github.com/mltframework/mlt/releases/download/v${pkgver}/mlt-${pkgver}.tar.gz"
-        "https://github.com/mltframework/mlt/commit/12d4f46a957ab4eba155940b44bb31c35697da26.diff"
-        "https://github.com/mltframework/mlt/commit/3dbe5bcb87a26895ffc80aad3d6eac3539c161dd.diff"
-        "https://github.com/mltframework/mlt/commit/1ece7ea5906e6ed06d364390234f3ca355f9850f.diff")
+        "https://github.com/mltframework/mlt/commit/f58b44d73442986eeffec7431e59b7d19d214c1b.diff")
 md5sums=('90a7fd10374dbf2b9d33ec3fbad18f2f'
-         '57f093194bdacdafe197bf8036c0336f'
-         '837b140a842f5746d2c0245d341a2fb4'
-         '602b6ad7185d40f081ba92d027d9ea4f')
+         'b4605b9c281a054e16a7f42d3c69203f')
 
 build() {
   cd mlt-${pkgver}
-  # make python3 default
-  #patch -p1 -i ${srcdir}/12d4f46a957ab4eba155940b44bb31c35697da26.diff
-  #patch -p1 -i ${srcdir}/3dbe5bcb87a26895ffc80aad3d6eac3539c161dd.diff
-  #patch -p1 -i ${srcdir}/1ece7ea5906e6ed06d364390234f3ca355f9850f.diff
+  # Qt 5.15 QPainterPath
+  patch -p1 -i ${srcdir}/f58b44d73442986eeffec7431e59b7d19d214c1b.diff
   
   #CXXFLAGS="-std=c++11"
 
@@ -50,8 +44,8 @@ package () {
   
   # install python bindings
   cd src/swig/python
-  mkdir -p ${pkgdir}/usr/lib/python3.7/
-  install -m0755 mlt.py ${pkgdir}/usr/lib/python3.7/
-  install -m0755 _mlt.so ${pkgdir}/usr/lib/python3.7/
-  install -m0755 mlt_wrap.o ${pkgdir}/usr/lib/python3.7/
+  mkdir -p ${pkgdir}/usr/lib/python3.8/
+  install -m0755 mlt.py ${pkgdir}/usr/lib/python3.8/
+  install -m0755 _mlt.so ${pkgdir}/usr/lib/python3.8/
+  install -m0755 mlt_wrap.o ${pkgdir}/usr/lib/python3.8/
 }
