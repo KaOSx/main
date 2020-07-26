@@ -1,7 +1,7 @@
 
 pkgname=openexr
 pkgver=2.5.2
-pkgrel=1
+pkgrel=2
 pkgdesc="openexr library for EXR images"
 url="http://www.openexr.org"
 arch=('x86_64')
@@ -38,7 +38,7 @@ package() {
   
   make DESTDIR=${pkgdir} install
   # missed lib in cmake install
-  install -Dm755 python3_7/imathnumpy.so -t ${pkgdir}/usr/lib/python3.7/site-packages/
+  install -Dm755 python3_8/imathnumpy.so -t ${pkgdir}/usr/lib/python3.8/site-packages/
   
   install -D -m644 ../${pkgname}-${pkgver}/LICENSE.md ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.md
 }
