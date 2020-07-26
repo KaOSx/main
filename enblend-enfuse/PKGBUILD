@@ -1,7 +1,7 @@
 
 pkgname=enblend-enfuse
 pkgver=4.2
-pkgrel=17
+pkgrel=18
 pkgdesc="Intelligent blend tool for overlapping picture"
 arch=("x86_64")
 license=('GPL')
@@ -11,11 +11,14 @@ makedepends=('boost' 'mesa' 'help2man' 'texlive-latexextra')
 replaces=('enblend')
 conflicts=('enblend')
 provides=('enblend')
-source=("https://downloads.sourceforge.net/sourceforge/enblend/${pkgname}-${pkgver}.tar.gz")
-md5sums=('e26751f393862cecfd1a113003787001')
+source=("https://downloads.sourceforge.net/sourceforge/enblend/${pkgname}-${pkgver}.tar.gz"
+        'gcc.patch')
+md5sums=('e26751f393862cecfd1a113003787001'
+         '14c14b48771f83e195a04d0355f87dd5')
 
 build() {
   cd ${pkgname}-${pkgver}
+  patch -p1 -i ${srcdir}/gcc.patch
   
   ./configure --prefix=/usr
   make
