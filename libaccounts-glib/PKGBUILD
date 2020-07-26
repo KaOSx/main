@@ -2,7 +2,7 @@
 pkgname=libaccounts-glib
 pkgver=1.25
 #_pkgver=VERSION_1.21-00254a604a7c7bd38c41794a80ad8930e90f21aa
-pkgrel=1
+pkgrel=2
 pkgdesc="Glib-based client library for accessing the online accounts database"
 arch=('x86_64')
 url="https://gitlab.com/groups/accounts-sso"
@@ -14,6 +14,12 @@ options=('!libtool')
 source=("https://gitlab.com/accounts-sso/libaccounts-glib/repository/archive.tar.bz2?ref=VERSION_${pkgver}")
 md5sums=('83bfa521c04ef358045e372f27f2a0ab')
 
+prepare() {
+  cd ${pkgname}-VERSION_${pkgver}-*
+  
+  sed -i "s|subdir('tests')||" meson.build
+}
+
 build() {
   mkdir -p build
   cd build
@@ -23,12 +29,6 @@ build() {
     --buildtype=release
   ninja
 }
-
-    #--prefix=/usr \
-    #--disable-static \
-    #--enable-gcov=no \
-    #--disable-gtk-doc
-
 
 package() {
   cd build
