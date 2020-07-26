@@ -1,18 +1,18 @@
 
 pkgname=python3-isodate
 pkgver=0.6.0
-pkgrel=2
+pkgrel=3
 pkgdesc="An ISO 8601 date/time/duration parser and formater"
 arch=('x86_64')
 url="https://pypi.python.org/pypi/isodate"
 license=('BSD')
 depends=('python3-six')
 makedepends=('python3-setuptools')
-source=("https://files.pythonhosted.org/packages/source/i/isodate/${pkgbase}-${pkgver}.tar.gz")
+source=("https://files.pythonhosted.org/packages/source/i/isodate/isodate-${pkgver}.tar.gz")
 sha256sums=('2e364a3d5759479cdb2d37cce6b9376ea504db2ff90252a2e5b7cc89cc9ff2d8')
 
 package() {
-  cd ${pkgbase}-${pkgver}
+  cd isodate-${pkgver}
   python3 setup.py install --root=${pkgdir}/ --optimize=0
   
   install -d ${pkgdir}/usr/share/licenses/${pkgname}
