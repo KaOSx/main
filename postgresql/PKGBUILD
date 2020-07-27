@@ -3,7 +3,7 @@
 pkgbase=postgresql
 pkgname=('postgresql-libs' 'postgresql-docs' 'postgresql')
 pkgver=12.3
-pkgrel=1
+pkgrel=2
 epoch=1
 arch=('x86_64')
 url="https://www.postgresql.org/"
@@ -102,9 +102,8 @@ package_postgresql-docs() {
 package_postgresql() {
   pkgdesc="A sophisticated object-relational DBMS"
   backup=('etc/pam.d/postgresql' 'etc/logrotate.d/postgresql')
-  depends=("postgresql-libs>=${pkgver}" 'krb5' 'libxml2' 'readline>=6.0' 'openssl>=1.0.0')
-  optdepends=('python2: for PL/Python support'
-              'perl: for PL/Perl support'
+  depends=("postgresql-libs>=${pkgver}" 'krb5' 'libxml2' 'readline>=6.0' 'openssl>=1.0.0' 'python3')
+  optdepends=('perl: for PL/Perl support'
               'tcl: for PL/Tcl support')
   install=postgresql.install
 
