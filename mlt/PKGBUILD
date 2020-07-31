@@ -1,25 +1,23 @@
 
-# NOTE: Disabled the gtk2 module so no gtk-preview
-
 pkgname=mlt
-pkgver=6.20.0
-pkgrel=2
+pkgver=6.22.0
+pkgrel=1
 pkgdesc="An open source multimedia framework"
 arch=('x86_64')
 url="http://www.mltframework.org"
 license=('GPL')
 depends=('sdl_image' 'libsamplerate' 'libdv' 'sox' 'libxml2' 'ffmpeg' 'python3' 'jack' 'ladspa' 'qt5-svg'
-         'frei0r-plugins' 'libexif' 'opencv' 'rubberband')
+         'frei0r-plugins' 'libexif' 'opencv' 'rubberband' 'gdk-pixbuf2')
 makedepends=('swig')
 source=("https://github.com/mltframework/mlt/releases/download/v${pkgver}/mlt-${pkgver}.tar.gz"
         "https://github.com/mltframework/mlt/commit/f58b44d73442986eeffec7431e59b7d19d214c1b.diff")
-md5sums=('90a7fd10374dbf2b9d33ec3fbad18f2f'
+md5sums=('f368354154a7e2d8191d6e6f8eb3d475'
          'b4605b9c281a054e16a7f42d3c69203f')
 
 build() {
   cd mlt-${pkgver}
   # Qt 5.15 QPainterPath
-  patch -p1 -i ${srcdir}/f58b44d73442986eeffec7431e59b7d19d214c1b.diff
+  #patch -p1 -i ${srcdir}/f58b44d73442986eeffec7431e59b7d19d214c1b.diff
   
   #CXXFLAGS="-std=c++11"
 
@@ -27,8 +25,7 @@ build() {
               --enable-gpl \
               --enable-gpl3 \
               --qimage-libdir=/usr/lib/ \
-              --qt-includedir=/usr/include/qt \
-              --disable-gtk2 \
+              --qt-includedir=/usr/include/qt5 \
               --avformat-swscale \
               --enable-opencv
   make
