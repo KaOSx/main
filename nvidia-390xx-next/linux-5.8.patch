@@ -1,0 +1,11 @@
+--- a/kernel/common/inc/nv-linux.h	2020-08-03 14:15:59.001286885 +0200
++++ b/kernel/common/inc/nv-linux.h	2020-08-03 14:16:09.488068752 +0200
+@@ -531,7 +531,7 @@
+ 
+ static inline void *nv_vmalloc(unsigned long size)
+ {
+-    void *ptr = __vmalloc(size, GFP_KERNEL, PAGE_KERNEL);
++    void *ptr = __vmalloc(size, GFP_KERNEL);
+     if (ptr)
+         NV_MEMDBG_ADD(ptr, size);
+     return ptr;
