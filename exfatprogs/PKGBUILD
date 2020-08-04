@@ -1,0 +1,29 @@
+ 
+pkgname=exfatprogs
+pkgver=1.0.4
+pkgrel=1
+pkgdesc="Userspace Utility for exFAT filesystem on Linux kernel"
+arch=('x86_64')
+url="https://github.com/exfatprogs/exfatprogs"
+license=('GPL2')
+depends=('glibc') # 'fuse')
+provides=('exfat-utils')
+conflicts=('exfat-utils')
+replaces=('exfat-utils')
+source=("https://github.com/exfatprogs/exfatprogs/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
+sha256sums=('cd0cd330ee7eaa80d29b8b6657e3bbc6b8d4e807bcd2ad2829c2704c136c33b1')
+
+build() {
+    cd ${pkgname}-${pkgver}
+
+    #autoreconf -vi
+    ./configure --prefix=/usr \
+        --enable-static=no
+    make
+}
+
+package() {
+    cd ${pkgname}-${pkgver}
+    
+    make DESTDIR=${pkgdir} install
+}
