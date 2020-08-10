@@ -1,105 +1,96 @@
---- a/kernel/common/inc/nv-linux.h	2020-08-03 14:15:59.001286885 +0200
-+++ b/kernel/common/inc/nv-linux.h	2020-08-03 14:16:09.488068752 +0200
-@@ -531,7 +531,13 @@ extern int nv_pat_mode;
+diff --git a/kernel/common/inc/nv-linux.h b/kernel/common/inc/nv-linux.h
+index ac5bb95..3d2f0b7 100644
+--- a/kernel/common/inc/nv-linux.h
++++ b/kernel/common/inc/nv-linux.h
+@@ -531,7 +531,11 @@ extern int nv_pat_mode;
  
  static inline void *nv_vmalloc(unsigned long size)
  {
-+#if NV_VMALLOC_ARGUMENT_COUNT_ARGUMENT_COUNT == 3
++#if defined(NV_VMALLOC_HAS_PGPROT_T_ARG)
      void *ptr = __vmalloc(size, GFP_KERNEL, PAGE_KERNEL);
-+#elif NV_VMALLOC_ARGUMENT_COUNT_ARGUMENT_COUNT == 2
-+    void *ptr = __vmalloc(size, GFP_KERNEL);
 +#else
-+#error "NV_VMALLOC_ARGUMENT_COUNT_ARGUMENT_COUNT value unrecognized!"
++    void *ptr = __vmalloc(size, GFP_KERNEL);
 +#endif
      if (ptr)
          NV_MEMDBG_ADD(ptr, size);
      return ptr;
 diff --git a/kernel/common/inc/nv-mm.h b/kernel/common/inc/nv-mm.h
-index 51c74b4..c0f9a61 100644
+index 1270bf3..d2d7657 100644
 --- a/kernel/common/inc/nv-mm.h
 +++ b/kernel/common/inc/nv-mm.h
-@@ -25,6 +25,10 @@
+@@ -29,6 +29,10 @@
+ typedef int vm_fault_t;
+ #endif
  
- #include "conftest.h"
- 
-+#if defined(NV_MM_STRUCT_HAS_MMAP_LOCK)
++#if defined(NV_MM_HAS_MMAP_LOCK)
 +#define mmap_sem mmap_lock
 +#endif
 +
- #ifndef NV_VMF_INSERT_PFN_PRESENT
- typedef int vm_fault_t;
- #endif
+ /* get_user_pages
+  *
+  * The 8-argument version of get_user_pages was deprecated by commit 
 diff --git a/kernel/conftest.sh b/kernel/conftest.sh
-index e2aa328..1ba22dc 100755
+index 7da7505..7793dd6 100755
 --- a/kernel/conftest.sh
 +++ b/kernel/conftest.sh
-@@ -2646,6 +2646,49 @@ compile_test() {
-             compile_check_conftest "$CODE" "NV_VZALLOC_PRESENT" "" "functions"
+@@ -4067,6 +4067,44 @@ compile_test() {
+             compile_check_conftest "$CODE" "NV_KTIME_GET_REAL_TS64_PRESENT" "" "functions"
          ;;
  
-+        vmalloc_argument_count)
++        vmalloc_has_pgprot_t_arg)
 +            #
-+            # Determine how many arguments __vmalloc takes.
++            # Determine if __vmalloc has the 'pgprot' argument.
 +            #
-+            # Changed by commit fc3af83c4fca ("mm: remove the pgprot argument
-+            # to __vmalloc")
-+            #
-+            echo "$CONFTEST_PREAMBLE
-+            #include <linux/mm.h>
-+            #include <linux/vmalloc.h>
-+            void conftest_vmalloc_argument_count(void) {
-+                __vmalloc(0, GFP_KERNEL, PAGE_KERNEL);
-+            }" > conftest$$.c
++            # The third argument to __vmalloc, page protection
++            # 'pgprot_t prot', was removed by commit 88dca4ca5a93
++            # (mm: remove the pgprot argument to __vmalloc)
++            # in v5.8-rc1 (2020-06-01).
++        CODE="
++        #include <linux/vmalloc.h>
 +
-+            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
-+            rm -f conftest$$.c
++        void conftest_vmalloc_has_pgprot_t_arg(void) {
++            pgprot_t prot;
++            (void)__vmalloc(0, 0, prot);
++        }"
 +
-+            if [ -f conftest$$.o ]; then
-+                echo "#define NV_VMALLOC_ARGUMENT_COUNT_ARGUMENT_COUNT 3" | append_conftest "functions"
-+            else
-+                echo "#define NV_VMALLOC_ARGUMENT_COUNT_ARGUMENT_COUNT 2" | append_conftest "functions"
-+            fi
++            compile_check_conftest "$CODE" "NV_VMALLOC_HAS_PGPROT_T_ARG" "" "types"
 +
-+            rm -f conftest$$.o
 +        ;;
 +
-+        mm_struct_has_mmap_lock)
++        mm_has_mmap_lock)
 +            #
-+            # Determine if the mm_struct structure has 'mmap_lock'.
++            # Determine if the 'mm_struct' structure has a 'mmap_lock' field.
 +            #
-+            # Changed by commit ea7b54944ef9 ("mmap locking API: rename mmap_sem
-+            # to mmap_lock")
-+            #
++            # Kernel commit da1c55f1b272 ("mmap locking API: rename mmap_sem
++            # to mmap_lock") replaced the field 'mmap_sem' by 'mmap_lock'
++            # in v5.8-rc1 (2020-06-08).
 +            CODE="
-+            #include <linux/mm.h>
++            #include <linux/mm_types.h>
 +
-+            int conftest_mm_struct_has_mmap_lock(void) {
++            int conftest_mm_has_mmap_lock(void) {
 +                return offsetof(struct mm_struct, mmap_lock);
 +            }"
 +
-+            compile_check_conftest "$CODE" "NV_MM_STRUCT_HAS_MMAP_LOCK" "" "types"
++            compile_check_conftest "$CODE" "NV_MM_HAS_MMAP_LOCK" "" "types"
++
 +        ;;
 +
-         drm_driver_has_set_busid)
+         pci_dev_has_skip_bus_pm)
              #
-             # Determine if the drm_driver structure has a 'set_busid' callback
+             # Determine if skip_bus_pm flag is present in struct pci_dev.
 diff --git a/kernel/nvidia/nvidia.Kbuild b/kernel/nvidia/nvidia.Kbuild
-index dea8d10..aa1bf6d 100644
+index 63e369f..656db7b 100644
 --- a/kernel/nvidia/nvidia.Kbuild
 +++ b/kernel/nvidia/nvidia.Kbuild
-@@ -156,6 +156,7 @@ NV_CONFTEST_FUNCTION_COMPILE_TESTS += kmem_cache_create_usercopy
- NV_CONFTEST_FUNCTION_COMPILE_TESTS += do_gettimeofday
- NV_CONFTEST_FUNCTION_COMPILE_TESTS += dma_direct_map_resource
- NV_CONFTEST_FUNCTION_COMPILE_TESTS += vmf_insert_pfn
-+NV_CONFTEST_FUNCTION_COMPILE_TESTS += vmalloc_argument_count
- 
- NV_CONFTEST_SYMBOL_COMPILE_TESTS += is_export_symbol_gpl_of_node_to_nid
- NV_CONFTEST_SYMBOL_COMPILE_TESTS += is_export_symbol_present_swiotlb_map_sg_attrs
-@@ -193,6 +194,7 @@ NV_CONFTEST_TYPE_COMPILE_TESTS += kstrtoull
+@@ -192,7 +192,9 @@ NV_CONFTEST_TYPE_COMPILE_TESTS += iterate_dir
+ NV_CONFTEST_TYPE_COMPILE_TESTS += kstrtoull
  NV_CONFTEST_TYPE_COMPILE_TESTS += backlight_properties_type
+ NV_CONFTEST_TYPE_COMPILE_TESTS += proc_ops
++NV_CONFTEST_TYPE_COMPILE_TESTS += vmalloc_has_pgprot_t_arg
+ NV_CONFTEST_TYPE_COMPILE_TESTS += timeval
++NV_CONFTEST_TYPE_COMPILE_TESTS += mm_has_mmap_lock
  NV_CONFTEST_TYPE_COMPILE_TESTS += kmem_cache_has_kobj_remove_work
  NV_CONFTEST_TYPE_COMPILE_TESTS += sysfs_slab_unlink
-+NV_CONFTEST_TYPE_COMPILE_TESTS += mm_struct_has_mmap_lock
- 
- NV_CONFTEST_GENERIC_COMPILE_TESTS += dom0_kernel_present
- NV_CONFTEST_GENERIC_COMPILE_TESTS += nvidia_vgpu_kvm_build
+ NV_CONFTEST_TYPE_COMPILE_TESTS += pci_dev_has_skip_bus_pm
+-- 
+2.25.1 
