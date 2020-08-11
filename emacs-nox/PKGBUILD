@@ -1,17 +1,16 @@
 
 pkgname=emacs-nox
-pkgver=26.3
-pkgrel=2
+pkgver=27.1
+pkgrel=1
 pkgdesc='The Emacs Editor, without X11 support'
 arch=('x86_64')
 url="https://www.gnu.org/software/emacs/emacs.html"
 license=('GPL3')
 depends=('dbus' 'ncurses' 'perl' 'gpm' 'libxpm')
 provides=('emacs')
-conflicts=('emacs' 'emacs-cvs')
 options=('docs')
 source=("https://ftp.gnu.org/gnu/emacs/emacs-${pkgver}.tar.xz")
-md5sums=('0a2e4b965d31a7cb1930eae3b79df793')
+md5sums=('f1f25356b68ec69caccd41d95988d23d')
 
 build() {
   cd emacs-$pkgver
