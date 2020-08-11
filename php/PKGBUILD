@@ -1,7 +1,7 @@
 
 #http://news.php.net/group.php?group=php.announce
 pkgname=php
-pkgver=7.3.21
+pkgver=7.4.9
 pkgrel=1
 arch=('x86_64')
 pkgdesc='An HTML-embedded scripting language'
@@ -53,19 +53,19 @@ source=("http://www.php.net/distributions/${pkgname}-${pkgver}.tar.xz"
         'php-fpm.service'
         'php-fpm.tmpfiles'
         'enchant2.patch')
-sha256sums=('4c8b065746ef776d84b7ae47908c21a79e3d4704b86b60d816716b8697c58ce9'
-            '07627f57bbc5559a63bfc77e21edd4e2a5d3aa15fed4d9dfe00e877dd31b7c9f'
+sha256sums=('23733f4a608ad1bebdcecf0138ebc5fd57cf20d6e0915f98a9444c3f747dc57b'
+            'f2040cc0648a395d0a84984dd6bf7aadf9f569b58838c666d84898bc4578fe04'
             '0f60fe0bc69fb06663faeb7ca710e573cdfd32cbb686bf6ccf49af76c53883d0'
             '65af4ebac5a1912292c701cca0313c76bd30450ef00d39f449ff5e8cbcfb82ba'
             '640dba0d960bfeaae9ad38d2826d3f6b5d6c175a4d3e16664eefff29141faad5'
-            '190998e5980c9a105c5bde4dd197f3aa0a97466640b71d184c6705894f754012')
+            '124702bfd8eff2e88026c2f3c204476f3ccaa9a8eddcd084f9a81b050a20338d')
 
 prepare() {
 	cd ${pkgname}-${pkgver}
 
 	patch -p0 -i ${srcdir}/php.ini.patch
 	patch -p0 -i ${srcdir}/php-fpm.conf.in.patch
-	patch -p1 -i ${srcdir}/enchant2.patch
+	patch -p0 -i ${srcdir}/enchant2.patch
 	
 	sed -i -e 's|#include "buffio.h"|#include "tidybuffio.h"|' ext/tidy/tidy.c
 }
@@ -94,6 +94,7 @@ build() {
 		--enable-dba=shared \
 		--enable-exif=shared \
 		--enable-ftp=shared \
+		--enable-gd=shared \
 		--enable-intl=shared \
 		--enable-mbstring \
 		--enable-shmop=shared \
@@ -102,40 +103,32 @@ build() {
 		--enable-sysvmsg=shared \
 		--enable-sysvsem=shared \
 		--enable-sysvshm=shared \
-		--enable-zip=shared \
 		--with-password-argon2 \
 		--with-bz2=shared \
 		--with-curl=shared \
 		--with-db4=/usr \
-		--with-enchant=shared,/usr \
+		--with-enchant=shared \
+		--with-external-pcre \
 		--with-fpm-systemd \
-		--with-freetype-dir=/usr \
-		--with-xpm-dir=/usr \
-		--with-gd=shared \
 		--with-gdbm \
 		--with-gettext=shared \
 		--with-gmp=shared \
 		--with-iconv=shared \
-		--with-icu-dir=/usr \
 		--with-imap-ssl \
 		--with-imap=shared \
 		--with-kerberos=/usr \
-		--with-jpeg-dir=/usr \
 		--with-ldap=shared \
 		--with-ldap-sasl \
-		--with-libzip \
 		--with-mhash \
 		--with-mysql-sock=/run/mysqld/mysqld.sock \
 		--with-mysqli=shared,mysqlnd \
 		--with-openssl \
-		--with-pcre-regex=/usr \
 		--with-pdo-dblib=shared,/usr \
 		--with-pdo-mysql=shared,mysqlnd \
 		--with-pdo-odbc=shared,unixODBC,/usr \
 		--with-pdo-pgsql=shared \
 		--with-pdo-sqlite=shared,/usr \
 		--with-pgsql=shared \
-		--with-png-dir=/usr \
 		--with-pspell=shared \
 		--with-snmp=shared \
 		--with-sodium=shared \
@@ -144,6 +137,7 @@ build() {
 		--with-unixODBC=shared,/usr \
 		--with-xmlrpc=shared \
 		--with-xsl=shared \
+		--with-zip=shared \
 		--with-zlib \
 		--enable-cli \
 		--enable-cgi \
