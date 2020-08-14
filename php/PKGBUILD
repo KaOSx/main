@@ -9,7 +9,8 @@ license=('PHP')
 url='https://secure.php.net/'
 depends=('postgresql-libs' 'libldap' 'sqlite' 'unixodbc' 'net-snmp' 'enchant' 
          'freetds' 'libmcrypt' 'tidyhtml' 'aspell' 'libtool' 'libpng' 'icu' 'curl' 'libxslt' 'bzip2'
-         'freetype2' 'harfbuzz' 'systemd' 'pcre2' 'libxml2' 'libxpm' 'libzip' 'gdbm' 'argon2' 'libsodium') #'libvpx'
+         'freetype2' 'harfbuzz' 'systemd' 'pcre2' 'libxml2' 'libxpm' 'libzip' 'gdbm' 'argon2' 'libsodium'
+         'oniguruma') #'libvpx'
 makedepends=('imap' 'mariadb' 'postfix' 'file' 'libjpeg-turbo' 'openssl' 'db' 'gmp')
 backup=('etc/php/php.ini'
         'etc/php/php-fpm.conf')
@@ -58,7 +59,7 @@ sha256sums=('23733f4a608ad1bebdcecf0138ebc5fd57cf20d6e0915f98a9444c3f747dc57b'
             '0f60fe0bc69fb06663faeb7ca710e573cdfd32cbb686bf6ccf49af76c53883d0'
             '65af4ebac5a1912292c701cca0313c76bd30450ef00d39f449ff5e8cbcfb82ba'
             '640dba0d960bfeaae9ad38d2826d3f6b5d6c175a4d3e16664eefff29141faad5'
-            '124702bfd8eff2e88026c2f3c204476f3ccaa9a8eddcd084f9a81b050a20338d')
+            '2ab626fdc1b33cda72d2950bc9d598362554b5d694f17614d312fc652d5f7ec1')
 
 prepare() {
 	cd ${pkgname}-${pkgver}
@@ -118,7 +119,7 @@ build() {
 		--with-imap=shared \
 		--with-kerberos=/usr \
 		--with-ldap=shared \
-		--with-ldap-sasl \
+		--without-ldap-sasl \
 		--with-mhash \
 		--with-mysql-sock=/run/mysqld/mysqld.sock \
 		--with-mysqli=shared,mysqlnd \

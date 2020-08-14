@@ -1,20 +1,14 @@
 --- ext/enchant/config.m4.orig
 +++ ext/enchant/config.m4
-@@ -4,10 +4,10 @@
+@@ -4,7 +4,7 @@
      [Include Enchant support])])
  
  if test "$PHP_ENCHANT" != "no"; then
 -  PKG_CHECK_MODULES([ENCHANT], [enchant])
 +  PKG_CHECK_MODULES([ENCHANT2], [enchant-2])
  
--  PHP_EVAL_INCLINE($ENCHANT_CFLAGS)
--  PHP_EVAL_LIBLINE($ENCHANT_LIBS, ENCHANT_SHARED_LIBADD)
-+  PHP_EVAL_INCLINE($ENCHANT2_CFLAGS)
-+  PHP_EVAL_LIBLINE($ENCHANT2_LIBS, ENCHANT_SHARED_LIBADD)
- 
-   AC_DEFINE(HAVE_ENCHANT, 1, [ ])
- 
-
+   PHP_EVAL_INCLINE($ENCHANT_CFLAGS)
+   PHP_EVAL_LIBLINE($ENCHANT_LIBS, ENCHANT_SHARED_LIBADD)
 --- ext/enchant/enchant.c.orig
 +++ ext/enchant/enchant.c
 @@ -738,7 +738,7 @@
@@ -52,3 +46,4 @@
 +	RETURN_BOOL(enchant_dict_is_added(pdict->pdict, word, wordlen));
  }
  /* }}} */
+ 
