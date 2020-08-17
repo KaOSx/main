@@ -1,0 +1,26 @@
+
+pkgname=avisynthplus
+_pkgname=AviSynthPlus
+pkgver=3.6.1
+pkgrel=1
+pkgdesc='AviSynth+ is a fork of the well-known AviSynth frameserver'
+arch=('x86_64')
+url='https://avs-plus.net/'
+license=('GPL')
+depends=('gcc-libs')
+makedepends=('cmake')
+source=("https://github.com/AviSynth/${_pkgname}/archive/v${pkgver}.tar.gz")
+md5sums=('4bd26c4764e2e8ba052990cb18e1d4c1')
+
+build() {
+  cmake -B build -S ${_pkgname}-${pkgver} \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DHEADERS_ONLY=ON 
+  cmake --build build
+}
+
+package() {
+
+  DESTDIR=${pkgdir} cmake --install build
+}
