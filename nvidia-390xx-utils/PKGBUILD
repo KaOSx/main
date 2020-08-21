@@ -3,7 +3,7 @@ pkgbase=nvidia-390xx-utils
 pkgname=('nvidia-390xx-utils' 'nvidia-390xx-settings')
 # Edit hardware-detection/hooks/hwdetect_7_graphics and Installer job 11 on version jump from 39x.xx
 pkgver=390.138
-pkgrel=2
+pkgrel=3
 arch=('x86_64')
 url="https://www.nvidia.com/page/home.html"
 license=('custom')
@@ -13,9 +13,11 @@ _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 #_pkg="NVIDIA-Linux-x86_64-${pkgver}"
 source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
 #source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}.run"
-        'nvidia-restore-settings.desktop')
+        'nvidia-restore-settings.desktop'
+        'nvidia-drm-outputclass.conf')
 md5sums=('06e8b4f973719cb425a580542c861259'
-         '9237516792da7b6df32f8c7e8a98f475')
+         '9237516792da7b6df32f8c7e8a98f475'
+         'cb27b0f4a78af78aa96c5aacae23256c')
 
 create_links() {
   while read -d '' _lib; do
@@ -46,6 +48,8 @@ package_nvidia-390xx-utils() {
   install -D -m755 libglx.so.${pkgver} ${pkgdir}/usr/lib/nvidia/xorg/modules/extensions/libglx.so.${pkgver}
   ln -s libglx.so.${pkgver} ${pkgdir}/usr/lib/nvidia/xorg/modules/extensions/libglx.so.1 # X doesn't find glx otherwise
   ln -s libglx.so.${pkgver} ${pkgdir}/usr/lib/nvidia/xorg/modules/extensions/libglx.so # X doesn't find glx otherwise
+  ln -s libglx.so.${pkgver} ${pkgdir}/usr/lib/nvidia/xorg/modules/libglx.so.1 # X doesn't find glx otherwise
+  ln -s libglx.so.${pkgver} ${pkgdir}/usr/lib/nvidia/xorg/modules/libglx.so # X doesn't find glx otherwise
   
   # GLVND vendor implementation libraries for GLX
   install -D -m755 libGLX_nvidia.so.${pkgver} ${pkgdir}/usr/lib/libGLX_nvidia.so.${pkgver}
@@ -103,6 +107,9 @@ package_nvidia-390xx-utils() {
   install -D -m644 README.txt "${pkgdir}/usr/share/doc/nvidia/README"
   install -D -m644 NVIDIA_Changelog "${pkgdir}/usr/share/doc/nvidia/NVIDIA_Changelog"
   ln -s nvidia "${pkgdir}/usr/share/doc/nvidia-utils"
+  
+  # conf
+  install -D -m644 ${srcdir}/nvidia-drm-outputclass.conf ${pkgdir}/etc/X11/xorg.conf.d/nvidia-drm-outputclass.conf
 
   create_links
 }

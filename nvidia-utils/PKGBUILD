@@ -3,7 +3,7 @@ pkgbase=nvidia-utils
 pkgname=('nvidia-utils' 'opencl-nvidia' 'nvidia-settings')
 # Edit hardware-detection/hooks/hwdetect_7_graphics and Installer job 11 on version jump from 43x.xx
 pkgver=450.66
-pkgrel=1
+pkgrel=2
 epoch=1
 arch=('x86_64')
 url="https://www.nvidia.com/page/home.html"
@@ -14,9 +14,11 @@ _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 #_pkg="NVIDIA-Linux-x86_64-${pkgver}"
 source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
 #source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}.run"
-        'nvidia-restore-settings.desktop')
+        'nvidia-restore-settings.desktop'
+        'nvidia-drm-outputclass.conf')
 md5sums=('6853bd8c9471cf74889cdaba4c45709f'
-         '9237516792da7b6df32f8c7e8a98f475')
+         '9237516792da7b6df32f8c7e8a98f475'
+         'cb27b0f4a78af78aa96c5aacae23256c')
 
 create_links() {
   while read -d '' _lib; do
@@ -148,6 +150,9 @@ package_nvidia-utils() {
   install -D -m644 nvidia-persistenced.1.gz ${pkgdir}/usr/share/man/man1/nvidia-persistenced.1.gz
   install -D -m644 nvidia-persistenced-init/systemd/nvidia-persistenced.service.template ${pkgdir}/usr/lib/systemd/system/nvidia-persistenced.service
   sed -i 's/__USER__/nvidia-persistenced/' ${pkgdir}/usr/lib/systemd/system/nvidia-persistenced.service
+  
+  # conf
+  install -D -m644 ${srcdir}/nvidia-drm-outputclass.conf ${pkgdir}/etc/X11/xorg.conf.d/nvidia-drm-outputclass.conf
 
   create_links
 }

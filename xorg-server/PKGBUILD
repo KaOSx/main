@@ -2,7 +2,7 @@
 pkgname=xorg-server
 pkgver=1.20.8
 # major updates build xorg-server/xf86-input-evdev/xorg-server again
-pkgrel=2
+pkgrel=3
 pkgdesc="X.Org X servers"
 arch=('x86_64')
 license=('custom')
@@ -21,11 +21,9 @@ conflicts=('glamor-egl' 'xf86-video-modesetting' )
 replaces=('glamor-egl' 'xf86-video-modesetting')
 groups=('xorg')
 source=("https://xorg.freedesktop.org/releases/individual/xserver/${pkgname}-${pkgver}.tar.bz2"
-        'nvidia-drm-outputclass.conf'
         'xvfb-run'
         'xvfb-run.1')
 sha256sums=('d17b646bee4ba0fb7850c1cc55b18e3e8513ed5c02bdf38da7e107f84e2d0146'
-            'd3792f4c076eb69ccece1ad4d99c691e02aec86a9b0f69a6cbb4f1b6c448eb62'
             'ff0156309470fc1d378fd2e104338020a884295e285972cc88e250e031cc35b9'
             '2460adccd3362fefd4cdc5f1c70f332d7b578091fb9167bf88b5f91265bbd776')
 
@@ -79,7 +77,6 @@ package() {
 
   install -m755 -d ${pkgdir}/etc/X11
   mv ${pkgdir}/usr/share/X11/xorg.conf.d ${pkgdir}/etc/X11/
-  install -m644 ${srcdir}/nvidia-drm-outputclass.conf ${pkgdir}/etc/X11/xorg.conf.d/
 
   rmdir ${pkgdir}/usr/share/X11
 
