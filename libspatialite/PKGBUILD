@@ -1,8 +1,8 @@
 
 pkgname=libspatialite
-pkgver=4.3.0.1
-_pkgver=4.3.0a
-pkgrel=4
+pkgver=5.0.0
+_pkgver=5.0.0
+pkgrel=1
 pkgdesc="SQLite extension to support spatial data types and operations"
 arch=('x86_64')
 url="https://www.gaia-gis.it/fossil/libspatialite/index"
@@ -10,12 +10,12 @@ license=('MPL')
 depends=('geos' 'sqlite3' 'libfreexl' 'zlib' 'proj')
 options=('!libtool')
 source=("http://www.gaia-gis.it/gaia-sins/${pkgname}-sources/${pkgname}-${_pkgver}.tar.gz")
-md5sums=('6b380b332c00da6f76f432b10a1a338c')
+md5sums=('90529e1931c3bfd28e6b96cbf9e6040e')
 
 build() {
   cd ${pkgname}-${_pkgver}
   
-  CFLAGS=-DACCEPT_USE_OF_DEPRECATED_PROJ_API_H
+  #CFLAGS=-DACCEPT_USE_OF_DEPRECATED_PROJ_API_H
   
   ./configure --prefix=/usr \
     --enable-proj
