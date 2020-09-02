@@ -1,0 +1,25 @@
+
+pkgname=python3-distro
+pkgver=1.5.0
+pkgrel=1
+pkgdesc="Provides information about the OS distribution it runs on, such as a reliable machine-readable ID, or version information."
+arch=('x86_64')
+license=('Apache-2.0')
+url="https://github.com/nir0s/distro"
+depends=('python3-setuptools')
+source=("https://files.pythonhosted.org/packages/source/d/distro/distro-${pkgver}.tar.gz")
+sha256sums=('0e58756ae38fbd8fc3020d54badb8eae17c5b9dcbed388b17bb55b8a5928df92')
+
+build() {
+   cd distro-${pkgver}
+   
+   python3 setup.py build
+}
+ 
+package() {
+   cd distro-${pkgver}
+   
+   python3 setup.py install --prefix=/usr --root=${pkgdir} --optimize=1 --skip-build
+}
+ 
+

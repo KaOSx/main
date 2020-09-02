@@ -1,20 +1,26 @@
 
 pkgname=telepathy-idle
 pkgver=0.2.0
-pkgrel=4
+pkgrel=5
 pkgdesc="IRC connection manager for Telepathy"
 arch=('x86_64')
 url="https://telepathy.freedesktop.org"
 groups=('telepathy')
 license=('LGPL')
 depends=('telepathy-glib' 'openssl')
-makedepends=('libxslt' 'python2')
+makedepends=('libxslt' 'python3')
 install=telepathy-idle.install
-source=("https://telepathy.freedesktop.org/releases/telepathy-idle/${pkgname}-${pkgver}.tar.gz")
-md5sums=('92a2de5198284cbd3c430b0d1a971a86')
+source=("https://telepathy.freedesktop.org/releases/telepathy-idle/${pkgname}-${pkgver}.tar.gz"
+        "https://github.com/TelepathyIM/telepathy-idle/pull/8/commits/8cdedc1d6716b2bb8ac7a95a00cf696f82ebbc38.diff"
+        "https://github.com/TelepathyIM/telepathy-idle/pull/8/commits/e8d12395db956727b037cefdf0e60ed409f0b33a.diff")
+md5sums=('92a2de5198284cbd3c430b0d1a971a86'
+         'c4349e4198135d7a3f0c8537ff928527'
+         'a58d8ac8eb5f3ff92aa493f2ccccef3e')
 
 build() {
     cd ${pkgname}-${pkgver}
+    patch -p1 -i ${srcdir}/e8d12395db956727b037cefdf0e60ed409f0b33a.diff
+    patch -p1 -i ${srcdir}/8cdedc1d6716b2bb8ac7a95a00cf696f82ebbc38.diff
     
     ./configure --prefix=/usr \
         --libexecdir=/usr/lib/telepathy
