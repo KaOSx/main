@@ -3,7 +3,7 @@ _USE_GNU_EFI="1"
 
 pkgname=refind-efi
 pkgver=0.11.5
-pkgrel=2
+pkgrel=3
 pkgdesc="Rod Smith's fork of rEFIt UEFI Boot Manager"
 url="http://www.rodsbooks.com/refind/index.html"
 arch=('x86_64')
@@ -26,7 +26,7 @@ if [[ "${_USE_GNU_EFI}" == "1" ]]; then
 else
 	
 	pkgdesc="${pkgdesc} - Built with Tianocore UDK libs"
-	makedepends+=('subversion' 'python2')
+	makedepends+=('subversion' 'python3')
 	
 	_TIANOCORE_SVN_URL="https://svn.code.sf.net/p/edk2/code/branches/UDK2014"
 	_TIANO_DIR_="tianocore-udk-2014-svn"
@@ -73,9 +73,9 @@ _prepare_tianocore_sources() {
 	mkdir -p "${_UDK_DIR}/Conf/"
 	mkdir -p "${_UDK_DIR}/Build/"
 	
-	msg "Use python2 for UDK BaseTools"
-	sed 's|python |python2 |g' -i "${EDK_TOOLS_PATH}/BinWrappers/PosixLike"/* || true
-	sed 's|python |python2 |g' -i "${EDK_TOOLS_PATH}/Tests/GNUmakefile"
+	msg "Use python3 for UDK BaseTools"
+	sed 's|python |python3 |g' -i "${EDK_TOOLS_PATH}/BinWrappers/PosixLike"/* || true
+	sed 's|python |python3 |g' -i "${EDK_TOOLS_PATH}/Tests/GNUmakefile"
 	
 	msg "Fix GCC Warning as error"
 	sed 's|-Werror |-Wno-error -Wno-unused-but-set-variable |g' -i "${EDK_TOOLS_PATH}/Source/C/Makefiles/header.makefile" || true
