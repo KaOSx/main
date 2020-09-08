@@ -1,6 +1,6 @@
 
 pkgname=gst-plugins-base
-pkgver=1.16.2
+pkgver=1.18.0
 pkgrel=1
 pkgdesc="GStreamer Multimedia Framework Base Plugins"
 arch=('x86_64')
@@ -8,34 +8,35 @@ url="https://gstreamer.freedesktop.org/"
 license=('LGPL')
 depends=("gstreamer>=${pkgver}" 'orc' 'libxv' 'alsa-lib' 'cdparanoia' 'libvisual'
          'libvorbis' 'libtheora' 'pango' 'opus' 'iso-codes')
-makedepends=('pkgconfig' 'gobject-introspection' 'qt5-base' 'python3')
+makedepends=('pkgconfig' 'gobject-introspection' 'qt5-base' 'python3' 'meson' 'ninja')
 options=('!libtool' '!emptydirs')
 source=("https://gstreamer.freedesktop.org/src/gst-plugins-base/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('b13e73e2fe74a4166552f9577c3dcb24bed077021b9c7fa600d910ec6987816a')
+sha256sums=('762abdd1a950809a1cea62fff7f86b5f7d6bd5f6841e3e585c700b823cdb7897')
 
 build() {
-  cd ${pkgname}-${pkgver}
+  mkdir -p build
+  cd build
   
-  ./configure --prefix=/usr \
-    --sysconfdir=/etc \
-    --localstatedir=/var \
-    --disable-static \
-    --enable-experimental \
-    --with-package-name="GStreamer Base (KaOS)" \
-    --with-package-origin="https://kaosx.us/" 
-  make
+  meson ../${pkgname}-${pkgver} \
+    --prefix=/usr \
+    --buildtype=release \
+    --libexecdir=lib \
+    -Dpackage-name="GStreamer (KaOS)" \
+    -Dpackage-origin="https://kaosx.us/" \
+    -Dgobject-cast-checks=disabled
+  ninja
 }
 
 check() {
-  cd ${pkgname}-${pkgver}
-  # 3 failing elements/glimagesink, elements/multisocketsink
-  make check
+  cd build
+  # 1 fail, elements_glimagesink             FAIL
+  meson test
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
+  cd build
   
-  make DESTDIR=${pkgdir} install
-  make -C ext DESTDIR=${pkgdir} install
+  DESTDIR=${pkgdir} ninja install
 }
+
 

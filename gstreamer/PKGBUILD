@@ -1,38 +1,41 @@
 
 pkgname=gstreamer
-pkgver=1.16.2
+pkgver=1.18.0
 pkgrel=1
 pkgdesc="GStreamer Multimedia Framework"
 arch=('x86_64')
 license=('LGPL')
 url="https://gstreamer.freedesktop.org/"
-depends=('libxml2' 'glib2')
-makedepends=('intltool' 'pkgconfig' 'gobject-introspection' 'python3')
+depends=('libxml2' 'glib2' 'libunwind' 'bash-completion')
+makedepends=('meson' 'ninja' 'gobject-introspection' 'python3' 'gsl')
 options=('!libtool')
 source=("https://gstreamer.freedesktop.org/src/gstreamer/gstreamer-${pkgver}.tar.xz")
-sha256sums=('e3f044246783fd685439647373fa13ba14f7ab0b346eadd06437092f8419e94e')
+sha256sums=('0ff09245b06c0aeb5d9a156edcab088a7e8213a0bf9c84a1ff0318f9c00c7805')
 
 build() {
-  cd gstreamer-${pkgver}
+  mkdir -p build
+  cd build
   
-    ./configure --prefix=/usr \
-      --sysconfdir=/etc \
-      --localstatedir=/var \
-      --libexecdir=/usr/lib \
-      --with-package-name="GStreamer (KaOS)" \
-      --with-package-origin="https://kaosx.us/" \
-      --disable-static 
-  make
+  meson ../${pkgname}-${pkgver} \
+    --prefix=/usr \
+    --buildtype=release \
+    --libexecdir=lib \
+    -Dpackage-name="GStreamer (KaOS)" \
+    -Dpackage-origin="https://kaosx.us/" \
+    -Dgobject-cast-checks=disabled \
+    -Ddbghelp=disabled
+  ninja
 }
 
 check() {
-  cd gstreamer-${pkgver}
+  cd build
   
-  make check
+  meson test
 }
 
 package() {
-  cd gstreamer-${pkgver}
+  cd build
   
-  make DESTDIR=${pkgdir} install
+  DESTDIR=${pkgdir} ninja install
 }
+

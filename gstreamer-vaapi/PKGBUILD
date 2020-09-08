@@ -1,36 +1,37 @@
 
 pkgname=gstreamer-vaapi
-pkgver=1.16.2
+pkgver=1.18.0
 pkgrel=1
 pkgdesc="GStreamer Multimedia Framework Vaapi Plugin"
 arch=('x86_64')
 license=('LGPL')
 url="https://gstreamer.freedesktop.org/"
 depends=('gst-plugins-bad' 'libva' 'libxrandr')
-makedepends=('python3' 'gobject-introspection')
+makedepends=('python3' 'gobject-introspection' 'meson' 'ninja')
 options=('!libtool')
 source=("https://gstreamer.freedesktop.org/src/gstreamer-vaapi/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('191de7b0ab64a85dd0875c990721e7be95518f60e2a9106beca162004ed7c601')
+sha256sums=('c6efeb8c736f75bb1b53ab18413c60c4321300e7aee66641bcc07d59c2fe9e31')
 
 build() {
-  cd ${pkgname}-${pkgver}
+  mkdir -p build
+  cd build
   
-    ./configure --prefix=/usr \
-      --sysconfdir=/etc \
-      --localstatedir=/var \
-      --libexecdir=/usr/lib \
-      --disable-static 
-  make
+  meson ../${pkgname}-${pkgver} \
+    --prefix=/usr \
+    --buildtype=release \
+    -Dpackage-name="GStreamer Good (KaOS)" \
+    -Dpackage-origin="https://kaosx.us/" 
+  ninja
 }
 
 check() {
-  cd ${pkgname}-${pkgver}
-  
-  make check
+  cd build
+  # 1 fail: elements_vaapipostproc FAIL
+  ninja test
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
+  cd build
   
-  make DESTDIR=${pkgdir} install
+  DESTDIR=${pkgdir} ninja install
 }

@@ -1,38 +1,37 @@
 
 pkgname=gst-libav
-pkgver=1.16.2
+pkgver=1.18.0
 pkgrel=1
 pkgdesc="Gstreamer libav Plugin"
 arch=('x86_64')
 license=('GPL')
 url="https://gstreamer.freedesktop.org/"
-depends=('gst-plugins-base' 'bzip2')
-makedepends=('yasm' 'python3')
+depends=('gst-plugins-base' 'bzip2' 'ffmpeg')
+makedepends=('yasm' 'python3' 'meson' 'ninja')
 options=('!emptydirs' '!libtool')
 source=("https://gstreamer.freedesktop.org/src/gst-libav/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('c724f612700c15a933c7356fbeabb0bb9571fb5538f8b1b54d4d2d94188deef2')
+sha256sums=('42f93f5ce9a3fc22051e5f783a4574b56ebf213f331f75dcbc3552459bd3a06a')
 
 build() {
-  cd ${pkgname}-${pkgver}
-
-  ./configure --prefix=/usr \
-      --sysconfdir=/etc \
-      --localstatedir=/var \
-      --disable-static \
-      --with-libav-extra-configure="--enable-runtime-cpudetect" \
-      --with-package-name="GStreamer libav Plugin (KaOS)" \
-      --with-package-origin="https://kaosx.us/" 
-  make
+  mkdir -p build
+  cd build
+  
+  meson ../${pkgname}-${pkgver} \
+    --prefix=/usr \
+    --buildtype=release \
+    -Dpackage-name="GStreamer Good (KaOS)" \
+    -Dpackage-origin="https://kaosx.us/" 
+  ninja
 }
 
 check() {
-  cd ${pkgname}-${pkgver}
+  cd build
 
-  make check
+  ninja test
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
-
-  make DESTDIR="${pkgdir}" install
+  cd build
+  
+  DESTDIR=${pkgdir} ninja install
 }
