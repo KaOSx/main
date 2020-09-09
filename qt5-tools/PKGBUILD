@@ -32,7 +32,7 @@ md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
 
 build() {
     cd ${srcdir}/${_pkgfqn}
-    patch -p1 -i ${srcdir}/3c30956e65a98706d283d44e07fd481a1849f74e.diff
+    #patch -p1 -i ${srcdir}/3c30956e65a98706d283d44e07fd481a1849f74e.diff
 
     /usr/lib/qt5/bin/qmake # INCLUDEPATH="/usr/include/QtWebKit /usr/include/QtWebKitWidgets"
     make
