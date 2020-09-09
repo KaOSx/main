@@ -1,25 +1,29 @@
 
 pkgname=libsndfile
-pkgver=1.0.28
-pkgrel=2
+pkgver=1.0.29
+pkgrel=1
 pkgdesc="A C library for reading and writing files containing sampled sound"
 arch=('x86_64')
 url="http://www.mega-nerd.com/libsndfile"
 license=('LGPL')
-depends=('alsa-lib' 'flac' 'libvorbis')
+depends=('alsa-lib' 'flac' 'libvorbis' 'python3' 'opus' 'speex')
+makedepends=('cmake')
 options=('!libtool')
-source=("http://www.mega-nerd.com/libsndfile/files/${pkgname}-${pkgver}.tar.gz")
-md5sums=('646b5f98ce89ac60cdb060fcd398247c')
+source=("https://github.com/erikd/libsndfile/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.bz2")
+md5sums=('054de114dc79f434eb75fe19436fed68')
 
 build() {
-  cd ${pkgname}-${pkgver}
-  
-  ./configure --prefix=/usr --disable-sqlite
-  make
+  cmake -B build -S ${pkgname}-${pkgver} \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DBUILD_SHARED_LIBS=ON \
+    -DBUILD_TESTING=OFF
+
+  cmake --build build
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
-  
-  make DESTDIR=${pkgdir} install
+
+  DESTDIR=${pkgdir} cmake --install build
 }
+
