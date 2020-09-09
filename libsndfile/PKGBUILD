@@ -1,7 +1,7 @@
 
 pkgname=libsndfile
 pkgver=1.0.29
-pkgrel=2
+pkgrel=3
 pkgdesc="A C library for reading and writing files containing sampled sound"
 arch=('x86_64')
 url="http://www.mega-nerd.com/libsndfile"
@@ -14,7 +14,7 @@ source=("https://github.com/erikd/libsndfile/releases/download/v${pkgver}/${pkgn
 md5sums=('054de114dc79f434eb75fe19436fed68'
          '2507c13ae7717dc67f1999749f8888fc')
 
-prepaare() {
+prepare() {
   cd ${pkgname}-${pkgver}
   
   patch -p1 -i ${srcdir}/a722c93f6999a5d6025bd90bb42cbb2733d54ce7.diff
