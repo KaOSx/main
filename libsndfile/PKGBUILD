@@ -1,7 +1,7 @@
 
 pkgname=libsndfile
 pkgver=1.0.29
-pkgrel=1
+pkgrel=2
 pkgdesc="A C library for reading and writing files containing sampled sound"
 arch=('x86_64')
 url="http://www.mega-nerd.com/libsndfile"
@@ -9,8 +9,16 @@ license=('LGPL')
 depends=('alsa-lib' 'flac' 'libvorbis' 'python3' 'opus' 'speex')
 makedepends=('cmake')
 options=('!libtool')
-source=("https://github.com/erikd/libsndfile/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('054de114dc79f434eb75fe19436fed68')
+source=("https://github.com/erikd/libsndfile/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.bz2"
+        "https://github.com/erikd/libsndfile/commit/a722c93f6999a5d6025bd90bb42cbb2733d54ce7.diff")
+md5sums=('054de114dc79f434eb75fe19436fed68'
+         '2507c13ae7717dc67f1999749f8888fc')
+
+prepaare() {
+  cd ${pkgname}-${pkgver}
+  
+  patch -p1 -i ${srcdir}/a722c93f6999a5d6025bd90bb42cbb2733d54ce7.diff
+}
 
 build() {
   cmake -B build -S ${pkgname}-${pkgver} \
