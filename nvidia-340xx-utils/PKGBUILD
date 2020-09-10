@@ -3,7 +3,7 @@ pkgbase=nvidia-340xx-utils
 pkgname=('nvidia-340xx-utils' 'nvidia-340xx-settings')
 # Edit hardware-detection/hooks/hwdetect_7_graphics on version jump from 3xx.xx
 pkgver=340.108
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 url="http://www.nvidia.com/"
 license=('custom')
@@ -11,9 +11,11 @@ makedepends=('xorg-server' 'libxvmc')
 options=('!strip')
 _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
-        'nvidia-restore-settings.desktop')
+        'nvidia-restore-settings.desktop'
+        'nvidia-drm-outputclass.conf')
 md5sums=('e783e383bd4344d590ad429eb0883717'
-         '9237516792da7b6df32f8c7e8a98f475')
+         '9237516792da7b6df32f8c7e8a98f475'
+         'cb27b0f4a78af78aa96c5aacae23256c')
 
 create_links() {
   # create soname links
@@ -72,6 +74,9 @@ package_nvidia-340xx-utils() {
   install -D -m644 README.txt "${pkgdir}/usr/share/doc/nvidia/README"
   install -D -m644 NVIDIA_Changelog "${pkgdir}/usr/share/doc/nvidia/NVIDIA_Changelog"
   ln -s nvidia "${pkgdir}/usr/share/doc/nvidia-utils"
+
+  # conf
+  install -D -m644 ${srcdir}/nvidia-drm-outputclass.conf ${pkgdir}/etc/X11/xorg.conf.d/nvidia-drm-outputclass.conf
 
   create_links
 }
