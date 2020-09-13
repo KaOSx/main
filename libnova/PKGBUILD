@@ -1,7 +1,7 @@
 
 pkgname=libnova
-pkgver=0.15.0
-pkgrel=3
+pkgver=0.16.0
+pkgrel=1
 pkgdesc="General purpose, double precision, celestial mechanics, astrometry and astrodynamics library."
 url="http://libnova.sourceforge.net/"
 license=('GPL2')
@@ -9,8 +9,9 @@ arch=('x86_64')
 depends=('glibc')
 makedepends=('pkgconfig')
 options=('!libtool')
-source=("https://downloads.sourceforge.net/sourceforge/libnova/${pkgname}-${pkgver}.tar.gz")
-md5sums=('756fdb55745cb78511f83a62c25f3be4')
+#source=("https://downloads.sourceforge.net/sourceforge/libnova/${pkgname}-${pkgver}.tar.gz")
+source=("https://dev.gentoo.org/~asturm/distfiles/${pkgname}-${pkgver}.tar.xz")
+md5sums=('181e41156e4bcf0f23ff723d77b7b881')
 
 build() {
     cd ${pkgname}-${pkgver}
