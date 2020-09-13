@@ -1,20 +1,24 @@
 
 pkgname=farstream
-pkgver=0.2.8
-pkgrel=4
+pkgver=0.2.9
+pkgrel=1
 pkgdesc="Farstream - Audio/Video Communications Framework"
 arch=('x86_64')
 url="https://www.freedesktop.org/wiki/Software/Farstream"
 license=('LGPL')
 depends=('libnice' 'gst-plugins-base' 'gst-plugins-good')
-makedepends=('gobject-introspection') # 'python3')
+makedepends=('gobject-introspection' 'python3' 'gtk-doc')
 options=('!libtool')
-source=("https://freedesktop.org/software/farstream/releases/farstream/${pkgname}-${pkgver}.tar.gz")
-md5sums=('a40d4c4bd0812c270069b9f97d74009b')
+source=("https://freedesktop.org/software/farstream/releases/farstream/${pkgname}-${pkgver}.tar.gz"
+        "https://gitlab.freedesktop.org/farstream/farstream/-/commit/54987d445ea714b467d901b7daf8c09ed0644189.diff")
+md5sums=('35ad6b9e0fb52debeaa2d5194bf5153c'
+         'a5d484189ca973b167e403776c96b444')
 
 build() {
   cd  ${pkgname}-${pkgver}
+  patch -p1 -i ${srcdir}/54987d445ea714b467d901b7daf8c09ed0644189.diff
   
+  ./autogen.sh
   ./configure --prefix=/usr \
     --with-package-name='KaOS Farstream package' \
     --with-package-origin='http://kaosx.us' \

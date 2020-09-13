@@ -1,6 +1,6 @@
 
 pkgname=espeak
-pkgver=1.49.2
+pkgver=1.50
 pkgrel=1
 pkgdesc="Text to Speech engine for good quality English, with support for other languages"
 arch=('x86_64')
@@ -8,13 +8,14 @@ url="https://groups.io/g/espeak-ng/"
 license=('GPL')
 depends=('gcc-libs' 'portaudio' 'pulseaudio' 'pcaudiolib')
 options=('!emptydirs')
-source=("https://github.com/espeak-ng/espeak-ng/releases/download/${pkgver}/${pkgname}-ng-${pkgver}.tar.gz")
-md5sums=('173010ead3244ba932ef50544fda57a9')
+source=("https://github.com/espeak-ng/espeak-ng/archive/${pkgver}/${pkgname}-ng-${pkgver}.tar.gz")
+md5sums=('7fccc4669d939c330c49b53d94c4c3af')
 
 
 build() {
   cd ${pkgname}-ng-${pkgver}
   
+  ./autogen.sh
   ./configure --prefix=/usr
   
   make -j1 
