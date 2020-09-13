@@ -1,8 +1,8 @@
 
 # fails to find perl bindings without running -make generate- in gdal/swig/perl on error
 pkgname=gdal
-pkgver=3.1.2
-_pkgver=3.1.2
+pkgver=3.1.3
+_pkgver=3.1.3
 pkgrel=1
 pkgdesc="A translator library for raster geospatial data formats"
 arch=('x86_64')
@@ -19,13 +19,13 @@ conflicts=('python3-gdal')
 source=("https://download.osgeo.org/gdal/${pkgver}/${pkgname}-${pkgver}.tar.xz"
 #source=("https://github.com/OSGeo/gdal/archive/v${_pkgver}.tar.gz"
         "https://github.com/OSGeo/gdal/commit/2b863dbabdc2a7d724f9fdf3e6ff20a142b619f6.diff")
-md5sums=('4273eda69b2976a87464b95d1b41273c'
+md5sums=('4438a1b7828c54b1d5bdff8647132c47'
          '5bc7a5e048a6a96d9f95d9ea480b7f5b')
 
 prepare() {
   cd ${pkgname}-${_pkgver}
   # poppler 20.08.0 needed
-  patch -p1 -i ${srcdir}/2b863dbabdc2a7d724f9fdf3e6ff20a142b619f6.diff
+  #patch -p1 -i ${srcdir}/2b863dbabdc2a7d724f9fdf3e6ff20a142b619f6.diff
 }
 
 build() {

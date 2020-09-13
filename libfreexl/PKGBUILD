@@ -1,7 +1,7 @@
 
 pkgname=libfreexl
-pkgver=1.0.2
-pkgrel=2
+pkgver=1.0.6
+pkgrel=1
 pkgdesc="Library to extract valid data from within an Excel (.xls) spreadsheet"
 arch=('x86_64')
 url="https://www.gaia-gis.it/fossil/freexl/index"
@@ -9,13 +9,14 @@ license=('MPL')
 depends=('glibc')
 options=('!libtool')
 source=("https://www.gaia-gis.it/gaia-sins/freexl-sources/freexl-${pkgver}.tar.gz")
-md5sums=('9954640e5fed76a5d9deb9b02b0169a0')
+md5sums=('d3d2df0d2ad7713038ce99024738172a')
 
 build() {
   cd freexl-${pkgver}
   
   LIBS=-lm ./configure --prefix=/usr
   make
+  
 }
 
 package() {
