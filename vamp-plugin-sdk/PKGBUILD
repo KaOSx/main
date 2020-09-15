@@ -1,6 +1,7 @@
 
 pkgname=vamp-plugin-sdk
-pkgver=2.7.1
+pkgver=2.10.0
+_pkgver=2691
 pkgrel=1
 pkgdesc="The Vamp audio analysis plugin system"
 arch=('x86_64')
@@ -8,8 +9,9 @@ url="https://www.vamp-plugins.org/"
 license=('BSD')
 depends=('gcc-libs' 'libsndfile')
 options=('!libtool')
-source=("https://code.soundsoftware.ac.uk/attachments/download/2206/${pkgname}-${pkgver}.tar.gz")
-md5sums=('41129f07c252dd721ea81ef0265777fd')
+# https://code.soundsoftware.ac.uk/projects/vamp-plugin-sdk/files for versions
+source=("https://code.soundsoftware.ac.uk/attachments/download/${_pkgver}/${pkgname}-${pkgver}.tar.gz")
+md5sums=('848f7ac0227b5c783bee0dd7a5cb3642')
 
 build() {
   cd ${pkgname}-${pkgver}
