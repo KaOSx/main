@@ -1,17 +1,17 @@
 
 pkgname=perl-html-parser
 _pkgname=HTML-Parser
-pkgver=3.72
-pkgrel=5
+pkgver=3.75
+pkgrel=1
 pkgdesc="Perl HTML parser class"
 arch=('x86_64')
 license=('PerlArtistic')
-url="https://search.cpan.org/dist/${_pkgname}/"
+url="https://metacpan.org/release/HTML-Parser"
 depends=('perl-html-tagset' 'perl')
 checkdepends=('perl-test-pod')
 options=(!emptydirs)
-source=("https://www.cpan.org/authors/id/G/GA/GAAS/${_pkgname}-${pkgver}.tar.gz")
-md5sums=('eb7505e5f626913350df9dd4a03d54a8')
+source=("https://cpan.metacpan.org/authors/id/C/CA/CAPOEIRAB/${_pkgname}-${pkgver}.tar.gz")
+md5sums=('65bf65aa8b34b35443e094010f991406')
 
 build() {
   cd ${_pkgname}-${pkgver}
@@ -23,7 +23,7 @@ build() {
 
 check() {
   cd ${_pkgname}-${pkgver}
-  
+  # 2 fail t/headparser-http.t t/linkextor-base.t
   make test
 }
 
