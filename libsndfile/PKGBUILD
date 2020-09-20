@@ -1,7 +1,7 @@
 
 pkgname=libsndfile
-pkgver=1.0.29
-pkgrel=3
+pkgver=1.0.30
+pkgrel=1
 pkgdesc="A C library for reading and writing files containing sampled sound"
 arch=('x86_64')
 url="http://www.mega-nerd.com/libsndfile"
@@ -11,13 +11,13 @@ makedepends=('cmake')
 options=('!libtool')
 source=("https://github.com/erikd/libsndfile/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.bz2"
         "https://github.com/erikd/libsndfile/commit/a722c93f6999a5d6025bd90bb42cbb2733d54ce7.diff")
-md5sums=('054de114dc79f434eb75fe19436fed68'
+md5sums=('ef229268c4b1b6d35f8b27e585f88e7b'
          '2507c13ae7717dc67f1999749f8888fc')
 
 prepare() {
   cd ${pkgname}-${pkgver}
   
-  patch -p1 -i ${srcdir}/a722c93f6999a5d6025bd90bb42cbb2733d54ce7.diff
+  #patch -p1 -i ${srcdir}/a722c93f6999a5d6025bd90bb42cbb2733d54ce7.diff
 }
 
 build() {
