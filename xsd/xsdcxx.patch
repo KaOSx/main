@@ -1,11 +1,11 @@
---- xsd-4.0.0+dep/xsd/doc/xsd.1~	2014-09-14 12:25:36.862267587 +0000
-+++ xsd-4.0.0+dep/xsd/doc/xsd.1	2014-09-14 12:28:25.728229892 +0000
+--- xsd/doc/xsd.1	2014-07-21 08:38:41.000000000 +0200
++++ xsd/doc/xsd.1	2014-07-21 23:27:00.928980158 +0200
 @@ -1,16 +1,16 @@
  .\" Process this file with
--.\" groff -man -Tascii xsd.1
-+.\" groff -man -Tascii xsdcxx.1
+ .\" groff -man -Tascii xsd.1
  .\"
- .TH XSD 1 "July 2014" "XSD 4.0.0"
+-.TH XSD 1 "July 2014" "XSD 4.1.0"
++.TH XSDCXX 1 "July 2014" "XSDCXX 4.1.0"
  .SH NAME
 -xsd \- W3C XML Schema to C++ Compiler
 +xsdcxx \- W3C XML Schema to C++ Compiler
@@ -52,16 +52,21 @@
  .I command
  .RE
  .PP
-@@ -206,7 +206,7 @@
- \fIfilename\fP \fInamespace\fP
+@@ -127,10 +127,10 @@
+ uses \fBstd::unique_ptr\fR instead of deprecated \fBstd::auto_ptr\fR\.
  
- For example, if you have file \fBhello\.xsd\fP with namespace
--\fBhttp://example\.com/hello\fP and you run \fBxsd\fP on this file, then the
-+\fBhttp://example\.com/hello\fP and you run \fBxsdcxx\fP on this file, then the
- string in question will be:
- 
- \fBhello\.xsd\. http://example\.com/hello\fP
-@@ -1632,7 +1632,7 @@
+ When the C++11 mode is selected, you normally don't need to perform any extra
+-steps other than enable C++11 in your C++ compiler, if required\. The XSD
++steps other than enable C++11 in your C++ compiler, if required\. The XSDCXX
+ compiler will automatically add the necessary macro defines to the generated
+-header files that will switch the header-only XSD runtime library
+-(\fBlibxsd\fR) to the C++11 mode\. However, if you include any of the XSD
++header files that will switch the header-only XSDCXX runtime library
++(\fBlibxsd\fR) to the C++11 mode\. However, if you include any of the XSDCXX
+ runtime headers directly in your application (normally you just include the
+ generated headers), then you will need to define the \fBXSD_CXX11\fR macro for
+ your entire project\.
+@@ -1461,7 +1461,7 @@
  .\"
  .SH DIAGNOSTICS
  If the input file is not a valid W3C XML Schema definition,
@@ -70,9 +75,25 @@
  will issue diagnostic messages to
  .B STDERR
  and exit with non-zero exit code.
---- xsd-4.0.0+dep/xsd/doc/xsd.xhtml~	2014-09-14 12:28:37.731513138 +0000
-+++ xsd-4.0.0+dep/xsd/doc/xsd.xhtml	2014-09-14 12:30:11.277789610 +0000
-@@ -50,19 +50,19 @@
+Index: xsd/doc/xsd.xhtml
+===================================================================
+--- xsd/doc/xsd.xhtml	2014-07-21 08:38:41.000000000 +0200
++++ xsd/doc/xsd.xhtml	2014-07-21 23:29:32.796093697 +0200
+@@ -3,11 +3,11 @@
+ <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+ 
+ <head>
+-  <title>XSD 4.1.0 Compiler Command Line Manual</title>
++  <title>XSDCXX 4.1.0 Compiler Command Line Manual</title>
+ 
+   <meta name="copyright" content="&copy; 2005-2017 Code Synthesis Tools CC"/>
+   <meta name="keywords" content="xsd,xml,schema,c++,mapping,data,binding,code,generator,manual,man,page"/>
+-  <meta name="description" content="XSD Compiler Command Line Manual"/>
++  <meta name="description" content="XSDCXX Compiler Command Line Manual"/>
+ 
+   <link rel="stylesheet" type="text/css" href="default.css" />
+ 
+@@ -52,19 +52,19 @@
  
    <h1>NAME</h1>
  
@@ -97,25 +118,30 @@
    C++ mapping from W3C XML Schema definitions. Particular mapping to
    produce is selected by a <code><i>command</i></code>. Each mapping has
    a number of mapping-specific <code><i>options</i></code> that should
-@@ -104,7 +104,7 @@
+@@ -134,10 +134,10 @@
  
-     <dt><code><b>help</b></code></dt>
-     <dd>Print usage information and exit. Use
--      <p><code><b>xsd help</b> <i>command</i></code></p>
-+      <p><code><b>xsdcxx help</b> <i>command</i></code></p>
-       for command-specific help.
-     </dd>
+     <p>When the C++11 mode is selected, you normally don't need to perform any
+     extra steps other than enable C++11 in your C++ compiler, if required. The
+-    XSD compiler will automatically add the necessary macro defines to the
+-    generated header files that will switch the header-only XSD runtime
++    XSDCXX compiler will automatically add the necessary macro defines to the
++    generated header files that will switch the header-only XSDCXX runtime
+     library (<code><b>libxsd</b></code>) to the C++11 mode. However, if you
+-    include any of the XSD runtime headers directly in your application
++    include any of the XSDCXX runtime headers directly in your application
+     (normally you just include the generated headers), then you will need to
+     define the <code><b>XSD_CXX11</b></code> macro for your entire
+     project.</p></dd>
+@@ -218,7 +218,7 @@
  
-@@ -219,7 +219,7 @@
+     <p>For example, if you have file <code><b>hello.xsd</b></code> with
+     namespace <code><b>http://example.com/hello</b></code> and you run
+-    <code><b>xsd</b></code> on this file, then the string in question will
++    <code><b>xsdcxx</b></code> on this file, then the string in question will
+     be:</p>
  
-   <p>For example, if you have file <code><b>hello.xsd</b></code> with
-   namespace <code><b>http://example.com/hello</b></code> and you run
--  <code><b>xsd</b></code> on this file, then the string in question will
-+  <code><b>xsdcxx</b></code> on this file, then the string in question will
-   be:</p>
- 
-   <p><code><b>hello.xsd. http://example.com/hello</b></code></p>
-@@ -1530,7 +1530,7 @@
+     <p><code><b>hello.xsd. http://example.com/hello</b></code></p>
+@@ -1564,7 +1564,7 @@
    <h1>DIAGNOSTICS</h1>
  
    <p>If the input file is not a valid W3C XML Schema definition,

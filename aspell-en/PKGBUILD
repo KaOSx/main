@@ -1,6 +1,6 @@
 
 pkgname=aspell-en
-pkgver=2018.04.16
+pkgver=2019.10.06
 pkgrel=1
 pkgdesc="English dictionary for aspell"
 arch=('x86_64')
@@ -8,11 +8,11 @@ url="http://aspell.net/"
 license=('custom')
 depends=('aspell')
 source=("https://ftp.gnu.org/gnu/aspell/dict/en/aspell6-en-${pkgver}-0.tar.bz2")
-md5sums=('6149dca1933cf5cd136e214957561292')                                                                                            
+md5sums=('5fe6108ae33bf0ec879d84d80c72ddbe')
 
 build() {
   cd aspell6-en-${pkgver}-0
-  
+
   ./configure 
   make
 }
@@ -20,6 +20,6 @@ build() {
 package() {
   cd aspell6-en-${pkgver}-0
   make DESTDIR=${pkgdir} install
-  
+
   install -D -m644 Copyright ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }

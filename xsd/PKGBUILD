@@ -1,27 +1,27 @@
 
 pkgname=xsd
-pkgver=4.0.0
-_pkgver=4.0.0+dep
-pkgrel=16
+pkgver=4.1.0
+_pkgver=4.1.0.a11
+pkgrel=1
 pkgdesc="An open-source, cross-platform W3C XML Schema to C++ data binding compiler"
 arch=('x86_64')
 url="https://www.codesynthesis.com/products/xsd"
 license=('GPL2')
-depends=('boost-libs' 'xerces-c')
-source=("https://www.codesynthesis.com/download/xsd/4.0/${pkgname}-${_pkgver}.tar.bz2"
+depends=('boost-libs' 'xerces-c' 'ghostscript')
+source=("https://codesynthesis.com/~boris/tmp/xsd/4.1.0.a11/${pkgname}-${_pkgver}+dep.tar.bz2"
         "xsdcxx.patch")
-md5sums=('ae64d7fcd258addc9b045fe3f96208bb'
-         'd49e0bbd3bae200f2c6bb7e37326a6ef')
+md5sums=('4dae2db02657ad6a82828983d5a7ffdc'
+         'b1b4039f41dc57284b7a55654b081016')
 
 build() {
-  cd ${pkgname}-${_pkgver}
+  cd ${pkgname}-${_pkgver}+dep
   patch -p1 -i ${srcdir}/xsdcxx.patch
 
   make 
 }
 
 package() {
-  cd ${pkgname}-${_pkgver}
+  cd ${pkgname}-${_pkgver}+dep
   make install_prefix=${pkgdir}/usr install
 
   # Fix conflicts with mono

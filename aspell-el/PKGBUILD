@@ -1,25 +1,27 @@
 
 pkgname=aspell-el
-pkgver=0.50
-_pkgver=0.50-3
-pkgrel=2
+_pkgname=aspell6-el
+pkgver=0.08
+_pkgver=0.08-0
+pkgrel=1
+epoch=1
 pkgdesc="Greek dictionary for aspell."
 arch=('x86_64')
 url="http://aspell.net/"
 license=('GPL')
 depends=('aspell')
-source=("ftp://ftp.gnu.org/gnu/aspell/dict/el/${pkgname}-${_pkgver}.tar.bz2")
-md5sums=('0ea2c42ceb9b91f7f5de2c017234ad37')
+source=("https://ftp.gnu.org/gnu/aspell/dict/el/${_pkgname}-${_pkgver}.tar.bz2")
+md5sums=('cf0e677c37ffb64e4b8ebe13acd233c7')
 
 build() {
-  cd ${pkgname}-${_pkgver}
+  cd ${_pkgname}-${_pkgver}
   
   ./configure
   make
 }
 
 package() {
-  cd ${pkgname}-${_pkgver}
+  cd ${_pkgname}-${_pkgver}
   
   make DESTDIR=${pkgdir} install
 }
