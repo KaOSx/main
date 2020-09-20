@@ -3,7 +3,7 @@ pkgbase=nvidia-390xx-utils
 pkgname=('nvidia-390xx-utils' 'nvidia-390xx-settings')
 # Edit hardware-detection/hooks/hwdetect_7_graphics and Installer job 11 on version jump from 39x.xx
 pkgver=390.138
-pkgrel=3
+pkgrel=4
 arch=('x86_64')
 url="https://www.nvidia.com/page/home.html"
 license=('custom')
@@ -46,6 +46,7 @@ package_nvidia-390xx-utils() {
   
   # GLX extension module for X
   install -D -m755 libglx.so.${pkgver} ${pkgdir}/usr/lib/nvidia/xorg/modules/extensions/libglx.so.${pkgver}
+  install -D -m755 libglx.so.${pkgver} ${pkgdir}/usr/lib/nvidia/xorg/modules/libglx.so.${pkgver}
   ln -s libglx.so.${pkgver} ${pkgdir}/usr/lib/nvidia/xorg/modules/extensions/libglx.so.1 # X doesn't find glx otherwise
   ln -s libglx.so.${pkgver} ${pkgdir}/usr/lib/nvidia/xorg/modules/extensions/libglx.so # X doesn't find glx otherwise
   ln -s libglx.so.${pkgver} ${pkgdir}/usr/lib/nvidia/xorg/modules/libglx.so.1 # X doesn't find glx otherwise
