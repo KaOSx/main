@@ -1,7 +1,7 @@
 
 pkgname=mpd
-pkgver=0.21.26
-_pkgver=0.21
+pkgver=0.22
+_pkgver=0.22
 pkgrel=1
 pkgdesc="Music daemon that plays MP3, FLAC, and Ogg Vorbis files"
 arch=('x86_64')
@@ -10,14 +10,15 @@ url="https://www.musicpd.org/"
 depends=('libao' 'ffmpeg' 'libmodplug' 'audiofile' 'libshout' 'libmad' 'curl' 'faad2'
          'sqlite' 'jack' 'libmms' 'wavpack' 'avahi' 'libid3tag' 'libmpdclient'
          'pulseaudio' 'mpg123' 'yajl' 'sdl_sound' 'fluidsynth' 'boost-libs'
-         'libsoxr' 'libnfs' 'zziplib' 'zip' 'libupnp' 'libgme' 'opus' 'udisks2')
+         'libsoxr' 'libnfs' 'zziplib' 'zip' 'libupnp' 'libgme' 'opus' 'udisks2'
+         'chromaprint' 'libcdio-paranoia' 'openal')
 makedepends=('boost' 'xmlto' 'meson' 'ninja') # 'python3-sphinx')  
 install=${pkgname}.install
 backup=('etc/mpd.conf')
 source=("https://www.musicpd.org/download/mpd/${_pkgver}/mpd-${pkgver}.tar.xz"
         'tmpfiles.d'
         'conf')
-md5sums=('ce126f68fbd2345c81a1bb96cff7389d'
+md5sums=('76b247b8e20e62ba45e0b32acb5d0976'
          'e5cdccd201610a41e957d684ebc38985'
          'ca16fc9ce20ca382b620cd366c95647e')
 
@@ -31,7 +32,7 @@ build() {
     --sysconfdir=/etc \
     -Dsystemd_system_unit_dir=/usr/lib/systemd/system \
     -Dsystemd_user_unit_dir=/usr/lib/systemd/user \
-    -Ddocumentation=false
+    -Ddocumentation=disabled
   ninja
 }
 
