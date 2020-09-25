@@ -3,7 +3,7 @@ pkgbase=nvidia-utils
 pkgname=('nvidia-utils' 'opencl-nvidia' 'nvidia-settings')
 # Edit hardware-detection/hooks/hwdetect_7_graphics and Installer job 11 on version jump from 43x.xx
 pkgver=450.66
-pkgrel=2
+pkgrel=3
 epoch=1
 arch=('x86_64')
 url="https://www.nvidia.com/page/home.html"
@@ -39,7 +39,7 @@ build() {
 
 package_opencl-nvidia() {
   pkgdesc="OpenCL implemention for NVIDIA"
-  depends=('libcl' 'zlib' 'nvidia-utils')
+  depends=('opencl-headers' 'zlib' 'nvidia-utils')
 
   cd "${srcdir}/${_pkg}"
 
