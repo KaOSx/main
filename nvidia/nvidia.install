@@ -16,38 +16,38 @@ post_upgrade() {
     EXTRAMODULES='extramodules-5.7'
     depmod $(cat /lib/modules/$EXTRAMODULES/version)
     
-    if [[ $(vercmp ${2} 396.28) -eq -1 ]]; then
+    #if [[ $(vercmp ${2} 396.28) -eq -1 ]]; then
     
-        kdialog --warningyesno "NVIDIA 396.xx driver drops support for Fermi-based GPUs<br>
-                To see the list of Fermi cards go to http://nvidia.custhelp.com/app/answers/detail/a_id/4656 <br>
-                If you own such an NVIDIA card you either need to switch to <strong>Nouveau or NVIDIA 390.xx.</strong><br><br>
-                sudo pacman -Rdd nvidia-utils nvidia<br>
-                Then:<br>
-                sudo pacman -S nvidia-390xx-utils nvidia-390xx<br>
-                Or:<br>
-                sudo pacman -S libgl nouveau<br><br>
-                Do you want to save this output?"
+    #    kdialog --warningyesno "NVIDIA 396.xx driver drops support for Fermi-based GPUs<br>
+    #            To see the list of Fermi cards go to http://nvidia.custhelp.com/app/answers/detail/a_id/4656 <br>
+    #            If you own such an NVIDIA card you either need to switch to <strong>Nouveau or NVIDIA 390.xx.</strong><br><br>
+    #            sudo pacman -Rdd nvidia-utils nvidia<br>
+    #            Then:<br>
+    #            sudo pacman -S nvidia-390xx-utils nvidia-390xx<br>
+    #            Or:<br>
+    #            sudo pacman -S libgl nouveau<br><br>
+    #            Do you want to save this output?"
 
-                save=${?}
+    #            save=${?}
 
-                    if [[ ${save} == 1 ]]; then
+    #                if [[ ${save} == 1 ]]; then
 
-                        kdialog --msgbox "Output not saved"
+    #                    kdialog --msgbox "Output not saved"
 
-                    else
+    #                else
 
-                        echo "NVIDIA 396.xx driver drops support for Fermi-based GPUs<br>
-                            If you own such an NVIDIA card you either need to switch to Nouveau or NVIDIA 390.xx.<br>
-                            sudo pacman -Rdd nvidia-utils nvidia</b>
-                            Then:<br>
-                            sudo pacman -S nvidia-390xx-utils nvidia-390xx<br>
-                            Or:<br>
-                            sudo pacman -S libgl nouveau" > /var/log/nvidia_install${timestamp}.txt
+    #                    echo "NVIDIA 396.xx driver drops support for Fermi-based GPUs<br>
+    #                        If you own such an NVIDIA card you either need to switch to Nouveau or NVIDIA 390.xx.<br>
+    #                        sudo pacman -Rdd nvidia-utils nvidia</b>
+    #                        Then:<br>
+    #                        sudo pacman -S nvidia-390xx-utils nvidia-390xx<br>
+    #                        Or:<br>
+    #                        sudo pacman -S libgl nouveau" > /var/log/nvidia_install${timestamp}.txt
 
-                        kdialog --msgbox "Output is saved in /var/log/nvidia_install${timestamp}.txt"
+    #                    kdialog --msgbox "Output is saved in /var/log/nvidia_install${timestamp}.txt"
                         
-                    fi
-    fi
+    #                fi
+    #fi
 }
 
 post_remove() {
