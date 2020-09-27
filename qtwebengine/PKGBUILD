@@ -10,12 +10,12 @@ pkgname=('qtwebengine') # 'qtwebengine-examples')
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=1
+pkgrel=2
 pkgdesc="Chromium-based web engine to replace Qt WebKit"
 url="http://blog.qt.digia.com/blog/2014/01/23/qt-webengine-technology-preview-available/"
 arch=('x86_64')
 license=('GPL3')
-makedepends=('qt5-declarative' 'python2' 'mesa' 'systemd' 'pango' 'nss' 'speex' 'libevent' 'libcups'
+makedepends=('qt5-declarative' 'python3' 'mesa' 'systemd' 'pango' 'nss' 'speex' 'libevent' 'libcups'
          'libxslt' 'libpng' 'libjpeg-turbo' 'libwebp' 'zlib' 'pciutils' 'jsoncpp' 'pulseaudio' 'libxcomposite'
          'qt5-location' 'qt5-webchannel' 'ffmpeg' 'libxss' 'protobuf' 'opus' 'libvpx'
          'gperf' 'yasm' 'openssh' 'icu' 'qt5-tools')
@@ -26,20 +26,23 @@ source=("${_qtmirror}/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz"
         'demobrowser.desktop'
         'quicknanobrowser.desktop'
         'markdowneditor.desktop'
-        "https://github.com/qt/qtwebengine/commit/a66d4cd82972996d76edff52d17464c150dec6a6.diff")
+        'python-patches.diff'
+        'rule_bison.diff')
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
          '5c297bd337ffab4a2d075a7c85d55ef3'
          'f11d24801322ef41f8a44eedc5e104c2'
          '6d62ba455c7d70870fb28c9362c9c591'
          '5ea5aa48c198a8de1398fc9e7a4abd14'
-         '907bd7678477737f09daa64936e7f70a')
+         '699b9a97d0164c0c62bfb1700fa31832'
+         '9830c8af376817b2812775b547734873')
 
 build() {
    cd $_pkgfqn/
-   # Nouveau & Wayland Qtwebengine crashes, OpenGl/no GPU rendering chnages
-   #patch -p1 -i ${srcdir}/a66d4cd82972996d76edff52d17464c150dec6a6.diff
-   # workaround posted in https://bugreports.qt.io/browse/QTBUG-77037 for new pulseaudio
-   #sed -i 's|gn_args += use_pulseaudio=true|gn_args += use_pulseaudio=true link_pulseaudio=true|' src/core/config/linux.pri
+   # move to python3, freebsd patch https://github.com/freebsd/freebsd-ports-kde/blob/webengine-python3/www/qt5-webengine/python-patches.diff
+   patch -p1 -i ${srcdir}/python-patches.diff
+   patch -p1 -i ${srcdir}/rule_bison.diff
+   sed -i 's|python_major_version, 2|python_major_version, 3|' configure.pri
+
    
    mkdir -p build   
    cd build 

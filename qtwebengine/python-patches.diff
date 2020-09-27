@@ -1,0 +1,2227 @@
+cd /wrkdirs/usr/ports/www/qt5-webengine/work/qtwebengine-everywhere-src-5.15.0 && for f in `find  . -name '*.orig'` ; do diff -u "$f" `dirname "$f"`/`basename "$f" .orig` || true ; done | sed 's/\t20[0-9][0-9]-.*//'
+--- ./src/3rdparty/chromium/mojo/public/tools/bindings/pylib/mojom/generate/generator.py.orig
++++ ./src/3rdparty/chromium/mojo/public/tools/bindings/pylib/mojom/generate/generator.py
+@@ -112,7 +112,10 @@
+ 
+   # Dump the data to disk.
+   with open(full_path, "wb") as f:
+-    f.write(contents)
++    if isinstance(contents, str):
++      f.write(contents.encode('utf-8'))
++    else:
++      f.write(contents)
+ 
+ 
+ def AddComputedData(module):
+--- ./src/3rdparty/chromium/mojo/public/tools/bindings/pylib/mojom/generate/module.py.orig
++++ ./src/3rdparty/chromium/mojo/public/tools/bindings/pylib/mojom/generate/module.py
+@@ -154,6 +154,8 @@
+          print(b.name)  # Outputs 'test_struct_2'.
+     """
+     def Get(self):
++      if name not in self.shared_definition:
++        raise AttributeError(name)
+       return self.shared_definition[name]
+ 
+     def Set(self, value):
+@@ -161,7 +163,20 @@
+ 
+     setattr(cls, name, property(Get, Set))
+ 
++  @classmethod
++  def AddSharedListProperty(cls, name):
++    """See AddSharedProperty, except this property is always coerced to a List"""
++    def Get(self):
++      if name not in self.shared_definition:
++        raise AttributeError(name)
++      return self.shared_definition[name]
+ 
++    def Set(self, value):
++      self.shared_definition[name] = list(value)
++
++    setattr(cls, name, property(Get, Set))
++
++
+ # Initialize the set of primitive types. These can be accessed by clients.
+ BOOL                  = Kind('b')
+ INT8                  = Kind('i8')
+@@ -327,10 +342,10 @@
+   ReferenceKind.AddSharedProperty('name')
+   ReferenceKind.AddSharedProperty('native_only')
+   ReferenceKind.AddSharedProperty('custom_serializer')
+-  ReferenceKind.AddSharedProperty('fields')
+-  ReferenceKind.AddSharedProperty('enums')
+-  ReferenceKind.AddSharedProperty('constants')
+   ReferenceKind.AddSharedProperty('attributes')
++  ReferenceKind.AddSharedListProperty('fields')
++  ReferenceKind.AddSharedListProperty('enums')
++  ReferenceKind.AddSharedListProperty('constants')
+ 
+   def __init__(self, mojom_name=None, module=None, attributes=None):
+     if mojom_name is not None:
+@@ -384,7 +399,7 @@
+   """
+   ReferenceKind.AddSharedProperty('mojom_name')
+   ReferenceKind.AddSharedProperty('name')
+-  ReferenceKind.AddSharedProperty('fields')
++  ReferenceKind.AddSharedListProperty('fields')
+   ReferenceKind.AddSharedProperty('attributes')
+ 
+   def __init__(self, mojom_name=None, module=None, attributes=None):
+@@ -600,7 +615,41 @@
+         if self.attributes else None
+ 
+ 
++def listprop(name):
++  """
++  Returns a property that stores a value in __name.
++  The value is always coerced to a list.
++  """
++  xname = "__" + name
++  def get(self):
++    return getattr(self, xname)
++    
++  def set(self, v):
++    setattr(self, xname, list(v))
++        
++  return property(get, set)
++
++def listornoneprop(name):
++  """
++  Returns a property that stores a value in __name.
++  The value is always coerced to a list, unless it's None.
++  """
++  xname = "__" + name
++  def get(self):
++    return getattr(self, xname)
++    
++  def set(self, v):
++    if v is None:
++      setattr(self, xname, None)
++    else:
++      setattr(self, xname, list(v))
++        
++  return property(get, set)
++
+ class Method(object):
++  parameters = listprop("parameters")
++  response_parameters = listornoneprop("response_parameters")
++
+   def __init__(self, interface, mojom_name, ordinal=None, attributes=None):
+     self.interface = interface
+     self.mojom_name = mojom_name
+@@ -659,10 +708,10 @@
+ class Interface(ReferenceKind):
+   ReferenceKind.AddSharedProperty('mojom_name')
+   ReferenceKind.AddSharedProperty('name')
+-  ReferenceKind.AddSharedProperty('methods')
+-  ReferenceKind.AddSharedProperty('enums')
+-  ReferenceKind.AddSharedProperty('constants')
+   ReferenceKind.AddSharedProperty('attributes')
++  ReferenceKind.AddSharedListProperty('methods')
++  ReferenceKind.AddSharedListProperty('enums')
++  ReferenceKind.AddSharedListProperty('constants')
+ 
+   def __init__(self, mojom_name=None, module=None, attributes=None):
+     if mojom_name is not None:
+@@ -731,6 +780,8 @@
+ 
+ 
+ class Enum(Kind):
++  fields = listprop("fields")
++
+   def __init__(self, mojom_name=None, module=None, attributes=None):
+     self.mojom_name = mojom_name
+     self.native_only = False
+@@ -762,6 +813,13 @@
+ 
+ 
+ class Module(object):
++  structs = listprop("structs")
++  unions = listprop("unions")
++  interfaces = listprop("interfaces")
++  enums = listprop("enums")
++  constants = listprop("constants")
++  imports = listprop("imports")
++
+   def __init__(self, path=None, mojom_namespace=None,
+                attributes=None):
+     self.path = path
+--- ./src/3rdparty/chromium/mojo/public/tools/bindings/generators/mojom_js_generator.py.orig
++++ ./src/3rdparty/chromium/mojo/public/tools/bindings/generators/mojom_js_generator.py
+@@ -9,6 +9,7 @@
+ import mojom.generate.pack as pack
+ import os
+ import urllib
++import urllib.request
+ from mojom.generate.template_expander import UseJinja
+ 
+ _kind_to_javascript_default_value = {
+@@ -215,7 +216,7 @@
+ 
+ 
+ def GetRelativeUrl(module, base_module):
+-  return urllib.pathname2url(
++  return urllib.request.pathname2url(
+       os.path.relpath(module.path, os.path.dirname(base_module.path)))
+ 
+ 
+--- ./src/3rdparty/chromium/mojo/public/tools/bindings/generators/mojom_cpp_generator.py.orig
++++ ./src/3rdparty/chromium/mojo/public/tools/bindings/generators/mojom_cpp_generator.py
+@@ -873,7 +873,23 @@
+       if param_counts[-1] != version.num_fields:
+         param_counts.append(version.num_fields)
+ 
+-    ordinal_fields = sorted(struct.fields, key=lambda field: field.ordinal)
++    class OrdinalSorter:
++      """
++      In Python2, None could be sorted relative to other values: 
++        None < None           -> False
++        None < something_else -> True
++        something_else < None -> False
++      """
++      def __init__(self, o):
++        self.o = o
++      def __lt__(self, other):
++        if other.o is None:
++          return False
++        if self.o is None:
++          return True  # None < anything
++        return self.o < other.o
++
++    ordinal_fields = sorted(struct.fields, key=lambda field: OrdinalSorter(field.ordinal))
+     return (StructConstructor(struct.fields, ordinal_fields[:param_count])
+             for param_count in param_counts)
+ 
+--- ./src/3rdparty/chromium/mojo/public/tools/bindings/concatenate_and_replace_closure_exports.py.orig
++++ ./src/3rdparty/chromium/mojo/public/tools/bindings/concatenate_and_replace_closure_exports.py
+@@ -27,20 +27,20 @@
+ 
+ 
+ def FilterLine(filename, line, output):
+-  if line.startswith("goog.require"):
++  if line.startswith(b"goog.require"):
+     return
+ 
+-  if line.startswith("goog.provide"):
+-    match = re.match("goog.provide\('([^']+)'\);", line)
++  if line.startswith(b"goog.provide"):
++    match = re.match(b"goog.provide\('([^']+)'\);", line)
+     if not match:
+       print("Invalid goog.provide line in %s:\n%s" % (filename, line))
+       exit(1)
+ 
+     module_name = match.group(1)
+     if module_name == _MOJO_INTERNAL_MODULE_NAME:
+-      output.write("self.mojo = { internal: {} };")
++      output.write(b"self.mojo = { internal: {} };")
+     else:
+-      output.write("%s('%s');\n" % (_MOJO_EXPORT_MODULE_SYMBOL, module_name))
++      output.write(("%s('%s');\n" % (_MOJO_EXPORT_MODULE_SYMBOL, module_name)).encode())
+     return
+ 
+   output.write(line)
+--- ./src/3rdparty/chromium/mojo/public/tools/bindings/mojom_bindings_generator.py.orig
++++ ./src/3rdparty/chromium/mojo/public/tools/bindings/mojom_bindings_generator.py
+@@ -112,6 +112,7 @@
+ 
+ 
+ def ScrambleMethodOrdinals(interfaces, salt):
++  salt_str = salt.encode()
+   already_generated = set()
+   for interface in interfaces:
+     i = 0
+@@ -126,9 +127,9 @@
+         # to be very strong, cryptographically. It just needs to be non-trivial
+         # to guess the results without the secret salt, in order to make it
+         # harder for a compromised process to send fake Mojo messages.
+-        sha256 = hashlib.sha256(salt)
+-        sha256.update(interface.mojom_name)
+-        sha256.update(str(i))
++        sha256 = hashlib.sha256(salt_str)
++        sha256.update(interface.mojom_name.encode())
++        sha256.update(str(i).encode())
+         # Take the first 4 bytes as a little-endian uint32.
+         ordinal = struct.unpack('<L', sha256.digest()[:4])[0]
+         # Trim to 31 bits, so it always fits into a Java (signed) int.
+@@ -145,7 +146,7 @@
+ 
+ def ReadFileContents(filename):
+   with open(filename, 'rb') as f:
+-    return f.read()
++    return f.read().decode()
+ 
+ 
+ class MojomProcessor(object):
+--- ./src/3rdparty/chromium/ui/ozone/generate_constructor_list.py.orig
++++ ./src/3rdparty/chromium/ui/ozone/generate_constructor_list.py
+@@ -68,7 +68,7 @@
+   This is just "Create" + typename + platform.
+   """
+ 
+-  return 'Create' + typename + string.capitalize(platform)
++  return 'Create' + typename + platform.capitalize()
+ 
+ 
+ def GenerateConstructorList(out, namespace, export, typenames, platforms,
+@@ -165,7 +165,7 @@
+   # Write to standard output or file specified by --output_cc.
+   out_cc = sys.stdout
+   if options.output_cc:
+-    out_cc = open(options.output_cc, 'wb')
++    out_cc = open(options.output_cc, 'w')
+ 
+   GenerateConstructorList(out_cc, options.namespace, options.export,
+                           typenames, platforms, includes, usings)
+--- ./src/3rdparty/chromium/ui/ozone/generate_ozone_platform_list.py.orig
++++ ./src/3rdparty/chromium/ui/ozone/generate_ozone_platform_list.py
+@@ -63,7 +63,7 @@
+   We just capitalize the platform name and prepend "CreateOzonePlatform".
+   """
+ 
+-  return 'kPlatform' + string.capitalize(name)
++  return 'kPlatform' + name.capitalize()
+ 
+ 
+ def GeneratePlatformListText(out, platforms):
+@@ -153,11 +153,11 @@
+   out_h = sys.stdout
+   out_txt = sys.stdout
+   if options.output_cc:
+-    out_cc = open(options.output_cc, 'wb')
++    out_cc = open(options.output_cc, 'w')
+   if options.output_h:
+-    out_h = open(options.output_h, 'wb')
++    out_h = open(options.output_h, 'w')
+   if options.output_txt:
+-    out_txt = open(options.output_txt, 'wb')
++    out_txt = open(options.output_txt, 'w')
+ 
+   GeneratePlatformListText(out_txt, platforms)
+   GeneratePlatformListHeader(out_h, platforms)
+--- ./src/3rdparty/chromium/ui/webui/resources/tools/js_modulizer.py.orig
++++ ./src/3rdparty/chromium/ui/webui/resources/tools/js_modulizer.py
+@@ -123,7 +123,7 @@
+   # across platforms.
+   with io.open(os.path.join(out_folder, out_filename), 'w', newline='\n') as f:
+     for l in lines:
+-      f.write(unicode(l, 'utf-8'))
++      f.write(l)
+   return
+ 
+ def main(argv):
+--- ./src/3rdparty/chromium/services/device/public/cpp/usb/tools/usb_ids.py.orig
++++ ./src/3rdparty/chromium/services/device/public/cpp/usb/tools/usb_ids.py
+@@ -16,14 +16,18 @@
+   return name
+ 
+ def ParseTable(input_path):
+-  input_file = open(input_path, "r")
+-  input = input_file.read().split("\n")
++  print("Reading table " + input_path)
++  input_file = open(input_path, "rb")
++  input = input_file.read().split(b"\n")
+   input_file.close()
+ 
+   table = {}
+   vendor = None
+ 
+   for line in input:
++    if b'\xb4' in line:
++      line = line.replace(b'\xb4', b"'")  # Bad encoding in table
++    line = line.decode()
+     vendor_match = VENDOR_PATTERN.match(line)
+     if vendor_match:
+       if vendor:
+--- ./src/3rdparty/chromium/third_party/blink/renderer/build/scripts/make_event_factory.py.orig
++++ ./src/3rdparty/chromium/third_party/blink/renderer/build/scripts/make_event_factory.py
+@@ -118,7 +118,7 @@
+         }
+ 
+     def _fatal(self, message):
+-        print 'FATAL ERROR: ' + message
++        print('FATAL ERROR: ' + message)
+         exit(1)
+ 
+     def _headers_header_include_path(self, entry):
+--- ./src/3rdparty/chromium/third_party/blink/renderer/build/scripts/hasher.py.orig
++++ ./src/3rdparty/chromium/third_party/blink/renderer/build/scripts/hasher.py
+@@ -20,18 +20,18 @@
+ # We've modified Victor's version to output hash values that match WTFString,
+ # which involves using a specific seed and some different constants.
+ 
+-class uint32_t(long):
++class uint32_t(int):
+     def __rshift__(self, other):
+-        return uint32_t(long.__rshift__(self, other) & ((1L << 32) - 1))
++        return uint32_t(int.__rshift__(self, other) & ((1 << 32) - 1))
+ 
+     def __lshift__(self, other):
+-        return uint32_t(long.__lshift__(self, other) & ((1L << 32) - 1))
++        return uint32_t(int.__lshift__(self, other) & ((1 << 32) - 1))
+ 
+     def __add__(self, other):
+-        return uint32_t(long.__add__(self, other) & ((1L << 32) - 1))
++        return uint32_t(int.__add__(self, other) & ((1 << 32) - 1))
+ 
+     def __xor__(self, other):
+-        return uint32_t(long.__xor__(self, other) & ((1L << 32) - 1))
++        return uint32_t(int.__xor__(self, other) & ((1 << 32) - 1))
+ 
+ 
+ def hash(string):
+@@ -46,7 +46,7 @@
+     if not string:
+         return 0
+ 
+-    result = uint32_t(0x9E3779B9L)
++    result = uint32_t(0x9E3779B9)
+     length = len(string)
+     remainder = length & 1
+     length >>= 1
+--- ./src/3rdparty/chromium/third_party/blink/renderer/build/scripts/core/css/properties/make_css_property_instances.py.orig
++++ ./src/3rdparty/chromium/third_party/blink/renderer/build/scripts/core/css/properties/make_css_property_instances.py
+@@ -39,8 +39,8 @@
+         aliases = self._css_properties.aliases
+ 
+         # Lists of PropertyClassData.
+-        self._property_classes_by_id = map(self.get_class, properties)
+-        self._alias_classes_by_id = map(self.get_class, aliases)
++        self._property_classes_by_id = list(map(self.get_class, properties))
++        self._alias_classes_by_id = list(map(self.get_class, aliases))
+ 
+         # Sort by enum value.
+         self._property_classes_by_id.sort(key=lambda t: t.enum_value)
+--- ./src/3rdparty/chromium/third_party/blink/renderer/build/scripts/core/css/make_style_shorthands.py.orig
++++ ./src/3rdparty/chromium/third_party/blink/renderer/build/scripts/core/css/make_style_shorthands.py
+@@ -53,10 +53,10 @@
+ 
+         self._longhand_dictionary = defaultdict(list)
+         for property_ in json5_properties.shorthands:
+-            property_['longhand_enum_keys'] = map(
+-                enum_key_for_css_property, property_['longhands'])
+-            property_['longhand_property_ids'] = map(
+-                id_for_css_property, property_['longhands'])
++            property_['longhand_enum_keys'] = list(map(
++                enum_key_for_css_property, property_['longhands']))
++            property_['longhand_property_ids'] = list(map(
++                id_for_css_property, property_['longhands']))
+             for longhand_enum_key in property_['longhand_enum_keys']:
+                 self._longhand_dictionary[longhand_enum_key].append(property_)
+ 
+--- ./src/3rdparty/chromium/third_party/blink/renderer/build/scripts/in_file.py.orig
++++ ./src/3rdparty/chromium/third_party/blink/renderer/build/scripts/in_file.py
+@@ -158,5 +158,5 @@
+ 
+     def _fatal(self, message):
+         # FIXME: This should probably raise instead of exit(1)
+-        print message
++        print(message)
+         exit(1)
+--- ./src/3rdparty/chromium/third_party/blink/renderer/build/scripts/gperf.py.orig
++++ ./src/3rdparty/chromium/third_party/blink/renderer/build/scripts/gperf.py
+@@ -28,6 +28,8 @@
+             stdin=subprocess.PIPE,
+             stdout=subprocess.PIPE,
+             universal_newlines=True)
++        if isinstance(gperf_input, bytes):
++            gperf_input = gperf_input.decode()
+         gperf_output = gperf.communicate(gperf_input)[0]
+         # Massage gperf output to be more palatable for modern compilers.
+         # TODO(thakis): Upstream these to gperf so we don't need massaging.
+@@ -39,8 +41,8 @@
+         # so replace gperf's /*FALLTHROUGH*/ comment with the statement.
+         # https://savannah.gnu.org/bugs/index.php?53029
+         gperf_output = gperf_output.replace('/*FALLTHROUGH*/', '  FALLTHROUGH;')
+-        script = 'third_party/blink/renderer/build/scripts/gperf.py'
+-        return '// Generated by %s\n' % script + gperf_output
++        script = b'third_party/blink/renderer/build/scripts/gperf.py'
++        return b'// Generated by %s\n' % script + gperf_output.encode()
+     except OSError:
+         raise subprocess.CalledProcessError(
+             127, cmd, output='Command not found.')
+@@ -61,7 +63,7 @@
+             if gperf_extra_args:
+                 gperf_args.extend(gperf_extra_args)
+             return generate_gperf(gperf_path, gperf_input, gperf_args)
+-        generator_internal.func_name = generator.func_name
++        generator_internal.func_name = generator.__name__
+         return generator_internal
+     return wrapper
+ 
+@@ -82,8 +84,10 @@
+     # Since we're passing the input file on stdin, remove it from the args.
+     gperf_args.remove(infile)
+ 
++    if not isinstance(gperf_path, bytes):
++        gperf_path = gperf_path.encode()
+     open(args.output_file, 'wb').write(
+-        generate_gperf(gperf_path, open(infile).read(), gperf_args))
++        generate_gperf(gperf_path, open(infile, 'rb').read(), gperf_args))
+ 
+ if __name__ == '__main__':
+     main()
+--- ./src/3rdparty/chromium/third_party/blink/renderer/build/scripts/templates/make_qualified_names.h.tmpl.orig
++++ ./src/3rdparty/chromium/third_party/blink/renderer/build/scripts/templates/make_qualified_names.h.tmpl
+@@ -24,12 +24,12 @@
+ {{symbol_export}}extern const WTF::AtomicString& {{namespace_prefix}}NamespaceURI;
+ 
+ // Tags
+-{% for tag in tags|sort %}
++{% for tag in tags %}
+ {{symbol_export}}extern const blink::{{namespace}}QualifiedName& {{tag|symbol}}Tag;
+ {% endfor %}
+ 
+ // Attributes
+-{% for attr in attrs|sort %}
++{% for attr in attrs %}
+ {{symbol_export}}extern const blink::QualifiedName& {{attr|symbol}}Attr;
+ {% endfor %}
+ 
+--- ./src/3rdparty/chromium/third_party/blink/renderer/build/scripts/templates/element_factory.cc.tmpl.orig
++++ ./src/3rdparty/chromium/third_party/blink/renderer/build/scripts/templates/element_factory.cc.tmpl
+@@ -26,7 +26,7 @@
+ 
+ static {{namespace}}FunctionMap* g_{{namespace|lower}}_constructors = nullptr;
+ 
+-{% for tag in tags|sort if not tag.noConstructor %}
++{% for tag in tags if not tag.noConstructor %}
+ static {{namespace}}Element* {{namespace}}{{tag.name.to_upper_camel_case()}}Constructor(
+     Document& document, const CreateElementFlags flags) {
+   {% if tag.runtimeEnabled %}
+@@ -52,7 +52,7 @@
+   // Empty array initializer lists are illegal [dcl.init.aggr] and will not
+   // compile in MSVC. If tags list is empty, add check to skip this.
+   static const Create{{namespace}}FunctionMapData data[] = {
+-  {% for tag in tags|sort if not tag.noConstructor %}
++  {% for tag in tags if not tag.noConstructor %}
+     { {{cpp_namespace}}::{{tag|symbol}}Tag, {{namespace}}{{tag.name.to_upper_camel_case()}}Constructor },
+   {% endfor %}
+   };
+--- ./src/3rdparty/chromium/third_party/blink/renderer/build/scripts/templates/element_type_helpers.cc.tmpl.orig
++++ ./src/3rdparty/chromium/third_party/blink/renderer/build/scripts/templates/element_type_helpers.cc.tmpl
+@@ -21,7 +21,7 @@
+     const char* name;
+     HTMLElementType type;
+   } kTags[] = {
+-    {% for tag in tags|sort %}
++    {% for tag in tags|sort(attribute='name') %}
+     { "{{tag.name}}", HTMLElementType::k{{tag.js_interface}} },
+     {% endfor %}
+   };
+@@ -37,7 +37,7 @@
+   if (it == html_type_map.end())
+     return HTMLElementType::kHTMLUnknownElement;
+ 
+-  {% for tag in tags|sort %}
++  {% for tag in tags|sort(attribute='name') %}
+   {% if tag.runtimeEnabled %}
+   if (tagName == "{{tag.name}}") {
+     if (!RuntimeEnabledFeatures::{{tag.runtimeEnabled}}Enabled()) {
+--- ./src/3rdparty/chromium/third_party/blink/renderer/build/scripts/templates/make_names.h.tmpl.orig
++++ ./src/3rdparty/chromium/third_party/blink/renderer/build/scripts/templates/make_names.h.tmpl
+@@ -19,7 +19,7 @@
+ namespace blink {
+ namespace {{namespace}} {
+ 
+-{% for entry in entries|sort %}
++{% for entry in entries|sort(attribute='name') %}
+ {{symbol_export}}extern const WTF::AtomicString& {{entry|symbol}};
+ {% endfor %}
+ 
+--- ./src/3rdparty/chromium/third_party/blink/renderer/build/scripts/templates/macros.tmpl.orig
++++ ./src/3rdparty/chromium/third_party/blink/renderer/build/scripts/templates/macros.tmpl
+@@ -25,7 +25,7 @@
+ 
+ 
+ {% macro trie_leaf(index, object, return_macro, lowercase_data) %}
+-{% set name, value = object.items()[0] %}
++{% set name, value = object.items()|first %}
+ {% if name|length %}
+ if (
+     {%- for c in name -%}
+@@ -45,7 +45,7 @@
+ 
+ 
+ {% macro trie_switch(trie, index, return_macro, lowercase_data) %}
+-{% if trie|length == 1 and trie.values()[0] is string %}
++{% if trie|length == 1 and trie.values()|first is string %}
+ {{ trie_leaf(index, trie, return_macro, lowercase_data) -}}
+ {% else %}
+     {% if lowercase_data %}
+--- ./src/3rdparty/chromium/third_party/blink/renderer/build/scripts/templates/element_type_helpers.h.tmpl.orig
++++ ./src/3rdparty/chromium/third_party/blink/renderer/build/scripts/templates/element_type_helpers.h.tmpl
+@@ -12,7 +12,7 @@
+ 
+ namespace blink {
+ // Type checking.
+-{% for tag in tags|sort if not tag.multipleTagNames and not tag.noTypeHelpers %}
++{% for tag in tags if not tag.multipleTagNames and not tag.noTypeHelpers %}
+ class {{tag.interface}};
+ template <>
+ inline bool IsElementOfType<const {{tag.interface}}>(const Node& node) {
+@@ -55,4 +55,4 @@
+ {% endif %}
+ }  // namespace blink
+ 
+-#endif  // THIRD_PARTY_BLINK_RENDERER_CORE_{{namespace|upper}}_ELEMENT_TYPE_HELPERS_H_
+\ No newline at end of file
++#endif  // THIRD_PARTY_BLINK_RENDERER_CORE_{{namespace|upper}}_ELEMENT_TYPE_HELPERS_H_
+--- ./src/3rdparty/chromium/third_party/blink/renderer/build/scripts/template_expander.py.orig
++++ ./src/3rdparty/chromium/third_party/blink/renderer/build/scripts/template_expander.py
+@@ -64,6 +64,6 @@
+             parameters = generator(*args, **kwargs)
+             return apply_template(template_path, parameters, filters=filters,
+                                   tests=tests, template_cache=template_cache)
+-        generator_internal.func_name = generator.func_name
++        generator_internal.func_name = generator.__name__
+         return generator_internal
+     return real_decorator
+--- ./src/3rdparty/chromium/third_party/blink/renderer/build/scripts/rule_bison.py.orig	2020-09-27 11:22:21.680632451 +0200
++++ ./src/3rdparty/chromium/third_party/blink/renderer/build/scripts/rule_bison.py	2020-09-27 11:22:21.592632443 +0200
+@@ -88,7 +88,7 @@
+ for outputHTry in outputHTries:
+     try:
+         os.unlink(outputHTry)
+-    except OSError, e:
++    except OSError as e:
+         if e.errno != errno.ENOENT:
+             raise
+ 
+@@ -104,7 +104,7 @@
+         os.stat(outputHTry)
+         outputHTmp = outputHTry
+         break
+-    except OSError, e:
++    except OSError as e:
+         if e.errno != errno.ENOENT:
+             raise
+ 
+@@ -122,12 +122,11 @@
+ outputHInGen = outputH.replace('gen/', '')
+ headerGuard = NameStyleConverter(outputHInGen).to_header_guard()
+ 
+-outputHFile = open(outputH, 'w')
+-print >>outputHFile, '#ifndef %s' % headerGuard
+-print >>outputHFile, '#define %s' % headerGuard
+-print >>outputHFile, outputHContents
+-print >>outputHFile, '#endif  // %s' % headerGuard
+-outputHFile.close()
++with open(outputH, 'w') as outputHFile:
++    outputHFile.write( '#ifndef %s\n' % headerGuard )
++    outputHFile.write( '#define %s\n' % headerGuard )
++    outputHFile.write( outputHContents )
++    outputHFile.write( '\n#endif  // %s\n' % headerGuard )
+ 
+ common_replace_list = [(inputRoot + '.hh',
+                         inputRoot + '.h')]
+--- ./src/3rdparty/chromium/third_party/blink/renderer/build/scripts/make_instrumenting_probes.py.orig
++++ ./src/3rdparty/chromium/third_party/blink/renderer/build/scripts/make_instrumenting_probes.py
+@@ -134,7 +134,7 @@
+             raise Exception("Instant probe must return void: %s" % self.name)
+ 
+         # Splitting parameters by a comma, assuming that attribute lists contain no more than one attribute.
+-        self.params = map(Parameter, map(str.strip, match.group(3).split(",")))
++        self.params = list(map(Parameter, map(str.strip, match.group(3).split(","))))
+ 
+ 
+ class Parameter(object):
+@@ -144,7 +144,7 @@
+         if match:
+             self.options.append(match.group(1))
+ 
+-        parts = map(str.strip, source.split("="))
++        parts = list(map(str.strip, source.split("=")))
+         self.default_value = parts[1] if len(parts) != 1 else None
+ 
+         param_decl = parts[0]
+--- ./src/3rdparty/chromium/third_party/blink/renderer/build/scripts/in_generator.py.orig
++++ ./src/3rdparty/chromium/third_party/blink/renderer/build/scripts/in_generator.py
+@@ -76,7 +76,7 @@
+     def __init__(self, in_files):
+         super(Writer, self).__init__(in_files)
+ 
+-        if isinstance(in_files, basestring):
++        if isinstance(in_files, str):
+             in_files = [in_files]
+         if in_files:
+             self.in_file = InFile.load_from_files(in_files, self.defaults, self.valid_values, self.default_parameters)
+@@ -92,7 +92,7 @@
+         script_name = os.path.basename(argv[0])
+         args = argv[1:]
+         if len(args) < 1:
+-            print "USAGE: %s INPUT_FILES" % script_name
++            print("USAGE: %s INPUT_FILES" % script_name)
+             exit(1)
+ 
+         parser = optparse.OptionParser()
+--- ./src/3rdparty/chromium/third_party/blink/renderer/build/scripts/make_runtime_features.py.orig
++++ ./src/3rdparty/chromium/third_party/blink/renderer/build/scripts/make_runtime_features.py
+@@ -28,7 +28,7 @@
+ # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ 
+ import copy
+-import cPickle as pickle
++import pickle
+ import os
+ import sys
+ 
+@@ -138,7 +138,7 @@
+                 except Exception:
+                     # If trouble unpickling, overwrite
+                     pass
+-        with open(os.path.abspath(file_name), 'w') as pickle_file:
++        with open(os.path.abspath(file_name), 'wb') as pickle_file:
+             pickle.dump(features_map, pickle_file)
+ 
+     def _template_inputs(self):
+--- ./src/3rdparty/chromium/third_party/blink/renderer/build/scripts/json5_generator.py.orig
++++ ./src/3rdparty/chromium/third_party/blink/renderer/build/scripts/json5_generator.py
+@@ -103,7 +103,7 @@
+         assert valid_keys, "'valid_keys' must be declared when using a dict value"
+         return all([(key in valid_keys or key == "default")
+                     and (val in valid_values or val == "")
+-                    for key, val in value.iteritems()])
++                    for key, val in value.items()])
+     else:
+         return value in valid_values
+ 
+@@ -252,11 +252,17 @@
+ 
+         # Only write the file if the contents have changed. This allows ninja to
+         # skip rebuilding targets which depend on the output.
+-        with open(path, "a+") as output_file:
+-            output_file.seek(0)
+-            if output_file.read() != contents:
+-                output_file.truncate(0)
+-                output_file.write(contents)
++        if not isinstance(contents, bytes):
++            contents = contents.encode()
++        try:
++            with open(path, "rb") as input_file:
++                if input_file.read() == contents:
++                    return
++        except FileNotFoundError as e:
++            # Just means it doesn't exist, so write it
++            pass
++        with open(path, "wb") as output_file:
++            output_file.write(contents)
+ 
+     def write_files(self, output_dir):
+         for file_name, generator in self._outputs.items():
+--- ./src/3rdparty/chromium/third_party/blink/renderer/bindings/templates/attributes.cc.tmpl.orig
++++ ./src/3rdparty/chromium/third_party/blink/renderer/bindings/templates/attributes.cc.tmpl
+@@ -634,7 +634,7 @@
+ {% filter secure_context(secure_context_test) %}
+ {% for feature_name, attribute_list in secure_context_attribute_list | groupby('runtime_enabled_feature_name') %}
+ {% filter runtime_enabled(feature_name) %}
+-{{install_attributes(attribute_list | sort, 'instance_object', 'prototype_object', 'interface_object')}}
++{{install_attributes(attribute_list | sort(attribute='name'), 'instance_object', 'prototype_object', 'interface_object')}}
+ {% endfilter %}{# runtime_enabled #}
+ {% endfor %}{# secure_context_attribute_list grouped by runtime_enabled #}
+ {% endfilter %}{# secure_context #}
+@@ -669,7 +669,7 @@
+ {% filter secure_context(secure_context_test) %}
+ {% for feature_name, attribute_list in secure_context_attribute_list | groupby('runtime_enabled_feature_name') %}
+ {% filter runtime_enabled(feature_name) %}
+-{{install_interface_objects(attribute_list | sort, 'instance_object', 'prototype_object')}}
++{{install_interface_objects(attribute_list | sort(attribute='name'), 'instance_object', 'prototype_object')}}
+ {% endfilter %}{# runtime_enabled #}
+ {% endfor %}{# secure_context_attribute_list grouped by runtime_enabled #}
+ {% endfilter %}{# secure_context #}
+--- ./src/3rdparty/chromium/third_party/blink/renderer/bindings/templates/interface_base.cc.tmpl.orig
++++ ./src/3rdparty/chromium/third_party/blink/renderer/bindings/templates/interface_base.cc.tmpl
+@@ -669,13 +669,13 @@
+ 
+   {% for feature_name, attribute_list in runtime_enabled_attributes | selectattr('is_data_type_property') | groupby('runtime_enabled_feature_name') %}
+   {% filter runtime_enabled(feature_name) %}
+-  {{install_interface_objects(attribute_list | sort, 'instance_template', 'prototype_template') | trim | indent(2)}}
++  {{install_interface_objects(attribute_list | sort(attribute='name'), 'instance_template', 'prototype_template') | trim | indent(2)}}
+   {% endfilter %}
+   {% endfor %}
+ 
+   {% for feature_name, attribute_list in runtime_enabled_attributes | selectattr('is_data_type_property', 'equalto', False) | groupby('runtime_enabled_feature_name') %}
+   {% filter runtime_enabled(feature_name) %}
+-  {{install_attributes(attribute_list | sort, 'instance_template', 'prototype_template', 'interface_template') | trim | indent(2)}}
++  {{install_attributes(attribute_list | sort(attribute='name'), 'instance_template', 'prototype_template', 'interface_template') | trim | indent(2)}}
+   {% endfilter %}
+   {% endfor %}
+ 
+@@ -770,13 +770,13 @@
+ 
+   {% for feature_name, attrs in runtime_enabled_attributes | selectattr('is_data_type_property') | groupby('runtime_enabled_feature_name') %}
+   {% filter runtime_enabled(feature_name) %}
+-  {{install_interface_objects(attrs | sort, 'instance', 'prototype')}}
++  {{install_interface_objects(attrs | sort(attribute='name'), 'instance', 'prototype')}}
+   {% endfilter %}
+   {% endfor %}
+ 
+   {% for feature_name, attrs in runtime_enabled_attributes | selectattr('is_data_type_property', 'equalto', False) | groupby('runtime_enabled_feature_name') %}
+   {% filter runtime_enabled(feature_name) %}
+-  {{install_attributes(attrs | sort, 'instance', 'prototype', 'interface') | trim | indent(2)}}
++  {{install_attributes(attrs | sort(attribute='name'), 'instance', 'prototype', 'interface') | trim | indent(2)}}
+   {% endfilter %}
+   {% endfor %}
+ 
+--- ./src/3rdparty/chromium/third_party/blink/renderer/bindings/scripts/idl_reader.py.orig
++++ ./src/3rdparty/chromium/third_party/blink/renderer/bindings/scripts/idl_reader.py
+@@ -56,8 +56,7 @@
+          definitions. There is no filename convention in this case.
+        - Otherwise, an IDL file is invalid.
+     """
+-    targets = (definitions.interfaces.values() +
+-               definitions.dictionaries.values())
++    targets = list(definitions.interfaces.values()) + list(definitions.dictionaries.values())
+     number_of_targets = len(targets)
+     if number_of_targets > 1:
+         raise Exception(
+--- ./src/3rdparty/chromium/third_party/blink/renderer/bindings/scripts/v8_methods.py.orig
++++ ./src/3rdparty/chromium/third_party/blink/renderer/bindings/scripts/v8_methods.py
+@@ -493,7 +493,7 @@
+                                 % idl_type.name)
+             # Union container objects are "null" initially.
+             return '/* null default value */'
+-        if isinstance(default_value.value, basestring):
++        if isinstance(default_value.value, str):
+             member_type = idl_type.string_member_type
+         elif isinstance(default_value.value, (int, float)):
+             member_type = idl_type.numeric_member_type
+--- ./src/3rdparty/chromium/third_party/blink/renderer/bindings/scripts/code_generator_v8.py.orig
++++ ./src/3rdparty/chromium/third_party/blink/renderer/bindings/scripts/code_generator_v8.py
+@@ -94,7 +94,7 @@
+     def resolve(self, definitions, definition_name):
+         """Traverse definitions and resolves typedefs with the actual types."""
+         self.typedefs = {}
+-        for name, typedef in self.info_provider.typedefs.iteritems():
++        for name, typedef in self.info_provider.typedefs.items():
+             self.typedefs[name] = typedef.idl_type
+         self.additional_header_includes = set()
+         definitions.accept(self)
+@@ -185,6 +185,7 @@
+         include_paths = interface_info.get('dependencies_include_paths')
+ 
+         # Select appropriate Jinja template and contents function
++        extra_includes = []
+         if interface.is_callback:
+             header_template_filename = 'callback_interface.h.tmpl'
+             cpp_template_filename = 'callback_interface.cc.tmpl'
+@@ -201,10 +202,14 @@
+             header_template_filename = 'interface.h.tmpl'
+             cpp_template_filename = 'interface.cc.tmpl'
+             interface_context = v8_interface.interface_context
++            # This is a terrible hack because keywords.h gets lost elsewhere
++            extra_includes = ["third_party/blink/renderer/core/keywords.h"]
+ 
+         component_info = self.info_provider.component_info
+         template_context = interface_context(interface, definitions.interfaces, component_info)
+         includes.update(interface_info.get('cpp_includes', {}).get(component, set()))
++        if extra_includes:
++            includes.update(extra_includes)
+         if not interface.is_partial and not is_testing_target(full_path):
+             template_context['header_includes'].add(self.info_provider.include_path_for_export)
+             template_context['exported'] = self.info_provider.specifier_for_export
+@@ -314,7 +319,7 @@
+         # idl_definitions.py. What we do instead is to resolve typedefs in
+         # _generate_container_code() whenever a new union file is generated.
+         self.typedefs = {}
+-        for name, typedef in self.info_provider.typedefs.iteritems():
++        for name, typedef in self.info_provider.typedefs.items():
+             self.typedefs[name] = typedef.idl_type
+ 
+     def _generate_container_code(self, union_type):
+@@ -409,7 +414,7 @@
+         if not callback_functions:
+             return ()
+         outputs = set()
+-        for callback_function_dict in callback_functions.itervalues():
++        for callback_function_dict in callback_functions.values():
+             if callback_function_dict['component_dir'] != self.target_component:
+                 continue
+             callback_function = callback_function_dict['callback_function']
+--- ./src/3rdparty/chromium/third_party/blink/renderer/bindings/scripts/idl_definitions.py.orig
++++ ./src/3rdparty/chromium/third_party/blink/renderer/bindings/scripts/idl_definitions.py
+@@ -136,22 +136,22 @@
+ 
+     def accept(self, visitor):
+         visitor.visit_definitions(self)
+-        for interface in self.interfaces.itervalues():
++        for interface in self.interfaces.values():
+             interface.accept(visitor)
+-        for callback_function in self.callback_functions.itervalues():
++        for callback_function in self.callback_functions.values():
+             callback_function.accept(visitor)
+-        for dictionary in self.dictionaries.itervalues():
++        for dictionary in self.dictionaries.values():
+             dictionary.accept(visitor)
+-        for enumeration in self.enumerations.itervalues():
++        for enumeration in self.enumerations.values():
+             enumeration.accept(visitor)
+         for include in self.includes:
+             include.accept(visitor)
+-        for typedef in self.typedefs.itervalues():
++        for typedef in self.typedefs.values():
+             typedef.accept(visitor)
+ 
+     def update(self, other):
+         """Update with additional IdlDefinitions."""
+-        for interface_name, new_interface in other.interfaces.iteritems():
++        for interface_name, new_interface in other.interfaces.items():
+             if not new_interface.is_partial:
+                 # Add as new interface
+                 self.interfaces[interface_name] = new_interface
+@@ -361,7 +361,7 @@
+             else:
+                 raise ValueError('Unrecognized node class: %s' % child_class)
+ 
+-        if len(filter(None, [self.iterable, self.maplike, self.setlike])) > 1:
++        if len(list(filter(None, [self.iterable, self.maplike, self.setlike]))) > 1:
+             raise ValueError('Interface can only have one of iterable<>, maplike<> and setlike<>.')
+ 
+         # TODO(rakuco): This validation logic should be in v8_interface according to bashi@.
+@@ -451,6 +451,15 @@
+     def accept(self, visitor):
+         visitor.visit_attribute(self)
+ 
++    def __lt__(self, other):
++        if isinstance(other, IdlAttribute):
++            if other.name is None:
++                return False
++            if self.name is None:
++                return True  # None < anything
++            return self.name < other.name
++        else:
++            return object.__lt__(self, other)
+ 
+ ################################################################################
+ # Constants
+--- ./src/3rdparty/chromium/third_party/blink/renderer/bindings/scripts/v8_interface.py.orig
++++ ./src/3rdparty/chromium/third_party/blink/renderer/bindings/scripts/v8_interface.py
+@@ -120,7 +120,7 @@
+     KEY = 'origin_trial_feature_name'  # pylint: disable=invalid-name
+ 
+     def member_filter(members):
+-        return sorted([member for member in members if member.get(KEY)])
++        return sorted([member for member in members if member.get(KEY)], key=lambda x : x.get(KEY))
+ 
+     def member_filter_by_name(members, name):
+         return [member for member in members if member[KEY] == name]
+@@ -166,7 +166,7 @@
+     KEY = 'context_enabled_feature_name'  # pylint: disable=invalid-name
+ 
+     def member_filter(members):
+-        return sorted([member for member in members if member.get(KEY) and not member.get('exposed_test')])
++        return sorted([member for member in members if member.get(KEY) and not member.get('exposed_test')], key=lambda x : x.get(KEY))
+ 
+     def member_filter_by_name(members, name):
+         return [member for member in members if member[KEY] == name]
+@@ -484,7 +484,7 @@
+     context.update({
+         'optional_features':
+             sorted(origin_trial_features(interface, context['constants'], context['attributes'], context['methods']) +
+-                   context_enabled_features(context['attributes'])),
++                   context_enabled_features(context['attributes']), key = lambda x : x.get('name')),
+     })
+     if context['optional_features']:
+         includes.add('platform/bindings/v8_per_context_data.h')
+--- ./src/3rdparty/chromium/third_party/blink/renderer/bindings/scripts/compute_interfaces_info_overall.py.orig
++++ ./src/3rdparty/chromium/third_party/blink/renderer/bindings/scripts/compute_interfaces_info_overall.py
+@@ -127,12 +127,12 @@
+ 
+     Needed for merging partial_interface_files across components.
+     """
+-    for key, value in other.iteritems():
++    for key, value in other.items():
+         if key not in existing:
+             existing[key] = value
+             continue
+         existing_value = existing[key]
+-        for inner_key, inner_value in value.iteritems():
++        for inner_key, inner_value in value.items():
+             existing_value[inner_key].extend(inner_value)
+ 
+ 
+@@ -170,7 +170,7 @@
+     garbage_collected_interfaces = set()
+     callback_interfaces = set()
+ 
+-    for interface_name, interface_info in interfaces_info.iteritems():
++    for interface_name, interface_info in interfaces_info.items():
+         component_dirs[interface_name] = idl_filename_to_component(interface_info['full_path'])
+ 
+         if interface_info['ancestors']:
+@@ -208,11 +208,11 @@
+                 partial_interface_files, info['partial_interface_files'])
+ 
+     # Record inheritance information individually
+-    for interface_name, interface_info in interfaces_info.iteritems():
++    for interface_name, interface_info in interfaces_info.items():
+         extended_attributes = interface_info['extended_attributes']
+         inherited_extended_attributes_by_interface[interface_name] = dict(
+                 (key, value)
+-                for key, value in extended_attributes.iteritems()
++                for key, value in extended_attributes.items()
+                 if key in INHERITED_EXTENDED_ATTRIBUTES)
+         parent = interface_info['parent']
+         if parent:
+@@ -230,14 +230,14 @@
+     # 'includes').
+     # Note that moving an 'includes' statement between files does not change the
+     # info itself (or hence cause a rebuild)!
+-    for mixin_name, interface_info in interfaces_info.iteritems():
++    for mixin_name, interface_info in interfaces_info.items():
+         for interface_name in interface_info['included_by_interfaces']:
+             interfaces_info[interface_name]['including_mixins'].append(mixin_name)
+         del interface_info['included_by_interfaces']
+ 
+     # An IDL file's dependencies are partial interface files that extend it,
+     # and files for other interfaces that this interfaces include.
+-    for interface_name, interface_info in interfaces_info.iteritems():
++    for interface_name, interface_info in interfaces_info.items():
+         partial_interface_paths = partial_interface_files[interface_name]
+         partial_interfaces_full_paths = partial_interface_paths['full_paths']
+         # Partial interface definitions each need an include, as they are
+@@ -290,7 +290,7 @@
+         })
+ 
+     # Clean up temporary private information
+-    for interface_info in interfaces_info.itervalues():
++    for interface_info in interfaces_info.values():
+         del interface_info['extended_attributes']
+         del interface_info['union_types']
+         del interface_info['is_legacy_treat_as_partial_interface']
+--- ./src/3rdparty/chromium/third_party/blink/renderer/bindings/scripts/interface_dependency_resolver.py.orig
++++ ./src/3rdparty/chromium/third_party/blink/renderer/bindings/scripts/interface_dependency_resolver.py
+@@ -102,7 +102,7 @@
+                             'this definition: %s, because this should '
+                             'have a dictionary.' % definitions.idl_name)
+ 
+-        target_interface = next(definitions.interfaces.itervalues())
++        target_interface = next(iter(definitions.interfaces.values()))
+         interface_name = target_interface.name
+         interface_info = self.interfaces_info[interface_name]
+ 
+@@ -160,7 +160,7 @@
+         dependency_definitions = reader.read_idl_file(dependency_idl_filename)
+         dependency_component = idl_filename_to_component(dependency_idl_filename)
+ 
+-        dependency_interface = next(dependency_definitions.interfaces.itervalues())
++        dependency_interface = next(iter(dependency_definitions.interfaces.values()))
+ 
+         transfer_extended_attributes(dependency_interface,
+                                      dependency_idl_filename)
+@@ -340,8 +340,8 @@
+         cpp_includes.update(interface.get('cpp_includes', {}).get(component, {}))
+         return unforgeable_attributes, referenced_interfaces, cpp_includes
+ 
+-    for component, definitions in resolved_definitions.iteritems():
+-        for interface_name, interface in definitions.interfaces.iteritems():
++    for component, definitions in resolved_definitions.items():
++        for interface_name, interface in definitions.interfaces.items():
+             interface_info = interfaces_info[interface_name]
+             inherited_unforgeable_attributes, referenced_interfaces, cpp_includes = collect_unforgeable_attributes_in_ancestors(interface_info.get('parent'), component)
+             # This loop may process the same interface many times, so it's
+--- ./src/3rdparty/chromium/third_party/blink/renderer/bindings/scripts/compute_global_objects.py.orig
++++ ./src/3rdparty/chromium/third_party/blink/renderer/bindings/scripts/compute_global_objects.py
+@@ -46,7 +46,7 @@
+ 
+ 
+ def dict_union(dicts):
+-    return dict((k, v) for d in dicts for k, v in d.iteritems())
++    return dict((k, v) for d in dicts for k, v in d.items())
+ 
+ 
+ def idl_file_to_global_names(idl_filename):
+--- ./src/3rdparty/chromium/third_party/blink/renderer/bindings/scripts/generate_origin_trial_features.py.orig
++++ ./src/3rdparty/chromium/third_party/blink/renderer/bindings/scripts/generate_origin_trial_features.py
+@@ -71,7 +71,7 @@
+     includes = definitions.includes
+     # There should only be a single interface defined in an IDL file. Return it.
+     assert len(interfaces) == 1
+-    return (interfaces.values()[0], includes)
++    return (list(interfaces.values())[0], includes)
+ 
+ 
+ def interface_is_global(interface):
+--- ./src/3rdparty/chromium/third_party/blink/renderer/bindings/scripts/blink_idl_lexer.py.orig
++++ ./src/3rdparty/chromium/third_party/blink/renderer/bindings/scripts/blink_idl_lexer.py
+@@ -117,7 +117,7 @@
+     try:
+         outputdir = argv[1]
+     except IndexError as err:
+-        print 'Usage: %s OUTPUT_DIR' % argv[0]
++        print('Usage: %s OUTPUT_DIR' % argv[0])
+         return 1
+     # Important: rewrite_tables=True causes the cache file to be deleted if it
+     # exists, thus making sure that PLY doesn't load it instead of regenerating
+--- ./src/3rdparty/chromium/third_party/blink/renderer/bindings/scripts/generate_global_constructors.py.orig
++++ ./src/3rdparty/chromium/third_party/blink/renderer/bindings/scripts/generate_global_constructors.py
+@@ -109,7 +109,7 @@
+ def generate_global_constructors_list(interface_name, extended_attributes):
+     extended_attributes_list = [
+         name + (('=' + extended_attributes[name]) if extended_attributes[name] else '')
+-        for name in 'RuntimeEnabled', 'ContextEnabled', 'SecureContext'
++        for name in ('RuntimeEnabled', 'ContextEnabled', 'SecureContext')
+         if name in extended_attributes]
+     if extended_attributes_list:
+         extended_string = '[%s] ' % ', '.join(extended_attributes_list)
+--- ./src/3rdparty/chromium/third_party/blink/renderer/bindings/scripts/generate_init_partial_interfaces.py.orig
++++ ./src/3rdparty/chromium/third_party/blink/renderer/bindings/scripts/generate_init_partial_interfaces.py
+@@ -59,10 +59,10 @@
+ 
+     for file_path in file_paths:
+         if not file_path.endswith('.idl'):
+-            print 'WARNING: non-IDL file passed: "%s"' % file_path
++            print('WARNING: non-IDL file passed: "%s"' % file_path)
+             continue
+         if not os.path.exists(file_path):
+-            print 'WARNING: file not found: "%s"' % file_path
++            print('WARNING: file not found: "%s"' % file_path)
+             continue
+ 
+         idl_file_contents = get_file_contents(file_path)
+--- ./src/3rdparty/chromium/third_party/blink/renderer/bindings/scripts/idl_validator.py.orig
++++ ./src/3rdparty/chromium/third_party/blink/renderer/bindings/scripts/idl_validator.py
+@@ -52,7 +52,7 @@
+ 
+     def validate_extended_attributes(self, definitions):
+         # FIXME: this should be done when parsing the file, rather than after.
+-        for interface in definitions.interfaces.itervalues():
++        for interface in definitions.interfaces.values():
+             self.validate_extended_attributes_node(interface)
+             for attribute in interface.attributes:
+                 self.validate_extended_attributes_node(attribute)
+@@ -60,18 +60,18 @@
+                 self.validate_extended_attributes_node(operation)
+                 for argument in operation.arguments:
+                     self.validate_extended_attributes_node(argument)
+-        for dictionary in definitions.dictionaries.itervalues():
++        for dictionary in definitions.dictionaries.values():
+             self.validate_extended_attributes_node(dictionary)
+             for member in dictionary.members:
+                 self.validate_extended_attributes_node(member)
+-        for callback_function in definitions.callback_functions.itervalues():
++        for callback_function in definitions.callback_functions.values():
+             self.validate_extended_attributes_node(callback_function)
+             for argument in callback_function.arguments:
+                 self.validate_extended_attributes_node(argument)
+ 
+ 
+     def validate_extended_attributes_node(self, node):
+-        for name, values_string in node.extended_attributes.iteritems():
++        for name, values_string in node.extended_attributes.items():
+             self.validate_name_values_string(name, values_string)
+ 
+     def validate_name_values_string(self, name, values_string):
+--- ./src/3rdparty/chromium/third_party/blink/renderer/bindings/scripts/utilities.py.orig
++++ ./src/3rdparty/chromium/third_party/blink/renderer/bindings/scripts/utilities.py
+@@ -8,7 +8,7 @@
+ """
+ 
+ import os
+-import cPickle as pickle
++import pickle
+ import re
+ import shlex
+ import string
+@@ -188,8 +188,8 @@
+ 
+     @property
+     def callback_functions(self):
+-        return dict(self._component_info_core['callback_functions'].items() +
+-                    self._component_info_modules['callback_functions'].items())
++        return dict(list(self._component_info_core['callback_functions'].items()) +
++                    list(self._component_info_modules['callback_functions'].items()))
+ 
+     @property
+     def specifier_for_export(self):
+@@ -201,7 +201,7 @@
+ 
+ 
+ def load_interfaces_info_overall_pickle(info_dir):
+-    with open(os.path.join(info_dir, 'interfaces_info.pickle')) as interface_info_file:
++    with open(os.path.join(info_dir, 'interfaces_info.pickle'), "rb") as interface_info_file:
+         return pickle.load(interface_info_file)
+ 
+ 
+@@ -210,7 +210,7 @@
+     |target| will be updated with |diff|.  Part of |diff| may be re-used in
+     |target|.
+     """
+-    for key, value in diff.iteritems():
++    for key, value in diff.items():
+         if key not in target:
+             target[key] = value
+         elif type(value) == dict:
+@@ -227,16 +227,16 @@
+ 
+ def create_component_info_provider_core(info_dir):
+     interfaces_info = load_interfaces_info_overall_pickle(info_dir)
+-    with open(os.path.join(info_dir, 'core', 'component_info_core.pickle')) as component_info_file:
++    with open(os.path.join(info_dir, 'core', 'component_info_core.pickle'), "rb") as component_info_file:
+         component_info = pickle.load(component_info_file)
+     return ComponentInfoProviderCore(interfaces_info, component_info)
+ 
+ 
+ def create_component_info_provider_modules(info_dir):
+     interfaces_info = load_interfaces_info_overall_pickle(info_dir)
+-    with open(os.path.join(info_dir, 'core', 'component_info_core.pickle')) as component_info_file:
++    with open(os.path.join(info_dir, 'core', 'component_info_core.pickle'), "rb") as component_info_file:
+         component_info_core = pickle.load(component_info_file)
+-    with open(os.path.join(info_dir, 'modules', 'component_info_modules.pickle')) as component_info_file:
++    with open(os.path.join(info_dir, 'modules', 'component_info_modules.pickle'), "rb") as component_info_file:
+         component_info_modules = pickle.load(component_info_file)
+     return ComponentInfoProviderModules(
+         interfaces_info, component_info_core, component_info_modules)
+@@ -307,15 +307,16 @@
+ 
+ def read_pickle_file(pickle_filename):
+     pickle_filename = abs(pickle_filename)
+-    with open(pickle_filename) as pickle_file:
++    with open(pickle_filename, "rb") as pickle_file:
+         return pickle.load(pickle_file)
+ 
+ 
+ def write_file(new_text, destination_filename):
++    new_text = new_text.encode()
+     destination_filename = abs(destination_filename)
+     # If |new_text| is same with the file content, we skip updating.
+     if os.path.isfile(destination_filename):
+-        with open(destination_filename) as destination_file:
++        with open(destination_filename, "rb") as destination_file:
+             if destination_file.read() == new_text:
+                 return
+ 
+@@ -339,7 +340,7 @@
+             except Exception:
+                 # If trouble unpickling, overwrite
+                 pass
+-    with open(pickle_filename, 'w') as pickle_file:
++    with open(pickle_filename, 'wb') as pickle_file:
+         pickle.dump(data, pickle_file)
+ 
+ 
+@@ -416,7 +417,7 @@
+         if parences < 0 or square_brackets < 0:
+             raise ValueError('You have more close braces than open braces.')
+         if parences == 0 and square_brackets == 0:
+-            name, _, value = map(string.strip, concatenated.partition('='))
++            name, _, value = map(lambda s : s.strip(), concatenated.partition('='))
+             extended_attributes[name] = value
+             concatenated = None
+     return extended_attributes
+@@ -432,7 +433,7 @@
+     if not match:
+         return None
+     arguments = []
+-    for argument in map(string.strip, match.group(1).split(',')):
++    for argument in map(lambda s : s.strip(), match.group(1).split(',')):
+         exposed, runtime_enabled = argument.split()
+         arguments.append({'exposed': exposed, 'runtime_enabled': runtime_enabled})
+ 
+--- ./src/3rdparty/chromium/third_party/blink/renderer/bindings/scripts/code_generator.py.orig
++++ ./src/3rdparty/chromium/third_party/blink/renderer/bindings/scripts/code_generator.py
+@@ -194,7 +194,7 @@
+         cache_dir = argv[1]
+         dummy_filename = argv[2]
+     except IndexError:
+-        print 'Usage: %s CACHE_DIR DUMMY_FILENAME' % argv[0]
++        print('Usage: %s CACHE_DIR DUMMY_FILENAME' % argv[0])
+         return 1
+ 
+     # Cache templates
+--- ./src/3rdparty/chromium/third_party/blink/renderer/bindings/scripts/overload_set_algorithm.py.orig
++++ ./src/3rdparty/chromium/third_party/blink/renderer/bindings/scripts/overload_set_algorithm.py
+@@ -183,7 +183,7 @@
+     # Filter to only methods that are actually overloaded
+     method_counts = Counter(method['name'] for method in methods)
+     overloaded_method_names = set(name
+-                                  for name, count in method_counts.iteritems()
++                                  for name, count in method_counts.items()
+                                   if count > 1)
+     overloaded_methods = [method for method in methods
+                           if method['name'] in overloaded_method_names]
+--- ./src/3rdparty/chromium/third_party/blink/renderer/bindings/scripts/compute_interfaces_info_individual.py.orig
++++ ./src/3rdparty/chromium/third_party/blink/renderer/bindings/scripts/compute_interfaces_info_individual.py
+@@ -232,7 +232,7 @@
+         this_union_types = collect_union_types_from_definitions(definitions)
+         self.union_types.update(this_union_types)
+         self.typedefs.update(definitions.typedefs)
+-        for callback_function_name, callback_function in definitions.callback_functions.iteritems():
++        for callback_function_name, callback_function in definitions.callback_functions.items():
+             # Set 'component_dir' to specify a directory that callback function files belong to
+             self.callback_functions[callback_function_name] = {
+                 'callback_function': callback_function,
+@@ -247,7 +247,7 @@
+         self.enumerations.update(definitions.enumerations)
+ 
+         if definitions.interfaces:
+-            definition = next(definitions.interfaces.itervalues())
++            definition = next(iter(definitions.interfaces.values()))
+             interface_info = {
+                 'is_callback_interface': definition.is_callback,
+                 'is_dictionary': False,
+@@ -261,7 +261,7 @@
+                 'referenced_interfaces': get_put_forward_interfaces_from_definition(definition),
+             }
+         elif definitions.dictionaries:
+-            definition = next(definitions.dictionaries.itervalues())
++            definition = next(iter(definitions.dictionaries.values()))
+             interface_info = {
+                 'is_callback_interface': False,
+                 'is_dictionary': True,
+--- ./src/3rdparty/chromium/third_party/blink/renderer/bindings/scripts/blink_idl_parser.py.orig
++++ ./src/3rdparty/chromium/third_party/blink/renderer/bindings/scripts/blink_idl_parser.py
+@@ -139,7 +139,7 @@
+     try:
+         outputdir = argv[1]
+     except IndexError as err:
+-        print 'Usage: %s OUTPUT_DIR' % argv[0]
++        print('Usage: %s OUTPUT_DIR' % argv[0])
+         return 1
+     blink_idl_lexer.main(argv)
+     # Important: rewrite_tables=True causes the cache file to be deleted if it
+--- ./src/3rdparty/chromium/third_party/blink/renderer/bindings/scripts/idl_types.py.orig
++++ ./src/3rdparty/chromium/third_party/blink/renderer/bindings/scripts/idl_types.py
+@@ -336,7 +336,7 @@
+         return True
+ 
+     def single_matching_member_type(self, predicate):
+-        matching_types = filter(predicate, self.flattened_member_types)
++        matching_types = list(filter(predicate, self.flattened_member_types))
+         if len(matching_types) > 1:
+             raise ValueError('%s is ambiguous.' % self.name)
+         return matching_types[0] if matching_types else None
+@@ -616,7 +616,7 @@
+ 
+     def __str__(self):
+         annotation = ', '.join((key + ('' if val is None else '=' + val))
+-                               for key, val in self.extended_attributes.iteritems())
++                               for key, val in self.extended_attributes.items())
+         return '[%s] %s' % (annotation, str(self.inner_type))
+ 
+     def __getattr__(self, name):
+@@ -639,7 +639,7 @@
+     @property
+     def name(self):
+         annotation = ''.join((key + ('' if val is None else val))
+-                             for key, val in sorted(self.extended_attributes.iteritems()))
++                             for key, val in sorted(self.extended_attributes.items()))
+         return self.inner_type.name + annotation
+ 
+     def resolve_typedefs(self, typedefs):
+--- ./src/3rdparty/chromium/third_party/jinja2/filters.py.orig
++++ ./src/3rdparty/chromium/third_party/jinja2/filters.py
+@@ -848,8 +848,9 @@
+        attribute of another attribute.
+     """
+     expr = make_attrgetter(environment, attribute)
++    nonefilter = lambda x : expr(x) if expr(x) is not None else ""
+     return [_GroupTuple(key, list(values)) for key, values
+-            in groupby(sorted(value, key=expr), expr)]
++            in groupby(sorted(value, key=nonefilter), expr)]
+ 
+ 
+ @environmentfilter
+--- ./src/3rdparty/chromium/third_party/dawn/generator/extract_json.py.orig
++++ ./src/3rdparty/chromium/third_party/dawn/generator/extract_json.py
+@@ -24,7 +24,7 @@
+ 
+     output_dir = sys.argv[2]
+ 
+-    for (name, content) in files.iteritems():
++    for (name, content) in files.items():
+         output_file = output_dir + os.path.sep + name
+ 
+         directory = os.path.dirname(output_file)
+--- ./src/3rdparty/chromium/third_party/devtools-frontend/src/scripts/build/modular_build.py.orig
++++ ./src/3rdparty/chromium/third_party/devtools-frontend/src/scripts/build/modular_build.py
+@@ -40,7 +40,7 @@
+     try:
+         return json.loads(read_file(filename))
+     except:
+-        print 'ERROR: Failed to parse %s' % filename
++        print('ERROR: Failed to parse %s' % filename)
+         raise
+ 
+ 
+@@ -68,7 +68,7 @@
+ 
+     def application_json(self):
+         result = dict()
+-        result['modules'] = self.application.values()
++        result['modules'] = list(self.application.values())
+         result['has_html'] = self.has_html
+         return json.dumps(result)
+ 
+--- ./src/3rdparty/chromium/third_party/devtools-frontend/src/scripts/build/build_release_applications.py.orig
++++ ./src/3rdparty/chromium/third_party/devtools-frontend/src/scripts/build/build_release_applications.py
+@@ -11,7 +11,7 @@
+ - Builds app.html referencing the application script.
+ """
+ 
+-from cStringIO import StringIO
++from io import StringIO
+ from os import path
+ from os.path import join
+ import copy
+@@ -193,7 +193,7 @@
+             resource_name = path.normpath(resource_name).replace('\\', '/')
+             output.write('Root.Runtime.cachedResources["%s"] = "' % resource_name)
+             resource_content = read_file(path.join(self.application_dir, resource_name))
+-            resource_content += resource_source_url(resource_name).encode('utf-8')
++            resource_content += resource_source_url(resource_name)
+             resource_content = resource_content.replace('\\', '\\\\')
+             resource_content = resource_content.replace('\n', '\\n')
+             resource_content = resource_content.replace('"', '\\"')
+@@ -236,7 +236,7 @@
+             output.write('/* Additional descriptors */\n')
+             output.write('Root.allDescriptors.push(...%s);' % self._release_module_descriptors())
+             output.write('/* Additional descriptors %s */\n' % self.app_file('json'))
+-            output.write('Root.applicationDescriptor.modules.push(...%s);' % json.dumps(self.descriptors.application.values()))
++            output.write('Root.applicationDescriptor.modules.push(...%s);' % json.dumps(list(self.descriptors.application.values())))
+ 
+         output.write('\n/* Autostart modules */\n')
+         if (self.descriptors.worker):
+--- ./src/3rdparty/chromium/third_party/devtools-frontend/src/scripts/build/generate_devtools_grd.py.orig
++++ ./src/3rdparty/chromium/third_party/devtools-frontend/src/scripts/build/generate_devtools_grd.py
+@@ -116,7 +116,7 @@
+ 
+     try:
+         os.makedirs(path.join(output_directory, 'Images'))
+-    except OSError, e:
++    except OSError as e:
+         if e.errno != errno.EEXIST:
+             raise e
+ 
+@@ -140,7 +140,7 @@
+             shutil.copy(path.join(dirname, filename), path.join(output_directory, 'Images'))
+             add_file_to_grd(doc, path.join('Images', filename))
+ 
+-    with open(parsed_args.output_filename, 'w') as output_file:
++    with open(parsed_args.output_filename, 'wb') as output_file:
+         output_file.write(doc.toxml(encoding='UTF-8'))
+ 
+ 
+--- ./src/3rdparty/chromium/third_party/devtools-frontend/src/scripts/build/generate_supported_css.py.orig
++++ ./src/3rdparty/chromium/third_party/devtools-frontend/src/scripts/build/generate_supported_css.py
+@@ -38,9 +38,12 @@
+ 
+ 
+ def _keep_only_required_keys(entry):
++    removeme = []
+     for key in entry.keys():
+         if key not in ("name", "longhands", "svg", "inherited"):
+-            del entry[key]
++            removeme.append(key)
++    for key in removeme:
++        del entry[key]
+     return entry
+ 
+ 
+--- ./src/3rdparty/chromium/tools/polymer/polymer.py.orig
++++ ./src/3rdparty/chromium/tools/polymer/polymer.py
+@@ -491,8 +491,6 @@
+   # across platforms.
+   with io.open(os.path.join(out_folder, result[1]), mode='w', encoding='utf-8', newline='\n') as f:
+     for l in result[0]:
+-      if (type(l) != unicode):
+-        l = unicode(l, encoding='utf-8')
+       f.write(l)
+   return
+ 
+--- ./src/3rdparty/chromium/tools/idl_parser/idl_parser.py.orig
++++ ./src/3rdparty/chromium/tools/idl_parser/idl_parser.py
+@@ -35,9 +35,9 @@
+ import sys
+ import time
+ 
+-from idl_lexer import IDLLexer
+-from idl_node import IDLAttribute
+-from idl_node import IDLNode
++from .idl_lexer import IDLLexer
++from .idl_node import IDLAttribute
++from .idl_node import IDLNode
+ 
+ SRC_DIR = os.path.join(os.path.dirname(__file__), os.pardir, os.pardir)
+ sys.path.insert(0, os.path.join(SRC_DIR, 'third_party'))
+--- ./src/3rdparty/chromium/tools/metrics/ukm/codegen.py.orig
++++ ./src/3rdparty/chromium/tools/metrics/ukm/codegen.py
+@@ -20,7 +20,7 @@
+ def HashName(name):
+   # This must match the hash function in base/metrics/metric_hashes.cc
+   # >Q: 8 bytes, big endian.
+-  return struct.unpack('>Q', hashlib.md5(name).digest()[:8])[0]
++  return struct.unpack('>Q', hashlib.md5(name.encode()).digest()[:8])[0]
+ 
+ 
+ class FileInfo(object):
+--- ./src/3rdparty/chromium/tools/metrics/ukm/ukm_model.py.orig
++++ ./src/3rdparty/chromium/tools/metrics/ukm/ukm_model.py
+@@ -28,21 +28,21 @@
+ _QUANTILES_TYPE = models.ObjectNodeType(
+     'quantiles',
+     attributes=[
+-      ('type', unicode, None),
++      ('type', str, None),
+     ],
+     single_line=True)
+ 
+ _INDEX_TYPE = models.ObjectNodeType(
+     'index',
+     attributes=[
+-      ('fields', unicode, None),
++      ('fields', str, None),
+     ],
+     single_line=True)
+ 
+ _STATISTICS_TYPE =  models.ObjectNodeType(
+     'statistics',
+     attributes=[
+-      ('export', unicode, r'^(?i)(|true|false)$'),
++      ('export', str, r'^(?i)(|true|false)$'),
+     ],
+     children=[
+         models.ChildType(_QUANTILES_TYPE.tag, _QUANTILES_TYPE, multiple=False),
+@@ -72,9 +72,9 @@
+ _METRIC_TYPE =  models.ObjectNodeType(
+     'metric',
+     attributes=[
+-      ('name', unicode, r'^[A-Za-z0-9_.]+$'),
+-      ('semantic_type', unicode, None),
+-      ('enum', unicode, None),
++      ('name', str, r'^[A-Za-z0-9_.]+$'),
++      ('semantic_type', str, None),
++      ('enum', str, None),
+     ],
+     alphabetization=[
+         (_OBSOLETE_TYPE.tag, _KEEP_ORDER),
+@@ -93,8 +93,8 @@
+ _EVENT_TYPE =  models.ObjectNodeType(
+     'event',
+     attributes=[
+-      ('name', unicode, r'^[A-Za-z0-9.]+$'),
+-      ('singular', unicode, r'^(?i)(|true|false)$'),
++      ('name', str, r'^[A-Za-z0-9.]+$'),
++      ('singular', str, r'^(?i)(|true|false)$'),
+     ],
+     alphabetization=[
+         (_OBSOLETE_TYPE.tag, _KEEP_ORDER),
+--- ./src/3rdparty/chromium/tools/grit/grit/util.py.orig
++++ ./src/3rdparty/chromium/tools/grit/grit/util.py
+@@ -33,7 +33,11 @@
+ _, UTF8, UTF16 = range(3)
+ 
+ def abs(filename):
+-  return os.path.normpath(os.path.join(os.getcwd(), filename))
++  if isinstance(filename, bytes):
++    t = os.path.join(os.getcwd().encode(), filename)
++  else:
++    t = os.path.join(os.getcwd(), filename)
++  return os.path.normpath(t)
+ 
+ def Encode(message, encoding):
+   '''Returns a byte stream that represents |message| in the given |encoding|.'''
+@@ -211,8 +215,9 @@
+   mode = 'rb' if encoding == BINARY else 'rU'
+   with open(abs(filename), mode) as f:
+     data = f.read()
+-  if encoding not in (BINARY, RAW_TEXT):
+-    data = data.decode(encoding)
++  # Binary returns a bytes object, and text mode already converts to str
++  # if encoding not in (BINARY, RAW_TEXT):
++  #   data = data.decode(encoding)
+   return data
+ 
+ 
+--- ./src/3rdparty/chromium/tools/grit/grit/node/misc.py.orig
++++ ./src/3rdparty/chromium/tools/grit/grit/node/misc.py
+@@ -478,7 +478,7 @@
+             input_files.update(node.GetHtmlResourceFilenames())
+ 
+     self.SetOutputLanguage(old_output_language)
+-    return sorted(input_files)
++    return sorted([ x.encode() if not isinstance(x, bytes) else x for x in input_files ])
+ 
+   def GetFirstIdsFile(self):
+     """Returns a usable path to the first_ids file, if set, otherwise
+--- ./src/3rdparty/chromium/tools/grit/grit/gather/chrome_scaled_image.py.orig
++++ ./src/3rdparty/chromium/tools/grit/grit/gather/chrome_scaled_image.py
+@@ -16,7 +16,7 @@
+ from grit.gather import interface
+ 
+ 
+-_PNG_SCALE_CHUNK = '\0\0\0\0csCl\xc1\x30\x60\x4d'
++_PNG_SCALE_CHUNK = b'\0\0\0\0csCl\xc1\x30\x60\x4d'
+ 
+ 
+ def _RescaleImage(data, from_scale, to_scale):
+@@ -29,19 +29,19 @@
+   return data
+ 
+ 
+-_PNG_MAGIC = '\x89PNG\r\n\x1a\n'
++_PNG_MAGIC = b'\x89PNG\r\n\x1a\n'
+ 
+ '''Mandatory first chunk in order for the png to be valid.'''
+-_FIRST_CHUNK = 'IHDR'
++_FIRST_CHUNK = b'IHDR'
+ 
+ '''Special chunks to move immediately after the IHDR chunk. (so that the PNG
+ remains valid.)
+ '''
+-_SPECIAL_CHUNKS = frozenset('csCl npTc'.split())
++_SPECIAL_CHUNKS = frozenset(b'csCl npTc'.split())
+ 
+ '''Any ancillary chunk not in this list is deleted from the PNG.'''
+ _ANCILLARY_CHUNKS_TO_LEAVE = frozenset(
+-    'bKGD cHRM gAMA iCCP pHYs sBIT sRGB tRNS acTL fcTL fdAT'.split())
++    b'bKGD cHRM gAMA iCCP pHYs sBIT sRGB tRNS acTL fcTL fdAT'.split())
+ 
+ 
+ def _MoveSpecialChunksToFront(data):
+@@ -53,14 +53,14 @@
+   rest = []
+   for chunk in _ChunkifyPNG(data):
+     type = chunk[4:8]
+-    critical = type < 'a'
++    critical = type < b'a'
+     if type == _FIRST_CHUNK:
+       first.append(chunk)
+     elif type in _SPECIAL_CHUNKS:
+       special_chunks.append(chunk)
+     elif critical or type in _ANCILLARY_CHUNKS_TO_LEAVE:
+       rest.append(chunk)
+-  return ''.join(first + special_chunks + rest)
++  return b''.join(first + special_chunks + rest)
+ 
+ 
+ def _ChunkifyPNG(data):
+--- ./src/3rdparty/chromium/tools/grit/grit/gather/chrome_html.py.orig
++++ ./src/3rdparty/chromium/tools/grit/grit/gather/chrome_html.py
+@@ -26,32 +26,32 @@
+ 
+ 
+ # Distribution string to replace with distribution.
+-DIST_SUBSTR = '%DISTRIBUTION%'
++DIST_SUBSTR = b'%DISTRIBUTION%'
+ 
+ 
+ # Matches a chrome theme source URL.
+ _THEME_SOURCE = lazy_re.compile(
+-    r'(?P<baseurl>chrome://theme/IDR_[A-Z0-9_]*)(?P<query>\?.*)?')
++    rb'(?P<baseurl>chrome://theme/IDR_[A-Z0-9_]*)(?P<query>\?.*)?')
+ # Pattern for matching CSS url() function.
+-_CSS_URL_PATTERN = r'url\((?P<quote>"|\'|)(?P<filename>[^"\'()]*)(?P=quote)\)'
++_CSS_URL_PATTERN = rb'url\((?P<quote>"|\'|)(?P<filename>[^"\'()]*)(?P=quote)\)'
+ # Matches CSS url() functions with the capture group 'filename'.
+ _CSS_URL = lazy_re.compile(_CSS_URL_PATTERN)
+ # Matches one or more CSS image urls used in given properties.
+ _CSS_IMAGE_URLS = lazy_re.compile(
+-    r'(?P<attribute>content|background|[\w-]*-image):\s*'
+-        r'(?P<urls>(' + _CSS_URL_PATTERN + r'\s*,?\s*)+)')
++    rb'(?P<attribute>content|background|[\w-]*-image):\s*'
++        rb'(?P<urls>(' + _CSS_URL_PATTERN + rb'\s*,?\s*)+)')
+ # Matches CSS image sets.
+ _CSS_IMAGE_SETS = lazy_re.compile(
+-    r'(?P<attribute>content|background|[\w-]*-image):[ ]*'
+-        r'-webkit-image-set\((?P<images>'
+-        r'(\s*,?\s*url\((?P<quote>"|\'|)[^"\'()]*(?P=quote)\)[ ]*[0-9.]*x)*)\)',
++    rb'(?P<attribute>content|background|[\w-]*-image):[ ]*'
++        rb'-webkit-image-set\((?P<images>'
++        rb'(\s*,?\s*url\((?P<quote>"|\'|)[^"\'()]*(?P=quote)\)[ ]*[0-9.]*x)*)\)',
+     re.MULTILINE)
+ # Matches a single image in a CSS image set with the capture group scale.
+-_CSS_IMAGE_SET_IMAGE = lazy_re.compile(r'\s*,?\s*'
+-    r'url\((?P<quote>"|\'|)[^"\'()]*(?P=quote)\)[ ]*(?P<scale>[0-9.]*x)',
++_CSS_IMAGE_SET_IMAGE = lazy_re.compile(rb'\s*,?\s*'
++    rb'url\((?P<quote>"|\'|)[^"\'()]*(?P=quote)\)[ ]*(?P<scale>[0-9.]*x)',
+     re.MULTILINE)
+ _HTML_IMAGE_SRC = lazy_re.compile(
+-    r'<img[^>]+src=\"(?P<filename>[^">]*)\"[^>]*>')
++    rb'<img[^>]+src=\"(?P<filename>[^">]*)\"[^>]*>')
+ 
+ def GetImageList(
+     base_path, filename, scale_factors, distribution,
+@@ -80,16 +80,19 @@
+     images = [('1x', filename)]
+     for scale_factor in scale_factors:
+       scale_filename = "%s@%s" % (theme_match.group('baseurl'), scale_factor)
++      scale_filename = scale_filename.encode()
+       if theme_match.group('query'):
+         scale_filename += theme_match.group('query')
+       images.append((scale_factor, scale_filename))
+     return images
+ 
+-  if filename.find(':') != -1:
++  if filename.find(b':') != -1:
+     # filename is probably a URL, only return filename itself.
+     return [('1x', filename)]
+ 
+-  filename = filename.replace(DIST_SUBSTR, distribution)
++  base_path = base_path.encode() if isinstance(base_path, str) else base_path
++
++  filename = filename.replace(DIST_SUBSTR, distribution.encode() if isinstance(distribution,str) else distribution)
+   if filename_expansion_function:
+     filename = filename_expansion_function(filename)
+   filepath = os.path.join(base_path, filename)
+@@ -98,15 +101,15 @@
+   for scale_factor in scale_factors:
+     # Check for existence of file and add to image set.
+     scale_path = os.path.split(os.path.join(base_path, filename))
+-    scale_image_path = os.path.join(scale_path[0], scale_factor, scale_path[1])
++    scale_image_path = os.path.join(scale_path[0], scale_factor if isinstance(scale_factor, bytes) else scale_factor.encode(), scale_path[1])
+     if os.path.isfile(scale_image_path):
+       # HTML/CSS always uses forward slashed paths.
+-      parts = filename.rsplit('/', 1)
++      parts = filename.rsplit(b'/', 1)
+       if len(parts) == 1:
+-        path = ''
++        path = b''
+       else:
+-        path = parts[0] + '/'
+-      scale_image_name = path + scale_factor + '/' + parts[-1]
++        path = parts[0] + b'/'
++      scale_image_name = path + scale_factor.encode() + b'/' + parts[-1]
+       images.append((scale_factor, scale_image_name))
+   return images
+ 
+@@ -120,13 +123,16 @@
+     quote: a string giving the quotation character to use (i.e. "'")
+ 
+   Returns:
+-    string giving a -webkit-image-set rule referencing the provided images.
++    bytes giving a -webkit-image-set rule referencing the provided images.
+         (i.e. '-webkit-image-set(url('image.png') 1x, url('2x/image.png') 2x)')
+   """
++  def _(s):
++    return s if isinstance(s, bytes) else s.encode()
++
+   imageset = []
+   for (scale_factor, filename) in images:
+-    imageset.append("url(%s%s%s) %s" % (quote, filename, quote, scale_factor))
+-  return "-webkit-image-set(%s)" % (', '.join(imageset))
++    imageset.append(b"url(%s%s%s) %s" % (_(quote), _(filename), _(quote), _(scale_factor)))
++  return b"-webkit-image-set(%s)" % (b', '.join(imageset))
+ 
+ 
+ def UrlToImageSet(
+@@ -148,21 +154,25 @@
+     distribution: string that should replace %DISTRIBUTION%.
+ 
+   Returns:
+-    string
++    bytes
+   """
+   quote = src_match.group('quote')
+   filename = src_match.group('filename')
++  quote = quote if isinstance(quote, bytes) else quote.encode()
++  filename = filename if isinstance(filename, bytes) else filename.encode()
++
+   image_list = GetImageList(
+       base_path, filename, scale_factors, distribution,
+       filename_expansion_function=filename_expansion_function)
+ 
+   # Don't modify the source if there is only one image.
+   if len(image_list) == 1:
+-    return src_match.group(0)
++    i = src_match.group(0)
++  else:
++    i = GenerateImageSet(image_list, quote)
++  return i if isinstance(i, bytes) else i.encode()
+ 
+-  return GenerateImageSet(image_list, quote)
+ 
+-
+ def InsertImageSet(
+     src_match, base_path, scale_factors, distribution,
+     filename_expansion_function=None):
+@@ -178,15 +188,20 @@
+     distribution: string that should replace %DISTRIBUTION%.
+ 
+   Returns:
+-    string
++    bytes
+   """
+   attr = src_match.group('attribute')
++  u_ = src_match.group('urls')
++  
++  attr = attr if isinstance(attr, bytes) else attr.encode()
++  u_ = u_ if isinstance(u_, bytes) else u_.encode()
++
+   urls = _CSS_URL.sub(
+       lambda m: UrlToImageSet(m, base_path, scale_factors, distribution,
+                               filename_expansion_function),
+-      src_match.group('urls'))
++      u_)
+ 
+-  return "%s: %s" % (attr, urls)
++  return b"%s: %s" % (attr, urls)
+ 
+ 
+ def InsertImageStyle(
+@@ -204,11 +219,13 @@
+ 
+   # Don't modify the source if there is only one image or image already defines
+   # a style.
+-  if src_match.group(0).find(" style=\"") != -1 or len(image_list) == 1:
+-    return src_match.group(0)
++  grp_0 = src_match.group(0)
++  grp_0 = grp_0 if isinstance(grp_0, bytes) else grp_0.encode()
++  if grp_0.find(b" style=\"") != -1 or len(image_list) == 1:
++    return grp_0
+ 
+-  return "%s style=\"content: %s;\">" % (src_match.group(0)[:-1],
+-                                        GenerateImageSet(image_list, "'"))
++  return b"%s style=\"content: %s;\">" % (grp_0[:-1],
++                                        GenerateImageSet(image_list, b"'"))
+ 
+ 
+ def InsertImageSets(
+@@ -219,17 +236,21 @@
+   """
+   # Add high DPI urls for css attributes: content, background,
+   # or *-image or <img src="foo">.
+-  return _CSS_IMAGE_URLS.sub(
+-      lambda m: InsertImageSet(
+-          m, filepath, scale_factors, distribution,
+-          filename_expansion_function=filename_expansion_function),
+-      _HTML_IMAGE_SRC.sub(
++  h = _HTML_IMAGE_SRC.sub(
+           lambda m: InsertImageStyle(
+               m, filepath, scale_factors, distribution,
+               filename_expansion_function=filename_expansion_function),
+-          text)).decode('utf-8').encode('utf-8')
++          text)
+ 
++  c =  _CSS_IMAGE_URLS.sub(
++      lambda m: InsertImageSet(
++          m, filepath, scale_factors, distribution,
++          filename_expansion_function=filename_expansion_function),
++      h)
+ 
++  return c.decode('utf-8').encode('utf-8')
++
++
+ def RemoveImagesNotIn(scale_factors, src_match):
+   """Regex replace function which removes images for scale factors not in
+   scale_factors.
+@@ -245,10 +266,12 @@
+     string
+   """
+   attr = src_match.group('attribute')
++  if not isinstance(attr, bytes):
++    attr = attr.encode()
+   images = _CSS_IMAGE_SET_IMAGE.sub(
+-      lambda m: m.group(0) if m.group('scale') in scale_factors else '',
++      lambda m: m.group(0) if m.group('scale') in scale_factors else b'',
+       src_match.group('images'))
+-  return "%s: -webkit-image-set(%s)" % (attr, images)
++  return b"%s: -webkit-image-set(%s)" % (attr, images)
+ 
+ 
+ def RemoveImageSetImages(text, scale_factors):
+@@ -256,7 +279,7 @@
+   supported scale_factors.
+   """
+   return _CSS_IMAGE_SETS.sub(
+-      lambda m: RemoveImagesNotIn(scale_factors, m), text)
++      lambda m: RemoveImagesNotIn(scale_factors, m), text.encode() if isinstance(text,str) else text)
+ 
+ 
+ def ProcessImageSets(
+--- ./src/3rdparty/chromium/tools/grit/grit/format/html_inline.py.orig
++++ ./src/3rdparty/chromium/tools/grit/grit/format/html_inline.py
+@@ -35,30 +35,30 @@
+ 
+ DIST_DEFAULT = 'chromium'
+ DIST_ENV_VAR = 'CHROMIUM_BUILD'
+-DIST_SUBSTR = '%DISTRIBUTION%'
++DIST_SUBSTR = b'%DISTRIBUTION%'
+ 
+ # Matches beginning of an "if" block.
+ _BEGIN_IF_BLOCK = lazy_re.compile(
+-    r'<if [^>]*?expr=("(?P<expr1>[^">]*)"|\'(?P<expr2>[^\'>]*)\')[^>]*?>')
++    rb'<if [^>]*?expr=("(?P<expr1>[^">]*)"|\'(?P<expr2>[^\'>]*)\')[^>]*?>')
+ 
+ # Matches ending of an "if" block.
+-_END_IF_BLOCK = lazy_re.compile(r'</if>')
++_END_IF_BLOCK = lazy_re.compile(rb'</if>')
+ 
+ # Used by DoInline to replace various links with inline content.
+ _STYLESHEET_RE = lazy_re.compile(
+-    r'<link rel="stylesheet"[^>]+?href="(?P<filename>[^"]*)".*?>(\s*</link>)?',
++    rb'<link rel="stylesheet"[^>]+?href="(?P<filename>[^"]*)".*?>(\s*</link>)?',
+     re.DOTALL)
+ _INCLUDE_RE = lazy_re.compile(
+-    r'(?P<comment>\/\/ )?<include[^>]+?'
+-    r'src=("(?P<file1>[^">]*)"|\'(?P<file2>[^\'>]*)\').*?>(\s*</include>)?',
++    rb'(?P<comment>\/\/ )?<include[^>]+?'
++    rb'src=("(?P<file1>[^">]*)"|\'(?P<file2>[^\'>]*)\').*?>(\s*</include>)?',
+     re.DOTALL)
+ _SRC_RE = lazy_re.compile(
+-    r'<(?!script)(?:[^>]+?\s)src="(?!\[\[|{{)(?P<filename>[^"\']*)"',
++    rb'<(?!script)(?:[^>]+?\s)src="(?!\[\[|{{)(?P<filename>[^"\']*)"',
+     re.MULTILINE)
+ # This re matches '<img srcset="..."' or '<source srcset="..."'
+ _SRCSET_RE = lazy_re.compile(
+-    r'<(img|source)\b(?:[^>]*?\s)srcset="(?!\[\[|{{|\$i18n{)'
+-    r'(?P<srcset>[^"\']*)"',
++    rb'<(img|source)\b(?:[^>]*?\s)srcset="(?!\[\[|{{|\$i18n{)'
++    rb'(?P<srcset>[^"\']*)"',
+     re.MULTILINE)
+ # This re is for splitting srcset value string into "image candidate strings".
+ # Notes:
+@@ -70,13 +70,13 @@
+ #   that form both of them.
+ # Matches for example "img2.png 2x" or "img9.png 11E-2w".
+ _SRCSET_ENTRY_RE = lazy_re.compile(
+-    r'\s*(?P<url>[^,\s]\S+[^,\s])'
+-    r'(?:\s+(?P<descriptor>[\deE.-]+[wx]))?\s*'
+-    r'(?P<separator>,|$)',
++    rb'\s*(?P<url>[^,\s]\S+[^,\s])'
++    rb'(?:\s+(?P<descriptor>[\deE.-]+[wx]))?\s*'
++    rb'(?P<separator>,|$)',
+     re.MULTILINE)
+ _ICON_RE = lazy_re.compile(
+-    r'<link rel="icon"\s(?:[^>]+?\s)?'
+-    r'href=(?P<quote>")(?P<filename>[^"\']*)\1',
++    rb'<link rel="icon"\s(?:[^>]+?\s)?'
++    rb'href=(?P<quote>")(?P<filename>[^"\']*)\1',
+     re.MULTILINE)
+ 
+ 
+@@ -113,10 +113,16 @@
+   Returns:
+     string
+   """
+-  if filename.find(':') != -1:
++  if filename.find(b':') != -1:
+     # filename is probably a URL, which we don't want to bother inlining
+     return filename
+ 
++  if not isinstance(distribution, bytes):
++    distribution = distribution.encode()
++  if not isinstance(base_path, bytes):
++    base_path = base_path.encode()
++  if not isinstance(filename, bytes):
++    filename = filename.encode()
+   filename = filename.replace(DIST_SUBSTR , distribution)
+   filepath = os.path.normpath(os.path.join(base_path, filename))
+   inlined_files.add(filepath)
+@@ -124,6 +130,9 @@
+   if names_only:
+     return ""
+ 
++  if isinstance(filename, bytes):
++    filename = filename.decode()
++
+   mimetype = mimetypes.guess_type(filename)[0]
+   if mimetype is None:
+     raise Exception('%s is of an an unknown type and '
+@@ -165,6 +174,12 @@
+ 
+   prefix = src_match.string[src_match.start():src_match.start('filename')]
+   suffix = src_match.string[src_match.end('filename'):src_match.end()]
++  if not isinstance(data_url, bytes):
++    data_url = data_url.encode()
++  if not isinstance(prefix, bytes):
++    prefix = prefix.encode()
++  if not isinstance(suffix, bytes):
++    suffix = suffix.encode()
+   return prefix + data_url + suffix
+ 
+ def SrcsetInlineAsDataURL(
+@@ -218,10 +233,11 @@
+     before, url, descriptor, separator, after = parts[i:i+5]
+ 
+     # There must be a comma-separated next entry or this must be the last entry.
+-    assert separator == "," or (separator == "" and i == len(parts) - 5), (
++    assert isinstance(separator, bytes)
++    assert separator == b"," or (separator == b"" and i == len(parts) - 5), (
+            "Bad srcset format in {}".format(srcset_match.group(0)))
+     # Both before and after the entry must be empty
+-    assert before == after == "", (
++    assert before == after == b"", (
+            "Bad srcset format in {}".format(srcset_match.group(0)))
+ 
+     if filename_expansion_function:
+@@ -229,8 +245,10 @@
+     else:
+       filename = url
+ 
++    assert isinstance(filename, bytes)
+     data_url = ConvertFileToDataURL(filename, base_path, distribution,
+                                     inlined_files, names_only)
++    assert isinstance(data_url, bytes)
+ 
+     # This is not "names_only" mode
+     if data_url:
+@@ -238,12 +256,12 @@
+       if descriptor:
+         candidate.append(descriptor)
+ 
+-      new_candidates.append(" ".join(candidate))
++      new_candidates.append(b" ".join(candidate))
+ 
+   prefix = srcset_match.string[srcset_match.start():
+       srcset_match.start('srcset')]
+   suffix = srcset_match.string[srcset_match.end('srcset'):srcset_match.end()]
+-  return prefix + ','.join(new_candidates) + suffix
++  return prefix + b','.join(new_candidates) + suffix
+ 
+ class InlinedData:
+   """Helper class holding the results from DoInline().
+@@ -290,9 +308,12 @@
+   def SrcReplace(src_match, filepath=input_filepath,
+                  inlined_files=inlined_files):
+     """Helper function to provide SrcInlineAsDataURL with the base file path"""
+-    return SrcInlineAsDataURL(
++    src = SrcInlineAsDataURL(
+         src_match, filepath, distribution, inlined_files, names_only=names_only,
+         filename_expansion_function=filename_expansion_function)
++    if not isinstance(src, bytes):
++      src = src.encode()
++    return src
+ 
+   def SrcsetReplace(srcset_match, filepath=input_filepath,
+                  inlined_files=inlined_files):
+@@ -308,42 +329,42 @@
+     filename = [v for k, v in src_match.groupdict().items()
+                 if k.startswith('file') and v][0]
+ 
+-    if filename.find(':') != -1:
++    if filename.find(b':') != -1:
+       # filename is probably a URL, which we don't want to bother inlining
+       return None
+ 
+-    filename = filename.replace('%DISTRIBUTION%', distribution)
++    filename = filename.replace(b'%DISTRIBUTION%', distribution.encode())
+     if filename_expansion_function:
+       filename = filename_expansion_function(filename)
+-    return os.path.normpath(os.path.join(base_path, filename))
++    return os.path.normpath(os.path.join(base_path, filename.decode()))
+ 
+   def IsConditionSatisfied(src_match):
+-    expr1 = src_match.group('expr1') or ''
+-    expr2 = src_match.group('expr2') or ''
++    expr1 = src_match.group('expr1') or b''
++    expr2 = src_match.group('expr2') or b''
+     return grd_node is None or grd_node.EvaluateCondition(expr1 + expr2)
+ 
+-  def CheckConditionalElements(str):
++  def CheckConditionalElements(text):
+     """Helper function to conditionally inline inner elements"""
+     while True:
+-      begin_if = _BEGIN_IF_BLOCK.search(str)
++      begin_if = _BEGIN_IF_BLOCK.search(text)
+       if begin_if is None:
+-        if _END_IF_BLOCK.search(str) is not None:
++        if _END_IF_BLOCK.search(text) is not None:
+           raise Exception('Unmatched </if>')
+-        return str
++        return text
+ 
+       condition_satisfied = IsConditionSatisfied(begin_if)
+-      leading = str[0:begin_if.start()]
++      leading = text[0:begin_if.start()]
+       content_start = begin_if.end()
+ 
+       # Find matching "if" block end.
+       count = 1
+       pos = begin_if.end()
+       while True:
+-        end_if = _END_IF_BLOCK.search(str, pos)
++        end_if = _END_IF_BLOCK.search(text, pos)
+         if end_if is None:
+           raise Exception('Unmatched <if>')
+ 
+-        next_if = _BEGIN_IF_BLOCK.search(str, pos)
++        next_if = _BEGIN_IF_BLOCK.search(text, pos)
+         if next_if is None or next_if.start() >= end_if.end():
+           count = count - 1
+           if count == 0:
+@@ -353,13 +374,13 @@
+           count = count + 1
+           pos = next_if.end()
+ 
+-      content = str[content_start:end_if.start()]
+-      trailing = str[end_if.end():]
++      content = text[content_start:end_if.start()]
++      trailing = text[end_if.end():]
+ 
+       if condition_satisfied:
+-        str = leading + CheckConditionalElements(content) + trailing
++        text = leading + CheckConditionalElements(content) + trailing
+       else:
+-        str = leading + trailing
++        text = leading + trailing
+ 
+   def InlineFileContents(src_match,
+                          pattern,
+@@ -368,7 +389,8 @@
+     """Helper function to inline external files of various types"""
+     filepath = GetFilepath(src_match)
+     if filepath is None:
+-      return src_match.group(0)
++      content = src_match.group(0)
++      return content if isinstance(content, bytes) else content.encode()
+     inlined_files.add(filepath)
+ 
+     if names_only:
+@@ -378,7 +400,7 @@
+           allow_external_script,
+           rewrite_function,
+           filename_expansion_function=filename_expansion_function))
+-      return ""
++      return b""
+     # To recursively save inlined files, we need InlinedData instance returned
+     # by DoInline.
+     inlined_data_inst=DoInline(filepath, grd_node,
+@@ -388,7 +410,8 @@
+ 
+     inlined_files.update(inlined_data_inst.inlined_files)
+ 
+-    return pattern % inlined_data_inst.inlined_data;
++    content = pattern % inlined_data_inst.inlined_data;
++    return content if isinstance(content, bytes) else content.encode()
+ 
+ 
+   def InlineIncludeFiles(src_match):
+@@ -400,9 +423,10 @@
+   def InlineScript(match):
+     """Helper function to inline external script files"""
+     attrs = (match.group('attrs1') + match.group('attrs2')).strip()
++    attrs = attrs if isinstance(attrs, bytes) else attrs.encode()
+     if attrs:
+-      attrs = ' ' + attrs
+-    return InlineFileContents(match, '<script' + attrs + '>%s</script>',
++      attrs = b' ' + attrs
++    return InlineFileContents(match, b'<script' + attrs + b'>%s</script>',
+                               strip_whitespace=True)
+ 
+   def InlineCSSText(text, css_filepath):
+@@ -427,7 +451,8 @@
+     """
+     filepath = GetFilepath(src_match, base_path)
+     if filepath is None:
+-      return src_match.group(0)
++      content = src_match.group(0)
++      return content if isinstance(content, bytes) else content.encode()
+ 
+     # Even if names_only is set, the CSS file needs to be opened, because it
+     # can link to images that need to be added to the file set.
+@@ -439,7 +464,8 @@
+     # When resolving CSS files we need to pass in the path so that relative URLs
+     # can be resolved.
+ 
+-    return pattern % InlineCSSText(text, filepath)
++    content = pattern % InlineCSSText(text, filepath)
++    return content if isinstance(content, bytes) else content.encode()
+ 
+   def GetUrlRegexString(postfix=''):
+     """Helper function that returns a string for a regex that matches url('')
+@@ -459,20 +485,24 @@
+         r'[ ]*[0-9.]*x[ ]*(,[ ]*)?)+\)')
+     value_re = '(%s|%s)' % (GetUrlRegexString(), image_set_value_re)
+     css_re = property_re + value_re
+-    return re.sub(css_re, lambda m: InlineCSSUrls(m, filepath), text)
++    return re.sub(css_re.encode(), lambda m: InlineCSSUrls(m, filepath), text)
+ 
+   def InlineCSSUrls(src_match, filepath=input_filepath):
+     """Helper function that inlines each url on a CSS image rule match."""
+     # Replace contents of url() references in matches.
+-    return re.sub(GetUrlRegexString(),
++    matched_src = src_match.group(0)
++    if not isinstance(matched_src, bytes):
++      matched_src = matched_src.encode()
++    return re.sub(GetUrlRegexString().encode(),
+                   lambda m: SrcReplace(m, filepath),
+-                  src_match.group(0))
++                  matched_src)
+ 
+   def InlineCSSImports(text, filepath=input_filepath):
+     """Helper function that inlines CSS files included via the @import
+        directive.
+     """
+-    return re.sub(r'@import\s+' + GetUrlRegexString() + r';',
++    text = text if isinstance(text, bytes) else text.encode()
++    return re.sub(rb'@import\s+' + GetUrlRegexString().encode() + rb';',
+                   lambda m: InlineCSSFile(m, '%s', filepath),
+                   text)
+ 
+@@ -484,9 +514,25 @@
+   # InlineScript, InlineCSSFile and InlineIncludeFiles on text we're eventually
+   # going to throw out anyway.
+   flat_text = CheckConditionalElements(flat_text)
++  if isinstance(flat_text, bytes):
++    pass
++  else:
++    flat_text = flat_text.encode()
+ 
+-  flat_text = _INCLUDE_RE.sub(InlineIncludeFiles, flat_text)
++  def inliner(m):
++    r = InlineIncludeFiles(m)
++    if isinstance(r, bytes):
++      return r
++    return r.encode()
+ 
++  flat_text = _INCLUDE_RE.sub(inliner, flat_text)
++
++  def replacor(m):
++    r = InlineCSSFile(m, '<style>%s</style>')
++    if isinstance(r, bytes):
++      return r
++    return r.encode()
++
+   if not preprocess_only:
+     if strip_whitespace:
+       flat_text = minifier.Minify(flat_text, input_filename)
+@@ -494,13 +540,17 @@
+     if not allow_external_script:
+       # We need to inline css and js before we inline images so that image
+       # references gets inlined in the css and js
+-      flat_text = re.sub(r'<script (?P<attrs1>.*?)src="(?P<filename>[^"\']*)"'
+-                         r'(?P<attrs2>.*?)></script>',
++      flat_text = re.sub(rb'<script (?P<attrs1>.*?)src="(?P<filename>[^"\']*)"'
++                         rb'(?P<attrs2>.*?)></script>',
+                          InlineScript,
+                          flat_text)
+ 
++    if isinstance(flat_text, bytes):
++      pass
++    else:
++      flat_text = flat_text.encode()
+     flat_text = _STYLESHEET_RE.sub(
+-        lambda m: InlineCSSFile(m, '<style>%s</style>'),
++        replacor,
+         flat_text)
+ 
+   # Check conditional elements, second pass. This catches conditionals in any
+--- ./src/3rdparty/chromium/tools/grit/grit/format/data_pack.py.orig
++++ ./src/3rdparty/chromium/tools/grit/grit/format/data_pack.py
+@@ -195,7 +195,7 @@
+ 
+   # Write data.
+   ret.extend(deduped_data)
+-  return ''.join(ret)
++  return b''.join(ret)
+ 
+ 
+ def WriteDataPack(resources, output_file, encoding):
+--- ./src/3rdparty/chromium/tools/grit/grit/tool/build.py.orig
++++ ./src/3rdparty/chromium/tools/grit/grit/tool/build.py
+@@ -530,10 +530,11 @@
+ 
+     output_file = os.path.relpath(output_file, depdir)
+     # The path prefix to prepend to dependencies in the depfile.
+-    prefix = os.path.relpath(os.getcwd(), depdir)
+-    deps_text = ' '.join([os.path.join(prefix, i) for i in infiles])
++    prefix = os.path.relpath(os.getcwd(), depdir).encode()
++    infile_bytes = [ i if isinstance(i, bytes) else i.encode() for i in infiles ]
++    deps_text = b' '.join([os.path.join(prefix, i) for i in infile_bytes])
+ 
+-    depfile_contents = output_file + ': ' + deps_text
++    depfile_contents = output_file + ': ' + deps_text.decode()
+     self.MakeDirectoriesTo(depfile)
+     outfile = self.fo_create(depfile, 'w', encoding='utf-8')
+     outfile.write(depfile_contents)
