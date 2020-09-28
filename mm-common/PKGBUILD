@@ -1,0 +1,32 @@
+
+pkgname=mm-common
+pkgver=1.0.2
+_pkgver=1.0.2
+pkgrel=1
+pkgdesc="Protocol definitions and daemon for D-Bus at-spi"
+arch=('x86_64')
+url="https://www.gtkmm.org/"
+license=('GPL2')
+depends=('doxygen' 'perl-xml-parser' 'python3')
+makedepends=('meson' 'ninja' 'libsigc++')
+options=('!libtool')
+source=("https://gitlab.gnome.org/GNOME/mm-common/-/archive/${_pkgver}/${pkgname}-${pkgver}.tar.bz2")
+sha256sums=('cdfcd86b57c6aee573eaa7dd5940f0e8aa2adedc351fc729f474f3b0b7738a83')
+
+build() {
+  mkdir -p build
+  cd build
+  
+  meson ../${pkgname}-${pkgver} \
+    --prefix=/usr \
+    --buildtype=release \
+    --libdir=usr \
+    -Duse-network=true
+  ninja
+}
+
+package() {
+  cd build
+  
+  DESTDIR=${pkgdir} ninja install
+}

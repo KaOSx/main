@@ -1,36 +1,36 @@
 
-pkgbase=libsigc++
-pkgname=('libsigc++' 'libsigc++-docs')
-pkgver=2.10.3
+pkgname=libsigc++
+pkgver=2.10.4
+_pkgver=2.10
 pkgrel=1
+pkgdesc="Libsigc++ implements a full callback system for use in widget libraries - V2."
 arch=('x86_64')
 url="https://libsigcplusplus.github.io/libsigcplusplus/"
 license=('LGPL')
-makedepends=('gcc-libs')
+depends=('gcc-libs')
+makedepends=('meson' 'ninja' 'mm-common')
 options=('!libtool' '!emptydirs')
-source=("http://download.gnome.org/sources/libsigc++/2.10/libsigc++-${pkgver}.tar.xz")
-sha256sums=('0b68dfc6313c6cc90ac989c6d722a1bf0585ad13846e79746aa87cb265904786')
+source=("https://download.gnome.org/sources/libsigc++/${_pkgver}/libsigc++-${pkgver}.tar.xz")
+sha256sums=('1f5874358d9a21379024a4f4edba80a8a3aeb33f0531b192a6b1c35ed7dbfa3e')
 
 build() {
-  cd libsigc++-${pkgver}
+  mkdir -p bld
+  cd bld
   
-  ./configure --prefix=/usr 
-  make 
+  meson ../${pkgname}-${pkgver} \
+    --prefix=/usr \
+    --buildtype=release \
+    --libdir=lib \
+    -Dbuild-documentation=false
+  ninja
 }
 
-package_libsigc++() {
-  pkgdesc="Libsigc++ implements a full callback system for use in widget libraries - V2."
-  depends=('gcc-libs')
-
-  cd libsigc++-${pkgver}
-  sed -i -e 's/^doc_subdirs/#doc_subdirs/' Makefile 
-  make DESTDIR=${pkgdir} install 
+package() {
+  cd bld
+  
+  DESTDIR=${pkgdir} ninja install
 }
 
-package_libsigc++-docs() {
-  pkgdesc="Developer documentation for libsigc++"
 
-  cd libsigc++-${pkgver}/docs
-  make DESTDIR=${pkgdir} install 
-}
+
 
