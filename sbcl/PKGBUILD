@@ -1,7 +1,7 @@
 
 # rebuild maxima on updates
 pkgname=sbcl
-pkgver=2.0.8
+pkgver=2.0.9
 pkgrel=1
 pkgdesc="Steel Bank Common Lisp"
 arch=('x86_64')
@@ -12,13 +12,13 @@ makedepends=('sbcl')
 provides=('common-lisp' 'cl-asdf')
 source=("https://downloads.sourceforge.net/project/sbcl/sbcl/${pkgver}/${pkgname}-${pkgver}-source.tar.bz2"
         'fixes.lisp')
-md5sums=('7c8821dc78fba31ebacab00728f463ab'
+md5sums=('57f3ea03ff7c048b2eafe76c2d9b5207'
          '7ac0c1936547f4278198b8bf7725204d')
 
 build() {
   cd ${pkgname}-${pkgver}
 
-  sh make.sh sbcl --prefix=/usr --fancy 
+  sh make.sh sbcl --prefix=/usr --fancy
 }
 
 package() {
