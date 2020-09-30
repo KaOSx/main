@@ -6,7 +6,7 @@ pkgname='qt5-base'
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=2
+pkgrel=3
 pkgdesc="A cross-platform application and UI framework"
 arch=('x86_64')
 url='http://qt-project.org/'
@@ -22,17 +22,17 @@ groups=('qt5')
 options=('!libtool' 'debug')
 _pkgfqn="qtbase-everywhere-src-${subver}"
 source=("${_qtmirror}/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz"
-        "https://bugreports.qt.io/secure/attachment/98413/98413_0001-Update-geometry-in-QScreen-setPlatformScreen.patch")
+        "https://github.com/qt/qtbase/commit/5290027e3bab75f14fc0a2b7c206594d9cb91e76.diff")
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
-         'a54117dad5ee168404b31a3d864aa4da')
+         '9e58fee21bd87e4e179115dc21a10bca')
 
 build() {
     cd ${srcdir}/${_pkgfqn}
     
     # https://bugreports.qt.io/browse/QTBUG-86604
     # https://bugs.kde.org/show_bug.cgi?id=426496
-    patch -p1 -i ${srcdir}/98413_0001-Update-geometry-in-QScreen-setPlatformScreen.patch
+    patch -R -p1 -i ${srcdir}/5290027e3bab75f14fc0a2b7c206594d9cb91e76.diff
     
     #sed -i 's|libs": "-lmysqlclient_r"|libs": "-lmariadb"|' src/sql/configure.json
         
