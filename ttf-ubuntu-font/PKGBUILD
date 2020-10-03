@@ -2,15 +2,15 @@
 _pkgname=ubuntu-font-family
 pkgname=ttf-ubuntu-font
 pkgver=0.83
-pkgrel=2
+pkgrel=3
 pkgdesc="The default TTF font family used by Ubuntu."
 arch=('x86_64')
+url="https://design.ubuntu.com/font/"
 license=('custom:ubuntu-font-licence-1.0')
-url="https://font.ubuntu.com/"
 depends=('fontconfig' 'xorg-font-utils')
-source=("http://font.ubuntu.com/download/${_pkgname}-${pkgver}.zip")
+source=("https://assets.ubuntu.com/v1/0cef8205-${_pkgname}-${pkgver}.zip")
 install=${pkgname}.install
-md5sums=('a24b8136b8f3bb93f166baf97d9328de')
+md5sums=('c5a5059d6856b4ddf79d824dcaf5ad32')
 
 package() {
   cd ${_pkgname}-${pkgver}
