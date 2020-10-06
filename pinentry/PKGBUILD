@@ -1,12 +1,13 @@
 
 pkgname=pinentry
 pkgver=1.1.0
-pkgrel=2
+pkgrel=3
 pkgdesc="Collection of dialog programs that allow GnuPG to read passphrases and PIN numbers in a secure manner. "
 arch=('x86_64')
 license=('GPL')
 url="https://www.gnupg.org/related_software/pinentry/"
-depends=('ncurses' 'libcap' 'qt5-base')
+depends=('ncurses' 'libcap')
+makedepends=('qt5-base')
 optdepends=('qt5-base: for qt backend')  
 source=("ftp://ftp.gnupg.org/gcrypt/pinentry/${pkgname}-${pkgver}.tar.bz2")
 md5sums=('3829315cb0a1e9cedc05ffe6def7a2c6')
