@@ -1,0 +1,34 @@
+
+# include global config
+source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+
+pkgname=qt6-svg
+pkgver=${qtver}
+subver=${subver}
+_pkgver=${_qtver}
+pkgrel=1
+pkgdesc="A cross-platform application and UI framework, QtSvg files"
+arch=('x86_64')
+url='https://www.qt.io/'
+license=('GPL3' 'LGPL')
+depends=('qt6-declarative')
+makedepends=('cmake')
+groups=('qt6')
+options=('!libtool')
+_pkgfqn="qtsvg-everywhere-src-${subver}"
+source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
+md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`)
+
+build() {
+    cmake -B build -S ${_pkgfqn} \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_INSTALL_PREFIX=/usr 
+    cmake --build build
+}
+
+package() {
+    DESTDIR=${pkgdir} cmake --install build
+    
+    install -D -m644 ${_pkgfqn}/LICENSE* -t ${pkgdir}/usr/share/licenses/${pkgname}
+}
+
