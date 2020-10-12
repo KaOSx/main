@@ -1,15 +1,16 @@
 
 pkgname=gtk-doc
-pkgver=1.32
-pkgrel=2
+pkgver=1.33.0
+_pkgver=1.33
+pkgrel=1
 pkgdesc="Documentation tool for public library API"
 arch=('x86_64')
-url="http://www.gtk.org/gtk-doc/"
+url="https://gitlab.gnome.org/GNOME/gtk-doc"
 license=('GPL' 'FDL')
 depends=('docbook-xsl' 'python3-pygments' 'python3-lxml')
 makedepends=('pkgconfig' 'itstool')
-source=("https://ftp.gnome.org/pub/gnome/sources/gtk-doc/${pkgver}/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('de0ef034fb17cb21ab0c635ec730d19746bce52984a6706e7bbec6fb5e0b907c')
+source=("https://ftp.gnome.org/pub/gnome/sources/gtk-doc/${_pkgver}/${pkgname}-${pkgver}.tar.xz")
+sha256sums=('d5e3b3f837174d246fa8482455740627efec1e5210aa15d0c7989ca68f72bb51')
 
 build() {
   cd ${pkgname}-${pkgver}
