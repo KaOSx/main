@@ -1,26 +1,27 @@
 
 pkgname=dbus-c++
-_pkgname=libdbus-c++
-pkgver=0.9.0
-pkgrel=6
-pkgdesc="dbus-c++ attempts to provide a C++ API for D-BUS"
-url="http://sourceforge.net/projects/dbus-cplusplus/"
+_pkgname=dbus-cplusplus
+pkgver=0.9.1
+pkgrel=1
+pkgdesc="C++ Interface for DBus"
+url="https://sourceforge.net/projects/dbus-cplusplus/"
 arch=('x86_64')
 license=('GPL')
 depends=('dbus' 'glib2')
 makedepends=('autoconf' 'automake')
 options=('!libtool')
-source=("https://sourceforge.net/projects/dbus-cplusplus/files/${pkgname}/${pkgver}/${_pkgname}-${pkgver}.tar.gz"
+#source=("https://sourceforge.net/projects/dbus-cplusplus/files/${pkgname}/${pkgver}/${_pkgname}-${pkgver}.tar.gz"
+source=("https://github.com/andreas-volz/dbus-cplusplus/archive/v${pkgver}pw.tar.gz"
         'patch-gcc47.patch'
         'gcc.patch')
-md5sums=('e752116f523fa88ef041e63d3dee4de2'
+md5sums=('32cc02e15bfcdd2ba07a0cd89aa51ebe'
          '9319b402b15f37d881b51bc758368900'
          '3fc93412faef1f5b36e6b59b7c790dba')
 
 
 build() {
-    cd ${_pkgname}-${pkgver}
-    patch -p0 -i ${srcdir}/patch-gcc47.patch
+    cd ${_pkgname}-${pkgver}pw
+    #patch -p0 -i ${srcdir}/patch-gcc47.patch
     patch -p1 -i ${srcdir}/gcc.patch
     
     export LDFLAGS="${LDFLAGS} -lexpat -lpthread"
@@ -32,7 +33,7 @@ build() {
 }
 
 package() {
-    cd ${_pkgname}-${pkgver}
+    cd ${_pkgname}-${pkgver}pw
     
     make DESTDIR=${pkgdir} install
 }
