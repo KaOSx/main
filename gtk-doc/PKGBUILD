@@ -8,20 +8,26 @@ arch=('x86_64')
 url="https://gitlab.gnome.org/GNOME/gtk-doc"
 license=('GPL' 'FDL')
 depends=('docbook-xsl' 'python3-pygments' 'python3-lxml')
-makedepends=('pkgconfig' 'itstool')
+makedepends=('pkgconfig' 'meson' 'ninja')
 source=("https://ftp.gnome.org/pub/gnome/sources/gtk-doc/${_pkgver}/${pkgname}-${pkgver}.tar.xz")
 sha256sums=('d5e3b3f837174d246fa8482455740627efec1e5210aa15d0c7989ca68f72bb51')
 
 build() {
-  cd ${pkgname}-${pkgver}
-  
-  ./configure --prefix=/usr
-  make
+    mkdir -p build
+    cd build
+
+    meson ../${pkgname}-${pkgver} \
+        --prefix=/usr \
+        --buildtype=release \
+        -Dyelp_manual=false \
+        -Dtests=false
+    ninja
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
-  
-  make DESTDIR=${pkgdir} install
+    cd build
+
+    DESTDIR=${pkgdir} ninja install
 }
+
 
