@@ -1,31 +1,36 @@
 
 pkgname=eigen3
 pkgver=3.3.8
-pkgrel=1
+pkgrel=2
 pkgdesc="Lightweight C++ template library for vector and matrix math, a.k.a. linear algebra."
 arch=('x86_64')
 url='http://eigen.tuxfamily.org'
 license=('GPL3' 'LGPL2.1' 'BSD' 'custom:MPL2' 'custom:MINPACK')
 depends=('fftw' 'freeglut')
 makedepends=('cmake' 'pkg-config')
-source=("https://gitlab.com/libeigen/eigen/-/archive/${pkgver}/eigen-${pkgver}.tar.bz2")
-md5sums=('432ef01499d514f4606343276afa0ec3')
+source=("https://gitlab.com/libeigen/eigen/-/archive/${pkgver}/eigen-${pkgver}.tar.bz2"
+        "https://gitlab.com/libeigen/eigen/-/commit/ef3cc72cb65e2d500459c178c63e349bacfa834f.diff")
+md5sums=('432ef01499d514f4606343276afa0ec3'
+         'd5ca26a3dc29170d555072f2ae82429f')
+
+prepare() {
+  cd eigen-${pkgver}
+  
+  patch -p1 -i ${srcdir}/ef3cc72cb65e2d500459c178c63e349bacfa834f.diff
+}
 
 build() {
-  mkdir -p build
-  cd build
-
-  cmake ../eigen-${pkgver} \
+  cmake -B build -S eigen-${pkgver} \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_DATADIR=lib
+  cmake --build build
 }
 
 package() {
-  cd build
-  make DESTDIR=${pkgdir} install
+  DESTDIR=${pkgdir} cmake --install build
 
-  install -Dm644 ../eigen-${pkgver}/COPYING.MPL2 ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
-  install -Dm644 ../eigen-${pkgver}/COPYING.BSD ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
-  install -Dm644 ../eigen-${pkgver}/COPYING.MINPACK ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+  install -Dm644 eigen-${pkgver}/COPYING.MPL2 ${pkgdir}/usr/share/licenses/${pkgname}/COPYING.MPL2
+  install -Dm644 eigen-${pkgver}/COPYING.BSD ${pkgdir}/usr/share/licenses/${pkgname}/COPYING.BSD
+  install -Dm644 eigen-${pkgver}/COPYING.MINPACK ${pkgdir}/usr/share/licenses/${pkgname}/COPYING.MINPACK
 }
