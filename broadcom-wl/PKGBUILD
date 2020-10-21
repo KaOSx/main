@@ -35,6 +35,7 @@ build() {
 	sed -i 's|BRCM_WLAN_IFNAME eth|BRCM_WLAN_IFNAME wlan|' src/wl/sys/wl_linux.c
 	sed -i 's|get_ds()|KERNEL_DS|g' src/wl/sys/wl_iw.c
     sed -i 's|get_ds()|KERNEL_DS|g' src/wl/sys/wl_cfg80211_hybrid.c
+    sed -i '/GE_49 :=/s|:= .*|:= 1|' Makefile
 
 	make -C /lib/modules/"${_kver}"/build M=`pwd`
 }
