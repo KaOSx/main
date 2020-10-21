@@ -1,15 +1,15 @@
 
 pkgname=alsa-ucm-conf
 pkgver=1.2.4
-pkgrel=1
+pkgrel=2
 pkgdesc="ALSA Use Case Manager configuration (and topologies)"
 arch=('x86_64')
 url="https://www.alsa-project.org"
 license=('BSD')
 depends=('alsa-lib')
-#source=("ftp://ftp.alsa-project.org/pub/lib/${pkgname}-${pkgver}.tar.bz2")
-source=("https://github.com/alsa-project/alsa-ucm-conf/archive/v1.2.4.tar.gz")
-md5sums=('05d6b0466665a562d03975bf96f49ad2')
+source=("https://www.alsa-project.org/files/pub/lib/${pkgname}-${pkgver}.tar.bz2")
+#source=("https://github.com/alsa-project/alsa-ucm-conf/archive/v1.2.4.tar.gz")
+md5sums=('176f06dc581b6574dd7399e335903c4b')
 
 package() {
   cd ${pkgname}-${pkgver}

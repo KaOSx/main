@@ -1,16 +1,16 @@
 
 pkgname=alsa-firmware
 pkgver=1.2.4
-pkgrel=1
+pkgrel=2
 pkgdesc="ALSA firmware package"
 arch=('x86_64')
 url="https://alsa-project.org/"
 license=('GPL')
 depends=('alsa-topology-conf' 'alsa-ucm-conf')
 options=('!strip')
-#source=("ftp://ftp.alsa-project.org/pub/firmware/${pkgname}-${pkgver}.tar.bz2")
-source=("https://github.com/alsa-project/alsa-firmware/archive/v${pkgver}.tar.gz")
-md5sums=('c034175ec44a2c1b2c5c07fc36fd9916')
+source=("https://www.alsa-project.org/files/pub/firmware/${pkgname}-${pkgver}.tar.bz2")
+#source=("https://github.com/alsa-project/alsa-firmware/archive/v${pkgver}.tar.gz")
+md5sums=('ee6c1d24a1a4ac1d86992b408ed710a2')
 
 build() {
   cd ${pkgname}-${pkgver}
