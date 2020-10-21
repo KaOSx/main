@@ -3,9 +3,9 @@ _extramodules=extramodules-5.8
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=rtl8821ce
-pkgver=2020.06.06
-_commit=69765eb288a8dfad3b055b906760b53e02ab1dea
-pkgrel=3
+pkgver=2020.10.06
+_commit=fe97b5003f2f3dd070f76ec38c00b83798c1cdea
+pkgrel=1
 pkgdesc="ReatlTek 8821ce wifi driver."
 arch=('x86_64')
 url="https://github.com/tomaspinho/rtl8821ce"
@@ -15,7 +15,7 @@ makedepends=('linux-headers' 'elfutils')
 install=rtl8821ce.install
 options=('!strip')
 source=("https://github.com/tomaspinho/rtl8821ce/archive/${_commit}.zip")
-md5sums=('c9f883ae4272eb3a447473be46bedb4e')
+md5sums=('0efd4ccda37a8c1c595ced57ddd7b6cf')
 
 build() {
   cd ${pkgname}-${_commit}
