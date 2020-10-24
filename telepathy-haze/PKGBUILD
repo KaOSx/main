@@ -1,17 +1,17 @@
 
 pkgname=telepathy-haze
 pkgver=0.8.0
-pkgrel=4
+pkgrel=5
 pkgdesc="A telepathy-backend to use libpurple (Pidgin) protocols."
 arch=('x86_64')
-url="http://telepathy.freedesktop.org"
+url="https://telepathy.freedesktop.org/components/telepathy-haze/"
 license=('GPL')
 depends=('telepathy-glib' 'libpurple')
-makedepends=('libxslt' 'python3')
+makedepends=('libxslt' 'python2')
 install=telepathy-haze.install
 groups=('telepathy')
 conflicts=('papyon' 'telepathy-butterfly')
-source=("http://telepathy.freedesktop.org/releases/${pkgname}/${pkgname}-${pkgver}.tar.gz"
+source=("https://telepathy.freedesktop.org/releases/${pkgname}/${pkgname}-${pkgver}.tar.gz"
         'contact-list.patch')
 md5sums=('b9ee3638833fb50db6276d1b771820b0'
          '41c0c7b49ba3afd0e948513e2bcc677b')
@@ -23,7 +23,8 @@ build() {
   # fix compatibility with libpurple 2.10.12 & up
   sed -i 's|PURPLE_MEDIA_NETWORK_PROTOCOL_TCP;|PURPLE_MEDIA_NETWORK_PROTOCOL_TCP_PASSIVE;|' src/media-stream.c
   
-  ./configure --prefix=/usr --libexecdir=/usr/lib/telepathy
+  PYTHON=python2 ./configure --prefix=/usr \
+    --libexecdir=/usr/lib/telepathy
   make
 }
 
