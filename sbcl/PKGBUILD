@@ -11,12 +11,15 @@ depends=('glibc' 'zlib')
 makedepends=('sbcl')
 provides=('common-lisp' 'cl-asdf')
 source=("https://downloads.sourceforge.net/project/sbcl/sbcl/${pkgver}/${pkgname}-${pkgver}-source.tar.bz2"
-        'fixes.lisp')
+        'fixes.lisp'
+        "https://github.com/sbcl/sbcl/commit/d0243a9f9961f0afdc09b555821b88edb2488be9.diff")
 md5sums=('57f3ea03ff7c048b2eafe76c2d9b5207'
-         '7ac0c1936547f4278198b8bf7725204d')
+         '7ac0c1936547f4278198b8bf7725204d'
+         'a925fee020d789d31884295949a350c0')
 
 build() {
   cd ${pkgname}-${pkgver}
+  patch -p1 -i ${srcdir}/d0243a9f9961f0afdc09b555821b88edb2488be9.diff
 
   sh make.sh sbcl --prefix=/usr --fancy
 }
