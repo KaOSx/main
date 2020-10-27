@@ -1,7 +1,7 @@
 
 pkgname=libass
-pkgver=0.14.0
-pkgrel=2
+pkgver=0.15.0
+pkgrel=1
 pkgdesc="A portable library for SSA/ASS subtitles rendering"
 arch=('x86_64')
 url="https://github.com/libass/libass"
@@ -9,13 +9,13 @@ license=('GPL')
 depends=('enca' 'fontconfig' 'fribidi' 'harfbuzz')
 makedepends=('pkg-config' 'yasm')
 options=('!libtool')
-source=("https://github.com/libass/libass/archive/${pkgver}.tar.gz")
-md5sums=('3c84884aa0589486bded10f71829bf39')
+source=("https://github.com/libass/libass/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
+md5sums=('dab492ded0ecc83dd7cb65522801cffa')
 
 build() {
   cd ${pkgname}-${pkgver}
   
-  ./autogen.sh
+  #./autogen.sh
   ./configure --prefix=/usr
   make
 }
