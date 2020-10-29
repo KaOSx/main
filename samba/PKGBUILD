@@ -1,8 +1,8 @@
 
 # check tdb & ldb for updates before building, use libxml2 2.9.4/libxslt 1.1.29 or older
 pkgname=samba
-pkgver=4.12.7
-_pkgver=4.12.7
+pkgver=4.12.9
+_pkgver=4.12.9
 pkgrel=1
 arch=('x86_64')
 pkgdesc="The standard Windows interoperability suite of programs for Linux and Unix."
@@ -11,7 +11,7 @@ license=('GPL3')
 depends=('readline' 'popt' 'libldap' 'libcap' 'krb5' 'db' 'e2fsprogs' 'tdb' 'talloc'
          'cifs-utils' 'libcups' 'acl' 'pam' 'gnutls' 'libbsd' 'ldb' 'tevent'
          'libgcrypt' 'python3' 'libaio' 'iniparser' 'libarchive' 'jansson' 'perl-parse-yapp')
-makedepends=('pkg-config' 'docbook-xsl')
+makedepends=('pkg-config' 'docbook-xsl' 'rpcsvc-proto')
 provides=('smbclient')
 options=('!makeflags')
 backup=(etc/logrotate.d/samba
@@ -23,7 +23,7 @@ source=("https://us1.samba.org/samba/ftp/stable/${pkgname}-${_pkgver}.tar.gz"
         'samba.pam'
         'samba.conf'
         'samba.conf.d')
-md5sums=('9f61a0ef23942179daad637ea84b7f37'
+md5sums=('7d087a15af448d6142e75b2c1f9b361d'
          '995621522c6ec9b68c1b858ceed627ed'
          '96f82c38f3f540b53f3e5144900acf17'
          '49abd7b719e3713a3f75a8a50958e381'
