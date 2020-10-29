@@ -1,9 +1,9 @@
 
 pkgname=freetds
-pkgver=1.2.5
+pkgver=1.2.6
 pkgrel=1
 pkgdesc='Library for accessing Sybase and MS SQL Server databases'
-url='http://www.freetds.org'
+url='https://www.freetds.org'
 arch=('x86_64')
 license=('LGPL')
 depends=('unixodbc' 'openssl')
@@ -12,7 +12,7 @@ backup=('etc/freetds/freetds.conf'
         'etc/freetds/locales.conf'
         'etc/freetds/pool.conf')
 source=("ftp://ftp.freetds.org/pub/freetds/stable/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('15e3d9f3dcfd962809cc7eb5ecc6ef95')
+md5sums=('977287cf4981e11e8ef249cb7b96fa6a')
 
 build() {
 	cd ${pkgname}-${pkgver}
