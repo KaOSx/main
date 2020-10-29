@@ -1,5 +1,6 @@
 
 pkgname=wavpack
+_pkgname=WavPack
 pkgver=5.3.2
 _commit=e4e8d191e8dd74cbdbeaef3232c16a7ef517e68d
 pkgrel=1
@@ -11,11 +12,12 @@ depends=('glibc')
 options=('!libtool')
 #source=("http://www.wavpack.com/${pkgname}-${pkgver}.tar.bz2")
 source=("https://github.com/dbry/WavPack/archive/${_commit}.zip")
-md5sums=('77f8fbf9c877a1e4d1178107fbc12450')
+md5sums=('ba6b734620b5dcf8645901f26f013ecc')
 
 build() {
-	cd ${pkgname}-${_commit}
+	cd ${_pkgname}-${_commit}
 	
+	./autogen.sh
 	./configure --prefix=/usr \
 	      --libdir=/usr/lib \
 	      --disable-static
@@ -23,7 +25,7 @@ build() {
 }
 
 package() {
-	cd ${pkgname}-${_commit}
+	cd ${_pkgname}-${_commit}
 	make DESTDIR=${pkgdir} install 
 	
 	install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
