@@ -5,7 +5,7 @@ _kver=$(cat /lib/modules/${_extramodules}/version)
 pkgname=rtl8821ce
 pkgver=2020.10.06
 _commit=fe97b5003f2f3dd070f76ec38c00b83798c1cdea
-pkgrel=1
+pkgrel=2
 pkgdesc="ReatlTek 8821ce wifi driver."
 arch=('x86_64')
 url="https://github.com/tomaspinho/rtl8821ce"
@@ -20,7 +20,7 @@ md5sums=('0efd4ccda37a8c1c595ced57ddd7b6cf')
 build() {
   cd ${pkgname}-${_commit}
   
-  sed -i -e 's|$(shell uname -r)|5.8.16-1|' Makefile
+  sed -i -e 's|$(shell uname -r)|5.8.18-1|' Makefile
   #patch -p1 -i ${srcdir}/80a0cb2c1aa10e52bc653e7455a6f1b64fdccd09.diff
   
   make 
