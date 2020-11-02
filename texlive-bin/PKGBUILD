@@ -1,13 +1,14 @@
 
 pkgname=texlive-bin
-pkgver=2020-56824
-_pkgver=build-svn56824
+pkgver=2020.56824
+#_pkgver=svn56824
+_commit=07b007ca4ee8022a15e1ae6cd927f3a36d9cc01e
 pkgrel=1
 pkgdesc="TeX Live binaries"
 url='https://tug.org/texlive/'
 license=('GPL')
 arch=('x86_64')
-depends=('t1lib' 'gd' 'poppler' 'libsigsegv' 'zziplib' 'libpng' 'libjpeg-turbo' 'freetype2'
+depends=('t1lib' 'gd' 'libsigsegv' 'zziplib' 'libpng' 'libjpeg-turbo' 'freetype2'
          'cairo' 'pixman' 'graphite' 'icu' 'harfbuzz' 'libpaper')
 makedepends=('perl' 'clisp' 'ffcall')
 optdepends=('ed: for texconfig')
@@ -15,30 +16,27 @@ options=('!libtool' '!strip')
 #install="texlive.install"
 # full credit for this PKGBUILD goes to Rémy Oudompheng <remy@archlinux.org>
 #source=("https://mirrors.kernel.org/archlinux/other/texlive/texlive-bin-source-${pkgver}.tar.xz"
-source=("https://github.com/TeX-Live/texlive-source/archive/${_pkgver}.tar.gz"
-        'poppler0.7x2.patch'
+source=("https://github.com/TeX-Live/texlive-source/archive/${_commit}.tar.gz"
         'poppler0.8x.patch')
-md5sums=('c5d340e900c3629a56a1f8daf580f3e1'
-         'f38b46eae0e2cdaa66e953791d2b5990'
+md5sums=('8e131804a10af432a063199f75db5e06'
          '5fa627950138922977baa71cbc3e2ff3')
 
 prepare() {
-   cd texlive-source-${_pkgver}
+   cd texlive-source-${_commit}
    
    # t4ht expects to be in /usr/share/texmf/bin/t4ht
    sed -i s/SELFAUTOPARENT/TEXMFROOT/ texk/tex4htk/t4ht.c
+
+   #cp -pv texk/web2c/pdftexdir/pdftoepdf{-poppler0.86.0,}.cc
+   #cp -pv texk/web2c/pdftexdir/pdftosrc{-poppler0.83.0,}.cc
    
-   patch -p1 -i ${srcdir}/poppler0.7x2.patch
-   cp -pv texk/web2c/pdftexdir/pdftoepdf{-poppler0.76.0,}.cc
-   cp -pv texk/web2c/pdftexdir/pdftosrc{-poppler0.76.0,}.cc
-   
-   patch -p1 -i ${srcdir}/poppler0.8x.patch
+   #patch -p1 -i ${srcdir}/poppler0.8x.patch
 }
 
 build() {
    #############################################################
    ### configure
-   cd texlive-source-${_pkgver}
+   cd texlive-source-${_commit}
    mkdir -p Work
    cd Work
    
@@ -66,8 +64,7 @@ build() {
      --with-system-ncurses \
      --with-system-t1lib \
      --with-system-gd \
-     --with-system-poppler \
-     --with-system-xpdf \
+     --without-system-xpdf \
      --with-system-freetype2 \
      --with-system-pixman \
      --with-system-cairo \
@@ -94,7 +91,7 @@ build() {
 }
 
 package() {
-   cd texlive-source-${_pkgver}
+   cd texlive-source-${_commit}
 
    #############################################################
    ### install
@@ -114,7 +111,7 @@ package() {
    ln -s euptex ${pkgdir}/usr/bin/uplatex
    ln -s luatex ${pkgdir}/usr/bin/dvilualatex
    ln -s luatex ${pkgdir}/usr/bin/dviluatex
-   ln -s luatex ${pkgdir}/usr/bin/lualatex
+   ln -s luahbtex ${pkgdir}/usr/bin/lualatex
    ln -s pdftex ${pkgdir}/usr/bin/amstex
    ln -s pdftex ${pkgdir}/usr/bin/cslatex
    ln -s pdftex ${pkgdir}/usr/bin/csplain
@@ -168,9 +165,12 @@ autoinst
 bundledoc
 checkcites
 checklistings
+chklref
 chkweb
 cjk-gs-integrate
 cluttex
+cllualatex
+clxelatex
 context
 contextjit
 ctanbib
@@ -204,6 +204,7 @@ htxelatex
 htxetex
 installfont-tl
 jfmutil
+ketcindy
 kpsepath
 kpsetool
 kpsewhere
@@ -223,7 +224,6 @@ latexrevise
 listings-ext.sh
 ltxfileinfo
 ltximg
-lua2dox_filter
 luaotfload-tool
 luatools
 lwarpmk
@@ -234,26 +234,20 @@ mk4ht
 mkjobtexmf
 mkt1font
 mktexfmt
+mktexlsr
+mktexmf
+mktexpk
+mktextfm
 mptopdf
 mtxrun
 mtxrunjit
 ot2kpx
-pdf180
-pdf270
-pdf90
+pamphletangler
 pdfatfi
-pdfbook
 pdfbook2
 pdfcrop
-pdfflip
 pdfjam
-pdfjam-pocketmod
-pdfjam-slides3up
-pdfjam-slides6up
-pdfjoin
 pdflatexpicscale
-pdfnup
-pdfpun
 pdftex-quiet
 pdfxup
 pfarrei
@@ -282,6 +276,7 @@ texdoc
 texdoctk
 texexec
 texfot
+texhash
 texindy
 texlinks
 texliveonfly
@@ -290,6 +285,7 @@ texmfstart
 texosquery
 texosquery-jre5
 texosquery-jre8
+texplate
 thumbpdf
 tlcockpit
 tlshell
