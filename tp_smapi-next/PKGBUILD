@@ -22,8 +22,7 @@ build() {
 
  _kernver=$(< "${_extramodules}/version")
 
-  sed -ri -e "s/^(KVER\s*:=).*$/\1 ${_kernver}/" \
-	  -e "s#^(KBASE\s*:=).*\$#\1 ${_extramodules%/*}/${_kernver}#" Makefile
+  sed -i -e 's|$(shell uname -r)|5.9.3-1|' Makefile
 
   make HDAPS=1
 }

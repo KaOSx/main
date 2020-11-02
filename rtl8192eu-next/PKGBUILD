@@ -24,6 +24,7 @@ md5sums=('e9ead4c93c59116cd68e115fcf1b7f71'
 build() {
   cd ${_pkgname}-${_commit}
   #patch -p1 -i ${srcdir}/80a0cb2c1aa10e52bc653e7455a6f1b64fdccd09.diff
+  sed -i -e 's|$(shell uname -r)|5.9.3-1|' Makefile
   
   make
 }
