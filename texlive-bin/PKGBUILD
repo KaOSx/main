@@ -1,8 +1,8 @@
 
 pkgname=texlive-bin
-pkgver=2019.51263
-_pkgver=build-svn51263
-pkgrel=11
+pkgver=2020-56824
+_pkgver=build-svn56824
+pkgrel=1
 pkgdesc="TeX Live binaries"
 url='https://tug.org/texlive/'
 license=('GPL')
@@ -43,7 +43,7 @@ build() {
    cd Work
    
    echo "--> Initial configuration..."
-   # we use temporary prefix to avoid messing the existing
+   # use temporary prefix to avoid messing the existing
    # $pkgdir/usr/share/texmf tree
    ../configure --prefix=/usr -C \
      --sysconfdir=/etc \
