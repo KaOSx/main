@@ -1,0 +1,36 @@
+
+# include global config
+source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+
+pkgname=qt5-charts
+pkgver=${qtver}
+subver=${subver}
+_pkgver=${_qtver}
+pkgrel=1
+pkgdesc="Module that provides a set of easy to use chart components."
+arch=('x86_64')
+url='https://github.com/qt/qtcharts'
+license=('GPL3')
+depends=('qt5-declarative')
+groups=('qt5')
+options=('!libtool')
+_pkgfqn="qtcharts-everywhere-src-${subver}"
+source=("${_qtmirror}/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz")
+#source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
+md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`)
+
+build() {
+    cd ${_pkgfqn}
+
+    /usr/lib/qt5/bin/qmake
+    make
+}
+
+package() {
+    cd ${_pkgfqn}
+    make INSTALL_ROOT=${pkgdir} install
+    
+    install -D -m644 LICENSE.GPL3 \
+    ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.GPL3
+}
+

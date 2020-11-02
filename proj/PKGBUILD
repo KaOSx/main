@@ -1,6 +1,7 @@
 
 pkgname=proj
-pkgver=7.1.1
+pkgver=7.2.0
+_dataver=1.3
 pkgrel=1
 pkgdesc="Cartographic Projections library"
 arch=('x86_64')
@@ -9,12 +10,12 @@ license=('MIT')
 depends=('sqlite' 'libtiff')
 options=('!libtool')
 source=("https://download.osgeo.org/proj/${pkgname}-${pkgver}.tar.gz"
-        "https://download.osgeo.org/proj/${pkgname}-data-1.2.tar.gz")
-md5sums=('b7ce84943dcf2b660b11c2ef9657dad5'
-         '1d3556a605bfd14d116eb869c323d744')
+        "https://download.osgeo.org/proj/${pkgname}-data-${_dataver}.tar.gz")
+md5sums=('12748b74e4d6c12ade32ec3ca68dafc7'
+         '7d202814fa70ff56f70fa4776a62b4f3')
 
 build() {
-  bsdtar -xzvf ${srcdir}/${pkgname}-data-1.2.tar.gz -C ${srcdir}/proj-${pkgver}/data
+  bsdtar -xzvf ${srcdir}/${pkgname}-data-${_dataver}.tar.gz -C ${srcdir}/proj-${pkgver}/data
   cd ${srcdir}/proj-${pkgver}
 
   ./configure --prefix=/usr
