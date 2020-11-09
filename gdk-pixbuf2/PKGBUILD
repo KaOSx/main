@@ -1,19 +1,19 @@
 
 pkgname=gdk-pixbuf2
-pkgver=2.40.0
-_pkgver=2.40
-pkgrel=3
+pkgver=2.42.0
+_pkgver=2.42
+pkgrel=1
 pkgdesc="An image loading library"
 arch=('x86_64')
 url="https://gitlab.gnome.org/GNOME/gdk-pixbuf"
-license=('LGPL2.1')
-depends=('glib2' 'libpng' 'libtiff' 'libjpeg-turbo' 'libx11')
+license=('LGPL')
+depends=('glib2' 'libpng' 'libtiff' 'libjpeg-turbo')
 makedepends=('gobject-introspection' 'meson' 'ninja')
 options=('!libtool')
 install=gdk-pixbuf2.install
 source=("https://download.gnome.org/sources/gdk-pixbuf/${_pkgver}/gdk-pixbuf-${pkgver}.tar.xz"
         'gdk-pixbuf-query-loaders.hook')
-sha256sums=('1582595099537ca8ff3b99c6804350b4c058bb8ad67411bbaae024ee7cead4e6'
+sha256sums=('73441338d1a901dc7a3940113cb0aac22776b2832f7eab8f8ec7ec5755adaec7'
             '9fb71d95e6a212779eb0f88dde5a3cee0df7f4d9183f8f9ce286f8cdc14428f0')
 
 build() {
