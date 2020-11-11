@@ -1,29 +1,25 @@
 
 pkgname=telepathy-haze
-pkgver=0.8.0
-pkgrel=5
+pkgver=0.8.1
+pkgrel=1
 pkgdesc="A telepathy-backend to use libpurple (Pidgin) protocols."
 arch=('x86_64')
 url="https://telepathy.freedesktop.org/components/telepathy-haze/"
 license=('GPL')
 depends=('telepathy-glib' 'libpurple')
-makedepends=('libxslt' 'python2')
+makedepends=('libxslt' 'python3')
 install=telepathy-haze.install
 groups=('telepathy')
 conflicts=('papyon' 'telepathy-butterfly')
-source=("https://telepathy.freedesktop.org/releases/${pkgname}/${pkgname}-${pkgver}.tar.gz"
-        'contact-list.patch')
-md5sums=('b9ee3638833fb50db6276d1b771820b0'
-         '41c0c7b49ba3afd0e948513e2bcc677b')
+source=("https://telepathy.freedesktop.org/releases/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+md5sums=('bdc5c30762ddebf24c4da05e023c9072')
 
 build() {
   cd ${pkgname}-${pkgver}
   # https://bugs.freedesktop.org/show_bug.cgi?id=47005
-  patch -p1 -i ${srcdir}/contact-list.patch
-  # fix compatibility with libpurple 2.10.12 & up
-  sed -i 's|PURPLE_MEDIA_NETWORK_PROTOCOL_TCP;|PURPLE_MEDIA_NETWORK_PROTOCOL_TCP_PASSIVE;|' src/media-stream.c
+  #patch -p1 -i ${srcdir}/contact-list.patch
   
-  PYTHON=python2 ./configure --prefix=/usr \
+  ./configure --prefix=/usr \
     --libexecdir=/usr/lib/telepathy
   make
 }
