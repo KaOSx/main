@@ -1,19 +1,19 @@
 
 pkgname=lsof
-pkgver=4.93.2
+pkgver=4.94.0
 pkgrel=1
 pkgdesc="Lists open files for running Unix processes"
 arch=('x86_64')
 url="https://github.com/lsof-org/lsof"
 license=('custom')
 depends=('glibc')
-source=("https://github.com/lsof-org/lsof/archive/${pkgver}.tar.gz"
+source=("https://github.com/lsof-org/lsof/releases/download/${pkgver}/${pkgname}_${pkgver}.linux.tar.bz2"
         'license.txt')
-md5sums=('3524773af52bf4d259b87dfd242def5f'
+md5sums=('2a007f86fb0207fbce3e9d7542e1041c'
          '1b63c76bd10437cabf890508c8e58d36')
 
 build() {
-   cd ${pkgname}-${pkgver}
+   cd ${pkgname}_${pkgver}.linux
 
    sed "s|/\* #define\tHASSECURITY\t1 \*/|#define\tHASSECURITY\t1|" -i dialects/linux/machine.h
    ./Configure -n linux
@@ -21,7 +21,7 @@ build() {
 }
 
 package() {
-    cd ${pkgname}-${pkgver}
+    cd ${pkgname}_${pkgver}.linux
 
     FILES=("00CREDITS" "00DCACHE" "00DIALECTS" "00DIST" "00FAQ" "00LSOF-L" "00MANIFEST" "00PORTING" "00QUICKSTART" "00README" "00.README.FIRST" "00TEST" "00XCONFIG")
     for file in ${FILES[@]}
@@ -31,7 +31,7 @@ package() {
     done
 
     install -D -m0755 -o root -g root lsof ${pkgdir}/usr/sbin/lsof
-    install -D -m0644 -o root -g root Lsof.8 ${pkgdir}/usr/share/man/man8/lsof.8
+    install -D -m0644 -o root -g root lsof.man ${pkgdir}/usr/share/man/man8/lsof.man
 
     install -D -m0644 -o root -g root ../../license.txt ${pkgdir}/usr/share/licenses/lsof/LICENSE
 }
