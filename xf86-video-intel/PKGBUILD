@@ -1,8 +1,8 @@
 
 pkgname=xf86-video-intel
-pkgver=2.99.917.36
+pkgver=2.99.917.37
 pkgrel=1
-_commit=5ca3ac1a90af177eb111a965e9b4dd8a27cc58fc
+_commit=ad5540f6ecaec287c70259f0181e613561b716f6
 pkgdesc="X.org Intel i810/i830/i915/945G/G965+ video drivers"
 arch=('x86_64')
 url="https://gitlab.freedesktop.org/xorg/driver/xf86-video-intel"
@@ -16,7 +16,7 @@ install=xf86-video-intel.install
 #source=("http://xorg.freedesktop.org/releases/individual/driver/${pkgname}-${pkgver}.tar.bz2")
 # check at https://cgit.freedesktop.org/xorg/driver/xf86-video-intel/
 source=("https://gitlab.freedesktop.org/xorg/driver/xf86-video-intel/-/archive/${_commit}/xf86-video-intel-${_commit}.tar.bz2")
-md5sums=('90133456fee3075d1c20a8cf6166fd91')
+md5sums=('df6fba8783279460a8b4f5a27f3c60fc')
 
 build() {
   cd ${pkgname}-${_commit}
