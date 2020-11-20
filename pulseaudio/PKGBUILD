@@ -1,15 +1,15 @@
 
 pkgname=pulseaudio
 pkgdesc="A featureful, general-purpose sound server"
-pkgver=13.0
+pkgver=13.99.3
 _commit=613c2994af42ff08fe0a9d0e4bfce42ef781e8f6
-pkgrel=5
+pkgrel=1
 arch=('x86_64')
 url="https://www.freedesktop.org/wiki/Software/PulseAudio/"
 license=('GPL' 'LGPL')
 depends=('dbus' 'xcb-util' 'libasyncns' 'libcap' 'libxtst' 'libsm' 'libsndfile' 
          'rtkit' 'speex' 'tdb' 'fftw' 'orc' 'webrtc-audio-processing' 'systemd'
-         'sbc' 'libsoxr' 'openssl' 'bluez')
+         'sbc' 'libsoxr' 'openssl' 'bluez' 'gst-plugins-base')
 makedepends=('attr' 'libltdl' 'avahi' 'intltool' 'jack'
              'pkgconfig' 'sh' 'meson' 'ninja' 'check')
 optdepends=('avahi: zeroconf support'
@@ -22,7 +22,7 @@ options=('!emptydirs' '!libtool' '!makeflags')
 source=("https://freedesktop.org/software/pulseaudio/releases/${pkgname}-${pkgver}.tar.xz"
         'asound.conf')
 #source=("https://github.com/pulseaudio/pulseaudio/archive/${_commit}.zip")
-sha256sums=('961b23ca1acfd28f2bc87414c27bb40e12436efcf2158d29721b1e89f3f28057'
+sha256sums=('60fdb5f619c85dfe3e018ad0ee1d8f6fe9041885c2e8b6ded724c855880276c8'
             '65166739e5b799da225ad8ae057f5958637afb9dbec15d28be7a5ea54fb8db25')
 
 build() {
@@ -34,7 +34,8 @@ build() {
       --buildtype=release \
       --libexecdir=/usr/lib \
       -Dudevrulesdir=/usr/lib/udev/rules.d \
-      -Dtests=false
+      -Dtests=false \
+      -Dgstreamer=enabled
   ninja    
 }
 
