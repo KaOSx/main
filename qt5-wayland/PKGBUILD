@@ -19,11 +19,9 @@ conflicts=('qtwayland')
 replaces=('qtwayland')
 options=('debug')
 _pkgfqn="qtwayland-everywhere-src-${subver}"
-source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz"
-        "https://github.com/qt/qtwayland/commit/36974955d13578071387695adb13a47be33e4d32.diff")
+source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
-md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
-         'd3c9711dbc3a021d2cecfb52635b602e')
+md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`)
 
 build() {
     cd ${_pkgfqn}

@@ -6,7 +6,7 @@ pkgname=qt5-base
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=4
+pkgrel=1
 pkgdesc="A cross-platform application and UI framework"
 arch=('x86_64')
 url='https://www.qt.io/'
@@ -32,7 +32,7 @@ build() {
     
     # https://bugreports.qt.io/browse/QTBUG-86604
     # https://bugs.kde.org/show_bug.cgi?id=426496
-    patch -p1 -i ${srcdir}/65243ad7aef48af4689ea4454916b504025b5051.diff
+    #patch -p1 -i ${srcdir}/65243ad7aef48af4689ea4454916b504025b5051.diff
     
     #sed -i 's|libs": "-lmysqlclient_r"|libs": "-lmariadb"|' src/sql/configure.json
         
