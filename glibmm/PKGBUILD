@@ -1,36 +1,32 @@
 
-pkgbase=glibmm
-pkgname=('glibmm' 'glibmm-docs')
-pkgver=2.64.2
+pkgname=glibmm
+pkgver=2.64.4
 _pkgver=2.64
-pkgrel=2
+pkgrel=1
 arch=('x86_64')
-url="http://gtkmm.sourceforge.net/"
+url="https://www.gtkmm.org"
 license=('LGPL')
+depends=('glib2' 'libsigc++')
 options=('!libtool')
-makedepends=('glib2' 'libsigc++' 'pkgconfig')
+makedepends=('glib2' 'libsigc++' 'meson' 'ninja')
 source=("https://ftp.gnome.org/pub/GNOME/sources/glibmm/${_pkgver}/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('a75282e58d556d9b2bb44262b6f5fb76c824ac46a25a06f527108bec86b8d4ec')
+sha256sums=('405040ab257cef0c8f1b14fdf9f3f92d6e6403715b64f1b75e4b6f04dfb56284')
 
 build() {
-  cd ${pkgname}-${pkgver}
+  mkdir -p build
+  cd build
   
-  ./configure --prefix=/usr
-  make
+  meson ../${pkgname}-${pkgver} \
+    --prefix=/usr \
+    --buildtype=release \
+    -Dbuild-documentation=false
+  ninja
 }
 
-package_glibmm() {
-  pkgdesc="Glib-- (glibmm) is a C++ interface for glib"
-  depends=('glib2' 'libsigc++')
+package() {
+  cd build
   
-  cd ${pkgbase}-${pkgver}
-  sed -i -e 's|^doc_subdirs|#doc_subdirs|' Makefile
-  make DESTDIR=${pkgdir} install
+  DESTDIR=${pkgdir} ninja install
 }
 
-package_glibmm-docs() {
-  pkgdesc="Developer documentation for glibmm"
-  
-  cd ${pkgbase}-${pkgver}/docs
-  make DESTDIR=${pkgdir} install
-}
+
