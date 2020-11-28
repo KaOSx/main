@@ -1,6 +1,6 @@
 
 pkgname=fprintd
-pkgver=1.90.1
+pkgver=1.90.4
 pkgrel=1
 pkgdesc="Daemon that provides fingerprint scanning functionality over D-Bus."
 arch=('x86_64')
@@ -9,14 +9,15 @@ license=('LGPL')
 depends=('libfprint' 'glib2' 'polkit' 'dbus-glib')
 makedepends=('meson' 'ninja' 'dbus-python3' 'python3-cairo')
 options=('!emptydirs' '!libtool')
-source=("https://gitlab.freedesktop.org/libfprint/fprintd/-/archive/${pkgver}/fprintd-${pkgver}.tar.bz2")
-md5sums=('d4233e061129d9e027241c938f35ba52')
+source=("https://gitlab.freedesktop.org/libfprint/fprintd/-/archive/v${pkgver}/fprintd-v${pkgver}.tar.bz2")
+md5sums=('0c928894f291e5200f5fa8dbad220a9e')
 
 prepare() {
-  cd ${pkgname}-${pkgver}
+  cd ${pkgname}-v${pkgver}
   
   sed -i -e "s|'dbusmock': true|'dbusmock': false|g" meson.build
   sed -i -e "s|'gi': true|'gi': false|g" meson.build
+  sed -i -e "s|FPrint': true|FPrint': false|g" meson.build
   sed -i -e "s|subdir('tests')|#subdir('tests')|g" meson.build
 }
 
@@ -24,7 +25,7 @@ build() {
   mkdir -p build
   cd build
   
-  meson ../${pkgname}-${pkgver} \
+  meson ../${pkgname}-v${pkgver} \
     --prefix=/usr \
     --buildtype=release \
     --libexecdir=lib \
