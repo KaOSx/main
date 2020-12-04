@@ -7,16 +7,20 @@ arch=('x86_64')
 license=('Apache')
 url="https://github.com/pypa/packaging"
 depends=('python3-six' 'python3-pyparsing')
-makedepends=('python3-pip' 'python3-flit')
+#makedepends=('python3-pip' 'python3-flit')
 # https://pypi.org/project/packaging/#files
-source=("https://pypi.io/packages/source/p/packaging/packaging-${pkgver}.tar.gz")
-sha256sums=('05af3bb85d320377db281cf254ab050e1a7ebcbf5410685a9a407e18a1f81236')
+source=("https://pypi.io/packages/source/p/packaging/packaging-${pkgver}.tar.gz"
+        'setuptools_return.diff')
+sha256sums=('05af3bb85d320377db281cf254ab050e1a7ebcbf5410685a9a407e18a1f81236'
+            'd807285cf28b12c0c48c003e7daeb5d7dd70e29481ff62ecdda71e12f94ad908')
 
 build() {
    cd packaging-${pkgver}
+   patch -p1 -i ${srcdir}/setuptools_return.diff
    
+   python3 setup.py build
    # new ways are discussed https://github.com/pypa/packaging/issues/363
-   python3 -m pip wheel --no-index --no-deps --no-clean --no-build-isolation --wheel-dir dist .
+   #python3 -m pip wheel --no-index --no-deps --no-clean --no-build-isolation --wheel-dir dist .
 }
  
 package() {
