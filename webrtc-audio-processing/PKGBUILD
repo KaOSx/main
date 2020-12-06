@@ -1,27 +1,34 @@
 
 pkgname=webrtc-audio-processing
-pkgver=0.3.1
+pkgver=1.0
 pkgrel=1
 pkgdesc="AudioProcessing library based on Google's implementation of WebRTC"
 arch=('x86_64')
 url="https://freedesktop.org/software/pulseaudio/webrtc-audio-processing"
 license=('custom')
-depends=('gcc-libs')
+depends=('gcc-libs' 'neon')
+makedepends=('meson' 'ninja' 'abseil-cpp')
 options=('!libtool')
-source=("https://freedesktop.org/software/pulseaudio/webrtc-audio-processing/${pkgname}-${pkgver}.tar.xz")
-md5sums=('6e10724ca34bcbc715a4c208273acb0c')
+source=("https://freedesktop.org/software/pulseaudio/webrtc-audio-processing/${pkgname}-${pkgver}.tar.gz")
+sha256sums=('441a30d2717b2eb4145c6eb96c2d5a270fe0b4bc71aebf76716750c47be1936f')
 
 build() {
-  cd ${pkgname}-${pkgver}
+  mkdir -p build
+  cd build
   
-  ./configure --prefix=/usr --disable-static
-  make
+  meson ../${pkgname}-${pkgver} \
+    --prefix=/usr \
+    --buildtype=release \
+    --libdir=lib
+  ninja
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
-  make DESTDIR=${pkgdir} install
-
-  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
-  #install -Dm644 PATENTS ${pkgdir}/usr/share/licenses/${pkgname}/PATENT
+  cd build
+  
+  DESTDIR=${pkgdir} ninja install
 }
+
+
+  #install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
+  
