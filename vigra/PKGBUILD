@@ -2,7 +2,7 @@
 pkgname=vigra
 pkgver=1.11.1
 _pkgver=1-11-1
-pkgrel=17
+pkgrel=18
 pkgdesc="Computer vision library"
 arch=('x86_64')
 url="https://ukoethe.github.io/vigra/"
@@ -36,7 +36,9 @@ build() {
       -DPYTHON_EXECUTABLE=/usr/bin/python3 \
       -DWITH_OPENEXR=1 \
       -DWITH_VIGRANUMPY=1 \
-      -DDOCINSTALL=share/doc 
+      -DDOCINSTALL=share/doc \
+      -DCMAKE_C_FLAGS="-DH5_USE_110_API" \
+      -DCMAKE_CXX_FLAGS="-DH5_USE_110_API"
   make
 }
 
