@@ -1,0 +1,38 @@
+
+# include global config
+source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+
+pkgname=qt6-x11extras
+pkgver=${qtver}
+subver=${subver}
+_pkgver=${_qtver}
+_commit=64e2a26867a7ba66b3efbda625bf41e6e7efd794
+pkgrel=1
+pkgdesc="A cross-platform application and UI framework, Qt11extras"
+arch=('x86_64')
+url='https://www.qt.io/'
+license=('GPL3' 'LGPL' 'FDL' 'custom')
+depends=('qt6-declarative')
+makedepends=('cmake')
+options=('!libtool')
+groups=('qt6')
+_pkgfqn="qtx11extras-everywhere-src-${subver}"
+#source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
+#md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`)
+source=("https://github.com/qt/qtx11extras/archive/${_commit}.zip")
+md5sums=('87d2d07c75f5bd53daa6d0ce6399a949')
+
+
+build() {
+    cmake -B build -S qtx11extras-${_commit} \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_INSTALL_PREFIX=/usr 
+    cmake --build build
+}
+
+package() {
+    DESTDIR=${pkgdir} cmake --install build
+
+    install -D -m644 qtx11extras-${_commit}/LICENSE* -t ${pkgdir}/usr/share/licenses/${pkgname}
+}
+

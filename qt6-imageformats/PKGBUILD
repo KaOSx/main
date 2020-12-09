@@ -2,25 +2,25 @@
 # include global config
 source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
 
-pkgname=qt6-3d
+pkgname=qt6-imageformats
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
 pkgrel=1
-pkgdesc="C++ and QML APIs for easy inclusion of 3D graphics"
+pkgdesc="Additional Image Format plugins for Qt"
 arch=('x86_64')
 url='https://www.qt.io/'
 license=('GPL3' 'LGPL')
-depends=('qt6-declarative'  'qt6-shadertools')
-makedepends=('cmake' 'vulkan-headers')
+depends=('qt6-base' 'libtiff' 'libmng' 'libwebp')
+makedepends=('cmake')
 groups=('qt6')
 options=('!libtool')
 #_pkgfqn="qt3d-everywhere-src-${subver}"
-_pkgfqn=qt3d-${subver}
+_pkgfqn=qtimageformats-${subver}
 #source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
 #md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`)
-source=("https://github.com/qt/qt3d/archive/${qtver}.zip")
-md5sums=('51370507eb36a11244166795810c14d1')
+source=("https://github.com/qt/qtimageformats/archive/${qtver}.zip")
+md5sums=('03c1b9915802c6f6d1862cee9e5ccdf0')
 
 build() {
     cmake -B build -S ${_pkgfqn} \
