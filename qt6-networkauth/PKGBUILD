@@ -2,22 +2,22 @@
 # include global config
 source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
 
-pkgname=qt6-imageformats
+pkgname=qt6-networkauth
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=2
-pkgdesc="Additional Image Format plugins for Qt"
+pkgrel=1
+pkgdesc="Qt Network Authenticators; QtOAuth in particular."
 arch=('x86_64')
 url='https://www.qt.io/'
 license=('GPL3' 'LGPL')
-depends=('qt6-base' 'libtiff' 'libmng' 'libwebp')
+depends=('qt6-base')
 makedepends=('cmake')
 groups=('qt6')
 options=('!libtool')
-_pkgfqn="qtimageformats-everywhere-src-${subver}"
+_pkgfqn="qtnetworkauth-everywhere-src-${subver}"
 #source=("${_qtmirror}/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz")
-source=("https://download.qt.io/official_releases/additional_libraries/qtimageformats/${_pkgver}/${subver}/${_pkgfqn}.tar.xz")
+source=("https://download.qt.io/official_releases/additional_libraries/qtnetworkauth/${_pkgver}/${subver}/${_pkgfqn}.tar.xz")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`)
 
 build() {
@@ -35,7 +35,7 @@ package() {
         ln -s /usr/lib/qt6/bin/${i} ${pkgdir}/usr/bin/${i}-qt6
     done
     
-    install -D -m644 ${_pkgfqn}/LICENSE.LGPLv3 \
-    ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.LGPLv3
+    install -D -m644 ${_pkgfqn}/LICENSE.GPL3 \
+    ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.GPL3
 }
 

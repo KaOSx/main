@@ -6,7 +6,7 @@ pkgname=qt6-3d
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=1
+pkgrel=2
 pkgdesc="C++ and QML APIs for easy inclusion of 3D graphics"
 arch=('x86_64')
 url='https://www.qt.io/'
@@ -15,12 +15,10 @@ depends=('qt6-declarative'  'qt6-shadertools')
 makedepends=('cmake' 'vulkan-headers')
 groups=('qt6')
 options=('!libtool')
-#_pkgfqn="qt3d-everywhere-src-${subver}"
-_pkgfqn=qt3d-${subver}
-#source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
-#md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`)
-source=("https://github.com/qt/qt3d/archive/${qtver}.zip")
-md5sums=('51370507eb36a11244166795810c14d1')
+_pkgfqn="qt3d-everywhere-src-${subver}"
+#source=("${_qtmirror}/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz")
+source=("https://download.qt.io/official_releases/additional_libraries/qt3d/${_pkgver}/${subver}/${_pkgfqn}.tar.xz")
+md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`)
 
 build() {
     cmake -B build -S ${_pkgfqn} \
