@@ -1,6 +1,6 @@
 
 pkgname=hunspell-fr
-pkgver=6.4.1
+pkgver=7.0
 pkgrel=1
 pkgdesc="French (modern) hunspell dictionaries"
 arch=('x86_64')
@@ -8,13 +8,13 @@ url="https://grammalecte.net/download.php?prj=fr"
 license=('GPL' 'MPL' 'LGPL')
 optdepends=('hunspell:	the spell checking libraries and apps')
 source=("https://grammalecte.net/download/fr/hunspell-french-dictionaries-v${pkgver}.zip")
-md5sums=('89fe0ea5a467e827bd7268636f0f5960')
+md5sums=('d403a9f7b4a69c51b16e5f8fe07bc040')
 
 package() {
   cd ${srcdir}
   install -dm755 ${pkgdir}/usr/share/hunspell
-  install -m644 fr-moderne.dic ${pkgdir}/usr/share/hunspell/fr_FR.dic
-  install -m644 fr-moderne.aff ${pkgdir}/usr/share/hunspell/fr_FR.aff
+  install -m644 fr-toutesvariantes.dic ${pkgdir}/usr/share/hunspell/fr_FR.dic
+  install -m644 fr-toutesvariantes.aff ${pkgdir}/usr/share/hunspell/fr_FR.aff
 
   pushd ${pkgdir}/usr/share/hunspell/
   fr_FR_aliases="fr_BE fr_CA fr_CH fr_LU"
