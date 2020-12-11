@@ -9,8 +9,16 @@ license=('custom')
 depends=('gcc-libs' 'neon')
 makedepends=('meson' 'ninja' 'abseil-cpp')
 options=('!libtool')
-source=("https://freedesktop.org/software/pulseaudio/webrtc-audio-processing/${pkgname}-${pkgver}.tar.gz")
-sha256sums=('441a30d2717b2eb4145c6eb96c2d5a270fe0b4bc71aebf76716750c47be1936f')
+source=("https://freedesktop.org/software/pulseaudio/webrtc-audio-processing/${pkgname}-${pkgver}.tar.gz"
+        'meson.diff')
+sha256sums=('441a30d2717b2eb4145c6eb96c2d5a270fe0b4bc71aebf76716750c47be1936f'
+            '89e9a9883fe6a0b6587b95732e49e2a5fa7669e8ca95114f84ab8b46810f0034')
+
+prepare() {
+  cd ${pkgname}-${pkgver}
+  
+  patch -p1 -i ${srcdir}/meson.diff
+}
 
 build() {
   mkdir -p build

@@ -1,15 +1,16 @@
 
 pkgname=python3-chardet
-pkgver=3.0.4
-pkgrel=3
+pkgver=4.0.0
+pkgrel=1
 pkgdesc="Character encoding auto-detection in Python. As smart as your browser."
 arch=('x86_64')
 license=('LGPL')
 url="http://chardet.readthedocs.org/"
 depends=('python3')
 makedepends=('python3-setuptools')
-source=("https://github.com/chardet/chardet/archive/${pkgver}.tar.gz")
-md5sums=('f37b246e5136c96828bb92f86d2354d1')
+#source=("https://github.com/chardet/chardet/archive/${pkgver}.tar.gz")
+source=("https://files.pythonhosted.org/packages/source/c/chardet/chardet-${pkgver}.tar.gz")
+sha256sums=('0d6f53a15db4120f2b08c94f11e7d93d2c911ee118b6b30a04ec3ee8310179fa')
 
 build() {
    cd chardet-${pkgver}
