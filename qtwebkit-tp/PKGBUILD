@@ -3,7 +3,7 @@ pkgname=qtwebkit-tp
 pkgver=5.212.0.4
 _pkgver=5.212.0-alpha4
 _commit=5ccca3a720f7c2251c4ac8b28f25bd73524081f0
-pkgrel=8
+pkgrel=9
 pkgdesc='Cross-platform application and UI framework, QtWebkit files (revived branch)'
 arch=('x86_64')
 url='https://github.com/qtwebkit/qtwebkit'
@@ -20,19 +20,20 @@ groups=('qt5')
 #source=("https://github.com/annulen/qtwebkit-snapshots/archive/${_commit}.zip"
 source=("https://github.com/qtwebkit/qtwebkit/releases/download/qtwebkit-${_pkgver}/qtwebkit-${_pkgver}.tar.xz"
         "https://raw.githubusercontent.com/Alexpux/MINGW-packages/master/mingw-w64-qtwebkit/0012-install-additional-pri-files.patch"
-        "https://github.com/qtwebkit/qtwebkit/commit/d92b11fea65364fefa700249bd3340e0cd4c5b31.diff")
+        "https://github.com/qtwebkit/qtwebkit/commit/d92b11fea65364fefa700249bd3340e0cd4c5b31.diff"
+        "https://gitweb.gentoo.org/repo/gentoo.git/plain/dev-qt/qtwebkit/files/qtwebkit-5.212.0_pre20200309-icu-68.patch")
 md5sums=('5b61a72497f06e51db09d57edc3c35fb'
          'd3997143a1b57cbbfbd4364713fea91d'
-         'be6dad072132dbcc69d8d96374dc5705')
+         'be6dad072132dbcc69d8d96374dc5705'
+         '280419a8ac54e7ae801e80630a4797ae')
 
 prepare() {
   cd qtwebkit-${_pkgver}
 
-  #patch -p1 -i ${srcdir}/0012-install-additional-pri-files.patch
-  # needed for cmake 3.10
-  #patch -p1 -i ${srcdir}/f51554bf104ab0491370f66631fe46143a23d5c2.diff
   # Bison 3.7 needed
   patch -p1 -i ${srcdir}/d92b11fea65364fefa700249bd3340e0cd4c5b31.diff
+  # ICU 68.1 needed
+  patch -p1 -i ${srcdir}/qtwebkit-5.212.0_pre20200309-icu-68.patch
 }
 
 build() {
