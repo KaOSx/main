@@ -10,8 +10,16 @@ license=('LGPL' 'MPL')
 depends=('glibc' 'icu')
 makedepends=('cmake' 'pkg-config')
 options=('!libtool')
-source=("https://github.com/libical/libical/archive/v${pkgver}.tar.gz")
-md5sums=('41bd1f1fcdcb4779cea478bb55cf07bf')
+source=("https://github.com/libical/libical/archive/v${pkgver}.tar.gz"
+        "https://github.com/libical/libical/pull/448/commits/a90657f5bbc5e2eb45fa419e7f43889aeccd4c39.diff")
+md5sums=('41bd1f1fcdcb4779cea478bb55cf07bf'
+         'f5cea66c98b89e1d8cb0ccb230c91977')
+
+prepare() {
+  cd ${pkgname}-${pkgver}
+  
+  patch -p1 -i ${srcdir}/a90657f5bbc5e2eb45fa419e7f43889aeccd4c39.diff
+}
 
 build() {
   cd ${pkgname}-${pkgver}
