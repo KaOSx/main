@@ -1,0 +1,28 @@
+
+pkgname=libcdr
+pkgver=0.1.6
+pkgrel=1
+pkgdesc="CorelDraw file format importer library for LibreOffice"
+arch=('x86_64')
+url="https://wiki.documentfoundation.org/DLP/Libraries/libcdr"
+license=('GPL2' 'LGPL2.1' 'MPL')
+depends=('libwpd' 'libwpg' 'lcms2' 'icu' 'librevenge')
+makedepends=('boost' 'doxygen' 'cppunit')
+source=("https://dev-www.libreoffice.org/src/libcdr/${pkgname}-${pkgver}.tar.xz"
+        "https://gitweb.gentoo.org/repo/gentoo.git/plain/media-libs/libcdr/files/libcdr-0.1.6-icu-68.patch")
+md5sums=('5543719c505002e9da0535c7e4cf2321'
+         'cd7e10e91bb0a1529e7438cd1ad60d13')
+
+build() {
+  cd ${pkgname}-${pkgver}
+  patch -p1 -i ${srcdir}/libcdr-0.1.6-icu-68.patch
+  
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd ${pkgname}-${pkgver}
+  
+  make DESTDIR=${pkgdir} install
+}
