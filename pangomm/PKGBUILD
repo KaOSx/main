@@ -1,35 +1,30 @@
 
-pkgbase=pangomm
-pkgname=('pangomm' 'pangomm-docs')
-pkgver=2.42.1
+pkgname=pangomm
+pkgver=2.42.2
 _pkgver=2.42
-pkgrel=2
+pkgrel=1
+pkgdesc="C++ bindings for pango"
 arch=('x86_64')
-url="http://gtkmm.sourceforge.net/"
+url="https://www.gtkmm.org/en/"
 license=('LGPL')
-makedepends=('pango' 'glibmm' 'glibmm-docs' 'cairomm' 'pkgconfig')
+depends=('pango' 'glibmm' 'cairomm')
+makedepends=('meson' 'ninja')
 options=('!libtool')
 source=("https://ftp.gnome.org/pub/GNOME/sources/pangomm/${_pkgver}/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('14bf04939930870d5cfa96860ed953ad2ce07c3fd8713add4a1bfe585589f40f')
+sha256sums=('1b24c92624ae1275ccb57758175d35f7c39ad3342d8c0b4ba60f0d9849d2d08a')
 
 build() {
-  cd ${pkgname}-${pkgver}
+  mkdir -p build
+  cd build
   
-  ./configure --prefix=/usr
-  make
-}
-package_pangomm() {
-  pkgdesc="C++ bindings for pango"
-  depends=('pango' 'glibmm' 'cairomm')
-  
-  cd ${pkgbase}-${pkgver}
-  sed -i -e 's|^doc_subdirs|#doc_subdirs|' Makefile
-  make DESTDIR=${pkgdir} install
+  meson ../${pkgname}-${pkgver} \
+    --prefix=/usr \
+    --buildtype=release 
+  ninja
 }
 
-package_pangomm-docs() {
-  pkgdesc="Developer documentation for pangomm"
+package() {
+  cd build
   
-  cd ${pkgbase}-${pkgver}/docs
-  make DESTDIR=${pkgdir} install
+  DESTDIR=${pkgdir} ninja install
 }
