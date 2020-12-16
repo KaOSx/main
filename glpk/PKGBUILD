@@ -1,6 +1,6 @@
 
 pkgname=glpk
-pkgver=4.65
+pkgver=5.0
 pkgrel=1
 pkgdesc="GNU Linear Programming Kit : solve LP, MIP and other problems."
 arch=('x86_64')
@@ -9,13 +9,13 @@ license=('GPL')
 depends=('glibc')
 options=('!libtool')
 source=("https://ftp.gnu.org/gnu/glpk/${pkgname}-${pkgver}.tar.gz")
-md5sums=('470a984a8b1c0e027bdb6d5859063fe8')
+md5sums=('91499dc0c139b221846cae60e5c7d222')
 
 build() {
   cd ${pkgname}-${pkgver}
 
   ./configure --prefix=/usr
-  make CFLAGS="$CFLAGS -fPIC"  
+  make
 }
 
 package(){
