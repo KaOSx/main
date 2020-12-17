@@ -1,0 +1,26 @@
+
+pkgname=python3-systemd
+_pkgname=python-systemd
+pkgver=234
+_commit=2166b5759ca0ead2b0ba1bf28eef5220268ae0ef
+pkgrel=1
+pkgdesc="Python module for native access to the systemd facilities."
+arch=('x86_64')
+url="https://github.com/systemd/python-systemd"
+license=('LGPL')
+depends=('systemd' 'python3')
+source=("https://github.com/systemd/python-systemd/archive/${_commit}.zip")
+md5sums=('e708e991f48e3459f9daff159d0a4ec6')
+
+build() {
+  cd ${_pkgname}-${_commit}
+  
+  make
+}
+
+package() {
+  cd ${_pkgname}-${_commit}
+  
+  python3 setup.py install --root=${pkgdir} --optimize=1 --skip-build
+}
+

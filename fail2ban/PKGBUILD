@@ -1,12 +1,12 @@
 
 pkgname=fail2ban
 pkgver=0.11.2
-pkgrel=1
+pkgrel=2
 pkgdesc='Scans log files like /var/log/auth.log and bans IP addresses conducting too many failed login attempts.'
 url='https://www.fail2ban.org/'
 license=('GPL')
 arch=('x86_64')
-depends=('iptables' 'python3' 'whois' 'sqlite')
+depends=('iptables' 'python3-systemd' 'whois' 'sqlite')
 makedepends=('python3-setuptools')
 backup=('etc/fail2ban/fail2ban.conf'
         'etc/fail2ban/jail.conf'
