@@ -1,0 +1,39 @@
+
+pkgname=fail2ban
+pkgver=0.11.2
+pkgrel=1
+pkgdesc='Scans log files like /var/log/auth.log and bans IP addresses conducting too many failed login attempts.'
+url='https://www.fail2ban.org/'
+license=('GPL')
+arch=('x86_64')
+depends=('iptables' 'python3' 'whois' 'sqlite')
+makedepends=('python3-setuptools')
+backup=('etc/fail2ban/fail2ban.conf'
+        'etc/fail2ban/jail.conf'
+        'etc/logrotate.d/fail2ban')
+source=("https://github.com/fail2ban/fail2ban/archive/${pkgver}.tar.gz")
+md5sums=('dbeaad971a1127320b949b0f29d7b1f9')
+
+prepare() {
+  cd ${pkgname}-${pkgver}
+  sed -i 's/^before = paths-debian.conf/before = paths-common.conf/' config/jail.conf
+}
+
+build() {
+  cd ${pkgname}-${pkgver}
+  
+  ./fail2ban-2to3
+  python3 setup.py build
+}
+
+package() {
+  cd ${pkgname}-${pkgver}
+  python3 setup.py install --root ${pkgdir} --optimize=1
+
+  install -Dm644 build/fail2ban.service ${pkgdir}/usr/lib/systemd/system/fail2ban.service
+  install -Dm644 files/fail2ban-tmpfiles.conf ${pkgdir}/usr/lib/tmpfiles.d/fail2ban.conf
+  install -Dm644 files/fail2ban-logrotate ${pkgdir}/etc/logrotate.d/fail2ban
+  install -Dm644 files/bash-completion ${pkgdir}/usr/share/bash-completion/completions/fail2ban
+
+  rm -r ${pkgdir}/run
+}
