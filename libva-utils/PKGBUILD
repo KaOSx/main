@@ -15,6 +15,7 @@ build() {
   mkdir -p build
   cd build
   
+  touch ../${pkgname}-${pkgver}/*
   meson ../${pkgname}-${pkgver} \
     --prefix=/usr \
     --buildtype=release 
