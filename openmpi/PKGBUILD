@@ -1,7 +1,7 @@
 
 pkgname=openmpi
-pkgver=4.0.5
-_pkgver=4.0
+pkgver=4.1.0
+_pkgver=4.1
 pkgrel=1
 pkgdesc="High performance message passing library (MPI)"
 arch=('x86_64')
@@ -11,7 +11,7 @@ depends=('gcc' 'openssh' 'valgrind' 'libtool' 'hwloc')
 makedepends=('inetutils')
 options=('!libtool')
 source=("https://www.open-mpi.org/software/ompi/v${_pkgver}/downloads/${pkgname}-${pkgver}.tar.bz2")
-sha256sums=('c58f3863b61d944231077f344fe6b4b8fbb83f3d1bc93ab74640bf3e5acac009')
+sha256sums=('73866fb77090819b6a8c85cb8539638d37d6877455825b74e289d647a39fd5b5')
 
 build() {
    cd ${pkgname}-${pkgver}
