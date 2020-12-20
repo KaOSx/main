@@ -1,8 +1,8 @@
 
 pkgname=crypto++
-pkgver=8.2.0
-_pkgver=820
-pkgrel=2
+pkgver=8.3.0
+_pkgver=830
+pkgrel=1
 pkgdesc="A free C++ class library of cryptographic schemes."
 arch=('x86_64')
 license=('custom')
@@ -12,8 +12,8 @@ url="https://www.cryptopp.com/"
 #source=("https://github.com/weidai11/cryptopp/archive/CRYPTOPP_${_pkgver}.tar.gz"
 source=("https://www.cryptopp.com/cryptopp${_pkgver}.zip"
         'libcrypto++.pc') # set to remove after testing cmake build setup, needed for clementine
-md5sums=('8a8bcb436af83e16d2227bd4ac642243'
-         'cbce96e6bd43859b01816951cc4876dc')
+sha256sums=('db38a15a6b1c337c665e2ebeb731dd0754b05e45504897d0f2fe4ae9f5ee589a'
+            '81697b17cd4d89a058e6c6bb6d1e42b29a2c2b35536cf6dfdd058f75a3087569')
 
 build() {
     
