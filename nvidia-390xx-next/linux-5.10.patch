@@ -1,17 +1,19 @@
 diff --git a/kernel/common/inc/nv-linux.h b/kernel/common/inc/nv-linux.h
-index 30afd4a..c9e5af7 100644
+index dd335b5..7eae890 100644
 --- a/kernel/common/inc/nv-linux.h
 +++ b/kernel/common/inc/nv-linux.h
-@@ -179,6 +179,9 @@ static inline uid_t __kuid_val(kuid_t uid)
+@@ -178,6 +178,10 @@
  #include <linux/dma-mapping.h>
- #else
- #include <linux/dma-direct.h>
-+#if defined(NV_LINUX_DMA_MAP_OPS_H_PRESENT)
-+#include <linux/dma-map-ops.h>
-+#endif
- #endif
  #endif
  
++#if defined(NV_LINUX_DMA_MAP_OPS_H_PRESENT)
++#include <linux/dma-map-ops.h>
++#endif  
++
+ #if defined(CONFIG_SWIOTLB) && defined(NVCPU_AARCH64)
+ #include <linux/swiotlb.h>
+ #endif
+
 diff --git a/kernel/conftest.sh b/kernel/conftest.sh
 index 9612796..1c1eb30 100755
 --- a/kernel/conftest.sh
@@ -24,16 +26,14 @@ index 9612796..1c1eb30 100755
  
      # Arch specific headers which need testing
      FILES_ARCH="asm/book3s/64/hash-64k.h"
-@@ -2050,6 +2051,9 @@ compile_test() {
+@@ -2046,6 +2046,7 @@
+             #
+             CODE="
              #include <linux/dma-mapping.h>
- #else
-             #include <linux/dma-direct.h>
-+#if defined(NV_LINUX_DMA_MAP_OPS_H_PRESENT)
 +            #include <linux/dma-map-ops.h>
-+#endif
- #endif
              void conftest_phys_to_dma(void) {
                  phys_to_dma();
+             }"
 @@ -2064,6 +2068,9 @@ compile_test() {
              #
              CODE="
