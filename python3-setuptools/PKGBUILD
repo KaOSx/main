@@ -1,6 +1,6 @@
 
 pkgname=python3-setuptools
-pkgver=51.0.0
+pkgver=51.1.0
 pkgrel=1
 pkgdesc="Easily download, build, install, upgrade, and uninstall Python3 packages"
 arch=('x86_64')
@@ -8,9 +8,9 @@ license=('PSF')
 url="https://pypi.org/project/setuptools/"
 depends=('python3-appdirs' 'python3-packaging')
 makedepends=('asciidoc' 'python3-pip')
-source=("https://files.pythonhosted.org/packages/source/s/setuptools/setuptools-${pkgver}.zip")
+source=("https://files.pythonhosted.org/packages/source/s/setuptools/setuptools-${pkgver}.tar.gz")
 #source=("https://github.com/pypa/setuptools/archive/v${pkgver}.tar.gz")
-sha256sums=('029c49fd713e9230f6a41c0298e6e1f5839f2cde7104c0ad5e053a37777e7688')
+sha256sums=('b4f6f2e65bbdb66452f6f94da46a436da962da3ec1f8a412fdba3bcd4fdc4eb7')
 
 build() {
    cd setuptools-${pkgver}
