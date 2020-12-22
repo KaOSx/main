@@ -1,7 +1,7 @@
 
 # check branch for version
 pkgname=sof-firmware
-pkgver=1.6
+pkgver=1.6.1
 _pkgver=stable-v1.6
 pkgrel=1
 pkgdesc="Sound Open Firmware is an audio DSP firmware and SDK that provides audio firmware infrastructure"
@@ -9,11 +9,11 @@ arch=('x86_64')
 url="https://www.sofproject.org/"
 license=('custom:BSD' 'custom:ISC')
 options=('!strip')
-source=("https://github.com/thesofproject/sof-bin/archive/${_pkgver}.zip")
-md5sums=('86f686a91b16411a97fb10daa3056588')
+source=("https://github.com/thesofproject/sof-bin/archive/v${pkgver}.tar.gz")
+md5sums=('fd4f660b3385dc59347e4613ce63c089')
 
 package() {
-  cd sof-bin-${_pkgver}
+  cd sof-bin-${pkgver}
   
   mkdir -p ${pkgdir}/lib/firmware/intel/sof
   mkdir -p ${pkgdir}/lib/firmware/intel/sof-tplg
