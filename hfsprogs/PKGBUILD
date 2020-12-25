@@ -1,47 +1,39 @@
 
 pkgname=hfsprogs
-pkgver=332.25
-pkgrel=4
+pkgver=540.1
+_pkgver=540.1.linux3
+_commit=0435afc389b919027b69616ad1b05709
+pkgrel=1
 pkgdesc="HFS/HFS+ user space utils" 
 arch=('x86_64')
 depends=('libbsd')
+makedepends=( 'clang')
 license=('custom:APSL')
 url="https://www.opensource.apple.com/"
-source=("http://ftp.de.debian.org/debian/pool/main/h/hfsprogs/hfsprogs_${pkgver}.orig.tar.gz" 
-        "http://ftp.de.debian.org/debian/pool/main/h/hfsprogs/hfsprogs_${pkgver}-11.debian.tar.gz"
+source=("https://src.fedoraproject.org/repo/pkgs/hfsplus-tools/diskdev_cmds-${_pkgver}.tar.gz/${_commit}/diskdev_cmds-${_pkgver}.tar.gz" 
+        "https://src.fedoraproject.org/rpms/hfsplus-tools/raw/master/f/hfsplus-tools-sysctl.patch"
         'license'
         'makefile.patch')
-md5sums=('261c3de5ec0dcf5244e3f60d79c1d6f1'
-        'ce42d7b88de9c41c6192ff3c450a6bd1'
-        '771f0a6036a80d929c07df49f9a3d909'
-        'e2429944c0192d817c700b8f0dffce6e')
+md5sums=('0435afc389b919027b69616ad1b05709'
+         '0576816a076edc54c6550f33d3a5eb93'
+         '771f0a6036a80d929c07df49f9a3d909'
+         'e2429944c0192d817c700b8f0dffce6e')
 
 build() {
-    cd diskdev_cmds-${pkgver}
-    patch -p1 -i ${srcdir}/debian/patches/0001-Create-short-Makefiles-for-Debian.patch
-    patch -p1 -i ${srcdir}/debian/patches/0002-Add-exclude-Darwin-specific-code.patch
-    patch -p1 -i ${srcdir}/debian/patches/0005-Remove-Apple-specific-p-from-strings.patch
-    patch -p1 -i ${srcdir}/debian/patches/0004-Fix-compilation-on-64-bit-arches.patch
-    patch -p1 -i ${srcdir}/debian/patches/0003-Add-helper-include-files-absent-from-the-upstream-pa.patch
-    patch -p1 -i ${srcdir}/debian/patches/0006-Adjust-types-for-printing.patch
-    patch -p1 -i ${srcdir}/debian/patches/0007-Fix-path-for-HFS-wrapper-block.patch
-    patch -p1 -i ${srcdir}/debian/patches/0008-Provide-command-line-option-a.patch
-    patch -p1 -i ${srcdir}/debian/patches/0009-Rename-dprintf-to-dbg_printf.patch
-    patch -p1 -i ${srcdir}/debian/patches/0013-Fix-manpages.patch
-    patch -p1 -i ${srcdir}/debian/patches/0010-Rename-custom-macro-nil-with-NULL.patch
-    patch -p1 -i ${srcdir}/debian/patches/0012-Fix-mkfs-not-creating-UUIDs-for-new-filesystems.patch
-    patch -p1 -i ${srcdir}/debian/patches/0011-Fix-types.patch
-    patch -p0 -i ${srcdir}/makefile.patch
-    make -f Makefile.lnx
+    cd diskdev_cmds-${_pkgver}
+    patch -p1 -i ${srcdir}/hfsplus-tools-sysctl.patch
+    
+    make -f Makefile
 }
 
 package() {
-    cd diskdev_cmds-${pkgver}
+    cd diskdev_cmds-${_pkgver}
     install -d -m 755 ${pkgdir}/usr/share/hfsprogs
-    install -m 644 newfs_hfs.tproj/hfsbootdata.img ${pkgdir}/usr/share/hfsprogs/hfsbootdata
     install -D -m755 newfs_hfs.tproj/newfs_hfs ${pkgdir}/sbin/mkfs.hfsplus
     install -D -m755 fsck_hfs.tproj/fsck_hfs ${pkgdir}/sbin/fsck.hfsplus
+    
     install -D -m644 ../license ${pkgdir}/usr/share/licenses/hfsprogs/APSL
+    
     install -d -m 755 ${pkgdir}/usr/share/man/man8/
     install -m 644 newfs_hfs.tproj/newfs_hfs.8 ${pkgdir}/usr/share/man/man8/mkfs.hfsplus.8
     install -m 644 fsck_hfs.tproj/fsck_hfs.8 ${pkgdir}/usr/share/man/man8/fsck.hfsplus.8
