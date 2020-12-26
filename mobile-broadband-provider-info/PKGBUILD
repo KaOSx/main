@@ -1,18 +1,17 @@
 
 pkgname=mobile-broadband-provider-info
-pkgver=20190618
+pkgver=20201225
 pkgrel=1
 pkgdesc="Mobile broadband settings for various service providers"
 arch=('x86_64')
 url="https://gitlab.gnome.org/GNOME/mobile-broadband-provider-info/"
 license=('CC-PD')
-source=("https://gitlab.gnome.org/GNOME/mobile-broadband-provider-info/-/archive/${pkgver}/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('1ca66a989e6b3d788f69bd299249b74a')
+source=("https://download.gnome.org/sources/mobile-broadband-provider-info/${pkgver}/${pkgname}-${pkgver}.tar.xz")
+sha256sums=('0d7fc04df41772f94eb813bb9a1dcfd42fa6f44df60005d5535a54d949143dbd')
 
 build() {
   cd ${pkgname}-${pkgver}
   
-  ./autogen.sh  
   ./configure --prefix=/usr
   make
 }
