@@ -1,6 +1,7 @@
 
 pkgname=terminus-font
-pkgver=4.49
+pkgver=4.49.1
+_pkgver=4.49
 pkgrel=1
 arch=('x86_64')
 url="https://sourceforge.net/projects/terminus-font/"
@@ -9,8 +10,8 @@ license=('GPL2' 'custom:OFL')
 depends=('xorg-fonts-encodings' 'xorg-fonts-alias' 'xorg-font-utils' 'fontconfig')
 makedepends=('python3')
 install=terminus-font.install
-source=("https://downloads.sourceforge.net/project/terminus-font/${pkgname}-${pkgver}/${pkgname}-${pkgver}.tar.gz")
-sha1sums=('cf3ec1f31f7ef9a365c20cf08ace1582fda1bb9a')
+source=("https://downloads.sourceforge.net/project/terminus-font/${pkgname}-${_pkgver}/${pkgname}-${pkgver}.tar.gz")
+sha1sums=('4b8656f7bb34fe3f729774d06a94d4b204de3c21')
 
 build() { 
   cd ${pkgname}-${pkgver}

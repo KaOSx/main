@@ -1,6 +1,7 @@
 
 pkgname=openjpeg
-pkgver=2.3.1
+pkgver=2.4.0
+_pkgver=2.4
 pkgrel=1
 pkgdesc="An open source JPEG 2000 codec"
 arch=('x86_64')
@@ -11,7 +12,7 @@ makedepends=('cmake' 'doxygen')
 options=('!libtool')
 source=("https://github.com/uclouvain/openjpeg/archive/v${pkgver}.tar.gz"
         "https://github.com/szukw000/openjpeg/commit/cadff5fb.diff")
-md5sums=('3b9941dc7a52f0376694adb15a72903f'
+md5sums=('4d388298335947367e91f1d100468af1'
          '90d91a567c7316bc4892e4c296ba8b71')
 
 prepare() {
@@ -39,6 +40,6 @@ package() {
   install -m755 -d ${pkgdir}/usr/share/licenses/openjpeg
   install -m644 ../${pkgname}-${pkgver}/LICENSE ${pkgdir}/usr/share/licenses/openjpeg/LICENSE
   # from doc build, just use the man pages
-  rm -r ${pkgdir}/usr/share/doc/html
+  rm -r ${pkgdir}/usr/share/doc/${pkgname}-${_pkgver}/html
 }
 

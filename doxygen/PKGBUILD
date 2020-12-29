@@ -1,16 +1,16 @@
 
 pkgname=doxygen
-pkgver=1.8.20
+pkgver=1.9.0
 pkgrel=1
 pkgdesc="A documentation system for C++, C, Java, IDL and PHP"
 license=('GPL')
 arch=('x86_64')
-url="http://www.doxygen.org/"
+url="https://www.doxygen.org/"
 depends=('gcc-libs' 'qt5-base' 'clang')
 makedepends=('flex' 'texlive-core' 'ghostscript' 'texlive-latexextra' 'python3' 'cmake') # 'clang-tools-extra')
-source=("http://doxygen.nl/files/${pkgname}-${pkgver}.src.tar.gz"
+source=("https://doxygen.nl/files/${pkgname}-${pkgver}.src.tar.gz"
         "https://github.com/doxygen/doxygen/commit/850f0ce7eaf0a689a8e8ef7f3ca05b7a152ab0ad.diff")
-md5sums=('8729936a843232a66fe970ef65f3c3e4'
+md5sums=('aae07b29b31da5ce1e6e01a57a6e4f10'
          '71c1ef8a67ea48b98d523b9029d60049')
 
 prepare() {
