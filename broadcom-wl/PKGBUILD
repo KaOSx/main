@@ -1,17 +1,17 @@
 
 # Find the kernel name inside the chroot
-_extramodules=extramodules-5.8
+_extramodules=extramodules-5.10
 _kver="$(cat /lib/modules/${_extramodules}/version)"
 
 pkgname=broadcom-wl
 pkgver=6.30.223.271
 _pkgver=6_30_223_271
-pkgrel=78
+pkgrel=79
 pkgdesc='Broadcom 802.11abgn hybrid Linux networking device driver'
 arch=('x86_64')
 url='https://www.broadcom.com/support/802.11/'
 license=('custom')
-depends=('linux>=5.8.16' 'linux<5.9')
+depends=('linux>=5.10.4' 'linux<5.11')
 makedepends=('linux-headers' 'elfutils')
 options=('!strip')
 install=install
@@ -22,7 +22,7 @@ source=("https://docs.broadcom.com/docs-and-downloads/docs/linux_sta/hybrid-v35_
 md5sums=('115903050c41d466161784d4c843f4f9'
          '3600df7db49c759c655bc6a7789b28d4'
          '52f9dcef8112f8e325d9236e5290cb88'
-         'f085090506124e976beee0b36e7556d1')
+         '3e2760a0d9e6d8611630f467097d2425')
 
 backup=('etc/modprobe.d/broadcom-wl.conf')
 
