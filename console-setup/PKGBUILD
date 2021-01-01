@@ -1,20 +1,20 @@
  
 pkgname=console-setup
-pkgver=1.199
+pkgver=1.200
 pkgrel=1
 pkgdesc="Translate XKB layout to loadkeys or kbdcontrol format"
 arch=('x86_64')
-url="http://anonscm.debian.org/cgit/d-i/console-setup.git/"
+url="https://salsa.debian.org/installer-team/console-setup"
 license=('GPL2')
 depends=('perl')
 provides=('keyboardctl')
 conflicts=('keyboardctl')
 replaces=('keyboardctl')
 source=("http://ftp.de.debian.org/debian/pool/main/c/console-setup/${pkgname}_${pkgver}.tar.xz")
-md5sums=('2855c79f3b1ea0be7e77656db2852b82')
+md5sums=('e8255fb84e87a678724b162355d828ad')
 
 package() {
-  cd ${pkgname}
+  cd ${pkgname}-${pkgver}
   
   install -d ${pkgdir}/usr/bin/
   install -m755 Keyboard/ckbcomp ${pkgdir}/usr/bin/
