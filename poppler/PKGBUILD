@@ -1,20 +1,20 @@
 
 pkgname=poppler
-pkgver=20.12.1
+pkgver=21.01.0
 pkgrel=1
 arch=('x86_64')
 pkgdesc="PDF rendering library based on xpdf 3.0"
 url="https://poppler.freedesktop.org/"
 license=('GPL')
 depends=('libjpeg' 'gcc-libs' 'cairo' 'libxml2' 'fontconfig' 'openjpeg' 'lcms2' 'poppler-data'
-         'nss' 'qt5-base' 'glib2')
+         'nss' 'qt5-base' 'qt6-base' 'glib2')
 makedepends=('extra-cmake-modules' 'lcms2' 'icu' 'gobject-introspection')
 options=('!libtool')
 conflicts=('poppler-glib' 'poppler-qt5' 'poppler-qt')
 provides=('poppler-glib' 'poppler-qt5' 'poppler-qt')
 replaces=('poppler-glib' 'poppler-qt5' 'poppler-qt')
 source=("https://poppler.freedesktop.org/${pkgname}-${pkgver}.tar.xz")
-md5sums=('eb4a8465b03ec58cc6a3277aa7d4fa7b')
+md5sums=('948111e6caff71c92b7813a094792f88')
 
 
 build() {
