@@ -1,7 +1,7 @@
 
 pkgname=python3-requests
 pkgver=2.25.1
-pkgrel=1
+pkgrel=2
 pkgdesc="Requests is an elegant and simple HTTP library for Python, built for human beings."
 arch=('x86_64')
 license=('Apache')
@@ -13,6 +13,7 @@ md5sums=('d081e47eb0814127aaafeccf8b4108d6')
 
 build() {
    cd requests-${pkgver}
+   sed -i 's|idna>=2.5,<3|idna>=2.5,<4|' setup.py
    
    python3 setup.py build
 }
