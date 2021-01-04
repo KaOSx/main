@@ -1,36 +1,35 @@
 
 pkgname=p7zip
-pkgver=16.02
-pkgrel=2
+pkgver=17.03
+pkgrel=1
 pkgdesc="A command-line port of the 7zip compression utility"
 arch=('x86_64')
 license=('GPL')
-url="http://p7zip.sourceforge.net/"
+url="https://github.com/jinfeihan57/p7zip"
 depends=('gcc-libs' 'bash')
-makedepends=('yasm' 'nasm')
+makedepends=('cmake')
 options=('!makeflags')
-source=("https://downloads.sourceforge.net/project/p7zip/p7zip/${pkgver}/${pkgname}_${pkgver}_src_all.tar.bz2")
-md5sums=('a0128d661cfe7cc8c121e73519c54fbf')
+source=("https://github.com/jinfeihan57/p7zip/archive/v${pkgver}.tar.gz")
+md5sums=('fd7e6b082db89edfc047c1ce2d810850')
 
 build() {
-	cd ${pkgname}_${pkgver}
-        cp makefile.linux_amd64_asm makefile.machine
-
-	make all3 OPTFLAGS="${CXXFLAGS}"
+    cmake -B build -S ${pkgname}-${pkgver}/CPP/7zip/CMAKE \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr
+  cmake --build build
 }
 
 package() {
-	cd ${pkgname}_${pkgver}
 
-	make install \
-		DEST_DIR=${pkgdir} \
-		DEST_HOME="/usr" \
-		DEST_MAN="/usr/share/man"
+  DESTDIR=${pkgdir} cmake --install build
+
+	#make install \
+#		DEST_DIR=${pkgdir} \
+#		DEST_HOME="/usr" \
+#		DEST_MAN="/usr/share/man"
 
 	install -d ${pkgdir}/usr/share/licenses/p7zip
 	ln -s -t ${pkgdir}/usr/share/licenses/p7zip \
 		/usr/share/doc/p7zip/DOCS/License.txt \
 		/usr/share/doc/p7zip/DOCS/unRarLicense.txt
-	
-	chmod -R u+w,o+r ${pkgdir}/usr
 }
