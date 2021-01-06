@@ -1,0 +1,25 @@
+
+pkgname=pyqt6-sip
+_pkgname=PyQt6_sip
+pkgver=13.0.0
+pkgrel=1
+arch=('x86_64')
+pkgdesc="The sip extension module provides support for the PyQt6 package."
+url="https://riverbankcomputing.com/software/pyqt/intro"
+license=('GPL')
+depends=('python3')
+makedepends=('python3-setuptools')
+source=("https://pypi.python.org/packages/source/P/PyQt6-sip/${_pkgname}-${pkgver}.tar.gz")
+sha256sums=('889edbcd912df815946a1958e1cb218d36f414bf06e863411ee70bee7e76b4c9')
+
+build() {
+  cd ${_pkgname}-${pkgver}
+  
+  python3 setup.py build
+}
+
+package()  {
+  cd ${_pkgname}-${pkgver}
+  
+  python3 setup.py install --root=${pkgdir}
+}
