@@ -13,20 +13,23 @@ source=("https://github.com/jinfeihan57/p7zip/archive/v${pkgver}.tar.gz")
 md5sums=('fd7e6b082db89edfc047c1ce2d810850')
 
 build() {
-    cmake -B build -S ${pkgname}-${pkgver}/CPP/7zip/CMAKE \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_INSTALL_PREFIX=/usr
-  cmake --build build
+    cd ${pkgname}-${pkgver}
+
+    make 7z 7za 7zr sfx
+    #cmake -B build -S ${pkgname}-${pkgver}/CPP/7zip/CMAKE \
+    #    -DCMAKE_BUILD_TYPE=Release \
+    #    -DCMAKE_INSTALL_PREFIX=/usr
+    #cmake --build build
 }
 
 package() {
+    cd ${pkgname}-${pkgver}
+    #DESTDIR=${pkgdir} cmake --install build
 
-  DESTDIR=${pkgdir} cmake --install build
-
-	#make install \
-#		DEST_DIR=${pkgdir} \
-#		DEST_HOME="/usr" \
-#		DEST_MAN="/usr/share/man"
+	make install \
+		DEST_DIR=${pkgdir} \
+		DEST_HOME="/usr" \
+		DEST_MAN="/usr/share/man"
 
 	install -d ${pkgdir}/usr/share/licenses/p7zip
 	ln -s -t ${pkgdir}/usr/share/licenses/p7zip \
