@@ -1,0 +1,31 @@
+
+pkgname=python3-toml
+_pkgname=toml
+pkgver=0.10.2
+pkgrel=1
+pkgdesc="Python library for parsing and creating TOML"
+arch=('x86_64')
+url="https://github.com/uiri/toml"
+license=('MIT')
+depends=('python3')
+makedepends=('python3-setuptools')
+source=("https://files.pythonhosted.org/packages/source/t/${_pkgname}/${_pkgname}-${pkgver}.tar.gz")
+sha256sums=('b3bda1d108d5dd99f4a20d24d9c348e91c4db7ab1b749200bded2f839ccbe68f')
+
+build() {
+  cd ${_pkgname}-${pkgver}
+
+  python3 setup.py build
+}
+
+package() {
+  cd ${_pkgname}-${pkgver}
+
+  python3 setup.py install --skip-build \
+    --optimize=1 \
+    --prefix=/usr \
+    --root=${pkgdir}
+    
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}
+}
+
