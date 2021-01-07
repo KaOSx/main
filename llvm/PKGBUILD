@@ -1,8 +1,8 @@
 
 pkgbase="llvm"
 pkgname=('llvm' 'clang' 'clang-analyzer' 'clang-tools-extra')
-pkgver=10.0.1
-_gcc_ver=9.3.0
+pkgver=11.0.1
+_gcc_ver=10.2.0
 pkgrel=1
 arch=('x86_64')
 url="https://llvm.org/"
@@ -13,10 +13,10 @@ source=("https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver
         "https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver}/clang-${pkgver}.src.tar.xz"
         "https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver}/clang-tools-extra-$pkgver.src.tar.xz"
         "https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver}/compiler-rt-${pkgver}.src.tar.xz")
-md5sums=('71c68c526cbbf1674b5aafc5542b336c'
-         '6c8b56f531876fd24e06257a2d8ce422'
-         '251388aa2f5fbd472acc9735b3386e59'
-         '970835d14e9c08a68c4b2ff3931bada7')
+md5sums=('6ec7ae9fd43da9b87cda15b3ab9cc7af'
+         'b4cb0b74b1f3292a89c9720f3e1e2934'
+         '1e577a85948a0f07483b7c405e59a0ca'
+         '29d6186e048936008512b8bbdb3a1b71')
 
 prepare() {
     cd ${pkgbase}-${pkgver}.src
