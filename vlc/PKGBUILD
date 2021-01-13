@@ -1,8 +1,8 @@
 
 pkgname=vlc
-pkgver=3.0.11.1
-_pkgver=3.0.11.1
-pkgrel=6
+pkgver=3.0.12.1
+_pkgver=3.0
+pkgrel=1
 epoch=1
 pkgdesc="Free and open source cross-platform multimedia player and framework that plays most multimedia files and various streaming protocols."
 arch=('x86_64')
@@ -24,22 +24,24 @@ backup=('usr/share/vlc/http/.hosts'
 groups=('multimedia')
 options=('!libtool' 'debug')
 install="vlc.install"
-source=("https://download.videolan.org/vlc/${pkgver}/${pkgname}-${pkgver}.tar.xz"
+source=("https://code.videolan.org/videolan/vlc-${_pkgver}/-/archive/${pkgver}/vlc-${_pkgver}-${pkgver}.tar.bz2"
         'qt5.15.patch')
 #source=("https://nightlies.videolan.org/build/source/${pkgname}-${_pkgver}.tar.xz")
-sha256sums=('189311d28aa814f106a7b3645211ac52c0b3e2b9f4b348de2f63bab3218086b8'
+sha256sums=('bd3cee6784473ad0db49c9f0961642d62e0c58ebf24352d2ddfbad1d23794a74'
             'a8a2267ddab07ea5267cb210a38c8772b2efb5d834f803a37e215aee1f784e95')
 
 prepare() {
-  cd ${pkgname}-${_pkgver}
+  cd ${pkgname}-${_pkgver}-${pkgver}
   
-  patch -p1 -i ${srcdir}/qt5.15.patch
+  #patch -p1 -i ${srcdir}/qt5.15.patch
   #sed -i -e 's|5.5.0|5.5.4|' configure.ac
   #autoreconf -fi
+  # move to gitlab rls tar seems to presume git checkout
+  touch src/revision.txt
 }
 
 build() {
-  cd ${pkgname}-${_pkgver}
+  cd ${pkgname}-${_pkgver}-${pkgver}
   
   #CXXFLAGS="-std=c++11"
 
@@ -68,12 +70,12 @@ build() {
 }
 
 package() {
-  cd ${pkgname}-${_pkgver}
+  cd ${pkgname}-${_pkgver}-${pkgver}
 
   make DESTDIR=${pkgdir} install
 
   for res in 16 32 48 128; do
-    install -D -m644 ${srcdir}/vlc-${_pkgver}/share/icons/${res}x${res}/vlc.png \
+    install -D -m644 ${srcdir}/vlc-${_pkgver}-${pkgver}/share/icons/${res}x${res}/vlc.png \
         ${pkgdir}/usr/share/icons/hicolor/${res}x${res}/apps/vlc.png
   done
 }
