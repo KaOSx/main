@@ -17,7 +17,8 @@ sha256sums=('441a30d2717b2eb4145c6eb96c2d5a270fe0b4bc71aebf76716750c47be1936f'
 prepare() {
   cd ${pkgname}-${pkgver}
   
-  patch -p1 -i ${srcdir}/meson.diff
+  #patch -p1 -i ${srcdir}/meson.diff
+  sed -i 's|absl_flags_registry|absl_flags_reflection|g' meson.build
 }
 
 build() {
