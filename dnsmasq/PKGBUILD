@@ -1,15 +1,15 @@
 
 pkgname=dnsmasq
-pkgver=2.82
+pkgver=2.83
 pkgrel=1
 pkgdesc="Network infrastructure for small networks: DNS, DHCP, router advertisement, network boot, tethering on smartphones and portable hotspots"
-url="http://www.thekelleys.org.uk/dnsmasq/doc.html"
+url="https://www.thekelleys.org.uk/dnsmasq/doc.html"
 arch=('x86_64')
 license=('GPL')
 depends=('glibc' 'dbus' 'gmp' 'nettle' 'libidn2')
 install=dnsmasq.install
 backup=('etc/dnsmasq.conf')
-source=("http://www.thekelleys.org.uk/dnsmasq/${pkgname}-${pkgver}.tar.xz"
+source=("https://www.thekelleys.org.uk/dnsmasq/${pkgname}-${pkgver}.tar.xz"
         'dnsmasq.service'
         "https://github.com/themiron/dnsmasq/commit/6fd9aba7abe1e084123bc5002959350897774ace.diff")
 md5sums=('0003fe90b69463c1f687f4ae8560f13a'
