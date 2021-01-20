@@ -1,14 +1,14 @@
 
 pkgname=abseil-cpp
-pkgver=20200923.2
+pkgver=20200923.3
 pkgrel=1
 pkgdesc="Open-source collection of C++ code designed to augment the C++ standard library."
 arch=('x86_64')
 url="https://abseil.io/"
 license=('Apache 2.0')
 makedepends=('cmake')
-source=("https://github.com/abseil/abseil-cpp/archive/20200923.2.tar.gz")
-md5sums=('ec82825aea3ef85f899a8be1583c7212')
+source=("https://github.com/abseil/abseil-cpp/archive/${pkgver}.tar.gz")
+md5sums=('daba6e99c7a84e2242a0107bbd873669')
 
 build() {
   cmake -B build -S ${pkgname}-${pkgver} \
