@@ -1,15 +1,15 @@
 
 pkgname=libsamplerate
-pkgver=0.1.9
-pkgrel=2
+pkgver=0.2.0
+pkgrel=1
 pkgdesc="Secret Rabbit Code - aka Sample Rate Converter for audio"
 arch=('x86_64')
-url="http://www.mega-nerd.com/SRC/index.html"
-license=('GPL')
+url="http://libsndfile.github.io/libsamplerate/"
+license=('BSD-2')
 depends=('libsndfile')
 options=('!libtool')
-source=("http://www.mega-nerd.com/SRC/libsamplerate-${pkgver}.tar.gz")
-md5sums=('2b78ae9fe63b36b9fbb6267fad93f259')
+source=("https://github.com/libsndfile/libsamplerate/releases/download/${pkgver}/libsamplerate-${pkgver}.tar.bz2")
+md5sums=('e1c76889ab2c5ee0dc9e0a92c87205f6')
 
 build() {
   cd ${pkgname}-${pkgver}
