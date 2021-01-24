@@ -1,7 +1,7 @@
 
 pkgname=libsndfile
-pkgver=1.0.30
-pkgrel=2
+pkgver=1.0.31
+pkgrel=1
 pkgdesc="A C library for reading and writing files containing sampled sound"
 arch=('x86_64')
 url="http://libsndfile.github.io/libsndfile/"
@@ -9,9 +9,9 @@ license=('LGPL')
 depends=('alsa-lib' 'flac' 'libvorbis' 'python3' 'opus' 'speex')
 makedepends=('cmake')
 options=('!libtool')
-source=("https://github.com/erikd/libsndfile/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.bz2"
+source=("https://github.com/erikd/libsndfile/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.bz2"
         "https://github.com/erikd/libsndfile/commit/a722c93f6999a5d6025bd90bb42cbb2733d54ce7.diff")
-md5sums=('c00bb91b8ce87bba7b6412e29d80a1e8'
+md5sums=('3f3b2a86a032f064ef922a2c8c191f7b'
          '2507c13ae7717dc67f1999749f8888fc')
 
 prepare() {
