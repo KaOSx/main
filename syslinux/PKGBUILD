@@ -1,14 +1,14 @@
  
 pkgname=syslinux
-pkgver=6.04beta3
+pkgver=6.04
 _pkgver=6.04-pre1
-pkgrel=2
+pkgrel=1
 arch=('x86_64')
 pkgdesc="Collection of boot loaders that boot from FAT, ext2/3/4 and btrfs filesystems, from CDs and via PXE"
 url="http://syslinux.zytor.com/"
 license=('GPL2')
 depends=('perl' 'glibc' 'util-linux')
-makedepends=('nasm' 'python3' 'gnu-efi-libs')
+makedepends=('nasm' 'python2' 'gnu-efi-libs')
 optdepends=('mtools:           For mkdiskimage and syslinux support'
             'gptfdisk:         For GPT support'
             'efibootmgr:       For EFI support'
@@ -39,8 +39,8 @@ _build_syslinux_bios() {
     cp -r ${srcdir}/${pkgname}-${_pkgver} ${srcdir}/${pkgname}-${_pkgver}-bios
     cd ${srcdir}/${pkgname}-${_pkgver}-bios/
     
-    make PYTHON=python3 bios
-    make PYTHON=python3 bios installer
+    make bios  #PYTHON=python3
+    make bios installer #PYTHON=python3
     
 }
 
