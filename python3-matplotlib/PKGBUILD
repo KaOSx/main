@@ -1,17 +1,17 @@
 
 pkgname=python3-matplotlib
-pkgver=3.3.3
+pkgver=3.3.4
 pkgrel=1
 pkgdesc="Python plotting library, making publication quality plots"
 arch=('x86_64')
 url='https://matplotlib.org'
 license=('custom')
 depends=('python3-pytz' 'python3-numpy' 'python3-cairo' 'pyqt5-python3' 'python3-dateutil'
-         'python3-pyparsing' 'python3-cycler' 'tk' 'ghostscript' 'texlive-bin')
+         'python3-pyparsing' 'python3-certifi' 'python3-cycler' 'tk' 'ghostscript' 'texlive-bin')
 makedepends=('python3-gobject3' 'python3-six')
 source=("https://files.pythonhosted.org/packages/source/m/matplotlib/matplotlib-${pkgver}.tar.gz")
 #source=("https://github.com/matplotlib/matplotlib/archive/v${pkgver}.tar.gz")
-sha256sums=('b1b60c6476c4cfe9e5cf8ab0d3127476fd3d5f05de0f343a452badaad0e4bdec')
+sha256sums=('3e477db76c22929e4c6876c44f88d790aacdf3c3f8f3a90cb1975c0bf37825b0')
 
 build() {
    cd matplotlib-${pkgver}
