@@ -1,7 +1,7 @@
 
 pkgname=a2ps
 pkgver=4.14
-pkgrel=8
+pkgrel=9
 pkgdesc="An Any to PostScript filter"
 arch=('x86_64')
 url="https://www.gnu.org/software/a2ps/"
@@ -17,7 +17,8 @@ source=("https://ftp.gnu.org/gnu/a2ps/${pkgname}-${pkgver}.tar.gz"
         'a2ps-4.14-check-mempcpy.patch' 
         'a2ps-4.14-fix-stpcpy-proto.patch'
         'a2ps-texinfo5.patch'
-        'security.patch')
+        'security.patch'
+        "https://gitweb.gentoo.org/repo/gentoo.git/plain/app-text/a2ps/files/a2ps-4.14-texinfo-6.7-encoding.patch")
 md5sums=('781ac3d9b213fa3e1ed0d79f986dc8c7'
          '93011b58e9f20a7fafa31287a51884a4'
          '2e493d0bc00d71eb3e8a9b6febc52b69'
@@ -25,7 +26,8 @@ md5sums=('781ac3d9b213fa3e1ed0d79f986dc8c7'
          '42aa39b74f6da8cf6e94185c4fc3e601'
          '066f9327fee6b6eca3a57d657d1097d1'
          'f8464790224d6f5444ac8ce3cfce8e8c'
-         'fa3c5f09f47619fbee347256e940fcce')
+         'fa3c5f09f47619fbee347256e940fcce'
+         'a0078faa88e0fcf24cda37db0cb97979')
 
 prepare() {
   cd ${pkgname}-${pkgver}
@@ -41,6 +43,7 @@ prepare() {
   patch -p0 -i ${srcdir}/a2ps-4.14-fix-stpcpy-proto.patch
   patch -p1 -i ${srcdir}/a2ps-texinfo5.patch
   patch -p1 -i ${srcdir}/security.patch
+  patch -p1 -i ${srcdir}/a2ps-4.14-texinfo-6.7-encoding.patch
 }
 
 build() {
