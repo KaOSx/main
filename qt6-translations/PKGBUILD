@@ -11,7 +11,7 @@ pkgdesc="A cross-platform application and UI framework, translations"
 arch=('x86_64')
 url='https://www.qt.io/'
 license=('GPL3' 'LGPL' 'FDL' 'custom')
-depends=('qt6-declarative' 'libtiff' 'libmng')
+depends=('qt6-base')
 makedepends=('cmake' 'qt6-tools')
 groups=('qt6')
 options=('!libtool')
@@ -24,7 +24,7 @@ build() {
     cmake -B build -S ${_pkgfqn} \
         -DCMAKE_BUILD_TYPE=Release \
         -DCMAKE_INSTALL_PREFIX=/usr 
-    cmake --build build
+    cmake --build build -j1
 }
 
 package() {
