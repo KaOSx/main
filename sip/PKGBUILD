@@ -1,15 +1,16 @@
 
 pkgname=sip
-pkgver=6.0.0
-_pkgver=6.0.0
+pkgver=6.0.1
+_pkgver=6.0.1
 pkgrel=1
 pkgdesc="Tool that makes it easy to create Python3 bindings for C and C++ libraries"
 arch=('x86_64')
 url="https://www.riverbankcomputing.com/software/sip/"
 license=('custom:"sip"')
-depends=('python3-setuptools' 'python3-toml')
+depends=('python3-packaging' 'python3-toml')
+makedepends=('python3-setuptools')
 source=("https://files.pythonhosted.org/packages/source/s/${pkgname}/${pkgname}-${pkgver}.tar.gz")
-sha256sums=('6185160e1aa8e167b5919c4761cbbf68cc7478d34fb655b3a28b3eb9acb5943a')
+sha256sums=('c933e92b24aedc6d5827748bd8167209102b5de1526e86681a2202549027a784')
 
 build() {
   cd ${pkgname}-${pkgver}
