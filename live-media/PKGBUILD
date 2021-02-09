@@ -1,7 +1,7 @@
 
 # rebuild vlc on any update, move to shared libs might change ABI
 pkgname=live-media
-pkgver=2021.02.05
+pkgver=2021.02.09
 pkgrel=1
 pkgdesc="A set of C++ libraries for multimedia streaming"
 arch=('x86_64')
@@ -10,32 +10,38 @@ url="http://live555.com/liveMedia"
 depends=('gcc-libs')
 source=("http://live555.com/liveMedia/public/live.${pkgver}.tar.gz"
         'config.kaos')
-md5sums=('64531584d34dd7a29495a635c46e15ce'
-         '6ff1eab03314198badb96032a5299e2b')
+md5sums=('eeb3dc0226294ff39138bb97448a9c0a'
+         'aaef317f7068eb1bb4470e33b1fcae84')
 
 prepare() {
   cd live
   
-  cp ${srcdir}/config.kaos config.kaos
+  #cp ${srcdir}/config.kaos config.kaos
+  sed -i 's|-I/usr/local/include|-I/usr/include|' config.linux-with-shared-libraries
+  sed -i 's|testProgs mediaServer|mediaServer|' genMakefiles
+  sed -i 's|cd $(TESTPROGS_DIR)|#cd $(TESTPROGS_DIR)|' Makefile.tail
+  find . -type f -exec sed -i 's|PREFIX = /usr/local|PREFIX = /usr|'  {} \;
 }
          
 build() {
   cd live
       
-  ./genMakefiles kaos
+  ./genMakefiles linux-with-shared-libraries
   make
 }
 
 package() {
   cd live
+  
+  make DESTDIR=${pkgdir}/ install
 
-  for dir in BasicUsageEnvironment groupsock liveMedia UsageEnvironment; do
-    install -dm755 ${pkgdir}/usr/{bin,lib,include/${dir}}
-    install -m644 ${dir}/*.so "${pkgdir}/usr/lib"
-    install -m644 ${dir}/include/*.h* "${pkgdir}/usr/include/${dir}"
-  done
+  #for dir in BasicUsageEnvironment groupsock liveMedia UsageEnvironment; do
+  #  install -dm755 ${pkgdir}/usr/{bin,lib,include/${dir}}
+  #  install -m644 ${dir}/*.so "${pkgdir}/usr/lib"
+  #  install -m644 ${dir}/include/*.h* "${pkgdir}/usr/include/${dir}"
+  #done
 
-  for testprog in `find testProgs -type f -perm 755`; do
-    install ${testprog} "${pkgdir}/usr/bin"
-  done
+  #for testprog in `find testProgs -type f -perm 755`; do
+  #  install ${testprog} "${pkgdir}/usr/bin"
+  #done
 }
