@@ -1,11 +1,11 @@
 # fails with gcc 6.4.0, builds with gcc 6.3.1
 pkgname=('openjdk' 'openjdk-src')
 pkgbase='openjdk'
-_icedtea_release="3.16.0"
+_icedtea_release="3.18.0"
 _icedtea_jdkver="8"
 # ${srcdir}/build/ChangeLog for versions
-_openjdk_build="b09"
-_pkgver="8u252"
+_openjdk_build="b08"
+_pkgver="8u282"
 pkgver="${_pkgver}_${_openjdk_build}_${_icedtea_release}"
 pkgrel=1
 pkgdesc="An open-source implementation of the seventh edition of the Java SE Platform."
@@ -35,15 +35,15 @@ source=("http://icedtea.classpath.org/download/source/icedtea-${_icedtea_release
         'command_path.diff'
         'openjdk.profile.sh'
         'openjdk.profile.csh')
-sha256sums=('b84bb7678baf09008670ce230a787b7bce7186cb5500d5a0664b8a369ad52500'
-            '45fbaefea10211f1efc17df5d1f2197583a119d2e8d1773ecd0f4fbc786813d3'
-            '030ee059bcb815934b4ea4fb1e6b8d4ee4d15fdad6f4ea8ce20f99ded80631b6'
-            'b529f8d44af3ed7588e51f8326da2ba47fb3ea79c23933b5a7e8ec1e5e4e0f1b'
-            'da14787acc99062ffb8b087eb27619eded0c84649b4a4e0f8d50d5c067533e8b'
-            'dd6978cce62c30bdeb2afeec865449d99e2a65a8555fdbecf9f7173c10022fcd'
-            'f08a768697cefd1bc2b358b075803d366d7023c7e84a78fc47fef66134bbc7e9'
-            '30086e392a365242c7c61eee18534bfc1583ced855fbb301f187fcd16403845c'
-            'a6b3e5379b95d6263d8d397cf181d6c07946400f1d5a424a8bc06c1cce9ef1e3'
+sha256sums=('fe26e4d7aa33e2cdeb3817ed082154c9a2927839c0417e95a18c632197298267'
+            '72762977b4d53df53cd110df6e518848c7c74e94da822186f7c90913bf4f5355'
+            '84d29f9e969a301607547f3479689e2e34f94c851091e8cf1eedf445a049afca'
+            '2f304535f1fa7c916975e8972cb748bf2679d0eb7d2b3fd1230ded58e2e1ecf2'
+            'c265bbd54c1ac4e4ba0dc9e77329fc59ec7d130b45228ccefda8d08fee458134'
+            '4d76c80df0443d0e3aef8577468afeb517a14d1d741cfb3baa65acc21b6eafb5'
+            '6de67e0ff2b27ab158e86f2484f1bce3481a9090f8ad8c744f2e9b736525c1f4'
+            '4aae629c96ac941739a7a2893b823375ab7d9221032b9e03903cf82be0211693'
+            '14da112dfc7cc123ecaa3a4eda3e83785263e31330aaf67e4a9c8232b79a9359'
             '9ad943ceb3dbcdf45d72974fc3667886a7ed65c69ab9abc17be5412827551a7f'
             'b23a0e6b6bd11e8db3c3a7040887bca955a9821fc11bf351e11d97b3e5fde05b'
             '0ad6a9c361176a63537d14faf23c1a8100558f33f4aa222c29d7034a055a384c'
@@ -63,7 +63,7 @@ prepare() {
   
   #patch -p1 -i ${srcdir}/makefile.diff
   # sed line needed to make it look for automake-1.16
-  sed -i 's|1.15|1.16|' configure
+  #sed -i 's|1.15|1.16|' configure
 }
 
 build() {

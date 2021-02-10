@@ -1,7 +1,7 @@
 
 # rebuild vlc on any update, move to shared libs might change ABI
 pkgname=live-media
-pkgver=2021.02.09
+pkgver=2021.02.10
 pkgrel=1
 pkgdesc="A set of C++ libraries for multimedia streaming"
 arch=('x86_64')
@@ -10,7 +10,7 @@ url="http://live555.com/liveMedia"
 depends=('gcc-libs')
 source=("http://live555.com/liveMedia/public/live.${pkgver}.tar.gz"
         'config.kaos')
-md5sums=('eeb3dc0226294ff39138bb97448a9c0a'
+md5sums=('674d05392c904fd7b5321c3e137c1cbd'
          'aaef317f7068eb1bb4470e33b1fcae84')
 
 prepare() {
@@ -18,8 +18,8 @@ prepare() {
   
   #cp ${srcdir}/config.kaos config.kaos
   sed -i 's|-I/usr/local/include|-I/usr/include|' config.linux-with-shared-libraries
-  sed -i 's|testProgs mediaServer|mediaServer|' genMakefiles
-  sed -i 's|cd $(TESTPROGS_DIR)|#cd $(TESTPROGS_DIR)|' Makefile.tail
+  #sed -i 's|testProgs mediaServer|mediaServer|' genMakefiles
+  #sed -i 's|cd $(TESTPROGS_DIR)|#cd $(TESTPROGS_DIR)|' Makefile.tail
   find . -type f -exec sed -i 's|PREFIX = /usr/local|PREFIX = /usr|'  {} \;
 }
          
