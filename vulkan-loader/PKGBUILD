@@ -14,7 +14,7 @@ md5sums=('37bba66e04037e9bd3af17f83a22ee87')
 build() {
   mkdir -p build
   cd build
-  
+
   cmake ../Vulkan-Loader-${pkgver} \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_BUILD_TYPE=Release \
@@ -30,6 +30,6 @@ build() {
 
 package() {
   cd build
-  
+
   make DESTDIR=${pkgdir} install
 } 
