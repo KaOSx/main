@@ -1,20 +1,23 @@
 pkgname=hunspell-nl
-pkgver=2.10g
-pkgrel=3
+_pkgname=opentaal-hunspell
+pkgver=2.20.19
+pkgrel=1
 pkgdesc="Dutch hunspell dictionaries"
 arch=('x86_64')
 url="https://www.opentaal.org/"
 license=('BSD' 'custom:Creative Commons, Attribution 3.0 Unported')
 depends=('hunspell')
 makedepends=('unzip')
-#source=("https://opentaal.org/bestanden/license_result/20-woordenlijst-v-210g-voor-openofficeorg-3?bid=20&agree=1")
-source=('https://sourceforge.net/projects/kaosx/files/sources/hunspell/OpenTaal-210G-LO.oxt')
-md5sums=('3c96686c2555e3ae23b5de06ba08631b')
+source=("https://github.com/OpenTaal/opentaal-hunspell/archive/${pkgver}.tar.gz")
+#source=('https://sourceforge.net/projects/kaosx/files/sources/hunspell/OpenTaal-210G-LO.oxt')
+md5sums=('719e4f4267e2a3a85444608dc11bc326')
 
 package() {
+  cd ${_pkgname}-${pkgver}
+
   install -dm755 ${pkgdir}/usr/share/hunspell
-  install -m644 nl_NL.dic ${pkgdir}/usr/share/hunspell/nl_NL.dic
-  install -m644 nl_NL.aff ${pkgdir}/usr/share/hunspell/nl_NL.aff
+  install -m644 nl.dic ${pkgdir}/usr/share/hunspell/nl_NL.dic
+  install -m644 nl.aff ${pkgdir}/usr/share/hunspell/nl_NL.aff
 
   pushd ${pkgdir}/usr/share/hunspell/
   nl_NL_aliases="nl_AW nl_BE"
@@ -33,6 +36,6 @@ package() {
   popd
 
   install -dm755 ${pkgdir}/usr/share/doc/${pkgname}
-  install -m644 README_nl_NL.txt ${pkgdir}/usr/share/doc/${pkgname}
-  install -D -m644 license_en_EN.txt ${pkgdir}/usr/share/licenses/${pkgname}/license_en_EN.txt
+  install -m644 README.md ${pkgdir}/usr/share/doc/${pkgname}
+  install -D -m644 LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.txt
 }
