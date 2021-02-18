@@ -1,8 +1,8 @@
 
 pkgname=hplip
-pkgver=3.20.11
+pkgver=3.21.2
 # incase a or b is used in hplip rls:
-_pkgver=3.20.11
+_pkgver=3.21.2
 pkgrel=1
 pkgdesc="Drivers for HP DeskJet, OfficeJet, Photosmart, Business Inkjet and some LaserJet."
 arch=('x86_64')
@@ -18,7 +18,7 @@ options=('!libtool')
 install=${pkgname}.install
 source=("https://downloads.sourceforge.net/hplip/${pkgname}-${_pkgver}.tar.gz"
         'imageprocessor.patch')
-md5sums=('dbd44f63450424eea293fccea0589d33'
+md5sums=('362cb4c10321ec98fa4b4f18891e1a45'
          'c703ef8afa447ab1bc492e936da626c5')
 
 build() {
@@ -27,7 +27,7 @@ build() {
   # https://github.com/KaOSx/main/issues/31, patch file prnt/filters/hpps
   #patch -p2 -i ${srcdir}/patch
   # https://bugs.launchpad.net/hplip/+bug/1785230, remove closed source parts, breaking hplip > 3.18.6
-  patch -p1 -i ${srcdir}/imageprocessor.patch
+  #patch -p1 -i ${srcdir}/imageprocessor.patch
 
   export AUTOMAKE='automake --foreign'
   
