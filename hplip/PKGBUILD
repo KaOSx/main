@@ -3,7 +3,7 @@ pkgname=hplip
 pkgver=3.21.2
 # incase a or b is used in hplip rls:
 _pkgver=3.21.2
-pkgrel=1
+pkgrel=2
 pkgdesc="Drivers for HP DeskJet, OfficeJet, Photosmart, Business Inkjet and some LaserJet."
 arch=('x86_64')
 url="https://developers.hp.com/hp-linux-imaging-and-printing"
@@ -19,7 +19,7 @@ install=${pkgname}.install
 source=("https://downloads.sourceforge.net/hplip/${pkgname}-${_pkgver}.tar.gz"
         'imageprocessor.patch')
 md5sums=('362cb4c10321ec98fa4b4f18891e1a45'
-         'c703ef8afa447ab1bc492e936da626c5')
+         '02df8be3c3e33abe6293a8b526f599a0')
 
 build() {
   cd ${pkgname}-${_pkgver}
@@ -48,6 +48,9 @@ package() {
   cd ${pkgname}-${_pkgver}
 
   make rulesdir=/usr/lib/udev/rules.d DESTDIR=${pkgdir}/ install
+
+  install prnt/hpcups/libImageProcessor-x86_64.so ${pkgdir}/usr/lib
+  ln -s libImageProcessor-x86_64.so ${pkgdir}/usr/lib/libImageProcessor.so
 
   # remove sane conflicts and obsolete files
   rm -rf ${pkgdir}/etc/{sane.d,xdg}
