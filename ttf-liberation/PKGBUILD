@@ -1,7 +1,7 @@
 
 pkgname=ttf-liberation
-pkgver=2.1.2
-_pkgver=5722232
+pkgver=2.1.3
+_pkgver=6026893
 pkgrel=1
 pkgdesc="Font family which aims at metric compatibility with Arial, Times New Roman, and Courier New, sponsored by Red Hat"
 arch=('x86_64')
@@ -14,7 +14,7 @@ source=("https://github.com/liberationfonts/liberation-fonts/files/${_pkgver}/li
         '30-0-liberation-mono.conf'
         '30-0-liberation-sans.conf'
         '30-0-liberation-serif.conf')
-md5sums=('64210ba59f0fe3adf726f12a71613ea3'
+md5sums=('6b00e4f93143cedec84d148b8d54cd02'
          '23ce227d5d72c6df2c69caf367d96341'
          '88e91e718053d46cb1215067ffb0024a'
          '5bc229f0f7ad387f1ba311148fcbff00')
@@ -22,7 +22,7 @@ md5sums=('64210ba59f0fe3adf726f12a71613ea3'
 build() {
   cd liberation-fonts-${pkgver}
   
-  make 
+  make build
 }
 package() {
   cd liberation-fonts-${pkgver}/liberation-fonts-ttf-${pkgver}
