@@ -9,9 +9,9 @@ license=('custom')
 depends=('xkeyboard-config' 'glibc' 'wayland-protocols')
 makedepends=('doxygen' 'meson' 'ninja')
 options=('!libtool')
-source=("https://xkbcommon.org/download/${pkgname}-${pkgver}.tar.xz")
-#source=("https://github.com/xkbcommon/libxkbcommon/archive/xkbcommon-${pkgver}.tar.gz")
-sha256sums=('a2202f851e072b84e64a395212cbd976ee18a8ee602008b0bad02a13247dbc52')
+#source=("https://xkbcommon.org/download/${pkgname}-${pkgver}.tar.xz")
+source=("https://github.com/xkbcommon/libxkbcommon/archive/xkbcommon-${pkgver}.tar.gz")
+sha256sums=('3f93ebcbc5823dc61aacee2aa65c8cb8a13401a9f76fb8b7695922fbfc6689ab')
 
 build() {
   mkdir -p build
@@ -19,7 +19,7 @@ build() {
   
   export LANG=en_US.UTF-8
   
-  meson ../${pkgname}-${pkgver} \
+  meson ../${pkgname}-xkbcommon-${pkgver} \
     --prefix=/usr \
     --buildtype=release \
     --libexecdir=/usr/lib 
@@ -30,5 +30,5 @@ package() {
   cd build
   DESTDIR=${pkgdir} ninja install
   
-  install -Dm644 ../${pkgname}-${pkgver}/LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+  install -Dm644 ../${pkgname}-xkbcommon-${pkgver}/LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
