@@ -9,8 +9,9 @@ url="https://python-pillow.org/"
 license=('BSD')
 depends=('python3' 'lcms2' 'libwebp')
 makedepends=('python3-setuptools' 'libwebp' 'tk')
-source=("https://files.pythonhosted.org/packages/source/P/Pillow/${_pkgname}-${pkgver}.tar.gz")
-sha256sums=('887668e792b7edbfb1d3c9d8b5d8c859269a0f0eba4dda562adb95500f60dbba')
+#source=("https://files.pythonhosted.org/packages/source/P/Pillow/${_pkgname}-${pkgver}.tar.gz")
+source=("https://github.com/python-pillow/Pillow/archive/${pkgver}.tar.gz")
+sha256sums=('b670476feb912d1f07b8f42815ebef13a039cccfd549b2dac84d2a1599f68af8')
 
 build() { 
   cd ${_pkgname}-${pkgver}
