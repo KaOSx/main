@@ -1,18 +1,18 @@
 
 pkgname=proj
-pkgver=7.2.1
-_dataver=1.4
+pkgver=8.0.0
+_dataver=1.5
 pkgrel=1
 pkgdesc="Cartographic Projections library"
 arch=('x86_64')
-url="https://proj4.org/"
+url="https://proj.org/"
 license=('MIT')
 depends=('sqlite' 'libtiff')
 options=('!libtool')
 source=("https://download.osgeo.org/proj/${pkgname}-${pkgver}.tar.gz"
         "https://download.osgeo.org/proj/${pkgname}-data-${_dataver}.tar.gz")
-md5sums=('befbafd25e65ddf0c26a8321d8bcdcd2'
-         '61a8ab165f3dba0c71319d20955b0b48')
+md5sums=('6fa1f298a824d3b12370b3bd2c39abff'
+         '1845455f8e416f532edb98462ef84ac8')
 
 build() {
   bsdtar -xzvf ${srcdir}/${pkgname}-data-${_dataver}.tar.gz -C ${srcdir}/proj-${pkgver}/data
