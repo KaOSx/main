@@ -17,7 +17,7 @@ groups=('qt6')
 options=('!libtool')
 _pkgfqn="qtnetworkauth-everywhere-src-${subver}"
 #source=("${_qtmirror}/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz")
-source=("https://download.qt.io/official_releases/additional_libraries/qtnetworkauth/${_pkgver}/${subver}/${_pkgfqn}.tar.xz")
+source=("https://download.qt.io/official_releases/additional_libraries/${_pkgver}/${subver}/${_pkgfqn}.tar.xz")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`)
 
 build() {
