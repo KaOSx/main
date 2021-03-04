@@ -10,13 +10,13 @@ url="https://github.com/TechSmith/mp4v2/"
 depends=('gcc-libs')
 options=('!libtool')
 source=("https://github.com/TechSmith/mp4v2/archive/${_pkgname}-${pkgver}.tar.gz"
-        "https://github.com/sergiomb2/libmp4v2/commit/855e9674232808ff3be7191b697dfb56917db21f.diff")
+        "https://github.com/TechSmith/mp4v2/commit/15730113969eb1e3e515676dd55dccbb339a0db4.diff")
 md5sums=('9c2a5cddac74a2e7f1bd33ca09d5f6bd'
-         '6ee4ff89ff7cc61dd94199eb41734580')
+         '96b295c3a1938d2b1b3eb125d733224b')
 
 build() {
   cd mp4v2-${_pkgname}-${pkgver}
-  patch -p1 -i ${srcdir}/855e9674232808ff3be7191b697dfb56917db21f.diff
+  patch -p1 -i ${srcdir}/15730113969eb1e3e515676dd55dccbb339a0db4.diff
 
   ./configure --prefix=/usr
   make
