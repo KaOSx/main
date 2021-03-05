@@ -1,22 +1,26 @@
 
 pkgname=opencc
 _pkgname=OpenCC-ver
-pkgver=1.1.1
+pkgver=1.1.2
 pkgrel=1
 url="https://github.com/BYVoid/OpenCC"
 arch=('x86_64')
 pkgdesc="Library for Open Chinese Convert"
 license=('Apache')
-depends=('glibc')
-makedepends=('cmake' 'doxygen' 'python3')
+depends=('glibc' 'clang')
+makedepends=('cmake' 'doxygen' 'python3' 'googletest')
 source=("https://github.com/BYVoid/OpenCC/archive/ver.${pkgver}.tar.gz")
-md5sums=('47ee65d6b2b17c2de2e2278d6013fcb6')
+md5sums=('37fffef46bbddc208272fd4dc89a9d15')
 
 build() {
+  export CC=/usr/bin/clang
+  export CXX=/usr/bin/clang++
+  
   cmake -B build -S ${_pkgname}.${pkgver} \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DBUILD_DOCUMENTATION=ON
+    -DBUILD_DOCUMENTATION=ON \
+    -DUSE_SYSTEM_GTEST=ON
   cmake --build build
 }
 
