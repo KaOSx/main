@@ -10,6 +10,7 @@ pkgname=('qtwebengine') # 'qtwebengine-examples')
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
+_commit=a059e7404a6db799f4da0ad696e65ae9c854b4b0
 pkgrel=1
 pkgdesc="Chromium-based web engine to replace Qt WebKit"
 url="https://www.qt.io/"
@@ -19,16 +20,20 @@ makedepends=('qt5-declarative' 'python3' 'mesa' 'systemd' 'pango' 'nss' 'speex' 
          'libxslt' 'libpng' 'libjpeg-turbo' 'libwebp' 'zlib' 'pciutils' 'jsoncpp' 'pulseaudio' 'libxcomposite'
          'qt5-location' 'qt5-webchannel' 'ffmpeg' 'libxss' 'protobuf' 'opus' 'libvpx'
          'gperf' 'yasm' 'openssh' 'icu' 'qt5-tools' 'nodejs' 'python2')
-_pkgfqn="qtwebengine-everywhere-src-${subver}"
-source=("${_qtmirror}/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz"
-#source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz"
+#_pkgfqn="qtwebengine-everywhere-src-${subver}"
+_pkgfqn="qtwebengine"
+#source=("${_qtmirror}/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz"
+source=("git+https://github.com/qt/qtwebengine.git#commit=${_commit}"
+        "git+https://github.com/qt/qtwebengine-chromium.git"
         'nss321.diff'
         'demobrowser.desktop'
         'quicknanobrowser.desktop'
         'markdowneditor.desktop'
         'python-patches.diff'
         'rule_bison.diff')
-md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
+#md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
+md5sums=('SKIP'
+         'SKIP'
          '5c297bd337ffab4a2d075a7c85d55ef3'
          'f11d24801322ef41f8a44eedc5e104c2'
          '6d62ba455c7d70870fb28c9362c9c591'
@@ -36,64 +41,70 @@ md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
          '699b9a97d0164c0c62bfb1700fa31832'
          '9830c8af376817b2812775b547734873')
 
-build() {
-   cd $_pkgfqn/
-   # move to python3, freebsd patch https://github.com/freebsd/freebsd-ports-kde/blob/webengine-python3/www/qt5-webengine/python-patches.diff
-   #patch -p1 -i ${srcdir}/python-patches.diff
-   #patch -p1 -i ${srcdir}/rule_bison.diff
-   #sed -i 's|python_major_version, 2|python_major_version, 3|' configure.pri
+prepare() {
+    mkdir -p build
+    cd ${_pkgfqn}
+    # move to python3, freebsd patch https://github.com/freebsd/freebsd-ports-kde/blob/webengine-python3/www/qt5-webengine/python-patches.diff
+    #patch -p1 -i ${srcdir}/python-patches.diff
+    #patch -p1 -i ${srcdir}/rule_bison.diff
+    #sed -i 's|python_major_version, 2|python_major_version, 3|' configure.pri
 
-   
-   mkdir -p build   
-   cd build 
-   #export GYP_DEFINES="python_ver=2.7 use_pulseaudio=1 use_pango=1 use_cairo=1 use_cups=1"
-   
-   /usr/lib/qt5/bin/qmake ../qtwebengine.pro -- \
+    git submodule init
+    git submodule set-url src/3rdparty ${srcdir}/qtwebengine-chromium
+    git submodule set-branch --branch 87-based src/3rdparty
+    git submodule update
+}
+
+build() {
+    cd build 
+    #export GYP_DEFINES="python_ver=2.7 use_pulseaudio=1 use_pango=1 use_cairo=1 use_cups=1"
+
+    /usr/lib/qt5/bin/qmake ../${_pkgfqn}/qtwebengine.pro -- \
     -webengine-proprietary-codecs \
     -webengine-ffmpeg \
     -webengine-opus \
     -webengine-spellchecker \
     -webengine-pepper-plugins 
-   make 
-   
-   #/usr/lib/qt5/bin/qmake ../examples/webenginewidgets/demobrowser/demobrowser.pro
-   #make
-   
-   #cd ..
-   #cd markdowneditor/
-   #/usr/lib/qt5/bin/qmake 
-   #make
-   
-   #/usr/lib/qt5/bin/qmake ../examples/webengine/quicknanobrowser/quicknanobrowser.pro
-   #make
+    make 
+
+    #/usr/lib/qt5/bin/qmake ../examples/webenginewidgets/demobrowser/demobrowser.pro
+    #make
+
+    #cd ..
+    #cd markdowneditor/
+    #/usr/lib/qt5/bin/qmake 
+    #make
+
+    #/usr/lib/qt5/bin/qmake ../examples/webengine/quicknanobrowser/quicknanobrowser.pro
+    #make
 }
 
 package_qtwebengine() {
-   pkgdesc="Chromium-based web engine to replace Qt WebKit"
-   depends=('qt5-declarative' 'mesa' 'systemd' 'pango' 'nss' 'speex' 'libevent' 'libcups'
+    pkgdesc="Chromium-based web engine to replace Qt WebKit"
+    depends=('qt5-declarative' 'mesa' 'systemd' 'pango' 'nss' 'speex' 'libevent' 'libcups'
             'libxslt' 'libpng' 'libjpeg-turbo' 'libwebp' 'zlib' 'pciutils' 'jsoncpp' 'pulseaudio' 'libxcomposite'
             'qt5-webchannel' 'ffmpeg' 'libxss' 'protobuf' 'opus' 'libvpx' 'qt5-location')
     groups=('qt5')
-            
-   cd $_pkgfqn/build/   
-   
-   make INSTALL_ROOT="${pkgdir}" install
+
+    cd build/   
+
+    make INSTALL_ROOT="${pkgdir}" install
 }
 
 package_qtwebengine-examples() {
     pkgdesc="Chromium-based web engine examples browsers and editor"
     depends=('qtwebengine')
-    
+
     cd $_pkgfqn/build
-    
+
     install -D -m755 demobrowser ${pkgdir}/usr/bin/demobrowser
     #install -D -m755 quicknanobrowser ${pkgdir}/usr/bin/quicknanobrowser
     #install -D -m755 examples/webenginewidgets/markdowneditor/markdowneditor ${pkgdir}/usr/bin/markdowneditor
-    
+
     install -D -m644 ${srcdir}/demobrowser.desktop ${pkgdir}/usr/share/applications/demobrowser.desktop
     #install -D -m644 ${srcdir}/quicknanobrowser.desktop ${pkgdir}/usr/share/applications/quicknanobrowser.desktop
     #install -D -m644 ${srcdir}/markdowneditor.desktop ${pkgdir}/usr/share/applications/markdowneditor.desktop
-    
+
     install -D -m644 ../examples/webenginewidgets/demobrowser/data/demobrowser.svg \
     ${pkgdir}/usr/share/icons/hicolor/scalable/apps/demobrowser.svg
 }
