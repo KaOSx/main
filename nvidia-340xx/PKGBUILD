@@ -18,13 +18,15 @@ source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.ru
         'linux-5.patch'
         'linux-5.8.patch'
         'linux-5.9.patch'
-        'linux-5.10.patch')
+        'linux-5.10.patch'
+        'linux-5.11.patch')
 md5sums=('e783e383bd4344d590ad429eb0883717'
          '62d0cdb856cfae64753c0f3acf729d47'
          '768a57cba24b1a1c075c5767a27bd44c'
          'd2e9ec8ec9bdf7a99521041d0f7d5cbc'
          'd4a36ad3b3e11360a3b219a8d9b6c01d'
-         'e4893414b629caaa0b3a31317ab484f2')
+         'e4893414b629caaa0b3a31317ab484f2'
+         'c08d3a8ac7806b00e2fc2b345035a3be')
 
 build() {
     cd "${srcdir}"
@@ -35,6 +37,7 @@ build() {
     patch -p1 -i ${srcdir}/linux-5.8.patch
     patch -p1 -i ${srcdir}/linux-5.9.patch
     patch -p1 -i ${srcdir}/linux-5.10.patch
+    patch -p1 -i ${srcdir}/linux-5.11.patch
     # sed line needed for linux 4.9 & 340.101
     #sed -i 's/= DRIVER_GEM | DRIVER_PRIME,/= DRIVER_GEM | DRIVER_PRIME | DRIVER_LEGACY,/g' kernel/nv-drm.c
     
