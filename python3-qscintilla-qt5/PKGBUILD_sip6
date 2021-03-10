@@ -1,0 +1,43 @@
+
+pkgname=python3-qscintilla-qt5
+pkgver=2.12.1
+pkgrel=1
+license=('GPL')
+arch=('x86_64')
+url="https://www.riverbankcomputing.com/software/qscintilla/intro"
+pkgdesc="A port to Qt of Neil Hodgson's Scintilla C++ editor class, python3 bindings"
+depends=('pyqt5-python3' 'qscintilla-qt5' 'qscintilla-designer-qt5')
+makedepends=('chrpath' 'sip' 'pyqt-builder')
+source=("https://www.riverbankcomputing.com/static/Downloads/QScintilla/${pkgver}/QScintilla_src-${pkgver}.tar.gz"
+        'configure.patch')
+sha1sums=('e19ce22c0837027571199e52f89e97d796598513'
+          '928561f39dc26127c5a7661f00bb83b358485d91')
+
+prepare() {
+  cd QScintilla_src-${pkgver}
+
+  #patch -p1 -i ${srcdir}/configure.patch
+}
+
+build() {
+    cd QScintilla_src-$pkgver/Python
+    
+    #python3 configure.py -n ../Qt4Qt5/ -o ../Qt4Qt5/ -c --pyqt=PyQt5 --qsci-libdir=/usr/lib --qmake /usr/lib/qt5/bin/qmake --no-dist-info
+    #make
+    mv pyproject{-qt5,}.toml
+    sip-build \
+    --no-make \
+    --api-dir /usr/share/qt5/qsci/api/python/ \
+    --qmake /usr/lib/qt5/bin/qmake \
+    --qsci-features-dir ../src/features \
+    --qsci-include-dir ../src \
+    --qsci-library-dir ../src
+  cd build
+  make
+}
+
+package() {
+    cd QScintilla_src-${pkgver}/Python
+    
+    make DESTDIR=${pkgdir} INSTALL_ROOT=${pkgdir} install
+}
