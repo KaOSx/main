@@ -11,7 +11,7 @@ pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
 _commit=a059e7404a6db799f4da0ad696e65ae9c854b4b0
-pkgrel=1
+pkgrel=2
 pkgdesc="Chromium-based web engine to replace Qt WebKit"
 url="https://www.qt.io/"
 arch=('x86_64')
@@ -30,7 +30,8 @@ source=("git+https://github.com/qt/qtwebengine.git#commit=${_commit}"
         'quicknanobrowser.desktop'
         'markdowneditor.desktop'
         'python-patches.diff'
-        'rule_bison.diff')
+        'rule_bison.diff'
+        "https://github.com/qt/qtwebengine/commit/199ea00a9eea13315a652c62778738629185b059.diff")
 #md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
 md5sums=('SKIP'
          'SKIP'
@@ -39,7 +40,8 @@ md5sums=('SKIP'
          '6d62ba455c7d70870fb28c9362c9c591'
          '5ea5aa48c198a8de1398fc9e7a4abd14'
          '699b9a97d0164c0c62bfb1700fa31832'
-         '9830c8af376817b2812775b547734873')
+         '9830c8af376817b2812775b547734873'
+         'e904b18e6d01b540fab3758fb0305f26')
 
 prepare() {
     mkdir -p build
@@ -53,6 +55,8 @@ prepare() {
     git submodule set-url src/3rdparty ${srcdir}/qtwebengine-chromium
     git submodule set-branch --branch 87-based src/3rdparty
     git submodule update
+
+    patch -p1 -i ${srcdir}/199ea00a9eea13315a652c62778738629185b059.diff
 }
 
 build() {
