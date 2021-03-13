@@ -1,16 +1,16 @@
 
 pkgname=junit
-pkgver=4.12
-pkgrel=3
+pkgver=4.13.2
+pkgrel=1
 pkgdesc="Automated testing framework for Java"
 arch=('x86_64')
-url="https://www.junit.org/"
+url="https://junit.org/junit4/"
 license=('CPL')
 depends=('java-runtime' 'hamcrest')
 #makedepends=('apache-ant' 'git')
-source=("https://github.com/junit-team/junit/releases/download/r${pkgver}/${pkgname}-${pkgver}.jar"
+source=("https://search.maven.org/remotecontent?filepath=junit/junit/${pkgver}/${pkgname}-${pkgver}.jar"
         'Manifest.txt')
-md5sums=('5b38c40c97fbd0adee29f91e60405584'
+md5sums=('d98a9a02a99a9acd22d7653cbcc1f31f'
          '165500a4fcda0cdd6cff5256301d3702')
 
 package() {
