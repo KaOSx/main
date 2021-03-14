@@ -1,7 +1,7 @@
 
 pkgname=tidyhtml
 _pkgname=tidy-html5
-pkgver=5.6.0
+pkgver=5.7.28
 pkgrel=1
 pkgdesc="A tool to tidy down your HTML code to a clean style"
 arch=('x86_64')
@@ -11,21 +11,18 @@ depends=('glibc')
 makedepends=('cmake' 'git')
 options=('!libtool')
 source=("https://github.com/htacg/tidy-html5/archive/${pkgver}.tar.gz")
-md5sums=('85c8a163d9ece6a02fe12bc9bddbc455')
+md5sums=('2a572befbf3610de6719506c338efabb')
 
 build() {
-  mkdir -p build
-  cd build
-  
-  cmake ../${_pkgname}-${pkgver} \
+  cmake -B build -S ${_pkgname}-${pkgver} \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr 
-  make 
+ cmake --build build
 }
 
 package() {
-  cd build
-  make DESTDIR=${pkgdir} install
+
+  DESTDIR=${pkgdir} cmake --install build
   
-  install -Dm644 ../${_pkgname}-${pkgver}/README/LICENSE.md ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.md
+  install -Dm644 ${_pkgname}-${pkgver}/README/LICENSE.md ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.md
 }
