@@ -1,7 +1,7 @@
 
 pkgname=libconfig
 pkgver=1.7.2
-pkgrel=1
+pkgrel=2
 pkgdesc="C/C++ library for processing configuration files"
 arch=('x86_64')
 url="https://hyperrealm.github.io/libconfig/"
@@ -15,14 +15,14 @@ build() {
   cd ${pkgname}-${pkgver}
   # build fix https://github.com/hyperrealm/libconfig/issues/53
   #rm lib/scanner.c
-  
+
   ./configure --prefix=/usr
   make
 }
 
 package() {
   cd ${pkgname}-${pkgver}
-  
+
   make DESTDIR=${pkgdir} install
   rm ${pkgdir}/usr/share/info/dir
 }
