@@ -1,41 +1,33 @@
 
 pkgname=cdrdao
 pkgver=1.2.4
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 license=('GPL')
 url="http://cdrdao.sourceforge.net/"
 pkgdesc='Records audio/data CD-Rs in disk-at-once (DAO) mode'
-depends=('gcc-libs' 'lame' 'libmad' 'libvorbis' 'libao')
+depends=('lame' 'libmad' 'libvorbis' 'libao')
 makedepends=('libsigc++')
-source=("http://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tar.bz2"
-	'cdrdao-1.2.3-autoconf-update.patch'
-        'cdrdao-1.2.3-k3b.patch'
-        'cdrdao-1.2.3-stat.patch')
+source=("https://downloads.sourceforge.net/cdrdao/${pkgname}-${pkgver}.tar.bz2"
+        'cdrdao-1.2.3-autoconf-update.patch')
 md5sums=('2ada887d1b30b440867b8df0d3023cf7'
-         '8e53dfc174f7c0882194caa05e68b85e'
-         '696f6ca01e1eeb9b6a5be88e535d9398'
-         '0fce05542ebad283f36fa1c4d62992a0')
+         '8e53dfc174f7c0882194caa05e68b85e')
 
 build() {
-	cd ${srcdir}/${pkgbase}-${pkgver}
-	#patch -p1 -i "${srcdir}/cdrdao-1.2.3-autoconf-update.patch"
-	#patch -p1 -i "${srcdir}/cdrdao-1.2.3-k3b.patch"
-	#patch -p1 -i "${srcdir}/cdrdao-1.2.3-stat.patch"
-  
-	./configure --prefix=/usr \
-	   --mandir=/usr/share/man \
-	   --sysconfdir=/etc \
-	   --with-xdao --with-lame \
-	   --with-ogg-support --with-mp3-support
-	make
+    cd ${pkgname}-${pkgver}
+    #patch -p1 -i "${srcdir}/cdrdao-1.2.3-autoconf-update.patch"
+
+    ./configure --prefix=/usr \
+        --mandir=/usr/share/man \
+        --sysconfdir=/etc \
+        --with-xdao --with-lame \
+        --with-ogg-support --with-mp3-support
+    make
 }
 
 package() {
-	cd ${srcdir}/${pkgbase}-${pkgver}
-	for dir in trackdb utils paranoia dao
-	do
-	     make -C ${dir} DESTDIR=${pkgdir} install
-	done
+    cd ${pkgname}-${pkgver}
+    
+    make DESTDIR=${pkgdir} install
 }
 

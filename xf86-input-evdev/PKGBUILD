@@ -1,13 +1,13 @@
 
 pkgname=xf86-input-evdev
 pkgver=2.10.6
-pkgrel=2
+pkgrel=3
 pkgdesc="X.org evdev input driver"
 arch=('x86_64')
 url="https://xorg.freedesktop.org/"
 license=('custom')
-depends=('glibc' 'systemd' 'mtdev' 'xf86driproto' 'libevdev')
-makedepends=('xorg-server' 'xorgproto')
+depends=('glibc' 'systemd' 'mtdev' 'xorgproto' 'libevdev')
+makedepends=('xorg-server')
 options=('!libtool' '!makeflags')
 groups=('xorg-drivers' 'xorg')
 source=("https://xorg.freedesktop.org/releases/individual/driver/${pkgname}-${pkgver}.tar.bz2")
@@ -15,7 +15,7 @@ sha256sums=('8726073e81861bc7b2321e76272cbdbd33c7e1a121535a9827977265b9033ec0')
 
 build() {
   cd ${pkgname}-${pkgver}
-  
+
   ./configure --prefix=/usr
   make
 }
@@ -23,7 +23,7 @@ build() {
 package() {
   cd ${pkgname}-${pkgver}
   make DESTDIR=${pkgdir} install
-  
+
   install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
   install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
 }

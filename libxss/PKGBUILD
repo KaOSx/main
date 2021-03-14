@@ -1,12 +1,12 @@
 
 pkgname=libxss
 pkgver=1.2.3
-pkgrel=1
+pkgrel=2
 pkgdesc="X11 Screen Saver extension library"
 arch=('x86_64')
 license=('custom')
 url="https://xorg.freedesktop.org/"
-depends=('libxext' 'scrnsaverproto')
+depends=('libxext' 'xorgproto')
 makedepends=('xorg-util-macros')
 options=('!libtool')
 source=("https://xorg.freedesktop.org/releases/individual/lib/libXScrnSaver-${pkgver}.tar.bz2")
@@ -14,7 +14,7 @@ sha256sums=('f917075a1b7b5a38d67a8b0238eaab14acd2557679835b154cf2bca576e89bf8')
 
 build() {
   cd libXScrnSaver-${pkgver}
-  
+
   ./configure --prefix=/usr --sysconfdir=/etc
   make
 }

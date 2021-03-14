@@ -2,7 +2,7 @@
 pkgname=networkmanager-vpnc
 pkgver=1.2.6
 _pkgver=1.2
-pkgrel=1
+pkgrel=2
 pkgdesc="NetworkManager VPN plugin for vpnc"
 arch=('x86_64')
 license=('GPL')
@@ -15,7 +15,7 @@ sha256sums=('de4fd059c4c08365a40b32b6f6fad9674f556724b4bbeb1f9d4473ac19a745cb')
 
 build() {
   cd NetworkManager-vpnc-${pkgver}
-  
+
   ./configure --prefix=/usr \
   	--sysconfdir=/etc \
 	--libexecdir=/usr/lib/networkmanager \
@@ -28,6 +28,6 @@ build() {
 
 package() {
   cd NetworkManager-vpnc-${pkgver}
-  
+
   make DESTDIR=${pkgdir} install 
 }
