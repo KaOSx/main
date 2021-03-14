@@ -2,7 +2,7 @@
 pkgname=libpng12
 _pkgname=libpng
 pkgver=1.2.59
-_pkgver=1.2.58
+_pkgver=1.2.59
 pkgrel=1
 pkgdesc="A collection of routines used to create PNG format graphics files"
 arch=('x86_64')
@@ -11,14 +11,14 @@ license=('custom')
 depends=('zlib')
 options=('!libtool')
 source=("https://sourceforge.net/projects/libpng/files/libpng-${pkgver}.tar.xz"
-        "https://sourceforge.net/projects/apng/files/libpng/libpng12/libpng-${_pkgver}-apng.patch.gz")
+        "https://sourceforge.net/projects/libpng-apng/files/libpng12/${_pkgver}/libpng-${_pkgver}-apng.patch.gz")
 md5sums=('e120f48f4e27e72255bc366c73aae1db'
-         'b3f80e509762a0025e7116c15194ad72')
+         'd8cea50b4e4b248391d26b14f3d5dfd2')
 
 
 build() {
   cd ${_pkgname}-${pkgver}
-  patch -p0 -i ${srcdir}/libpng-${_pkgver}-apng.patch
+  patch -p1 -i ${srcdir}/libpng-${_pkgver}-apng.patch
   sed -i 's|AM_CONFIG_HEADER|AC_CONFIG_HEADERS|' configure.ac
 
   libtoolize --force --copy 

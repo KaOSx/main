@@ -1,7 +1,7 @@
 
 pkgname=xcb-util-renderutil
 pkgver=0.3.9
-pkgrel=3
+pkgrel=4
 pkgdesc="Utility libraries for XC Binding"
 arch=('x86_64')
 url="https://xcb.freedesktop.org"
@@ -16,7 +16,7 @@ md5sums=('468b119c94da910e1291f3ffab91019a'
 
 build() {
   cd ${pkgname}-${pkgver}
-  
+
   ./configure --prefix=/usr --disable-static
   make
 }

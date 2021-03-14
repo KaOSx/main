@@ -1,7 +1,7 @@
 
 pkgname=xcb-util-keysyms
 pkgver=0.4.0
-pkgrel=3
+pkgrel=4
 pkgdesc="Utility libraries for XC Binding"
 arch=('x86_64')
 url="https://xcb.freedesktop.org"
@@ -16,7 +16,7 @@ md5sums=('1022293083eec9e62d5659261c29e367'
 
 build() {
   cd ${pkgname}-${pkgver}
-  
+
   ./configure --prefix=/usr --disable-static
   make
 }
