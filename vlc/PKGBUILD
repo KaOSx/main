@@ -2,7 +2,7 @@
 pkgname=vlc
 pkgver=3.0.12.1
 _pkgver=3.0
-pkgrel=2
+pkgrel=3
 epoch=1
 pkgdesc="Free and open source cross-platform multimedia player and framework that plays most multimedia files and various streaming protocols."
 arch=('x86_64')
@@ -15,7 +15,7 @@ depends=('a52dec' 'fluidsynth' 'libmtp' 'libdvbpsi' 'libxpm' 'libcdio' 'libdca' 
          'desktop-file-utils' 'xcb-util-keysyms' 'pulseaudio' 'chromaprint' 
          'qt5-x11extras' 'qt5-svg' 'x265' 'lua' 'mpg123' 'protobuf' 'vcdimager'
          'avahi' 'libnotify' 'libbluray' 'flac' 'libtheora' 'alsa-lib' 'dav1d'
-         'libraw1394' 'libdc1394' 'libavc1394' 'libva' 'live-media' 'microdns' 'libidn') # fails with 'fribidi' 1.0.1
+         'libraw1394' 'libdc1394' 'libavc1394' 'libva' 'microdns' 'libidn') # 'live-media' fails with 'fribidi' 1.0.1
 makedepends=('pkgconfig' 'jack' 'systemd' 'gnutls' 'libcaca' 'librsvg' 'qt5-tools')
 backup=('usr/share/vlc/http/.hosts'
         'usr/share/vlc/http/dialogs/.hosts'
@@ -64,6 +64,7 @@ build() {
               --enable-chromecast \
               --enable-microdns \
               --disable-fribidi \
+              --disable-live555 \
               --enable-vpx \
               RCC=/usr/bin/rcc-qt5
   make
