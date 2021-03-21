@@ -1,23 +1,24 @@
 
 pkgname=python3-lxml
-pkgver=4.6.2
+pkgver=4.6.3
 pkgrel=1
 pkgdesc="Python3 binding for the libxml2 and libxslt libraries"
 arch=('x86_64')
 license=('BSD' 'GPL' 'custom')
 url="https://lxml.de/"
 depends=('python3-cython' 'libxslt')
-source=("https://pypi.io/packages/source/l/lxml/lxml-${pkgver}.tar.gz")
-sha256sums=('cd11c7e8d21af997ee8079037fff88f16fda188a9776eb4b81c7e4c9c0a7d7fc')
+#source=("https://pypi.io/packages/source/l/lxml/lxml-${pkgver}.tar.gz")
+source=("https://github.com/lxml/lxml/archive/refs/tags/lxml-${pkgver}.tar.gz")
+sha256sums=('5955ed615b7be9407d9eab83edde8f1818c94224d762d1d6355bf0371f220bd6')
 
 build() {
-  cd lxml-${pkgver}
+  cd lxml-lxml-${pkgver}
   
   python3 setup.py build
 }
 
 package() {
-  cd lxml-${pkgver}
+  cd lxml-lxml-${pkgver}
 
   python3 setup.py install --root=${pkgdir} --optimize=1 --skip-build
 
