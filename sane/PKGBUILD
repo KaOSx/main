@@ -1,7 +1,7 @@
 
 pkgname=sane
 pkgver=1.0.32
-pkgrel=1
+pkgrel=2
 pkgdesc="Application programming interface (API) that provides standardized access to any raster image scanner hardware."
 url="http://www.sane-project.org"
 arch=('x86_64')
@@ -16,17 +16,19 @@ source=("https://gitlab.com/sane-project/backends/uploads/104f09c07d35519cc8e72e
         #ftp://ftp2.sane-project.org/pub/sane/$pkgname-backends-$pkgver/$pkgname-backends-$pkgver.tar.gz
         'sane.xinetd'
         'saned.socket'
-        'saned.service')
+        'saned.service'
+        "https://gitlab.com/sane-project/backends/-/commit/580c278dcafe4159213406b4307ee8598fe08fe7.diff")
 options=('!libtool')
 sha256sums=('3a28c237c0a72767086202379f6dc92dbb63ec08dfbab22312cba80e238bb114'
             '4fcf740a4003de71c68f0d40fe80e125c3bb5f74249864eeabbd1afd860305ea'
             'c06fdd54128b06efbf8fbcb40b145512fa8e8a1c470c5cb60abc839a6002fdf1'
-            '58698587610819ac87c2ac1fbb6e4fd184e8a9f24f79e81bc75c1c3d11585c77')
+            '58698587610819ac87c2ac1fbb6e4fd184e8a9f24f79e81bc75c1c3d11585c77'
+            '45d172a059dedf1687295edc9994cc55a85c364e612d52458399cf79092ec652')
 
 build() {
   cd ${pkgname}-backends-${pkgver}
-  # http://kaosx.us/phpBB3/viewtopic.php?f=10&t=46&p=210#p208
-  #patch -p1 -i ${srcdir}/avahi.patch
+  # https://forum.kaosx.us/d/2775-scanner/11
+  patch -p1 -i ${srcdir}/580c278dcafe4159213406b4307ee8598fe08fe7.diff
 
   ./configure --prefix=/usr \
     --sysconfdir=/etc \
