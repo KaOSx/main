@@ -1,7 +1,7 @@
 
 pkgname=libmp4v2
 _pkgname=Release-ThirdParty-MP4v2
-pkgver=4.1.5
+pkgver=4.1.6
 pkgrel=1
 pkgdesc="Library that provides an API to create and modify mp4 files as defined by ISO-IEC:14496-1:2001 MPEG-4 Systems"
 arch=('x86_64')
@@ -11,13 +11,14 @@ depends=('gcc-libs')
 options=('!libtool')
 source=("https://github.com/TechSmith/mp4v2/archive/${_pkgname}-${pkgver}.tar.gz"
         "https://github.com/TechSmith/mp4v2/commit/15730113969eb1e3e515676dd55dccbb339a0db4.diff")
-md5sums=('9c2a5cddac74a2e7f1bd33ca09d5f6bd'
+md5sums=('1ec0b965530deab7887a9743b2ce6707'
          '96b295c3a1938d2b1b3eb125d733224b')
 
 build() {
   cd mp4v2-${_pkgname}-${pkgver}
-  patch -p1 -i ${srcdir}/15730113969eb1e3e515676dd55dccbb339a0db4.diff
+  #patch -p1 -i ${srcdir}/15730113969eb1e3e515676dd55dccbb339a0db4.diff
 
+  CXXFLAGS="$CXXFLAGS -Wno-narrowing"
   ./configure --prefix=/usr
   make
 }
