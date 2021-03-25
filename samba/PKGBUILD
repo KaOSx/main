@@ -1,8 +1,8 @@
 
 # check tdb & ldb for updates before building
 pkgname=samba
-pkgver=4.13.5
-_pkgver=4.13.5
+pkgver=4.14.2
+_pkgver=4.14.2
 pkgrel=1
 arch=('x86_64')
 pkgdesc="The standard Windows interoperability suite of programs for Linux and Unix."
@@ -11,7 +11,7 @@ license=('GPL3')
 depends=('readline' 'popt' 'libldap' 'libcap' 'krb5' 'db' 'e2fsprogs' 'tdb' 'talloc'
          'cifs-utils' 'libcups' 'acl' 'pam' 'gnutls' 'libbsd' 'ldb' 'tevent'
          'libgcrypt' 'python3' 'libaio' 'iniparser' 'libarchive' 'jansson' 'perl-parse-yapp')
-makedepends=('pkg-config' 'docbook-xsl' 'rpcsvc-proto')
+makedepends=('pkg-config' 'docbook-xsl' 'rpcsvc-proto' 'python3-markdown' 'python3-dnspython')
 provides=('smbclient')
 options=('!makeflags')
 backup=(etc/logrotate.d/samba
@@ -23,7 +23,7 @@ source=("https://us1.samba.org/samba/ftp/stable/${pkgname}-${_pkgver}.tar.gz"
         'samba.pam'
         'samba.conf'
         'samba.conf.d')
-md5sums=('f4d69b3ecc249458b468e4b4c042c40e'
+md5sums=('2c726e392a7d36743ae0517e48db36eb'
          '995621522c6ec9b68c1b858ceed627ed'
          '96f82c38f3f540b53f3e5144900acf17'
          '49abd7b719e3713a3f75a8a50958e381'
@@ -41,6 +41,7 @@ build() {
               --libdir=/usr/lib/ \
               --localstatedir=/var \
               --libexecdir=/usr/lib \
+              --sysconfdir=/etc \
               --with-configdir=/etc/samba \
               --with-lockdir=/var/cache/samba \
               --with-sockets-dir=/var/run/samba \

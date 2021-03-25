@@ -1,0 +1,26 @@
+
+pkgname=python3-dnspython
+_pkgname=dnspython
+pkgver=2.1.0
+pkgrel=1
+pkgdesc="Powerful DNS toolkit for python."
+arch=('x86_64')
+url='https://www.dnspython.org/'
+license=('BSD')
+depends=('python3')
+makedepends=('python3-setuptools')
+source=("https://files.pythonhosted.org/packages/source/d/dnspython/${_pkgname}-${pkgver}.zip")
+sha256sums=('e4a87f0b573201a0f3727fa18a516b055fd1107e0e5477cded4a2de497df1dd4')
+
+build() {
+  cd ${_pkgname}-${pkgver}
+  
+  python3 setup.py build
+}
+
+package() {
+  cd ${_pkgname}-${pkgver}
+  
+  python3 setup.py install --root=${pkgdir} --optimize=1 --skip-build
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
