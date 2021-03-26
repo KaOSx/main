@@ -3,13 +3,13 @@ pkgbase=gtk3
 pkgname=('gtk3' 'gtk-update-icon-cache')
 pkgver=3.24.27
 _pkgver=3.24
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 url="https://www.gtk.org/"
 makedepends=('gobject-introspection' 'cairo' 'libcups' 'libxcursor' 'libxinerama' 'libxrandr' 
              'libxi' 'libxcomposite' 'libxdamage' 'pango' 'shared-mime-info' 'gdk-pixbuf2' 
              'colord' 'at-spi2-atk' 'libepoxy' 'libxkbcommon' 'librsvg' 'wayland' 
-             'wayland-protocols' 'iso-codes' 'sassc')
+             'wayland-protocols' 'iso-codes' 'sassc' 'meson' 'ninja')
 options=('!libtool' '!docs')
 license=('LGPL')
 source=("https://ftp.gnome.org/pub/gnome/sources/gtk+/${_pkgver}/gtk+-${pkgver}.tar.xz"
@@ -22,19 +22,21 @@ sha256sums=('f71c067570339f9f8efac7bb87717a2c52279cb50223fb8b5ba7085930757a26'
             '9dd003e9396d511e68856f37e9ab0ec34fc7f540e266366f2df506157894b361')
 
 build() {
-  cd gtk+-${pkgver}
-  # fix middle click pasting between Wayland clients and GTK clients
-  #patch -p1 -i ${srcdir}/9a693c7228a88b76a007aed41b101d89d084cf9b.diff
-  #sed -e "s|gdk_screen_get_dfeault|gdk_screen_get_default|" -i docs/tools/shooter.c
-
- ./configure --prefix=/usr \
-             --sysconfdir=/etc \
-             --localstatedir=/var \
-             --disable-schemas-compile \
-             --enable-x11-backend \
-             --enable-wayland-backend
-
-  make
+  mkdir -p build
+  cd build
+  
+  meson ../gtk+-${pkgver} \
+    --prefix=/usr \
+    --buildtype=release \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    -Dgtk_doc=false \
+    -Dintrospection=true \
+    -Ddemos=false \
+    -Dexamples=false \
+    -Dtests=false \
+    -Dinstalled_tests=false
+  ninja
 }
 
 package_gtk3() {
@@ -45,9 +47,9 @@ package_gtk3() {
           'wayland-protocols' 'iso-codes')
   install="gtk3.install"
   
-  cd gtk+-${pkgver}
-
-  make DESTDIR=${pkgdir} install
+  cd build
+  
+  DESTDIR=${pkgdir} ninja install
   
   # avoid gtk2 conflict, used for both gtk2 & 3 this way
   rm $pkgdir/usr/bin/gtk-update-icon-cache
@@ -57,7 +59,7 @@ package_gtk-update-icon-cache() {
     pkgdesc="The GTK+ update icon cache tool"
     depends=('gdk-pixbuf2')
 
-    cd gtk+-${pkgver}/gtk
+    cd build/gtk
 
     install -Dm755 gtk-update-icon-cache ${pkgdir}/usr/bin/gtk-update-icon-cache
     
