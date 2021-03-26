@@ -20,7 +20,8 @@ build() {
     -DCMAKE_INSTALL_LIBDIR=/usr/lib \
     -DCMAKE_INSTALL_BINDIR=/usr/bin \
     -DTJPEG_INCLUDE_DIR=/usr/include \
-    -DTJPEG_LIBRARY=/usr/lib/libturbojpeg.so 
+    -DTJPEG_LIBRARY=/usr/lib/libturbojpeg.so \
+    -DVGL_FAKEOPENCL=0
   make -j1
 }
 
