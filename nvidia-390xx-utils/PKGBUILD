@@ -3,7 +3,7 @@ pkgbase=nvidia-390xx-utils
 pkgname=('nvidia-390xx-utils' 'nvidia-390xx-settings')
 # Edit hardware-detection/hooks/hwdetect_7_graphics and Installer job 11 on version jump from 39x.xx
 pkgver=390.141
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 url="https://www.nvidia.com/page/home.html"
 license=('custom')
@@ -35,9 +35,6 @@ build() {
 package_nvidia-390xx-utils() {
   pkgdesc="NVIDIA drivers utilities and libraries, 390xx legacy version."
   depends=('xorg-server' 'libxvmc')
-  optdepends=('gtk2: nvidia-settings' 'pkg-config: nvidia-xconfig'
-              'opencl-nvidia: OpenCL support'
-              'nvidia-settings: Gtk GUI')
   conflicts=('nvidia-utils' 'nvidia-340xx-utils')
 	      
   cd "${srcdir}/$_pkg"
@@ -117,7 +114,7 @@ package_nvidia-390xx-utils() {
 
 package_nvidia-390xx-settings() {
   pkgdesc="Gtk Graphical User Interface for nVidia"
-  depends=('nvidia-390xx-utils' 'gtk2')
+  depends=('nvidia-390xx-utils' 'gtk3')
 
   cd "${srcdir}/${_pkg}"
 
@@ -126,7 +123,6 @@ package_nvidia-390xx-settings() {
   install -D -m644 nvidia-settings.1.gz "${pkgdir}/usr/share/man/man1/nvidia-settings.1.gz"
   install -D -m644 nvidia-settings.desktop "${pkgdir}/usr/share/applications/nvidia-settings.desktop"
   install -D -m644 nvidia-settings.png "${pkgdir}/usr/share/pixmaps/nvidia-settings.png"
-  install -D -m755 "libnvidia-gtk2.so.$pkgver" "$pkgdir/usr/lib/libnvidia-gtk2.so.$pkgver"
   install -D -m755 "libnvidia-gtk3.so.$pkgver" "$pkgdir/usr/lib/libnvidia-gtk3.so.$pkgver"
   sed -e 's:__UTILS_PATH__:/usr/bin:' -e 's:__PIXMAP_PATH__:/usr/share/pixmaps:' -i "${pkgdir}/usr/share/applications/nvidia-settings.desktop"
 
