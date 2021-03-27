@@ -1,14 +1,15 @@
 
 pkgname=gst-plugins-base
 pkgver=1.18.4
-pkgrel=1
+pkgrel=2
 pkgdesc="GStreamer Multimedia Framework Base Plugins"
 arch=('x86_64')
 url="https://gstreamer.freedesktop.org/"
 license=('LGPL')
 depends=("gstreamer>=${pkgver}" 'orc' 'libxv' 'alsa-lib' 'cdparanoia' 'libvisual'
          'libvorbis' 'libtheora' 'pango' 'opus' 'iso-codes')
-makedepends=('pkgconfig' 'gobject-introspection' 'qt5-base' 'python3' 'meson' 'ninja')
+makedepends=('pkgconfig' 'gobject-introspection' 'qt5-x11extras' 'qt5-tools'
+             'python3' 'meson' 'ninja' 'graphene')
 options=('!libtool' '!emptydirs')
 source=("https://gstreamer.freedesktop.org/src/gst-plugins-base/${pkgname}-${pkgver}.tar.xz")
 sha256sums=('29e53229a84d01d722f6f6db13087231cdf6113dd85c25746b9b58c3d68e8323')
