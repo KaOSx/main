@@ -6,8 +6,8 @@ pkgname=rtl88x2bu
 _pkgname=RTL88x2BU-Linux-Driver
 pkgver=2021.03.02
 _commit=f4dadcaf88df08d5a563f79cadabe9d901ad1a23
-pkgrel=1
-pkgdesc="ReatlTek 88x2bu wifi driver."
+pkgrel=2
+pkgdesc="RealTek 88x2bu wifi driver."
 arch=('x86_64')
 url="https://github.com/RinCat/RTL88x2BU-Linux-Driver"
 license=('GPL-2.0')
@@ -31,7 +31,7 @@ package() {
   cd ${_pkgname}-${_commit}
   
   install -D -m644 88x2bu.ko ${pkgdir}/lib/modules/${_kver}/kernel/drivers/net/wireless/88x2bu.ko
-  
+
   # sign the module
   _file=/usr/src/linux-${_kver}/scripts/sign-file
   _pem=/$HOME/signing_key.pem
@@ -40,6 +40,6 @@ package() {
   ${_file} sha256 ${_pem} ${_key} ${pkgdir}/lib/modules/${_kver}/kernel/drivers/net/wireless/88x2bu.ko
   
   install -d -m755 ${pkgdir}/etc/modules-load.d/
-  echo "88x2bu" >> "${pkgdir}/etc/modules-load.d/rtl88x2bu.conf"
+  echo "options 88x2bu rtw_switch_usb_mode=1" >> "${pkgdir}/etc/modules-load.d/rtl88x2bu.conf"
   sed -i -e "s/EXTRAMODULES='.*'/EXTRAMODULES='${_extramodules}'/" "${startdir}/rtl88x2bu.install"
 }
