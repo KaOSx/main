@@ -2,7 +2,7 @@
 pkgname=signonqt
 pkgver=8.60
 #_pkgver=VERSION_8.58-aa1bcf3c9218addbdb376a40151b689409046125
-pkgrel=2
+pkgrel=3
 arch=('x86_64')
 url="https://gitlab.com/accounts-sso/signond/"
 license=('LGPL')
@@ -14,13 +14,16 @@ options=('!emptydirs')
 conflicts=('signonqt-doc' 'signon-qt5')
 replaces=('signonqt-doc' 'signon-qt5')
 provides=('signonqt-doc' 'signon-qt5')
-source=("https://gitlab.com/accounts-sso/signond/repository/archive.tar.bz2?ref=VERSION_${pkgver}")
-md5sums=('ea98f8b5d8433aca0532bb5599353316')
+source=("https://gitlab.com/accounts-sso/signond/repository/archive.tar.bz2?ref=VERSION_${pkgver}"
+        "https://gitlab.com/accounts-sso/signond/-/commit/07d45498ad374d9e8e4ff6a886f4b4bb850c0cb5.diff")
+md5sums=('ea98f8b5d8433aca0532bb5599353316'
+         '37a2b101097f69425d3b6a86962ba147')
 
 build() {
   cd signond-VERSION_${pkgver}-*
   #sed -i 's/qdbusxml2cpp/qdbusxml2cpp-qt5/' src/signond/signond.pro
-  
+  patch -p1 -i ${srcdir}/07d45498ad374d9e8e4ff6a886f4b4bb850c0cb5.diff
+
   /usr/lib/qt5/bin/qmake PREFIX=/usr LIBDIR=/usr/lib
   make
 }
