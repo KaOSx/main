@@ -1,43 +1,27 @@
 
 pkgname=webrtc-audio-processing
-pkgver=1.0
-pkgrel=1
+pkgver=0.3.1
+pkgrel=2
 pkgdesc="AudioProcessing library based on Google's implementation of WebRTC"
 arch=('x86_64')
 url="https://freedesktop.org/software/pulseaudio/webrtc-audio-processing"
 license=('custom')
-depends=('gcc-libs' 'neon')
-makedepends=('meson' 'ninja' 'abseil-cpp')
+depends=('gcc-libs')
 options=('!libtool')
-source=("https://freedesktop.org/software/pulseaudio/webrtc-audio-processing/${pkgname}-${pkgver}.tar.gz"
-        'meson.diff')
-sha256sums=('441a30d2717b2eb4145c6eb96c2d5a270fe0b4bc71aebf76716750c47be1936f'
-            '89e9a9883fe6a0b6587b95732e49e2a5fa7669e8ca95114f84ab8b46810f0034')
-
-prepare() {
-  cd ${pkgname}-${pkgver}
-  
-  #patch -p1 -i ${srcdir}/meson.diff
-  sed -i 's|absl_flags_registry|absl_flags_reflection|g' meson.build
-}
+source=("https://freedesktop.org/software/pulseaudio/webrtc-audio-processing/${pkgname}-${pkgver}.tar.xz")
+md5sums=('6e10724ca34bcbc715a4c208273acb0c')
 
 build() {
-  mkdir -p build
-  cd build
+  cd ${pkgname}-${pkgver}
   
-  meson ../${pkgname}-${pkgver} \
-    --prefix=/usr \
-    --buildtype=release \
-    --libdir=lib
-  ninja
+  ./configure --prefix=/usr --disable-static
+  make
 }
 
 package() {
-  cd build
-  
-  DESTDIR=${pkgdir} ninja install
+  cd ${pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install
+
+  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
+  #install -Dm644 PATENTS ${pkgdir}/usr/share/licenses/${pkgname}/PATENT
 }
-
-
-  #install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
-  

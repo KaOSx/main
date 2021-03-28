@@ -1,17 +1,21 @@
 
 pkgname=abseil-cpp
-pkgver=20200923.3
+pkgver=20210324rc1
+_pkgver=20210324.rc1
 pkgrel=1
 pkgdesc="Open-source collection of C++ code designed to augment the C++ standard library."
 arch=('x86_64')
 url="https://abseil.io/"
 license=('Apache 2.0')
-makedepends=('cmake')
-source=("https://github.com/abseil/abseil-cpp/archive/${pkgver}.tar.gz")
-md5sums=('daba6e99c7a84e2242a0107bbd873669')
+makedepends=('cmake' 'clang')
+source=("https://github.com/abseil/abseil-cpp/archive/refs/tags/${_pkgver}.tar.gz")
+md5sums=('d566ead8e294ce5ea9b774df384f6616')
 
 build() {
-  cmake -B build -S ${pkgname}-${pkgver} \
+  export CC=/usr/bin/clang
+  export CXX=/usr/bin/clang++
+
+  cmake -B build -S ${pkgname}-${_pkgver} \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=lib \
@@ -19,7 +23,8 @@ build() {
     -DABSL_ENABLE_INSTALL=TRUE \
     -DABSL_RUN_TESTS=OFF \
     -DABSL_USE_GOOGLETEST_HEAD=OFF \
-    -DCMAKE_CXX_STANDARD=17
+    -DCMAKE_CXX_STANDARD=17 \
+    -DCMAKE_POSITION_INDEPENDENT_CODE=ON
   cmake --build build
 }
 
