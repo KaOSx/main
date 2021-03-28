@@ -1,12 +1,12 @@
 
 pkgname=xorg-xinit
 pkgver=1.4.1
-pkgrel=1
+pkgrel=2
 pkgdesc="X.Org initialisation program "
 arch=('x86_64')
 license=('custom')
 url="https://xorg.freedesktop.org/"
-depends=('libx11' 'xorg-xauth' 'inetutils' 'xorg-server-utils')
+depends=('libx11' 'xorg-xauth' 'xorg-server-utils')
 makedepends=('xorg-util-macros')
 optdepends=('xterm')
 backup=('etc/X11/xinit/xserverrc'
@@ -15,17 +15,20 @@ groups=('xorg')
 source=("https://xorg.freedesktop.org/releases/individual/app/xinit-${pkgver}.tar.bz2"
         '06_move_serverauthfile_into_tmp.diff'
         'fs25361.patch'
-        'xserverrc')
+        'xserverrc'
+        "https://gitlab.freedesktop.org/xorg/app/xinit/-/commit/e2430bcb8327682340d985f89ad5137efa2f0d4f.diff")
 options=('!emptydirs')
 sha256sums=('de9b8f617b68a70f6caf87da01fcf0ebd2b75690cdcba9c921d0ef54fa54abb9'
             'a5c6ced5822bbb3145e0f30a4b12995782ca6d80ff2d927851ec91b5e41212cb'
             '866a478630d31bbf01c7fe7cd2a6db3912b67f693c6417d77536a5bd8d169ddd'
-            '5e87bff928c143d9db9966048f6530e83e9e9a1cac09ce4c25f8aabc08611b6f')
+            '5e87bff928c143d9db9966048f6530e83e9e9a1cac09ce4c25f8aabc08611b6f'
+            '71c84795c557721ee4b4495f04ff5d1e9c1e84e36bdd0a921e5734a94ef2f3ba')
 
 build() {
   cd xinit-${pkgver}
   patch -p1 -i ${srcdir}/06_move_serverauthfile_into_tmp.diff
   patch -p1 -i ${srcdir}/fs25361.patch
+  patch -p1 -i ${srcdir}/e2430bcb8327682340d985f89ad5137efa2f0d4f.diff
   sed -i -e 's|XSLASHGLOB.sh|XSLASHGLOB|' xinitrc.cpp
   
   ./configure --prefix=/usr --with-xinitdir=/etc/X11/xinit
