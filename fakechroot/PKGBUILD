@@ -1,7 +1,7 @@
 
 pkgname=fakechroot
 pkgver=2.20.1
-pkgrel=1
+pkgrel=2
 pkgdesc="Gives a fake chroot environment"
 arch=('x86_64')
 url="https://github.com/dex4er/fakechroot"
@@ -20,7 +20,8 @@ build() {
 
 check() {
   cd ${pkgname}-${pkgver}
-  
+  # FAIL: t/escape-nested-chroot.t, known upstream 
+  # https://github.com/dex4er/fakechroot/commit/b42d1fb9538f680af2f31e864c555414ccba842a
   make check
 }
 
