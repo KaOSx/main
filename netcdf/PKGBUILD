@@ -1,22 +1,22 @@
 
 pkgname=netcdf
-pkgver=4.7.4
-pkgrel=2
+pkgver=4.8.0
+pkgrel=1
 pkgdesc="Network Common Data Form interface for array-oriented data access and corresponding library."
 arch=("x86_64")
-url=""
+url="https://www.unidata.ucar.edu/downloads/netcdf/"
 license=('custom')
 depends=('gcc-libs' 'hdf5' 'curl')
 options=('!libtool' '!makeflags')
 source=("https://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-c-${pkgver}.tar.gz")
-md5sums=('3e0a97e6abb9a989f8a8a2e395473597')
+md5sums=('a1e31625e2f270aa8044578d7320962c')
 
 build() {
   cd ${pkgname}-c-${pkgver}
   
   ./configure --prefix=/usr \
         --enable-shared \
-        --enable-netcdf-4 
+        --enable-netcdf-4
   make
 }
 
