@@ -1,6 +1,6 @@
 
 pkgname=lapack
-pkgver=3.9.0
+pkgver=3.9.1
 pkgrel=1
 arch=('x86_64')
 url="https://www.netlib.org/lapack"
@@ -12,13 +12,10 @@ replaces=('blas' 'atlas-lapack')
 provides=('blas')
 license=("custom")
 source=("https://github.com/Reference-LAPACK/lapack/archive/v${pkgver}.tar.gz")
-md5sums=('0b251e2a8d5f949f99b50dd5e2200ee2')
+md5sums=('47ab2d11652045145df37ddbe2a32d71')
 
 build() {
-  mkdir -p build
-  cd build
-  
-  cmake ../${pkgname}-${pkgver} \
+  cmake -B build -S ${pkgname}-${pkgver} \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_SKIP_RPATH=ON \
     -DBUILD_SHARED_LIBS=ON \
@@ -26,12 +23,11 @@ build() {
     -DCMAKE_INSTALL_LIBDIR=lib \
     -DCMAKE_Fortran_COMPILER=gfortran \
     -DLAPACKE=ON 
-  make
+  cmake --build build
 }
 
 package() {
-  cd build
-  make DESTDIR=$pkgdir install
+  DESTDIR=${pkgdir} cmake --install build
   
   # install the test bin options
   #install -m755 -d ${pkgdir}/usr/bin
