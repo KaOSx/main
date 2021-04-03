@@ -1,7 +1,7 @@
 
 pkgname=opencv
-pkgver=4.5.1
-_pkgver=4.5.1
+pkgver=4.5.2
+_pkgver=4.5.2
 pkgrel=1
 pkgdesc="Open Source Computer Vision Library"
 arch=('x86_64')
@@ -14,12 +14,10 @@ optdepends=('python3-numpy: Python 3.x interface' 'eigen3')
 options=('!libtool')
 source=("https://github.com/Itseez/opencv/archive/${_pkgver}.tar.gz"
         "opencv_contrib-${_pkgver}::https://github.com/Itseez/opencv_contrib/archive/${_pkgver}.tar.gz"
-        "https://github.com/alalek/opencv/commit/24dbb43c096691d0333cacf231e22f1369f8c826.patch"
         "https://github.com/opencv/opencv_contrib/commit/c4419e4e65a8d9e0b5a15e9a5242453f261bee46.diff")
-md5sums=('2205d3169238ec1f184438a96de68513'
-         '19a31bf7271978ab426112dbf5d1b83f'
-         'fea946fad4f25b47e8c8db37d5843863'
-         'de1f1ad27a3da356706ba6a6fa74622b')
+md5sums=('d3141f649ab2d76595fdd8991ee15c55'
+         '4d3a8d5d0e877ba49f904e5a4ac67f0a'
+         'ca884d27cca217f84e3b86dcd658bc69')
 
 prepare () {
   cd opencv_contrib-${_pkgver}
@@ -28,14 +26,8 @@ prepare () {
 }
          
 build() {
-  cd ${pkgname}-${_pkgver}
-  # known Eigen3 issue upstream https://github.com/opencv/opencv/pull/15247
-  #sed -e "s|include <Eigen/Core>|include <eigen3/Eigen/Core>|" -i modules/core/include/opencv2/core/private.hpp
- 
-  mkdir -p build 
-  cd build
-
-  cmake .. -DCMAKE_BUILD_TYPE=Release \
+  cmake -B build -S ${pkgname}-${_pkgver} \
+        -DCMAKE_BUILD_TYPE=Release \
         -DCMAKE_INSTALL_PREFIX=/usr \
         -DCMAKE_INSTALL_LIBDIR=lib \
         -DCMAKE_SKIP_RPATH=ON \
@@ -54,15 +46,13 @@ build() {
         -DOPENCV_EXTRA_MODULES_PATH=${srcdir}/opencv_contrib-${_pkgver}/modules \
         -DOPENCV_GENERATE_PKGCONFIG=ON \
         -DOPENCV_ENABLE_NONFREE=ON
-  make
+  cmake --build build
 }
 
 package() {
-  cd ${pkgname}-${_pkgver}/build
-  make DESTDIR=${pkgdir} install
+  DESTDIR=${pkgdir} cmake --install build
 
-  cd ..
-  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+  install -Dm644 ${pkgname}-${_pkgver}/LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
 
 
