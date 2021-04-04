@@ -1,7 +1,7 @@
 
 pkgname=p7zip
-pkgver=17.03
-pkgrel=1
+pkgver=17.04
+pkgrel=2
 pkgdesc="A command-line port of the 7zip compression utility"
 arch=('x86_64')
 license=('GPL')
@@ -9,8 +9,8 @@ url="https://github.com/jinfeihan57/p7zip"
 depends=('gcc-libs' 'bash')
 makedepends=('cmake')
 options=('!makeflags')
-source=("https://github.com/jinfeihan57/p7zip/archive/${pkgver}.tar.gz")
-md5sums=('eeb0c8acf59e02ea5422af0bfec9dcd0')
+source=("https://github.com/jinfeihan57/p7zip/archive/v${pkgver}.tar.gz")
+md5sums=('00acfd6be87848231722d2d53f89e4a5')
 
 build() {
     cd ${pkgname}-${pkgver}
