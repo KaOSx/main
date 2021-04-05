@@ -9,7 +9,7 @@ url="https://www.imagemagick.org/"
 license=('custom')
 depends=('libtool' 'lcms2' 'libxt' 'gcc-libs' 'bzip2' 'freetype2' 'fontconfig'
          'libxext' 'fftw' 'liblqr' 'libraw' 'librsvg' 'libxml2' 'perl' 'libwebp'
-         'ghostscript' 'openexr')
+         'ghostscript' 'openexr' 'djvulibre')
 makedepends=('opencl-headers' 'subversion')
 options=('!docs' 'libtool' '!emptydirs')
 source=("https://www.imagemagick.org/download/ImageMagick-${_pkgver}.tar.xz"
@@ -42,7 +42,7 @@ build() {
 	    --with-rsvg \
 	    --with-webp \
 	    --without-gvc \
-	    --without-djvu \
+	    --with-djvu \
 	    --without-autotrace \
 	    --without-jbig \
 	    --without-openjp2 \

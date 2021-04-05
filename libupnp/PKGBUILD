@@ -1,14 +1,14 @@
 
 pkgname=libupnp
-pkgver=1.14.3
+pkgver=1.14.4
 pkgrel=1
 pkgdesc="Portable UPnP development kit."
 arch=('x86_64')
 url="https://github.com/mrjimenez/pupnp"
 license=('BSD')
 depends=('glibc')
-source=("https://sourceforge.net/projects/pupnp/files/pupnp/${pkgname}-${pkgver}/${pkgname}-${pkgver}.tar.bz2")
-sha1sums=('eec748402d71813b922d05c91639c34798b2decf')
+source=("https://github.com/pupnp/pupnp/releases/download/release-${pkgver}/${pkgname}-${pkgver}.tar.bz2")
+sha1sums=('59624a1f09d0ef640774e3f2c07ec7c3904218c8')
 
 build() {
   cd ${pkgname}-${pkgver}
