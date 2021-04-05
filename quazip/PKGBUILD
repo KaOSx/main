@@ -1,6 +1,6 @@
 
 pkgname=quazip
-pkgver=1.0
+pkgver=1.1
 pkgrel=1
 pkgdesc="Simple C++ wrapper over Gilles Vollant's ZIP/UNZIP package that can be used to access ZIP archives"
 url="https://stachenov.github.io/quazip/"
@@ -9,19 +9,15 @@ arch=('x86_64')
 depends=('qt5-base')
 makedepends=('cmake')
 source=("https://github.com/stachenov/quazip/archive/v${pkgver}.tar.gz")
-sha256sums=('7c7d980ec4873a9fc5204bd7716948253dcdcba3ed2532ccbd80c0d684ff4441')
+sha256sums=('54edce9c11371762bd4f0003c2937b5d8806a2752dd9c0fd9085e90792612ad0')
 
 build() {
-  mkdir -p build
-  cd build
-  
-  cmake ../${pkgname}-${pkgver} \
+  cmake -B build -S ${pkgname}-${pkgver} \
     -DCMAKE_INSTALL_PREFIX=/usr 
-  make
+  cmake --build build
 }
 
 package() {
-  cd build
-  
-  make DESTDIR=${pkgdir} install
+
+  DESTDIR=${pkgdir} cmake --install build
 }
