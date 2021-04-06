@@ -1,8 +1,8 @@
 
 # check branch for version
 pkgname=sof-firmware
-pkgver=1.6.1
-_pkgver=stable-v1.6
+pkgver=1.7
+_pkgver=stable-v1.7
 pkgrel=1
 pkgdesc="Sound Open Firmware is an audio DSP firmware and SDK that provides audio firmware infrastructure"
 arch=('x86_64')
@@ -10,22 +10,18 @@ url="https://www.sofproject.org/"
 license=('custom:BSD' 'custom:ISC')
 options=('!strip')
 source=("https://github.com/thesofproject/sof-bin/archive/v${pkgver}.tar.gz")
-md5sums=('fd4f660b3385dc59347e4613ce63c089')
+md5sums=('2f4f10db9947c88a827cc907b66b88b2')
 
 package() {
   cd sof-bin-${pkgver}
-  
+
   mkdir -p ${pkgdir}/lib/firmware/intel/sof
   mkdir -p ${pkgdir}/lib/firmware/intel/sof-tplg
-  
-  cp lib/firmware/intel/sof/v${pkgver}/*.ldc ${pkgdir}/lib/firmware/intel/sof
-  
-  cp lib/firmware/intel/sof/v${pkgver}/intel-signed/sof-apl-v${pkgver}.ri ${pkgdir}/lib/firmware/intel/sof/sof-apl.ri
-  cp lib/firmware/intel/sof/v${pkgver}/intel-signed/sof-cnl-v${pkgver}.ri ${pkgdir}/lib/firmware/intel/sof/sof-cnl.ri
-  cp lib/firmware/intel/sof/v${pkgver}/intel-signed/sof-icl-v${pkgver}.ri ${pkgdir}/lib/firmware/intel/sof/sof-icl.ri
-  
-  cp lib/firmware/intel/sof-tplg-v${pkgver}/*.tplg ${pkgdir}/lib/firmware/intel/sof-tplg
-  
+
+  cp -a sof-v${pkgver} ${pkgdir}/lib/firmware/intel/sof
+
+  cp -a sof-tplg-v${pkgver} ${pkgdir}/lib/firmware/intel/sof-tplg
+
   install -Dm644 LICENCE.Intel ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.Intel
   install -Dm644 LICENCE.NXP ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.NXP
 }
