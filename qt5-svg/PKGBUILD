@@ -6,7 +6,7 @@ pkgname=qt5-svg
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=1
+pkgrel=2
 pkgdesc="A cross-platform application and UI framework, QtSvg files"
 arch=('x86_64')
 url='https://www.qt.io/'
@@ -15,20 +15,23 @@ depends=('qt5-declarative')
 groups=('qt5')
 options=('!libtool')
 _pkgfqn="qtsvg-everywhere-src-${subver}"
-source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
+source=("${_qtmirror}/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz"
+        'qt_kde.patch')
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
-md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`)
+md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
+         '66eaa87d34fe6b4886e62bf03611b68b')
 
 build() {
-    cd $srcdir/$_pkgfqn
+    cd ${_pkgfqn}
+    patch -p1 -i ${srcdir}/qt_kde.patch
 
     /usr/lib/qt5/bin/qmake
     make
 }
 
 package() {
-    cd $srcdir/$_pkgfqn
-    make INSTALL_ROOT=$pkgdir install
+    cd ${_pkgfqn}
+    make INSTALL_ROOT=${pkgdir} install
     
     mkdir -p ${pkgdir}/usr/bin
     for i in $(ls ${pkgdir}/usr/lib/qt5/bin); do

@@ -6,7 +6,7 @@ pkgname=qt5-wayland
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=1
+pkgrel=2
 pkgdesc="Cross-platform application and UI framework (QtWayland)"
 arch=('x86_64')
 url="https://www.qt.io/"
@@ -19,13 +19,15 @@ conflicts=('qtwayland')
 replaces=('qtwayland')
 options=('debug')
 _pkgfqn="qtwayland-everywhere-src-${subver}"
-source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
+source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz"
+        'qt_kde.patch')
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
-md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`)
+md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
+         '4c0b3ecfc9e185a3e70ac86a09d00ab7')
 
 build() {
     cd ${_pkgfqn}
-    #patch -p1 -i ${srcdir}/36974955d13578071387695adb13a47be33e4d32.diff
+    patch -p1 -i ${srcdir}/qt_kde.patch
 
     /usr/lib/qt5/bin/qmake
     make
