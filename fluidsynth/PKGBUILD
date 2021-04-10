@@ -1,6 +1,6 @@
 
 pkgname=fluidsynth
-pkgver=2.1.8
+pkgver=2.2.0
 pkgrel=1
 pkgdesc="Real-time software synthesizer based on the SoundFont 2 specifications"
 arch=('x86_64')
@@ -10,26 +10,23 @@ makedepends=('cmake' 'ladspa' 'doxygen')
 license=('LGPL')
 backup=('etc/conf.d/fluidsynth')
 source=("https://github.com/FluidSynth/fluidsynth/archive/v${pkgver}.tar.gz")
-md5sums=('64ccba97fb37dc2c510b77ddb52e128c')
+md5sums=('e51e1ae0dba6fe1a27955fbcf405742b')
 
 build() {
-  mkdir -p build
-  cd build
-
-  cmake ../${pkgname}-${pkgver} \
+  cmake -B build -S ${pkgname}-${pkgver} \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_BUILD_TYPE=Release \
     -Denable-ladspa=ON \
     -Denable-portaudio=ON \
     -DLIB_SUFFIX="" \
     -DFLUID_DAEMON_ENV_FILE=/etc/conf.d/fluidsynth
-  make
+  cmake --build build
 }
 
 package() {
-  cd build
-  make DESTDIR=${pkgdir}/ install
 
-  install -Dm644 fluidsynth.service ${pkgdir}/usr/lib/systemd/system/fluidsynth.service
-  install -Dm644 fluidsynth.conf ${pkgdir}/etc/conf.d/fluidsynth
+  DESTDIR=${pkgdir} cmake --install build
+
+  install -Dm644 build/fluidsynth.service ${pkgdir}/usr/lib/systemd/system/fluidsynth.service
+  install -Dm644 build/fluidsynth.conf ${pkgdir}/etc/conf.d/fluidsynth
 }
