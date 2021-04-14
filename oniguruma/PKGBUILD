@@ -1,7 +1,7 @@
 
 pkgname=oniguruma
-pkgver=6.9.6
-_pkgver=6.9.6
+pkgver=6.9.7
+_pkgver=6.9.7
 pkgrel=1
 pkgdesc="Modern and flexible regular expressions library."
 arch=('x86_64')
@@ -9,7 +9,7 @@ url="https://github.com/kkos/oniguruma"
 makedends=('cmake')
 license=('BSD')
 source=("https://github.com/kkos/oniguruma/releases/download/v${pkgver}/onig-${_pkgver}.tar.gz")
-md5sums=('4759064e1a6c23e764fa6918c700ecbd')
+md5sums=('d52e5d762366b740d71f9bcf1e0e0522')
 
 build() {
   cmake -B build -S onig-${_pkgver} \

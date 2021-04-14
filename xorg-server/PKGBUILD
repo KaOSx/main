@@ -1,6 +1,6 @@
 
 pkgname=xorg-server
-pkgver=1.20.10
+pkgver=1.20.11
 # major updates build xorg-server/xf86-input-evdev/xorg-server again
 pkgrel=1
 pkgdesc="X.Org X servers"
@@ -13,7 +13,7 @@ depends=('xorgproto' 'xorg-util-macros' 'pixman'
          'systemd' 'xf86-input-evdev' 'xkeyboard-config' 'xorg-xkb-utils'
          'xorg-fonts-misc' 'xcb-util' 'xcb-util-image' 'xcb-util-keysyms'
          'xcb-util-renderutil' 'xcb-util-wm' 'libepoxy' 'libglvnd' 'wayland-protocols' 'nettle')
-makedepends=('libx11' 'xtrans' 'libxkbfile' 'libxmu' 'libxtst' 'libxres' 'links')
+makedepends=('libx11' 'xtrans' 'libxkbfile' 'libxmu' 'libxtst' 'libxres' 'links' 'valgrind')
 #backup=('etc/X11/xorg.conf.d/10-evdev.conf' 'etc/X11/xorg.conf.d/10-quirks.conf')
 options=('!libtool')
 provides=('glamor-egl')
@@ -23,7 +23,7 @@ groups=('xorg')
 source=("https://xorg.freedesktop.org/releases/individual/xserver/${pkgname}-${pkgver}.tar.bz2"
         'xvfb-run'
         'xvfb-run.1')
-sha256sums=('977420c082450dc808de301ef56af4856d653eea71519a973c3490a780cb7c99'
+sha256sums=('914c796e3ffabe1af48071d40ccc85e92117c97a9082ed1df29e4d64e3c34c49'
             'ff0156309470fc1d378fd2e104338020a884295e285972cc88e250e031cc35b9'
             '2460adccd3362fefd4cdc5f1c70f332d7b578091fb9167bf88b5f91265bbd776')
 
