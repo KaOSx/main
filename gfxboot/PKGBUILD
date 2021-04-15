@@ -1,6 +1,6 @@
 
 pkgname=gfxboot
-pkgver=4.5.74
+pkgver=4.5.75
 _pkgver=1.1
 pkgrel=1
 arch=('x86_64')
@@ -14,7 +14,7 @@ options=('docs')
 source=("https://download.opensuse.org/source/tumbleweed/repo/oss/src/${pkgname}-${pkgver}-${_pkgver}.src.rpm"
         'gfxboot.html'
         'isolinux.patch')
-md5sums=('9bdcabf42c3a42677b0ab6145d9e1cb1'
+md5sums=('70ecaf43f4a193e29208aa84daafe216'
          'f824c5bc2f716f8029677cae6956c1c7'
          '224289270f7ea288aaded3272a9c53f4')
 
@@ -43,5 +43,3 @@ package() {
   install -m 644 ../gfxboot.html ${pkgdir}/usr/share/doc/gfxboot 
 }
 
-# alternative source download
-# source=(http://archpkg.rodp.net/src/${pkgname}-${pkgver}-${pkgrel}.src.rpm)
