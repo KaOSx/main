@@ -3,7 +3,7 @@ pkgbase=nvidia-utils
 pkgname=('nvidia-utils' 'opencl-nvidia' 'nvidia-settings')
 # Edit hardware-detection/hooks/hwdetect_7_graphics and Installer job 11 on version jump from 43x.xx
 pkgver=465.24.02
-pkgrel=1
+pkgrel=2
 epoch=1
 arch=('x86_64')
 url="https://www.nvidia.com/page/home.html"
@@ -120,6 +120,9 @@ package_nvidia-utils() {
   # nvidia-smi
   install -D -m755 nvidia-smi "${pkgdir}/usr/bin/nvidia-smi"
   install -D -m644 nvidia-smi.1.gz "${pkgdir}/usr/share/man/man1/nvidia-smi.1.gz"
+
+  # firmware, added since 465.24
+  install -D -m644 firmware/gsp.bin "${pkgdir}/lib/firmware/nvidia/${pkgver}/gsp.bin"
 
   # license
   install -D -m644 LICENSE "${pkgdir}/usr/share/licenses/nvidia/LICENSE"

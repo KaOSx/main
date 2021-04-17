@@ -30,8 +30,7 @@ md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
 build() {
     cd ${srcdir}/${_pkgfqn}
     
-    # https://bugreports.qt.io/browse/QTBUG-86604
-    # https://bugs.kde.org/show_bug.cgi?id=426496
+    # https://community.kde.org/Qt5PatchCollectio
     patch -p1 -i ${srcdir}/qt_kde.patch
     
     #sed -i 's|libs": "-lmysqlclient_r"|libs": "-lmariadb"|' src/sql/configure.json
