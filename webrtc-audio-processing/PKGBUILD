@@ -19,6 +19,7 @@ prepare() {
   
   #patch -p1 -i ${srcdir}/meson.diff
   #sed -i 's|absl_flags_registry|absl_flags_reflection|g' meson.build
+  sed -i '/vector/a #include <memory>' webrtc/modules/audio_processing/aec3/reverb_model_estimator.h
 }
 
 build() {
@@ -28,7 +29,9 @@ build() {
   meson ../${pkgname}-${_commit} \
     --prefix=/usr \
     --buildtype=release \
-    --libdir=lib
+    --libdir=lib \
+    -Dc_std=c17 \
+    -Dcpp_std=c++17
   ninja
 }
 
@@ -36,8 +39,5 @@ package() {
   cd build
   
   DESTDIR=${pkgdir} ninja install
+  install -Dm644 ../${pkgname}-${_commit}/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
 }
-
-
-  #install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
-  
