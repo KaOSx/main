@@ -1,7 +1,7 @@
 
 pkgname=graphicsmagick
 pkgver=1.3.36
-pkgrel=2
+pkgrel=3
 pkgdesc="Image processing system"
 arch=('x86_64')
 url="http://www.graphicsmagick.org/"
@@ -20,8 +20,7 @@ build() {
               --enable-shared \
               --with-modules \
               --with-wmf=no \
-              --with-quantum-depth=16 \
-              --with-gs-font-dir=/usr/share/fonts/Type1 
+              --with-quantum-depth=16
   make
   
   cd PerlMagick
