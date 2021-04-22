@@ -2,22 +2,22 @@
 # include global config
 source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
 
-pkgname=qt6-networkauth
+pkgname=qt6-virtualkeyboard
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
 pkgrel=1
-pkgdesc="Qt Network Authenticators; QtOAuth in particular."
+pkgdesc="Virtual keyboard framework that consists of a C++ backend as well as a UI frontend implemented in QML."
 arch=('x86_64')
 url='https://www.qt.io/'
-license=('GPL3' 'LGPL')
-depends=('qt6-base')
+license=('GPL3')
+depends=('hunspell' 'qt6-quickcontrols2' 'qt6-svg')
 makedepends=('cmake')
 groups=('qt6')
 options=('!libtool')
-_pkgfqn="qtnetworkauth-everywhere-src-${subver}"
+_pkgfqn="qtvirtualkeyboard-everywhere-src-${subver}"
 source=("${_qtmirror}/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz")
-#source=("https://download.qt.io/official_releases/additional_libraries/${_pkgver}/${subver}/${_pkgfqn}.tar.xz")
+#source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`)
 
 build() {
@@ -29,13 +29,7 @@ build() {
 
 package() {
     DESTDIR=${pkgdir} cmake --install build
-    
-    mkdir -p ${pkgdir}/usr/bin
-    for i in $(ls ${pkgdir}/usr/lib/qt6/bin); do
-        ln -s /usr/lib/qt6/bin/${i} ${pkgdir}/usr/bin/${i}-qt6
-    done
-    
-    install -D -m644 ${_pkgfqn}/LICENSE.GPL3 \
-    ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.GPL3
+
+    install -D -m644 ${_pkgfqn}/LICENSE.GPL3 ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.GPL3
 }
 

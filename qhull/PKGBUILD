@@ -11,7 +11,7 @@ depends=('glibc')
 makedepends=('cmake')
 options=('!libtool')
 source=("http://www.qhull.org/download/${pkgname}-${_pkgver}.tgz")
-md5sums=('d74284d803e6ef6624e4a413d3ec05ab')
+md5sums=('295f7332269a38279478f555cc185296')
 
 build() {
   mkdir -p build
@@ -19,7 +19,8 @@ build() {
   
   cmake ../${pkgname}-${pkgver} \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_BUILD_TYPE=Release
+    -DCMAKE_BUILD_TYPE=Release \
+    -DLINK_APPS_SHARED=ON
   make
 }
 

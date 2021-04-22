@@ -1,7 +1,7 @@
 
 pkgname=octave
 pkgver=6.2.0
-pkgrel=1
+pkgrel=2
 pkgdesc="A high-level language, primarily intended for numerical computations."
 arch=('x86_64')
 url="https://www.octave.org"
@@ -10,11 +10,14 @@ depends=('fftw' 'curl' 'graphicsmagick' 'glpk' 'hdf5' 'gcc-libs' 'qhull' 'fltk' 
          'arpack' 'suitesparse' 'gperf' 'glu' 'gnuplot' 'gl2ps' 'ghostscript' 'qscintilla-qt5')
 makedepends=('texlive-core' 'gcc-fortran' 'qt5-tools')
 options=('!emptydirs')
-source=("https://ftp.gnu.org/gnu/octave/octave-${pkgver}.tar.lz")
-md5sums=('5de14d8561af9799e2ecf6bedfbdb346')
+source=("https://ftp.gnu.org/gnu/octave/octave-${pkgver}.tar.lz"
+        '0001-Use-reentrant-libqhull_r.patch')
+md5sums=('5de14d8561af9799e2ecf6bedfbdb346'
+         'a53f7eea9e8f23884787eaa4d9c6b797')
 
 build() {
   cd ${pkgname}-${pkgver}
+  patch -p1 -i ${srcdir}/0001-Use-reentrant-libqhull_r.patch
 
   autoreconf -vfi
 

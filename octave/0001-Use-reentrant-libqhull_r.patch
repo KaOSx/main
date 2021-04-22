@@ -1,0 +1,569 @@
+From 2a3568f502831edf9a40ed52c178d1397b31acfb Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Stefan=20Br=C3=BCns?= <stefan.bruens@rwth-aachen.de>
+Date: Fri, 2 Apr 2021 19:53:26 +0200
+Subject: [PATCH 1/2] Use reentrant libqhull_r
+
+Actual porting is trivial, as it only requires replacing all occurences
+of the "qh" macro with the dereferenced instace "qh->", and passing
+the context to all qh_* function calls as first parameter.
+
+Cleanup libqhull include statements - qhull.h has been a proxy for
+libqhull.h since 2009.1 and removed in 2011.1, and is irrelevant for
+libqhull_r.h. Likewise for the <qhull/*.h> hierarchy, headers are always
+below "libqhull_r/".
+---
+ configure.ac                      |  14 ++--
+ libinterp/dldfcn/__delaunayn__.cc |  26 ++++----
+ libinterp/dldfcn/__voronoi__.cc   |  41 ++++++------
+ libinterp/dldfcn/convhulln.cc     |  53 +++++++--------
+ libinterp/dldfcn/oct-qhull.h      |  38 ++++-------
+ m4/acinclude.m4                   | 104 +++++++++++-------------------
+ 6 files changed, 115 insertions(+), 161 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 5a07285..4a40ec9 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -1336,15 +1336,15 @@ AC_CHECK_DECLS([sys_siglist], [], [],
+ 
+ ### Check for the Qhull library.
+ 
+-OCTAVE_CHECK_LIB(qhull, QHull,
++OCTAVE_CHECK_LIB(qhull_r, QHull,
+   [Qhull library not found.  This will result in loss of functionality for some geometry functions.],
+-  [libqhull/libqhull.h qhull/libqhull.h libqhull.h qhull/qhull.h qhull.h],
++  [libqhull_r/libqhull_r.h libqhull_r.h],
+   [qh_qhull], [], [],
+-  [warn_qhull=
++  [warn_qhull_r=
+   OCTAVE_CHECK_QHULL_VERSION
+   OCTAVE_CHECK_LIB_QHULL_OK(
+     [AC_DEFINE(HAVE_QHULL, 1, [Define to 1 if Qhull is available.])],
+-    [warn_qhull="Qhull library found, but does not seem to work properly.  This will result in loss of functionality for some geometry functions.  Please try recompiling the library with -fno-strict-aliasing."])])
++    [warn_qhull_r="Qhull library found, but does not seem to work properly.  This will result in loss of functionality for some geometry functions.  Please try recompiling the library with -fno-strict-aliasing."])])
+ 
+ ### Check for PCRE regex library.
+ 
+@@ -3109,9 +3109,9 @@ Octave is now configured for $canonical_host_type
+   PortAudio libraries:           $PORTAUDIO_LIBS
+   PTHREAD flags:                 $PTHREAD_CFLAGS
+   PTHREAD libraries:             $PTHREAD_LIBS
+-  QHULL CPPFLAGS:                $QHULL_CPPFLAGS
+-  QHULL LDFLAGS:                 $QHULL_LDFLAGS
+-  QHULL libraries:               $QHULL_LIBS
++  QHULL CPPFLAGS:                $QHULL_R_CPPFLAGS
++  QHULL LDFLAGS:                 $QHULL_R_LDFLAGS
++  QHULL libraries:               $QHULL_R_LIBS
+   QRUPDATE CPPFLAGS:             $QRUPDATE_CPPFLAGS
+   QRUPDATE LDFLAGS:              $QRUPDATE_LDFLAGS
+   QRUPDATE libraries:            $QRUPDATE_LIBS
+diff --git a/libinterp/dldfcn/__delaunayn__.cc b/libinterp/dldfcn/__delaunayn__.cc
+index 853eb97..8257db4 100644
+--- a/libinterp/dldfcn/__delaunayn__.cc
++++ b/libinterp/dldfcn/__delaunayn__.cc
+@@ -65,7 +65,7 @@
+ 
+ #  include "oct-qhull.h"
+ 
+-#  if defined (NEED_QHULL_VERSION)
++#  if defined (NEED_QHULL_R_VERSION)
+ char qh_version[] = "__delaunayn__.oct 2007-08-21";
+ #  endif
+ 
+@@ -76,12 +76,12 @@ close_fcn (FILE *f)
+ }
+ 
+ static void
+-free_qhull_memory ()
++free_qhull_memory (qhT* qh)
+ {
+-  qh_freeqhull (! qh_ALL);
++  qh_freeqhull (qh, !qh_ALL);
+ 
+   int curlong, totlong;
+-  qh_memfreeshort (&curlong, &totlong);
++  qh_memfreeshort (qh, &curlong, &totlong);
+ 
+   if (curlong || totlong)
+     warning ("__delaunayn__: did not free %d bytes of long memory (%d pieces)",
+@@ -161,10 +161,7 @@ Undocumented internal function.
+       double *pt_array = p.fortran_vec ();
+       boolT ismalloc = false;
+ 
+-      // Qhull flags argument is not const char*
+-      OCTAVE_LOCAL_BUFFER (char, flags, 9 + options.length ());
+-
+-      sprintf (flags, "qhull d %s", options.c_str ());
++      std::string cmd = "qhull d " + options;
+ 
+       octave::unwind_protect frame;
+ 
+@@ -181,16 +178,19 @@ Undocumented internal function.
+ 
+       frame.add_fcn (close_fcn, outfile);
+ 
+-      int exitcode = qh_new_qhull (dim, n, pt_array,
+-                                   ismalloc, flags, outfile, errfile);
++      qhT context = { 0 };
++      qhT* qh = &context;
++
++      int exitcode = qh_new_qhull (qh, dim, n, pt_array,
++                                   ismalloc, &cmd[0], outfile, errfile);
+ 
+-      frame.add_fcn (free_qhull_memory);
++      frame.add_fcn (free_qhull_memory, qh);
+ 
+       if (exitcode)
+         error ("__delaunayn__: qhull failed");
+ 
+       // triangulate non-simplicial facets
+-      qh_triangulate ();
++      qh_triangulate (qh);
+ 
+       facetT *facet;
+       vertexT *vertex, **vertexp;
+@@ -217,7 +217,7 @@ Undocumented internal function.
+ 
+               FOREACHvertex_ (facet->vertices)
+                 {
+-                  simpl(i, j++) = 1 + qh_pointid(vertex->point);
++                  simpl(i, j++) = 1 + qh_pointid(qh, vertex->point);
+                 }
+               i++;
+             }
+diff --git a/libinterp/dldfcn/__voronoi__.cc b/libinterp/dldfcn/__voronoi__.cc
+index 950f46d..14633e2 100644
+--- a/libinterp/dldfcn/__voronoi__.cc
++++ b/libinterp/dldfcn/__voronoi__.cc
+@@ -60,7 +60,7 @@ qhull command
+ 
+ #  include "oct-qhull.h"
+ 
+-#  if defined (NEED_QHULL_VERSION)
++#  if defined (NEED_QHULL_R_VERSION)
+ char qh_version[] = "__voronoi__.oct 2007-07-24";
+ #  endif
+ 
+@@ -71,12 +71,12 @@ close_fcn (FILE *f)
+ }
+ 
+ static void
+-free_qhull_memory ()
++free_qhull_memory (qhT* qh)
+ {
+-  qh_freeqhull (! qh_ALL);
++  qh_freeqhull (qh, !qh_ALL);
+ 
+   int curlong, totlong;
+-  qh_memfreeshort (&curlong, &totlong);
++  qh_memfreeshort (qh, &curlong, &totlong);
+ 
+   if (curlong || totlong)
+     warning ("__voronoi__: did not free %d bytes of long memory (%d pieces)",
+@@ -173,35 +173,32 @@ Undocumented internal function.
+ 
+   frame.add_fcn (close_fcn, outfile);
+ 
+-  // qh_new_qhull command and points arguments are not const...
++  qhT context = { 0 };
++  qhT* qh = &context;
+ 
+   std::string cmd = "qhull v" + options;
+ 
+-  OCTAVE_LOCAL_BUFFER (char, cmd_str, cmd.length () + 1);
++  int exitcode = qh_new_qhull (qh, dim, num_points, points.fortran_vec (),
++                               ismalloc, &cmd[0], outfile, errfile);
+ 
+-  strcpy (cmd_str, cmd.c_str ());
+-
+-  int exitcode = qh_new_qhull (dim, num_points, points.fortran_vec (),
+-                               ismalloc, cmd_str, outfile, errfile);
+-
+-  frame.add_fcn (free_qhull_memory);
++  frame.add_fcn (free_qhull_memory, qh);
+ 
+   if (exitcode)
+     error ("%s: qhull failed", caller.c_str ());
+ 
+   // Calling findgood_all provides the number of Voronoi vertices
+-  // (sets qh num_good).
++  // (sets qh->num_good).
+ 
+-  qh_findgood_all (qh facet_list);
++  qh_findgood_all (qh, qh->facet_list);
+ 
+   octave_idx_type num_voronoi_regions
+-    = qh num_vertices - qh_setsize (qh del_vertices);
++    = qh->num_vertices - qh_setsize (qh, qh->del_vertices);
+ 
+-  octave_idx_type num_voronoi_vertices = qh num_good;
++  octave_idx_type num_voronoi_vertices = qh->num_good;
+ 
+   // Find the voronoi centers for all facets.
+ 
+-  qh_setvoronoi_all ();
++  qh_setvoronoi_all (qh);
+ 
+   facetT *facet;
+   vertexT *vertex;
+@@ -224,8 +221,8 @@ Undocumented internal function.
+ 
+   FORALLvertices
+     {
+-      if (qh hull_dim == 3)
+-        qh_order_vertexneighbors (vertex);
++      if (qh->hull_dim == 3)
++        qh_order_vertexneighbors (qh, vertex);
+ 
+       bool infinity_seen = false;
+ 
+@@ -289,12 +286,12 @@ Undocumented internal function.
+ 
+   FORALLvertices
+     {
+-      if (qh hull_dim == 3)
+-        qh_order_vertexneighbors (vertex);
++      if (qh->hull_dim == 3)
++        qh_order_vertexneighbors (qh, vertex);
+ 
+       bool infinity_seen = false;
+ 
+-      octave_idx_type idx = qh_pointid (vertex->point);
++      octave_idx_type idx = qh_pointid (qh, vertex->point);
+ 
+       octave_idx_type num_vertices = ni[k++];
+ 
+diff --git a/libinterp/dldfcn/convhulln.cc b/libinterp/dldfcn/convhulln.cc
+index 724cf36..c6caa57 100644
+--- a/libinterp/dldfcn/convhulln.cc
++++ b/libinterp/dldfcn/convhulln.cc
+@@ -53,7 +53,7 @@
+ 
+ #  include "oct-qhull.h"
+ 
+-#  if defined (NEED_QHULL_VERSION)
++#  if defined (NEED_QHULL_R_VERSION)
+ char qh_version[] = "convhulln.oct 2007-07-24";
+ #  endif
+ 
+@@ -64,12 +64,12 @@ close_fcn (FILE *f)
+ }
+ 
+ static void
+-free_qhull_memory ()
++free_qhull_memory (qhT* qh)
+ {
+-  qh_freeqhull (! qh_ALL);
++  qh_freeqhull (qh, !qh_ALL);
+ 
+   int curlong, totlong;
+-  qh_memfreeshort (&curlong, &totlong);
++  qh_memfreeshort (qh, &curlong, &totlong);
+ 
+   if (curlong || totlong)
+     warning ("convhulln: did not free %d bytes of long memory (%d pieces)",
+@@ -188,25 +188,22 @@ convex hull is calculated.
+ 
+   frame.add_fcn (close_fcn, outfile);
+ 
+-  // qh_new_qhull command and points arguments are not const...
++  qhT context = { 0 };
++  qhT* qh = &context;
+ 
+   std::string cmd = "qhull" + options;
+ 
+-  OCTAVE_LOCAL_BUFFER (char, cmd_str, cmd.length () + 1);
++  int exitcode = qh_new_qhull (qh, dim, num_points, points.fortran_vec (),
++                               ismalloc, &cmd[0], outfile, errfile);
+ 
+-  strcpy (cmd_str, cmd.c_str ());
+-
+-  int exitcode = qh_new_qhull (dim, num_points, points.fortran_vec (),
+-                               ismalloc, cmd_str, outfile, errfile);
+-
+-  frame.add_fcn (free_qhull_memory);
++  frame.add_fcn (free_qhull_memory, qh);
+ 
+   if (exitcode)
+     error ("convhulln: qhull failed");
+ 
+   bool nonsimp_seen = false;
+ 
+-  octave_idx_type nf = qh num_facets;
++  octave_idx_type nf = qh->num_facets;
+ 
+   Matrix idx (nf, dim + 1);
+ 
+@@ -218,7 +215,7 @@ convex hull is calculated.
+     {
+       octave_idx_type j = 0;
+ 
+-      if (! (nonsimp_seen || facet->simplicial || qh hull_dim == 2))
++      if (! (nonsimp_seen || facet->simplicial || qh->hull_dim == 2))
+         {
+           nonsimp_seen = true;
+ 
+@@ -229,14 +226,14 @@ convex hull is calculated.
+ 
+       if (dim == 3)
+         {
+-          setT *vertices = qh_facet3vertex (facet);
++          setT *vertices = qh_facet3vertex (qh, facet);
+ 
+           vertexT *vertex, **vertexp;
+ 
+           FOREACHvertex_ (vertices)
+-            idx(i, j++) = 1 + qh_pointid(vertex->point);
++            idx(i, j++) = 1 + qh_pointid(qh, vertex->point);
+ 
+-          qh_settempfree (&vertices);
++          qh_settempfree (qh, &vertices);
+         }
+       else
+         {
+@@ -245,14 +242,14 @@ convex hull is calculated.
+               vertexT *vertex, **vertexp;
+ 
+               FOREACHvertex_ (facet->vertices)
+-                idx(i, j++) = 1 + qh_pointid(vertex->point);
++                idx(i, j++) = 1 + qh_pointid(qh, vertex->point);
+             }
+           else
+             {
+               vertexT *vertex, **vertexp;
+ 
+               FOREACHvertexreverse12_ (facet->vertices)
+-                idx(i, j++) = 1 + qh_pointid(vertex->point);
++                idx(i, j++) = 1 + qh_pointid(qh, vertex->point);
+             }
+         }
+       if (j < dim)
+@@ -280,26 +277,26 @@ convex hull is calculated.
+           if (! facet->normal)
+             continue;
+ 
+-          if (facet->upperdelaunay && qh ATinfinity)
++          if (facet->upperdelaunay && qh->ATinfinity)
+             continue;
+ 
+-          facet->f.area = area = qh_facetarea (facet);
++          facet->f.area = area = qh_facetarea (qh, facet);
+           facet->isarea = True;
+ 
+-          if (qh DELAUNAY)
++          if (qh->DELAUNAY)
+             {
+-              if (facet->upperdelaunay == qh UPPERdelaunay)
+-                qh totarea += area;
++              if (facet->upperdelaunay == qh->UPPERdelaunay)
++                qh->totarea += area;
+             }
+           else
+             {
+-              qh totarea += area;
+-              qh_distplane (qh interior_point, facet, &dist);
+-              qh totvol += -dist * area/ qh hull_dim;
++              qh->totarea += area;
++              qh_distplane (qh, qh->interior_point, facet, &dist);
++              qh->totvol += -dist * area/ qh->hull_dim;
+             }
+         }
+ 
+-      retval(1) = octave_value (qh totvol);
++      retval(1) = octave_value (qh->totvol);
+     }
+ 
+   retval(0) = idx;
+diff --git a/libinterp/dldfcn/oct-qhull.h b/libinterp/dldfcn/oct-qhull.h
+index d28ba87..2f6323f 100644
+--- a/libinterp/dldfcn/oct-qhull.h
++++ b/libinterp/dldfcn/oct-qhull.h
+@@ -32,32 +32,18 @@
+ 
+ extern "C" {
+ 
+-#if defined (HAVE_LIBQHULL_LIBQHULL_H)
+-#  include <libqhull/libqhull.h>
+-#  include <libqhull/qset.h>
+-#  include <libqhull/geom.h>
+-#  include <libqhull/poly.h>
+-#  include <libqhull/io.h>
+-#elif defined (HAVE_QHULL_LIBQHULL_H) || defined (HAVE_QHULL_QHULL_H)
+-#  if defined (HAVE_QHULL_LIBQHULL_H)
+-#    include <qhull/libqhull.h>
+-#  else
+-#    include <qhull/qhull.h>
+-#  endif
+-#  include <qhull/qset.h>
+-#  include <qhull/geom.h>
+-#  include <qhull/poly.h>
+-#  include <qhull/io.h>
+-#  elif defined (HAVE_LIBQHULL_H) || defined (HAVE_QHULL_H)
+-#  if defined (HAVE_LIBQHULL_H)
+-#    include <libqhull.h>
+-#  else
+-#    include <qhull.h>
+-#  endif
+-#  include <qset.h>
+-#  include <geom.h>
+-#  include <poly.h>
+-#  include <io.h>
++#if defined (HAVE_LIBQHULL_R_LIBQHULL_R_H)
++#  include <libqhull_r/libqhull_r.h>
++#  include <libqhull_r/qset_r.h>
++#  include <libqhull_r/geom_r.h>
++#  include <libqhull_r/poly_r.h>
++#  include <libqhull_r/io_r.h>
++#elif defined (HAVE_LIBQHULL_R_H)
++#  include <libqhull_r.h>
++#  include <qset_r.h>
++#  include <geom_r.h>
++#  include <poly_r.h>
++#  include <io_r.h>
+ #endif
+ 
+ }
+diff --git a/m4/acinclude.m4 b/m4/acinclude.m4
+index a6b8c61..40b4284 100644
+--- a/m4/acinclude.m4
++++ b/m4/acinclude.m4
+@@ -1793,38 +1793,24 @@ dnl
+ dnl Check whether Qhull works (does not crash).
+ dnl
+ AC_DEFUN([OCTAVE_CHECK_LIB_QHULL_OK], [
+-  AC_CACHE_CHECK([whether the qhull library works],
+-    [octave_cv_lib_qhull_ok],
++  AC_CACHE_CHECK([whether the qhull_r library works],
++    [octave_cv_lib_qhull_r_ok],
+     [AC_RUN_IFELSE([AC_LANG_PROGRAM([[
+         #include <stdio.h>
+-        #if defined (HAVE_LIBQHULL_LIBQHULL_H)
+-        # include <libqhull/libqhull.h>
+-        # include <libqhull/qset.h>
+-        # include <libqhull/geom.h>
+-        # include <libqhull/poly.h>
+-        # include <libqhull/io.h>
+-        #elif defined (HAVE_QHULL_LIBQHULL_H) || defined (HAVE_QHULL_QHULL_H)
+-        # if defined (HAVE_QHULL_LIBQHULL_H)
+-        #  include <qhull/libqhull.h>
+-        # else
+-        #  include <qhull/qhull.h>
+-        # endif
+-        # include <qhull/qset.h>
+-        # include <qhull/geom.h>
+-        # include <qhull/poly.h>
+-        # include <qhull/io.h>
+-        #elif defined (HAVE_LIBQHULL_H) || defined (HAVE_QHULL_H)
+-        # if defined (HAVE_LIBQHULL_H)
+-        #  include <libqhull.h>
+-        # else
+-        #  include <qhull.h>
+-        # endif
+-        # include <qset.h>
+-        # include <geom.h>
+-        # include <poly.h>
+-        # include <io.h>
++        #if defined (HAVE_LIBQHULL_R_LIBQHULL_R_H)
++        # include <libqhull_r/libqhull_r.h>
++        # include <libqhull_r/qset_r.h>
++        # include <libqhull_r/geom_r.h>
++        # include <libqhull_r/poly_r.h>
++        # include <libqhull_r/io_r.h>
++        #elif defined (HAVE_LIBQHULL_R_H)
++        # include <libqhull_r.h>
++        # include <qset_r.h>
++        # include <geom_r.h>
++        # include <poly_r.h>
++        # include <io_r.h>
+         #endif
+-        #if defined (NEED_QHULL_VERSION)
++        #if defined (NEED_QHULL_R_VERSION)
+           char *qh_version = "version";
+         #endif
+         ]], [[
+@@ -1832,13 +1818,15 @@ AC_DEFUN([OCTAVE_CHECK_LIB_QHULL_OK], [
+         int n = 4;
+         coordT points[8] = { -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, 0.5 };
+         boolT ismalloc = 0;
+-        return qh_new_qhull (dim, n, points, ismalloc, "qhull ", 0, stderr);
++        qhT context;
++        qhT* qh = &context;
++        return qh_new_qhull (qh, dim, n, points, ismalloc, "qhull ", 0, stderr);
+       ]])],
+-      octave_cv_lib_qhull_ok=yes,
+-      octave_cv_lib_qhull_ok=no,
+-      octave_cv_lib_qhull_ok=yes)
++      octave_cv_lib_qhull_r_ok=yes,
++      octave_cv_lib_qhull_r_ok=no,
++      octave_cv_lib_qhull_r_ok=yes)
+   ])
+-  if test $octave_cv_lib_qhull_ok = yes; then
++  if test $octave_cv_lib_qhull_r_ok = yes; then
+     $1
+     :
+   else
+@@ -2030,44 +2018,30 @@ dnl
+ dnl Check for the Qhull version.
+ dnl
+ AC_DEFUN([OCTAVE_CHECK_QHULL_VERSION], [
+-  AC_CACHE_CHECK([for qh_version in $QHULL_LIBS],
+-    [octave_cv_lib_qhull_version],
++  AC_CACHE_CHECK([for qh_version in $QHULL_R_LIBS],
++    [octave_cv_lib_qhull_r_version],
+     [AC_LINK_IFELSE([AC_LANG_PROGRAM([[
+         #include <stdio.h>
+-        #if defined (HAVE_LIBQHULL_LIBQHULL_H)
+-        # include <libqhull/libqhull.h>
+-        # include <libqhull/qset.h>
+-        # include <libqhull/geom.h>
+-        # include <libqhull/poly.h>
+-        # include <libqhull/io.h>
+-        #elif defined (HAVE_QHULL_LIBQHULL_H) || defined (HAVE_QHULL_QHULL_H)
+-        # if defined (HAVE_QHULL_LIBQHULL_H)
+-        #  include <qhull/libqhull.h>
+-        # else
+-        #  include <qhull/qhull.h>
+-        # endif
+-        # include <qhull/qset.h>
+-        # include <qhull/geom.h>
+-        # include <qhull/poly.h>
+-        # include <qhull/io.h>
+-        #elif defined (HAVE_LIBQHULL_H) || defined (HAVE_QHULL_H)
+-        # if defined (HAVE_LIBQHULL_H)
+-        #  include <libqhull.h>
+-        # else
+-        #  include <qhull.h>
+-        # endif
+-        # include <qset.h>
+-        # include <geom.h>
+-        # include <poly.h>
+-        # include <io.h>
++        #if defined (HAVE_LIBQHULL_R_LIBQHULL_R_H)
++        # include <libqhull_r/libqhull_r.h>
++        # include <libqhull_r/qset_r.h>
++        # include <libqhull_r/geom_r.h>
++        # include <libqhull_r/poly_r.h>
++        # include <libqhull_r/io_r.h>
++        #elif defined (HAVE_LIBQHULL_R_H)
++        # include <libqhull_r.h>
++        # include <qset_r.h>
++        # include <geom_r.h>
++        # include <poly_r.h>
++        # include <io_r.h>
+         #endif
+         ]], [[
+         const char *tmp = qh_version;
+       ]])],
+-      octave_cv_lib_qhull_version=yes, octave_cv_lib_qhull_version=no)
++      octave_cv_lib_qhull_r_version=yes, octave_cv_lib_qhull_r_version=no)
+   ])
+-  if test $octave_cv_lib_qhull_version = no; then
+-    AC_DEFINE(NEED_QHULL_VERSION, 1,
++  if test $octave_cv_lib_qhull_r_version = no; then
++    AC_DEFINE(NEED_QHULL_R_VERSION, 1,
+       [Define to 1 if the Qhull library needs a qh_version variable defined.])
+   fi
+ ])
+-- 
+2.30.2
+
