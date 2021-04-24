@@ -1,0 +1,51 @@
+
+pkgname=jpeg-xl
+pkgver=0.3.7
+pkgrel=1
+pkgdesc='JPEG XL image format reference implementation, called libjxl'
+arch=('x86_64')
+url='https://jpeg.org/jpegxl/'
+license=('Apache')
+depends=('brotli' 'gdk-pixbuf2' 'giflib' 'libjpeg-turbo' 'libpng' 'libwebp' 'openexr' 'zlib'
+         'libglvnd' 'freeglut')
+makedepends=('cmake' 'clang' 'git' 'googletest' 'python3' 'graphviz')
+#source=("https://gitlab.com/wg1/jpeg-xl/-/archive/v${pkgver}/${pkgname}-v${pkgver}.tar.bz2")
+source=("git+https://gitlab.com/wg1/jpeg-xl.git")
+sha256sums=('SKIP')
+
+prepare() {
+    cd ${pkgname}
+
+    git submodule init 
+    git submodule update
+}
+
+build() {
+    export CC='clang'
+    export CXX='clang++'
+
+    cmake -B build -S ${pkgname} \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_INSTALL_PREFIX=/usr \
+        -DJPEGXL_ENABLE_BENCHMARK=OFF \
+        -DJPEGXL_ENABLE_FUZZERS=OFF \
+        -DJPEGXL_ENABLE_TCMALLOC=OFF \
+        -DJPEGXL_ENABLE_PLUGINS=ON \
+        -DJPEGXL_ENABLE_VIEWERS=OFF \
+        -DJPEGXL_FORCE_SYSTEM_BROTLI=ON \
+        -DJPEGXL_FORCE_SYSTEM_GTEST=ON \
+        -DJPEGXL_FORCE_SYSTEM_HWY=OFF \
+        -DJPEGXL_WARNINGS_AS_ERRORS=OFF
+    cmake --build build
+}
+
+check() {
+    make -C build test
+}
+
+package() {
+    DESTDIR=${pkgdir} cmake --install build
+    
+    install -D -m644 jpeg-xl/plugins/mime/image-jxl.xml -t ${pkgdir}/usr/share/mime/packages
+}
+
