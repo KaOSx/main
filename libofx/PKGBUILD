@@ -1,7 +1,7 @@
 
 pkgbase=libofx
 pkgname=('libofx' 'libofx-doc')
-pkgver=0.10.1
+pkgver=0.10.2
 pkgrel=1
 pkgdesc="API for the OFX banking standard"
 arch=('x86_64')
@@ -11,7 +11,7 @@ depends=('opensp' 'curl') # not ready for 2.6 > 'libxml++', ofxconnect not build
 checkdepends=('gnupg')
 source=("https://downloads.sourceforge.net/libofx/${pkgbase}-${pkgver}.tar.gz")
 #source=("https://github.com/libofx/libofx/archive/${pkgver}.tar.gz")
-md5sums=('423ae9ff83d2faae4f55f4c13f43e903' )
+md5sums=('e5d44584a916ba4271bf34ad6a319c5c' )
 
 build() {
   cd ${pkgbase}-${pkgver}

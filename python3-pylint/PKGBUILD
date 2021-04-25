@@ -1,6 +1,6 @@
 
 pkgname=python3-pylint
-pkgver=2.7.4
+pkgver=2.8.1
 pkgrel=1
 pkgdesc="Tool that checks for errors in Python code and tries to enforce a coding standard"
 arch=('x86_64')
@@ -9,7 +9,7 @@ license=('GPL')
 depends=('python3' 'python3-astroid')
 makedepends=('python3-setuptools')
 source=("https://github.com/PyCQA/pylint/archive/pylint-${pkgver}.tar.gz")
-md5sums=('73cbdd80f1801cdd8433d84a5465c199')
+md5sums=('13b04279386f4a4e7c2aa284b7d4e0e7')
 
 build() {
     cd pylint-pylint-${pkgver}
@@ -21,6 +21,6 @@ package() {
     cd pylint-pylint-${pkgver}
     python3 setup.py install --prefix=/usr --root=${pkgdir} --skip-build --optimize=1
     
-    install -d ${pkgdir}/usr/share/man/man1
-    install -m644 man/* ${pkgdir}/usr/share/man/man1
+    #install -d ${pkgdir}/usr/share/man/man1
+    #install -m644 man/* ${pkgdir}/usr/share/man/man1
 }
