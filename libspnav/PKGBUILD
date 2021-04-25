@@ -1,7 +1,7 @@
 
 pkgname=libspnav
 pkgver=0.2.3
-pkgrel=4
+pkgrel=5
 pkgdesc="Provides a free, compatible alternative, to the proprietary 3Dconnexion device driver."
 arch=('x86_64')
 url="http://spacenav.sourceforge.net/"
@@ -14,14 +14,14 @@ md5sums=('44d840540d53326d4a119c0f1aa7bf0a'
 
 build() {
   cd ${pkgname}-${pkgver}
-  patch -p0 -i $srcdir/Makefile.in.diff
-  
+  patch -p0 -i ${srcdir}/Makefile.in.diff
+
   ./configure --prefix=/usr
   make
 }
 
 package() {
   cd ${pkgname}-${pkgver}
-  
+
   make DESTDIR=${pkgdir} install
 }
