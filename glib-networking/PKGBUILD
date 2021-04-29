@@ -1,8 +1,8 @@
 
 pkgname=glib-networking
-pkgver=2.66.0
-_pkgver=2.66
-pkgrel=3
+pkgver=2.68.1
+_pkgver=2.68
+pkgrel=1
 pkgdesc="Network-related giomodules for glib"
 arch=('x86_64')
 url="https://gitlab.gnome.org/GNOME/glib-networking"
@@ -10,7 +10,7 @@ license=('GPL2')
 depends=('glib2' 'libproxy' 'gnutls' 'ca-certificates' 'libtasn1') # 'gsettings-desktop-schemas')
 makedepends=('intltool' 'meson' 'ninja')
 source=("https://download.gnome.org/sources/glib-networking/${_pkgver}/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('c5d7be2437fdd196eebfb70c4517b96d3ba7ec13bd496318b8f02dea383e0099')
+sha256sums=('d05d8bd124a9f53fc2b93b18f2386d512e4f48bc5a80470a7967224f3bf53b30')
 
 build() {
   mkdir -p build
@@ -28,7 +28,7 @@ build() {
 
 check() {
   cd build
-
+  # gnutls test timeout, other 4 ok
   meson test
 }
 
