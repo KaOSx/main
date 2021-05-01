@@ -6,7 +6,7 @@ pkgname=qt5-base
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=3
+pkgrel=4
 pkgdesc="A cross-platform application and UI framework"
 arch=('x86_64')
 url='https://www.qt.io/'
@@ -25,12 +25,12 @@ source=("${_qtmirror}/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz"
         'qt_kde.patch')
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
-         '42691f0dcd1aa0183368122a983ad833')
+         'b1dfdf915dcea16d910e925f385e58cb')
 
 build() {
     cd ${srcdir}/${_pkgfqn}
     
-    # https://community.kde.org/Qt5PatchCollectio
+    # https://community.kde.org/Qt5PatchCollection
     patch -p1 -i ${srcdir}/qt_kde.patch
     
     #sed -i 's|libs": "-lmysqlclient_r"|libs": "-lmariadb"|' src/sql/configure.json

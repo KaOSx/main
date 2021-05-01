@@ -20692,7 +20692,7 @@ index f7269798a3..31bb23b7a7 100644
      if (ret)
          return begin + (ret - decoded.constBegin());
 diff --git a/src/corelib/itemmodels/qconcatenatetablesproxymodel.cpp b/src/corelib/itemmodels/qconcatenatetablesproxymodel.cpp
-index 0e29714677..1c2d5e9f9e 100644
+index 0e29714677..efddc14603 100644
 --- a/src/corelib/itemmodels/qconcatenatetablesproxymodel.cpp
 +++ b/src/corelib/itemmodels/qconcatenatetablesproxymodel.cpp
 @@ -313,8 +313,8 @@ QModelIndex QConcatenateTablesProxyModel::parent(const QModelIndex &index) const
@@ -20706,8 +20706,24 @@ index 0e29714677..1c2d5e9f9e 100644
      return d->m_rowCount;
  }
  
+@@ -622,9 +622,14 @@ void QConcatenateTablesProxyModelPrivate::_q_slotDataChanged(const QModelIndex &
+     Q_Q(QConcatenateTablesProxyModel);
+     Q_ASSERT(from.isValid());
+     Q_ASSERT(to.isValid());
++    if (from.column() >= m_columnCount)
++        return;
++    QModelIndex adjustedTo = to;
++    if (to.column() >= m_columnCount)
++        adjustedTo = to.siblingAtColumn(m_columnCount - 1);
+     const QModelIndex myFrom = q->mapFromSource(from);
+     Q_ASSERT(q->checkIndex(myFrom, QAbstractItemModel::CheckIndexOption::IndexIsValid));
+-    const QModelIndex myTo = q->mapFromSource(to);
++    const QModelIndex myTo = q->mapFromSource(adjustedTo);
+     Q_ASSERT(q->checkIndex(myTo, QAbstractItemModel::CheckIndexOption::IndexIsValid));
+     emit q->dataChanged(myFrom, myTo, roles);
+ }
 diff --git a/src/corelib/itemmodels/qsortfilterproxymodel.cpp b/src/corelib/itemmodels/qsortfilterproxymodel.cpp
-index bd4c7e93c5..9fc59d5894 100644
+index bd4c7e93c5..3b07c7b9cf 100644
 --- a/src/corelib/itemmodels/qsortfilterproxymodel.cpp
 +++ b/src/corelib/itemmodels/qsortfilterproxymodel.cpp
 @@ -1489,15 +1489,19 @@ void QSortFilterProxyModelPrivate::_q_sourceDataChanged(const QModelIndex &sourc
@@ -20747,13 +20763,49 @@ index bd4c7e93c5..9fc59d5894 100644
      update_source_sort_column();
      if (dynamic_sortfilter && update_source_sort_column())
          sort();
-@@ -2141,6 +2146,7 @@ void QSortFilterProxyModel::setSourceModel(QAbstractItemModel *sourceModel)
+@@ -1797,7 +1802,10 @@ void QSortFilterProxyModelPrivate::_q_sourceColumnsRemoved(
+             source_sort_column = -1;
+     }
+ 
+-    proxy_sort_column = q->mapFromSource(model->index(0,source_sort_column, source_parent)).column();
++    if (source_sort_column >= 0)
++        proxy_sort_column = q->mapFromSource(model->index(0,source_sort_column, source_parent)).column();
++    else
++        proxy_sort_column = -1;
+ }
+ 
+ void QSortFilterProxyModelPrivate::_q_sourceColumnsAboutToBeMoved(
+@@ -2141,6 +2149,7 @@ void QSortFilterProxyModel::setSourceModel(QAbstractItemModel *sourceModel)
      connect(d->model, SIGNAL(modelReset()), this, SLOT(_q_sourceReset()));
  
      endResetModel();
 +    d->create_mapping(QModelIndex());
      if (d->update_source_sort_column() && d->dynamic_sortfilter)
          d->sort();
+ }
+@@ -3080,8 +3089,9 @@ bool QSortFilterProxyModel::filterAcceptsRow(int source_row, const QModelIndex &
+ 
+     if (d->filter_data.isEmpty())
+         return true;
++
++    int column_count = d->model->columnCount(source_parent);
+     if (d->filter_column == -1) {
+-        int column_count = d->model->columnCount(source_parent);
+         for (int column = 0; column < column_count; ++column) {
+             QModelIndex source_index = d->model->index(source_row, column, source_parent);
+             QString key = d->model->data(source_index, d->filter_role).toString();
+@@ -3090,9 +3100,10 @@ bool QSortFilterProxyModel::filterAcceptsRow(int source_row, const QModelIndex &
+         }
+         return false;
+     }
+-    QModelIndex source_index = d->model->index(source_row, d->filter_column, source_parent);
+-    if (!source_index.isValid()) // the column may not exist
++
++    if (d->filter_column >= column_count) // the column may not exist
+         return true;
++    QModelIndex source_index = d->model->index(source_row, d->filter_column, source_parent);
+     QString key = d->model->data(source_index, d->filter_role).toString();
+     return d->filter_data.hasMatch(key);
  }
 diff --git a/src/corelib/kernel/qcore_mac.mm b/src/corelib/kernel/qcore_mac.mm
 index 33c64bc474..4e13ba5262 100644
@@ -27042,10 +27094,35 @@ index c555209f19..05c088e923 100644
      "License": "Unicode License Agreement - Data Files and Software (2016)",
      "LicenseId": "Unicode-DFS-2016",
 diff --git a/src/corelib/thread/qmutex.cpp b/src/corelib/thread/qmutex.cpp
-index 9bfd50f2d9..310d1cb14f 100644
+index 9bfd50f2d9..7097122d8e 100644
 --- a/src/corelib/thread/qmutex.cpp
 +++ b/src/corelib/thread/qmutex.cpp
-@@ -613,7 +613,7 @@ bool QBasicMutex::lockInternal(int timeout) QT_MUTEX_LOCK_NOEXCEPT
+@@ -152,6 +152,7 @@ public:
+ 
+ /*!
+     \enum QMutex::RecursionMode
++    \obsolete Use QRecursiveMutex to create a recursive mutex.
+ 
+     \value Recursive  In this mode, a thread can lock the same mutex
+                       multiple times and the mutex won't be unlocked
+@@ -173,6 +174,7 @@ public:
+ 
+ /*!
+     Constructs a new mutex. The mutex is created in an unlocked state.
++    \obsolete Use QRecursiveMutex to create a recursive mutex.
+ 
+     If \a mode is QMutex::Recursive, a thread can lock the same mutex
+     multiple times and the mutex won't be unlocked until a
+@@ -197,7 +199,7 @@ QMutex::QMutex(RecursionMode mode)
+ QMutex::~QMutex()
+ {
+     QMutexData *d = d_ptr.loadRelaxed();
+-    if (isRecursive()) {
++    if (QBasicMutex::isRecursive()) {
+         delete static_cast<QRecursiveMutexPrivate *>(d);
+     } else if (d) {
+ #ifndef QT_LINUX_FUTEX
+@@ -613,7 +615,7 @@ bool QBasicMutex::lockInternal(int timeout) QT_MUTEX_LOCK_NOEXCEPT
          // is set to the BigNumber magic value set in unlockInternal()
          int old_waiters;
          do {
@@ -27055,10 +27132,10 @@ index 9bfd50f2d9..310d1cb14f 100644
                  // we are unlocking, and the thread that unlocks is about to change d to 0
                  // we try to acquire the mutex by changing to dummyLocked()
 diff --git a/src/corelib/thread/qmutex.h b/src/corelib/thread/qmutex.h
-index 93c4bf23e8..73c9e00663 100644
+index 93c4bf23e8..b2e2640ba2 100644
 --- a/src/corelib/thread/qmutex.h
 +++ b/src/corelib/thread/qmutex.h
-@@ -129,7 +129,7 @@ private:
+@@ -129,13 +129,21 @@ private:
  class Q_CORE_EXPORT QMutex : public QBasicMutex
  {
  public:
@@ -27067,6 +27144,43 @@ index 93c4bf23e8..73c9e00663 100644
      constexpr QMutex() = default;
  #else
      QMutex() { d_ptr.storeRelaxed(nullptr); }
+ #endif
++#if QT_DEPRECATED_SINCE(5,15)
+     enum RecursionMode { NonRecursive, Recursive };
++    QT_DEPRECATED_VERSION_X(5, 15, "Use QRecursiveMutex instead of a recursive QMutex")
+     explicit QMutex(RecursionMode mode);
++
++    QT_DEPRECATED_VERSION_X(5, 15, "Use QRecursiveMutex instead of a recursive QMutex")
++    bool isRecursive() const noexcept
++    { return QBasicMutex::isRecursive(); }
++#endif
++
+     ~QMutex();
+ 
+     // BasicLockable concept
+@@ -166,9 +174,6 @@ public:
+     }
+ #endif
+ 
+-    bool isRecursive() const noexcept
+-    { return QBasicMutex::isRecursive(); }
+-
+ private:
+     Q_DISABLE_COPY(QMutex)
+     friend class QMutexLocker;
+diff --git a/src/corelib/thread/qwaitcondition_unix.cpp b/src/corelib/thread/qwaitcondition_unix.cpp
+index 88b058f410..0f1da4dc9b 100644
+--- a/src/corelib/thread/qwaitcondition_unix.cpp
++++ b/src/corelib/thread/qwaitcondition_unix.cpp
+@@ -213,7 +213,7 @@ bool QWaitCondition::wait(QMutex *mutex, QDeadlineTimer deadline)
+ {
+     if (! mutex)
+         return false;
+-    if (mutex->isRecursive()) {
++    if (static_cast<QBasicMutex *>(mutex)->isRecursive()) {
+         qWarning("QWaitCondition: cannot wait on recursive mutexes");
+         return false;
+     }
 diff --git a/src/corelib/time/qcalendar.cpp b/src/corelib/time/qcalendar.cpp
 index 7700ce5b8d..4139ed877d 100644
 --- a/src/corelib/time/qcalendar.cpp
@@ -32682,6 +32796,46 @@ index 4913734161..465ea68309 100644
  };
  // GENERATED PART ENDS HERE
  
+diff --git a/src/corelib/time/qtimezone.cpp b/src/corelib/time/qtimezone.cpp
+index 0309e43e52..3d451696a1 100644
+--- a/src/corelib/time/qtimezone.cpp
++++ b/src/corelib/time/qtimezone.cpp
+@@ -1,6 +1,6 @@
+ /****************************************************************************
+ **
+-** Copyright (C) 2013 John Layt <jlayt@kde.org>
++** Copyright (C) 2020 John Layt <jlayt@kde.org>
+ ** Contact: https://www.qt.io/licensing/
+ **
+ ** This file is part of the QtCore module of the Qt Toolkit.
+@@ -975,9 +975,15 @@ QList<QByteArray> QTimeZone::windowsIdToIanaIds(const QByteArray &windowsId,
+ }
+ 
+ #ifndef QT_NO_DATASTREAM
++// Invalid, as an IANA ID: too long, starts with - and has other invalid characters in it
++static inline QString invalidId() { return QStringLiteral("-No Time Zone Specified!"); }
++
+ QDataStream &operator<<(QDataStream &ds, const QTimeZone &tz)
+ {
+-    tz.d->serialize(ds);
++    if (tz.isValid())
++        tz.d->serialize(ds);
++    else
++        ds << invalidId();
+     return ds;
+ }
+ 
+@@ -985,7 +991,9 @@ QDataStream &operator>>(QDataStream &ds, QTimeZone &tz)
+ {
+     QString ianaId;
+     ds >> ianaId;
+-    if (ianaId == QLatin1String("OffsetFromUtc")) {
++    if (ianaId == invalidId()) {
++        tz = QTimeZone();
++    } else if (ianaId == QLatin1String("OffsetFromUtc")) {
+         int utcOffset;
+         QString name;
+         QString abbreviation;
 diff --git a/src/corelib/time/qtimezoneprivate_data_p.h b/src/corelib/time/qtimezoneprivate_data_p.h
 index 6d2bbc83c1..ccf2234540 100644
 --- a/src/corelib/time/qtimezoneprivate_data_p.h
@@ -33957,20 +34111,6 @@ index 74be7bb2ba..ac00aaee96 100644
  */
  
  /*!
-diff --git a/src/corelib/tools/qsharedpointer_impl.h b/src/corelib/tools/qsharedpointer_impl.h
-index 790c187cb9..4aee98af53 100644
---- a/src/corelib/tools/qsharedpointer_impl.h
-+++ b/src/corelib/tools/qsharedpointer_impl.h
-@@ -155,9 +155,6 @@ namespace QtSharedPointer {
- #endif
-         inline void checkQObjectShared(...) { }
-         inline void setQObjectShared(...) { }
--
--        inline void operator delete(void *ptr) { ::operator delete(ptr); }
--        inline void operator delete(void *, void *) { }
-     };
-     // sizeof(ExternalRefCountData) = 12 (32-bit) / 16 (64-bit)
- 
 diff --git a/src/corelib/tools/qvarlengtharray.h b/src/corelib/tools/qvarlengtharray.h
 index 6be695e317..fd0c99c032 100644
 --- a/src/corelib/tools/qvarlengtharray.h
@@ -34166,6 +34306,19 @@ index 03ec43eaf7..eb44a0190d 100644
  #pragma optimize("", on)
  #endif
  
+diff --git a/src/gui/image/qxpmhandler.cpp b/src/gui/image/qxpmhandler.cpp
+index 8acc80776c..16fd78f25f 100644
+--- a/src/gui/image/qxpmhandler.cpp
++++ b/src/gui/image/qxpmhandler.cpp
+@@ -924,7 +924,7 @@ static bool read_xpm_body(
+                 colorMap.insert(xpmHash(QLatin1String(index.constData())), 0);
+             }
+         } else {
+-            QRgb c_rgb;
++            QRgb c_rgb = 0;
+             if (((buf.length()-1) % 3) && (buf[0] == '#')) {
+                 buf.truncate(((buf.length()-1) / 4 * 3) + 1); // remove alpha channel left by imagemagick
+             }
 diff --git a/src/gui/painting/qbrush.cpp b/src/gui/painting/qbrush.cpp
 index 89f3374ea1..9e5605dd48 100644
 --- a/src/gui/painting/qbrush.cpp
@@ -34566,6 +34719,23 @@ index 663f727145..7f2c01d4d3 100644
      return true;
  }
  
+diff --git a/src/gui/text/qfontdatabase.cpp b/src/gui/text/qfontdatabase.cpp
+index 1a4d8f938b..0f5219410d 100644
+--- a/src/gui/text/qfontdatabase.cpp
++++ b/src/gui/text/qfontdatabase.cpp
+@@ -2679,6 +2679,12 @@ QFontEngine *QFontDatabase::findFont(const QFontDef &request, int script)
+         return engine;
+     }
+ 
++    if (request.pixelSize > 0xffff) {
++        // Stop absurd requests reaching the engines; pixel size is assumed to fit ushort
++        qCDebug(lcFontMatch, "Rejecting request for pixel size %g2, returning box engine", double(request.pixelSize));
++        return new QFontEngineBox(32); // not request.pixelSize, to avoid overflow/DOS
++    }
++
+     QString family_name, foundry_name;
+     const QString requestFamily = request.families.size() > 0 ? request.families.at(0) : request.family;
+     parseFontName(requestFamily, foundry_name, family_name);
 diff --git a/src/gui/text/qfontengine.cpp b/src/gui/text/qfontengine.cpp
 index f1fd755e91..d9c0239940 100644
 --- a/src/gui/text/qfontengine.cpp
@@ -34579,6 +34749,27 @@ index f1fd755e91..d9c0239940 100644
          ensureFallbackFamiliesQueried();
      Q_ASSERT(at < m_engines.size());
      if (!m_engines.at(at)) {
+diff --git a/src/gui/text/qtextengine.cpp b/src/gui/text/qtextengine.cpp
+index b7459bf826..cdaa729785 100644
+--- a/src/gui/text/qtextengine.cpp
++++ b/src/gui/text/qtextengine.cpp
+@@ -1,6 +1,6 @@
+ /****************************************************************************
+ **
+-** Copyright (C) 2016 The Qt Company Ltd.
++** Copyright (C) 2021 The Qt Company Ltd.
+ ** Contact: https://www.qt.io/licensing/
+ **
+ ** This file is part of the QtGui module of the Qt Toolkit.
+@@ -258,7 +258,7 @@ struct QBidiAlgorithm {
+         for (int i = 0; i < length; ++i) {
+             int pos = i;
+             uint uc = text[i].unicode();
+-            if (QChar::isHighSurrogate(uc) && i < length - 1) {
++            if (QChar::isHighSurrogate(uc) && i < length - 1 && text[i + 1].isLowSurrogate()) {
+                 ++i;
+                 analysis[i].bidiDirection = QChar::DirNSM;
+                 uc = QChar::surrogateToUcs4(ushort(uc), text[i].unicode());
 diff --git a/src/gui/text/qtextimagehandler.cpp b/src/gui/text/qtextimagehandler.cpp
 index 0d87a2135d..053be89959 100644
 --- a/src/gui/text/qtextimagehandler.cpp
@@ -35158,6 +35349,18 @@ index bf986aab77..69750bdbb0 100644
  }
  #endif
  
+diff --git a/src/platformsupport/input/xkbcommon/qxkbcommon.cpp b/src/platformsupport/input/xkbcommon/qxkbcommon.cpp
+index 877c5d848f..6a692a2456 100644
+--- a/src/platformsupport/input/xkbcommon/qxkbcommon.cpp
++++ b/src/platformsupport/input/xkbcommon/qxkbcommon.cpp
+@@ -93,6 +93,7 @@ static constexpr const auto KeyTbl = qMakeArray(
+         Xkb2Qt<XKB_KEY_Clear,                   Qt::Key_Delete>,
+         Xkb2Qt<XKB_KEY_Pause,                   Qt::Key_Pause>,
+         Xkb2Qt<XKB_KEY_Print,                   Qt::Key_Print>,
++        Xkb2Qt<XKB_KEY_Sys_Req,                 Qt::Key_SysReq>,
+         Xkb2Qt<0x1005FF60,                      Qt::Key_SysReq>,         // hardcoded Sun SysReq
+         Xkb2Qt<0x1007ff00,                      Qt::Key_SysReq>,         // hardcoded X386 SysReq
+ 
 diff --git a/src/platformsupport/linuxaccessibility/atspiadaptor.cpp b/src/platformsupport/linuxaccessibility/atspiadaptor.cpp
 index 88539b7220..9153fd20bb 100644
 --- a/src/platformsupport/linuxaccessibility/atspiadaptor.cpp
@@ -35173,6 +35376,63 @@ index 88539b7220..9153fd20bb 100644
      Q_ASSERT(!active || iface->isValid());
  
      QString windowTitle;
+diff --git a/src/platformsupport/themes/genericunix/dbusmenu/qdbusmenuconnection.cpp b/src/platformsupport/themes/genericunix/dbusmenu/qdbusmenuconnection.cpp
+index 09470bccc6..345a853b1b 100644
+--- a/src/platformsupport/themes/genericunix/dbusmenu/qdbusmenuconnection.cpp
++++ b/src/platformsupport/themes/genericunix/dbusmenu/qdbusmenuconnection.cpp
+@@ -105,13 +105,7 @@ void QDBusMenuConnection::unregisterTrayIconMenu(QDBusTrayIcon *item)
+ 
+ bool QDBusMenuConnection::registerTrayIcon(QDBusTrayIcon *item)
+ {
+-    bool success = connection().registerService(item->instanceId());
+-    if (!success) {
+-        qWarning() << "failed to register service" << item->instanceId();
+-        return false;
+-    }
+-
+-    success = connection().registerObject(StatusNotifierItemPath, item);
++    bool success = connection().registerObject(StatusNotifierItemPath, item);
+     if (!success) {
+         unregisterTrayIcon(item);
+         qWarning() << "failed to register" << item->instanceId() << StatusNotifierItemPath;
+@@ -126,21 +120,18 @@ bool QDBusMenuConnection::registerTrayIcon(QDBusTrayIcon *item)
+ 
+ bool QDBusMenuConnection::registerTrayIconWithWatcher(QDBusTrayIcon *item)
+ {
++    Q_UNUSED(item);
+     QDBusMessage registerMethod = QDBusMessage::createMethodCall(
+                 StatusNotifierWatcherService, StatusNotifierWatcherPath, StatusNotifierWatcherService,
+                 QLatin1String("RegisterStatusNotifierItem"));
+-    registerMethod.setArguments(QVariantList() << item->instanceId());
++    registerMethod.setArguments(QVariantList() << m_connection.baseService());
+     return m_connection.callWithCallback(registerMethod, this, SIGNAL(trayIconRegistered()), SLOT(dbusError(QDBusError)));
+ }
+ 
+-bool QDBusMenuConnection::unregisterTrayIcon(QDBusTrayIcon *item)
++void QDBusMenuConnection::unregisterTrayIcon(QDBusTrayIcon *item)
+ {
+     unregisterTrayIconMenu(item);
+     connection().unregisterObject(StatusNotifierItemPath);
+-    bool success = connection().unregisterService(item->instanceId());
+-    if (!success)
+-        qWarning() << "failed to unregister service" << item->instanceId();
+-    return success;
+ }
+ #endif // QT_NO_SYSTEMTRAYICON
+ 
+diff --git a/src/platformsupport/themes/genericunix/dbusmenu/qdbusmenuconnection_p.h b/src/platformsupport/themes/genericunix/dbusmenu/qdbusmenuconnection_p.h
+index f484795fbb..11c7e56534 100644
+--- a/src/platformsupport/themes/genericunix/dbusmenu/qdbusmenuconnection_p.h
++++ b/src/platformsupport/themes/genericunix/dbusmenu/qdbusmenuconnection_p.h
+@@ -78,7 +78,7 @@ public:
+     void unregisterTrayIconMenu(QDBusTrayIcon *item);
+     bool registerTrayIcon(QDBusTrayIcon *item);
+     bool registerTrayIconWithWatcher(QDBusTrayIcon *item);
+-    bool unregisterTrayIcon(QDBusTrayIcon *item);
++    void unregisterTrayIcon(QDBusTrayIcon *item);
+ #endif // QT_NO_SYSTEMTRAYICON
+ 
+ Q_SIGNALS:
 diff --git a/src/plugins/imageformats/jpeg/jpeg.pro b/src/plugins/imageformats/jpeg/jpeg.pro
 index 89476e62f5..fa14dd9cc1 100644
 --- a/src/plugins/imageformats/jpeg/jpeg.pro
@@ -36158,7 +36418,7 @@ index f3f8d57af7..8990109743 100644
          SUBDIRS += src_3rdparty_libpng
          src_3rdparty_freetype.depends += src_3rdparty_libpng
 diff --git a/src/testlib/qabstractitemmodeltester.cpp b/src/testlib/qabstractitemmodeltester.cpp
-index 4c86d65e77..2348f8fdfe 100644
+index 4c86d65e77..2c3d6a5586 100644
 --- a/src/testlib/qabstractitemmodeltester.cpp
 +++ b/src/testlib/qabstractitemmodeltester.cpp
 @@ -438,7 +438,7 @@ void QAbstractItemModelTesterPrivate::parent()
@@ -36166,7 +36426,7 @@ index 4c86d65e77..2348f8fdfe 100644
      MODELTESTER_VERIFY(!model->parent(QModelIndex()).isValid());
  
 -    if (!model->hasChildren())
-+    if (model->rowCount() == 0)
++    if (model->rowCount() == 0 || model->columnCount() == 0)
          return;
  
      // Column 0                | Column 1    |
@@ -36180,7 +36440,7 @@ index 4c86d65e77..2348f8fdfe 100644
      // Common error test #2, make sure that a second level index has a parent
      // that is the first level index.
 -    if (model->hasChildren(topIndex)) {
-+    if (model->rowCount(topIndex) > 0) {
++    if (model->rowCount(topIndex) > 0 && model->columnCount(topIndex) > 0) {
          QModelIndex childIndex = model->index(0, 0, topIndex);
          MODELTESTER_VERIFY(childIndex.isValid());
          MODELTESTER_COMPARE(model->parent(childIndex), topIndex);
@@ -36202,6 +36462,21 @@ index 4c86d65e77..2348f8fdfe 100644
          return;
  
      MODELTESTER_VERIFY(model->index(0, 0).isValid());
+@@ -719,12 +720,12 @@ void QAbstractItemModelTesterPrivate::rowsAboutToBeRemoved(const QModelIndex &pa
+     Changing c;
+     c.parent = parent;
+     c.oldSize = model->rowCount(parent);
+-    if (start > 0) {
++    if (start > 0 && model->columnCount(parent) > 0) {
+         const QModelIndex startIndex = model->index(start - 1, 0, parent);
+         MODELTESTER_VERIFY(startIndex.isValid());
+         c.last = model->data(startIndex);
+     }
+-    if (end < c.oldSize - 1) {
++    if (end < c.oldSize - 1 && model->columnCount(parent) > 0) {
+         const QModelIndex endIndex = model->index(end + 1, 0, parent);
+         MODELTESTER_VERIFY(endIndex.isValid());
+         c.next = model->data(endIndex);
 diff --git a/src/testlib/qabstracttestlogger.cpp b/src/testlib/qabstracttestlogger.cpp
 index ff05dd88c7..c7a0784da7 100644
 --- a/src/testlib/qabstracttestlogger.cpp
@@ -36820,6 +37095,100 @@ index 766adef36d..0f6641c3df 100644
      int pressed;
      int hover;
  
+diff --git a/src/widgets/itemviews/qtableview.cpp b/src/widgets/itemviews/qtableview.cpp
+index 1b72536dcf..f79bb24249 100644
+--- a/src/widgets/itemviews/qtableview.cpp
++++ b/src/widgets/itemviews/qtableview.cpp
+@@ -1013,6 +1013,7 @@ void QTableViewPrivate::drawCell(QPainter *painter, const QStyleOptionViewItem &
+ int QTableViewPrivate::widthHintForIndex(const QModelIndex &index, int hint, const QStyleOptionViewItem &option) const
+ {
+     Q_Q(const QTableView);
++    const int oldHint = hint;
+     QWidget *editor = editorForIndex(index).widget.data();
+     if (editor && persistent.contains(editor)) {
+         hint = qMax(hint, editor->sizeHint().width());
+@@ -1021,6 +1022,17 @@ int QTableViewPrivate::widthHintForIndex(const QModelIndex &index, int hint, con
+         hint = qBound(min, hint, max);
+     }
+     hint = qMax(hint, q->itemDelegate(index)->sizeHint(option, index).width());
++
++    if (hasSpans()) {
++        auto span = spans.spanAt(index.column(), index.row());
++        if (span && span->m_left == index.column() && span->m_top == index.row()) {
++            // spans are screwed up when sections are moved
++            const auto left = logicalColumn(span->m_left);
++            for (int i = 1; i <= span->width(); ++i)
++               hint -= q->columnWidth(visualColumn(left + i));
++        }
++        hint = std::max(hint, oldHint);
++    }
+     return hint;
+ }
+ 
+@@ -1053,6 +1065,11 @@ int QTableViewPrivate::heightHintForIndex(const QModelIndex &index, int hint, QS
+         option.rect.setHeight(height);
+         option.rect.setX(q->columnViewportPosition(index.column()));
+         option.rect.setWidth(q->columnWidth(index.column()));
++        if (hasSpans()) {
++            auto span = spans.spanAt(index.column(), index.row());
++            if (span && span->m_left == index.column() && span->m_top == index.row())
++                option.rect.setWidth(std::max(option.rect.width(), visualSpanRect(*span).width()));
++        }
+         // 1px less space when grid is shown (see drawCell)
+         if (showGrid)
+             option.rect.setWidth(option.rect.width() - 1);
+@@ -2944,6 +2961,8 @@ void QTableView::timerEvent(QTimerEvent *event)
+             updateGeometries();
+             killTimer(d->columnResizeTimerID);
+             d->columnResizeTimerID = 0;
++        } else {
++            updateEditorGeometries();
+         }
+ 
+         QRect rect;
+@@ -2972,6 +2991,8 @@ void QTableView::timerEvent(QTimerEvent *event)
+             updateGeometries();
+             killTimer(d->rowResizeTimerID);
+             d->rowResizeTimerID = 0;
++        } else {
++            updateEditorGeometries();
+         }
+ 
+         int viewportHeight = d->viewport->height();
+diff --git a/src/widgets/itemviews/qtreewidget.cpp b/src/widgets/itemviews/qtreewidget.cpp
+index 47b06a4138..842fc1b82b 100644
+--- a/src/widgets/itemviews/qtreewidget.cpp
++++ b/src/widgets/itemviews/qtreewidget.cpp
+@@ -508,22 +508,18 @@ bool QTreeModel::insertColumns(int column, int count, const QModelIndex &parent)
+ bool QTreeModel::removeRows(int row, int count, const QModelIndex &parent) {
+     if (count < 1 || row < 0 || (row + count) > rowCount(parent))
+         return false;
+-
+-    beginRemoveRows(parent, row, row + count - 1);
+-
+-    QSignalBlocker blocker(this);
+-
+-    QTreeWidgetItem *itm = item(parent);
++    QTreeWidgetItem *parentItem = item(parent);
++    // if parentItem is valid, begin/end RemoveRows is handled by takeChild below
++    if (!parentItem)
++        beginRemoveRows(parent, row, row + count - 1);
+     for (int i = row + count - 1; i >= row; --i) {
+-        QTreeWidgetItem *child = itm ? itm->takeChild(i) : rootItem->children.takeAt(i);
++        QTreeWidgetItem *child = parentItem ? parentItem->takeChild(i) : rootItem->children.takeAt(i);
+         Q_ASSERT(child);
+         child->view = nullptr;
+         delete child;
+-        child = nullptr;
+     }
+-    blocker.unblock();
+-
+-    endRemoveRows();
++    if (!parentItem)
++        endRemoveRows();
+     return true;
+ }
+ 
 diff --git a/src/widgets/kernel/qboxlayout.cpp b/src/widgets/kernel/qboxlayout.cpp
 index 7b09adfbf0..c1052c5b9d 100644
 --- a/src/widgets/kernel/qboxlayout.cpp
@@ -37078,7 +37447,7 @@ index 14bca7fbe4..72f7ad7455 100644
  
                  if (button->state & (State_On | State_Sunken))
 diff --git a/src/widgets/widgets/qcombobox.cpp b/src/widgets/widgets/qcombobox.cpp
-index 474a538fb2..68bd647741 100644
+index 474a538fb2..41dccd1f5e 100644
 --- a/src/widgets/widgets/qcombobox.cpp
 +++ b/src/widgets/widgets/qcombobox.cpp
 @@ -1943,6 +1943,7 @@ void QComboBox::setEditable(bool editable)
@@ -37089,6 +37458,19 @@ index 474a538fb2..68bd647741 100644
          setLineEdit(le);
      } else {
          if (style()->styleHint(QStyle::SH_ComboBox_Popup, &opt, this)) {
+@@ -2761,8 +2762,10 @@ void QComboBox::showPopup()
+ #endif
+ 
+     // set current item and select it
+-    view()->selectionModel()->setCurrentIndex(d->currentIndex,
+-                                              QItemSelectionModel::ClearAndSelect);
++    QItemSelectionModel::SelectionFlags selectionMode = QItemSelectionModel::ClearAndSelect;
++    if (view()->selectionBehavior() == QAbstractItemView::SelectRows)
++        selectionMode.setFlag(QItemSelectionModel::Rows);
++    view()->selectionModel()->setCurrentIndex(d->currentIndex, selectionMode);
+     QComboBoxPrivateContainer* container = d->viewContainer();
+     QRect listRect(style->subControlRect(QStyle::CC_ComboBox, &opt,
+                                          QStyle::SC_ComboBoxListBoxPopup, this));
 diff --git a/src/widgets/widgets/qmenu.cpp b/src/widgets/widgets/qmenu.cpp
 index ab933c987f..a23d8b790d 100644
 --- a/src/widgets/widgets/qmenu.cpp
@@ -37433,6 +37815,73 @@ index d30ec1d57d..b3ae547d07 100644
      QTest::newRow("case 1") << QString::fromLatin1("//[56:56:56:56:56:56:56:56]") << true
                              << "//[56:56:56:56:56:56:56:56]";
      QTest::newRow("case 2") << QString::fromLatin1("//[::56:56:56:56:56:56:56]") << true
+diff --git a/tests/auto/corelib/itemmodels/qconcatenatetablesproxymodel/tst_qconcatenatetablesproxymodel.cpp b/tests/auto/corelib/itemmodels/qconcatenatetablesproxymodel/tst_qconcatenatetablesproxymodel.cpp
+index 40617c1f7d..90972caa57 100644
+--- a/tests/auto/corelib/itemmodels/qconcatenatetablesproxymodel/tst_qconcatenatetablesproxymodel.cpp
++++ b/tests/auto/corelib/itemmodels/qconcatenatetablesproxymodel/tst_qconcatenatetablesproxymodel.cpp
+@@ -116,6 +116,8 @@ private Q_SLOTS:
+     void shouldPropagateDropBetweenItemsAtModelBoundary();
+     void shouldPropagateDropAfterLastRow_data();
+     void shouldPropagateDropAfterLastRow();
++    void qtbug91788();
++    void qtbug91878();
+ 
+ private:
+     QStandardItemModel mod;
+@@ -453,6 +455,17 @@ void tst_QConcatenateTablesProxyModel::shouldUseSmallestColumnCount()
+     const QModelIndex indexD = pm.mapFromSource(mod2.index(0, 0));
+     QVERIFY(indexD.isValid());
+     QCOMPARE(indexD, pm.index(1, 0));
++
++    // Test setData in an ignored column (QTBUG-91253)
++    QSignalSpy dataChangedSpy(&pm, SIGNAL(dataChanged(QModelIndex,QModelIndex)));
++    mod.setData(mod.index(0, 1), "b");
++    QCOMPARE(dataChangedSpy.count(), 0);
++
++    // Test dataChanged across all columns, some visible, some ignored
++    mod.dataChanged(mod.index(0, 0), mod.index(0, 2));
++    QCOMPARE(dataChangedSpy.count(), 1);
++    QCOMPARE(dataChangedSpy.at(0).at(0).toModelIndex(), pm.index(0, 0));
++    QCOMPARE(dataChangedSpy.at(0).at(1).toModelIndex(), pm.index(0, 0));
+ }
+ 
+ void tst_QConcatenateTablesProxyModel::shouldIncreaseColumnCountWhenRemovingFirstModel()
+@@ -818,6 +831,35 @@ void tst_QConcatenateTablesProxyModel::shouldPropagateDropAfterLastRow()
+ 
+ }
+ 
++void tst_QConcatenateTablesProxyModel::qtbug91788()
++{
++    QConcatenateTablesProxyModel proxyConcat;
++    QStringList strList{QString("one"),QString("two")};
++    QStringListModel strListModelA(strList);
++    QSortFilterProxyModel proxyFilter;
++    proxyFilter.setSourceModel(&proxyConcat);
++
++    proxyConcat.addSourceModel(&strListModelA);
++    proxyConcat.removeSourceModel(&strListModelA); // This should not assert
++    QCOMPARE(proxyConcat.columnCount(), 0);
++}
++
++void tst_QConcatenateTablesProxyModel::qtbug91878()
++{
++    QStandardItemModel m;
++    m.setRowCount(4);
++    m.setColumnCount(4);
++
++    QConcatenateTablesProxyModel pm;
++    QSortFilterProxyModel proxyFilter;
++    proxyFilter.setSourceModel(&pm);
++    proxyFilter.setFilterFixedString("something");
++    pm.addSourceModel(&m);  // This should not assert
++
++    QCOMPARE(pm.columnCount(), 4);
++    QCOMPARE(pm.rowCount(), 4);
++}
++
+ QTEST_GUILESS_MAIN(tst_QConcatenateTablesProxyModel)
+ 
+ #include "tst_qconcatenatetablesproxymodel.moc"
 diff --git a/tests/auto/corelib/itemmodels/qsortfilterproxymodel_common/tst_qsortfilterproxymodel.cpp b/tests/auto/corelib/itemmodels/qsortfilterproxymodel_common/tst_qsortfilterproxymodel.cpp
 index 7f9a996136..6f608854ae 100644
 --- a/tests/auto/corelib/itemmodels/qsortfilterproxymodel_common/tst_qsortfilterproxymodel.cpp
@@ -37931,6 +38380,52 @@ index 5da69e76a5..55027530ec 100644
 +
  QTEST_APPLESS_MAIN(tst_QCalendar)
  #include "tst_qcalendar.moc"
+diff --git a/tests/auto/corelib/time/qtimezone/tst_qtimezone.cpp b/tests/auto/corelib/time/qtimezone/tst_qtimezone.cpp
+index 332a00efb5..92ead6545b 100644
+--- a/tests/auto/corelib/time/qtimezone/tst_qtimezone.cpp
++++ b/tests/auto/corelib/time/qtimezone/tst_qtimezone.cpp
+@@ -62,6 +62,7 @@ private slots:
+     void windowsId();
+     void isValidId_data();
+     void isValidId();
++    void serialize();
+     // Backend tests
+     void utcTest();
+     void icuTest();
+@@ -935,6 +936,33 @@ void tst_QTimeZone::isValidId()
+ #endif
+ }
+ 
++void tst_QTimeZone::serialize()
++{
++    int parts = 0;
++#ifndef QT_NO_DEBUG_STREAM
++    qDebug() << QTimeZone(); // to verify no crash
++    parts++;
++#endif
++#ifndef QT_NO_DATASTREAM
++    QByteArray blob;
++    {
++        QDataStream stream(&blob, QIODevice::WriteOnly);
++        stream << QTimeZone("Europe/Oslo") << QTimeZone(420) << QTimeZone() << qint64(-1);
++    }
++    QDataStream stream(&blob, QIODevice::ReadOnly);
++    QTimeZone invalid, offset, oslo;
++    qint64 minusone;
++    stream >> oslo >> offset >> invalid >> minusone;
++    QCOMPARE(oslo, QTimeZone("Europe/Oslo"));
++    QCOMPARE(offset, QTimeZone(420));
++    QVERIFY(!invalid.isValid());
++    QCOMPARE(minusone, qint64(-1));
++    parts++;
++#endif
++    if (!parts)
++        QSKIP("No serialization enabled");
++}
++
+ void tst_QTimeZone::utcTest()
+ {
+ #ifdef QT_BUILD_INTERNAL
 diff --git a/tests/auto/corelib/tools/qvarlengtharray/tst_qvarlengtharray.cpp b/tests/auto/corelib/tools/qvarlengtharray/tst_qvarlengtharray.cpp
 index a1d0100f96..5443cf120b 100644
 --- a/tests/auto/corelib/tools/qvarlengtharray/tst_qvarlengtharray.cpp
@@ -39701,6 +40196,41 @@ index 396e23da0c..b875c7c5cf 100644
      static const char contents[] = "This is 34 bytes. Do not change...";
  #ifdef Q_OS_WIN
      // use Windows's native UNC support to try and open a file on the server
+diff --git a/tests/auto/testlib/qabstractitemmodeltester/tst_qabstractitemmodeltester.cpp b/tests/auto/testlib/qabstractitemmodeltester/tst_qabstractitemmodeltester.cpp
+index b305eee0ec..d2050a61aa 100644
+--- a/tests/auto/testlib/qabstractitemmodeltester/tst_qabstractitemmodeltester.cpp
++++ b/tests/auto/testlib/qabstractitemmodeltester/tst_qabstractitemmodeltester.cpp
+@@ -40,6 +40,7 @@ private slots:
+     void stringListModel();
+     void treeWidgetModel();
+     void standardItemModel();
++    void standardItemModelZeroColumns();
+     void testInsertThroughProxy();
+     void moveSourceItems();
+     void testResetThroughProxy();
+@@ -104,6 +105,22 @@ void tst_QAbstractItemModelTester::standardItemModel()
+     model.insertColumns(0, 5, model.index(1, 3));
+ }
+ 
++void tst_QAbstractItemModelTester::standardItemModelZeroColumns()
++{
++    QStandardItemModel model;
++    QAbstractItemModelTester t1(&model);
++    // QTBUG-92220
++    model.insertRows(0, 5);
++    model.removeRows(0, 5);
++    // QTBUG-92886
++    model.insertRows(0, 5);
++    model.removeRows(1, 2);
++
++    const QModelIndex parentIndex = model.index(0, 0);
++    model.insertRows(0, 5, parentIndex);
++    model.removeRows(1, 2, parentIndex);
++}
++
+ void tst_QAbstractItemModelTester::testInsertThroughProxy()
+ {
+     DynamicTreeModel *model = new DynamicTreeModel(this);
 diff --git a/tests/auto/testlib/selftests/tst_selftests.cpp b/tests/auto/testlib/selftests/tst_selftests.cpp
 index 95b759edc2..829a79c0e6 100644
 --- a/tests/auto/testlib/selftests/tst_selftests.cpp
@@ -39894,6 +40424,123 @@ index 941ff52373..04c6acfea1 100644
      }
  }
  
+diff --git a/tests/auto/widgets/itemviews/qtableview/tst_qtableview.cpp b/tests/auto/widgets/itemviews/qtableview/tst_qtableview.cpp
+index 761357b252..06bb706074 100644
+--- a/tests/auto/widgets/itemviews/qtableview/tst_qtableview.cpp
++++ b/tests/auto/widgets/itemviews/qtableview/tst_qtableview.cpp
+@@ -397,6 +397,7 @@ private slots:
+     void checkHeaderMinSize();
+ 
+     void resizeToContents();
++    void resizeToContentsSpans();
+ 
+     void tabFocus();
+     void bigModel();
+@@ -3721,6 +3722,70 @@ void tst_QTableView::resizeToContents()
+ 
+ }
+ 
++
++class SpanModel : public QAbstractTableModel
++{
++public:
++    SpanModel(bool sectionsMoved)
++        : _sectionsMoved(sectionsMoved)
++    {}
++    int columnCount(const QModelIndex & = {}) const override { return 2; }
++    int rowCount(const QModelIndex & = {}) const override { return 1; }
++    QVariant data(const QModelIndex &idx, int role = Qt::DisplayRole) const override
++    {
++        if (role != Qt::DisplayRole)
++            return QVariant();
++        const int col = _sectionsMoved ? 1 - idx.column() : idx.column();
++        if (col == 0)
++            return "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
++        return QVariant();
++    }
++private:
++    bool _sectionsMoved;
++};
++
++
++void tst_QTableView::resizeToContentsSpans()
++{
++    SpanModel model1(false);
++    SpanModel model2(true);
++    QTableView view1, view2, view3;
++    view1.setModel(&model1);
++    view2.setModel(&model2);
++    view2.horizontalHeader()->moveSection(0, 1);
++    view3.setModel(&model1);
++
++    view1.setSpan(0, 0, 1, 2);
++    view2.setSpan(0, 1, 1, 2);
++    view1.show();
++    view2.show();
++    view3.show();
++    QVERIFY(QTest::qWaitForWindowExposed(&view1));
++    QVERIFY(QTest::qWaitForWindowExposed(&view2));
++    QVERIFY(QTest::qWaitForWindowExposed(&view3));
++    view1.setColumnWidth(0, 100);
++    view1.setColumnWidth(1, 100);
++    view2.setColumnWidth(0, 100);
++    view2.setColumnWidth(1, 100);
++    view3.setColumnWidth(0, 200);
++
++    view1.resizeRowToContents(0);
++    view2.resizeRowToContents(0);
++    view3.resizeRowToContents(0);
++    QCOMPARE(view1.rowHeight(0), view3.rowHeight(0));
++    QCOMPARE(view2.rowHeight(0), view3.rowHeight(0));
++
++    view3.resizeColumnToContents(0);
++    view3.resizeRowToContents(0);
++    // height should be only 1 text line for easy testing
++    view1.setRowHeight(0, view3.verticalHeader()->sectionSize(0));
++    view2.setRowHeight(0, view3.verticalHeader()->sectionSize(0));
++    view1.resizeColumnToContents(0);
++    view2.resizeColumnToContents(1);
++    QCOMPARE(view1.columnWidth(0), view3.columnWidth(0) - view1.columnWidth(1));
++    QCOMPARE(view2.columnWidth(0), view3.columnWidth(0) - view2.columnWidth(1));
++}
++
+ QT_BEGIN_NAMESPACE
+ extern bool Q_WIDGETS_EXPORT qt_tab_all_widgets(); // qapplication.cpp
+ QT_END_NAMESPACE
+diff --git a/tests/auto/widgets/itemviews/qtreewidget/tst_qtreewidget.cpp b/tests/auto/widgets/itemviews/qtreewidget/tst_qtreewidget.cpp
+index 7da56ab797..b129868bbd 100644
+--- a/tests/auto/widgets/itemviews/qtreewidget/tst_qtreewidget.cpp
++++ b/tests/auto/widgets/itemviews/qtreewidget/tst_qtreewidget.cpp
+@@ -151,6 +151,7 @@ private slots:
+     void getMimeDataWithInvalidItem();
+     void testVisualItemRect();
+     void reparentHiddenItem();
++    void persistentChildIndex();
+ #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+     void clearItemData();
+ #endif
+@@ -3597,6 +3598,21 @@ void tst_QTreeWidget::reparentHiddenItem()
+     QVERIFY(grandChild->isHidden());
+ }
+ 
++void tst_QTreeWidget::persistentChildIndex() // QTBUG-90030
++{
++    QTreeWidget tree;
++    QTreeWidgetItem *toplevel = new QTreeWidgetItem(QStringList{QStringLiteral("toplevel")});
++    tree.addTopLevelItem(toplevel);
++    QModelIndex firstIndex = tree.model()->index(0, 0);
++    QTreeWidgetItem *child1 = new QTreeWidgetItem(QStringList{QStringLiteral("child1")});
++    QTreeWidgetItem *child2 = new QTreeWidgetItem(QStringList{QStringLiteral("child2")});
++    toplevel->addChildren({child1, child2});
++    QPersistentModelIndex persistentIdx = tree.model()->index(1, 0, firstIndex);
++    QCOMPARE(persistentIdx.data().toString(), QStringLiteral("child2"));
++    tree.model()->removeRows(0, 1, firstIndex);
++    QCOMPARE(persistentIdx.data().toString(), QStringLiteral("child2"));
++}
++
+ #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+ void tst_QTreeWidget::clearItemData()
+ {
 diff --git a/tests/auto/widgets/widgets/qcombobox/tst_qcombobox.cpp b/tests/auto/widgets/widgets/qcombobox/tst_qcombobox.cpp
 index 86a7b112d2..d8bb34933a 100644
 --- a/tests/auto/widgets/widgets/qcombobox/tst_qcombobox.cpp
