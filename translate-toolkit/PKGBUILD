@@ -9,8 +9,9 @@ url="https://toolkit.translatehouse.org/index.html"
 license=('GPL')
 depends=('bash' 'python3-lxml' 'python3-six')
 makedepends=('python3-setuptools')
-source=("https://github.com/translate/translate/releases/download/${pkgver}/translate-toolkit-${pkgver}.tar.gz")
-md5sums=('023f358aad00cec9cf2b33e82cd09fe3')
+#source=("https://github.com/translate/translate/releases/download/${pkgver}/translate-toolkit-${pkgver}.tar.gz")
+source=("https://files.pythonhosted.org/packages/source/t/translate-toolkit/${pkgname}-${pkgver}.tar.gz")
+sha256sums=('abc6815ac563a013ba5dcbc245bddb6b2000f8de112999a85ed087a989de1860')
 
 package() {
   cd ${pkgname}-${pkgver}
