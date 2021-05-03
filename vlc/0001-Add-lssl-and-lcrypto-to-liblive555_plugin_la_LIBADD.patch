@@ -1,0 +1,28 @@
+From 9827f331d647275365655fe4901620862807aae6 Mon Sep 17 00:00:00 2001
+From: Dominic Mayers <dominic.mayers@meditationstudies.org>
+Date: Sun, 28 Mar 2021 05:00:43 -0400
+Subject: [PATCH] Add -lssl and -lcrypto to liblive555_plugin_la_LIBADD
+
+We must add -lssl and -lcrypto to liblive555_plugin_la_LIBADD in modules/access/Makefile.am.
+The code will not compile with the recent version of live555 otherwise. This was mentioned
+in issue 25473 of code.videolan.org.
+---
+ modules/access/Makefile.am | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/modules/access/Makefile.am b/modules/access/Makefile.am
+index 9cd3098fc2..b695cb6106 100644
+--- a/modules/access/Makefile.am
++++ b/modules/access/Makefile.am
+@@ -334,7 +334,7 @@ access_LTLIBRARIES += libhttp_plugin.la
+ liblive555_plugin_la_SOURCES = access/live555.cpp access/mms/asf.c access/mms/buffer.c \
+                                access/live555_dtsgen.h
+ liblive555_plugin_la_CXXFLAGS = $(AM_CXXFLAGS) $(CXXFLAGS_live555)
+-liblive555_plugin_la_LIBADD = $(LIBS_live555) $(SOCKET_LIBS)
++liblive555_plugin_la_LIBADD = $(LIBS_live555) $(SOCKET_LIBS) -lssl -lcrypto
+ liblive555_plugin_la_LDFLAGS = $(AM_LDFLAGS) -rpath '$(accessdir)' \
+ 	$(LDFLAGS_live555)
+ access_LTLIBRARIES += $(LTLIBlive555)
+-- 
+2.25.1
+

@@ -2,7 +2,7 @@
 pkgname=vlc
 pkgver=3.0.13
 _pkgver=3.0
-pkgrel=1
+pkgrel=2
 epoch=1
 pkgdesc="Free and open source cross-platform multimedia player and framework that plays most multimedia files and various streaming protocols."
 arch=('x86_64')
@@ -15,7 +15,7 @@ depends=('a52dec' 'fluidsynth' 'libmtp' 'libdvbpsi' 'libxpm' 'libcdio' 'libdca' 
          'desktop-file-utils' 'xcb-util-keysyms' 'pulseaudio' 'chromaprint' 
          'qt5-x11extras' 'qt5-svg' 'x265' 'lua' 'mpg123' 'protobuf' 'vcdimager'
          'avahi' 'libnotify' 'libbluray' 'flac' 'libtheora' 'alsa-lib' 'dav1d'
-         'libraw1394' 'libdc1394' 'libavc1394' 'libva' 'microdns' 'libidn') # 'live-media' fails with 'fribidi' 1.0.1
+         'libraw1394' 'libdc1394' 'libavc1394' 'libva' 'microdns' 'libidn' 'live-media') # fails with 'fribidi' 1.0.1
 makedepends=('pkgconfig' 'jack' 'systemd' 'gnutls' 'libcaca' 'librsvg' 'qt5-tools')
 backup=('usr/share/vlc/http/.hosts'
         'usr/share/vlc/http/dialogs/.hosts'
@@ -25,15 +25,18 @@ groups=('multimedia')
 options=('!libtool' 'debug')
 install="vlc.install"
 source=("https://code.videolan.org/videolan/vlc-${_pkgver}/-/archive/${pkgver}/vlc-${_pkgver}-${pkgver}.tar.bz2"
-        'qt5.15.patch')
+        '0001-Add-lssl-and-lcrypto-to-liblive555_plugin_la_LIBADD.patch'
+        '0001-Get-addr-by-ref.-from-getConnectionEndpointAddress.patch')
 #source=("https://download.videolan.org/vlc/${pkgver}/${pkgname}-${pkgver}.tar.xz"
 sha256sums=('390770314e906622689c385f25531fd9cf69d78dee1247cb2956fbcef59efdbe'
-            'a8a2267ddab07ea5267cb210a38c8772b2efb5d834f803a37e215aee1f784e95')
+            '81c1db61be41bfe31cedcdc83fe6ecf8178708d3ab372a0c4811008a3eded1a1'
+            '8ab6bb3244f654700b5a41271a2336d6fd04240e52a8db3aafdd47303c23d77d')
 
 prepare() {
   cd ${pkgname}-${_pkgver}-${pkgver}
-  
-  #patch -p1 -i ${srcdir}/qt5.15.patch
+  # https://code.videolan.org/videolan/vlc/-/issues/25473
+  patch -p1 -i ${srcdir}/0001-Add-lssl-and-lcrypto-to-liblive555_plugin_la_LIBADD.patch
+  patch -p1 -i ${srcdir}/0001-Get-addr-by-ref.-from-getConnectionEndpointAddress.patch
   #sed -i -e 's|5.5.0|5.5.4|' configure.ac
   #autoreconf -fi
   # move to gitlab rls tar seems to presume git checkout
@@ -64,7 +67,7 @@ build() {
               --enable-chromecast \
               --enable-microdns \
               --disable-fribidi \
-              --disable-live555 \
+              --enable-live555 \
               --enable-vpx \
               RCC=/usr/bin/rcc-qt5
   make
