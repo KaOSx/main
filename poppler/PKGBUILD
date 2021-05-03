@@ -1,7 +1,7 @@
 
 pkgname=poppler
-pkgver=21.04.0
-pkgrel=2
+pkgver=21.05.0
+pkgrel=1
 arch=('x86_64')
 pkgdesc="PDF rendering library based on xpdf 3.0"
 url="https://poppler.freedesktop.org/"
@@ -15,13 +15,13 @@ provides=('poppler-glib' 'poppler-qt5' 'poppler-qt')
 replaces=('poppler-glib' 'poppler-qt5' 'poppler-qt')
 source=("https://poppler.freedesktop.org/${pkgname}-${pkgver}.tar.xz"
         "https://gitlab.freedesktop.org/poppler/poppler/-/commit/d7aa275b0bca86ae174e7e504dd269df2a0234cf.diff")
-md5sums=('c3a76a9ef4625f54718136699c74c9b1'
+md5sums=('109c337462c2a4ac916226588a2c23f7'
          'ba31bf29b71356d34e01632aa4a1356d')
 
 prepare() {
   cd ${pkgname}-${pkgver}
   # scribus needed
-  patch -p1 -i ${srcdir}/d7aa275b0bca86ae174e7e504dd269df2a0234cf.diff
+  #patch -p1 -i ${srcdir}/d7aa275b0bca86ae174e7e504dd269df2a0234cf.diff
 }
 
 build() {

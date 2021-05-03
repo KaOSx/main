@@ -1,8 +1,8 @@
 
 # fails to find perl bindings without running -make generate- in gdal/swig/perl on error
 pkgname=gdal
-pkgver=3.2.2
-_pkgver=3.2.2
+pkgver=3.3.0
+_pkgver=3.3.0
 pkgrel=2
 pkgdesc="A translator library for raster geospatial data formats"
 arch=('x86_64')
@@ -19,7 +19,7 @@ conflicts=('python3-gdal')
 source=("https://download.osgeo.org/gdal/${pkgver}/${pkgname}-${pkgver}.tar.xz"
 #source=("https://github.com/OSGeo/gdal/archive/v${_pkgver}.tar.gz"
         "https://github.com/OSGeo/gdal/commit/2b863dbabdc2a7d724f9fdf3e6ff20a142b619f6.diff")
-md5sums=('c656be582f7beb528c66486cd1fca7a2'
+md5sums=('000db27a7b3e146b9dcb3838aabde2ab'
          '5bc7a5e048a6a96d9f95d9ea480b7f5b')
 
 prepare() {
@@ -33,6 +33,7 @@ build() {
 
   ./configure --prefix=/usr \
     --sysconfdir=/etc \
+    --mandir=/usr/share/man \
     --with-netcdf \
     --with-libtiff \
     --with-sqlite3 \
@@ -56,4 +57,7 @@ package () {
 
   install -D -m644 LICENSE.TXT ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
   rm -f ${pkgdir}/usr/bin/*.dox
+
+  cp -r ${pkgdir}/share/man ${pkgdir}/usr/share/man
+  rm -r -f ${pkgdir}/share
 }
