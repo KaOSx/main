@@ -1,28 +1,29 @@
 
 pkgname=tidyhtml
 _pkgname=tidy-html5
-pkgver=5.7.28
+pkgver=5.7.47
+_commit=2c75207c5e9bb77bf7069ca091efef51e0af1d90
 pkgrel=1
 pkgdesc="A tool to tidy down your HTML code to a clean style"
 arch=('x86_64')
 url="https://www.html-tidy.org/"
 license=('custom')
 depends=('glibc')
-makedepends=('cmake' 'git')
+makedepends=('cmake')
 options=('!libtool')
-source=("https://github.com/htacg/tidy-html5/archive/${pkgver}.tar.gz")
-md5sums=('2a572befbf3610de6719506c338efabb')
+#source=("https://github.com/htacg/tidy-html5/archive/${pkgver}.tar.gz")
+source=("https://github.com/htacg/tidy-html5/archive/${_commit}.zip")
+md5sums=('fe131fcc8adebe45e1d38a256362f3fb')
 
 build() {
-  cmake -B build -S ${_pkgname}-${pkgver} \
+  cmake -B build -S ${_pkgname}-${_commit} \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr 
  cmake --build build
 }
 
 package() {
-
   DESTDIR=${pkgdir} cmake --install build
   
-  install -Dm644 ${_pkgname}-${pkgver}/README/LICENSE.md ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.md
+  install -Dm644 ${_pkgname}-${_commit}/README/LICENSE.md ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.md
 }
