@@ -1,9 +1,9 @@
 
 pkgname=hplip
-pkgver=3.21.2
+pkgver=3.21.4
 # incase a or b is used in hplip rls:
-_pkgver=3.21.2
-pkgrel=2
+_pkgver=3.21.4
+pkgrel=1
 pkgdesc="Drivers for HP DeskJet, OfficeJet, Photosmart, Business Inkjet and some LaserJet."
 arch=('x86_64')
 url="https://developers.hp.com/hp-linux-imaging-and-printing"
@@ -18,7 +18,7 @@ options=('!libtool')
 install=${pkgname}.install
 source=("https://downloads.sourceforge.net/hplip/${pkgname}-${_pkgver}.tar.gz"
         'imageprocessor.patch')
-md5sums=('362cb4c10321ec98fa4b4f18891e1a45'
+md5sums=('ae20067d576a3546e8cbf0df8746ae6e'
          '02df8be3c3e33abe6293a8b526f599a0')
 
 build() {
