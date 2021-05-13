@@ -1,7 +1,7 @@
 
 pkgname=fluidsynth
-pkgver=2.2.0
-pkgrel=2
+pkgver=2.2.1
+pkgrel=1
 pkgdesc="Real-time software synthesizer based on the SoundFont 2 specifications"
 arch=('x86_64')
 url="https://www.fluidsynth.org/"
@@ -10,7 +10,7 @@ makedepends=('cmake' 'ladspa' 'doxygen')
 license=('LGPL')
 backup=('etc/conf.d/fluidsynth')
 source=("https://github.com/FluidSynth/fluidsynth/archive/v${pkgver}.tar.gz")
-md5sums=('e51e1ae0dba6fe1a27955fbcf405742b')
+md5sums=('4cf368d0b8c4187f5c74de8d84c0ae36')
 
 build() {
   cmake -B build -S ${pkgname}-${pkgver} \
