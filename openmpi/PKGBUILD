@@ -1,6 +1,6 @@
 
 pkgname=openmpi
-pkgver=4.1.0
+pkgver=4.1.1
 _pkgver=4.1
 pkgrel=1
 pkgdesc="High performance message passing library (MPI)"
@@ -11,7 +11,7 @@ depends=('gcc' 'openssh' 'valgrind' 'libtool' 'hwloc')
 makedepends=('inetutils')
 options=('!libtool')
 source=("https://www.open-mpi.org/software/ompi/v${_pkgver}/downloads/${pkgname}-${pkgver}.tar.bz2")
-sha256sums=('73866fb77090819b6a8c85cb8539638d37d6877455825b74e289d647a39fd5b5')
+sha256sums=('e24f7a778bd11a71ad0c14587a7f5b00e68a71aa5623e2157bafee3d44c07cda')
 
 build() {
    cd ${pkgname}-${pkgver}
@@ -41,7 +41,7 @@ package() {
    make DESTDIR=${pkgdir} install
 
    install -d -m 755 ${pkgdir}/usr/lib/pkgconfig
-   for i in ompi-c.pc ompi-cxx.pc ompi-f77.pc ompi-f90.pc ompi.pc; do
+   for i in ompi-c.pc ompi-cxx.pc ompi-f77.pc ompi-f90.pc ompi-fort.pc ompi.pc orte.pc pmix.pc; do
       ln -sf /usr/lib/openmpi/pkgconfig/$i ${pkgdir}/usr/lib/pkgconfig/
    done
 
