@@ -1,9 +1,9 @@
 
 # only use even numbers, odd are for development versions
 pkgname=pango
-pkgver=1.48.4
+pkgver=1.48.5
 _pkgver=1.48
-pkgrel=2
+pkgrel=1
 pkgdesc="A library for layout and rendering of text"
 arch=('x86_64')
 url="http://www.pango.org/"
@@ -12,7 +12,7 @@ depends=('cairo' 'libxft' 'libthai' 'harfbuzz' 'fribidi')
 makedepends=('gobject-introspection' 'libxt' 'fontconfig' 'meson' 'ninja' 'help2man')
 options=('!libtool')
 source=("https://download.gnome.org/sources/pango/${_pkgver}/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('418913fb062071a075846244989d4a67aa5c80bf0eae8ee4555a092fd566a37a')
+sha256sums=('501e74496173c02dcd024ded7fbb3f09efd37e2a488e248aa40799424dbb3b2a')
 
 prepare() {
   cd ${pkgname}-${pkgver}
