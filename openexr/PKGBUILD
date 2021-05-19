@@ -1,17 +1,17 @@
 
 pkgname=openexr
-pkgver=3.0.1
+pkgver=2.5.6
 pkgrel=1
 pkgdesc="Provides the EXR file format, the image storage format of the motion picture industry."
 url="http://www.openexr.org"
 arch=('x86_64')
 license=('custom')
 depends=('boost-libs' 'python3' 'zlib')
-makedepends=('boost' 'cmake')
+makedepends=('boost' 'cmake' 'freeglut' 'python3-numpy')
 options=('!libtool')
 source=("https://github.com/AcademySoftwareFoundation/openexr/archive/v${pkgver}.tar.gz"
         "https://github.com/AcademySoftwareFoundation/openexr/commit/0b26a9dedda4924841323677f1ce0bce37bfbeb4.diff")
-md5sums=('ef9a93e18c74b1013303f3e67cdfe080'
+md5sums=('29f87b5f486b1a3e54308be30d05f5c1'
          '673343bed6d675244da3fd30dcfeb3ab')
 
 prepare() {
@@ -30,5 +30,5 @@ build() {
 package() {
 
   DESTDIR=${pkgdir} cmake --install build
-  install -D -m644 ../${pkgname}-${pkgver}/LICENSE.md ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.md
+  install -D -m644 ${pkgname}-${pkgver}/LICENSE.md ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.md
 }
