@@ -1,7 +1,7 @@
 
 pkgname=mesa
-pkgver=21.0.3
-_pkgver=21.0.3
+pkgver=21.1.1
+_pkgver=21.1.1
 pkgrel=1
 arch=('x86_64')
 pkgdesc="Mesa 3-D graphics libraries and include files"
@@ -9,13 +9,13 @@ depends=('libx11' 'libxt' 'gcc-libs' 'libvdpau' 'xorgproto' 'wayland' 'elfutils'
          'libdrm' 'libxxf86vm' 'libxdamage' 'expat' 'libxshmfence' 'llvm'
          'lm_sensors' 'libunwind' 'libxvmc' 'libxrandr' 'libglvnd' 'zstd') 
 makedepends=('libva' 'llvm' 'libxml2' 'imake' 'clang' 'python3-mako'
-             'wayland-protocols' 'meson' 'ninja' 'valgrind')
+             'wayland-protocols' 'meson' 'ninja' 'valgrind' 'vulkan-loader')
 url="https://www.mesa3d.org/"
 license=('custom')
 source=("https://mesa.freedesktop.org/archive/${pkgname}-${pkgver}.tar.xz"
         "https://gitlab.freedesktop.org/mesa/mesa/commit/689817c9dfde9a0852f2b2489cb0fa93ffbcb215.diff"
         'LICENSE')
-sha256sums=('565c6f4bd2d5747b919454fc1d439963024fc78ca56fd05158c3b2cde2f6912b'
+sha256sums=('eec25ea379054e8911bc5de816aeb50f581b5b708414725003d2f00386b38dd2'
             'fe619c39cdcbff3e4d79ec673e35f6eceb8bcab56113868277ff8295a2623702'
             '7fdc119cf53c8ca65396ea73f6d10af641ba41ea1dd2bd44a824726e01c8b3f2')
 
@@ -48,8 +48,7 @@ build() {
     -Dgallium-nine=true \
     -Dgallium-opencl=disabled \
     -Dvulkan-drivers=amd,intel,swrast \
-    -Dvulkan-overlay-layer=false \
-    -Dvulkan-device-select-layer=false \
+    -Dvulkan-layers=device-select,intel-nullhw \
     -Dshared-glapi=enabled \
     -Dgles1=enabled \
     -Dgles2=enabled \
