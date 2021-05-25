@@ -11,7 +11,7 @@ pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
 _commit=0d4ca9cfb0d6e538172005e1c4b0b3a021b1c18c
-pkgrel=1
+pkgrel=2
 pkgdesc="Chromium-based web engine to replace Qt WebKit"
 url="https://www.qt.io/"
 arch=('x86_64')
@@ -31,7 +31,8 @@ source=("git+https://github.com/qt/qtwebengine.git#commit=${_commit}"
         'markdowneditor.desktop'
         'python-patches.diff'
         'rule_bison.diff'
-        "https://gitweb.gentoo.org/repo/gentoo.git/plain/dev-qt/qtwebengine/files/qtwebengine-5.15.2_p20210406-glibc-2.33.patch")
+        "https://gitweb.gentoo.org/repo/gentoo.git/plain/dev-qt/qtwebengine/files/qtwebengine-5.15.2_p20210406-glibc-2.33.patch"
+        'falkon.diff')
 #md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
 md5sums=('SKIP'
          'SKIP'
@@ -41,7 +42,8 @@ md5sums=('SKIP'
          '5ea5aa48c198a8de1398fc9e7a4abd14'
          '699b9a97d0164c0c62bfb1700fa31832'
          '9830c8af376817b2812775b547734873'
-         '62855be92cd3bd1b5cc7fedeca587179')
+         '62855be92cd3bd1b5cc7fedeca587179'
+         '4f7dbaa811c2a6beaa3bd8c53328966d')
 
 prepare() {
     mkdir -p build
@@ -56,6 +58,7 @@ prepare() {
     git submodule update
 
     patch -p1 -i ${srcdir}/qtwebengine-5.15.2_p20210406-glibc-2.33.patch
+    patch -p1 -i ${srcdir}/falkon.diff
 }
 
 build() {
