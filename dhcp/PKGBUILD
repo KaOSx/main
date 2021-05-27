@@ -1,29 +1,31 @@
 
 pkgbase=dhcp
 pkgname=('dhcp' 'dhclient')
-pkgver=4.4.2
-_pkgver=4.4.2
+pkgver=4.4.2.P1
+_pkgver=4.4.2-P1
 pkgrel=1
 arch=('x86_64')
 license=('MPL 2.0.')
 url="https://www.isc.org/dhcp/"
 makedepends=('bash' 'iproute2')
-source=("https://ftp.isc.org/isc/dhcp/${pkgver}/${pkgbase}-${pkgver}.tar.gz"
+source=("https://ftp.isc.org/isc/dhcp/${_pkgver}/${pkgbase}-${_pkgver}.tar.gz"
         'dhcpd4.service'
-        'dhcpd6.service')
-        #"http://www.linuxfromscratch.org/patches/blfs/svn/dhcp-${_pkgver}-missing_ipv6-1.patch")
-md5sums=('2afdaf8498dc1edaf3012efdd589b3e1'
+        'dhcpd6.service'
+        "https://gitlab.isc.org/isc-projects/dhcp/-/commit/6c7e61578b1b449272dbb40dd8b98d03dad8a57a.diff")
+md5sums=('3089a1ebd20a802ec0870ae337d43907'
          '7045e63a5d294c761ce306084eec2c67'
-         'a2ebf4460c049cbee3e49cb26a475f68')
+         'a2ebf4460c049cbee3e49cb26a475f68'
+         'eef25d700f3f054cf05ad3d786dc0f28')
 
 build() {
-  cd ${pkgname}-${pkgver}
+  cd ${pkgname}-${_pkgver}
 
   # Define _GNU_SOURCE to fix IPV6.
   sed '/^CFLAGS="$CFLAGS/ s/INGS"/INGS -D_GNU_SOURCE"/' -i configure
   # use patches from LFS http://www.linuxfromscratch.org/blfs/view/cvs/basicnet/dhcp.html
   #patch -p1 -i ${srcdir}/dhcp-${_pkgver}-missing_ipv6-1.patch
-  #patch -p1 -i ${srcdir}/dhcp-${_pkgver}-client_script-1.patch
+  # needed for GCC 10 & up
+  patch -p1 -i ${srcdir}/6c7e61578b1b449272dbb40dd8b98d03dad8a57a.diff
 
   ./configure --prefix=/usr \
               --sysconfdir=/etc \
@@ -40,7 +42,7 @@ package_dhcp() {
   backup=('etc/dhcpd.conf')
   install=dhcp.install
   
-  cd ${pkgname}-${pkgver}
+  cd ${pkgname}-${_pkgver}
   make DESTDIR=${pkgdir} install
 
   mkdir -p ${pkgdir}/var/state/dhcp
@@ -65,7 +67,7 @@ package_dhclient() {
   pkgdesc="dhclient is standalone client from the dhcp package"
   depends=('bash' 'iproute2')
   
-  cd ${_pkgname}-${pkgver}
+  cd ${_pkgname}-${_pkgver}
   make -C client DESTDIR=${pkgdir} install 
 
   install -m755 -d ${pkgdir}/usr/share/dhclient
