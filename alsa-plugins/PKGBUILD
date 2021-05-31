@@ -1,7 +1,7 @@
 
 pkgname=alsa-plugins
-pkgver=1.2.2
-pkgrel=2
+pkgver=1.2.5
+pkgrel=1
 pkgdesc="Extra alsa plugins"
 arch=('x86_64')
 url="https://www.alsa-project.org"
@@ -12,8 +12,8 @@ optdepends=('jack: Jack plugin'
             'libsamplerate: libsamplerate resampling plugin'
             'speex: libspeexdsp resampling plugin')
 options=('!libtool')
-source=("ftp://ftp.alsa-project.org/pub/plugins/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('8455e3c6fbc47f62f070afabc14ba575')
+source=("https://www.alsa-project.org/files/pub/plugins/${pkgname}-${pkgver}.tar.bz2")
+md5sums=('11d1bcc1b4eec26c1011ec965f4b54ba')
 
 build() {
   cd ${pkgname}-${pkgver}
