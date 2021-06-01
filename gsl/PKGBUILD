@@ -1,6 +1,6 @@
 
 pkgname=gsl
-pkgver=2.6
+pkgver=2.7
 pkgrel=1
 arch=('x86_64')
 pkgdesc="The GNU Scientific Library (GSL) is a modern numerical library for C and C++ programmers"
@@ -9,23 +9,23 @@ license=('GPL')
 depends=('glibc' 'bash')
 options=('!libtool')
 source=("https://ftp.gnu.org/gnu/gsl/${pkgname}-${pkgver}.tar.gz")
-md5sums=('bda73a3dd5ff2f30b5956764399db6e7')
+md5sums=('9e47e81caaebcd92b7aca27a5348df74')
 
 build() {
     cd ${pkgname}-${pkgver}
-    
+
     ./configure --prefix=/usr
     make 
 }
 
 check() {
     cd ${pkgname}-${pkgver}
-    
+
     make -k check || true
 }
 
 package() {
     cd ${pkgname}-${pkgver}
-    
+
     make DESTDIR=${pkgdir} install 
 }
