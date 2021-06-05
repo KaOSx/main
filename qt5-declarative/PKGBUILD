@@ -6,7 +6,7 @@ pkgname=qt5-declarative
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=2
+pkgrel=3
 pkgdesc="A cross-platform application and UI framework, QtDeclarative files"
 arch=('x86_64')
 url='https://www.qt.io/'
@@ -17,10 +17,10 @@ options=('!libtool' 'debug')
 groups=('qt5')
 _pkgfqn="qtdeclarative-everywhere-src-${subver}"
 source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz"
-        'patch -p1 -i ${srcdir}/qt_kde.patch')
+        'qt_kde.patch')
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
-         'a066e918bb8c9a4f309aef9ca9bed0d2')
+         '53aee166ef301ba5fa99bbe71b51f793')
 
 build() {
     cd $srcdir/$_pkgfqn
