@@ -1,7 +1,7 @@
 
 pkgname=groff
 pkgver=1.22.4
-pkgrel=11
+pkgrel=12
 pkgdesc="GNU troff text-formatting system"
 arch=('x86_64')
 url="https://www.gnu.org/software/groff/groff.html"
@@ -10,13 +10,9 @@ depends=('perl' 'gcc-libs' 'texinfo')
 makedepends=('netpbm' 'psutils' 'ghostscript')
 optdepends=('netpbm: to use together with man -H command interaction in browsers'
             'psutils: to use together with man -H command interaction in browsers')
-source=("https://ftp.gnu.org/gnu/groff/${pkgname}-${pkgver}.tar.gz"
-        'site.tmac'
-        'gropdf.patch')
+source=("https://ftp.gnu.org/gnu/groff/${pkgname}-${pkgver}.tar.gz")
 options=('!docs' '!emptydirs')
-md5sums=('08fb04335e2f5e73f23ea4c3adbf0c5f'
-         'a1fedafd7863b37968d32ad9ae1d8c13'
-         '96f261605bd4b31c1f0b56cf590cf459')
+md5sums=('08fb04335e2f5e73f23ea4c3adbf0c5f')
 
 build() {
   cd ${pkgname}-${pkgver}
@@ -43,10 +39,4 @@ package() {
   ln -s eqn ${pkgdir}/usr/bin/geqn
   ln -s tbl ${pkgdir}/usr/bin/gtbl
   ln -s soelim ${pkgdir}/usr/bin/zsoelim
-  
-  # Fix some issues when encoding to utf8 man pages
-  cat ${srcdir}/site.tmac >> \
-    ${pkgdir}/usr/share/groff/site-tmac/man.local
-  cat ${srcdir}/site.tmac >> \
-    ${pkgdir}/usr/share/groff/site-tmac/mdoc.local
 }
