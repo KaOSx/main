@@ -17,6 +17,9 @@ depends=('sqlite' 'xcb-util-keysyms' 'xcb-util-wm' 'xcb-util-image' 'xcb-util-re
         'libxcursor' 'libxrender' 'libpng' 'mariadb' 'icu' 'libgl' 'libxfixes' 'libxinerama'
         'libxkbcommon' 'libinput' 'harfbuzz' 'mtdev' 'libproxy' 'double-conversion') # 'brotli')
 makedepends=('postgresql-libs' 'cups' 'gperf' 'ruby' 'pulseaudio' 'vulkan-headers' 'cmake')
+provides=('qt6-x11extras')
+replaces=('qt6-x11extras')
+conflicts=('qt6-x11extras')
 optdepends=('postgresql-libs: PostgreSQL driver')
 groups=('qt6')
 options=('!libtool' 'debug')
