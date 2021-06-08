@@ -1,6 +1,6 @@
 
 pkgname=sshfs
-pkgver=3.7.1
+pkgver=3.7.2
 pkgrel=1
 pkgdesc="FUSE client based on the SSH File Transfer Protocol"
 arch=('x86_64')
@@ -9,12 +9,12 @@ license=('GPL')
 depends=('fuse3' 'glib2' 'openssh')
 makedepends=('pkgconfig' 'meson' 'ninja' 'python3-docutils')
 source=("https://github.com/libfuse/sshfs/releases/download/sshfs-${pkgver}/sshfs-${pkgver}.tar.xz")
-md5sums=('22ac23d05ca7c56fb568627f086374d0')
+md5sums=('86dcc81a1381c3e6863c97e684501bb6')
 
 build() {
   mkdir -p build
   cd build
-  
+
   meson ../sshfs-${pkgver} \
     --prefix=/usr \
     --buildtype=release 
@@ -23,6 +23,6 @@ build() {
 
 package() {
   cd build
-  
+
   DESTDIR=${pkgdir} ninja install
 }
