@@ -1,7 +1,7 @@
 
 pkgname=ffcall
 _pkgname=libffcall
-pkgver=2.2
+pkgver=2.3
 pkgrel=1
 pkgdesc="C library for implementing foreign function calls in embedded interpreters"
 arch=('x86_64')
@@ -9,11 +9,11 @@ url="https://www.gnu.org/software/libffcall/"
 license=('GPLv2+')
 options=('!libtool' '!makeflags')
 source=("https://ftp.gnu.org/gnu/libffcall/${_pkgname}-${pkgver}.tar.gz")
-md5sums=('d4c7bf840673ec30c1f3b3edab98a7c6')
+md5sums=('488ab42990986016a690bd3acc490662')
 
 build() {
   cd ${_pkgname}-${pkgver}
-  
+
   ./configure --prefix=/usr \
     --mandir=/usr/share/man \
     --with-pic \
@@ -23,13 +23,13 @@ build() {
 
 check() {
   cd ${_pkgname}-${pkgver}
-  
+
   make check
 }
 
 package() {
   cd ${_pkgname}-${pkgver}
-  
+
   install -d ${pkgdir}/usr/share/{man,doc/ffcall}
   make DESTDIR=${pkgdir} htmldir=/usr/share/doc/ffcall install
 }
