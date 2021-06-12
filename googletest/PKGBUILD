@@ -1,7 +1,7 @@
 
 pkgname=googletest
-pkgver=1.10.0
-_pkgver=1.10.x
+pkgver=1.11.0
+_pkgver=release-1.11.0
 pkgrel=1
 pkgdesc='Googles C++ test framework'
 url='https://github.com/google/googletest/'
@@ -10,25 +10,21 @@ license=('BSD')
 depends=('gcc-libs' 'sh')
 makedepends=('cmake' 'python3')
 options=('!makeflags')
-source=("https://github.com/google/googletest/archive/v${_pkgver}.tar.gz")
-md5sums=('58e27196e6423e330e5caadacfe3557b')
+source=("https://github.com/google/googletest/archive/${_pkgver}.tar.gz")
+md5sums=('e8a8df240b6938bb6384155d4c37d937')
 
 build() {
-  mkdir -p build
-  cd build
-  
-  cmake ../${pkgname}-${_pkgver} \
+  cmake -B build -S ${pkgname}-${_pkgver} \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=lib \
     -DBUILD_SHARED_LIBS=ON \
     -DCMAKE_SKIP_RPATH=ON
-  make
+  cmake --build build
 }
 
 package() {
-  cd build
-  make DESTDIR=${pkgdir} install
-  
-  install -Dm 644 ../${pkgname}-${_pkgver}/googletest/LICENSE ${pkgdir}/usr/share/licenses/${pkgname}
+  DESTDIR=${pkgdir} cmake --install build
+
+  install -Dm 644 ${pkgname}-${_pkgver}/LICENSE ${pkgdir}/usr/share/licenses/${pkgname}
 }
 
