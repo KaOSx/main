@@ -1,7 +1,7 @@
 
 pkgname=libkolabxml
 pkgver=1.1.6
-pkgrel=13
+pkgrel=14
 pkgdesc="Kolab XML Format Schema Definitions Library"
 url='https://www.kolab.org/'
 arch=('x86_64')
@@ -12,19 +12,15 @@ source=("https://mirror.kolabenterprise.com/pub/releases/${pkgname}-${pkgver}.ta
 md5sums=('eec4b8bf117a6e263eed9ee800ae3aa6')
 
 build() {
-  mkdir -p build
-  cd build
-
-  cmake ../${pkgname}-${pkgver} \
+  cmake -B build -S ${pkgname}-${pkgver} \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DBUILD_TESTS=OFF \
     -DBoost_NO_BOOST_CMAKE=ON
-  make
+  cmake --build build
 }
 
 package() {
-  cd build
 
-  make DESTDIR=${pkgdir} install
+  DESTDIR=${pkgdir} cmake --install build
 }
