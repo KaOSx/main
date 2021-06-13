@@ -1,7 +1,7 @@
 
 pkgname=harfbuzz
 pkgver=2.8.1
-pkgrel=1
+pkgrel=2
 pkgdesc="OpenType text shaping engine."
 arch=('x86_64')
 url="https://harfbuzz.github.io/"
@@ -15,7 +15,7 @@ sha256sums=('4124f663ec4bf4e294d9cf230668370b4249a48ff34deaf0f06e8fc82d891300')
 build() {
   mkdir -p build
   cd build
-  
+
   meson ../${pkgname}-${pkgver} \
     --prefix=/usr \
     --buildtype=release \
@@ -25,7 +25,7 @@ build() {
 
 package() {
   cd build
-  
+
   DESTDIR=${pkgdir} ninja install
   install -Dm644 ../${pkgname}-${pkgver}/COPYING ${pkgdir}/usr/share/licenses/harfbuzz/COPYING
 }
