@@ -1,6 +1,6 @@
 
 pkgname=vulkan-headers
-pkgver=1.2.180
+pkgver=1.2.181
 pkgrel=1
 pkgdesc="Vulkan Header files and API registry"
 arch=('x86_64')
@@ -8,7 +8,7 @@ url="https://www.khronos.org/vulkan/"
 license=('APACHE')
 makedepends=('cmake')
 source=("https://github.com/KhronosGroup/Vulkan-Headers/archive/v${pkgver}.tar.gz")
-md5sums=('c87ef2c890d4b8662065c5d7c4305d15')
+md5sums=('562559b1c69ca5cf04dc4acc7f58c621')
 
 build() {
   cmake -B build -S Vulkan-Headers-${pkgver} \
