@@ -4,9 +4,9 @@ _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=rtl88x2bu
 _pkgname=RTL88x2BU-Linux-Driver
-pkgver=2021.03.02
-_commit=f4dadcaf88df08d5a563f79cadabe9d901ad1a23
-pkgrel=6
+pkgver=2021.05.26
+_commit=d547cb694c388cb3f3334ad82f23ed2851bfed62
+pkgrel=1
 pkgdesc="RealTek 88x2bu wifi driver."
 arch=('x86_64')
 url="https://github.com/RinCat/RTL88x2BU-Linux-Driver"
@@ -16,7 +16,7 @@ makedepends=('linux-headers' 'elfutils')
 install=rtl88x2bu.install
 options=('!strip')
 source=("https://github.com/RinCat/RTL88x2BU-Linux-Driver/archive/${_commit}.zip")
-md5sums=('d0943c2e9da0c1f18f5c61d41ec7b2ad')
+md5sums=('5ccbc53e341ff8012bbb1fd96a141190')
 
 build() {
   cd ${_pkgname}-${_commit}
