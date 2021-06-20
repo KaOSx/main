@@ -1,21 +1,21 @@
 
 pkgname=libva
-pkgver=2.11.0
+pkgver=2.12.0
 _commit=25b33076849e68bebae87771fb482c5ab929e18b
-pkgrel=2
+pkgrel=1
 pkgdesc="Libva with patches to extend VA API with data needed for VDPAU and XvBA backends."
 arch=('x86_64')
 url="https://github.com/intel/libva"
 license=('MIT')
 depends=('libglvnd' 'libdrm' 'libxext' 'libxfixes' 'wayland')
-makedepends=('mesa' 'meson' 'ninja')
+makedepends=('mesa' 'meson' 'ninja' 'valgrind')
 options=('!libtool')
-source=("https://github.com/intel/libva/releases/download/${pkgver}/libva-${pkgver}.tar.bz2")
-#source=("https://github.com/intel/libva/archive/${pkgver}.tar.gz")
-sha1sums=('35baa7667e8a51ca3d481786095469d38cacfb2f')
+#source=("https://github.com/intel/libva/releases/download/${pkgver}/libva-${pkgver}.tar.bz2")
+source=("https://github.com/intel/libva/archive/${pkgver}.tar.gz")
+sha1sums=('bc0fb0db8ac2c2436d10e8b5873e8edece4a47ba')
 
 build() {
-  touch ${pkgname}-${pkgver}/meson.build
+  #touch ${pkgname}-${pkgver}/meson.build
   
   mkdir -p build
   cd build
