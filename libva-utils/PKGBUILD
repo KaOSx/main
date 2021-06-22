@@ -1,6 +1,6 @@
 
 pkgname=libva-utils
-pkgver=2.11.1
+pkgver=2.12.0
 pkgrel=1
 pkgdesc="Collection of utilities and examples to exercise VA-API in accordance with the libva project."
 arch=('x86_64')
@@ -9,12 +9,12 @@ license=('MIT')
 depends=('libva')
 makedepends=('meson' 'ninja')
 source=("https://github.com/intel/libva-utils/archive/${pkgver}.tar.gz")
-sha1sums=('3e92345f12106807a8d722740dd2016912bde1a2')
+sha1sums=('69c3a31faca6d525c3ed8fa991a2fa5b1bb60d2b')
 
 build() {
   mkdir -p build
   cd build
-  
+
   meson ../${pkgname}-${pkgver} \
     --prefix=/usr \
     --buildtype=release 
@@ -23,9 +23,9 @@ build() {
 
 package() {
   cd build
-  
+
   DESTDIR=${pkgdir} ninja install
-  
+
   install -m644 -D ../${pkgname}-${pkgver}/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
 }
 
