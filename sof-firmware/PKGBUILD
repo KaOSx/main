@@ -1,26 +1,28 @@
 
 # check branch for version
 pkgname=sof-firmware
-pkgver=1.7
+pkgver=1.8
 _pkgver=stable-v1.7
 pkgrel=1
 pkgdesc="Sound Open Firmware is an audio DSP firmware and SDK that provides audio firmware infrastructure"
 arch=('x86_64')
 url="https://www.sofproject.org/"
 license=('custom:BSD' 'custom:ISC')
+depends=('alsa-lib')
 options=('!strip')
-source=("https://github.com/thesofproject/sof-bin/archive/v${pkgver}.tar.gz")
-md5sums=('2f4f10db9947c88a827cc907b66b88b2')
+source=("https://github.com/thesofproject/sof-bin/releases/download/v${pkgver}/sof-bin-v${pkgver}.tar.gz")
+md5sums=('113fc3681a2ee44ce0691386750d9975')
 
 package() {
-  cd sof-bin-${pkgver}
+  cd sof-bin-v${pkgver}
 
   mkdir -p ${pkgdir}/lib/firmware/intel/sof
   mkdir -p ${pkgdir}/lib/firmware/intel/sof-tplg
+  mkdir -p ${pkgdir}/usr/bin
 
   cp -a sof-v${pkgver} ${pkgdir}/lib/firmware/intel/sof
-
   cp -a sof-tplg-v${pkgver} ${pkgdir}/lib/firmware/intel/sof-tplg
+  mv tools-v${pkgver}/* ${pkgdir}/usr/bin
 
   install -Dm644 LICENCE.Intel ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.Intel
   install -Dm644 LICENCE.NXP ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.NXP
