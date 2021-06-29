@@ -1,6 +1,6 @@
 
 pkgname=lapack
-pkgver=3.9.1
+pkgver=3.10.0
 pkgrel=1
 arch=('x86_64')
 url="https://www.netlib.org/lapack"
@@ -12,7 +12,7 @@ replaces=('blas' 'atlas-lapack')
 provides=('blas')
 license=("custom")
 source=("https://github.com/Reference-LAPACK/lapack/archive/v${pkgver}.tar.gz")
-md5sums=('47ab2d11652045145df37ddbe2a32d71')
+md5sums=('d70fc27a8bdebe00481c97c728184f09')
 
 build() {
   cmake -B build -S ${pkgname}-${pkgver} \
