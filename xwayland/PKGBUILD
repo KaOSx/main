@@ -1,0 +1,47 @@
+
+pkgname=xwayland
+pkgver=21.1.1
+pkgrel=1
+pkgdesc="X.Org X servers for Wayland"
+arch=('x86_64')
+url="https://xorg.freedesktop.org"
+license=('GPL2')
+depends=('xorg-server' 'wayland-protocols')
+makedepends=('libx11' 'xtrans' 'libxkbfile' 'libxmu' 'libxtst' 'libxres' 'valgrind' 'meson' 'ninja')
+options=('!libtool')
+groups=('xorg')
+# https://gitlab.freedesktop.org/xorg/xserver/-/tree/xwayland-21.1
+source=("https://xorg.freedesktop.org/archive/individual/xserver/${pkgname}-${pkgver}.tar.xz")
+sha256sums=('31f261ce51bbee76a6ca3ec02aa367ffa2b5efa2b98412df57ccefd7a19003ce')
+
+build() {
+  mkdir -p build
+  cd build
+
+  meson ../${pkgname}-${pkgver} \
+    --prefix=/usr \
+    --buildtype=release \
+    -Dglamor=true \
+    -Dxwayland_eglstream=false \
+    -Dxvfb=false \
+    -Dipv6=true \
+    -Dxdmcp=false \
+    -Dxcsecurity=true \
+    -Ddri3=true \
+    -Dxkb_dir=/usr/share/X11/xkb \
+    -Dxkb_output_dir=/var/lib/xkb
+  ninja
+}
+
+package() {
+  cd build
+
+  DESTDIR=${pkgdir} ninja install
+
+  install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
+  install -m644 ../${pkgname}-${pkgver}/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
+
+  # part of xorg-server, keep conflicting files there
+  rm ${pkgdir}/usr/share/man/man1/Xserver.1
+  rm ${pkgdir}/usr/lib/xorg/protocol.txt
+}

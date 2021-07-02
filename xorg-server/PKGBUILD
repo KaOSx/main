@@ -2,7 +2,7 @@
 pkgname=xorg-server
 pkgver=1.20.11
 # major updates build xorg-server/xf86-input-evdev/xorg-server again
-pkgrel=2
+pkgrel=3
 pkgdesc="X.Org X servers"
 arch=('x86_64')
 license=('custom')
@@ -12,7 +12,7 @@ depends=('xorgproto' 'xorg-util-macros' 'pixman'
          'libxrender' 'libdmx' 'libdrm' 'libxfixes' 'libxext' 'libxdmcp' 'libxshmfence'
          'systemd' 'xf86-input-evdev' 'xkeyboard-config' 'xorg-xkb-utils'
          'xorg-fonts-misc' 'xcb-util' 'xcb-util-image' 'xcb-util-keysyms'
-         'xcb-util-renderutil' 'xcb-util-wm' 'libepoxy' 'libglvnd' 'wayland-protocols' 'nettle')
+         'xcb-util-renderutil' 'xcb-util-wm' 'libepoxy' 'libglvnd' 'nettle')
 makedepends=('libx11' 'xtrans' 'libxkbfile' 'libxmu' 'libxtst' 'libxres' 'links' 'valgrind')
 #backup=('etc/X11/xorg.conf.d/10-evdev.conf' 'etc/X11/xorg.conf.d/10-quirks.conf')
 options=('!libtool')
@@ -41,18 +41,12 @@ build() {
       --enable-xcsecurity \
       --enable-xorg \
       --enable-xephyr \
-      --enable-xwayland \
+      --disable-xwayland \
       --enable-glamor \
-      --enable-kdrive \
-      --enable-kdrive-evdev \
-      --enable-kdrive-kbd \
-      --enable-kdrive-mouse \
       --enable-config-udev \
       --enable-systemd-logind \
       --enable-suid-wrapper \
       --enable-record \
-      --disable-xfbdev \
-      --disable-xfake \
       --disable-static \
       --sysconfdir=/etc/X11 \
       --localstatedir=/var \
