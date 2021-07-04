@@ -6,7 +6,7 @@ pkgname=qt5-tools
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=5
+pkgrel=6
 pkgdesc="A cross-platform application and UI framework, development tools and help files"
 arch=('x86_64')
 url='https://www.qt.io/'
@@ -23,16 +23,16 @@ source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz"
         'assistant.desktop'
         'designer.desktop'
         'linguist.desktop'
-        "https://github.com/qt/qttools/commit/3c30956e65a98706d283d44e07fd481a1849f74e.diff")
+        "qt_kde.patch")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
          '892d3632bdcd9a22f191aa8f28a3c0e1'
          '208921efc9e4c11fae762e9580ca23aa'
          '59cbeef3e6090dcb7d2a7d32cd62ea08'
-         '36b3dcbeb49105567ad44d8e57848052')
+         '643c5f28e42352a6e815d83f3ef49be8')
 
 build() {
     cd ${srcdir}/${_pkgfqn}
-    #patch -p1 -i ${srcdir}/3c30956e65a98706d283d44e07fd481a1849f74e.diff
+    patch -p1 -i ${srcdir}/qt_kde.patch
 
     /usr/lib/qt5/bin/qmake # INCLUDEPATH="/usr/include/QtWebKit /usr/include/QtWebKitWidgets"
     make
