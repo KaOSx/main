@@ -2,7 +2,7 @@
 pkgname=vigra
 pkgver=1.11.1
 _pkgver=1-11-1
-pkgrel=20
+pkgrel=21
 pkgdesc="Computer vision library"
 arch=('x86_64')
 url="https://ukoethe.github.io/vigra/"
@@ -14,10 +14,12 @@ optdepends=('python3: for python bindings'
 options=('!libtool')
 source=("https://github.com/ukoethe/vigra/archive/Version-${_pkgver}.tar.gz"
         "https://github.com/ukoethe/vigra/commit/8acd73a5e0408326e2a3c1ed1c2c70ffe2b954d0.diff"
-        "https://github.com/ukoethe/vigra/commit/b2ff44fbffcfa3f9e2862d890f43ad7cf588f565.diff")
+        "https://github.com/ukoethe/vigra/commit/b2ff44fbffcfa3f9e2862d890f43ad7cf588f565.diff"
+        "https://raw.githubusercontent.com/archlinux/svntogit-community/packages/vigra/trunk/vigra-openexr3.patch")
 md5sums=('46acc077a0cb24e41c5cb8e1f75dc148'
          '424d3938f1e7579d1893b5dd0585c526'
-         '3fcd2568044430844732d00d8d3a6861')
+         '3fcd2568044430844732d00d8d3a6861'
+         'f9de2112633e58b6e3bcefb83b7108f1')
 
 prepare() {
   cd ${pkgname}-Version-${_pkgver}
@@ -25,6 +27,8 @@ prepare() {
   patch -p1 -i ${srcdir}/b2ff44fbffcfa3f9e2862d890f43ad7cf588f565.diff
   # python 3.7 needed patch
   patch -p1 -i ${srcdir}/8acd73a5e0408326e2a3c1ed1c2c70ffe2b954d0.diff
+  # openexr 3.0 needed
+  patch -p1 -i ${srcdir}/vigra-openexr3.patch
 }
 
 build() {

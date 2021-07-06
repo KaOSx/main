@@ -2,7 +2,7 @@
 pkgname=gegl
 pkgver=0.4.30
 _pkgver=0.4
-pkgrel=4
+pkgrel=5
 pkgdesc="Graph based image processing framework."
 arch=('x86_64')
 url="https://www.gegl.org/"
@@ -11,10 +11,15 @@ depends=('babl' 'ffmpeg' 'openexr' 'librsvg' 'json-glib' 'libwebp' 'libraw' 'gex
 makedepends=('ruby' 'lua' 'exiv2' 'intltool' 'gobject-introspection' 'meson' 'ninja' 'python3-gobject3')
 options=('!libtool')
 source=("https://download.gimp.org/pub/gegl/${_pkgver}/${pkgname}-${pkgver}.tar.xz"
-        "https://gitlab.gnome.org/GNOME/gegl/commit/c1c3541caab485384087bbbcf1c83ef2d5bd4d43.diff")
+        "https://gitlab.gnome.org/GNOME/gegl/-/commit/499a239d158fadb3a04499255b5b282a8a6023bb.diff")
 sha256sums=('c112782cf4096969e23217ccdfabe42284e35d5435ff0c43d40e4c70faeca8dd'
-            'd69bb05a4327c2c1bc2bd1b6a4c938eb035ece37f8ea3ce6840d415dea4234e5')
+            '371bda564b4806f603ec6d2640fd95f276aa8de9aa71849a3638a793c8ed0749')
 
+prepare () {
+  cd ${pkgname}-${pkgver}
+
+  patch -p1 -i ${srcdir}/499a239d158fadb3a04499255b5b282a8a6023bb.diff
+}
 
 build() {
   mkdir -p build

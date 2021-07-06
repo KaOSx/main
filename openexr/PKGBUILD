@@ -1,17 +1,17 @@
 
 pkgname=openexr
-pkgver=2.5.7
+pkgver=3.0.5
 pkgrel=1
 pkgdesc="Provides the EXR file format, the image storage format of the motion picture industry."
 url="http://www.openexr.org"
 arch=('x86_64')
 license=('custom')
 depends=('boost-libs' 'python3' 'zlib')
-makedepends=('boost' 'cmake' 'freeglut' 'python3-numpy')
+makedepends=('boost' 'cmake')
 options=('!libtool')
 source=("https://github.com/AcademySoftwareFoundation/openexr/archive/v${pkgver}.tar.gz"
         "https://github.com/AcademySoftwareFoundation/openexr/commit/0b26a9dedda4924841323677f1ce0bce37bfbeb4.diff")
-md5sums=('7a847629c45dab65222439fa8d659dc2'
+md5sums=('41d1f47f56d10d43054d033ce1d05275'
          '673343bed6d675244da3fd30dcfeb3ab')
 
 prepare() {
