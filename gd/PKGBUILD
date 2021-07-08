@@ -2,13 +2,13 @@
 pkgname=gd
 pkgver=2.3.2
 _pkgver=2.3.2
-pkgrel=1
+pkgrel=2
 pkgdesc="Library for the dynamic creation of images by programmers"
 arch=('x86_64')
 url="https://libgd.github.io/"
 license=('custom')
-depends=('libpng' 'fontconfig' 'libjpeg-turbo' 'libtiff' 'libxpm' 'libwebp')
-#makedepends=('cmake')
+depends=('libpng' 'fontconfig' 'libjpeg-turbo' 'libtiff' 'libxpm' 'libwebp' 'libavif')
+makedepends=('ttf-liberation')
 options=('!libtool')
 source=("https://github.com/libgd/libgd/archive/gd-${_pkgver}.tar.gz")
 md5sums=('541e5d9213597c976188614fa400248c')
@@ -23,7 +23,7 @@ build() {
 
 check() {
   cd libgd-gd-${_pkgver}
-  # fontconfig basic test fails
+  # avif/compare_avif_to_png fails
   make check
  }
 
