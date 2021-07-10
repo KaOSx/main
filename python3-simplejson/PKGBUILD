@@ -1,6 +1,6 @@
 
 pkgname=python3-simplejson
-pkgver=3.17.2
+pkgver=3.17.3
 pkgrel=1
 pkgdesc='Simple, fast, extensible JSON encoder/decoder for Python'
 license=('MIT')
@@ -8,8 +8,8 @@ arch=('x86_64')
 url='https://github.com/simplejson/simplejson'
 depends=('python3')
 makedepends=('python3-setuptools')
-source=("https://github.com/simplejson/simplejson/archive/v${pkgver}.tar.gz")
-md5sums=('e8a028eabc1d9f397e01c154c0ec65ec')
+source=("https://files.pythonhosted.org/packages/source/s/simplejson/simplejson-${pkgver}.tar.gz")
+sha256sums=('da72a452bcf4349fc467a12b54ab0e63e654a571cacc44084826d52bde12b6ee')
 
 package() {
     cd simplejson-${pkgver}
