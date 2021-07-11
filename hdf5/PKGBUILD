@@ -1,7 +1,6 @@
 
 pkgname=hdf5
-pkgver=1.12.0
-_patchver=1.12.0
+pkgver=1.12.1
 _pkgver=1.12
 pkgrel=1
 arch=('x86_64')
@@ -11,14 +10,17 @@ license=('custom')
 depends=('zlib' 'sh')
 makedepends=('cmake')
 options=('!libtool')
-source=("https://www.hdfgroup.org/ftp/HDF5/releases/hdf5-${_pkgver}/hdf5-${_patchver}/src/${pkgname}-${_patchver}.tar.bz2")
-md5sums=('1fa68c4b11b6ef7a9d72ffa55995f898')
+source=("https://www.hdfgroup.org/ftp/HDF5/releases/hdf5-${_pkgver}/hdf5-${pkgver}/src/${pkgname}-${pkgver}.tar.bz2")
+sha256sums=('aaf9f532b3eda83d3d3adc9f8b40a9b763152218fa45349c3bc77502ca1f8f1c')
+
+prepare() {
+  cd ${pkgname}-${pkgver}
+
+  #touch release_docs/INSTALL_VMS.txt
+}
 
 build() {
-  mkdir -p build
-  cd build
-  
-  cmake ../${pkgname}-${_patchver} \
+  cmake -B build -S ${pkgname}-${pkgver} \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DONLY_SHARED_LIBS=ON \
     -DCMAKE_BUILD_TYPE=Release \
@@ -30,16 +32,13 @@ build() {
     -DHDF5_ENABLE_SZIP_SUPPORT=OFF \
     -DHDF5_ENABLE_SZIP_ENCODING=OFF \
     -DHDF5_ENABLE_PARALLEL=OFF
-  make 
+  cmake --build build
 }
 
 package() {
-  cd build
-
-  make DESTDIR=${pkgdir} install
+  DESTDIR=${pkgdir} cmake --install build
 
   install -d -m755 ${pkgdir}/usr/share/licenses/${pkgname}
-  #install -m644 ../COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
   mv ${pkgdir}/usr/share/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
   rm ${pkgdir}/usr/share/RELEASE.txt
   rm ${pkgdir}/usr/share/USING_HDF5_CMake.txt
