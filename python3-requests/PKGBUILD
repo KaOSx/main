@@ -1,21 +1,21 @@
 
 pkgname=python3-requests
-pkgver=2.25.1
-pkgrel=2
+pkgver=2.26.0
+pkgrel=1
 pkgdesc="Requests is an elegant and simple HTTP library for Python, built for human beings."
 arch=('x86_64')
 license=('Apache')
 url="https://requests.readthedocs.io/en/master/"
 depends=('python3-urllib3' 'python3-chardet' 'python3-certifi' 'python3-idna')
 makedepends=('python3-setuptools')
-source=("https://github.com/psf/requests/archive/v${pkgver}.tar.gz")
-md5sums=('d081e47eb0814127aaafeccf8b4108d6')
+source=("https://files.pythonhosted.org/packages/source/r/requests/requests-${pkgver}.tar.gz")
+sha256sums=('b8aa58f8cf793ffd8782d3d8cb19e66ef36f7aba4353eec859e74678b01b07a7')
 
 build() {
    cd requests-${pkgver}
-   sed -i 's|idna>=2.5,<3|idna>=2.5,<4|' setup.py
+   #sed -i 's|idna>=2.5,<3|idna>=2.5,<4|' setup.py
    
-   python3 setup.py build
+   python3 setup.py build --use_chardet_on_py3
 }
  
 package() {

@@ -1,34 +1,40 @@
 
 pkgname=yaml-cpp
-pkgver=0.6.3
-pkgrel=4
+pkgver=0.7.0
+pkgrel=1
 pkgdesc="YAML parser and emitter in C++ matching the YAML 1.2 spec"
 url="https://github.com/jbeder/yaml-cpp"
 arch=('x86_64')
 license=('MIT')
 depends=('gcc')
 makedepends=('cmake')
-source=("https://github.com/jbeder/yaml-cpp/archive/yaml-cpp-${pkgver}.tar.gz")
-md5sums=('b45bf1089a382e81f6b661062c10d0c2')
+source=("https://github.com/jbeder/yaml-cpp/archive/yaml-cpp-${pkgver}.tar.gz"
+        'cmake.diff')
+md5sums=('74d646a3cc1b5d519829441db96744f0'
+         '33abd80366290bd14fbeb1319eaca28d')
+
+prepare() {
+    cd ${pkgname}-${pkgname}-${pkgver}
+
+    patch -p0 -i ${srcdir}/cmake.diff
+}
 
 build() {
-    mkdir -p build
-    cd build
-
-    cmake ../${pkgname}-${pkgname}-${pkgver} \
+    cmake -B build -S ${pkgname}-${pkgname}-${pkgver} \
         -DCMAKE_BUILD_TYPE=Release \
         -DCMAKE_INSTALL_PREFIX=/usr \
         -DYAML_BUILD_SHARED_LIBS=ON \
+        -DCMAKE_INSTALL_DATADIR=lib \
         -DYAML_CPP_BUILD_TOOLS=OFF \
         -DYAML_CPP_BUILD_TESTS=OFF
-    make
+    cmake --build build
 }
 
 package() {
-    cd build
-    make DESTDIR=${pkgdir} install
 
-    install -Dm644 ../${pkgname}-${pkgname}-${pkgver}/LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+    DESTDIR=${pkgdir} cmake --install build
+
+    install -Dm644 ${pkgname}-${pkgname}-${pkgver}/LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
     
     #install -Dm644 yaml-cpp-config.cmake ${pkgdir}/usr/lib/cmake/${pkgname}/yaml-cpp-config.cmake
     #install -Dm644 yaml-cpp-config-version.cmake ${pkgdir}/usr/lib/cmake/${pkgname}/yaml-cpp-config-version.cmake
