@@ -13,9 +13,9 @@ sha256sums=('b8aa58f8cf793ffd8782d3d8cb19e66ef36f7aba4353eec859e74678b01b07a7')
 
 build() {
    cd requests-${pkgver}
-   #sed -i 's|idna>=2.5,<3|idna>=2.5,<4|' setup.py
+   sed -i 's|charset_normalizer~=2.0.0|chardet>=4.0.0,<5|' setup.py
    
-   python3 setup.py build --use_chardet_on_py3
+   python3 setup.py build
 }
  
 package() {
