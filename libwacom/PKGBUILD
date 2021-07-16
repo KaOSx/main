@@ -1,15 +1,16 @@
  
 pkgname=libwacom
-pkgver=1.10
+pkgver=1.11
 pkgrel=1
 pkgdesc="Library that provides applications with a way to get information about any tablets that are currently connected."
 arch=('x86_64')
 url="https://github.com/linuxwacom/libwacom/wiki"
 license=('GPLv2')
 depends=('glib2' 'libgudev')
+makedepends=('python3')
 source=("https://github.com/linuxwacom/libwacom/releases/download/${pkgname}-${pkgver}/${pkgname}-${pkgver}.tar.bz2"
         "https://github.com/linuxwacom/libwacom/commit/007c25052bf20adc1f5311c3e5668f6f343ac18b.diff")
-sha256sums=('f6c98c4597a786f967b3c02b9c93e40932a162cc4e279daf7abd4316b4265291'
+sha256sums=('4580a8fbad067a5b187abe864ab80d42d8138d0caec394533bec67bf457e4c58'
             'b1588dac7bff6f6988434041c0bf7bded7c09f1bfcd47db2922dca4555c5a4a1')
 
 build() {
