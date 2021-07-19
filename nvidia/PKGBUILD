@@ -3,8 +3,8 @@ _extramodules=extramodules-5.12
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=('nvidia' 'khd-nvidia')
-pkgver=465.31
-pkgrel=4
+pkgver=470.57.02
+pkgrel=1
 epoch=1
 arch=('x86_64')
 url="https://www.nvidia.com/page/home.html"
@@ -12,12 +12,13 @@ makedepends=('linux-headers' 'linux>=5.12.11' 'linux<5.13' "nvidia-utils=1:${pkg
 options=('!strip')
 license=('custom')
 
-_pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
+#_pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
+_pkg="NVIDIA-Linux-x86_64-${pkgver}"
 
 source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
         'nvidia_supported'
         'linux-4.10.patch')
-md5sums=('3f67ed0163f5974e3c5c828161152727'
+md5sums=('34b71dd32ab10d84dd256095291dc96f'
          '282f73f1a7326339a7b0e0716eee4f76'
          '4ab00fe5ab144083caa6c6994feea7e6')
 

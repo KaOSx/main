@@ -2,7 +2,7 @@
 pkgbase=nvidia-utils
 pkgname=('nvidia-utils' 'opencl-nvidia' 'nvidia-settings')
 # Edit hardware-detection/hooks/hwdetect_7_graphics and Installer job 11 on version jump from 43x.xx
-pkgver=465.31
+pkgver=470.57.02
 pkgrel=1
 epoch=1
 arch=('x86_64')
@@ -10,13 +10,13 @@ url="https://www.nvidia.com/page/home.html"
 license=('custom')
 makedepends=('xorg-server' 'libxvmc')
 options=('!strip')
-_pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
-#_pkg="NVIDIA-Linux-x86_64-${pkgver}"
+#_pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
+_pkg="NVIDIA-Linux-x86_64-${pkgver}"
 source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
 #source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}.run"
         'nvidia-restore-settings.desktop'
         'nvidia-drm-outputclass.conf')
-md5sums=('3f67ed0163f5974e3c5c828161152727'
+md5sums=('34b71dd32ab10d84dd256095291dc96f'
          '9237516792da7b6df32f8c7e8a98f475'
          'cb27b0f4a78af78aa96c5aacae23256c')
 
@@ -86,7 +86,7 @@ package_nvidia-utils() {
   install -D -m755 "libnvidia-glcore.so.${pkgver}" "${pkgdir}/usr/lib/libnvidia-glcore.so.${pkgver}"
   install -D -m755 "libnvidia-eglcore.so.${pkgver}" "${pkgdir}/usr/lib/libnvidia-eglcore.so.${pkgver}"
   install -D -m755 "libnvidia-glsi.so.${pkgver}" "${pkgdir}/usr/lib/libnvidia-glsi.so.${pkgver}"
-  install -D -m755 "libnvidia-egl-wayland.so.1.1.5" "${pkgdir}/usr/lib/libnvidia-egl-wayland.so.1.1.5"
+  install -D -m755 "libnvidia-egl-wayland.so.1.1.7" "${pkgdir}/usr/lib/libnvidia-egl-wayland.so.1.1.7"
   install -D -m644 "10_nvidia_wayland.json" "${pkgdir}/usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json"
   install -D -m755 "libEGL_nvidia.so.${pkgver}" "${pkgdir}/usr/lib/libEGL_nvidia.so.${pkgver}"
   install -D -m644 "10_nvidia.json" "${pkgdir}/usr/share/glvnd/egl_vendor.d/10_nvidia.json"
@@ -139,6 +139,10 @@ package_nvidia-utils() {
   # Vulkan real-time ray tracing
   install -D -m755 libnvidia-rtcore.so.${pkgver} ${pkgdir}/usr/lib/libnvidia-rtcore.so.${pkgver}
   install -D -m755 libnvidia-cbl.so.${pkgver} ${pkgdir}/usr/lib/libnvidia-cbl.so.${pkgver}
+  
+  # DLSS
+  install -D -m644 nvngx.dll -t ${pkgdir}/usr/lib/nvidia/wine
+  install -D -m644 _nvngx.dll -t ${pkgdir}/usr/lib/nvidia/wine
   
   # Systemd suspend/hibernate/resume service files
   # http://us.download.nvidia.com/XFree86/Linux-x86_64/430.40/README/powermanagement.html
