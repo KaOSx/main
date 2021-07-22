@@ -1,7 +1,7 @@
 #
 pkgname=libpciaccess
 pkgver=0.16
-pkgrel=1
+pkgrel=2
 pkgdesc="X11 PCI access library"
 arch=('x86_64')
 license=('custom')
@@ -14,7 +14,7 @@ sha256sums=('214c9d0d884fdd7375ec8da8dcb91a8d3169f263294c9a90c575bf1938b9f489')
 
 build() {
   cd ${pkgname}-${pkgver}
-  
+
   ./configure --prefix=/usr --sysconfdir=/etc
   make
 }
@@ -22,7 +22,7 @@ build() {
 package() {
   cd ${pkgname}-${pkgver}
   make DESTDIR=${pkgdir} install
-  
+
   install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
   install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
 }

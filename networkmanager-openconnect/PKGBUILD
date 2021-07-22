@@ -1,7 +1,8 @@
 
 pkgname=networkmanager-openconnect
-pkgver=1.2.6
-_pkgver=1.2
+_pkgname=NetworkManager-openconnect
+pkgver=1.2.7dev
+_pkgver=1.2.7-dev
 pkgrel=1
 pkgdesc="NetworkManager VPN integration for openconnect"
 arch=('x86_64')
@@ -11,12 +12,14 @@ depends=('networkmanager' 'openconnect' 'dbus-glib')
 makedepends=('intltool') 
 options=('!libtool')
 install=${pkgname}.install
-source=("https://download.gnome.org/sources/NetworkManager-openconnect/${_pkgver}/NetworkManager-openconnect-${pkgver}.tar.xz")
-sha256sums=('95109803596a9782680a5dca3b51c4ad8ff7e126169d5431278cab694112975a')
+#source=("https://download.gnome.org/sources/NetworkManager-openconnect/${_pkgver}/${_pkgname}-${pkgver}.tar.xz")
+source=("https://gitlab.gnome.org/GNOME/NetworkManager-openconnect/-/archive/${_pkgver}/${_pkgname}-${_pkgver}.tar.bz2")
+sha256sums=('eaa8ec31b7ae9b0e897b71681379b2cf84b3819438ce23b9ba612eb13e3076d3')
 
 build() {
-  cd NetworkManager-openconnect-${pkgver}
-  
+  cd ${_pkgname}-${_pkgver}
+
+  autoreconf -fvi
   ./configure --prefix=/usr \
     --sysconfdir=/etc \
     --libexecdir=/usr/lib/networkmanager \
@@ -26,7 +29,7 @@ build() {
 }
 
 package() {
-  cd NetworkManager-openconnect-${pkgver}
-  
+  cd ${_pkgname}-${_pkgver}
+
   make DESTDIR=${pkgdir} install 
 }
