@@ -1,7 +1,7 @@
 
 pkgname=ttf-google-fonts
-pkgver=20190926
-_commit=ed510bbd260ce9a07dd0db6feb8cd1e75471df98
+pkgver=20210723
+_commit=ba19f4ac0b5b635c233dcaf78a5666ce37947918
 pkgrel=1
 pkgdesc="TrueType fonts from the Google Fonts project"
 arch=('x86_64')
@@ -13,7 +13,7 @@ provides=('ttf-raleway')
 conflicts=('ttf-raleway')
 install=${pkgname}.install
 source=("https://github.com/google/fonts/archive/${_commit}.zip")
-md5sums=('597085d6e3ed1c2beb57886fb925fa6f')
+md5sums=('14952a7fcbac2081d16b2f6f5cc83325')
 
 package() {
   install -dm755 ${pkgdir}/usr/share/fonts/TTF

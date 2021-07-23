@@ -1,7 +1,7 @@
 
 pkgname=libcdio-paranoia
-pkgver=10.2+2.0.1
-_pkgver=10.2-2.0.1
+pkgver=10.2.2.01
+_pkgver=10.2+2.0.1
 pkgrel=1
 epoch=1
 pkgdesc="CD paranoia libraries from libcdio"
@@ -10,14 +10,13 @@ license=('GPL' 'LGPL')
 url="https://www.gnu.org/software/libcdio/"
 depends=('libcdio')
 options=('!libtool')
-#source=("https://ftp.gnu.org/gnu/libcdio/${pkgname}-${pkgver}.tar.bz2")
-source=("https://github.com/rocky/libcdio-paranoia/archive/release-${pkgver}.tar.gz")
-md5sums=('13aa9153d14a0d917c5bdac6e9bf8664')
+source=("https://ftp.gnu.org/gnu/libcdio/${pkgname}-${_pkgver}.tar.bz2")
+#source=("https://github.com/rocky/libcdio-paranoia/archive/release-${_pkgver}.tar.gz")
+md5sums=('98332ca7b2a4fcabf5dec8a57cc98fe9')
 
 build() {
-  cd ${pkgname}-release-${_pkgver}
+  cd ${pkgname}-${_pkgver}
 
-  ./autogen.sh
   ./configure --prefix=/usr \
         --enable-cpp-progs \
         --disable-static \
@@ -26,7 +25,7 @@ build() {
 }
 
 package() {
-  cd ${pkgname}-release-${_pkgver}
+  cd ${pkgname}-${_pkgver}
 
   make -j1 DESTDIR=${pkgdir} install
 }

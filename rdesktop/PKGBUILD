@@ -2,7 +2,7 @@
 pkgname=rdesktop
 pkgver=1.9.0
 _commit=7d8675074f99f30727403d69c51f440f24a2b024
-pkgrel=1
+pkgrel=2
 pkgdesc="Open source UNIX client for connecting to Windows Remote Desktop Services"
 arch=('x86_64')
 url="http://www.rdesktop.org/"
@@ -23,7 +23,7 @@ build() {
 
 package() {
   cd ${pkgname}-${pkgver}
-  
+
   make DESTDIR=${pkgdir} install
 }
 
