@@ -1,7 +1,7 @@
 
 pkgname=xorg-server-utils
 pkgver=7.14
-pkgrel=5
+pkgrel=6
 pkgdesc="X.Org utilities required by xorg-server"
 arch=('x86_64')
 url="https://xorg.freedesktop.org/"
@@ -50,8 +50,8 @@ sha256sums=('e6ee213a217265cc76050e4293ea70b98c32dce6505c6421227efbda62ab60c6'
             'a8753d4a476a3fcdfe0aed574604588c24565a991cb7f2be1f1106a17f56339b')
 
 build() {
-  cd "${srcdir}"
-  
+  cd ${srcdir}
+
   for i in *; do
     if [ -d "${i}" ]; then
       pushd "${i}"
@@ -70,18 +70,18 @@ build() {
 }
 
 package() {
-  cd "${srcdir}"
-  
+  cd ${srcdir}
+
   for i in *; do
     if [ -d "${i}" ]; then
       pushd "${i}"
-      make DESTDIR="${pkgdir}" install
-      install -m755 -d "${pkgdir}/usr/share/licenses/${pkgname}"
+      make DESTDIR=${pkgdir} install
+      install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
       install -m644 COPYING "${pkgdir}"/usr/share/licenses/${pkgname}/LICENSE.${i%-*}
       popd
     fi
   done
 
   # Replacing stub license files
-  install -m644 "${srcdir}"/LICENSE.* "${pkgdir}/usr/share/licenses/${pkgname}/"
+  install -m644 LICENSE.* ${pkgdir}/usr/share/licenses/${pkgname}/
 }

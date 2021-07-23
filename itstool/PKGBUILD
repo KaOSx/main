@@ -1,7 +1,7 @@
 
 pkgname=itstool
 pkgver=2.0.6
-pkgrel=1
+pkgrel=2
 epoch=1
 pkgdesc="XML to PO and back again"
 arch=('x86_64')
@@ -13,19 +13,19 @@ sha256sums=('6233cc22726a9a5a83664bf67d1af79549a298c23185d926c3677afa917b92a9')
 
 build() {
   cd ${pkgname}-${pkgver}
-  
+
   ./configure --prefix=/usr
   make
 }
 
 check() {
   cd ${pkgname}-${pkgver}
-  
+
   make -k check
 }
 
 package() {
   cd ${pkgname}-${pkgver}
-  
+
   make DESTDIR=${pkgdir} install
 }

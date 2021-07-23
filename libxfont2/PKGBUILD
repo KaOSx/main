@@ -1,7 +1,7 @@
  
 pkgname=libxfont2
 pkgver=2.0.4
-pkgrel=1
+pkgrel=2
 pkgdesc="X11 font rasterisation library, version 2"
 arch=('x86_64')
 url="https://xorg.freedesktop.org/"
@@ -27,7 +27,7 @@ build() {
 package() {
   cd libXfont2-${pkgver}
   make DESTDIR=${pkgdir} install
-  
+
   install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
   install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
 }

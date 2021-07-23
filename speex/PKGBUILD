@@ -1,7 +1,7 @@
 
 pkgname=speex
 pkgver=1.2.0
-pkgrel=2
+pkgrel=3
 pkgdesc="A free codec for free speech"
 arch=('x86_64')
 url="https://www.speex.org/"
@@ -14,7 +14,7 @@ sha256sums=('eaae8af0ac742dc7d542c9439ac72f1f385ce838392dc849cae4536af9210094')
 
 build() {
   cd ${pkgname}-${pkgver}
-  
+
   ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var
   make
 }
