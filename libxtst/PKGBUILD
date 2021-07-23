@@ -1,7 +1,7 @@
 
 pkgname=libxtst
 pkgver=1.2.3
-pkgrel=2
+pkgrel=3
 pkgdesc="X11 Testing -- Resource extension library"
 arch=('x86_64')
 url="https://xorg.freedesktop.org/"
@@ -14,7 +14,7 @@ md5sums=('ef8c2c1d16a00bd95b9fdcef63b8a2ca')
 
 build() {
   cd libXtst-${pkgver}
-  
+
   ./configure --prefix=/usr --disable-static
   make
 }
