@@ -20,7 +20,10 @@ prepare() {
 }
 
 build() {
-  cmake -B build -S ${pkgname}-${pkgver} \
+  mkdir -p build
+  cd build
+
+  cmake ../${pkgname}-${pkgver} \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DONLY_SHARED_LIBS=ON \
     -DCMAKE_BUILD_TYPE=Release \
@@ -32,11 +35,13 @@ build() {
     -DHDF5_ENABLE_SZIP_SUPPORT=OFF \
     -DHDF5_ENABLE_SZIP_ENCODING=OFF \
     -DHDF5_ENABLE_PARALLEL=OFF
-  cmake --build build
+  make
 }
 
 package() {
-  DESTDIR=${pkgdir} cmake --install build
+  cd build
+
+  make DESTDIR=${pkgdir} install
 
   install -d -m755 ${pkgdir}/usr/share/licenses/${pkgname}
   mv ${pkgdir}/usr/share/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
