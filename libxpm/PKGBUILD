@@ -1,27 +1,27 @@
 
 pkgname=libxpm
 pkgver=3.5.13
-pkgrel=1
+pkgrel=2
 pkgdesc="X11 pixmap library"
 arch=('x86_64')
 license=('custom')
-url="http://xorg.freedesktop.org/"
+url="https://xorg.freedesktop.org/"
 depends=('libxt' 'libxext')
 makedepends=('xorg-util-macros')
 options=('!libtool')
-source=("http://xorg.freedesktop.org/releases/individual/lib/libXpm-${pkgver}.tar.bz2")
+source=("https://xorg.freedesktop.org/releases/individual/lib/libXpm-${pkgver}.tar.bz2")
 sha256sums=('9cd1da57588b6cb71450eff2273ef6b657537a9ac4d02d0014228845b935ac25')
 
 build() {
   cd libXpm-${pkgver}
-  
+
   ./configure --prefix=/usr --sysconfdir=/etc --disable-static
   make
 }
 
 package() {
   cd libXpm-${pkgver}
-  make DESTDIR="${pkgdir}" install
+  make DESTDIR=${pkgdir} install
 
   install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
   install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/

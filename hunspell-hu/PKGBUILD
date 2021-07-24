@@ -1,7 +1,7 @@
 
 pkgname=hunspell-hu
 pkgver=1.7
-pkgrel=1
+pkgrel=2
 pkgdesc="Hungarian hunspell dictionary"
 arch=('x86_64')
 url="https://github.com/laszlonemeth/magyarispell/"
@@ -19,10 +19,10 @@ build() {
 
 package() {
   cd magyarispell-${pkgver}
-  
+
   install -dm755 ${pkgdir}/usr/share/hunspell
   install -m644 -t $pkgdir/usr/share/hunspell hu_HU.dic hu_HU.aff
-  
+
   #make DESTDIR=${pkgdir} install_myspell
 
   install -dm755 ${pkgdir}/usr/share/myspell/dicts
@@ -31,6 +31,6 @@ package() {
       ln -sv /usr/share/hunspell/$(basename $file) .
     done
   popd
-  
+
   install -Dm644 README ${pkgdir}/usr/share/doc/$pkgname/README
 }

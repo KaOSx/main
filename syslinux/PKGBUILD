@@ -8,7 +8,7 @@ pkgdesc="Collection of boot loaders that boot from FAT, ext2/3/4 and btrfs files
 url="http://syslinux.zytor.com/"
 license=('GPL2')
 depends=('perl' 'glibc' 'util-linux')
-makedepends=('nasm' 'python2' 'gnu-efi-libs')
+makedepends=('nasm' 'python3' 'gnu-efi-libs')
 optdepends=('mtools:           For mkdiskimage and syslinux support'
             'gptfdisk:         For GPT support'
             'efibootmgr:       For EFI support'
@@ -34,13 +34,14 @@ prepare() {
 }
 
 _build_syslinux_bios() {
-    
+    export LDFLAGS+=--no-dynamic-linker
+
     rm -rf ${srcdir}/${pkgname}-${_pkgver}-bios/ 
     cp -r ${srcdir}/${pkgname}-${_pkgver} ${srcdir}/${pkgname}-${_pkgver}-bios
     cd ${srcdir}/${pkgname}-${_pkgver}-bios/
     
-    make bios  #PYTHON=python3
-    make bios installer #PYTHON=python3
+    make bios  PYTHON=python3
+    make bios installer PYTHON=python3
     
 }
 

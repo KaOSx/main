@@ -1,7 +1,7 @@
 
 pkgname=cppunit
 pkgver=1.15.1
-pkgrel=1
+pkgrel=2
 pkgdesc="A C++ unit testing framework"
 arch=('x86_64')
 url="https://www.freedesktop.org/wiki/Software/cppunit/"
@@ -14,19 +14,19 @@ sha256sums=('89c5c6665337f56fd2db36bc3805a5619709d51fb136e51937072f63fcc717a7')
 
 build() {
    cd ${pkgname}-${pkgver}
-   
+
    ./configure --prefix=/usr --disable-static
    make
 }
 
 check() {
   cd ${pkgname}-${pkgver}
-  
+
   make -k check
 }
 
 package() {
    cd ${pkgname}-${pkgver}
-   
+
    make DESTDIR=${pkgdir} install
 }
