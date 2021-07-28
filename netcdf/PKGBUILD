@@ -13,7 +13,8 @@ md5sums=('a1e31625e2f270aa8044578d7320962c')
 
 build() {
   cd ${pkgname}-c-${pkgver}
-  
+  export CPPFLAGS+=" -DH5_USE_110_API"
+
   ./configure --prefix=/usr \
         --enable-shared \
         --enable-netcdf-4
@@ -22,7 +23,7 @@ build() {
 
 check() {
   cd ${pkgname}-c-${pkgver}
- 
+
   make check 
 }
 
