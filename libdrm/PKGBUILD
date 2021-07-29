@@ -1,13 +1,13 @@
 
 pkgname=libdrm
 pkgver=2.4.107
-pkgrel=1
+pkgrel=2
 pkgdesc="Userspace interface to kernel DRM services"
 arch=('x86_64')
 url="https://dri.freedesktop.org/"
 license=('custom')
 depends=('glibc' 'libpciaccess')
-makedepends=('cairo' 'valgrind' 'xorg-util-macros' 'pkg-config' 'meson' 'ninja')
+makedepends=('cairo' 'xorg-util-macros' 'pkg-config' 'meson' 'ninja')
 options=('!libtool')
 source=("https://dri.freedesktop.org/libdrm/${pkgname}-${pkgver}.tar.xz"
         'COPYING')
@@ -24,7 +24,8 @@ build() {
     --buildtype=release \
     -Dudev=true \
     -Dexynos=true \
-    -Domap=true
+    -Domap=true \
+    -Dvalgrind=false
   ninja
 }
 
