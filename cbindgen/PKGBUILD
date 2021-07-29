@@ -1,5 +1,5 @@
 pkgname=cbindgen
-pkgver=0.19.0
+pkgver=0.20.0
 pkgrel=1
 pkgdesc="Project for generating C bindings from Rust code"
 url="https://github.com/eqrion/cbindgen"
@@ -8,17 +8,17 @@ license=('MPL2')
 depends=('gcc-libs')
 makedepends=('rust')
 source=("https://github.com/eqrion/cbindgen/archive/v${pkgver}.tar.gz")
-md5sums=('b707b093702d4f1995f9a97f44ed081d')
+md5sums=('19e6e9bc319f689ef433eb59090e3f3c')
 
 build() {
   cd ${pkgname}-${pkgver}
-  
+
   cargo build --release
 }
 
 package() {
   cd ${pkgname}-${pkgver}
-  
+
   install -Dt ${pkgdir}/usr/bin target/release/cbindgen
   install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 } 

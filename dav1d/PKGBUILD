@@ -1,6 +1,6 @@
 
 pkgname=dav1d
-pkgver=0.9.0
+pkgver=0.9.1
 pkgrel=1
 pkgdesc='New AV1 cross-platform decoder, open-source, and focused on speed and correctness.'
 url='https://code.videolan.org/videolan/dav1d/'
@@ -9,12 +9,12 @@ license=('BSD-2')
 depends=('glibc')
 makedepends=('meson' 'ninja' 'nasm')
 source=("https://code.videolan.org/videolan/dav1d/-/archive/${pkgver}/${pkgname}-${pkgver}.tar.bz2")
-sha256sums=('e0cb645f170e7a087bc76e501324177be51a8db21df22ad37b43d289d7d1f7b5')
+sha256sums=('fb2a050e6c2410c99104f631e202a02697dfe1a2fc9acc3c50a16422aefb004c')
 
 build() {
   mkdir -p build
   cd build
-  
+
   meson ../${pkgname}-${pkgver} \
     --prefix=/usr \
     --buildtype=release
@@ -23,13 +23,13 @@ build() {
 
 check() {
   cd build
-  
+
   meson test
 }
 
 package() {
   cd build
   DESTDIR=${pkgdir} ninja install
-  
+
   install -D -m644 ../${pkgname}-${pkgver}/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
 }

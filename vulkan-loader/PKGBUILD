@@ -1,6 +1,6 @@
 # keep vulkan header & loader version in sync
 pkgname=vulkan-loader
-pkgver=1.2.185
+pkgver=1.2.186
 pkgrel=1
 pkgdesc="Vulkan Header files and API registry"
 arch=('x86_64')
@@ -9,7 +9,7 @@ license=('APACHE')
 depends=('mesa' 'wayland' 'libx11' 'libxkbcommon' 'libxrandr')
 makedepends=('cmake' 'vulkan-headers' 'python3-lxml')
 source=("https://github.com/KhronosGroup/Vulkan-Loader/archive/v${pkgver}.tar.gz")
-md5sums=('9ca0e4a4f1bdb9d58afb546f72b6e38f')
+md5sums=('46afb0e06ca0f06ee701a65fcf606a37')
 
 build() {
   cmake -B build -S Vulkan-Loader-${pkgver} \
