@@ -1,48 +1,32 @@
 
 pkgname=mlt
-pkgver=6.26.1
-pkgrel=3
+pkgver=7.0.1
+pkgrel=1
 pkgdesc="An open source multimedia framework"
 arch=('x86_64')
 url="https://www.mltframework.org"
 license=('GPL')
 depends=('sdl_image' 'libsamplerate' 'libdv' 'sox' 'libxml2' 'ffmpeg' 'python3' 'jack' 'ladspa' 'qt5-svg'
          'frei0r-plugins' 'libexif' 'opencv' 'rubberband' 'gdk-pixbuf2')
-makedepends=('swig')
+makedepends=('cmake' 'swig')
 source=("https://github.com/mltframework/mlt/releases/download/v${pkgver}/mlt-${pkgver}.tar.gz"
         "https://github.com/mltframework/mlt/commit/f58b44d73442986eeffec7431e59b7d19d214c1b.diff")
-md5sums=('60f42fc4d83b024c08383d985f50a86e'
+md5sums=('c9cca34e75caee6aa31d42d5e141206b'
          'b4605b9c281a054e16a7f42d3c69203f')
 
 build() {
-  cd mlt-${pkgver}
-  # Qt 5.15 QPainterPath
-  #patch -p1 -i ${srcdir}/f58b44d73442986eeffec7431e59b7d19d214c1b.diff
-  
-  #CXXFLAGS="-std=c++11"
-
-  ./configure --prefix=/usr \
-              --enable-gpl \
-              --enable-gpl3 \
-              --qimage-libdir=/usr/lib/ \
-              --qt-includedir=/usr/include/qt5 \
-              --avformat-swscale \
-              --enable-opencv
-  make
-
-  # mlt python bindings
-  cd src/swig/python
-  ./build
+  cmake -B build -S ${pkgname}-${pkgver} \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DGPL=ON \
+    -DGPL3=ON \
+    -DBUILD_TESTING=OFF \
+    -DMOD_OPENCV=ON \
+    -DSWIG_PYTHON=ON
+  cmake --build build
 }
 
-package () {
-  cd mlt-${pkgver}
-  make DESTDIR=${pkgdir} install
-  
-  # install python bindings
-  cd src/swig/python
-  mkdir -p ${pkgdir}/usr/lib/python3.8/
-  install -m0755 mlt.py ${pkgdir}/usr/lib/python3.8/
-  install -m0755 _mlt.so ${pkgdir}/usr/lib/python3.8/
-  install -m0755 mlt_wrap.o ${pkgdir}/usr/lib/python3.8/
+package() {
+
+  DESTDIR=${pkgdir} cmake --install build
 }
