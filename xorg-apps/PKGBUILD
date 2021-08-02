@@ -1,25 +1,25 @@
 
 pkgname=xorg-apps
 pkgver=7.14
-pkgrel=2
+pkgrel=3
 pkgdesc="Various X.Org applications"
 arch=('x86_64')
 url="https://xorg.freedesktop.org/"
 license=('custom')
-depends=('libxcursor' 'libxkbfile' 'libpng' 'libxft' 'libfontenc' 'libxaw')
+depends=('libxcursor' 'libxkbfile' 'libpng' 'libxft' 'libfontenc' 'libxaw' 'libxi')
 makedepends=('pkgconfig' 'xbitmaps' 'xorg-util-macros')
 source=("https://xorg.freedesktop.org/releases/individual/app/oclock-1.0.4.tar.bz2"
         "https://xorg.freedesktop.org/releases/individual/app/luit-1.1.1.tar.bz2"
         "https://xorg.freedesktop.org/releases/individual/app/xclock-1.0.9.tar.bz2"
         "https://xorg.freedesktop.org/releases/individual/app/xpr-1.0.5.tar.bz2"
-        "https://xorg.freedesktop.org/releases/individual/app/xwd-1.0.7.tar.bz2"
+        "https://xorg.freedesktop.org/releases/individual/app/xwd-1.0.8.tar.bz2"
         "https://xorg.freedesktop.org/releases/individual/app/xwud-1.0.5.tar.bz2"
         "https://xorg.freedesktop.org/releases/individual/app/x11perf-1.6.0.tar.bz2"
         "https://xorg.freedesktop.org/releases/individual/app/xbiff-1.0.4.tar.bz2"
         "https://xorg.freedesktop.org/releases/individual/app/xclipboard-1.1.3.tar.bz2"
         "https://xorg.freedesktop.org/releases/individual/app/xconsole-1.0.7.tar.bz2"
         "https://xorg.freedesktop.org/releases/individual/app/xcursorgen-1.0.7.tar.bz2"
-        "https://xorg.freedesktop.org/releases/individual/app/xeyes-1.1.2.tar.bz2"
+        "https://xorg.freedesktop.org/releases/individual/app/xeyes-1.2.0.tar.bz2"
         "https://xorg.freedesktop.org/releases/individual/app/xkill-1.0.5.tar.bz2"
         "https://xorg.freedesktop.org/releases/individual/app/xload-1.1.3.tar.bz2"
         "https://xorg.freedesktop.org/releases/individual/app/xlogo-1.0.5.tar.bz2"
@@ -34,14 +34,14 @@ sha256sums=('cc20cfc1c0d5128d89e1eecd9ba52e58f111075be163e0aeda5690dbaafbaefe'
             '30b0e787cb07a0f504b70f1d6123930522111ce9d4276f6683a69b322b49c636'
             'cf461fb2c6f2ac42c54d8429ee2010fdb9a1442a370adfbfe8a7bfaf33c123bb'
             'b936e0f1f8d63f5ad097a0bbdce2e67c34f5d49b7263f32a832ff62d394d1e1f'
-            'cd6815b8b9e0b98e284d3d732fb12162159cb9dcee4f45a7d4c0bd8b308a6794'
+            'fbaa2b34163714fe7be22b60920ea4683f63b355babb1781aec2e452a033031b'
             '99997051f8a892313f22edf41dab45864e86e7062ee9012d5dbb6a40fc6b10a9'
             'e87098dec1947572d70c62697a7b70bde1ab5668237d4660080eade6bc096751'
             'e1e1a39628a5678585008ef7fb1ff2864edaaa0e062989c2331f8c74e0fec971'
             '9c0e0a1f4f1d49f73c6cf3ccd27b5ca0e18afc63679f1a1ee466b1d82446ebb5'
             'd1144882df207378381bc83927906559defbf7b83a01d52c50ad44234c5851e0'
             '35b6f844b24f1776e9006c880a745728800764dbe3b327a128772b4610d8eb3d'
-            '57bcec0d2d167af9e5d44d0dbd74c6d7c0f0591cd0608952b23c749fdd910553'
+            'f8a17e23146bef1ab345a1e303c6749e42aaa7bcf4f25428afad41770721b6db'
             'c5f0bb6a95e1ac7c4def8a657496d5d2f21ccd41eb47ef2c9ccb03fb6d6aff6b'
             'f34e4803871d771325cfe52bebd98cc5b6040d3f065184ec73de436f9a375907'
             '633d7a3aa5df61e4e643b740e5799664741ab1a0ba40593e54fcd15dc30f378e'
@@ -54,9 +54,9 @@ sha256sums=('cc20cfc1c0d5128d89e1eecd9ba52e58f111075be163e0aeda5690dbaafbaefe'
             '633f8cb6a9c273b51e0dee1f747d1681a4faba7c43d16a28efe544ec940e6eb5')
 
 build() {
-  cd "${srcdir}"
+  cd ${srcdir}
   patch -p0 -i $srcdir/luit.patch
-  
+
   for i in *; do
     if [ -d "${i}" ]; then
       pushd "${i}"
@@ -70,7 +70,7 @@ build() {
 
 package() {
   cd "${srcdir}"
-  
+
   for i in *; do
     if [ -d "${i}" ]; then
       pushd "${i}"    
@@ -78,7 +78,7 @@ package() {
       popd
     fi
   done
-  
-  install -D -m644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+
+  install -D -m644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
 

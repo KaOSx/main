@@ -1,7 +1,7 @@
 
 pkgname=libxft
-pkgver=2.3.3
-pkgrel=2
+pkgver=2.3.4
+pkgrel=1
 pkgdesc="FreeType-based font drawing library for X"
 arch=('x86_64')
 license=('custom')
@@ -10,11 +10,11 @@ depends=('fontconfig' 'libxrender')
 makedepends=('pkgconfig')
 options=('!libtool')
 source=("https://xorg.freedesktop.org/releases/individual/lib/libXft-${pkgver}.tar.bz2")
-sha256sums=('225c68e616dd29dbb27809e45e9eadf18e4d74c50be43020ef20015274529216')
+sha256sums=('57dedaab20914002146bdae0cb0c769ba3f75214c4c91bd2613d6ef79fc9abdd')
 
 build() {
   cd libXft-${pkgver}
-  
+
   ./configure --prefix=/usr \
         --sysconfdir=/etc \
         --disable-static
@@ -24,7 +24,7 @@ build() {
 package() {
   cd libXft-${pkgver}
   make DESTDIR=${pkgdir} install
-  
+
   install -d -m755 ${pkgdir}/usr/share/licenses/${pkgname}
   install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
 
