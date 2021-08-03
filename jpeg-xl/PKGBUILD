@@ -1,7 +1,7 @@
 
 pkgname=jpeg-xl
-pkgver=0.3.7
-pkgrel=2
+pkgver=0.5
+pkgrel=1
 pkgdesc='JPEG XL image format reference implementation, called libjxl'
 arch=('x86_64')
 url='https://jpeg.org/jpegxl/'
@@ -45,7 +45,7 @@ check() {
 
 package() {
     DESTDIR=${pkgdir} cmake --install build
-    
+
     install -D -m644 jpeg-xl/plugins/mime/image-jxl.xml -t ${pkgdir}/usr/share/mime/packages
 }
 

@@ -2,7 +2,7 @@
 pkgname=gegl
 pkgver=0.4.30
 _pkgver=0.4
-pkgrel=6
+pkgrel=7
 pkgdesc="Graph based image processing framework."
 arch=('x86_64')
 url="https://www.gegl.org/"
@@ -24,7 +24,7 @@ prepare () {
 build() {
   mkdir -p build
   cd build
-  
+
   meson ../${pkgname}-${pkgver} \
     --prefix=/usr \
     --buildtype=release \
@@ -39,7 +39,7 @@ build() {
 
 package() {
   cd build
-  
+
   DESTDIR=${pkgdir} ninja install
 }
 
