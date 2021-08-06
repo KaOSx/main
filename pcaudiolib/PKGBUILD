@@ -1,29 +1,29 @@
 
 pkgname=pcaudiolib
-pkgver=1.1
+pkgver=1.2
 pkgrel=1
 _commit=d6a6b00aa4334b461c1a09c27b6c681eaac8da8a
 pkgdesc="Portable C Audio Library provides a C API to different audio devices."
 arch=('x86_64')
-url="https://github.com/rhdunn/pcaudiolib"
+url="https://github.com/espeak-ng/pcaudiolib"
 license=('GPL3')
 depends=('pulseaudio' 'alsa-lib')
 options=('!emptydirs')
-source=("https://github.com/rhdunn/pcaudiolib/archive/${_commit}.zip")
-md5sums=('0283a20fc6d20e5fef62fbe3766ea85c')
+source=("https://github.com/espeak-ng/pcaudiolib/archive/refs/tags/${pkgver}.tar.gz")
+md5sums=('0bd25f25a330699cffe62bd968d693ef')
 
 
 build() {
-  cd ${pkgname}-${_commit}
-  
+  cd ${pkgname}-${pkgver}
+
   ./autogen.sh
   ./configure --prefix=/usr
-  
+
   make -j1 
 }
 
 package() {
-  cd ${pkgname}-${_commit}
-  
+  cd ${pkgname}-${pkgver}
+
   make DESTDIR=${pkgdir} install
 }
