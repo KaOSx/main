@@ -1,25 +1,25 @@
 
 pkgname=libupnp
-pkgver=1.14.7
+pkgver=1.14.8
 pkgrel=1
 pkgdesc="Portable UPnP development kit."
 arch=('x86_64')
 url="https://pupnp.github.io/pupnp/"
 license=('BSD')
 depends=('glibc')
+makedepends=('cmake')
 source=("https://github.com/pupnp/pupnp/releases/download/release-${pkgver}/${pkgname}-${pkgver}.tar.bz2")
-sha1sums=('33e2eec13112860c9da8406ae6f60a920a7205cf')
+sha1sums=('ca6ad89c99a398f88e3a6e15b6394e2b75ec4923')
 
 build() {
-  cd ${pkgname}-${pkgver}
-  
-  ./configure --prefix=/usr
-  make
+  cmake -B build -S ${pkgname}-${pkgver} \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr
+  cmake --build build
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
-  make DESTDIR=${pkgdir} install
+  DESTDIR=${pkgdir} cmake --install build
 
-  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/custom/${pkgname}/COPYING
+  install -Dm644 ${pkgname}-${pkgver}/COPYING ${pkgdir}/usr/share/licenses/custom/${pkgname}/COPYING
 }
