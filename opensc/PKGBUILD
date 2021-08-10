@@ -1,6 +1,6 @@
 
 pkgname=opensc
-pkgver=0.21.0
+pkgver=0.22.0
 pkgrel=1
 pkgdesc='Tools and libraries for smart cards'
 arch=('x86_64')
@@ -11,14 +11,14 @@ depends=('openssl' 'pcsclite' 'libltdl')
 makedepends=('docbook-xsl')
 options=('!emptydirs')
 source=("https://github.com/OpenSC/OpenSC/archive/$pkgver.tar.gz")
-md5sums=('d9e06292e512f1dbfd19cf72d2eeef28')
+md5sums=('c21c0dc0654c80cbaa17c59196b94990')
 
 build() {
     cd OpenSC-$pkgver
     export LIBS=-lltdl
     ./bootstrap
     _sheetdir=(/usr/share/xml/docbook/xsl-stylesheets-*)
-    
+
     ./configure \
           --prefix=/usr \
           --sysconfdir=/etc \
@@ -36,7 +36,7 @@ build() {
 package(){
     cd OpenSC-$pkgver
     make DESTDIR="$pkgdir" install
-    
+
     install -D -m644 etc/opensc.conf "$pkgdir/etc/opensc.conf"
 }
 
