@@ -1,6 +1,6 @@
 
 pkgname=sdl2
-pkgver=2.0.14
+pkgver=2.0.16
 pkgrel=1
 pkgdesc="Library for portable low-level access to a video framebuffer, audio output, mouse, and keyboard (Version 2)"
 arch=('x86_64')
@@ -10,7 +10,7 @@ depends=('glibc' 'libxcursor' 'libxext' 'libxrender' 'libx11' 'libglvnd' 'pulsea
          'alsa-lib' 'mesa')
 makedepends=('libxrandr' 'libxinerama' 'libxkbcommon' 'fcitx')
 source=("https://www.libsdl.org/release/SDL2-${pkgver}.tar.gz")
-md5sums=('76ed4e6da9c07bd168b2acd9bfefab1b')
+md5sums=('98b8a1535a757ea1d03ae44e2fb20247')
 
 prepare() {
   mkdir -p build
@@ -18,7 +18,7 @@ prepare() {
 
 build() {
   cd build
-  
+
   ../SDL2-${pkgver}/configure --prefix=/usr \
     --enable-sdl-dlopen \
     --disable-arts \
@@ -35,6 +35,6 @@ build() {
 package() {
   cd build
   make DESTDIR=${pkgdir} install
-  
-  install -Dm644 ../SDL2-${pkgver}/COPYING.txt ${pkgdir}/usr/share/licenses/$pkgname/LICENSE
+
+  install -Dm644 ../SDL2-${pkgver}/LICENSE.txt ${pkgdir}/usr/share/licenses/$pkgname/LICENSE
 }
