@@ -1,6 +1,6 @@
 
 pkgname=python3-pip
-pkgver=21.2.3
+pkgver=21.2.4
 pkgrel=1
 pkgdesc="An easy_install replacement for installing pypi python3 packages"
 url="https://pip.pypa.io/"
@@ -8,13 +8,13 @@ arch=('x86_64')
 license=('MIT')
 depends=('python3' 'python3-setuptools')
 source=("https://files.pythonhosted.org/packages/source/p/pip/pip-${pkgver}.tar.gz")
-sha256sums=('91e66f2a2702e7d2dcc092ed8c5ebe923e69b9997ea28ba25823943bcd3bf820')
+sha256sums=('0eb8a1516c3d138ae8689c0c1a60fde7143310832f9dc77e11d8a4bc62de193b')
 
 package() {
   cd pip-${pkgver}
   python3 setup.py build
   python3 setup.py install --prefix=/usr --root=${pkgdir}
-  
+
   sed -i "s|#!/usr/bin/env python$|#!/usr/bin/env python3|" \
     ${pkgdir}/usr/lib/python3.8/site-packages/pip/__init__.py
 
