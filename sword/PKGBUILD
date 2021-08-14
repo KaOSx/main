@@ -1,0 +1,28 @@
+
+pkgname=sword
+pkgver=1.9.0
+_pkgver=1.9
+pkgrel=1
+pkgdesc='SWORD libraries for Bible programs'
+arch=('x86_64')
+url='https://www.crosswire.org/sword/index.jsp'
+license=('LGPL3')
+depends=('curl' 'swig' 'clucene')
+makedepends=('cmake')
+backup=('etc/sword.conf')
+source=("https://www.crosswire.org/ftpmirror/pub/sword/source/v${_pkgver}/${pkgname}-${pkgver}.tar.gz")
+md5sums=('7b86ab627993ef295307e3729d8edef2')
+
+build() {
+  cmake -B build -S ${pkgname}-${pkgver} \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DLIBSWORD_LIBRARY_TYPE=Shared \
+    -DSYSCONF_INSTALL_DIR=/etc
+  cmake --build build
+}
+
+package() {
+
+  DESTDIR=${pkgdir} cmake --install build
+}
