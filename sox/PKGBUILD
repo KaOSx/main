@@ -1,7 +1,7 @@
 
 pkgname=sox
 pkgver=14.4.2
-pkgrel=5
+pkgrel=6
 pkgdesc="The Swiss Army knife of sound processing tools"
 arch=('x86_64')
 url="http://sox.sourceforge.net/"
@@ -15,7 +15,7 @@ md5sums=('ba804bb1ce5c71dd484a102a5b27d0dd')
 build() {
   cd ${pkgname}-${pkgver}
   sed -i 's/(sox_.*|lsx_(check_read_params|/(sox_.*|lsx_(error|flush|check_read_params|/' src/Makefile.am
-  
+
   aclocal
   automake
   
@@ -28,6 +28,6 @@ build() {
 
 package() {
   cd ${pkgname}-${pkgver}
-  
+
   make DESTDIR=${pkgdir} install
 }
