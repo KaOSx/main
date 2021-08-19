@@ -1,7 +1,8 @@
 
 pkgname=openbabel
-pkgver=2.4.1
-pkgrel=2
+pkgver=3.1.1
+_pkgver=3-1-1
+pkgrel=1
 pkgdesc="Open, collaborative project allowing anyone to search, convert,
          analyze, or store data from molecular modeling, chemistry, solid-state materials,
          biochemistry, or related areas"
@@ -11,27 +12,23 @@ license=('GPL')
 depends=('gcc-libs' 'libxml2' 'eigen3' 'cairo')
 makedepends=('cmake')
 options=('!libtool')
-source=("https://downloads.sourceforge.net/openbabel/${pkgname}-${pkgver}.tar.gz")
-md5sums=('d9defcd7830b0592fece4fe54a137b99')
+source=("https://github.com/openbabel/openbabel/releases/download/${pkgname}-${_pkgver}/${pkgname}-${pkgver}-source.tar.bz2")
+md5sums=('581c78e6c89368b9f0c17cfb5cec8190')
 
 prepare() {
   cd ${pkgname}-${pkgver}
-  
+
   #sed -i -e 's|if __GNUC__ == 4  //&&|if __GNUC__ >= 4  //&&|' include/openbabel/shared_ptr.h
 }
 
 build() {
-  mkdir -p build
-  
-  cd build
-  cmake ../${pkgname}-${pkgver} \
+  cmake -B build -S ${pkgname}-${pkgver} \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr
-  make
+  cmake --build build
 }
 
 package() {
-  cd build
-  
-  make DESTDIR=${pkgdir} install
+
+  DESTDIR=${pkgdir} cmake --install build
 }
