@@ -1,7 +1,7 @@
 
 pkgname=gtk4
-pkgver=4.2.1
-_pkgver=4.2
+pkgver=4.4.0
+_pkgver=4.4
 pkgrel=1
 pkgdesc="The GTK+ Toolkit (v4)"
 arch=('x86_64')
@@ -14,7 +14,7 @@ makedepends=('gobject-introspection' 'sassc' 'meson' 'ninja')
 options=('!libtool' '!docs')
 license=('LGPL')
 source=("https://ftp.gnome.org/pub/gnome/sources/gtk/${_pkgver}/gtk-${pkgver}.tar.xz")
-sha256sums=('023169775de43f0a1fde066fbc19d78545ea6a7562c1915abde9b8ae4a7309e6')
+sha256sums=('e0a1508f441686c3a20dfec48af533b19a4b2e017c18eaee31dccdb7d292505b')
 
 build() {
   mkdir -p build
@@ -30,7 +30,8 @@ build() {
     -Ddemos=false \
     -Dbuild-examples=false \
     -Dbuild-tests=false \
-    -Dinstall-tests=false
+    -Dinstall-tests=false \
+    -Dvulkan=enabled
   ninja
 }
 
