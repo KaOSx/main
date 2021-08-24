@@ -1,7 +1,7 @@
 
 pkgname=pstoedit
 pkgver=3.75
-pkgrel=3
+pkgrel=4
 pkgdesc="Translates PostScript and PDF graphics into other vector formats"
 arch=('x86_64')
 url="http://www.pstoedit.net/"
@@ -16,12 +16,13 @@ build() {
   cd ${pkgname}-${pkgver}
   #sed -i 's|-pedantic||' configure
 
-  ./configure --prefix=/usr
+  ./configure --prefix=/usr \
+    --with-magick
   make
 }
 
 package() {
   cd ${pkgname}-${pkgver}
-  
+
   make DESTDIR=${pkgdir} install
 }

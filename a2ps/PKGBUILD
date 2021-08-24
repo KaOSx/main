@@ -1,7 +1,7 @@
 
 pkgname=a2ps
 pkgver=4.14
-pkgrel=10
+pkgrel=11
 pkgdesc="An Any to PostScript filter"
 arch=('x86_64')
 url="https://www.gnu.org/software/a2ps/"
@@ -50,7 +50,7 @@ build() {
   cd ${pkgname}-${pkgver}
   libtoolize --force --copy
   autoreconf --force --install -I m4 
-  
+
   LIBS+="-lm" ./configure --prefix=/usr \
        --sysconfdir=/etc/a2ps \
        --includedir=/usr/include \
@@ -61,6 +61,6 @@ build() {
 
 package() {
   cd ${pkgname}-${pkgver}
-  
+
   make DESTDIR="${pkgdir}" install
 }

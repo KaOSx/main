@@ -1,7 +1,7 @@
 
 pkgname=imagemagick
-pkgver=6.9.12.20
-_pkgver=6.9.12-20
+pkgver=7.1.0.5
+_pkgver=7.1.0-5
 pkgrel=1
 pkgdesc="An image viewing/manipulation program"
 arch=('x86_64')
@@ -14,13 +14,13 @@ makedepends=('opencl-headers' 'subversion')
 options=('!docs' 'libtool' '!emptydirs')
 source=("https://www.imagemagick.org/download/ImageMagick-${_pkgver}.tar.xz"
         'perlmagick.rpath.patch')
-md5sums=('14274af31e5832bb9a1d99b893a5b4ae'
+md5sums=('93734748a765ae2d05b510e584f05222'
          '0faf7158fd3a0904d9a70dd3e3c1fe9c')
 
 build() {
 	cd ImageMagick-${_pkgver}
 	sed '/AC_PATH_XTRA/d' -i configure.ac
-        autoreconf --force --install
+    autoreconf --force --install
 
 	patch -p0 -i ${srcdir}/perlmagick.rpath.patch 
 
@@ -55,7 +55,7 @@ build() {
 
 check() {
         cd ImageMagick-${_pkgver}
-        # 2 demos fail without libwmf
+        # 1 demo fails without libwmf
         make check
 }
 
