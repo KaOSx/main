@@ -1,6 +1,6 @@
 
 pkgname=iso-codes
-pkgver=4.6.0
+pkgver=4.7.0
 pkgrel=1
 pkgdesc="Lists of various ISO standards (e.g. country,language, language scripts, and currency names) in one place"
 arch=('x86_64')
@@ -10,17 +10,17 @@ pkgdesc="Lists of the country, language, and currency names"
 makedepends=('python3')
 #source=("https://pkg-isocodes.alioth.debian.org/downloads/${pkgname}-${pkgver}.tar.xz")
 source=("https://salsa.debian.org/iso-codes-team/iso-codes/-/archive/${pkgname}-${pkgver}/iso-codes-${pkgname}-${pkgver}.tar.bz2")
-md5sums=('74566259a3dfbf2addfaf8af3697cb9e')
+md5sums=('e72349ccc3a3cf0de5fb95d71630f5d8')
 
 build() {
   cd ${pkgname}-${pkgname}-${pkgver}
-  
+
   ./configure --prefix=/usr
   make
 }
 
 package() {
   cd ${pkgname}-${pkgname}-${pkgver}
-  
+
   make DESTDIR=${pkgdir} pkgconfigdir=/usr/lib/pkgconfig install
 }
