@@ -8,8 +8,8 @@ url="https://www.unidata.ucar.edu/downloads/netcdf/"
 license=('custom')
 depends=('gcc-libs' 'hdf5' 'curl')
 options=('!libtool' '!makeflags')
-source=("https://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-c-${pkgver}.tar.gz")
-md5sums=('a1e31625e2f270aa8044578d7320962c')
+source=("https://downloads.unidata.ucar.edu/netcdf-c/${pkgver}/src/netcdf-c-${pkgver}.tar.gz")
+md5sums=('8da8665f1f185b85bc8127bc0bad0ee6')
 
 build() {
   cd ${pkgname}-c-${pkgver}
@@ -23,7 +23,7 @@ build() {
 
 check() {
   cd ${pkgname}-c-${pkgver}
-
+  # 2 tests fail in 4.8.1
   make check 
 }
 

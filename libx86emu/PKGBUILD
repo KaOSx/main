@@ -1,34 +1,28 @@
 
 pkgname=libx86emu
-pkgver=3.1.1.7
-_pkgver=3.1-1.7
-_shortver=3.1
+pkgver=3.2
+_pkgver=3
 pkgrel=1
 pkgdesc="x86 emulation library"
 arch=('x86_64')
 url="https://github.com/wfeldt/libx86emu"
 license=('BSD')
 depends=('glibc')
-makedepends=('rpmextract')
 options=('!emptydirs')
-source=("https://download.opensuse.org/source/tumbleweed/repo/oss/src/${pkgname}-${_pkgver}.src.rpm")
-sha256sums=('b22c299973a1553c124cfd311a6ac86647bcd79cbcb4d9d2c1bea5bef8c4e4f2')
+#source=("https://download.opensuse.org/source/tumbleweed/repo/oss/src/${pkgname}-${_pkgver}.src.rpm")
+source=("https://github.com/wfeldt/libx86emu/archive/refs/tags/3.2.tar.gz")
+sha256sums=('4faf853cc3776bc089fe01917acf56043feb42dc7bae91f60b974b2b00b1b0f3')
 
 build() {
-  cd ${srcdir}
-  rpmextract.sh ${pkgname}-${_pkgver}.src.rpm
-  tar -xJf ${pkgname}-${_shortver}.tar.xz
-  
-  cd ${srcdir}/${pkgname}-${_shortver}
+  cd ${pkgname}-${pkgver}
 
-  make LIBDIR=/usr/lib
+  make VERSION=${pkgver} MAJOR_VERSION=${_pkgver} GIT2LOG= LIBDIR=/usr/lib
 }
 
 package() {
-  cd ${srcdir}/${pkgname}-${_shortver}
-  make LIBDIR=/usr/lib DESTDIR=${pkgdir} install
-  
-  install -Dm644 LICENSE \
-  ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+  cd ${pkgname}-${pkgver}
+  make VERSION=${pkgver} MAJOR_VERSION=${_pkgver} GIT2LOG= LIBDIR=/usr/lib DESTDIR=${pkgdir} install
+
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
 
