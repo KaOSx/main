@@ -1,35 +1,33 @@
 
 pkgname=pmanager
-pkgver=0.2.7
+pkgver=0.3.0
 pkgrel=1
-_commit=e01fb9fb89d502e5c66b72e6ed3f34cb92a4db67
+_commit=9b6903404d9292d898cd2eb0763e32d7a440539b
 pkgdesc="Packages viewer & Mirrors status used by KaOS"
 arch=('x86_64')
 url="https://github.com/KaOSx/pmanager"
 license=('Public Domain')
-depends=('go')
-backup=('etc/pmanager/pmanager.conf')
+depends=('go' 'sqlite')
 source=("https://github.com/KaOSx/pmanager/archive/${_commit}.zip"
         'pmanager.service'
         'pmanager_update.service'
         'pmanager_update.timer')
-md5sums=('87b55fcff2a89d9516ac634a817c838b'
+md5sums=('2610fef5caf7e2a5f2b18a13fc6bfd51'
          '680f391419f6ced62a6984f9a1eb69ef'
          '4d340e0496cc1c69fb0a319ba460d39b'
          '9ae0fe194f318cff49054bf6d57d4978')
  
 build() {
   cd ${pkgname}-${_commit}
-  
+
   go build -o pmanager pmanager.go
 }
 
 package() {
   cd ${pkgname}-${_commit} 
-  
+
   install -Dm755 pmanager ${pkgdir}/usr/bin/pmanager
-  install -Dm644 resources/etc/pmanager/pmanager.conf ${pkgdir}/etc/pmanager/pmanager.conf
-  
+
   install -Dm644 ../pmanager.service ${pkgdir}/usr/lib/systemd/system/pmanager.service
   install -Dm644 ../pmanager_update.service ${pkgdir}/usr/lib/systemd/system/pmanager_update.service
   install -Dm644 ../pmanager_update.timer ${pkgdir}/usr/lib/systemd/system/pmanager_update.timer
