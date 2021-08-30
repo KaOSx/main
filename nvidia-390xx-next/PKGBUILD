@@ -18,9 +18,11 @@ license=('custom')
 _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 
 source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
-        'linux-5.13.patch')
+        'linux-5.13.patch'
+        'linux-5.14.patch')
 md5sums=('bdfffb4693160a7e2eb7bc2ff43b84bf'
-         'cf432576556abdf678a775a8bfe53dcd')
+         'cf432576556abdf678a775a8bfe53dcd'
+         'b75c09ec4a5057079cb3ec2f188bdba2')
 
 build() {
     cd ${srcdir}
@@ -28,6 +30,7 @@ build() {
     
     cd ${_pkg}
     patch -p1 -i ${srcdir}/linux-5.13.patch
+    patch -p1 -i ${srcdir}/linux-5.14.patch
     # linux 4.20 needed
     #sed -i -e 's|ipmi_user_t         p_user;|struct ipmi_user    *p_user;|g' kernel/nvidia/os-interface.c
     
