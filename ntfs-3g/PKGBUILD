@@ -1,8 +1,8 @@
 
 pkgname=ntfs-3g
 _pkgname=ntfs-3g_ntfsprogs
-pkgver=2017.3.23
-pkgrel=3
+pkgver=2021.8.22
+pkgrel=1
 pkgdesc="Stable read and write NTFS driver"
 url="https://www.tuxera.com/company/open-source/"
 arch=('x86_64')
@@ -12,15 +12,16 @@ makedepends=('pkgconfig')
 options=('!libtool')
 conflicts=('ntfsprogs')
 provides=("ntfsprogs=${pkgver}")
+# https://github.com/tuxera/ntfs-3g/releases
 source=("https://www.tuxera.com/opensource/${_pkgname}-${pkgver}.tgz"
         'CVE-2019-9755.patch')
-md5sums=('d97474ae1954f772c6d2fa386a6f462c'
+md5sums=('90da343e78877d388eb34cefae6799ae'
          '38f3ee38f666ce30cf03336b9405da9a')
 
 build() {
   cd ${_pkgname}-${pkgver}
-  patch -p1 -i ${srcdir}/CVE-2019-9755.patch
-  
+  #patch -p1 -i ${srcdir}/CVE-2019-9755.patch
+
   ./configure --prefix=/usr \
        --with-fuse=external \
        --disable-static \
@@ -35,7 +36,7 @@ build() {
 package() {
   cd ${_pkgname}-${pkgver}
   make DESTDIR=${pkgdir} rootlibdir=/usr/lib install
-  
+
   ln -s /bin/ntfs-3g ${pkgdir}/sbin/mount.ntfs
 }
 
