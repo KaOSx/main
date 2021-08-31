@@ -1,7 +1,7 @@
 
 pkgname=testdisk
 pkgver=7.2
-pkgrel=2
+pkgrel=3
 pkgdesc="Checks and undeletes partitions + PhotoRec, signature based recovery tool"
 arch=('x86_64')
 url="http://www.cgsecurity.org/index.html?testdisk.html"
@@ -17,14 +17,14 @@ md5sums=('4cc6f1d884d254fed2a9177768b2aba0')
 build() {
   cd ${pkgbase}-${pkgver}-WIP
   sed -i 's|Exec=/usr/bin/qphotorec %F|Exec=kdesu /usr/bin/qphotorec %F|g' linux/qphotorec.desktop
-  
+
   # Qt5 changes
   sed -i '/<QWidget>/d' src/*.h
   sed -i '/<QWidget>/d' src/*.cpp
   sed -i 's/Qt::escape\(.*\)text())/QString\1text()).toHtmlEscaped()/g' src/qphotorec.cpp
-  
+
   sed -i 's|qt4|qt5|g' configure
-  
+
   CXXFLAGS="-std=c++11"
 
   export QTGUI_LIBS="$(pkg-config Qt5Widgets --libs)"
@@ -37,7 +37,7 @@ build() {
 
 package() {
   cd ${pkgbase}-${pkgver}-WIP
-  
+
   make DESTDIR=${pkgdir} install
 }
 
