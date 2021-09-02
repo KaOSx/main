@@ -2,7 +2,7 @@
 pkgname=libspatialite
 pkgver=5.0.1
 _pkgver=5.0.1
-pkgrel=2
+pkgrel=3
 pkgdesc="SQLite extension to support spatial data types and operations"
 arch=('x86_64')
 url="https://www.gaia-gis.it/fossil/libspatialite/index"
@@ -14,9 +14,9 @@ md5sums=('5f4a961afbb95dcdc715b5d7f8590573')
 
 build() {
   cd ${pkgname}-${_pkgver}
-  
+
   #CFLAGS=-DACCEPT_USE_OF_DEPRECATED_PROJ_API_H
-  
+
   ./configure --prefix=/usr \
     --enable-proj \
     --disable-rttopo
@@ -25,6 +25,6 @@ build() {
 
 package() {
   cd ${pkgname}-${_pkgver}
-  
+
   make DESTDIR=${pkgdir}/ install
 }
