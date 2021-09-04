@@ -1,13 +1,13 @@
 
 pkgname=pkgfile
 pkgver=21
-pkgrel=3
+pkgrel=4
 pkgdesc="An alpm .files metadata explorer"
 arch=('x86_64')
 url="https://github.com/falconindy/pkgfile"
 license=('MIT')
 depends=('libarchive' 'curl' 'pcre' 'pacman')
-makedepends=('meson' 'ninja')
+makedepends=('meson' 'ninja' 'clang')
 install=pkgfile.install
 source=("https://github.com/falconindy/pkgfile/archive/v${pkgver}.tar.gz")
 md5sums=('6edfc7c84891ed0a32a0aa47949d6ee9')
@@ -21,12 +21,11 @@ build() {
     --buildtype=release \
     --libexecdir=/usr/lib
   ninja
-  
 }
 
 package() {
   cd build
-  
+
   DESTDIR=${pkgdir} ninja install
 }
 
