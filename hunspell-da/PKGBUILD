@@ -1,0 +1,24 @@
+
+pkgname=hunspell-da
+pkgver=2.6.147
+pkgrel=1
+pkgdesc='Danish dictionary for Hunspell/Myspell'
+arch=('x86_64')
+url='https://stavekontrolden.dk/'
+license=('GPL3')
+depends=('hunspell')
+source=("https://stavekontrolden.dk/dictionaries/da_DK/da_DK-${pkgver}.oxt")
+md5sums=('425e145f7bc01248568aebe8c0e20890')
+
+package() {
+  install -dm755 ${pkgdir}/usr/share/hunspell
+  install -m644 da_DK.aff ${pkgdir}/usr/share/hunspell
+  install -m644 da_DK.dic ${pkgdir}/usr/share/hunspell
+
+  install -dm755 ${pkgdir}/usr/share/myspell/dicts
+  pushd ${pkgdir}/usr/share/myspell/dicts
+  for file in ${pkgdir}/usr/share/hunspell/*; do
+    ln -sv /usr/share/hunspell/$(basename $file) .
+  done
+  popd
+}
