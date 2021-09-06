@@ -1,6 +1,6 @@
 
 pkgname=mpg123
-pkgver=1.28.2
+pkgver=1.29.0
 pkgrel=1
 pkgdesc="A console based real time MPEG Audio Player for Layer 1, 2 and 3"
 arch=('x86_64')
@@ -13,11 +13,11 @@ optdepends=('sdl: for sdl audio support'
 options=('libtool')
 groups=('multimedia')
 source=("https://www.mpg123.org/download/${pkgname}-${pkgver}.tar.bz2")
-sha1sums=('45d8dc173e7c12846a45f6c167080e030a46dc9c')
+sha1sums=('8580b3984a3e75a9bb209f4cdd3f4f3a22cac500')
 
 build() {
   cd ${pkgname}-${pkgver}
-  
+
   ./configure --prefix=/usr \
               --enable-int-quality \
               --with-audio="alsa oss sdl jack pulse"
@@ -26,6 +26,6 @@ build() {
 
 package() {
   cd ${pkgname}-${pkgver}
-  
+
   make DESTDIR=${pkgdir} install
 }
