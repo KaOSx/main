@@ -1,37 +1,26 @@
 
 pkgname=soqt
-pkgver=1.5.0
-pkgrel=2
+pkgver=1.6.0
+pkgrel=1
 pkgdesc='A library which provides the glue between Coin and Qt'
 arch=('x86_64')
-url='http://www.coin3d.org/lib/soqt/'
+url='https://github.com/coin3d/soqt/'
 license=('GPL')
-depends=('coin' 'qt')
-makedepends=('doxygen')
+depends=('coin' 'qt5-base')
+makedepends=('cmake')
 options=('!libtool')
-source=("https://bitbucket.org/Coin3D/coin/downloads/SoQt-${pkgver}.tar.gz")
-md5sums=('9f1e582373d66f556b1db113a93ac68e')
+source=("https://github.com/coin3d/soqt/releases/download/SoQt-${pkgver}/${pkgname}-${pkgver}-src.tar.gz")
+md5sums=('724996aedad2a33760dc36f08ceeda22')
 
 build() {
-  cd ${srcdir}/SoQt-${pkgver}
-
-  ./configure --prefix=/usr \
-    --enable-optimization \
-    --enable-man \
-    --enable-exceptions \
-    --disable-debug \
-    --disable-maintainer-mode \
-    --disable-dependency-tracking \
-    --enable-shared \
-    --disable-static \
-    --with-qt=/usr
-
-  make
+  cmake -B build -S ${pkgname} \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib
+  cmake --build build
 }
 
 package() {
-  cd SoQt-${pkgver}
 
-  make DESTDIR=${pkgdir} install
+  DESTDIR=${pkgdir} cmake --install build
 }
-
