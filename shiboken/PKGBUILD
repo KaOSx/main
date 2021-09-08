@@ -1,9 +1,8 @@
 
-pkgname=shiboken
-_pkgname=pyside2-setup
-pkgver=2.0.0
-_commit=a3e4e367cf462e2dd9d7b08fe8d3f0007c33e1fa
-pkgrel=6
+pkgname=shiboken2
+_pkgname=pyside-setup-opensource-src
+pkgver=5.15.2
+pkgrel=1
 pkgdesc="Plugin (front-end) for Generator Runner. It generates bindings for C++ libraries using CPython source code"
 arch=('x86_64')
 license=('LGPL')
@@ -11,26 +10,20 @@ url="http://code.qt.io/cgit/pyside/shiboken.git/tree/README.md"
 depends=('python3' 'qt5-xmlpatterns' 'libxslt' 'clang')
 makedepends=('cmake' 'python3-sphinx')
 #source=("git://code.qt.io/pyside/pyside-setup.git")
-source=("https://github.com/pyside/pyside2-setup/archive/${_commit}.zip")
-md5sums=('a9361ee65a65c6211c0f2215a2758b66')
+source=("https://download.qt.io/official_releases/QtForPython/${pkgname}/PySide2-${pkgver}-src/${_pkgname}-${pkgver}.tar.xz")
+md5sums=('e9bb6b57d39eb6cf1720cd3589a8b76a')
 
-
-build(){
-    cd ${_pkgname}-${_commit}/sources/shiboken2
-    mkdir -p build
-    cd build
-    
-    cmake ../ \
-        -DCMAKE_INSTALL_PREFIX=/usr \
-        -DCMAKE_BUILD_TYPE=Release \
-        -DBUILD_TESTS=OFF \
-        -DUSE_PYTHON_VERSION=2
-    make
+build() {
+  cmake -B build -S ${_pkgname}-${pkgver}/sources/shiboken2 \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DBUILD_TESTS=OFF \
+    -DUSE_PYTHON_VERSION=3
+  cmake --build build
 }
 
-package(){
-    cd ${_pkgname}-${_commit}/sources/shiboken2/build
-    
-    make DESTDIR=${pkgdir} install
+package() {
+
+  DESTDIR=${pkgdir} cmake --install build
 }
 
