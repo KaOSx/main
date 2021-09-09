@@ -31,5 +31,9 @@ build() {
 package() {
 
   DESTDIR=${pkgdir} cmake --install build
+
+  # part of qt5-base
+  rm ${pkgdir}/usr/bin/rcc-qt5
+  rm ${pkgdir}/usr/bin/uic-qt5
 }
 
