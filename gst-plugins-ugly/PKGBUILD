@@ -1,6 +1,6 @@
 
 pkgname=gst-plugins-ugly
-pkgver=1.18.4
+pkgver=1.18.5
 pkgrel=1
 pkgdesc="GStreamer Multimedia Framework Ugly Plugins"
 arch=('x86_64')
@@ -11,12 +11,12 @@ depends=('gst-plugins-base' 'libdvdread' 'lame' 'libmpeg2' 'a52dec'
 makedepends=('python3' 'meson' 'ninja')
 options=('!libtool' '!emptydirs')
 source=("https://gstreamer.freedesktop.org/src/gst-plugins-ugly/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('218df0ce0d31e8ca9cdeb01a3b0c573172cc9c21bb3d41811c7820145623d13c')
+sha256sums=('df32803e98f8a9979373fa2ca7e05e62f977b1097576d3a80619d9f5c69f66d9')
 
 build() {
   mkdir -p build
   cd build
-  
+
   meson ../${pkgname}-${pkgver} \
     --prefix=/usr \
     --buildtype=release \
@@ -33,6 +33,6 @@ check() {
 
 package() {
   cd build
-  
+
   DESTDIR=${pkgdir} ninja install
 }

@@ -1,6 +1,6 @@
 
 pkgname=gstreamer-vaapi
-pkgver=1.18.4
+pkgver=1.18.5
 pkgrel=1
 pkgdesc="GStreamer Multimedia Framework Vaapi Plugin"
 arch=('x86_64')
@@ -10,12 +10,12 @@ depends=('gst-plugins-bad' 'libva' 'libxrandr')
 makedepends=('python3' 'gobject-introspection' 'meson' 'ninja')
 options=('!libtool')
 source=("https://gstreamer.freedesktop.org/src/gstreamer-vaapi/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('92db98af86f3150d429c9ab17e88d2364f9c07a140c8f445ed739e8f10252aea')
+sha256sums=('4a460fb95559f41444eb24864ad2d9e37922b6eea941510310319fc3e0ba727b')
 
 build() {
   mkdir -p build
   cd build
-  
+
   meson ../${pkgname}-${pkgver} \
     --prefix=/usr \
     --buildtype=release \
@@ -32,6 +32,6 @@ check() {
 
 package() {
   cd build
-  
+
   DESTDIR=${pkgdir} ninja install
 }
