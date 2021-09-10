@@ -1,14 +1,14 @@
 
 pkgname=jansson
-pkgver=2.13.1
+pkgver=2.14
 pkgrel=1
 pkgdesc='C library for encoding, decoding and manipulating JSON data'
 arch=('x86_64')
 url='https://digip.org/jansson/'
 license=('MIT')
 options=('!libtool')
-source=("https://digip.org/jansson/releases/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('e343e5b2e8fac568a00a8ca36dc01ebe')
+source=("https://github.com/akheron/jansson/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.bz2")
+md5sums=('3f90473d7d54ebd1cb6a2757396641df')
 
 build() {
   cd ${pkgname}-${pkgver}

@@ -1,273 +1,77 @@
 
-_USE_GNU_EFI="1"
-
 pkgname=refind-efi
 pkgver=0.13.2
-pkgrel=2
+pkgrel=3
 pkgdesc="Rod Smith's fork of rEFIt UEFI Boot Manager"
 url="http://www.rodsbooks.com/refind/index.html"
 arch=('x86_64')
 license=('GPL3' 'custom')
 depends=('bash' 'dosfstools' 'efibootmgr')
+makedepends=('gnu-efi-libs')
 optdepends=('imagemagick: For refind-mkfont script')
 options=('!strip' 'docs' '!makeflags')
 install="${pkgname}.install"
 source=("https://downloads.sourceforge.net/refind/refind-src-${pkgver}.tar.gz"
-        'refind_linux.conf')
+        'refind_linux.conf'
+        'os_kaos.png')
 md5sums=('053502eb2a1bbbc40fd0b735cb57b33b'
-         '12ce3e22a216e7b25c253478a34713b4')
-
-
-if [[ "${_USE_GNU_EFI}" == "1" ]]; then
-	
-	pkgdesc="${pkgdesc} - Built with GNU-EFI libs"
-	makedepends=('gnu-efi-libs')
-	
-else
-	
-	pkgdesc="${pkgdesc} - Built with Tianocore UDK libs"
-	makedepends+=('subversion' 'python3')
-	
-	_TIANOCORE_SVN_URL="https://svn.code.sf.net/p/edk2/code/branches/UDK2014"
-	_TIANO_DIR_="tianocore-udk-2014-svn"
-	_TIANO_SVN_REV_="15322"
-	
-	_TIANOCORE_PKG="Mde"
-	_TIANOCORE_TARGET="RELEASE"
-	_UDK_TARGET="${_TIANOCORE_PKG}Pkg/${_TIANOCORE_PKG}Pkg.dsc"
-	_COMPILER="GCC48"
-	
-	## BaseTools MdePkg MdeModulePkg IntelFrameworkPkg IntelFrameworkModulePkg
-	for _DIR_ in BaseTools MdePkg MdeModulePkg IntelFrameworkPkg IntelFrameworkModulePkg ; do
-		source+=("${_TIANO_DIR_}_${_DIR_}::svn+${_TIANOCORE_SVN_URL}/${_DIR_}#revision=${_TIANO_SVN_REV_}")
-	done
-	
-fi
-
-
-_setup_tianocore_env_vars() {
-	
-	msg "Setup UDK PATH ENV variables"
-	export _UDK_DIR="${srcdir}/${_TIANO_DIR_}_build"
-	export EDK_TOOLS_PATH="${_UDK_DIR}/BaseTools"
-	
-}
-
-_prepare_tianocore_sources() {
-	
-	msg "Delete old UDK BUILD dir"
-	rm -rf "${_UDK_DIR}/" || true
-	
-	msg "Create UDK BUILD dir"
-	mkdir -p "${_UDK_DIR}/"
-	
-	for _DIR_ in BaseTools MdePkg MdeModulePkg IntelFrameworkPkg IntelFrameworkModulePkg ; do
-		mv "${srcdir}/${_TIANO_DIR_}_${_DIR_}" "${_UDK_DIR}/${_DIR_}"
-	done
-	
-	cd "${_UDK_DIR}/"
-	
-	msg "Cleanup UDK config files"
-	rm -rf "${_UDK_DIR}/Build/" || true
-	rm -rf "${_UDK_DIR}/Conf/" || true
-	mkdir -p "${_UDK_DIR}/Conf/"
-	mkdir -p "${_UDK_DIR}/Build/"
-	
-	msg "Use python3 for UDK BaseTools"
-	sed 's|python |python3 |g' -i "${EDK_TOOLS_PATH}/BinWrappers/PosixLike"/* || true
-	sed 's|python |python3 |g' -i "${EDK_TOOLS_PATH}/Tests/GNUmakefile"
-	
-	msg "Fix GCC Warning as error"
-	sed 's|-Werror |-Wno-error -Wno-unused-but-set-variable |g' -i "${EDK_TOOLS_PATH}/Source/C/Makefiles/header.makefile" || true
-	sed 's|-Werror |-Wno-error -Wno-unused-but-set-variable |g' -i "${EDK_TOOLS_PATH}/Conf/tools_def.template" || true
-	
-	msg "Fix GenFw: ERROR 3000: Invalid, bad symbol definition"
-	## http://www.mail-archive.com/edk2-devel@lists.sourceforge.net/msg03625.html
-	sed -e 's|_OBJCOPY_FLAGS      =|_OBJCOPY_FLAGS      = -R .eh_frame|g' -i "${EDK_TOOLS_PATH}/Conf/tools_def.template" || true
-	
-	msg "Remove GCC -g debug option and add -O0 -mabi=ms -maccumulate-outgoing-args"
-	sed 's|DEFINE GCC_ALL_CC_FLAGS            = -g |DEFINE GCC_ALL_CC_FLAGS            = -O0 -mabi=ms -maccumulate-outgoing-args |g' -i "${EDK_TOOLS_PATH}/Conf/tools_def.template" || true
-	sed 's|DEFINE GCC44_ALL_CC_FLAGS            = -g |DEFINE GCC44_ALL_CC_FLAGS            = -O0 -mabi=ms -maccumulate-outgoing-args |g' -i "${EDK_TOOLS_PATH}/Conf/tools_def.template" || true
-	
-	msg "Fix UDK Target Platform"
-	sed "s|ACTIVE_PLATFORM       = Nt32Pkg/Nt32Pkg.dsc|ACTIVE_PLATFORM       = ${_UDK_TARGET}|g" -i "${EDK_TOOLS_PATH}/Conf/target.template" || true
-	sed "s|TARGET                = DEBUG|TARGET                = ${_TIANOCORE_TARGET}|g" -i "${EDK_TOOLS_PATH}/Conf/target.template" || true
-	sed "s|TARGET_ARCH           = IA32|TARGET_ARCH           = ${_TIANO_ARCH}|g" -i "${EDK_TOOLS_PATH}/Conf/target.template" || true
-	sed "s|TOOL_CHAIN_TAG        = MYTOOLS|TOOL_CHAIN_TAG        = ${_COMPILER}|g" -i "${EDK_TOOLS_PATH}/Conf/target.template" || true
-	
-	chmod 0755 "${_UDK_DIR}/BaseTools/BuildEnv"
-	
-}
-
-_prepare_refind_sources() {
-	
-	cd "${srcdir}/refind-${pkgver}/"
-	
-	if [[ "${_USE_GNU_EFI}" == "1" ]]; then
-		msg "Enable GNU_EFI_USE_MS_ABI"
-		sed "s|-DEFI_FUNCTION_WRAPPER|-DEFI_FUNCTION_WRAPPER -maccumulate-outgoing-args|g" -i "${srcdir}/refind-${pkgver}/Make.common" || true
-		sed "s|-DEFIX64|-DEFIX64 -maccumulate-outgoing-args|g" -i "${srcdir}/refind-${pkgver}/Make.common" || true
-		sed "s|-m64|-maccumulate-outgoing-args -m64|g" -i "${srcdir}/refind-${pkgver}/filesystems/Make.gnuefi" || true
-	else
-		msg "Fix UDK Path in rEFInd Makefiles"
-		sed "s|^export EDK2BASE=.*$|export EDK2BASE=${_UDK_DIR}|g" -i "${srcdir}/refind-${pkgver}/Makefile" || truee
-		
-		msg "Disable build ID generation"
-+		sed 's|--gc-sections|--gc-sections --build-id=none|g' -i "${srcdir}/refind-${pkgver}/Make.common" || true
-	fi
-	
-}
+         '12ce3e22a216e7b25c253478a34713b4'
+         '0239a75d2d5393a11af30baa5aeb97ea')
 
 prepare() {
-	
-	if [[ "${_USE_GNU_EFI}" != "1" ]]; then
-		_setup_tianocore_env_vars
-		
-		msg "Prepare Tianocore Sources"
-		_prepare_tianocore_sources
-	fi
-	
-	msg "Prepare rEFInd Sources"
-	_prepare_refind_sources
-	
-}
-
-_build_tianocore_sources() {
-	
-	_setup_tianocore_env_vars
-	
-	cd "${_UDK_DIR}/"
-	
-	msg "Unset all compiler FLAGS"
-	unset CFLAGS
-	unset CPPFLAGS
-	unset CXXFLAGS
-	unset LDFLAGS
-	unset MAKEFLAGS
-	
-	msg "Setup UDK Environment"
-	source "${_UDK_DIR}/BaseTools/BuildEnv" BaseTools
-	echo
-	
-	msg "Compile UDK BaseTools"
-	make -C "${EDK_TOOLS_PATH}"
-	echo
-	
-	msg "Unset all compiler FLAGS"
-	unset CFLAGS
-	unset CPPFLAGS
-	unset CXXFLAGS
-	unset LDFLAGS
-	unset MAKEFLAGS
-	
-	msg "Compile UDK Libraries"
-	"${EDK_TOOLS_PATH}/BinWrappers/PosixLike/build" -p "${_UDK_TARGET}" -a X64 -b "${_TIANOCORE_TARGET}" -t "${_COMPILER}"
-	echo
-	
+    cd refind-${pkgver}
+    # Point refind dir paths to /usr/share/refind/ in refind-install script"
+    sed 's|RefindDir=\"\$ThisDir/refind\"|RefindDir="/usr/share/refind/"|g' -i refind-install
 }
 
 build() {
-	
-	if [[ "${_USE_GNU_EFI}" != "1" ]]; then
-		_build_tianocore_sources
-	fi
-	
-	cd "${srcdir}/refind-${pkgver}/"
-	
-	msg "Unset all compiler FLAGS"
-	unset CFLAGS
-	unset CPPFLAGS
-	unset CXXFLAGS
-	unset LDFLAGS
-	unset MAKEFLAGS
-	
-	msg "Compile rEFInd UEFI application"
-	if [[ "${_USE_GNU_EFI}" == "1" ]]; then
-		make gnuefi
-		echo
-	else
-		make edk2
-		echo
-	fi
-	
-	cd "${srcdir}/refind-${pkgver}/"
-	
-	msg "Unset all compiler FLAGS"
-	unset CFLAGS
-	unset CPPFLAGS
-	unset CXXFLAGS
-	unset LDFLAGS
-	unset MAKEFLAGS
-	
-	msg "Compile UEFI FS drivers"
-	if [[ "${_USE_GNU_EFI}" == "1" ]]; then
-		make fs_gnuefi
-		echo
-	else
-		make fs_edk2
-		echo
-	fi
-	
+    cd refind-${pkgver}
+
+    make gptsync_gnuefi
+    make all_gnuefi
 }
 
 package() {
-	
-	msg "Install the rEFInd UEFI application"
-	install -d "${pkgdir}/usr/share/refind/"
-	install -D -m0644 "${srcdir}/refind-${pkgver}/refind/refind_x64.efi" "${pkgdir}/usr/share/refind/refind_x64.efi"
-	
-	msg "Install UEFI drivers built from rEFInd"
-	install -d "${pkgdir}/usr/share/refind/drivers_x64/"
-	install -D -m0644 "${srcdir}/refind-${pkgver}/drivers_x64"/*.efi "${pkgdir}/usr/share/refind/drivers_x64/"
-	
-	msg "Install UEFI applications built from rEFInd"
-	install -d "${pkgdir}/usr/share/refind/tools_x64"
-	install -D -m0644 "${srcdir}/refind-${pkgver}/gptsync/gptsync_x64.efi" "${pkgdir}/usr/share/refind/tools_x64/gptsync_x64.efi"
-	
-	msg "Install rEFInd helper scripts"
-	install -d "${pkgdir}/usr/bin/"
-	install -D -m0755 "${srcdir}/refind-${pkgver}/refind-install" "${pkgdir}/usr/bin/refind-install"
-	install -D -m0755 "${srcdir}/refind-${pkgver}/mkrlconf" "${pkgdir}/usr/bin/refind-mkrlconf"
-	install -D -m0755 "${srcdir}/refind-${pkgver}/mvrefind" "${pkgdir}/usr/bin/refind-mvrefind"
-	install -D -m0755 "${srcdir}/refind-${pkgver}/fonts/mkfont.sh" "${pkgdir}/usr/bin/refind-mkfont"
-	
-	msg "Install the rEFInd sample config files"
-	install -D -m0644 "${srcdir}/refind-${pkgver}/refind.conf-sample" "${pkgdir}/usr/share/refind/refind.conf-sample"
-	install -D -m0644 "${srcdir}/refind_linux.conf" "${pkgdir}/usr/share/refind/refind_linux.conf-sample"
-	
-	msg "Install the rEFInd docs"
-	install -d "${pkgdir}/usr/share/refind/docs/html/"
-	install -d "${pkgdir}/usr/share/refind/docs/Styles/"
-	install -D -m0644 "${srcdir}/refind-${pkgver}/docs/refind"/* "${pkgdir}/usr/share/refind/docs/html/"
-	install -D -m0644 "${srcdir}/refind-${pkgver}/docs/Styles"/* "${pkgdir}/usr/share/refind/docs/Styles/"
-	install -D -m0644 "${srcdir}/refind-${pkgver}/README.txt" "${pkgdir}/usr/share/refind/docs/README.txt"
-	install -D -m0644 "${srcdir}/refind-${pkgver}/NEWS.txt" "${pkgdir}/usr/share/refind/docs/NEWS.txt"
-	rm -f "${pkgdir}/usr/share/refind/docs/html/.DS_Store" || true
-	
-	msg "Install the rEFInd fonts"
-	install -d "${pkgdir}/usr/share/refind/fonts/"
-	install -D -m0644 "${srcdir}/refind-${pkgver}/fonts"/* "${pkgdir}/usr/share/refind/fonts/"
-	rm -f "${pkgdir}/usr/share/refind/fonts/mkfont.sh"
-	
-	msg "Install the rEFInd icons"
-	install -d "${pkgdir}/usr/share/refind/icons/"
-	install -D -m0644 "${srcdir}/refind-${pkgver}/icons"/*.png "${pkgdir}/usr/share/refind/icons/"
-	
-	msg "Install the rEFInd images"
-	install -d "${pkgdir}/usr/share/refind/images/"
-	install -D -m0644 "${srcdir}/refind-${pkgver}/images"/*.{png,bmp} "${pkgdir}/usr/share/refind/images/"
-	
-	msg "Install the rEFInd keys"
-	install -d "${pkgdir}/usr/share/refind/keys/"
-	install -D -m0644 "${srcdir}/refind-${pkgver}/keys"/* "${pkgdir}/usr/share/refind/keys/"
-	
-	msg "Install the rEFIt license file, since rEFInd is a fork of rEFIt"
-	install -d "${pkgdir}/usr/share/licenses/refind/"
-	install -D -m0644 "${srcdir}/refind-${pkgver}/LICENSE.txt" "${pkgdir}/usr/share/licenses/refind/LICENSE"
-	
-	msg "Point refind dir paths to /usr/share/refind/ in refind-install script"
-	#sed 's|^ThisDir=.*|ThisDir="/usr/share/refind/"|g' -i "${pkgdir}/usr/bin/refind-install"
-	sed 's|RefindDir=\"\$ThisDir/refind\"|RefindDir="/usr/share/refind/"|g' -i "${pkgdir}/usr/bin/refind-install"
-	#sed 's|^ThisScript=.*|ThisScript="/usr/bin/refind-install"|g' -i "${pkgdir}/usr/bin/refind-install"
-	
+    cd refind-${pkgver}
+
+    # Install the rEFInd UEFI application
+    install -D -m0644 refind/refind_x64.efi -t ${pkgdir}/usr/share/refind
+
+    # Install UEFI drivers built from rEFInd
+    install -D -m0644 drivers_x64/*.efi -t ${pkgdir}/usr/share/refind/drivers_x64/
+
+    # Install UEFI applications built from rEFInd
+    install -D -m0644 gptsync/gptsync_x64.efi -t ${pkgdir}/usr/share/refind/tools_x64
+    # Install rEFInd helper scripts
+    install -D -m0755 refind-install -t ${pkgdir}/usr/bin
+    install -D -m0755 mkrlconf -t ${pkgdir}/usr/bin
+    install -D -m0755 mvrefind -t ${pkgdir}/usr/bin
+    install -D -m0755 fonts/mkfont.sh -t ${pkgdir}/usr/bin
+
+    # Install the rEFInd sample config files
+    install -D -m0644 refind.conf-sample -t ${pkgdir}/usr/share/refind
+    install -D -m0644 ../refind_linux.conf -t ${pkgdir}/usr/share/refind
+
+    # Install the rEFInd docs
+    install -D -m0644 docs/refind/* -t ${pkgdir}/usr/share/refind/docs/html/
+    install -D -m0644 docs/Styles/* -t ${pkgdir}/usr/share/refind/docs/Styles/
+    install -D -m0644 README.txt -t ${pkgdir}/usr/share/refind/docs
+
+    rm -f ${pkgdir}/usr/share/refind/docs/html/.DS_Store
+
+    # Install the rEFInd fonts
+    install -D -m0644 fonts/*.png -t ${pkgdir}/usr/share/refind/fonts/
+
+    # Install the rEFInd icons
+    install -D -m0644 icons/*.png -t ${pkgdir}/usr/share/refind/icons/
+    install -D -m0644 ../os_kaos.png -t ${pkgdir}/usr/share/refind/icons/
+
+    # Install the rEFInd images
+    install -D -m0644 images/*.{png,bmp} -t ${pkgdir}/usr/share/refind/images/
+
+    # Install the rEFInd keys
+    install -D -m0644 keys/* -t ${pkgdir}/usr/share/refind/keys/
+
+    # Install the rEFIt license file, since rEFInd is a fork of rEFIt
+    install -D -m0644 LICENSE.txt -t ${pkgdir}/usr/share/licenses/refind
 }
