@@ -1,7 +1,6 @@
 
-
 pkgname=libexif
-pkgver=0.6.22
+pkgver=0.6.23
 _pkgver=0_6_22
 pkgrel=1
 pkgdesc="A library to parse an EXIF file and read the data from those tags"
@@ -10,18 +9,18 @@ url="https://libexif.github.io/"
 license=('LGPL')
 depends=('glibc')
 options=('!libtool')
-source=("https://github.com/libexif/libexif/releases/download/libexif-${_pkgver}-release/${pkgname}-${pkgver}.tar.xz")
-md5sums=('1070601438443fdd5b8635565693cf99')
+source=("https://github.com/libexif/libexif/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.xz")
+md5sums=('aa78b055afbd87f7580957d6a615f238')
 
 build() {
   cd ${pkgname}-${pkgver}
-  
+
   ./configure --prefix=/usr 
   make 
 }
 
 package() {
   cd ${pkgname}-${pkgver}
-  
+
   make DESTDIR=${pkgdir} install 
 }
