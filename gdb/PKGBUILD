@@ -1,7 +1,7 @@
 
 pkgname=gdb
-pkgver=10.2
-pkgrel=2
+pkgver=11.1
+pkgrel=1
 pkgdesc="The GNU Debugger"
 arch=('x86_64')
 url="https://www.gnu.org/software/gdb/"
@@ -11,14 +11,14 @@ makedepends=('texinfo')
 backup=('etc/gdb/gdbinit')
 options=('!libtool' '!buildflags')
 source=("https://ftp.gnu.org/gnu/gdb/${pkgname}-${pkgver}.tar.xz")
-md5sums=('c044b7146903ec51c9d2337a29aee93b')
+md5sums=('257cb0f67927f79acf636d8c01e19990')
 
 build() {
   cd ${pkgname}-${pkgver}
-  
+
   mkdir -p build
   cd build
-  
+
   ../configure --prefix=/usr \
     --disable-nls \
     --with-system-readline \
@@ -35,7 +35,7 @@ package() {
   touch $pkgdir/etc/gdb/gdbinit
 
   # files in binutils
-  rm ${pkgdir}/usr/include/{ansidecl,bfd,bfdlink,bfd_stdint,ctf-api,ctf,diagnostics,dis-asm,symcat,plugin-api}.h
+  rm ${pkgdir}/usr/include/{ansidecl,bfd,bfdlink,ctf-api,ctf,diagnostics,dis-asm,symcat,plugin-api}.h
   rm ${pkgdir}/usr/lib/{libbfd,libctf-nobfd,libctf,libopcodes}.a
   rm ${pkgdir}/usr/share/info/bfd.info
 }
