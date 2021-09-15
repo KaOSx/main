@@ -1,5 +1,6 @@
 
-pkgname=pivy
+pkgname=python3-pivy
+_pkgname=pivy
 pkgver=0.6.6
 pkgrel=1
 pkgdesc='Python bindings to coin3d'
@@ -8,24 +9,27 @@ url='https://github.com/coin3d/pivy/'
 license=('GPL')
 depends=('python3' 'soqt')
 makedepends=('cmake' 'swig' 'python3-setuptools')
+provides=('pivy')
+conflicts=('pivy')
+replaces=('pivy')
 options=('!libtool')
 source=("https://github.com/coin3d/pivy/archive/refs/tags/${pkgver}.tar.gz")
 md5sums=('1b3d07aab6eccf2eba05479639825d86')
 
 prepare() {
-  cd ${pkgname}-${pkgver}
+  cd ${_pkgname}-${pkgver}
 
   sed -i -e 's|find_executable("qmake")|find_executable("qmake-qt5")|' qtinfo.py
 }
 
 build() {
-  cd ${pkgname}-${pkgver}
+  cd ${_pkgname}-${pkgver}
 
   python3 setup.py build
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
+  cd ${_pkgname}-${pkgver}
 
   python3 setup.py install --prefix=/usr --root=${pkgdir} --optimize=1 --skip-build
 }
