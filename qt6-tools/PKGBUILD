@@ -13,7 +13,7 @@ url='https://www.qt.io/'
 license=('GPL3' 'LGPL' 'FDL' 'custom')
 depends=('qt6-declarative' 'desktop-file-utils' 'hicolor-icon-theme' 'xdg-utils')
          #'qt6-translations' 'qt5-location')
-makedepends=('cmake' 'clang-tools-extra' 'vulkan-headers')
+makedepends=('cmake' 'ninja' 'clang-tools-extra' 'vulkan-headers')
 optdepends=('qt6-doc: offline help documentation')
 groups=('qt6')
 options=('!libtool')
@@ -22,7 +22,7 @@ source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`)
 
 build() {
-    cmake -B build -S ${_pkgfqn} \
+    cmake -B build -S ${_pkgfqn} -G Ninja \
         -DCMAKE_BUILD_TYPE=Release \
         -DCMAKE_INSTALL_PREFIX=/usr 
     cmake --build build

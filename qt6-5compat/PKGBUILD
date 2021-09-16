@@ -11,8 +11,8 @@ pkgdesc="The module contains unsupported Qt 5 APIs"
 arch=('x86_64')
 url='https://www.qt.io/'
 license=('GPL3' 'LGPL')
-depends=('qt6-base')
-makedepends=('cmake')
+depends=('qt6-declarative')
+makedepends=('cmake' 'ninja')
 groups=('qt6')
 options=('!libtool')
 _pkgfqn="qt5compat-everywhere-src-${subver}"
@@ -20,7 +20,7 @@ source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`)
 
 build() {
-    cmake -B build -S ${_pkgfqn} \
+    cmake -B build -S ${_pkgfqn} -G Ninja \
         -DCMAKE_BUILD_TYPE=Release \
         -DCMAKE_INSTALL_PREFIX=/usr
     cmake --build build

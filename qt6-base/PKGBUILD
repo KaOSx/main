@@ -15,8 +15,8 @@ depends=('sqlite' 'xcb-util-keysyms' 'xcb-util-wm' 'xcb-util-image' 'xcb-util-re
         'glib2' 'dbus' 'fontconfig' 'libsm' 'libxrandr' 'libxv' 'libxi' 'unixodbc' 'libjpeg-turbo'
         'alsa-lib' 'xdg-utils' 'hicolor-icon-theme' 'desktop-file-utils' 'mesa' 'systemd'
         'libxcursor' 'libxrender' 'libpng' 'mariadb' 'icu' 'libgl' 'libxfixes' 'libxinerama'
-        'libxkbcommon' 'libinput' 'harfbuzz' 'mtdev' 'libproxy' 'double-conversion') # 'brotli')
-makedepends=('postgresql-libs' 'cups' 'gperf' 'ruby' 'pulseaudio' 'vulkan-headers' 'cmake')
+        'libxkbcommon' 'libinput' 'harfbuzz' 'mtdev' 'libproxy' 'double-conversion' 'vulkan-validationlayers') # 'brotli')
+makedepends=('postgresql-libs' 'cups' 'gperf' 'ruby' 'pulseaudio' 'cmake' 'ninja' 'valgrind')
 provides=('qt6-x11extras')
 replaces=('qt6-x11extras')
 conflicts=('qt6-x11extras')
@@ -28,7 +28,7 @@ source=("${_qtmirror}/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`)
 
 build() {
-    cmake -B build -S ${_pkgfqn} \
+    cmake -B build -S ${_pkgfqn} -G Ninja \
         -DCMAKE_BUILD_TYPE=Release \
         -DCMAKE_INSTALL_PREFIX=/usr \
         -DINSTALL_BINDIR=lib/qt6/bin \
@@ -41,7 +41,6 @@ build() {
         -DINSTALL_MKSPECSDIR=lib/qt6/mkspecs \
         -DINSTALL_EXAMPLESDIR=share/doc/qt6/examples \
         -DBUILD_TESTING=OFF \
-        -DBUILD_EXAMPLES=OFF \
         -DINPUT_dbus=linked \
         -DFEATURE_reduce_relocations=ON \
         -DQT_FEATURE_journald=ON \

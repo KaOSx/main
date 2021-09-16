@@ -12,7 +12,7 @@ arch=('x86_64')
 url="https://www.qt.io/"
 license=('GPL3' 'LGPL')
 depends=('libxcomposite' 'qt6-declarative' 'wayland')
-makedepends=('vulkan-headers')
+makedepends=('cmake' 'ninja')
 groups=('qt6')
 #options=('debug')
 _pkgfqn="qtwayland-everywhere-src-${subver}"
@@ -20,7 +20,7 @@ source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`)
 
 build() {
-    cmake -B build -S ${_pkgfqn} \
+    cmake -B build -S ${_pkgfqn} -G Ninja \
         -DCMAKE_BUILD_TYPE=Release \
         -DCMAKE_INSTALL_PREFIX=/usr
     cmake --build build
@@ -28,7 +28,7 @@ build() {
 
 package() {
     DESTDIR=${pkgdir} cmake --install build
-    
+
     install -D -m644 ${_pkgfqn}/LICENSE.LGPL3 ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.LGPL3
 }
 

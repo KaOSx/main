@@ -11,16 +11,19 @@ pkgdesc="A cross-platform application and UI framework, QtDeclarative files"
 arch=('x86_64')
 url='https://www.qt.io/'
 license=('GPL3' 'LGPL' 'FDL' 'custom')
-depends=('qt6-base')
-makedepends=('cmake' 'python3' 'vulkan-headers')
+depends=('qt6-base' 'qt6-shadertools')
+makedepends=('cmake' 'ninja' 'python3')
 options=('!libtool' 'debug')
+provides=('qt6-quickcontrols2')
+replaces=('qt6-quickcontrols2')
+conflicts=('qt6-quickcontrols2')
 groups=('qt6')
 _pkgfqn="qtdeclarative-everywhere-src-${subver}"
 source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`)
 
 build() {
-    cmake -B build -S ${_pkgfqn} \
+    cmake -B build -S ${_pkgfqn} -G Ninja \
         -DCMAKE_BUILD_TYPE=Release \
         -DCMAKE_INSTALL_PREFIX=/usr 
     cmake --build build
