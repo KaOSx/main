@@ -1,0 +1,44 @@
+
+# include global config
+source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
+
+# check in tools/scripts/version_resolver.py for used Chromium
+pkgname=qt6-webengine
+pkgver=${qtver}
+subver=${subver}
+_pkgver=${_qtver}
+pkgrel=1
+pkgdesc="Provides a web browser engine that makes it easy to embed content from the Web into your Qt application."
+arch=('x86_64')
+url='https://github.com/qt/qtwebengine'
+license=('GPL3' 'LGPL')
+depends=('qt6-declarative' 'mesa' 'systemd' 'pango' 'nss' 'speex' 'libevent' 'libcups'
+         'libxslt' 'libpng' 'libjpeg-turbo' 'libwebp' 'zlib' 'pciutils' 'jsoncpp' 'pulseaudio' 'libxcomposite'
+         'qt6-location' 'qt6-webchannel' 'ffmpeg' 'libxss' 'protobuf' 'opus' 'libvpx')
+makedepends=('cmake' 'ninja' 'python3' 'python2' 'gperf' 'yasm' 'openssh' 'icu' 'qt6-tools' 'nodejs')
+groups=('qt6')
+options=('!libtool')
+_pkgfqn="qtwebengine-everywhere-src-${subver}"
+source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
+#source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
+md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`)
+
+build() {
+    cmake -B build -S ${_pkgfqn} -G Ninja \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_INSTALL_PREFIX=/usr \
+        -DQT_FEATURE_webengine_proprietary_codecs=ON \
+        -DQT_FEATURE_webengine_system_ffmpeg=ON \
+        -DQT_FEATURE_webengine_system_opus=ON \
+        -DQT_FEATURE_webengine_system_icu=ON \
+        -DQT_FEATURE_webengine_kerberos=ON \
+    cmake --build build
+}
+
+package() {
+    DESTDIR=${pkgdir} cmake --install build
+
+    install -D -m644 ${_pkgfqn}/LICENSE.GPL3 \
+    ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.GPL3
+}
+
