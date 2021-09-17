@@ -1,7 +1,7 @@
 
 pkgname=glib-networking
-pkgver=2.68.2
-_pkgver=2.68
+pkgver=2.70.0
+_pkgver=2.70
 pkgrel=1
 pkgdesc="Network-related giomodules for glib"
 arch=('x86_64')
@@ -10,12 +10,12 @@ license=('GPL2')
 depends=('glib2' 'libproxy' 'gnutls' 'ca-certificates' 'libtasn1') # 'gsettings-desktop-schemas')
 makedepends=('intltool' 'meson' 'ninja')
 source=("https://download.gnome.org/sources/glib-networking/${_pkgver}/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('535ebc054ef697db56a4fffed91bc0e11c8ee1c9acb48aad28c8e1d5c3d5994f')
+sha256sums=('66b408e7afa86c582fe38963db56133869ab4b57d34e48ec56aba621940d6f35')
 
 build() {
   mkdir -p build
   cd build
-  
+
   meson ../${pkgname}-${pkgver} \
     --prefix=/usr \
     --buildtype=release \
@@ -34,7 +34,7 @@ check() {
 
 package() {
   cd build
-  
+
   DESTDIR=${pkgdir} ninja install
 }
 

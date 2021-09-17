@@ -10,9 +10,10 @@ license=('GPL2')
 depends=('fontconfig' 'python3')
 makedepends=('meson' 'ninja')
 install=cantarell-fonts.install
-source=("https://download.gnome.org/sources/cantarell-fonts/${_pkgver}/${pkgname}-${pkgver}.tar.xz")
-#source=("https://gitlab.gnome.org/GNOME/cantarell-fonts/-/archive/v${pkgver}/${pkgname}-v${pkgver}.tar.bz2")
-sha256sums=('c4ac4b80a714b0d405338c39fcd5dd23d00435e5cc9dca53856c2c5ba1ebafc2')
+#source=("https://download.gnome.org/sources/cantarell-fonts/${_pkgver}/${pkgname}-${pkgver}.tar.xz")
+# use tar from CI/CD > Jobs > build-variable
+source=("https://gitlab.gnome.org/GNOME/cantarell-fonts/-/jobs/1515398/artifacts/raw/build/meson-dist/${pkgname}-${pkgver}.tar.xz")
+sha256sums=('8f65f4bdd7aabf16076d9b514b7d731b5db0d860dded0a68642cbc4ab658f8c0')
 
 build() {
   mkdir -p build
