@@ -10,8 +10,8 @@ pkgname=('qtwebengine') # 'qtwebengine-examples')
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-_commit=c684572390c086093f8ecfcb61d41b04c6faa340
-pkgrel=1
+_commit=2acbba86362ac3a1c2d8c20390dc263875f8f09c
+pkgrel=2
 pkgdesc="Chromium-based web engine to replace Qt WebKit"
 url="https://www.qt.io/"
 arch=('x86_64')
@@ -66,8 +66,7 @@ build() {
     -webengine-proprietary-codecs \
     -webengine-ffmpeg \
     -webengine-opus \
-    -webengine-spellchecker \
-    -webengine-pepper-plugins 
+    -webengine-spellchecker
     make 
 
     #/usr/lib/qt5/bin/qmake ../examples/webenginewidgets/demobrowser/demobrowser.pro
