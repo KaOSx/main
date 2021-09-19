@@ -1,7 +1,8 @@
 
 pkgname=ufw
-pkgver=0.36
-pkgrel=5
+pkgver=0.36.1
+_pkgver=0.36
+pkgrel=1
 pkgdesc="Uncomplicated and easy to use CLI tool for managing a netfilter firewall"
 arch=('x86_64')
 url="https://launchpad.net/ufw"
@@ -19,9 +20,9 @@ backup=('etc/ufw/before.rules'
         'usr/lib/ufw/user6.rules')
 #install=ufw.install
 categories=('network')
-source=("https://launchpad.net/ufw/${pkgver}/${pkgver}/+download/${pkgname}-${pkgver}.tar.gz"
+source=("https://launchpad.net/ufw/${_pkgver}/${pkgver}/+download/${pkgname}-${pkgver}.tar.gz"
         "${pkgname}.service")
-md5sums=('6d8ab1506da21ae003f4628f93d05781'
+md5sums=('cd0b09ae3ee8393e6a5851eae1fa5e1e'
          '2c85da635f53c6817be8c1941a9a35fb')
 
 package() {

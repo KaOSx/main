@@ -1,22 +1,22 @@
 
 pkgname=libsoup
-pkgver=2.74.0
-_pkgver=2.74
+pkgver=3.0.0
+_pkgver=3.0
 pkgrel=1
 pkgdesc="GNOME HTTP Library - base library"
 arch=('x86_64')
 url="https://www.gnome.org"
 license=('LGPL')
-depends=('glib2' 'libxml2' 'gnutls' 'sqlite3' 'glib-networking')
+depends=('glib2' 'gnutls' 'sqlite3' 'glib-networking')
 makedepends=('intltool' 'gobject-introspection' 'vala' 'meson' 'ninja')
 options=('!libtool' '!emptydirs')
 source=("https://ftp.gnome.org/pub/gnome/sources/libsoup/${_pkgver}/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('33b1d4e0d639456c675c227877e94a8078d731233e2d57689c11abcef7d3c48e')
+sha256sums=('cde05f3e20114ce985cbd03d575ff74e5e41e70a218e5eb3068c4bf4710dbf2b')
 
 build() {
   mkdir -p build
   cd build
-  
+
   meson ../${pkgname}-${pkgver} \
     --prefix=/usr \
     --buildtype=release \
@@ -28,6 +28,6 @@ build() {
 
 package() {
   cd build
-  
+
   DESTDIR=${pkgdir} ninja install
 }

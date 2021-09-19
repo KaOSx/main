@@ -1,7 +1,7 @@
 # odd numbers are dev
 pkgname=gexiv2
-pkgver=0.12.3
-_pkgver=0.12
+pkgver=0.14.0
+_pkgver=0.14
 pkgrel=1
 pkgdesc='GObject wrapper around the Exiv2 photo metadata library.'
 url='https://wiki.gnome.org/Projects/gexiv2'
@@ -11,7 +11,7 @@ depends=('exiv2' 'glib2')
 makedepends=('python3-gobject3' 'meson' 'ninja' 'vala')
 source=("https://ftp.gnome.org/pub/gnome/sources/gexiv2/${_pkgver}/${pkgname}-${pkgver}.tar.xz"
         "https://gitlab.gnome.org/GNOME/gexiv2/commit/d8f96634e1df693eb0393cf82893a86dd2a92d2b.diff")
-sha256sums=('d23b7972a2fc6f840150bad1ed79c1cbec672951e180c1e1ec33ca6c730c59f3'
+sha256sums=('e58279a6ff20b6f64fa499615da5e9b57cf65ba7850b72fafdf17221a9d6d69e'
             'dab25b32a6e1e1e712bad28788e37276ab175c80fa8bf6a8ed0cb795cb507206')
 
 prepare() {
@@ -19,11 +19,11 @@ prepare() {
   # fix build with exiv2 0.27
   #patch -p1 -i ${srcdir}/d8f96634e1df693eb0393cf82893a86dd2a92d2b.diff
 }
-            
+
 build() {
   mkdir -p build
   cd build
-  
+
   meson ../${pkgname}-${pkgver} \
     --prefix=/usr \
     --buildtype=release \
@@ -33,6 +33,6 @@ build() {
 
 package() {
   cd build
-  
+
   DESTDIR=${pkgdir} ninja install
 }
