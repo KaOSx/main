@@ -3,8 +3,8 @@ _extramodules=extramodules-5.13
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=('nvidia-390xx' 'khd-nvidia-390xx')
-pkgver=390.143
-pkgrel=7
+pkgver=390.144
+pkgrel=1
 arch=('x86_64')
 url="https://www.nvidia.com/page/home.html"
 makedepends=('linux-headers' 'linux>=5.13.9' 'linux<5.14' "nvidia-390xx-utils=${pkgver}")
@@ -16,16 +16,16 @@ _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
         'nvidia_supported'
         'linux-5.13.patch')
-md5sums=('bdfffb4693160a7e2eb7bc2ff43b84bf'
+md5sums=('258c635ac21824b282db79745867024d'
          '282f73f1a7326339a7b0e0716eee4f76'
-         'cf432576556abdf678a775a8bfe53dcd')
+         '2d4294cf94d9cc76b19694242d4ebf1e')
 
 build() {
     cd "${srcdir}"
     sh "${_pkg}.run" --extract-only
     
     cd "${_pkg}"
-    patch -p1 -i ${srcdir}/linux-5.13.patch
+    #patch -p1 -i ${srcdir}/linux-5.13.patch
     # linux 4.19 needed
     #sed -i -e 's|drm_mode_connector_attach_encoder|drm_connector_attach_encoder|g' kernel/nvidia-drm/nvidia-drm-encoder.c
     

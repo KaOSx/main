@@ -3,8 +3,8 @@ _extramodules=extramodules-5.14-next
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=nvidia-390xx-next
-pkgver=390.143
-pkgrel=35
+pkgver=390.144
+pkgrel=1
 pkgdesc="NVIDIA drivers for linux-next, 390xx legacy version."
 arch=('x86_64')
 url="https://www.nvidia.com/page/home.html"
@@ -20,8 +20,8 @@ _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
         'linux-5.13.patch'
         'linux-5.14.patch')
-md5sums=('bdfffb4693160a7e2eb7bc2ff43b84bf'
-         'cf432576556abdf678a775a8bfe53dcd'
+md5sums=('258c635ac21824b282db79745867024d'
+         '2d4294cf94d9cc76b19694242d4ebf1e'
          'b75c09ec4a5057079cb3ec2f188bdba2')
 
 build() {
