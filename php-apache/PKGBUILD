@@ -1,19 +1,19 @@
 
 pkgname=php-apache
 _pkgname=php
-pkgver=7.4.23
+pkgver=7.4.24
 pkgrel=1
 arch=('x86_64')
 pkgdesc='Apache SAPI for PHP'
 license=('PHP')
 url='https://secure.php.net/'
 depends=("php>=${pkgver}" 'apache') 
-makedepends=('imap' 'mariadb' 'postfix' 'libzip' 'file' 'libjpeg-turbo' 'openssl' 'db' 'gmp')
+makedepends=('mariadb' 'postfix' 'libzip' 'file' 'libjpeg-turbo' 'openssl' 'db' 'gmp')
 backup=('etc/httpd/conf/extra/php5_module.conf')
 source=("http://www.php.net/distributions/${_pkgname}-${pkgver}.tar.xz"
         'apache.conf'
         'enchant2.patch')
-sha256sums=('cea52313fcffe56343bcd3c66dbb23cd5507dc559cc2e3547cf8f5452e88a05d'
+sha256sums=('ff7658ee2f6d8af05b48c21146af5f502e121def4e76e862df5ec9fa06e98734'
             'ebc0af1ef3a6baccb013d0ccb29923895a7b22ff2d032e3bba802dc6328301ce'
             '190998e5980c9a105c5bde4dd197f3aa0a97466640b71d184c6705894f754012')
 
@@ -66,8 +66,6 @@ build() {
 		--with-gmp=shared \
 		--with-jpeg=shared \
 		--with-iconv=shared \
-		--with-imap-ssl \
-		--with-imap=shared \
 		--with-kerberos=shared \
 		--with-ldap=shared \
 		--without-ldap-sasl \
