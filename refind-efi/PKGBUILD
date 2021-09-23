@@ -22,7 +22,7 @@ prepare() {
     cd refind-${pkgver}
     # Point refind dir paths to /usr/share/refind/ in refind-install script"
     sed 's|RefindDir=\"\$ThisDir/refind\"|RefindDir="/usr/share/refind/"|g' -i refind-install
-    # set to refind midna them
+    # set to refind midna theme
     echo "include themes/midna/theme.conf" >> refind.conf-sample
 }
 
