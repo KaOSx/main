@@ -1,7 +1,7 @@
 
 pkgname=cifs-utils
-pkgver=6.13
-pkgrel=2
+pkgver=6.14
+pkgrel=1
 pkgdesc="CIFS filesystem user-space tools"
 arch=('x86_64')
 url="https://wiki.samba.org/index.php/LinuxCIFS_utils"
@@ -10,7 +10,7 @@ depends=('libcap' 'keyutils' 'krb5' 'talloc')
 makedepends=('samba')
 opdepends=('samba: for cifs.idmap and cifsacl')
 source=("https://ftp.samba.org/pub/linux-cifs/cifs-utils/$pkgname-$pkgver.tar.bz2")
-md5sums=('4348921483c530826950e9503b08b033')
+md5sums=('e918d1246adb841c61e562538c2cc78e')
 
 build() {
   cd ${pkgname}-${pkgver}
@@ -25,7 +25,7 @@ build() {
 package() {
   cd ${pkgname}-${pkgver}
   make DESTDIR=${pkgdir} ROOTSBINDIR=/usr/bin install
-  
+
   # mount.cifs uid, for root mounting fstab
   chmod +s $pkgdir/usr/bin/mount.cifs
 }
