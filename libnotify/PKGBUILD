@@ -1,21 +1,22 @@
 
 pkgname=libnotify
 pkgver=0.7.9
-pkgrel=1
+_pkgver=0.7
+pkgrel=2
 pkgdesc="Desktop notification library"
 arch=('x86_64')
-url="https://developer.gnome.org/notification-spec/"
+url="https://gitlab.gnome.org/GNOME/libnotify"
 license=('LGPL')
 depends=('gdk-pixbuf2')
 makedepends=('gtk3' 'gobject-introspection' 'meson' 'ninja')
 options=('!libtool')
-source=("https://ftp.gnome.org/pub/GNOME/sources/libnotify/0.7/${pkgname}-${pkgver}.tar.xz")
+source=("https://ftp.gnome.org/pub/GNOME/sources/libnotify/${_pkgver}/${pkgname}-${pkgver}.tar.xz")
 sha256sums=('66c0517ed16df7af258e83208faaf5069727dfd66995c4bbc51c16954d674761')
 
 build() {
   mkdir -p build
   cd build
-  
+
   meson ../${pkgname}-${pkgver} \
     --prefix=/usr \
     --buildtype=release \
@@ -27,7 +28,7 @@ build() {
 
 package() {
   cd build
-  
+
   DESTDIR=${pkgdir} ninja install
 }
 
