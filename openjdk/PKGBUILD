@@ -7,7 +7,7 @@ _icedtea_jdkver="8"
 _openjdk_build="b10"
 _pkgver="8u292"
 pkgver="${_pkgver}_${_openjdk_build}_${_icedtea_release}"
-pkgrel=1
+pkgrel=2
 pkgdesc="An open-source implementation of the seventh edition of the Java SE Platform."
 arch=('x86_64')
 url="https://icedtea.classpath.org/"
@@ -16,7 +16,7 @@ makedepends=('java-environment=8' 'apache-ant' 'zip' 'unzip'
              'fastjar' 'cpio' 'cups' 'coreutils'
              'wget' 'gzip' 'alsa-lib' 'pulseaudio' 'zlib' 'libjpeg-turbo'
              'libpng' 'lcms2' 'freetype2' 'rhino' 'nss' 'libxt' 'pkg-config'
-             'libxtst' 'libxp' 'libxrender' 'libxinerama' 'libxcomposite' 'ca-certificates-java' 'pcsclite') #'giflib' 
+             'libxtst' 'libxp' 'libxrender' 'libxinerama' 'libxcomposite' 'pcsclite') #'giflib'
 
 _hg_url="https://icedtea.wildebeest.org/download/drops/icedtea8/${_icedtea_release}"
 _jvmdir="/usr/lib/jvm/java-8-openjdk"
@@ -112,10 +112,8 @@ pkgdesc="An open-source implementation of the Java SE Platform."
 conflicts=('openjdk6' 'openjdk7')
 provides=("java-environment=${_icedtea_jdkver}" "java-runtime=${_icedtea_jdkver}")
 replaces=('openjdk6' 'openjdk7')
-depends=('alsa-lib' 'pulseaudio' 'giflib' 'libjpeg-turbo' 'libpng' 'freetype2'
-         'ca-certificates-java')
-optdepends=('icedtea-web: web browser plugin and Java Web Start support'
-            'gtk2: for the GTK+ Look And Feel')
+depends=('alsa-lib' 'pulseaudio' 'giflib' 'libjpeg-turbo' 'libpng' 'freetype2')
+optdepends=('icedtea-web: web browser plugin and Java Web Start support')
 
   cd "${srcdir}/build"
 
