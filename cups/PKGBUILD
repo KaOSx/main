@@ -1,20 +1,21 @@
 
 pkgbase=cups
 pkgname=('libcups' 'cups')
-pkgver=2.3.3
+pkgver=2.3.3op2
 pkgrel=1
+epoch=1
 arch=('x86_64')
 license=('GPL')
-url="https://www.cups.org/"
+url="https://openprinting.github.io/cups/"
 makedepends=('libtiff' 'libpng' 'acl' 'pam' 'xdg-utils' 'krb5' 'openssl' 'cups-filters' 'bc'
              'xinetd' 'gzip' 'autoconf' 'libusb' 'dbus' 'avahi'  'hicolor-icon-theme' 'systemd'
              'colord' 'libpaper' 'gnutls')
-source=("https://github.com/apple/cups/releases/download/v${pkgver}/cups-${pkgver}-source.tar.gz"
+source=("https://github.com/OpenPrinting/cups/releases/download/v${pkgver}/cups-${pkgver}-source.tar.gz"
         'cups-no-export-ssllibs.patch'
         'cups-no-gcrypt.patch'
         'cups.logrotate'
         'cups.pam')
-md5sums=('412434ceefbdf3ec71bc9188a035f589'
+md5sums=('524266752cf243c968921547b18ee594'
          '3ba9e3410df1dc3015463d615ef91b3b'
          '928b4ec806db4170179ad4d1c8074ff9'
          'ec2fdabb60b430ce1fb643078e9fc7c0'
@@ -43,7 +44,6 @@ build() {
      --enable-threads \
      --enable-avahi\
      --enable-libpaper \
-     --with-php=/usr/bin/php-cgi \
      --with-optim="$CFLAGS"
   make
 }
