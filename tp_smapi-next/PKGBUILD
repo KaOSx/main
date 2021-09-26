@@ -2,7 +2,7 @@
 pkgname=tp_smapi-next
 _pkgname=tp_smapi
 pkgver=0.43
-pkgrel=269
+pkgrel=270
 _extramodules=/lib/modules/extramodules-5.14-next
 pkgdesc="Modules for ThinkPad's SMAPI functionality"
 arch=('x86_64')
@@ -22,7 +22,7 @@ build() {
 
  _kernver=$(< "${_extramodules}/version")
 
-  sed -i -e 's|$(shell uname -r)|5.14.7-1-next|' Makefile
+  sed -i -e 's|$(shell uname -r)|5.14.8-1-next|' Makefile
 
   make HDAPS=1
 }
