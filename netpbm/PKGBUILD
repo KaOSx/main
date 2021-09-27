@@ -2,7 +2,7 @@
 # install subversion prior to makepkg, svn in source fails otherwise
 # version at https://sourceforge.net/p/netpbm/code/HEAD/tree/advanced/version.mk
 pkgname=netpbm
-pkgver=10.95.1
+pkgver=10.96.0
 pkgrel=1
 pkgdesc="A toolkit for manipulation of graphic images"
 arch=('x86_64')
@@ -16,10 +16,10 @@ md5sums=('SKIP')
 
 build() {
   cd advanced
-  
+
   # use the interactive way
   ./configure
-  
+
   sed -i 's|misc|share/netpbm|' common.mk
   sed -i 's|/link|/lib|' lib/Makefile
 
@@ -29,9 +29,9 @@ build() {
 package() {
   cd advanced
   make package pkgdir=${pkgdir}/usr 
-  
+
   install -D -m644 doc/copyright_summary ${pkgdir}/usr/share/licenses/${pkgname}/copyright_summary.txt
-    
+
   #mv -iv ${pkgdir}/usr/man ${pkgdir}/usr/share/man
   rm ${pkgdir}/usr/conf*
   rm ${pkgdir}/usr/pkg*

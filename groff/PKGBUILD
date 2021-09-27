@@ -1,7 +1,7 @@
 
 pkgname=groff
 pkgver=1.22.4
-pkgrel=12
+pkgrel=13
 pkgdesc="GNU troff text-formatting system"
 arch=('x86_64')
 url="https://www.gnu.org/software/groff/groff.html"
@@ -18,15 +18,14 @@ build() {
   cd ${pkgname}-${pkgver}
   # https://savannah.gnu.org/bugs/index.php?43581
   #patch -p1 -i ${srcdir}/gropdf.patch
-  
-  
+
   ./configure --prefix=/usr --without-x
   make
 }
 
 check() {
   cd ${pkgname}-${pkgver}
-  
+
   make check
 }
 
@@ -34,7 +33,7 @@ check() {
 package() {
   cd ${pkgname}-${pkgver}
   make DESTDIR=${pkgdir} install
-  
+
   # needed for xman
   ln -s eqn ${pkgdir}/usr/bin/geqn
   ln -s tbl ${pkgdir}/usr/bin/gtbl
