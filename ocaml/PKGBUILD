@@ -1,19 +1,19 @@
 
 # rebuild facile on any update
 pkgname=ocaml	
-pkgver=4.12.1
-_pkgver=4.12
+pkgver=4.13.0
+_pkgver=4.13
 pkgrel=1
 pkgdesc="A functional language with OO extensions"
 arch=('x86_64')
 license=('LGPL2' 'custom: QPL-1.0')
 url="https://ocaml.org/"
 depends=('gdbm')
-makedepends=('tk' 'ncurses>=5.6-7' 'libx11')
+makedepends=('tk' 'ncurses' 'libx11')
 optdepends=('ncurses: advanced ncurses features' 'tk: advanced tk features')
 options=('!makeflags' '!emptydirs')
 source=("https://caml.inria.fr/distrib/ocaml-${_pkgver}/${pkgname}-${pkgver}.tar.xz")
-md5sums=('338a787872b89043635720f4014fdb50')
+md5sums=('ab56c8215988f6c144442cc977b33782')
 
 build() {
   cd ${pkgname}-${pkgver}
