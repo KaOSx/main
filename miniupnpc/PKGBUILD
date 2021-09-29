@@ -1,28 +1,30 @@
 
 pkgname=miniupnpc
-pkgver=2.2.2
+pkgver=2.2.3
 pkgrel=1
 pkgdesc="Small UPnP client library/tool to access Internet Gateway Devices"
 arch=('x86_64')
 url="https://miniupnp.tuxfamily.org/"
 license=('BSD')
 depends=('sh')
+makedepends=('python3-setuptools' 'lsb-release')
 source=("https://miniupnp.tuxfamily.org/files/download.php?file=${pkgname}-${pkgver}.tar.gz"
         'CVE-2017-8798.diff')
-md5sums=('e13206be6bb3b8aa246d4dc07ab99511'
+md5sums=('4a037c6f22861d58e037fcb0bdc5922e'
          '0e359ab89d9abac2911e2ce904d39a18')
 
 build() {
   cd ${pkgname}-${pkgver}
   #patch -p1 -i ${srcdir}/CVE-2017-8798.diff
-  
+  python3 setup.py build
+
   make
 }
 
 package() {
   cd ${pkgname}-${pkgver}
-  make PREFIX=${pkgdir}/usr/ install
-  
+  make DESTDIR=${pkgdir} install
+
   #install -Dm644 man3/miniupnpc.3 ${pkgdir}/usr/share/man/man3/miniupnpc.3
   install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
