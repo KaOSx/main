@@ -1,6 +1,6 @@
 
 pkgname=udisks2
-pkgver=2.9.3
+pkgver=2.9.4
 pkgrel=1
 pkgdesc="Provides a daemon, tools and libraries to access and manipulate disks, storage devices and technologies."
 arch=('x86_64')
@@ -13,12 +13,12 @@ options=('!libtool')
 backup=(etc/udisks2/udisks2.conf)
 source=("https://github.com/storaged-project/udisks/releases/download/udisks-${pkgver}/udisks-${pkgver}.tar.bz2"
         '10-enable-mount.rules')
-md5sums=('63e18a47069000cb31d5f98cc3c83be0'
+md5sums=('576e057d2654894fab58f0393d105b7b'
          '5f6c7dcbc2e98b7814a91fbe7630ecfc')
 
 build() {
   cd udisks-${pkgver}
-  
+
   ./configure --prefix=/usr \
         --sysconfdir=/etc \
         --localstatedir=/var \
@@ -37,7 +37,7 @@ package() {
   cd udisks-${pkgver}
   make DESTDIR=${pkgdir} install
      bash_completiondir=/usr/share/bash-completion/completions
-  
+
   # allow ntfs mounts
   sed -i -e 's|<allow_active>auth_admin_keep</allow_active>|<allow_active>yes</allow_active>|' ${pkgdir}/usr/share/polkit-1/actions/org.freedesktop.UDisks2.policy
   # set auto-mounting authorizations 
