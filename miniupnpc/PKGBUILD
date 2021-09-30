@@ -9,13 +9,15 @@ license=('BSD')
 depends=('sh')
 makedepends=('python3-setuptools' 'lsb-release')
 source=("https://miniupnp.tuxfamily.org/files/download.php?file=${pkgname}-${pkgver}.tar.gz"
-        'CVE-2017-8798.diff')
+        'CVE-2017-8798.diff'
+        "https://github.com/miniupnp/miniupnp/commit/ed1dc4bb5cdc4a53963f3eb01089289e30acc5a3.diff")
 md5sums=('4a037c6f22861d58e037fcb0bdc5922e'
-         '0e359ab89d9abac2911e2ce904d39a18')
+         '0e359ab89d9abac2911e2ce904d39a18'
+         '34f29b7fbe15bd64bbcf1d8a8d716ced')
 
 build() {
   cd ${pkgname}-${pkgver}
-  #patch -p1 -i ${srcdir}/CVE-2017-8798.diff
+  patch -p0 -i ${srcdir}/ed1dc4bb5cdc4a53963f3eb01089289e30acc5a3.diff
   python3 setup.py build
 
   make
