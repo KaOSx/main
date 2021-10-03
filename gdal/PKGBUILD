@@ -20,12 +20,12 @@ source=("https://download.osgeo.org/gdal/${pkgver}/${pkgname}-${pkgver}.tar.xz"
 #source=("https://github.com/OSGeo/gdal/archive/v${_pkgver}.tar.gz"
         "https://github.com/OSGeo/gdal/commit/9c09870e374ca21d558101af3f4c09a6164fdfc3.diff")
 md5sums=('3a4071fc446182c7b2d71f3939d0c383'
-         '5bc7a5e048a6a96d9f95d9ea480b7f5b')
+         '99542f856ea646fd386601305942b948')
 
 prepare() {
   cd ${pkgname}-${_pkgver}
   # poppler 20.10.0 needed
-  patch -p1 -i ${srcdir}/9c09870e374ca21d558101af3f4c09a6164fdfc3.diff
+  patch -p0 -i ${srcdir}/9c09870e374ca21d558101af3f4c09a6164fdfc3.diff
 }
 
 build() {
