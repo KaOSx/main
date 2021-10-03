@@ -1,17 +1,18 @@
 
 pkgname=pyqt6-python3
-pkgver=6.1.1
-_pkgver=6.1.1
+pkgver=6.2.0
+_pkgver=6.2.0
 pkgrel=1
 pkgdesc="A set of Python3 bindings for the Qt6 toolkit"
 arch=('x86_64')
 url="https://www.riverbankcomputing.com/software/pyqt/intro"
 license=('GPL')
-depends=('dbus-python3' 'qt6-base' 'qt6-svg' 'qt6-declarative' 'qt6-quick3d' 'pyqt6-sip')
-makedepends=('pyqt-builder' 'qt6-tools')
+depends=('dbus-python3' 'qt6-connectivity' 'qt6-svg' 'qt6-declarative' 'qt6-multimedia' 'qt6-quick3d'
+         'qt6-location' 'qt6-sensors' 'qt6-serialport' 'qt6-webchannel' 'qt6-websockets' 'pyqt6-sip')
+makedepends=('pyqt-builder' 'qt6-tools' 'python3-setuptools')
 source=("https://pypi.python.org/packages/source/P/PyQt6/PyQt6-${pkgver}.tar.gz")
 #source=("https://www.riverbankcomputing.com/static/Downloads/PyQt6/PyQt6-${_pkgver}.tar.gz")
-sha256sums=('8775244fa73f94bfe8ae7672b624e2a903a22bc35d7ea42dd830949e2f9e43c7')
+sha256sums=('142ce7fa574d7ebb13fb0a2ebd18c86087c35829f786c094a71a0749155d8fee')
 
 build() {
   cd PyQt6-${_pkgver}
