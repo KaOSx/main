@@ -18,14 +18,14 @@ replaces=('python3-gdal')
 conflicts=('python3-gdal')
 source=("https://download.osgeo.org/gdal/${pkgver}/${pkgname}-${pkgver}.tar.xz"
 #source=("https://github.com/OSGeo/gdal/archive/v${_pkgver}.tar.gz"
-        "https://github.com/OSGeo/gdal/commit/2b863dbabdc2a7d724f9fdf3e6ff20a142b619f6.diff")
+        "https://github.com/OSGeo/gdal/commit/9c09870e374ca21d558101af3f4c09a6164fdfc3.diff")
 md5sums=('3a4071fc446182c7b2d71f3939d0c383'
          '5bc7a5e048a6a96d9f95d9ea480b7f5b')
 
 prepare() {
   cd ${pkgname}-${_pkgver}
-  # poppler 20.08.0 needed
-  #patch -p1 -i ${srcdir}/2b863dbabdc2a7d724f9fdf3e6ff20a142b619f6.diff
+  # poppler 20.10.0 needed
+  patch -p1 -i ${srcdir}/9c09870e374ca21d558101af3f4c09a6164fdfc3.diff
 }
 
 build() {
