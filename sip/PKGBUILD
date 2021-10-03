@@ -1,7 +1,7 @@
 
 pkgname=sip
-pkgver=6.1.1
-_pkgver=6.1.1
+pkgver=6.2.0
+_pkgver=6.2.0
 pkgrel=1
 pkgdesc="Tool that makes it easy to create Python3 bindings for C and C++ libraries"
 arch=('x86_64')
@@ -10,18 +10,18 @@ license=('custom:"sip"')
 depends=('python3-packaging' 'python3-toml')
 makedepends=('python3-setuptools')
 source=("https://files.pythonhosted.org/packages/source/s/${pkgname}/${pkgname}-${pkgver}.tar.gz")
-sha256sums=('52d25af2fcd764c4e15cc9cd1350bdb0e63f52dfa2aa3c5e7679af7fde9f7e20')
+sha256sums=('34d2270b4ed8d7f8e55cc4ba821d718ee40d9bb2449c6b5cf8a10139d5c121ac')
 
 build() {
   cd ${pkgname}-${pkgver}
-  
+
   python3 setup.py build
 }
 
 package() {
   cd ${pkgname}-${pkgver}
-  
+
   python3 setup.py install --prefix=/usr --root=${pkgdir} --optimize=1 --skip-build
-  
+
   install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }

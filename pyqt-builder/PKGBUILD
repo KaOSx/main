@@ -1,7 +1,7 @@
 
 pkgname=pyqt-builder
 _pkgname=PyQt-builder
-pkgver=1.10.3
+pkgver=1.11.0
 pkgrel=1
 arch=('x86_64')
 pkgdesc="PEP 517 compliant build system for PyQt and projects that extend PyQt."
@@ -10,16 +10,16 @@ license=('BSD')
 depends=('python3-packaging' 'sip')
 makedepends=('python3-setuptools')
 source=("https://pypi.python.org/packages/source/P/PyQt-builder/${_pkgname}-${pkgver}.tar.gz")
-sha256sums=('6ade47445b7d8c08eb96e91ebda5f8b3494b3e7a9da2be343b9d0704419cb5c7')
+sha256sums=('40f6df88c00e6aa9ac9a8bc5688f9fe2a4bd56c06cdb0a0b00ce8955ec34ffe5')
 
 build() {
   cd ${_pkgname}-${pkgver}
-  
+
   python3 setup.py build
 }
 
 package()  {
   cd ${_pkgname}-${pkgver}
-  
+
   python3 setup.py install --root=${pkgdir}
 }
