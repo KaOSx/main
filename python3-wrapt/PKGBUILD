@@ -1,19 +1,20 @@
 
 pkgname=python3-wrapt
-pkgver=1.12.1
+pkgver=1.13.1
 pkgrel=1
 pkgdesc="Python module for decorators, wrappers and monkey patching."
 arch=('x86_64')
 url="https://github.com/GrahamDumpleton/wrapt"
 license=('LGPL')
 depends=('python3')
+makedepends=('python3-setuptools')
 source=("https://pypi.io/packages/source/w/wrapt/wrapt-${pkgver}.tar.gz")
-sha256sums=('b62ffa81fb85f4332a4f609cab4ac40709470da05643a082ec1eb88e6d9b97d7')
+sha256sums=('909a80ce028821c7ad01bdcaa588126825931d177cdccd00b3545818d4a195ce')
 
 
 build() {
   cd wrapt-${pkgver}
-  
+
   python3 setup.py build
 }
 
