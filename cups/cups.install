@@ -1,6 +1,6 @@
 post_install() {
  echo "Enabling systemd service"
-         systemctl enable org.cups.cupsd
+         systemctl enable cups
          
  echo ">> If you use an HTTPS connection to CUPS, the first time you access"
  echo ">> the interface it may take a very long time before the site comes up."
@@ -8,7 +8,13 @@ post_install() {
  echo ">> SSL certificates which can be a very time-consuming job."
 }
 
+post_upgrade() {
+
+    systemctl enable cups
+    systemctl disable org.cups.cupsd
+}
+
 post_remove() {
   echo "Disabling systemd service"
-         systemctl disable org.cups.cupsd
+         systemctl disable cups
 }
