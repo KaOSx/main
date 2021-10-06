@@ -1,7 +1,7 @@
 
 pkgname=libftdi
 pkgver=1.5
-pkgrel=2
+pkgrel=3
 pkgdesc="Open source library to talk to FTDI chips including the popular bitbang mode."
 arch=('x86_64')
 url="https://www.intra2net.com/en/developer/libftdi/download.php"
@@ -15,7 +15,7 @@ md5sums=('f515d7d69170a9afc8b273e8f1466a80')
 build() {
   cd ${pkgname}1-${pkgver}
   sed -i 's|LIB_SUFFIX 64|LIB_SUFFIX ""|' CMakeLists.txt
-  
+
   mkdir -p build
   cd build
   cmake .. -DCMAKE_INSTALL_PREFIX=/usr \
@@ -28,6 +28,6 @@ build() {
 
 package() {
   cd ${pkgname}1-${pkgver}/build
-  
+
   make DESTDIR=${pkgdir} install
 }
