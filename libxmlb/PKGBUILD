@@ -1,6 +1,6 @@
 
 pkgname=libxmlb
-pkgver=0.3.2
+pkgver=0.3.3
 pkgrel=1
 pkgdesc="Library to help create and query binary XML blobs"
 arch=('x86_64')
@@ -10,12 +10,12 @@ depends=('glib2')
 makedepends=('gobject-introspection' 'meson' 'ninja')
 options=('!libtool')
 source=("https://people.freedesktop.org/~hughsient/releases/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('7b4d2e4223dc40f8fa767199d7d788021e997530e904b03d5b17cf4612b43b8b')
+sha256sums=('931f59aa3635397ad580c8b46cad5caa9632997fa505b92bd6661d98b0b11bf6')
 
 build() {
   mkdir -p build
   cd build
-  
+
   meson ../${pkgname}-${pkgver} \
     --prefix=/usr \
     --buildtype=release \
@@ -27,6 +27,6 @@ build() {
 
 package() {
   cd build
-  
+
   DESTDIR=${pkgdir} ninja install
 } 
