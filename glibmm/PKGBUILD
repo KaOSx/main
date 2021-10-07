@@ -1,8 +1,9 @@
 
 pkgname=glibmm
-pkgver=2.66.1
+pkgver=2.66.2
 _pkgver=2.66
 pkgrel=1
+pkgdesc="Glib-- (glibmm) is a C++ interface for glib"
 arch=('x86_64')
 url="https://www.gtkmm.org"
 license=('LGPL')
@@ -10,12 +11,12 @@ depends=('glib2' 'libsigc++')
 options=('!libtool')
 makedepends=('meson' 'ninja')
 source=("https://ftp.gnome.org/pub/GNOME/sources/glibmm/${_pkgver}/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('69bd6b5327716ca2f511ab580a969fd7bf0cd2c24ce15e1d0e530592d3ff209c')
+sha256sums=('b2a4cd7b9ae987794cbb5a1becc10cecb65182b9bb841868625d6bbb123edb1d')
 
 build() {
   mkdir -p build
   cd build
-  
+
   meson ../${pkgname}-${pkgver} \
     --prefix=/usr \
     --buildtype=release \
@@ -25,7 +26,7 @@ build() {
 
 package() {
   cd build
-  
+
   DESTDIR=${pkgdir} ninja install
 }
 
