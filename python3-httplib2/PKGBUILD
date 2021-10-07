@@ -1,6 +1,6 @@
 
 pkgname=python3-httplib2
-pkgver=0.19.1
+pkgver=0.20.1
 pkgrel=1
 pkgdesc="Comprehensive HTTP client library, httplib2.py supports many features left out of other HTTP libraries"
 arch=('x86_64')
@@ -8,17 +8,17 @@ url="https://github.com/httplib2"
 license=('LGPL')
 depends=('python3-setuptools')
 source=("https://github.com/httplib2/httplib2/archive/v${pkgver}.tar.gz")
-md5sums=('c658f986f923c456ff4cd51aee46c8fc')
+md5sums=('829ab45e73ceeb75ceec54b3c95fe903')
 
 build() {
   cd httplib2-${pkgver}
-  
+
   python3 setup.py build
 }
 
 package() {
   cd httplib2-${pkgver}
   python3 setup.py install --skip-build --prefix=/usr --root=${pkgdir}
-  
+
   install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
