@@ -1,10 +1,10 @@
 
 pkgname=libmng
 pkgver=2.0.3
-pkgrel=3
+pkgrel=4
 pkgdesc="Collection of routines used to create and manipulate MNG format graphics files"
 arch=('x86_64')
-url="https://www.libmng.com/"
+url="https://sourceforge.net/projects/libmng/"
 license=('custom')
 depends=('zlib' 'libjpeg-turbo' 'lcms2')
 options=('!libtool')
@@ -13,7 +13,7 @@ md5sums=('e9e899adb1b681b17f14d91e261878c5')
 
 build() {
   cd ${pkgname}-${pkgver}
- 
+
   autoreconf --force --install
   ./configure --prefix=/usr --with-lcms2
   make
@@ -21,7 +21,7 @@ build() {
 
 package() {
   cd ${pkgname}-${pkgver}
-  
+
   make DESTDIR=${pkgdir} install
   install -D -m644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
