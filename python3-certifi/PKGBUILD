@@ -1,7 +1,7 @@
 
 pkgname=python3-certifi
 _pkgname=certifi
-pkgver=2021.5.30
+pkgver=2021.10.8
 pkgrel=1
 pkgdesc="Carefully curated collection of Root Certificates for validating the trustworthiness of SSL certificates."
 arch=('x86_64')
@@ -10,17 +10,17 @@ url="https://pypi.org/project/certifi/"
 depends=('python3')
 makedepends=('python3-setuptools')
 source=("https://files.pythonhosted.org/packages/source/C/Certifi/${_pkgname}-${pkgver}.tar.gz")
-sha256sums=('2bbf76fd432960138b3ef6dda3dde0544f27cbf8546c458e60baf371917ba9ee')
+sha256sums=('78884e7c1d4b00ce3cea67b44566851c4343c120abd683433ce934a68ea58872')
 
 build() {
-   cd ${_pkgname}-${pkgver}
-   
-   python3 setup.py build
-}
- 
-package() {
-   cd ${_pkgname}-${pkgver}
-   
-   python3 setup.py install --prefix=/usr --root=${pkgdir} --optimize=1 --skip-build
-   install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+    cd ${_pkgname}-${pkgver}
+
+    python3 setup.py build
+    }
+
+    package() {
+    cd ${_pkgname}-${pkgver}
+
+    python3 setup.py install --prefix=/usr --root=${pkgdir} --optimize=1 --skip-build
+    install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
