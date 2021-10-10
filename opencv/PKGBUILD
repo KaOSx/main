@@ -1,8 +1,8 @@
 
 pkgname=opencv
-pkgver=4.5.3
-_pkgver=4.5.3
-pkgrel=2
+pkgver=4.5.4
+_pkgver=4.5.4
+pkgrel=1
 pkgdesc="Open Source Computer Vision Library"
 arch=('x86_64')
 license=('Apache2')
@@ -15,13 +15,14 @@ options=('!libtool')
 source=("https://github.com/Itseez/opencv/archive/${_pkgver}.tar.gz"
         "opencv_contrib-${_pkgver}::https://github.com/Itseez/opencv_contrib/archive/${_pkgver}.tar.gz"
         "https://github.com/opencv/opencv_contrib/commit/c4419e4e65a8d9e0b5a15e9a5242453f261bee46.diff")
-md5sums=('1fe94553bcc8c8723b47c1a72f9f768f'
-         '0688d9ec79b20379729af86552ecd675'
+md5sums=('83ea8262a74f205309514e44e589112d'
+         '4d42f88e3be326bf140528b5ace64642'
          'ca884d27cca217f84e3b86dcd658bc69')
 
 prepare () {
   cd opencv_contrib-${_pkgver}
-  
+  # https://github.com/opencv/opencv_contrib/issues/3063
+  sed -e 's|HAVE_QT5|HAVE_QT|' -i modules/cvv/CMakeLists.txt
   #patch -p1 -i ${srcdir}/c4419e4e65a8d9e0b5a15e9a5242453f261bee46.diff
 }
          
