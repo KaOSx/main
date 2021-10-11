@@ -1,7 +1,7 @@
 
 pkgname=imagemagick
-pkgver=7.1.0.9
-_pkgver=7.1.0-9
+pkgver=7.1.0.10
+_pkgver=7.1.0-10
 pkgrel=1
 pkgdesc="An image viewing/manipulation program"
 arch=('x86_64')
@@ -14,59 +14,59 @@ makedepends=('opencl-headers' 'subversion')
 options=('!docs' 'libtool' '!emptydirs')
 source=("https://download.imagemagick.org/ImageMagick/download/releases/ImageMagick-${_pkgver}.tar.xz"
         'perlmagick.rpath.patch')
-md5sums=('b8bd3b65c8ddbf50777288a45a6266b2'
+md5sums=('4161b662b4c70e9da3fbe028f94b271c'
          '0faf7158fd3a0904d9a70dd3e3c1fe9c')
 
 build() {
-	cd ImageMagick-${_pkgver}
-	sed '/AC_PATH_XTRA/d' -i configure.ac
+    cd ImageMagick-${_pkgver}
+    sed '/AC_PATH_XTRA/d' -i configure.ac
     autoreconf --force --install
 
-	patch -p0 -i ${srcdir}/perlmagick.rpath.patch 
+    patch -p0 -i ${srcdir}/perlmagick.rpath.patch 
 
-	./configure --prefix=/usr \
+    ./configure --prefix=/usr \
         --sysconfdir=/etc \
         --with-modules \
         --disable-static \
         --enable-shared \
-	    --enable-hdri \
-	    --without-wmf \
-	    --with-openexr \
-	    --with-xml \
-	    --enable-opencl \
-	    --with-gslib \
-	    --with-gs-font-dir=/usr/share/fonts/Type1 \
-	    --with-perl \
-	    --with-perl-options="INSTALLDIRS=vendor" \
-	    --with-lqr \
-	    --with-rsvg \
-	    --with-webp \
-	    --without-gvc \
-	    --with-djvu \
-	    --without-autotrace \
-	    --without-jbig \
-	    --without-openjp2 \
-	    --without-fpx \
-	    --without-dps \
-	    --without-fftw \
-	    --with-gcc-arch=x86-64
-	make 
-}
+        --enable-hdri \
+        --without-wmf \
+        --with-openexr \
+        --with-xml \
+        --enable-opencl \
+        --with-gslib \
+        --with-gs-font-dir=/usr/share/fonts/Type1 \
+        --with-perl \
+        --with-perl-options="INSTALLDIRS=vendor" \
+        --with-lqr \
+        --with-rsvg \
+        --with-webp \
+        --without-gvc \
+        --with-djvu \
+        --without-autotrace \
+        --without-jbig \
+        --without-openjp2 \
+        --without-fpx \
+        --without-dps \
+        --without-fftw \
+        --with-gcc-arch=x86-64
+    make 
+    }
 
-check() {
+    check() {
         cd ImageMagick-${_pkgver}
         # 1 demo fails without libwmf
         make check
-}
+    }
 
-package() {
-	cd ImageMagick-${_pkgver}
+    package() {
+    cd ImageMagick-${_pkgver}
 
-	make -j8 DESTDIR=${pkgdir} install 
+    make -j8 DESTDIR=${pkgdir} install 
 
-	install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE 
-	install -Dm644 NOTICE ${pkgdir}/usr/share/licenses/${pkgname}/NOTICE 
+    install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE 
+    install -Dm644 NOTICE ${pkgdir}/usr/share/licenses/${pkgname}/NOTICE 
 
-	#Cleaning
-	rm -f ${pkgdir}/usr/lib/*.la 
+    #Cleaning
+    rm -f ${pkgdir}/usr/lib/*.la 
 }
