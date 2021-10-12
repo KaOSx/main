@@ -14,12 +14,12 @@ sha256sums=('7c31073fe8e6cb8a42e85d60d3a096700a9047c772b354d6227dfe965566ec8a')
 
 build() {
   cd ${_pkgname}-${pkgver}
-  
+
   python3 setup.py build
 }
 
 package()  {
   cd ${_pkgname}-${pkgver}
-  
+
   python3 setup.py install --root=${pkgdir}
 }
