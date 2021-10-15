@@ -1,7 +1,7 @@
 
 pkgname=frei0r-plugins
 pkgver=1.7.0
-pkgrel=3
+pkgrel=4
 pkgdesc="Large collection of free and portable video plugins"
 arch=('x86_64')
 url="https://www.dyne.org/software/frei0r/"
@@ -18,25 +18,21 @@ prepare() {
   cd ${pkgname}-${pkgver}
   # opencv 4 support
   patch -p1 -i ${srcdir}/c0c8eed79fc8abe6c9881a53d7391efb526a3064.diff
- 
+
   #sed -i -e 's|AM_INIT_AUTOMAKE|AM_INIT_AUTOMAKE([foreign])|g' configure.ac
 }
-         
-build() {  
-  mkdir -p build
-  cd build
 
-  cmake ../${pkgname}-${pkgver} \
+build() {
+  cmake -B build -S ${pkgname}-${pkgver} \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr 
-  make
+  cmake --build build
 }
 
 package() {
-  cd build
 
-  make DESTDIR=${pkgdir} install
-  install -Dm644 ../${pkgname}-${pkgver}/COPYING.txt ${pkgdir}/usr/share/licenses/${pkgname}/COPYING.txt
+  DESTDIR=${pkgdir} cmake --install build
+  install -Dm644 ${pkgname}-${pkgver}/COPYING.txt ${pkgdir}/usr/share/licenses/${pkgname}/COPYING.txt
 }
 
 
