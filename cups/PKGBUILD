@@ -2,14 +2,14 @@
 pkgbase=cups
 pkgname=('libcups' 'cups')
 pkgver=2.3.3op2
-pkgrel=2
+pkgrel=3
 epoch=1
 arch=('x86_64')
 license=('GPL')
 url="https://openprinting.github.io/cups/"
 makedepends=('libtiff' 'libpng' 'acl' 'pam' 'xdg-utils' 'krb5' 'openssl' 'cups-filters' 'bc'
              'xinetd' 'gzip' 'autoconf' 'libusb' 'dbus' 'avahi'  'hicolor-icon-theme' 'systemd'
-             'colord' 'libpaper' 'gnutls')
+             'colord' 'libpaper' 'gnutls' 'libxcrypt')
 source=("https://github.com/OpenPrinting/cups/releases/download/v${pkgver}/cups-${pkgver}-source.tar.gz"
         'cups-no-export-ssllibs.patch'
         'cups-no-gcrypt.patch'
@@ -24,7 +24,7 @@ md5sums=('524266752cf243c968921547b18ee594'
 build() {
   cd ${pkgbase}-${pkgver}
   patch -p1 -i ${srcdir}/cups-no-export-ssllibs.patch
-  
+
   aclocal -I config-scripts
   autoconf -I config-scripts
 
@@ -61,10 +61,10 @@ backup=(etc/cups/client.conf)
 
   cd ${pkgbase}-${pkgver}
   make BUILDROOT=${pkgdir} install-headers install-libs
- 
+
   mkdir -p ${pkgdir}/usr/bin 
   install -m755 ${srcdir}/${pkgbase}-${pkgver}/cups-config ${pkgdir}/usr/bin/cups-config
-  
+
   install -dm755 ${pkgdir}/etc/cups
   touch ${pkgdir}/etc/cups/client.conf
   echo "# see 'man client.conf'" >> ${pkgdir}/etc/cups/client.conf
@@ -96,7 +96,7 @@ optdepends=('xdg-utils: xdg .desktop file support')
 
   rm -rf ${pkgdir}/etc/rc*.d
   rm -rf ${pkgdir}/etc/init.d
-  
+
   install -D -m644 ../cups.logrotate ${pkgdir}/etc/logrotate.d/cups
   install -D -m644 ../cups.pam ${pkgdir}/etc/pam.d/cups
   
@@ -113,14 +113,14 @@ optdepends=('xdg-utils: xdg .desktop file support')
   touch ${pkgdir}/etc/cups/classes.conf
   touch ${pkgdir}/etc/cups/subscriptions.conf 
   chgrp lp ${pkgdir}/etc/cups/{printers.conf,classes.conf,subscriptions.conf}
-  
+
   # .desktop file
   sed -i 's|^Exec=htmlview http://localhost:631/|Exec=xdg-open http://localhost:631/|g' ${pkgdir}/usr/share/applications/cups.desktop
   
   find ${pkgdir}/usr/share/cups/model -name "*.ppd" | xargs gzip -n9f
-  
+
   #rm -f ${pkgdir}/usr/share/man/man5/client.conf.5
-  
+
   # part of cups-filters
   #rm -v ${pkgdir}/usr/share/cups/banners/*
   #rm -v ${pkgdir}/usr/share/cups/data/testprint

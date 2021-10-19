@@ -2,12 +2,12 @@
 pkgname=mariadb
 pkgver=10.5.12
 _pkgver=10.5.12
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 license=('GPL')
 url='https://mariadb.org/'
 pkgdesc='Open Source database to support today’s enterprise needs from OLTP to analytics from a single SQL compliant interface.'
-depends=('openssl' 'pcre' 'lz4' 'zstd')
+depends=('openssl' 'pcre' 'lz4' 'zstd' 'libxcrypt')
 makedepends=('cmake' 'zlib')
 options=('!libtool' 'emptydirs')
 conflicts=('libmariadbclient' 'mariadb-clients')
@@ -28,7 +28,7 @@ sha256sums=('ab4f1ca69a30c5372e191a68e8b543a74168327680fb1f4067e8cc0a5582e4bd'
 
 prepare() {
   cd ${pkgname}-${pkgver}
-  
+
   #sed -i 's|MARIADB_CLIENT_VERSION_PATCH "5"|MARIADB_CLIENT_VERSION_PATCH "6"|' libmariadb/CMakeLists.txt
   #patch -p1 -R -i ${srcdir}/8b18a44fa7e5ddf6c8caee37de4f6112c64dfc87.diff
 }

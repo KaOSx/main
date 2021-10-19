@@ -3,13 +3,13 @@ pkgname=hplip
 pkgver=3.21.8
 # incase a or b is used in hplip rls:
 _pkgver=3.21.8
-pkgrel=1
+pkgrel=2
 pkgdesc="Drivers for HP DeskJet, OfficeJet, Photosmart, Business Inkjet and some LaserJet."
 arch=('x86_64')
 url="https://developers.hp.com/hp-linux-imaging-and-printing"
 license=('GPL')
 depends=('ghostscript' 'foomatic-db' 'foomatic-db-engine' 'cups' 'net-snmp' 'libusb' 
-         'wget' 'python3-gobject3' 'pyqt5-python3' 'python3-distro')
+         'wget' 'python3-gobject3' 'pyqt5-python3' 'python3-distro' 'libxcrypt')
 makedepends=('pkgconfig' 'sane' 'rpcbind' 'dbus-python3')
 optdepends=('dbus-python3: for dbus support'
             'sane: for scanner support'
@@ -47,7 +47,7 @@ build() {
 package() {
   cd ${pkgname}-${_pkgver}
 
-  make rulesdir=/usr/lib/udev/rules.d DESTDIR=${pkgdir}/ install
+  make -j4 rulesdir=/usr/lib/udev/rules.d DESTDIR=${pkgdir}/ install
 
   install prnt/hpcups/libImageProcessor-x86_64.so ${pkgdir}/usr/lib
   ln -s libImageProcessor-x86_64.so ${pkgdir}/usr/lib/libImageProcessor.so
