@@ -1,12 +1,12 @@
 
 pkgname=net-snmp
 pkgver=5.9.1
-pkgrel=1
+pkgrel=2
 pkgdesc="A suite of applications used to implement SNMP v1, SNMP v2c and SNMP v3 using both IPv4 and IPv6"
 arch=('x86_64')
 url="http://www.net-snmp.org/"
 license=('BSD')
-depends=('openssl' 'libnl' 'pciutils')
+depends=('openssl' 'libnl' 'pciutils' 'libxcrypt')
 makedepends=('python3-setuptools')
 options=('!libtool' '!makeflags' '!emptydirs')
 #source=("https://github.com/net-snmp/net-snmp/archive/v${pkgver}.tar.gz")
@@ -20,7 +20,7 @@ md5sums=('e5ee202dfb15000342354d64f1837d19'
 build() {
   cd ${pkgname}-${pkgver}
   patch -p1 -i $srcdir/perl.patch
-  
+
   autoreconf -f -i  
 
   ./configure --prefix=/usr \
@@ -44,7 +44,7 @@ package() {
   cd ${pkgname}-${pkgver}
   sed -i -e "s|install --basedir=\$\$dir|install --basedir=\$\$dir --root=${pkgdir}|" Makefile
   make DESTDIR=${pkgdir} INSTALL_PREFIX=${pkgdir} INSTALLDIRS=vendor install
-  
+
   install -Dm0644 ${srcdir}/snmpd.service ${pkgdir}/usr/lib/systemd/system/snmpd.service
   install -Dm0644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
