@@ -1,8 +1,8 @@
 
 #http://news.php.net/group.php?group=php.announce
 pkgname=php
-pkgver=7.4.24
-pkgrel=2
+pkgver=7.4.25
+pkgrel=1
 arch=('x86_64')
 pkgdesc='An HTML-embedded scripting language'
 license=('PHP')
@@ -10,7 +10,7 @@ url='https://secure.php.net/'
 depends=('postgresql-libs' 'libldap' 'sqlite' 'unixodbc' 'net-snmp' 'enchant' 
          'freetds' 'libmcrypt' 'tidyhtml' 'aspell' 'libtool' 'libpng' 'icu' 'curl' 'libxslt' 'bzip2'
          'freetype2' 'harfbuzz' 'systemd' 'pcre2' 'libxml2' 'libxpm' 'libzip' 'gdbm' 'argon2' 'libsodium'
-         'oniguruma' 'libxcrypt') #'libvpx'
+         'oniguruma') # 'libxcrypt') #'libvpx'
 makedepends=('mariadb' 'postfix' 'file' 'libjpeg-turbo' 'openssl' 'db' 'gmp')
 backup=('etc/php/php.ini'
         'etc/php/php-fpm.conf')
@@ -54,7 +54,7 @@ source=("https://www.php.net/distributions/${pkgname}-${pkgver}.tar.xz"
         'php-fpm.service'
         'php-fpm.tmpfiles'
         'enchant2.patch')
-sha256sums=('ff7658ee2f6d8af05b48c21146af5f502e121def4e76e862df5ec9fa06e98734'
+sha256sums=('12a758f1d7fee544387a28d3cf73226f47e3a52fb3049f07fcc37d156d393c0a'
             'f2040cc0648a395d0a84984dd6bf7aadf9f569b58838c666d84898bc4578fe04'
             '0f60fe0bc69fb06663faeb7ca710e573cdfd32cbb686bf6ccf49af76c53883d0'
             '65af4ebac5a1912292c701cca0313c76bd30450ef00d39f449ff5e8cbcfb82ba'
