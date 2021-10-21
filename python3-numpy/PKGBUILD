@@ -1,7 +1,7 @@
 
 pkgname=python3-numpy
-pkgver=1.21.2
-_pkgver=1.21.2
+pkgver=1.21.3
+_pkgver=1.21.3
 pkgrel=1
 pkgdesc="Scientific tools for Python"
 arch=('x86_64')
@@ -9,13 +9,13 @@ license=('custom')
 url="https://www.numpy.org/"
 depends=('lapack' 'python3-nose' 'python3-cython')
 source=("https://github.com/numpy/numpy/releases/download/v${pkgver}/numpy-${_pkgver}.tar.gz")
-sha256sums=('76af194fbc117934ec5bbe2ff15177adbd05aeed23f18ee209ed88edcd777e05')
+sha256sums=('d0bba24083c01ae43457514d875f10d9ce4c1125d55b1e2573277b2410f2d068')
 
 build() {
   cd numpy-${pkgver}
   export Atlas=None
   export LDFLAGS="$LDFLAGS -shared"
-  
+
   python3 setup.py config_fc --fcompiler=gnu95 build
 }
 
@@ -25,7 +25,7 @@ package() {
 
   install -m755 -d ${pkgdir}/usr/share/licenses/python3-numpy
   install -m644 LICENSE.txt ${pkgdir}/usr/share/licenses/python3-numpy/
-  
+
   install -m755 -d ${pkgdir}/usr/include/python3.8
   ln -sf /usr/lib/python3.8/site-packages/numpy/core/include/numpy ${pkgdir}/usr/include/python3.8/numpy
 }
