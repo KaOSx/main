@@ -1,6 +1,6 @@
 
 pkgname=geos
-pkgver=3.9.1
+pkgver=3.10.0
 pkgrel=1
 pkgdesc="A C++ port of the Java Topology Suite"
 arch=('x86_64')
@@ -9,7 +9,7 @@ license=('LGPL')
 depends=('gcc-libs' 'bash')
 options=('!libtool' '!emptydirs')
 source=("https://download.osgeo.org/geos/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('efc4ce81bdbaa5e5c1caefe6c9b8553c')
+md5sums=('ceba6581d4e42ca85712ec640764dd10')
 
 build() {
   cd ${pkgname}-${pkgver}
@@ -20,7 +20,7 @@ build() {
 
 package() {
   cd ${pkgname}-${pkgver}
-  
+
   make DESTDIR=${pkgdir} install
 }
 
