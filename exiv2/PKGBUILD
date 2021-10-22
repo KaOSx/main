@@ -1,7 +1,7 @@
 
 pkgname=exiv2
-pkgver=0.27.4
-pkgrel=2
+pkgver=0.27.5
+pkgrel=1
 pkgdesc="Exif and Iptc metadata manipulation library and tools."
 arch=('x86_64')
 url="https://exiv2.org"
@@ -10,13 +10,10 @@ depends=('gcc-libs' 'zlib' 'expat')
 makedepends=('cmake')
 options=('!libtool')
 source=("https://exiv2.org/builds/${pkgname}-${pkgver}-Source.tar.gz")
-sha256sums=('84366dba7c162af9a7603bcd6c16f40fe0e9af294ba2fd2f66ffffb9fbec904e')
+sha256sums=('35a58618ab236a901ca4928b0ad8b31007ebdc0386d904409d825024e45ea6e2')
 
 build() {
-  mkdir -p build
-  cd build
-  
-  cmake ../${pkgname}-${pkgver}-Source \
+  cmake -B build -S ${pkgname}-${pkgver}-Source \
     -DEXIV2_BUILD_UNIT_TESTS=OFF \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
@@ -26,12 +23,10 @@ build() {
     -DEXIV2_ENABLE_CURL=ON \
     -DEXIV2_ENABLE_SSH= \
     -DEXIV2_ENABLE_BMFF=ON
-    
-  make
+  cmake --build build
 }
 
 package() {
-  cd build
-  
-  make DESTDIR=${pkgdir} install
+
+  DESTDIR=${pkgdir} cmake --install build
 }
