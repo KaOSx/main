@@ -1,20 +1,19 @@
 
 pkgname=python3-pyparsing
-pkgver=2.4.7
-pkgrel=2
+pkgver=3.0.0
+pkgrel=1
 pkgdesc='General parsing module for Python'
 arch=('x86_64')
 url='https://pypi.org/project/pyparsing/'
 license=('MIT')
 depends=('python3')
 makedepends=('python3-setuptools')
-source=("https://github.com/pyparsing/pyparsing/releases/download/pyparsing_${pkgver}/pyparsing-${pkgver}.tar.gz")
-md5sums=('f0953e47a0112f7a65aec2305ffdf7b4')
+source=("https://files.pythonhosted.org/packages/source/p/pyparsing/pyparsing-${pkgver}.tar.gz")
+sha256sums=('001cad8d467e7a9248ef9fd513f5c0d39afcbcb9a43684101853bd0ab962e479')
 
 package() {
   cd pyparsing-${pkgver}
-  rm -rf build
-  
+
   python3 setup.py install --prefix=/usr --root=${pkgdir} --optimize=1
   install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/python3-pyparsing/LICENSE
 }
