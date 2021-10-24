@@ -1,7 +1,7 @@
 
 pkgname=v4l-utils
-pkgver=1.20.0
-pkgrel=2
+pkgver=1.22.1
+pkgrel=1
 pkgdesc="Userspace tools and conversion library for Video 4 Linux"
 arch=('x86_64')
 url="https://linuxtv.org/"
@@ -10,7 +10,7 @@ depends=('glibc' 'gcc-libs' 'sysfsutils' 'libjpeg-turbo' 'qt5-base')
 makedepends=('clang')
 options=('!libtool')
 source=("https://linuxtv.org/downloads/v4l-utils/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('46f9e2c0b2fdccd009da2f7e1aa87894')
+md5sums=('8aa73287320a49e9170a8255d7b2c7e6')
 
 build() {
   cd ${pkgname}-${pkgver}
@@ -22,7 +22,7 @@ build() {
 package() {
   cd ${pkgname}-${pkgver}
   MAKEFLAGS="-j1" make install DESTDIR=${pkgdir}/
-  
+
   rm -f ${pkgdir}/usr/bin/ivtv-ctl
   rm -f ${pkgdir}/usr/share/applications/qvidcap.desktop
 }
