@@ -11,12 +11,12 @@ makedepends=('cmake')
 source=("https://github.com/jbeder/yaml-cpp/archive/yaml-cpp-${pkgver}.tar.gz"
         'cmake.diff')
 md5sums=('74d646a3cc1b5d519829441db96744f0'
-         '33abd80366290bd14fbeb1319eaca28d')
+         '29c4f23c776e2be26e37393719f13cc0')
 
 prepare() {
     cd ${pkgname}-${pkgname}-${pkgver}
 
-    patch -p0 -i ${srcdir}/cmake.diff
+    patch -p1 -i ${srcdir}/cmake.diff
 }
 
 build() {
