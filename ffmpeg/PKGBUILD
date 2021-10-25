@@ -2,7 +2,7 @@
 # rebuild mpv on any update
 pkgname=ffmpeg
 pkgver=4.4.1
-pkgrel=1
+pkgrel=2
 pkgdesc="Complete and free Internet live audio and video broadcasting solution for Linux/Unix"
 arch=('x86_64')
 url="https://ffmpeg.org/"
@@ -10,8 +10,8 @@ license=('GPL')
 depends=('bzip2' 'lame' 'sdl2' 'libvorbis' 'xvidcore' 'zlib' 'x264' 'libtheora' 'fribidi'
          'opencore-amr' 'alsa-lib' 'libvdpau' 'libxfixes' 'libvpx' 'libwebp'
          'libva' 'openjpeg' 'rtmpdump' 'speex' 'gsm' 'pulseaudio' 'v4l-utils' 'gnutls' 'x265'
-         'libass' 'dcadec' 'opus' 'dav1d' 'avisynthplus' 'samba')
-makedepends=('yasm')
+         'libass' 'dcadec' 'opus' 'dav1d' 'avisynthplus' 'samba' 'librsvg' 'vulkan-loader')
+makedepends=('yasm' 'vulkan-headers')
 source=("https://ffmpeg.org/releases/${pkgname}-${pkgver}.tar.xz"
         'openjpeg2.2.patch')
 md5sums=('41a1ca8693acc56088e8eaf3899b91ea'
@@ -50,7 +50,9 @@ build() {
               --enable-libfribidi \
               --enable-libass \
               --enable-libdav1d \
+              --enable-librsvg \
               --enable-libsmbclient \
+              --enable-vulkan \
               --disable-debug \
               --disable-static
 
