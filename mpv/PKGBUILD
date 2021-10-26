@@ -1,27 +1,27 @@
 
 pkgname=mpv
 pkgver=0.33.1
-pkgrel=3
+pkgrel=4
 pkgdesc='Video player based on MPlayer/mplayer2'
 arch=('x86_64')
 license=('GPL')
 url='https://mpv.io'
 depends=('ffmpeg' 'lcms2' 'libdvdread' 'libcdio' 'libcdio-paranoia' 'libglvnd' 'libxinerama'
          'libxv' 'libxkbcommon' 'libva' 'wayland' 'desktop-file-utils' 'hicolor-icon-theme'
-         'xdg-utils' 'libdvdnav' 'youtube-dl' 'libass' 'libbluray' 'lua' 'libxrandr' 'jack'
+         'xdg-utils' 'libdvdnav' 'yt-dlp' 'libass' 'libbluray' 'lua' 'libxrandr' 'jack'
          'rubberband' 'libxss' 'libcaca' 'libarchive' 'openal')
 makedepends=('mesa' 'python3-docutils' 'ladspa' 'perl')
 options=('!emptydirs' '!buildflags')
 source=("https://github.com/mpv-player/mpv/archive/v${pkgver}.tar.gz"
-        "https://github.com/mpv-player/mpv/commit/2ecf240b1cd20875991a5b18efafbe799864ff7f.patch")
+        "https://github.com/mpv-player/mpv/commit//cc4ada655aae06218b900bb434e3521566394cde.diff")
 #source=("https://github.com/mpv-player/mpv/archive/${_commit}.zip")
 md5sums=('2549341eda0f5770c221469197186038'
-         'ec43562bba26f19c55ab6ba47731ab50')
+         'a91b76f6edcc272f81528d3c8e95bfaa')
 
 prepare() {
     cd ${pkgname}-${pkgver}
-    # libva 2.0.0 fix
-    #patch -p1 -i ${srcdir}/2ecf240b1cd20875991a5b18efafbe799864ff7f.patch
+    # move to yt-dlp
+    patch -p1 -i ${srcdir}//cc4ada655aae06218b900bb434e3521566394cde.diff
 
     ./bootstrap.py
 }
