@@ -1,0 +1,30 @@
+
+pkgname=yt-dlp
+pkgver=2021.10.22
+pkgrel=1
+pkgdesc='Command-line program to download videos from YouTube.com and other video sites'
+arch=('x86_64')
+url="https://github.com/yt-dlp/yt-dlp"
+license=('custom')
+depends=('python3' 'mutagen')
+makedepends=('zip' 'python3-setuptools')
+conflicts=('youtube-dl')
+provides=('youtube-dl')
+replaces=('youtube-dl')
+source=("https://github.com/yt-dlp/yt-dlp/archive/refs/tags/${pkgver}.tar.gz")
+sha256sums=('63f267cb0f2e9d18afc8e51267be2a13ce60030eab7c04b25b94d6b90d2ba6d3')
+
+build() {
+    cd ${pkgname}-${pkgver}
+    #sed -i 's|python|python3|g' Makefile
+
+    make PREFIX=${pkgdir}/usr yt-dlp completion-bash completion-zsh completion-fish
+    python3 setup.py build
+}
+
+package() {
+    cd ${pkgname}-${pkgver}
+    python3 setup.py install --root=${pkgdir}/ --optimize=1 --skip-build
+
+    install -D -m644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
