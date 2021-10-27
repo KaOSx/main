@@ -1,6 +1,6 @@
 
 pkgname=xorg-server
-pkgver=1.20.13
+pkgver=21.1.0
 # major updates build xorg-server/xf86-input-evdev/xorg-server again
 pkgrel=1
 pkgdesc="X.Org X servers"
@@ -9,7 +9,7 @@ license=('custom')
 url="https://xorg.freedesktop.org"
 depends=('xorgproto' 'xorg-util-macros' 'pixman'
          'libpciaccess' 'libxfont2' 'libxi' 'mesa' 'libgcrypt' 'libxv' 'libxau' 'libxaw'
-         'libxrender' 'libdmx' 'libdrm' 'libxfixes' 'libxext' 'libxdmcp' 'libxshmfence'
+         'libxrender' 'libdmx' 'libdrm' 'libxfixes' 'libxext' 'libxdmcp' 'libxshmfence' 'libxcvt'
          'systemd' 'xf86-input-evdev' 'xkeyboard-config' 'xorg-xkb-utils'
          'xorg-fonts-misc' 'xcb-util' 'xcb-util-image' 'xcb-util-keysyms'
          'xcb-util-renderutil' 'xcb-util-wm' 'libepoxy' 'libglvnd' 'nettle')
@@ -23,7 +23,7 @@ groups=('xorg')
 source=("https://xorg.freedesktop.org/releases/individual/xserver/${pkgname}-${pkgver}.tar.xz"
         'xvfb-run'
         'xvfb-run.1')
-sha256sums=('40aa4e96a56a81a301f15a9b10e06a22700f12b42d9e0e453c7f11d354386300'
+sha256sums=('50c316dd8f4472cb60dfb285aa46ca6855d7626cecfd8330f6c51da743c1fe42'
             'ff0156309470fc1d378fd2e104338020a884295e285972cc88e250e031cc35b9'
             '2460adccd3362fefd4cdc5f1c70f332d7b578091fb9167bf88b5f91265bbd776')
 
@@ -34,14 +34,12 @@ build() {
   ./configure --prefix=/usr \
       --enable-ipv6 \
       --enable-dri \
-      --enable-dmx \
       --enable-xvfb \
       --enable-xnest \
       --enable-composite \
       --enable-xcsecurity \
       --enable-xorg \
       --enable-xephyr \
-      --disable-xwayland \
       --enable-glamor \
       --enable-config-udev \
       --enable-systemd-logind \
