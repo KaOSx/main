@@ -1,6 +1,6 @@
 
 pkgname=openexr
-pkgver=3.1.2
+pkgver=3.1.3
 pkgrel=1
 pkgdesc="Provides the EXR file format, the image storage format of the motion picture industry."
 url="http://www.openexr.org"
@@ -11,12 +11,12 @@ makedepends=('boost' 'cmake')
 options=('!libtool')
 source=("https://github.com/AcademySoftwareFoundation/openexr/archive/v${pkgver}.tar.gz"
         "https://github.com/AcademySoftwareFoundation/openexr/commit/0b26a9dedda4924841323677f1ce0bce37bfbeb4.diff")
-md5sums=('2e976f5fb610abb6f75d8f20014cf72a'
+md5sums=('faa3efff7a181f0ca651b2b481ee1b4f'
          '673343bed6d675244da3fd30dcfeb3ab')
 
 prepare() {
   cd ${pkgname}-${pkgver}
-  
+
   #patch -p1 -i ${srcdir}/0b26a9dedda4924841323677f1ce0bce37bfbeb4.diff
 }
 
