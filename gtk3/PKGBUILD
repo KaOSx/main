@@ -3,7 +3,7 @@ pkgbase=gtk3
 pkgname=('gtk3' 'gtk-update-icon-cache')
 pkgver=3.24.30
 _pkgver=3.24
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 url="https://www.gtk.org/"
 makedepends=('gobject-introspection' 'cairo' 'libcups' 'libxcursor' 'libxinerama' 'libxrandr' 
@@ -15,16 +15,22 @@ license=('LGPL')
 source=("https://ftp.gnome.org/pub/gnome/sources/gtk+/${_pkgver}/gtk+-${pkgver}.tar.xz"
         'gtk-update-icon-cache.hook'
         'gtk-update-icon-cache.script'
-        "https://gitlab.gnome.org/GNOME/gtk/-/commit/9a693c7228a88b76a007aed41b101d89d084cf9b.diff")
+        'gcc11.diff')
 sha256sums=('ba75bfff320ad1f4cfbee92ba813ec336322cc3c660d406aad014b07087a3ba9'
             '2d435e3bec8b79b533f00f6d04decb1d7c299c6e89b5b175f20be0459f003fe8'
             'bbe06e1b4e1ad5d61a4e703445a2bb93c6be918964d6dd76c0420c6667fa11eb'
-            '9dd003e9396d511e68856f37e9ab0ec34fc7f540e266366f2df506157894b361')
+            'f62d5e7f7ae9694021ba87e232dbcd3ba402987132708baff282b34c508c1b53')
+
+prepare() {
+  cd gtk+-${pkgver}
+
+  patch -p1 -i ${srcdir}/gcc11.diff
+}
 
 build() {
   mkdir -p build
   cd build
-  
+
   meson ../gtk+-${pkgver} \
     --prefix=/usr \
     --buildtype=release \
@@ -46,11 +52,11 @@ package_gtk3() {
           'colord' 'at-spi2-atk' 'libepoxy' 'libxkbcommon' 'wayland' 
           'wayland-protocols' 'iso-codes')
   install="gtk3.install"
-  
+
   cd build
   
   DESTDIR=${pkgdir} ninja install
-  
+
   # avoid gtk2 conflict, used for both gtk2 & 3 this way
   rm $pkgdir/usr/bin/gtk-update-icon-cache
 }

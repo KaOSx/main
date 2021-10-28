@@ -2,7 +2,7 @@
 pkgname=dconf
 pkgver=0.40.0
 _pkgver=0.40
-pkgrel=2
+pkgrel=3
 pkgdesc="A low-level configuration system."
 arch=('x86_64')
 url="https://wiki.gnome.org/Projects/dconf"
@@ -14,14 +14,14 @@ sha256sums=('cf7f22a4c9200421d8d3325c5c1b8b93a36843650c9f95d6451e20f0bcb24533')
 
 prepare() {
   cd ${pkgname}-${pkgver}
-  
+
   sed -e "s|subdir('tests')|#subdir('tests')|" -i meson.build
 }
   
 build() {
   mkdir -p build
   cd build
-  
+
   meson ../${pkgname}-${pkgver} \
     --prefix=/usr \
     --buildtype=release \
@@ -32,6 +32,6 @@ build() {
 
 package() {
   cd build
-  
+
   DESTDIR=${pkgdir} ninja install
 }
