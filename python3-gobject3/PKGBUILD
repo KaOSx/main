@@ -1,8 +1,8 @@
 
 pkgname=python3-gobject3 
 pkgbase=pygobject
-pkgver=3.40.1
-_pkgver=3.40
+pkgver=3.42.0
+_pkgver=3.42
 pkgrel=1
 pkgdesc="Python3 bindings for GObject"
 arch=('x86_64')
@@ -12,12 +12,12 @@ depends=('python3' 'python3-cairo' 'gobject-introspection')
 makedepends=('meson' 'ninja')
 source=("https://ftp.gnome.org/pub/gnome/sources/pygobject/${_pkgver}/${pkgbase}-${pkgver}.tar.xz")
 options=('!libtool')
-sha256sums=('00c6d591f4cb40c335ab1fd3e8c17869ba15cfda54416fe363290af766790035')
+sha256sums=('9b12616e32cfc792f9dc841d9c472a41a35b85ba67d3a6eb427e307a6fe4367b')
 
 build() {
   mkdir -p build
   cd build
-  
+
   meson ../${pkgbase}-${pkgver} \
     --prefix=/usr \
     --buildtype=release \
@@ -27,7 +27,7 @@ build() {
 
 package() {
   cd build
-  
+
   DESTDIR=${pkgdir} ninja install
 }
 
