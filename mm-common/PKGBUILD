@@ -2,7 +2,7 @@
 pkgname=mm-common
 pkgver=1.0.3
 _pkgver=1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Protocol definitions and daemon for D-Bus at-spi"
 arch=('x86_64')
 url="https://www.gtkmm.org/"
@@ -16,7 +16,7 @@ sha256sums=('e81596625899aacf1d0bf27ccc2fcc7f373405ec48735ca1c7273c0fbcdc1ef5')
 build() {
   mkdir -p build
   cd build
-  
+
   meson ../${pkgname}-${pkgver} \
     --prefix=/usr \
     --buildtype=release \
@@ -27,6 +27,6 @@ build() {
 
 package() {
   cd build
-  
+
   DESTDIR=${pkgdir} ninja install
 }

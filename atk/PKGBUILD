@@ -2,7 +2,7 @@
 pkgname=atk
 pkgver=2.36.0
 _pkgver=2.36
-pkgrel=3
+pkgrel=4
 pkgdesc="A library providing a set of interfaces for accessibility"
 arch=('x86_64')
 url='https://www.gtk.org/'
@@ -16,7 +16,7 @@ sha256sums=('fb76247e369402be23f1f5c65d38a9639c1164d934e40f6a9cf3c9e96b652788')
 build() {
   mkdir -p build
   cd build
-  
+
   meson ../${pkgname}-${pkgver} \
     --prefix=/usr \
     --buildtype=release
@@ -25,6 +25,6 @@ build() {
 
 package() {
   cd build
-  
+
   DESTDIR=${pkgdir} ninja install
 }

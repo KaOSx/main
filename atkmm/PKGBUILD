@@ -2,7 +2,7 @@
 pkgname=atkmm
 pkgver=2.28.2
 _pkgver=2.28
-pkgrel=1
+pkgrel=2
 pkgdesc="C++ bindings for atk"
 url="https://www.gtkmm.org/en/"
 arch=('x86_64')
@@ -16,7 +16,7 @@ sha256sums=('a0bb49765ceccc293ab2c6735ba100431807d384ffa14c2ebd30e07993fd2fa4')
 build() {
   mkdir -p build
   cd build
-  
+
   meson ../${pkgname}-${pkgver} \
     --prefix=/usr \
     --buildtype=release 
@@ -25,6 +25,6 @@ build() {
 
 package() {
   cd build
-  
+
   DESTDIR=${pkgdir} ninja install
 }

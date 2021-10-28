@@ -2,7 +2,7 @@
 pkgname=gtk2
 pkgver=2.24.33
 _pkgver=2.24
-pkgrel=2
+pkgrel=3
 arch=('x86_64')
 url="https://www.gtk.org/"
 pkgdesc="GTK+ is a multi-platform toolkit (v2)"
@@ -35,9 +35,9 @@ package() {
     make DESTDIR=${pkgdir} install
 
     echo 'gtk-fallback-icon-theme = "gnome"' > ${pkgdir}/etc/gtk-2.0/gtkrc
-    
+
     install -Dm644 ../gtk-query-immodules-2.0.hook ${pkgdir}/usr/share/libalpm/hooks/gtk-query-immodules-2.0.hook
-    
+
     rm $pkgdir/usr/bin/gtk-update-icon-cache
 }
 
