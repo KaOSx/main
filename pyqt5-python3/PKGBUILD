@@ -1,6 +1,6 @@
 
 pkgname=pyqt5-python3
-pkgver=5.15.5
+pkgver=5.15.6
 pkgrel=1
 pkgdesc="A set of Python3 bindings for the Qt toolkit"
 arch=('x86_64')
@@ -11,12 +11,13 @@ makedepends=('qt5-tools')
 source=("https://pypi.python.org/packages/source/P/PyQt5/PyQt5-${pkgver}.tar.gz"
         'qt5.11.patch')
 #source=("https://www.riverbankcomputing.com/static/Downloads/PyQt5/PyQt5_gpl-5.6.1.${_commit}.tar.gz")
-sha256sums=('b411b7a8fa03901c9feb1dcbac7ea1fc3ce20b9ae682762b777cd5398749ca2b'
+sha256sums=('80343bcab95ffba619f2ed2467fd828ffeb0a251ad7225be5fc06dcc333af452'
             '34bba97f87615ea072312bfc03c4d3fb0a1cf7a4cd9d6907857c1dca6cc89200')
 
 build() {
   cd PyQt5-${pkgver}
-  #patch -p1 -i ${srcdir}/qt5.11.patch 
+  #patch -p1 -i ${srcdir}/qt5.11.patch
+  sed -i 's|sip >=6.4|sip >=5.3|' pyproject.toml
 
   python3 configure.py \
     --confirm-license \
