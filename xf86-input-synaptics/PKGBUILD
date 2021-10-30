@@ -1,7 +1,7 @@
 
 pkgname=xf86-input-synaptics
 pkgver=1.9.1
-pkgrel=3
+pkgrel=4
 pkgdesc="Synaptics driver for notebook touchpads"
 arch=('x86_64')
 license=('custom')
@@ -19,7 +19,7 @@ sha256sums=('7af83526eff1c76e8b9e1553b34245c203d029028d8044dd9dcf71eef1001576'
 build() {
   cd ${pkgname}-${pkgver}
   #patch -p1 -i ${srcdir}/tapbutton.patch
-  
+
   ./configure --prefix=/usr
   make
 }
@@ -27,7 +27,7 @@ build() {
 package() {
   cd ${pkgname}-${pkgver}
   make DESTDIR=${pkgdir} install
-  
+
   install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
   install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
 }

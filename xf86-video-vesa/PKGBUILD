@@ -1,7 +1,7 @@
 
 pkgname=xf86-video-vesa
 pkgver=2.5.0
-pkgrel=1
+pkgrel=2
 pkgdesc="X.org vesa video driver"
 arch=('x86_64')
 license=('custom')
@@ -17,7 +17,7 @@ sha256sums=('1f1624f3c73906801ad1bc98335a2cb5676a7a4d18e5374d9a1d18464e54c659'
 
 build() {
   cd ${pkgname}-${pkgver}
-  
+
   patch -p1 -R -i ${srcdir}/revert-kernelcheck.patch
 
   ./configure --prefix=/usr 

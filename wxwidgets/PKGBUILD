@@ -1,0 +1,48 @@
+
+pkgname=wxwidgets
+_pkgname=wxWidgets
+pkgver=3.1.5
+pkgrel=1
+pkgdesc="Open source cross-platform C++ framework for writing advanced GUI applications using native controls."
+arch=('x86_64')
+url="http://wxwidgets.org"
+license=('custom:wxWindows')
+depends=('gtk3' 'glu' 'gst-plugins-base')
+makedepends=('gtk2')
+options=('!emptydirs')
+conflicts=('wxgtk')
+source=("https://github.com/wxWidgets/wxWidgets/releases/download/v${pkgver}/${_pkgname}-${pkgver}.tar.bz2")
+sha1sums=('725455d6324baa808259b56a42199237327e0638')
+
+prepare() {
+  cd ${_pkgname}-${pkgver}
+  #patch -p1 -i ../wxGTK-2.9.5-collision.patch
+}
+
+build() {
+  cd ${_pkgname}-${pkgver}
+
+  ./configure --prefix=/usr \
+    --libdir=/usr/lib \
+    --with-gtk=3 \
+    --with-opengl \
+    --enable-unicode \
+    --enable-graphics_ctx \
+    --enable-mediactrl \
+    --disable-webview \
+    --with-regex=builtin \
+    --with-libpng=sys \
+    --with-libxpm=sys \
+    --with-libjpeg=sys \
+    --with-libtiff=sys \
+    --disable-precomp-headers
+  make
+  make -C locale allmo
+}
+
+package() {
+  cd ${_pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install
+
+  install -D -m644 docs/licence.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}

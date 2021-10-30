@@ -1,7 +1,7 @@
 
 pkgname=xf86-video-nouveau
 pkgver=1.0.17
-pkgrel=1
+pkgrel=2
 pkgdesc="Open Source 3D acceleration driver for nVidia cards"
 arch=('x86_64')
 url="https://nouveau.freedesktop.org/"
@@ -9,21 +9,25 @@ license=('GPL') #and MIT, not yet a license file, see http://nouveau.freedesktop
 depends=('libdrm' 'systemd' 'mesa')
 makedepends=('xorg-server' 'xorgproto')
 options=('!libtool')
-source=("https://xorg.freedesktop.org/archive/individual/driver/$pkgname-$pkgver.tar.bz2"
-        '50-nouveau-hwmon.rules')
+source=("https://xorg.freedesktop.org/archive/individual/driver/${pkgname}-${pkgver}.tar.bz2"
+        '50-nouveau-hwmon.rules'
+        "https://gitlab.freedesktop.org/xorg/driver/xf86-video-nouveau/-/commit/e80e73ced69b15662103d0fd6837db4ce6c6eb5b.diff")
 sha256sums=('499322e27a55c8183166bf2dd1e47d085eb834143e0d7036baba8427b90c156b'
-            'a963c9c597d97d6637176efd66af43a081dcb95c89975ea496ec4052d308a107')
+            'a963c9c597d97d6637176efd66af43a081dcb95c89975ea496ec4052d308a107'
+            '1a24074aa7ae3226100e9fc4d58c911e23f64e32109c0516228b91e303d1d658')
 
 build() {
-  cd $pkgname-$pkgver
-  
+  cd ${pkgname}-${pkgver}
+  # xorg-server 21.1 needed
+  patch -p1 -i ${srcdir}/e80e73ced69b15662103d0fd6837db4ce6c6eb5b.diff
+
   ./configure --prefix=/usr
   make
 }
 
 package() {
-  cd $pkgname-$pkgver
+  cd ${pkgname}-${pkgver}
   make DESTDIR=${pkgdir} install
-  
+
   #install -Dm644 ${srcdir}/50-nouveau-hwmon.rules ${pkgdir}/etc/udev/rules.d/50-nouveau-hwmon.rules
 }
