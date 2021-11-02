@@ -1,7 +1,7 @@
 
 pkgname=proj
-pkgver=8.1.1
-_dataver=1.7
+pkgver=8.2.0
+_dataver=1.8
 pkgrel=1
 pkgdesc="Cartographic Projections library"
 arch=('x86_64')
@@ -10,15 +10,14 @@ license=('MIT')
 depends=('sqlite' 'libtiff')
 makedepends=('cmake')
 options=('!libtool')
-source=("https://download.osgeo.org/proj/${pkgname}-${pkgver}.tar.gz"
-        "https://download.osgeo.org/proj/${pkgname}-data-${_dataver}.tar.gz")
-md5sums=('f017fd7d35311b0d65b2cf0503844690'
-         'a7f85578335509c99029b72c139fc0c6')
+source=("https://download.osgeo.org/proj/${pkgname}-${pkgver}.tar.gz")
+        #"https://download.osgeo.org/proj/${pkgname}-data-${_dataver}.tar.gz")
+md5sums=('c157faf5d4cf9967ffbe3028d7d9a921')
 
-prepare() {
+#prepare() {
 
-  bsdtar -xzvf ${srcdir}/${pkgname}-data-${_dataver}.tar.gz -C ${srcdir}/proj-${pkgver}/data
-}
+  #bsdtar -xzvf ${srcdir}/${pkgname}-data-${_dataver}.tar.gz -C ${srcdir}/proj-${pkgver}/data
+#}
 
 build() {
   cmake -B build -S ${pkgname}-${pkgver} \
