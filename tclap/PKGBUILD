@@ -1,17 +1,17 @@
 
 pkgname=tclap
-pkgver=1.2.4
+pkgver=1.2.5
 pkgrel=1
 pkgdesc="Small, flexible library providing a simple interface for defining command line arguments"
 arch=('x86_64')
 url="http://tclap.sourceforge.net/"
 license=('MIT')
 source=("https://downloads.sourceforge.net/sourceforge/tclap/${pkgname}-${pkgver}.tar.gz")
-md5sums=('733b26a2dae2ae8acc46fc37974d6d76')
+md5sums=('346a92acf9b364dfbff0a6df03c8a59e')
 
 build() {
   cd ${pkgname}-${pkgver}
-  
+
   ./configure --prefix=/usr
   make
 }
@@ -19,6 +19,6 @@ build() {
 package() {
   cd ${pkgname}-${pkgver}
   make DESTDIR=${pkgdir} install
-  
+
   install -D -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
