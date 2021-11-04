@@ -1,7 +1,7 @@
 
 pkgname=lv2
 pkgver=1.18.2
-pkgrel=1
+pkgrel=2
 pkgdesc="Successor to the LADSPA audio plug-in standard"
 url="https://lv2plug.in/"
 license=('LGPL' 'custom')
@@ -11,16 +11,16 @@ source=("https://lv2plug.in/spec/${pkgname}-${pkgver}.tar.bz2")
 md5sums=('4693bac601af4ca329ff18e6d6dae3fa')
 
 build() {
-	cd ${pkgname}-${pkgver}
+    cd ${pkgname}-${pkgver}
 
-	python3 waf configure --prefix=/usr
-	python3 waf build $MAKEFLAGS
-}
+    python3 waf configure --prefix=/usr
+    python3 waf build $MAKEFLAGS
+    }
 
-package() {
-	cd ${pkgname}-${pkgver}
+    package() {
+    cd ${pkgname}-${pkgver}
 
-	python3 waf install --destdir=${pkgdir}
+    python3 waf install --destdir=${pkgdir}
 
-	install -Dm644 COPYING  ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
+    install -Dm644 COPYING  ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
 }
