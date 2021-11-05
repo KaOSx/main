@@ -1,6 +1,6 @@
 # keep vulkan header & loader version in sync, remove git from chroot to build from rls tar
 pkgname=vulkan-loader
-pkgver=1.2.196
+pkgver=1.2.197
 pkgrel=1
 pkgdesc="Vulkan Header files and API registry"
 arch=('x86_64')
@@ -9,7 +9,7 @@ license=('APACHE')
 depends=('mesa' 'wayland' 'libx11' 'libxkbcommon' 'libxrandr')
 makedepends=('cmake' 'vulkan-headers' 'python3-lxml')
 source=("https://github.com/KhronosGroup/Vulkan-Loader/archive/v${pkgver}.tar.gz")
-md5sums=('8a0549a633e0d93126f00d3f3dfb6a67')
+md5sums=('658f9fca9f3c404ff62cd0869a988b75')
 
 build() {
   cmake -B build -S Vulkan-Loader-${pkgver} \
