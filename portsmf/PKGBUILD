@@ -1,0 +1,25 @@
+
+pkgname=portsmf
+pkgver=239
+pkgrel=1
+pkgdesc="Port Standard MIDI File, a cross-platform, C++ library for reading and writing Standard MIDI Files."
+arch=('x86_64')
+url="https://github.com/tenacityteam/portsmf"
+license=('MIT')
+depends=('gcc-libs')
+options=('!staticlibs')
+source=("https://github.com/tenacityteam/portsmf/archive/refs/tags/${pkgver}.tar.gz")
+md5sums=('9405cf3acf0c8a19d1c321b970593057')
+
+build() {
+  cmake -B build -S ${pkgname}-${pkgver} \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release
+  cmake --build build
+}
+
+package() {
+
+  DESTDIR=${pkgdir} cmake --install build
+  install -D -m644 ${pkgname}-${pkgver}/license.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
