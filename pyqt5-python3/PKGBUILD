@@ -17,7 +17,8 @@ sha256sums=('80343bcab95ffba619f2ed2467fd828ffeb0a251ad7225be5fc06dcc333af452'
 build() {
   cd PyQt5-${pkgver}
   #patch -p1 -i ${srcdir}/qt5.11.patch
-  sed -i 's|sip >=6.4|sip >=5.3|' pyproject.toml
+  #sed -i 's|sip >=6.4|sip >=5.3|' pyproject.toml
+  sed -i 's|use_limited_api=True, py_ssize_t_clean=True|use_limited_api=True|' sip/QtCore/QtCoremod.sip
 
   python3 configure.py \
     --confirm-license \
