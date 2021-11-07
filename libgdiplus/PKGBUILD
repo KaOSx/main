@@ -7,15 +7,16 @@ arch=('x86_64')
 license=('MPL' 'LGPL')
 url="https://www.mono-project.com"
 depends=('cairo' 'freetype2' 'giflib' 'glib2' 'libexif' 'libpng' 'libtiff')
-makedepends=('pkgconfig' 'googletest')
+makedepends=('pkgconfig') # 'googletest')
 options=('!libtool')
-source=("https://github.com/mono/libgdiplus/archive/${pkgver}.tar.gz")
-md5sums=('b5490be9511269c85dcda0f45f17508b')
+#source=("https://github.com/mono/libgdiplus/archive/${pkgver}.tar.gz")
+source=("https://download.mono-project.com/sources/libgdiplus-1.1/libgdiplus-${pkgver}.tar.gz")
+md5sums=('c017987f3434e0dcd5fa5e5c5631afeb')
 
 build() {
   cd ${pkgname}-${pkgver}
 
-  ./autogen.sh --prefix=/usr
+  ./configure --prefix=/usr
   make 
 }
 
