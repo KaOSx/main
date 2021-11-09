@@ -1,7 +1,7 @@
 
 pkgname=libdrm
-pkgver=2.4.107
-pkgrel=2
+pkgver=2.4.108
+pkgrel=1
 pkgdesc="Userspace interface to kernel DRM services"
 arch=('x86_64')
 url="https://dri.freedesktop.org/"
@@ -11,13 +11,13 @@ makedepends=('cairo' 'xorg-util-macros' 'pkg-config' 'meson' 'ninja')
 options=('!libtool')
 source=("https://dri.freedesktop.org/libdrm/${pkgname}-${pkgver}.tar.xz"
         'COPYING')
-sha256sums=('c554cef03b033636a975543eab363cc19081cb464595d3da1ec129f87370f888'
+sha256sums=('a1d7948cbc536763fde14b4beb5e4da7867607966d4cf46301087e8b8fe3d6a0'
             '9631d4f694952e3e6ae5a05534c2e93e994e47d3413677a3a00e45c8cef6db93')
 
 build() {
   mkdir -p build
   cd build
-  
+
   meson ../${pkgname}-${pkgver} \
     --prefix=/usr \
     --sysconfdir=/etc \
@@ -31,14 +31,14 @@ build() {
 
 check() {
   cd build
-  
+
   meson test
 }
 
 package() {
   cd build  
   DESTDIR=${pkgdir} ninja install
-  
+
   install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
   install -m644 ${srcdir}/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
 }
