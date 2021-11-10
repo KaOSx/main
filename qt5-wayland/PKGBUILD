@@ -6,7 +6,7 @@ pkgname=qt5-wayland
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=7
+pkgrel=8
 pkgdesc="Cross-platform application and UI framework (QtWayland)"
 arch=('x86_64')
 url="https://www.qt.io/"
@@ -23,7 +23,7 @@ source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz"
         'qt_kde.patch')
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
-         '37492a4e9b0e0faa51cff7288fc1dd07')
+         '9f8049611cf8c2db1d5e3b502dcd8683')
 
 build() {
     cd ${_pkgfqn}
@@ -36,7 +36,7 @@ build() {
 package() {
     cd ${_pkgfqn}
     make INSTALL_ROOT=$pkgdir install
-    
+
     install -D -m644 LICENSE.LGPL3 ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.LGPL3
 }
 

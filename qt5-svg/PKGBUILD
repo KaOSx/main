@@ -6,7 +6,7 @@ pkgname=qt5-svg
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=4
+pkgrel=5
 pkgdesc="A cross-platform application and UI framework, QtSvg files"
 arch=('x86_64')
 url='https://www.qt.io/'
@@ -19,7 +19,7 @@ source=("${_qtmirror}/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz"
         'qt_kde.patch')
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
-         '07b5fccdb92463ee4666b4c71352a480')
+         '935bd661820d4dc7a370cd88feb1b7a2')
 
 build() {
     cd ${_pkgfqn}
@@ -32,12 +32,12 @@ build() {
 package() {
     cd ${_pkgfqn}
     make INSTALL_ROOT=${pkgdir} install
-    
+
     mkdir -p ${pkgdir}/usr/bin
     for i in $(ls ${pkgdir}/usr/lib/qt5/bin); do
         ln -s /usr/lib/qt5/bin/${i} ${pkgdir}/usr/bin/${i}-qt5
     done
-    
+
     install -D -m644 LICENSE* -t ${pkgdir}/usr/share/licenses/${pkgname}
 }
 

@@ -6,7 +6,7 @@ pkgname=qt5-declarative
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=6
+pkgrel=7
 pkgdesc="A cross-platform application and UI framework, QtDeclarative files"
 arch=('x86_64')
 url='https://www.qt.io/'
@@ -20,7 +20,7 @@ source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz"
         'qt_kde.patch')
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
-         'a35a0ece2131025107ef53cdfa786b86')
+         'dfae353fb1e61a5d255fe4b0822bec78')
 
 build() {
     cd $srcdir/$_pkgfqn
@@ -34,7 +34,7 @@ build() {
 package() {
     cd $srcdir/$_pkgfqn
     make INSTALL_ROOT=$pkgdir install
-    
+
     mkdir -p ${pkgdir}/usr/bin
     for i in $(ls ${pkgdir}/usr/lib/qt5/bin); do
         ln -s /usr/lib/qt5/bin/${i} ${pkgdir}/usr/bin/${i}-qt5
