@@ -2,7 +2,7 @@
 pkgname=xorg-server
 pkgver=21.1.1
 # major updates build xorg-server/xf86-input-evdev/xorg-server again
-pkgrel=1
+pkgrel=2
 pkgdesc="X.Org X servers"
 arch=('x86_64')
 license=('custom')
@@ -22,14 +22,17 @@ replaces=('glamor-egl' 'xf86-video-modesetting')
 groups=('xorg')
 source=("https://xorg.freedesktop.org/releases/individual/xserver/${pkgname}-${pkgver}.tar.xz"
         'xvfb-run'
-        'xvfb-run.1')
+        'xvfb-run.1'
+        "https://gitlab.freedesktop.org/xorg/xserver/-/commit/05b3c681ea2f478c0cb941c2f8279919cf78de6d.diff")
 sha256sums=('782e7fef2ca0c7cbe60a937b8bf42dac69c904fb841950fd0363e1c2346ea755'
             'ff0156309470fc1d378fd2e104338020a884295e285972cc88e250e031cc35b9'
-            '2460adccd3362fefd4cdc5f1c70f332d7b578091fb9167bf88b5f91265bbd776')
+            '2460adccd3362fefd4cdc5f1c70f332d7b578091fb9167bf88b5f91265bbd776'
+            'b2e3e5472842ba88b20b0b86d55ba45b0a923df190f8874da4abbb33e808b38b')
 
 prepare() {
   cd ${pkgname}-${pkgver}
 
+  patch -p1 -R -i ${srcdir}/05b3c681ea2f478c0cb941c2f8279919cf78de6d.diff
   #sed -i 's|dtrace_tmpl =|#dtrace_tmpl =|' include/meson.build
 }
 
