@@ -1,9 +1,9 @@
 
 pkgname=texlive-bin
-pkgver=2020.56824
-#_pkgver=svn56824
-_commit=07b007ca4ee8022a15e1ae6cd927f3a36d9cc01e
-pkgrel=4
+pkgver=2020.58837
+#_pkgver=svn58837
+_commit=3d38702c81f33d85306323a6a540112bf6159d73
+pkgrel=1
 pkgdesc="TeX Live binaries"
 url='https://tug.org/texlive/'
 license=('GPL')
@@ -18,7 +18,7 @@ options=('!libtool' '!strip')
 #source=("https://mirrors.kernel.org/archlinux/other/texlive/texlive-bin-source-${pkgver}.tar.xz"
 source=("https://github.com/TeX-Live/texlive-source/archive/${_commit}.tar.gz"
         'poppler0.8x.patch')
-md5sums=('8e131804a10af432a063199f75db5e06'
+md5sums=('6fdb650049dc134a27819086eb915d10'
          '5fa627950138922977baa71cbc3e2ff3')
 
 prepare() {
@@ -156,6 +156,7 @@ a2ping
 a5toa4
 adhocfilelist
 afm2afm
+albatross
 allcm
 allec
 allneeded
@@ -194,6 +195,7 @@ fmtutil-sys
 fmtutil-user
 fontinst
 fragmaster
+git-latexdiff
 ht
 htcontext
 htlatex
@@ -222,6 +224,7 @@ latexmk
 latexpand
 latexrevise
 listings-ext.sh
+llmk
 ltxfileinfo
 ltximg
 luaotfload-tool
@@ -262,6 +265,7 @@ repstopdf
 rpdfcrop
 rungs
 simpdftex
+spix
 srcredact
 sty2dtx
 tex4ebook
@@ -314,6 +318,7 @@ kanji-config-updmap-user
    _latexextra_scripts="
 authorindex
 exceltex
+hyperxmp-add-bytecount
 l3build
 makedtx
 makeglossaries
@@ -328,7 +333,7 @@ webquiz
 wordcount
 yplan"
    _music_scripts="lily-glyph-commands lily-image-commands lily-rebuild-pdfs m-tx musixtex musixflx pmxchords"
-   _pictures_scripts="cachepic epspdf epspdftk fig4latex getmapdl mathspic mkpic pn2pdf"
+   _pictures_scripts="cachepic epspdf epspdftk fig4latex getmapdl mathspic mkpic pn2pdf tikztosvg"
    _pstricks_scripts="pedigree pst2pdf"
    _science_scripts="pygmentex ulqda"
    for s in \

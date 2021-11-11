@@ -1,8 +1,8 @@
 
 pkgname=texlive-latexextra
-pkgver=2020.55418
-_revnr=${pkgver#2020.}
-pkgrel=2
+pkgver=2021.58668
+_revnr=${pkgver#2021.}
+pkgrel=1
 pkgdesc="TeX Live - Large collection of add-on packages for LaTeX"
 license=('GPL')
 arch=('x86_64')
@@ -13,7 +13,7 @@ url='http://tug.org/texlive/'
 source=("https://sources.archlinux.org/other/texlive/$pkgname-$pkgver-src.zip"
         "$pkgname.maps")
 options=('!emptydirs' '!strip')
-md5sums=('f25ce1693fe32b11b1819bb58119a607'
+md5sums=('0865a9c84770221b03084773381427a5'
          'f06643f92ce3c5d565c6414f3e77bc4c')
 
 build() {
@@ -51,6 +51,7 @@ authorindex/authorindex
 exceltex/exceltex
 glossaries/makeglossaries
 glossaries/makeglossaries-lite.lua
+hyperxmp/hyperxmp-add-bytecount.pl
 l3build/l3build.lua
 pax/pdfannotextractor.pl
 perltex/perltex.pl
