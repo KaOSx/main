@@ -1,8 +1,8 @@
 
 pkgname=libindi
 _pkgname=indi
-pkgver=1.9.2
-_pkgver=1.9.2
+pkgver=1.9.3
+_pkgver=1.9.3
 pkgrel=1
 pkgdesc="Interface control protocol providing backend driver support and
         automation for a wide range of Astronomical devices (telescopes, focusers, CCDs..etc)."
@@ -14,7 +14,7 @@ depends=('gcc-libs' 'zlib' 'libnova' 'cfitsio' 'libusb' 'boost-libs' 'libjpeg-tu
 makedepends=('boost' 'cmake' 'googletest')
 source=("https://github.com/indilib/indi/archive/v${pkgver}.tar.gz")
 options=('!libtool')
-md5sums=('08c763bfd07e95be99c2e0e26bcca57d')
+md5sums=('32524aca0ea53a6f224468fae6107edf')
 
 build() {
     mkdir -p build
@@ -33,6 +33,6 @@ package() {
     cd build 
     make DESTDIR=${pkgdir} install
     # systemd errors becuase of non-existing plugdev group
-    sed -e 's|GROUP="plugdev", MODE="0666"|TAG+="uaccess"|' -i ${pkgdir}/usr/lib/udev/rules.d/99-vantage.rules
+    #sed -e 's|GROUP="plugdev", MODE="0666"|TAG+="uaccess"|' -i ${pkgdir}/usr/lib/udev/rules.d/99-vantage.rules
     #sed -e 's|GROUP="plugdev", MODE="0666"|TAG+="uaccess"|' -i ${pkgdir}/usr/lib/udev/rules.d/99-perfectstar.rules
 }
