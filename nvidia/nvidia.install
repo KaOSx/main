@@ -19,13 +19,14 @@ post_upgrade() {
     if [[ $(vercmp ${2} 495.44) -eq -1 ]]; then
     
         kdialog --warningyesno "NVIDIA 495.xx driver drops support for Kepler-based GPUs<br>
-                To see the list of Fermi cards go to https://download.nvidia.com/XFree86/Linux-x86_64/495.44/README/supportedchips.html <br>
+                To see the list of Kepler cards go to https://download.nvidia.com/XFree86/Linux-x86_64/495.44/README/supportedchips.html <br>
                 If you own such an NVIDIA card you either need to switch to <strong>Nouveau or NVIDIA 470.xx.</strong><br><br>
                 sudo pacman -Rdd nvidia-utils nvidia<br>
                 Then:<br>
-                sudo pacman -S nvidia-390xx-utils nvidia-390xx<br>
+                sudo pacman -S nvidia-470xx-utils nvidia-470xx<br>
                 Or:<br>
-                sudo pacman -S libgl nouveau<br><br>
+                sudo pacman -S xf86-video-nouveau<br><br>
+                Support for Wayland was added with 495.xx, add <strong>nvidia-drm.modeset=1</strong> to the kernel parameter to run a Wayland session.<br><br>
                 Do you want to save this output?"
 
                 save=${?}
@@ -36,13 +37,14 @@ post_upgrade() {
 
                     else
 
-                        echo "NVIDIA 495.xx driver drops support for Fermi-based GPUs<br>
+                        echo "NVIDIA 495.xx driver drops support for Kepler-based GPUs<br>
                             If you own such an NVIDIA card you either need to switch to Nouveau or NVIDIA 470.xx.<br>
                             sudo pacman -Rdd nvidia-utils nvidia</b>
                             Then:<br>
-                            sudo pacman -S nvidia-390xx-utils nvidia-390xx<br>
+                            sudo pacman -S nvidia-470xx-utils nvidia-470xx<br>
                             Or:<br>
-                            sudo pacman -S libgl nouveau" > /var/log/nvidia_install${timestamp}.txt
+                            sudo pacman -S xf86-video-nouveau<br>
+                            Support for Wayland was added with 495.xx, add <strong>nvidia-drm.modeset=1</strong> to the kernel parameter to run a Wayland session." > /var/log/nvidia_install${timestamp}.txt
 
                         kdialog --msgbox "Output is saved in /var/log/nvidia_install${timestamp}.txt"
                         

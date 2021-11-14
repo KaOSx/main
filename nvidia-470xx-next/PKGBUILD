@@ -1,0 +1,57 @@
+
+_extramodules=extramodules-5.15-next
+_kver=$(cat /lib/modules/${_extramodules}/version)
+
+pkgname=nvidia-470xx-next
+pkgver=470.86
+pkgrel=1
+pkgdesc="NVIDIA drivers for linux."
+arch=('x86_64')
+url="http://www.nvidia.com/"
+depends=('linux>=5.15.1' 'linux<5.16' "nvidia-470xx-utils=${pkgver}")
+makedepends=('linux-next-headers')
+conflicts=('nvidia' 'nvidia-390xx')
+backup=('etc/X11/xorg.conf.d/20-nvidia.conf')
+install=nvidia.install
+license=('custom')
+options=('!strip')
+
+_pkg="NVIDIA-Linux-x86_64-${pkgver}"
+
+source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run")
+md5sums=('6620e8c931b5e33c5860793e5242edcf')
+
+build() {
+    cd ${srcdir}
+    sh ${_pkg}.run --extract-only
+
+    cd ${_pkg}
+    #patch -p1 -i ${srcdir}/linux-5.14.patch
+
+    cd ${srcdir}/${_pkg}/kernel
+    make SYSSRC=/lib/modules/${_kver}/build module
+}
+
+package() {
+    install -D -m644 ${srcdir}/${_pkg}/kernel/nvidia.ko ${pkgdir}/lib/modules/${_extramodules}/nvidia.ko
+    install -D -m644 ${srcdir}/${_pkg}/kernel/nvidia-modeset.ko ${pkgdir}/lib/modules/${_extramodules}/nvidia-modeset.ko
+    install -D -m644 ${srcdir}/${_pkg}/kernel/nvidia-uvm.ko ${pkgdir}/lib/modules/${_extramodules}/nvidia-uvm.ko
+    install -D -m644 ${srcdir}/${_pkg}/kernel/nvidia-drm.ko ${pkgdir}/lib/modules/${_extramodules}/nvidia-drm.ko
+
+    # sign the module
+    _file=/usr/src/linux-${_kver}/scripts/sign-file
+    _pem=/$HOME/signing_key.pem
+    _key=/$HOME/signing_key.x509
+
+    ${_file} sha256 ${_pem} ${_key} ${pkgdir}/lib/modules/${_extramodules}/nvidia.ko
+    ${_file} sha256 ${_pem} ${_key} ${pkgdir}/lib/modules/${_extramodules}/nvidia-modeset.ko
+    ${_file} sha256 ${_pem} ${_key} ${pkgdir}/lib/modules/${_extramodules}/nvidia-uvm.ko
+    ${_file} sha256 ${_pem} ${_key} ${pkgdir}/lib/modules/${_extramodules}/nvidia-drm.ko
+
+    install -d -m755 ${pkgdir}/etc/modprobe.d
+    echo "blacklist nouveau" >> ${pkgdir}/etc/modprobe.d/nouveau_blacklist.conf
+
+    sed -i -e "s/EXTRAMODULES='.*'/EXTRAMODULES='${_extramodules}'/" ${startdir}/nvidia.install
+    gzip ${pkgdir}/lib/modules/${_extramodules}/*.ko
+}
+

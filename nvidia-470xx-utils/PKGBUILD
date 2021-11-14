@@ -1,22 +1,18 @@
 
-pkgbase=nvidia-utils
-pkgname=('nvidia-utils' 'opencl-nvidia' 'nvidia-settings')
-# Edit hardware-detection/hooks/hwdetect_7_graphics and Installer job 11 on version jump from 43x.xx
-pkgver=495.44
+pkgbase=nvidia-470xx-utils
+pkgname=('nvidia-470xx-utils' 'nvidia-470xx-settings')
+pkgver=470.86
 pkgrel=1
-epoch=1
 arch=('x86_64')
-url="https://www.nvidia.com/page/home.html"
+url="http://www.nvidia.com/page/home.html"
 license=('custom')
 makedepends=('xorg-server' 'libxvmc')
 options=('!strip')
-#_pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 _pkg="NVIDIA-Linux-x86_64-${pkgver}"
 source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
-#source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}.run"
         'nvidia-restore-settings.desktop'
         'nvidia-drm-outputclass.conf')
-md5sums=('3730580acbd0d2145e870f7896d4db83'
+md5sums=('6620e8c931b5e33c5860793e5242edcf'
          '9237516792da7b6df32f8c7e8a98f475'
          'cb27b0f4a78af78aa96c5aacae23256c')
 
@@ -37,29 +33,15 @@ build() {
   
 }
 
-package_opencl-nvidia() {
-  pkgdesc="OpenCL implemention for NVIDIA"
-  depends=('opencl-headers' 'zlib' 'nvidia-utils')
-
-  cd "${srcdir}/${_pkg}"
-
-  # OpenCL
-  install -D -m644 nvidia.icd "${pkgdir}/etc/OpenCL/vendors/nvidia.icd"
-  install -D -m755 "libnvidia-compiler.so.${pkgver}" "${pkgdir}/usr/lib/libnvidia-compiler.so.${pkgver}"
-  install -D -m755 "libnvidia-opencl.so.${pkgver}" "${pkgdir}/usr/lib/libnvidia-opencl.so.${pkgver}"
-
-  create_links
-}
-
-package_nvidia-utils() {
-  pkgdesc="NVIDIA drivers utilities and libraries."
+package_nvidia-470xx-utils() {
+  pkgdesc="NVIDIA drivers utilities and libraries, 470xx legacy version."
   depends=('xorg-server' 'libxvmc')
-  optdepends=('pkg-config: nvidia-xconfig'
-              'opencl-nvidia: OpenCL support'
-              'nvidia-settings: Gtk GUI')
-  conflicts=('nvidia-utils-bumblebee')
-  provides=('nvidia-utils-bumblebee')
-	      
+  optdepends=('opencl-nvidia: OpenCL support'
+              'nvidia-470xx-settings: Gtk GUI')
+  conflicts=('nvidia-utils' 'nvidia-390xx-utils')
+
+  cd ${srcdir}/${_pkg}
+
   cd ${srcdir}/${_pkg}
   # X driver
   install -D -m755 nvidia_drv.so ${pkgdir}/usr/lib/xorg/modules/drivers/nvidia_drv.so
@@ -70,15 +52,7 @@ package_nvidia-utils() {
   # X doesn't find glx otherwise:
   ln -s libglxserver_nvidia.so.${pkgver} ${pkgdir}/usr/lib/xorg/modules/extensions/libglxserver_nvidia.so 
   ln -s libglxserver_nvidia.so.${pkgver} ${pkgdir}/usr/lib/nvidia/xorg/libglx.so
-
-  # Wayland
-  install -D -m755 libnvidia-egl-gbm.so.1* -t ${pkgdir}/usr/lib/
-  install -D -m644 15_nvidia_gbm.json ${pkgdir}/usr/share/egl/egl_external_platform.d/15_nvidia_gbm.json
-  install -D -m755 libnvidia-egl-wayland.so.1* -t ${pkgdir}/usr/lib/
-  install -D -m644 10_nvidia_wayland.json ${pkgdir}/usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json
-  mkdir -p ${pkgdir}/usr/lib/gbm
-  ln -sr ${pkgdir}/usr/lib/libnvidia-allocator.so.${pkgver} ${pkgdir}/usr/lib/gbm/nvidia-drm_gbm.so
-
+  
   # GLVND vendor implementation libraries for GLX
   install -D -m755 libGLX_nvidia.so.${pkgver} ${pkgdir}/usr/lib/libGLX_nvidia.so.${pkgver}
   #install -D -m755 libGLX.so.0 ${pkgdir}/lib/xorg/modules/extensions/libgGLX.so
@@ -94,6 +68,8 @@ package_nvidia-utils() {
   install -D -m755 "libnvidia-glcore.so.${pkgver}" "${pkgdir}/usr/lib/libnvidia-glcore.so.${pkgver}"
   install -D -m755 "libnvidia-eglcore.so.${pkgver}" "${pkgdir}/usr/lib/libnvidia-eglcore.so.${pkgver}"
   install -D -m755 "libnvidia-glsi.so.${pkgver}" "${pkgdir}/usr/lib/libnvidia-glsi.so.${pkgver}"
+  install -D -m755 "libnvidia-egl-wayland.so.1.1.7" "${pkgdir}/usr/lib/libnvidia-egl-wayland.so.1.1.7"
+  install -D -m644 "10_nvidia_wayland.json" "${pkgdir}/usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json"
   install -D -m755 "libEGL_nvidia.so.${pkgver}" "${pkgdir}/usr/lib/libEGL_nvidia.so.${pkgver}"
   install -D -m644 "10_nvidia.json" "${pkgdir}/usr/share/glvnd/egl_vendor.d/10_nvidia.json"
   
@@ -142,12 +118,9 @@ package_nvidia-utils() {
   # OptiX ray tracing
   install -D -m755 libnvoptix.so.${pkgver} ${pkgdir}/usr/lib/libnvoptix.so.${pkgver}
   
-  # Vulkan
+  # Vulkan real-time ray tracing
   install -D -m755 libnvidia-rtcore.so.${pkgver} ${pkgdir}/usr/lib/libnvidia-rtcore.so.${pkgver}
-  #install -D -m755 libnvidia-cbl.so.${pkgver} ${pkgdir}/usr/lib/libnvidia-cbl.so.${pkgver}
-  install -D -m755 libnvidia-vulkan-producer.so.${pkgver} ${pkgdir}/usr/lib/libnvidia-vulkan-producer.so.${pkgver}
-  ln -s libnvidia-vulkan-producer.so.${pkgver} ${pkgdir}/usr/lib/libnvidia-vulkan-producer.so.1
-  ln -s libnvidia-vulkan-producer.so.${pkgver} ${pkgdir}/usr/lib/libnvidia-vulkan-producer.so
+  install -D -m755 libnvidia-cbl.so.${pkgver} ${pkgdir}/usr/lib/libnvidia-cbl.so.${pkgver}
   
   # DLSS
   install -D -m644 nvngx.dll -t ${pkgdir}/usr/lib/nvidia/wine
@@ -173,11 +146,12 @@ package_nvidia-utils() {
   create_links
 }
 
-package_nvidia-settings() {
-  pkgdesc="Gtk Graphical User Interface for nVidia"
-  depends=('nvidia-utils' 'gtk3')
+package_nvidia-470xx-settings() {
+  pkgdesc="Gtk Graphical User Interface for nVidia, , 470xx legacy version"
+  depends=('nvidia-470xx-utils' 'gtk3')
+  conflicts=('nvidia-settings' 'nvidia-390xx-settings')
 
-  cd "${srcdir}/${_pkg}"
+  cd ${srcdir}/${_pkg}
 
 
   install -D -m755 nvidia-settings "${pkgdir}/usr/bin/nvidia-settings"
@@ -194,3 +168,4 @@ package_nvidia-settings() {
   install -D -m644 nvidia-application-profiles-${pkgver}-key-documentation "${pkgdir}/usr/share/nvidia/nvidia-application-profiles-${pkgver}-key-documentation"
   install -D -m644 nvidia-application-profiles-${pkgver}-rc "${pkgdir}/usr/share/nvidia/nvidia-application-profiles-${pkgver}-rc"
 }
+

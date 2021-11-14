@@ -2,13 +2,12 @@
 _extramodules=extramodules-5.14
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
-pkgname=('nvidia' 'khd-nvidia')
-pkgver=495.44
+pkgname=('nvidia-470xx' 'khd-nvidia-470xx')
+pkgver=470.86
 pkgrel=1
-epoch=1
 arch=('x86_64')
 url="https://www.nvidia.com/page/home.html"
-makedepends=('linux-headers' 'linux>=5.14.9' 'linux<5.15' "nvidia-utils=1:${pkgver}")
+makedepends=('linux-headers' 'linux>=5.14.9' 'linux<5.15' "nvidia-470xx-utils=${pkgver}")
 options=('!strip')
 license=('custom')
 
@@ -16,18 +15,16 @@ license=('custom')
 _pkg="NVIDIA-Linux-x86_64-${pkgver}"
 
 source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
-        'nvidia_supported'
-        'linux-4.10.patch')
-md5sums=('3730580acbd0d2145e870f7896d4db83'
-         '282f73f1a7326339a7b0e0716eee4f76'
-         '4ab00fe5ab144083caa6c6994feea7e6')
+        'nvidia_supported')
+md5sums=('6620e8c931b5e33c5860793e5242edcf'
+         '282f73f1a7326339a7b0e0716eee4f76')
 
 build() {
     cd "${srcdir}"
     sh "${_pkg}.run" --extract-only
     
     cd "${_pkg}"
-    #patch -p1 -i ${srcdir}/linux-4.10.patch
+    #patch -p1 -i ${srcdir}/linux-5.10.patch
     
     export IGNORE_CC_MISMATCH=yes
 
@@ -35,10 +32,10 @@ build() {
     make SYSSRC=/lib/modules/"${_kver}/build" module
 }
 
-package_nvidia() {
+package_nvidia-470xx() {
     pkgdesc="NVIDIA drivers for linux."
     depends=('linux>=5.14.9' 'linux<5.15' "nvidia-utils=1:${pkgver}")
-    conflicts=('nvidia-470xx' 'nvidia-390xx' 'nvidia-bumblebee')
+    conflicts=('nvidia-340xx' 'nvidia-390xx' 'nvidia-bumblebee')
     provides=('nvidia-bumblebee')
     replaces=('nvidia-bumblebee')
     install=nvidia.install
@@ -64,11 +61,9 @@ package_nvidia() {
     sed -i -e "s/EXTRAMODULES='.*'/EXTRAMODULES='${_extramodules}'/" "${startdir}/nvidia.install"
 }
 
-package_khd-nvidia() {
-    pkgdesc="KHD ids for nvidia $pkgver"
+package_khd-nvidia-470xx() {
+    pkgdesc="KHD ids for nvidia-470xx ${pkgver}"
     arch=('x86_64')
-    conflicts=('chd-nvidia')
-    replaces=('chd-nvidia')
 
     cd "${srcdir}/${_pkg}"
 
