@@ -13,7 +13,7 @@ post_upgrade() {
     EXTRAMODULES='extramodules-5.15-next'
     depmod $(cat /lib/modules/$EXTRAMODULES/version)
     
-    if [[ $(vercmp ${2} 495.44) -eq -1 ]]; then
+    if [[ $(vercmp ${2} 1:495.44-1) -eq -1 ]]; then
     
         kdialog --warningyesno "NVIDIA 495.xx driver drops support for Kepler-based GPUs<br>
                 To see the list of Kepler cards go to https://download.nvidia.com/XFree86/Linux-x86_64/495.44/README/supportedchips.html <br>
