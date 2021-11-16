@@ -1,6 +1,6 @@
 
 pkgname=python3-matplotlib
-pkgver=3.4.3
+pkgver=3.5.0
 pkgrel=1
 pkgdesc="Python plotting library, making publication quality plots"
 arch=('x86_64')
@@ -8,14 +8,14 @@ url='https://matplotlib.org'
 license=('custom')
 depends=('python3-pytz' 'python3-numpy' 'python3-cairo' 'pyqt5-python3' 'python3-dateutil'
          'python3-pyparsing' 'python3-certifi' 'python3-cycler' 'tk' 'ghostscript' 'texlive-bin')
-makedepends=('python3-gobject3' 'python3-six')
+makedepends=('python3-gobject3' 'python3-six' 'python3-pip')
 source=("https://files.pythonhosted.org/packages/source/m/matplotlib/matplotlib-${pkgver}.tar.gz")
 #source=("https://github.com/matplotlib/matplotlib/archive/v${pkgver}.tar.gz")
-sha256sums=('fc4f526dfdb31c9bd6b8ca06bf9fab663ca12f3ec9cdf4496fb44bc680140318')
+sha256sums=('38892a254420d95594285077276162a5e9e9c30b6da08bdc2a4d53331ad9a6fa')
 
 build() {
    cd matplotlib-${pkgver}
-   
+
    python3 setup.py build
 }
 
@@ -24,6 +24,6 @@ package() {
    python3 setup.py install -O1 --skip-build --root ${pkgdir} --prefix=/usr
 
    install -dm755 ${pkgdir}/usr/share/licenses/python3-matplotlib
-   install -m 644 doc/users/license.rst ${pkgdir}/usr/share/licenses/python3-matplotlib
+   install -m 644 doc/users/project/license.rst ${pkgdir}/usr/share/licenses/python3-matplotlib
 }
 
