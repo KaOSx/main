@@ -25,22 +25,22 @@ build() {
   cd ${_pkgname}-${_commit}
   #patch -p1 -i ${srcdir}/80a0cb2c1aa10e52bc653e7455a6f1b64fdccd09.diff
   sed -i -e 's|$(shell uname -r)|5.15.2-1-next|' Makefile
-  
+
   make
 }
 
 package() {
   cd ${_pkgname}-${_commit}
-  
+
   install -D -m644 8192eu.ko ${pkgdir}/lib/modules/${_kver}/kernel/drivers/net/wireless/8192eu.ko
   
   # sign the module
   _file=/usr/src/linux-${_kver}/scripts/sign-file
   _pem=/$HOME/signing_key.pem
   _key=/$HOME/signing_key.x509
-  
+
   ${_file} sha256 ${_pem} ${_key} ${pkgdir}/lib/modules/${_kver}/kernel/drivers/net/wireless/8192eu.ko
-  
+
   install -d -m755 ${pkgdir}/etc/modprobe.d
   echo "blacklist rtl8xxxu" >> ${pkgdir}/etc/modprobe.d/rtl-next-blacklist.conf
   echo "install rtl8xxxu /bin/false" >> ${pkgdir}/etc/modprobe.d/rtl-next-blacklist.conf
