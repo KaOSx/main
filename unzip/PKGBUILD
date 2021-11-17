@@ -2,24 +2,27 @@
 pkgname=unzip
 pkgver=6.0
 _pkgver=60
-pkgrel=9
+pkgrel=10
 pkgdesc="Unpacks .zip archives such as those made by PKZIP"
 arch=('x86_64')
 url="http://infozip.sourceforge.net/UnZip.html"
 license=('custom')
 depends=('bzip2' 'bash')
-source=("https://downloads.sourceforge.net/infozip/unzip${_pkgver}.tar.gz")
-md5sums=('62b490407489521db863b523a7f86375')
+source=("https://downloads.sourceforge.net/infozip/unzip${_pkgver}.tar.gz"
+        "https://github.com/madler/unzip/commit/6d351831be705cc26d897db44f878a978f4138fc.diff")
+md5sums=('62b490407489521db863b523a7f86375'
+         'fb41c2674e9e3e4138bf833b82cfa779')
 
 build() {
   cd ${pkgname}${_pkgver}
+  #patch -p1 -i ${srcdir}/6d351831be705cc26d897db44f878a978f4138fc.diff
 
   # set CFLAGS -- from Debian
   export CFLAGS="$CFLAGS -D_FILE_OFFSET_BITS=64 -DACORN_FTYPE_NFS \
   -DWILD_STOP_AT_DIR -DLARGE_FILE_SUPPORT -DUNICODE_SUPPORT \
   -DUNICODE_WCHAR -DUTF8_MAYBE_NATIVE -DNO_LCHMOD -DDATE_FORMAT=DF_YMD \
   -DUSE_BZIP2 -DNATIVE"
-  
+
   sed -i "/MANDIR =/s#)/#)/share/#" unix/Makefile
 
   make -f unix/Makefile LOCAL_UNZIP="$CFLAGS" prefix=/usr LF2="" \

@@ -1,17 +1,17 @@
 
 # rebuild cups-filters on every update, but point update
 pkgname=qpdf
-pkgver=10.3.2
+pkgver=10.4.0
 pkgrel=1
 pkgdesc="QPDF: A Content-Preserving PDF Transformation System"
 arch=('x86_64')
-url="http://qpdf.sourceforge.net/"
+url="https://qpdf.sourceforge.io/"
 license=('custom:Artistic-2.0')
 depends=('openjpeg' 'zlib')
 makedepends=('make')
 options=('!libtool')
 source=("https://github.com/qpdf/qpdf/releases/download/release-${pkgname}-${pkgver}/${pkgname}-${pkgver}.tar.gz")
-sha256sums=('062808c40ef8741ec8160ae00168638a712cfa1d4bf673e8e595ab5eba1da947')
+sha256sums=('9ac6e691cc3f35a9fe44632e3fba727e1b6ef21181c0a883287abf5cf97ae222')
 
 build() {
   cd ${pkgname}-${pkgver}
@@ -20,10 +20,9 @@ build() {
   make
 }
 
-
 package() {
   cd ${pkgname}-${pkgver}
-  
+
   make DESTDIR=${pkgdir}/ install
 
   mkdir -m755 -p ${pkgdir}/usr/share/licenses/${pkgname}
