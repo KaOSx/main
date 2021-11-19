@@ -1,6 +1,6 @@
  
 pkgname=fwupd
-pkgver=1.7.1
+pkgver=1.7.2
 pkgrel=1
 pkgdesc="Simple daemon to allow updating firmware on Linux automatic, safe and reliable"
 arch=('x86_64')
@@ -22,12 +22,12 @@ backup=('etc/fwupd/daemon.conf'
         'etc/fwupd/thunderbolt.conf'
         'etc/fwupd/upower.conf')
 source=("https://people.freedesktop.org/~hughsient/releases/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('ae56ceb44b786f21f54d133ac70bc5d9cb8cd4bda0167339c669a228da67fa3c')
+sha256sums=('8632df69c3bafc59387cdcb517c3ce31a597a09026e44f5907d8384671b9f834')
 
 build() {
     mkdir -p build
     cd build
-    
+
     meson ../${pkgname}-${pkgver} \
         --prefix=/usr \
         --buildtype=release \
@@ -47,7 +47,7 @@ check() {
 
 package() {
     cd build
-  
+
     DESTDIR=${pkgdir} ninja install
 
     install -d -o root -g 102 -m 700 ${pkgdir}/usr/share/polkit-1/rules.d
