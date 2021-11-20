@@ -1,0 +1,25 @@
+
+pkgname=liburcu
+pkgver=0.13.0
+pkgrel=1
+pkgdesc="Userspace RCU (read-copy-update) library"
+arch=('x86_64')
+url="http://liburcu.org/"
+license=('LGPL2.1')
+depends=('glibc')
+source=("https://lttng.org/files/urcu/userspace-rcu-${pkgver}.tar.bz2")
+sha256sums=('cbb20dbe1a892c2a4d8898bac4316176e585392693d498766ccbbc68cf20ba20')
+
+build() {
+  cd userspace-rcu-${pkgver}
+
+  ./configure --prefix=/usr \
+    --enable-static=false
+  make
+}
+
+package() {
+  cd userspace-rcu-${pkgver}
+
+  make install DESTDIR=${pkgdir}
+}
