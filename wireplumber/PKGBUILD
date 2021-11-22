@@ -1,0 +1,33 @@
+
+pkgname=wireplumber
+pkgver=0.4.5
+pkgrel=1
+pkgdesc="Modular session/policy manager for PipeWire and a GObject-based library that wraps PipeWire's API."
+url="https://gitlab.freedesktop.org/pipewire/wireplumber"
+license=('MIT')
+arch=('x86_64')
+depends=('pipewire' 'glib2')
+makedepends=('meson' 'ninja' 'gobject-introspection')
+install=wireplumber.install
+source=("https://gitlab.freedesktop.org/pipewire/wireplumber/-/archive/0.4.5/wireplumber-0.4.5.tar.bz2")
+md5sums=('0c87f03bc3d0129278749f6ea1f6b21b')
+
+build() {
+  mkdir -p build
+  cd build
+
+  meson ../${pkgname}-${pkgver} \
+    --prefix=/usr \
+    --buildtype=release \
+    -Ddoc=disabled \
+    -Dtests=false \
+    -Dsystemd-system-service=true
+  ninja
+}
+
+package() {
+  cd build
+
+  DESTDIR=${pkgdir} ninja install
+  install -D -m0644 ../${pkgname}-${pkgver}/LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
+}

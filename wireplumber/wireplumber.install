@@ -1,0 +1,10 @@
+post_install() {
+
+  systemctl --global enable wireplumber.service
+}
+
+
+pre_remove() {
+
+  systemctl --global disable wireplumber.service
+}
