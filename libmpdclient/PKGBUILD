@@ -1,6 +1,6 @@
 
 pkgname=libmpdclient
-pkgver=2.19
+pkgver=2.20
 pkgrel=1
 pkgdesc='Asynchronous API library for interfacing MPD in the C, C++ & Objective C languages'
 url='https://www.musicpd.org/libs/libmpdclient/'
@@ -8,12 +8,12 @@ license=('custom:BSD')
 arch=('x86_64')
 makedepends=('meson' 'ninja')
 source=("https://www.musicpd.org/download/${pkgname}/2/${pkgname}-${pkgver}.tar.xz")
-md5sums=('aee66cbf5ce2ebf1b976e9c6ade0feee')
+md5sums=('2c007da25c0de18921f9fb3155218865')
 
 build() {
     mkdir -p build
     cd build
-    
+
     meson ../${pkgname}-${pkgver} \
     --prefix=/usr \
     --buildtype=release \
