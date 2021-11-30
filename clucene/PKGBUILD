@@ -1,7 +1,7 @@
 
 pkgname=clucene
 pkgver=2.3.3.4
-pkgrel=23
+pkgrel=24
 pkgdesc="CLucene is a C++ port of Lucene: A high-performance, full-featured text search engine."
 arch=('x86_64')
 url="http://clucene.sourceforge.net"
@@ -24,7 +24,7 @@ build() {
   patch -p1 -i ${srcdir}/clucene-core-2.3.3.4-pkgconfig.patch
   # one upstream postrelease commit for proper zlib detection
   patch -p1 -i ${srcdir}/fix_zlib_detections.diff
-  
+
   mkdir -p build
   pushd build
   cmake .. \
@@ -42,7 +42,7 @@ build() {
 
 package() {
   cd ${pkgname}-core-${pkgver}
-  
+
   make DESTDIR=${pkgdir} install -C build
   rm -rf ${pkgdir}/usr/lib/CLuceneConfig.cmake
 }

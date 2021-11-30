@@ -2,7 +2,7 @@
 #http://news.php.net/group.php?group=php.announce
 pkgname=php
 pkgver=7.4.26
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 pkgdesc='An HTML-embedded scripting language'
 license=('PHP')
@@ -67,7 +67,7 @@ prepare() {
 	patch -p0 -i ${srcdir}/php.ini.patch
 	patch -p0 -i ${srcdir}/php-fpm.conf.in.patch
 	patch -p0 -i ${srcdir}/enchant2.patch
-	
+
 	sed -i -e 's|#include "buffio.h"|#include "tidybuffio.h"|' ext/tidy/tidy.c
 }
 
@@ -78,7 +78,7 @@ build() {
 	#export PEAR_INSTALLDIR
 
 	cd ${pkgname}-${pkgver}
-	
+
 	./configure --config-cache \
 		--prefix=/usr \
 		--sysconfdir=/etc/php \
@@ -160,7 +160,7 @@ package() {
 	# install php.ini
 	install -D -m644 php.ini-production ${pkgdir}/etc/php/php.ini
 	install -d -m755 ${pkgdir}/etc/php/conf.d/
-	
+
 	install -d -m755 ${pkgdir}/etc/php/fpm.d
 	install -D -m644 ${srcdir}/php-fpm.tmpfiles ${pkgdir}/usr/lib/tmpfiles.d/php-fpm.conf
 	install -D -m644 ${srcdir}/php-fpm.service ${pkgdir}/usr/lib/systemd/system/php-fpm.service

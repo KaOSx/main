@@ -1,7 +1,7 @@
 
 pkgname=enblend-enfuse
 pkgver=4.2
-pkgrel=22
+pkgrel=23
 pkgdesc="Intelligent blend tool for overlapping picture"
 arch=("x86_64")
 license=('GPL')
@@ -19,13 +19,13 @@ md5sums=('e26751f393862cecfd1a113003787001'
 build() {
   cd ${pkgname}-${pkgver}
   patch -p1 -i ${srcdir}/gcc.patch
-  
+
   ./configure --prefix=/usr
   make
 }
 
 package() {
   cd ${pkgname}-${pkgver}
-  
+
   make DESTDIR=${pkgdir} install
 }

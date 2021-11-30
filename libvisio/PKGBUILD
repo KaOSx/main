@@ -1,7 +1,7 @@
 
 pkgname=libvisio
 pkgver=0.1.7
-pkgrel=6
+pkgrel=7
 pkgdesc="Library for importing Visio(tm) documents"
 arch=('x86_64')
 url="http://www.freedesktop.org/wiki/Software/libvisio"
@@ -14,13 +14,13 @@ md5sums=('812a21fee1f7b096612ca83fdafb0db7')
 build() {
   cd ${pkgname}-${pkgver}
   #export CPPFLAGS='-DBOOST_ERROR_CODE_HEADER_ONLY -DBOOST_SYSTEM_NO_DEPRECATED'
-  
+
   ./configure --without-docs --prefix=/usr 
   make
 }
 
 package() {
   cd ${pkgname}-${pkgver} 
-  
+
   make DESTDIR=${pkgdir} install
 }

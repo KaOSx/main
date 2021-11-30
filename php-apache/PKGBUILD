@@ -2,7 +2,7 @@
 pkgname=php-apache
 _pkgname=php
 pkgver=7.4.26
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 pkgdesc='Apache SAPI for PHP'
 license=('PHP')
@@ -19,7 +19,7 @@ sha256sums=('e305b3aafdc85fa73a81c53d3ce30578bc94d1633ec376add193a1e85e0f0ef8'
 
 prepare() {
 	cd ${_pkgname}-${pkgver}
-	
+
 	sed '/APACHE_THREADED_MPM=/d' -i sapi/apache2handler/config.m4 -i configure
 	sed -i -e 's|#include "buffio.h"|#include "tidybuffio.h"|' ext/tidy/tidy.c
 	
@@ -28,7 +28,7 @@ prepare() {
 
 build() {
 	cd ${_pkgname}-${pkgver}
-	
+
 	./configure --config-cache \
 		--prefix=/usr \
 		--sysconfdir=/etc/php \
@@ -94,7 +94,7 @@ build() {
 
 	make
 }
-	
+
 package() {
 	install -D -m755 ${srcdir}/${_pkgname}-${pkgver}/libs/libphp7.so ${pkgdir}/usr/lib/httpd/modules/libphp7.so
 	install -D -m644 ${srcdir}/apache.conf ${pkgdir}/etc/httpd/conf/extra/php7_module.conf

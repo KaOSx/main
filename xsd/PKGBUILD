@@ -2,7 +2,7 @@
 pkgname=xsd
 pkgver=4.1.0
 _pkgver=4.1.0.a11
-pkgrel=2
+pkgrel=3
 pkgdesc="An open-source, cross-platform W3C XML Schema to C++ data binding compiler"
 arch=('x86_64')
 url="https://www.codesynthesis.com/products/xsd"
@@ -15,7 +15,7 @@ md5sums=('4dae2db02657ad6a82828983d5a7ffdc'
 
 build() {
   cd ${pkgname}-${_pkgver}+dep
-  patch -p1 -i ${srcdir}/xsdcxx.patch
+  patch -p0 -i ${srcdir}/xsdcxx.patch
 
   make 
 }
