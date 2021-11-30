@@ -1,7 +1,7 @@
 
 pkgname=libcdr
 pkgver=0.1.7
-pkgrel=2
+pkgrel=3
 pkgdesc="CorelDraw file format importer library for LibreOffice"
 arch=('x86_64')
 url="https://wiki.documentfoundation.org/DLP/Libraries/libcdr"
@@ -16,13 +16,13 @@ md5sums=('b6df5cafffe0724b8a1339ecc1710936'
 build() {
   cd ${pkgname}-${pkgver}
   #patch -p1 -i ${srcdir}/libcdr-0.1.6-icu-68.patch
-  
+
   ./configure --prefix=/usr
   make
 }
 
 package() {
   cd ${pkgname}-${pkgver}
-  
+
   make DESTDIR=${pkgdir} install
 }

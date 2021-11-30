@@ -7,7 +7,7 @@ arch=("x86_64")
 license=('GPL')
 url="http://enblend.sourceforge.net"
 depends=('openexr' 'lcms2' 'libpng' 'vigra' 'gsl')
-makedepends=('boost' 'mesa' 'help2man' 'texlive-latexextra')
+makedepends=('boost' 'mesa' 'help2man' 'texlive-latexextra' 'clang')
 replaces=('enblend')
 conflicts=('enblend')
 provides=('enblend')
@@ -19,6 +19,9 @@ md5sums=('e26751f393862cecfd1a113003787001'
 build() {
   cd ${pkgname}-${pkgver}
   patch -p1 -i ${srcdir}/gcc.patch
+
+  export CC=/usr/bin/clang
+  export CXX=/usr/bin/clang++
 
   ./configure --prefix=/usr
   make
