@@ -1,7 +1,7 @@
 
 pkgname=sdl2
-pkgver=2.0.16
-pkgrel=3
+pkgver=2.0.18
+pkgrel=1
 pkgdesc="Library for portable low-level access to a video framebuffer, audio output, mouse, and keyboard (Version 2)"
 arch=('x86_64')
 url="https://www.libsdl.org"
@@ -10,7 +10,7 @@ depends=('glibc' 'libxcursor' 'libxext' 'libxrender' 'libx11' 'libglvnd' 'pulsea
          'alsa-lib' 'mesa' 'wayland-protocols')
 makedepends=('cmake' 'libxrandr' 'libxinerama' 'libxkbcommon' 'fcitx' 'pipewire')
 source=("https://www.libsdl.org/release/SDL2-${pkgver}.tar.gz")
-md5sums=('98b8a1535a757ea1d03ae44e2fb20247')
+md5sums=('c1dd33299db5b7091f37d989c68d5212')
 
 build() {
 cmake -B build -S SDL2-${pkgver} \
