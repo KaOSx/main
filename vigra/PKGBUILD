@@ -2,7 +2,7 @@
 pkgname=vigra
 pkgver=1.11.1
 _pkgver=1-11-1
-pkgrel=22
+pkgrel=23
 pkgdesc="Computer vision library"
 arch=('x86_64')
 url="https://ukoethe.github.io/vigra/"
@@ -34,7 +34,7 @@ prepare() {
 build() {
   mkdir -p build
   cd build
-  
+
   cmake ../${pkgname}-Version-${_pkgver} \
       -DCMAKE_INSTALL_PREFIX=/usr \
       -DPYTHON_EXECUTABLE=/usr/bin/python3 \
@@ -48,7 +48,7 @@ build() {
 
 check() {
   cd build
-  
+
   #make -k check || /bin/true 
 }
 

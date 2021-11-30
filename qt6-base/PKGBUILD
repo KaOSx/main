@@ -6,7 +6,7 @@ pkgname=qt6-base
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=1
+pkgrel=2
 pkgdesc="A cross-platform application and UI framework"
 arch=('x86_64')
 url='https://www.qt.io/'
@@ -54,7 +54,7 @@ package() {
     DESTDIR=${pkgdir} cmake --install build
 
     install -D -m644 ${_pkgfqn}/LICENSE* -t ${pkgdir}/usr/share/licenses/${pkgname}
-    
+
     mkdir -p ${pkgdir}/usr/bin
     for i in $(ls ${pkgdir}/usr/lib/qt6/bin); do
         ln -s /usr/lib/qt6/bin/${i} ${pkgdir}/usr/bin/${i}-qt6

@@ -6,7 +6,7 @@ pkgname=qt5-tools
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=8
+pkgrel=9
 pkgdesc="A cross-platform application and UI framework, development tools and help files"
 arch=('x86_64')
 url='https://www.qt.io/'
@@ -41,7 +41,7 @@ build() {
 package() {
     cd ${srcdir}/${_pkgfqn}
     make INSTALL_ROOT=$pkgdir install
-	
+
     install -d ${pkgdir}/usr/share/applications
     install -m644 ${srcdir}/assistant.desktop ${pkgdir}/usr/share/applications/
     install -m644 ${srcdir}/designer.desktop ${pkgdir}/usr/share/applications/
@@ -51,7 +51,7 @@ package() {
     for i in $(ls ${pkgdir}/usr/lib/qt5/bin); do
         ln -s /usr/lib/qt5/bin/${i} ${pkgdir}/usr/bin/${i}-qt5
     done
-    
+
     install -D -m644 LICENSE.LGPL3 ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.LGPL3
 }
 
