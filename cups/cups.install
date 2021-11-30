@@ -11,7 +11,10 @@ post_install() {
 post_upgrade() {
 
     systemctl enable cups
-    systemctl disable org.cups.cupsd
+
+    if [[ $(vercmp ${2} 1:2.3.3op2-3) -eq -1 ]]; then
+        systemctl disable org.cups.cupsd
+    fi
 }
 
 post_remove() {
