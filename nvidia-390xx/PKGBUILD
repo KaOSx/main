@@ -41,7 +41,7 @@ build() {
 package_nvidia-390xx() {
     pkgdesc="NVIDIA drivers for linux, 390xx legacy version."
     depends=('linux>=5.14.9' 'linux<5.15' "nvidia-390xx-utils=${pkgver}")
-    conflicts=('nvidia' 'nvidia-340xx')
+    conflicts=('nvidia' 'nvidia-470xx')
     install=nvidia.install
     
     install -D -m644 "${srcdir}/${_pkg}/kernel/nvidia.ko" "${pkgdir}/lib/modules/${_extramodules}/nvidia.ko"
