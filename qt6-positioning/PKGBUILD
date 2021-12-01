@@ -2,20 +2,23 @@
 # include global config
 source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
 
-pkgname=qt6-location
+pkgname=qt6-positioning
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
 pkgrel=1
 pkgdesc="A cross-platform application and UI framework (QtLocation, QtPositioning)."
 arch=('x86_64')
-url='https://github.com/qt/qtlocation'
+url='https://github.com/qt/qtpositioning'
 license=('GPL3' 'LGPL')
 depends=('qt6-declarative' 'qt6-serialport')
 makedepends=('cmake' 'ninja')
+conflicts=('qt6-location')
+provides=('qt6-location')
+replaces=('qt6-location')
 groups=('qt6')
 options=('!libtool')
-_pkgfqn="qtlocation-everywhere-src-${subver}"
+_pkgfqn="qtpositioning-everywhere-src-${subver}"
 source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`)
