@@ -1,0 +1,32 @@
+
+pkgname=qscintilla-qt6
+pkgver=2.13.1
+pkgrel=1
+license=('GPL')
+arch=('x86_64')
+url="https://www.riverbankcomputing.com/software/qscintilla/intro"
+pkgdesc="A port to Qt of Neil Hodgson's Scintilla C++ editor class"
+depends=('qt6-base')
+makedepends=('chrpath' 'qt6-tools')
+source=("https://www.riverbankcomputing.com/static/Downloads/QScintilla/${pkgver}/QScintilla_src-${pkgver}.tar.gz")
+sha1sums=('082cbaa8419ff1911cd9d7fec79ce21ca621eeb6')
+
+prepare() {
+    cd QScintilla_src-${pkgver}
+
+    #patch -p1 -i ${srcdir}/qt5_libname.patch
+}
+
+build() {
+    cd QScintilla_src-${pkgver}/src
+
+    /usr/lib/qt6/bin/qmake qscintilla.pro
+    make
+}
+
+package() {
+    cd QScintilla_src-${pkgver}/src
+    
+    make DESTDIR=${pkgdir} INSTALL_ROOT=${pkgdir} install
+}
+

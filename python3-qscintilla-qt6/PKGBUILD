@@ -1,0 +1,39 @@
+
+pkgname=python3-qscintilla-qt6
+pkgver=2.13.1
+pkgrel=1
+license=('GPL')
+arch=('x86_64')
+url="https://www.riverbankcomputing.com/software/qscintilla/intro"
+pkgdesc="A port to Qt of Neil Hodgson's Scintilla C++ editor class, python3 bindings"
+depends=('pyqt6-python3' 'qscintilla-qt6') # 'qscintilla-designer-qt5')
+makedepends=('chrpath' 'sip' 'pyqt-builder' 'python3-setuptools')
+source=("https://www.riverbankcomputing.com/static/Downloads/QScintilla/${pkgver}/QScintilla_src-${pkgver}.tar.gz")
+sha1sums=('082cbaa8419ff1911cd9d7fec79ce21ca621eeb6')
+
+prepare() {
+  cd QScintilla_src-${pkgver}
+
+  #patch -p1 -i ${srcdir}/configure.patch
+}
+
+build() {
+    cd QScintilla_src-$pkgver/Python
+
+    mv pyproject{-qt6,}.toml
+    sip-build \
+    --no-make \
+    --api-dir /usr/share/qt6/qsci/api/python/ \
+    --qmake /usr/lib/qt6/bin/qmake \
+    --qsci-features-dir ../src/features \
+    --qsci-include-dir ../src \
+    --qsci-library-dir ../src
+  cd build
+  make
+}
+
+package() {
+    cd QScintilla_src-${pkgver}/Python/build
+
+    make DESTDIR=${pkgdir} INSTALL_ROOT=${pkgdir} install
+}
