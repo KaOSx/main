@@ -1,8 +1,8 @@
 
 pkgname=pangomm
-pkgver=2.46.1
+pkgver=2.46.2
 _pkgver=2.46
-pkgrel=2
+pkgrel=1
 pkgdesc="C++ bindings for pango"
 arch=('x86_64')
 url="https://www.gtkmm.org/en/"
@@ -11,12 +11,12 @@ depends=('pango' 'glibmm' 'cairomm')
 makedepends=('meson' 'ninja')
 options=('!libtool')
 source=("https://ftp.gnome.org/pub/GNOME/sources/pangomm/${_pkgver}/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('c885013fe61a4c5117fda395770d507563411c63e49f4a3aced4c9efe34d9975')
+sha256sums=('57442ab4dc043877bfe3839915731ab2d693fc6634a71614422fb530c9eaa6f4')
 
 build() {
   mkdir -p build
   cd build
-  
+
   meson ../${pkgname}-${pkgver} \
     --prefix=/usr \
     --buildtype=release 
@@ -25,6 +25,6 @@ build() {
 
 package() {
   cd build
-  
+
   DESTDIR=${pkgdir} ninja install
 }
