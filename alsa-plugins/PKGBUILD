@@ -1,26 +1,26 @@
 
 pkgname=alsa-plugins
-pkgver=1.2.5
-pkgrel=2
+pkgver=1.2.6
+pkgrel=1
 pkgdesc="Extra alsa plugins"
 arch=('x86_64')
 url="https://www.alsa-project.org"
 license=('GPL')
 depends=('alsa-lib' 'ffmpeg')
-makedepends=('pulseaudio' 'jack' )
-optdepends=('jack: Jack plugin'
+makedepends=('pulseaudio' 'jack2')
+optdepends=('jack2: Jack plugin'
             'libsamplerate: libsamplerate resampling plugin'
             'speex: libspeexdsp resampling plugin')
 options=('!libtool')
 source=("https://www.alsa-project.org/files/pub/plugins/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('11d1bcc1b4eec26c1011ec965f4b54ba')
+md5sums=('5ff136cf63d190dc51d7065a0eb7c978')
 
 build() {
   cd ${pkgname}-${pkgver}
   #sed -i 's/ && LIBAVCODEC_VERSION_MINOR >= 34//' a52/pcm_a52.c
   # workaround for split speex caused unknown type name uint16_t & uint32_t error
   #CFLAGS+=' -DHAVE_STDINT_H'
-    
+
   ./configure --prefix=/usr
   make
 }
