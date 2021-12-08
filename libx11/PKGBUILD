@@ -1,6 +1,6 @@
 
 pkgname=libx11
-pkgver=1.7.2
+pkgver=1.7.3
 pkgrel=1
 pkgdesc="X11 client-side library"
 arch=('x86_64')
@@ -9,12 +9,12 @@ depends=('libxcb' 'xorgproto')
 makedepends=('xorg-util-macros' 'xtrans')
 options=('!libtool')
 license=('custom')
-source=("https://xorg.freedesktop.org/releases/individual/lib/libX11-${pkgver}.tar.bz2")
-sha256sums=('1cfa35e37aaabbe4792e9bb690468efefbfbf6b147d9c69d6f90d13c3092ea6c')
+source=("https://xorg.freedesktop.org/releases/individual/lib/libX11-${pkgver}.tar.xz")
+sha256sums=('dfd1343db3a0e523f1bb97d5ba71453c79eee78a77e51ca9f8dfef7131c6f0fe')
 
 build() {
   cd libX11-${pkgver}
-  
+
   ./configure --prefix=/usr \
     --disable-static \
     --disable-xf86bigfont
@@ -23,7 +23,7 @@ build() {
 
 check() {
   cd libX11-${pkgver}
-  
+
   make check
 }
 
