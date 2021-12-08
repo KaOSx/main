@@ -1,9 +1,9 @@
 
 # check tdb & ldb for updates before building
 pkgname=samba
-pkgver=4.15.2
-_pkgver=4.15.2
-pkgrel=3
+pkgver=4.15.3
+_pkgver=4.15.3
+pkgrel=1
 arch=('x86_64')
 pkgdesc="The standard Windows interoperability suite of programs for Linux and Unix."
 url="https://www.samba.org"
@@ -23,7 +23,7 @@ source=("https://us1.samba.org/samba/ftp/stable/${pkgname}-${_pkgver}.tar.gz"
         'samba.pam'
         'samba.conf'
         'samba.conf.d')
-md5sums=('2245f5b1258b782702ad644c5e9d2857'
+md5sums=('ac2959e825fad82cbaa85c0d6ea6a0b8'
          '995621522c6ec9b68c1b858ceed627ed'
          '96f82c38f3f540b53f3e5144900acf17'
          '49abd7b719e3713a3f75a8a50958e381'
@@ -32,7 +32,7 @@ md5sums=('2245f5b1258b782702ad644c5e9d2857'
 build() {
   cd ${pkgname}-${_pkgver}
   #patch -p1 -i ${srcdir}/gnutls34.patch
-  
+
   _samba4_idmap_modules=idmap_ad,idmap_rid,idmap_adex,idmap_hash,idmap_tdb2
   _samba4_pdb_modules=pdb_tdbsam,pdb_ldap,pdb_ads,pdb_smbpasswd,pdb_wbc_sam,pdb_samba4
   _samba4_auth_modules=auth_unix,auth_wbc,auth_server,auth_netlogond,auth_script,auth_samba4
@@ -64,32 +64,32 @@ build() {
 package() {
   cd ${pkgname}-${_pkgver} 
   make DESTDIR=$pkgdir install
-  
+
   mkdir -p ${pkgdir}/usr/lib/cups/backend
   ln -sf /usr/bin/smbspool ${pkgdir}/usr/lib/cups/backend/smb
-  
+
   install -d -m755 ${pkgdir}/etc/samba
   install -m644 ${srcdir}/samba-${_pkgver}/examples/smb.conf.default ${pkgdir}/etc/samba/smb.conf.default
-  
+
   mkdir -p ${pkgdir}/etc/samba/private
   chmod 700 ${pkgdir}/etc/samba/private
   
   install -D -m644 ${srcdir}/samba.logrotate ${pkgdir}/etc/logrotate.d/samba
   install -D -m644 ${srcdir}/samba.pam ${pkgdir}/etc/pam.d/samba
-  
+
   # spool directory
   install -d -m1777 ${pkgdir}/var/spool/samba
-  
+
   # fix logrotate
   sed -i -e 's|log.%m|%m.log|g' ${pkgdir}/etc/samba/smb.conf.default
   
   # winbind krb5 locator
   mkdir -p ${pkgdir}/usr/lib/krb5/plugins/libkrb5
   mv  ${pkgdir}/usr/lib/samba/krb5/winbind_krb5_locator.so ${pkgdir}/usr/lib/krb5/plugins/libkrb5/
-  
+
   # systemd files use /etc/conf.d
   sed -i -e 's|/usr/etc/sysconfig|/etc/conf.d|g' ${pkgdir}/usr/lib/systemd/system/*.service
-  
+
   install -d -m755  ${pkgdir}/etc/conf.d
   install -m644 packaging/systemd/samba.sysconfig ${pkgdir}/etc/conf.d/samba
 
@@ -97,7 +97,7 @@ package() {
   install -D -m644 ${srcdir}/samba.conf ${pkgdir}/usr/lib/tmpfiles.d/samba.conf
   
   rm -rf ${pkgdir}/var/run
-  
+
   # copy ldap example
   install -D -m644 ${srcdir}/samba-${_pkgver}/examples/LDAP/samba.schema ${pkgdir}/usr/share/doc/samba/examples/LDAP/samba.schema
  }
