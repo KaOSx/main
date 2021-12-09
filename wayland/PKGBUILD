@@ -1,7 +1,7 @@
 
 pkgname=wayland
-pkgver=1.19.0
-pkgrel=2
+pkgver=1.20.0
+pkgrel=1
 pkgdesc="Wayland the modern display server."
 arch=('x86_64')
 url="https://wayland.freedesktop.org"
@@ -10,12 +10,12 @@ depends=('libffi' 'expat')
 makedepends=('doxygen' 'xmlto' 'graphviz' 'meson' 'ninja')
 options=('!makeflags' '!libtool' 'debug')
 source=("https://wayland.freedesktop.org/releases/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('baccd902300d354581cd5ad3cc49daa4921d55fb416a5883e218750fef166d15')
+sha256sums=('b8a034154c7059772e0fdbd27dbfcda6c732df29cae56a82274f6ec5d7cd8725')
 
 build() {
   mkdir -p build
   cd build
-  
+
   meson ../${pkgname}-${pkgver} \
     --prefix=/usr \
     --buildtype=release 
@@ -24,7 +24,7 @@ build() {
 
 package() {
   cd build
-  
+
   DESTDIR=${pkgdir} ninja install
   install -Dm 644 ../${pkgname}-${pkgver}/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
 }
