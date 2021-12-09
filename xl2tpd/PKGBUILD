@@ -1,9 +1,9 @@
  
 pkgname=xl2tpd
 pkgver=1.3.16
-pkgrel=1
+pkgrel=2
 pkgdesc='Implementation of the Layer 2 Tunnelling Protocol (RFC 2661).'
-url="https://www.xelerance.com/services/software/xl2tpd/"
+url="https://github.com/xelerance/xl2tpd"
 arch=('x86_64')
 license=('GPL')
 depend=('ppp')
@@ -19,19 +19,19 @@ md5sums=('6b2fb8f7f1666ae0b80f0e178f04c944'
 
 build() {
   cd ${pkgname}-${pkgver}
-  
+
   make PREFIX=/usr #KERNELSRC=/usr/src/linux-`uname -r`
 }
 
 package() {
   cd ${pkgname}-${pkgver}
-  
+
   make  PREFIX=/usr DESTDIR=${pkgdir} install #KERNELSRC=/usr/src/linux-`uname -r`
   
   install -D -m0644 examples/ppp-options.xl2tpd ${pkgdir}/etc/ppp/ppp-options.xl2tpd
   install -D -m0644 examples/chapsecrets.sample ${pkgdir}/etc/ppp/chapsecrets.sample
   install -D -m0644 examples/xl2tpd.conf ${pkgdir}/etc/xl2tpd/xl2tpd.conf
-  
+
   install -D -m0644 ../xl2tpd.conf ${pkgdir}/usr/lib/systemd/tmpfiles.d/xl2tpd.conf
   install -D -m0644 ../xl2tpd.service ${pkgdir}/usr/lib/systemd/systemd/xl2tpd.service
 }

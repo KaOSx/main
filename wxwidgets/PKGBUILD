@@ -9,7 +9,7 @@ arch=('x86_64')
 url="http://wxwidgets.org"
 license=('custom:wxWindows')
 depends=('gtk3' 'glu' 'gst-plugins-base')
-#makedepends=('gtk2')
+makedepends=('gtk2')
 options=('!emptydirs')
 conflicts=('wxgtk')
 replaces=('wxgtk')
@@ -24,18 +24,16 @@ prepare() {
 
 build() {
   cd ${_pkgname}-${pkgver}
-  export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/lib/pkgconfig/gtk+-3.0.pc
 
   ./configure --prefix=/usr \
     --libdir=/usr/lib \
-    --includedir=/usr/include/gtk-3.0 \
     --with-gtk=3 \
     --with-opengl \
     --enable-unicode \
     --enable-graphics_ctx \
     --enable-mediactrl \
     --disable-webview \
-    --enable-gtktest=no \
+    --disable-gtktest \
     --with-regex=builtin \
     --with-libpng=sys \
     --with-libxpm=sys \
