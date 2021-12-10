@@ -14,9 +14,9 @@ md5sums=('e758f271cf43469211486c96afdc1b3a')
 package() {
   cd ${pkgname}-${pkgver}
   install -d -m755 ${pkgdir}/usr/share/alsa/ucm{,2}/
-  
+
   cp -r ucm/* ${pkgdir}/usr/share/alsa/ucm/
   cp -r ucm2/* ${pkgdir}/usr/share/alsa/ucm2/
-  
+
   install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
