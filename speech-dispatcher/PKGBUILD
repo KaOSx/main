@@ -1,6 +1,6 @@
 
 pkgname=speech-dispatcher
-pkgver=0.10.2
+pkgver=0.11.0
 pkgrel=1
 arch=('x86_64')
 url="https://devel.freebsoft.org/speechd"
@@ -28,13 +28,13 @@ install=speech-dispatcher.install
 #source=("https://devel.freebsoft.org/pub/projects/speechd/${pkgname}-${pkgver}.tar.gz"
 source=("https://github.com/brailcom/speechd/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.gz"
         'speech-dispatcherd.service')
-md5sums=('ace54a15e1d235d7dbdac3ac99004a5b'
+md5sums=('278d4f18e6cd3305a2e5ca0cddd1bf1c'
          '0f09abe1af4eb79885ba88a1c2bcde8b')
 
 
 build() {
   cd ${pkgname}-${pkgver}
-  
+
   ./configure --prefix=/usr --sysconfdir=/etc --without-flite
   make
 }
@@ -45,6 +45,6 @@ package() {
 
   install -Dm644 ${srcdir}/speech-dispatcherd.service ${pkgdir}/usr/lib/systemd/system/speech-dispatcherd.service
   install -d ${pkgdir}/var/log/speech-dispatcher
-  
+
   #sed -i -e 's|# DisableAutoSpawn|DisableAutoSpawn|' ${pkgdir}/etc/speech-dispatcher/speechd.conf
 }
