@@ -2,7 +2,7 @@
 pkgname=dbus-python3
 _pkgname=dbus-python
 pkgver=1.2.18
-pkgrel=1
+pkgrel=2
 pkgdesc="Python3 bindings for DBUS"
 arch=('x86_64')
 license=('GPL' 'LGPL')
@@ -18,13 +18,13 @@ md5sums=('468874f3bf61d1b7deac98bbe2cfd8ac')
 build() {
   cd ${_pkgname}-${pkgver}
   #autoreconf -fi
-  
+
   ./configure --prefix=/usr
   make
 }
 
 package() {
   cd ${_pkgname}-${pkgver}
-  
+
   make DESTDIR=${pkgdir} install
 }

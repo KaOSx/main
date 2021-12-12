@@ -1,7 +1,7 @@
 
 pkgname=python3-six
 pkgver=1.16.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Python 3 compatibility utilities"
 arch=('x86_64')
 url="https://pypi.python.org/pypi/six/"
@@ -12,13 +12,13 @@ sha256sums=('1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926')
 
 check() {
   cd six-${pkgver}
-  
+
   python3 setup.py check
 }
 
 package() {
   cd six-${pkgver} 
   python3 setup.py install --root ${pkgdir} --optimize=1
-  
+
   install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
