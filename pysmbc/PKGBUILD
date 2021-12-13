@@ -1,7 +1,7 @@
 
 pkgname=pysmbc
 pkgver=1.0.23
-pkgrel=1
+pkgrel=2
 pkgdesc="Python libsmbclient bindings"
 arch=('x86_64')
 url="https://github.com/hamano/pysmbc"
@@ -13,12 +13,12 @@ sha256sums=('08db176281103024b7e8563adef733e56250051d87394c4baec4fd298d0d16f8')
 
 build(){
   cd ${pkgname}-${pkgver}
-  
+
   python3 setup.py build
 }
 
 package() {
   cd ${pkgname}-${pkgver}
-  
+
   python3 setup.py install --root=${pkgdir} --optimize=1
 }

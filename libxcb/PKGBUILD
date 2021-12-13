@@ -1,7 +1,7 @@
 
 pkgname=libxcb
 pkgver=1.14
-pkgrel=3
+pkgrel=4
 epoch=2
 pkgdesc="X11 client-side library"
 arch=('x86_64')
@@ -15,9 +15,9 @@ sha256sums=('a55ed6db98d43469801262d81dc2572ed124edc3db31059d4e9916eb9f844c34')
 
 build() {
   cd ${pkgname}-${pkgver}
-  
+
   autoreconf -vfi
-  
+
   ./configure --prefix=/usr \
     --enable-xinput \
     --enable-xkb \
@@ -28,7 +28,7 @@ build() {
 package () {
   cd ${pkgname}-${pkgver}
   make DESTDIR=${pkgdir} install
-  
+
   install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
   install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
 }

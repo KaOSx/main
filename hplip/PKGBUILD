@@ -3,7 +3,7 @@ pkgname=hplip
 pkgver=3.21.10
 # incase a or b is used in hplip rls:
 _pkgver=3.21.10
-pkgrel=1
+pkgrel=2
 pkgdesc="Drivers for HP DeskJet, OfficeJet, Photosmart, Business Inkjet and some LaserJet."
 arch=('x86_64')
 url="https://developers.hp.com/hp-linux-imaging-and-printing"
@@ -23,14 +23,14 @@ md5sums=('a87a3fb04f7931c5e764811aa0606c8a'
 
 build() {
   cd ${pkgname}-${_pkgver}
-  
+
   # https://github.com/KaOSx/main/issues/31, patch file prnt/filters/hpps
   #patch -p2 -i ${srcdir}/patch
   # https://bugs.launchpad.net/hplip/+bug/1785230, remove closed source parts, breaking hplip > 3.18.6
   #patch -p1 -i ${srcdir}/imageprocessor.patch
 
   export AUTOMAKE='automake --foreign'
-  
+
   autoreconf --force --install
 
 	./configure --prefix=/usr \
@@ -59,7 +59,7 @@ package() {
   # .desktop file showing in Lost & Found
   echo "Categories=Application;Utility;" >> ${pkgdir}/usr/share/applications/hp-uiscan.desktop
   sed -i -e 's|/usr/share/icons/Humanity/devices/48/printer.svg|/usr/share/hplip/data/images/128x128/hp_logo.png|' ${pkgdir}/usr/share/applications/hp-uiscan.desktop
-  
+
   python3 -m compileall -d /usr/share ${pkgdir}/usr/share
   python3 -O -m compileall -d /usr/share ${pkgdir}/usr/share
 }

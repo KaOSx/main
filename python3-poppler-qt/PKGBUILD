@@ -2,7 +2,7 @@
 pkgname=python3-poppler-qt
 _pkgname=python-poppler-qt5
 pkgver=21.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="A Python 3 binding to poppler-qt, early Qt 5 port"
 arch=('x86_64')
 url="https://github.com/frescobaldi/python-poppler-qt5"
@@ -24,6 +24,6 @@ build() {
  
 package() {
     cd ${_pkgname}-${pkgver}
-        
+
     python3 setup.py install --root=${pkgdir} build_ext --qmake-bin='/usr/lib/qt5/bin/qmake'
 }

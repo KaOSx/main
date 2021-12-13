@@ -2,7 +2,7 @@
 pkgname=dconf
 pkgver=0.40.0
 _pkgver=0.40
-pkgrel=3
+pkgrel=4
 pkgdesc="A low-level configuration system."
 arch=('x86_64')
 url="https://wiki.gnome.org/Projects/dconf"
@@ -17,7 +17,7 @@ prepare() {
 
   sed -e "s|subdir('tests')|#subdir('tests')|" -i meson.build
 }
-  
+
 build() {
   mkdir -p build
   cd build

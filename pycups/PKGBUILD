@@ -1,7 +1,7 @@
 
 pkgname=pycups
 pkgver=2.0.1
-pkgrel=2
+pkgrel=3
 pkgdesc="Python CUPS Bindings"
 url="http://cyberelk.net/tim/software/pycups/"
 arch=('x86_64')
@@ -12,12 +12,12 @@ sha256sums=('57434ce5f62548eb12949ca8217f066f4eeb21a5d6ab8b13471dce350e380c90')
 
 build() {
   cd ${pkgname}-${pkgver}
-  
+
   python3 setup.py build
 }
 
 package() {
   cd ${pkgname}-${pkgver}
-  
+
   python3 setup.py install --root=${pkgdir} --optimize=1
 }
