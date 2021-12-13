@@ -2,7 +2,7 @@
 pkgname=python3-toml
 _pkgname=toml
 pkgver=0.10.2
-pkgrel=1
+pkgrel=2
 pkgdesc="Python library for parsing and creating TOML"
 arch=('x86_64')
 url="https://github.com/uiri/toml"
@@ -25,7 +25,7 @@ package() {
     --optimize=1 \
     --prefix=/usr \
     --root=${pkgdir}
-    
+
   install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}
 }
 

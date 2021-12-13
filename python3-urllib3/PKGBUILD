@@ -2,7 +2,7 @@
 # only update if transifex can use newer
 pkgname=python3-urllib3
 pkgver=1.26.7
-pkgrel=1
+pkgrel=2
 pkgdesc="Python HTTP library with thread-safe connection pooling, file post support, sanity friendly, and more."
 arch=('x86_64')
 license=('MIT')
@@ -16,9 +16,9 @@ build() {
     cd urllib3-${pkgver}
 
     python3 setup.py build
-    }
+}
 
-    package() {
+package() {
     cd urllib3-${pkgver}
 
     python3 setup.py install --prefix=/usr --root=${pkgdir} --optimize=1 --skip-build
