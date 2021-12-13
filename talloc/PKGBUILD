@@ -1,7 +1,7 @@
 
 pkgname=talloc
 pkgver=2.3.3
-pkgrel=1
+pkgrel=2
 pkgdesc="A hierarchical pool based memory allocator with destructors"
 arch=('x86_64')
 license=('GPL3')
@@ -12,18 +12,18 @@ source=("https://samba.org/ftp/talloc/${pkgname}-${pkgver}.tar.gz")
 md5sums=('b9a334039dd24bed8ea546c71cb3d196')
 
 build() {
-   cd ${pkgname}-${pkgver}
-   #sed -i -e 's|python|python3|g' buildtools/bin/waf
-   
-   ./configure --prefix=/usr \
-   --sysconfdir=/etc/samba \
-   --localstatedir=/var \
-   --enable-talloc-compat1
-   make -j1
+    cd ${pkgname}-${pkgver}
+    #sed -i -e 's|python|python3|g' buildtools/bin/waf
+
+    ./configure --prefix=/usr \
+    --sysconfdir=/etc/samba \
+    --localstatedir=/var \
+    --enable-talloc-compat1
+    make -j8
 }
 
 package() {
-   cd ${pkgname}-${pkgver}
-   
-   make DESTDIR=${pkgdir}/ install
+    cd ${pkgname}-${pkgver}
+
+    make DESTDIR=${pkgdir}/ install
 }

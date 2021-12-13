@@ -1,7 +1,7 @@
 
 pkgname=tevent
 pkgver=0.11.0
-pkgrel=1
+pkgrel=2
 pkgdesc="An event system based on the talloc memory management library"
 arch=('x86_64')
 url="https://tevent.samba.org/"
@@ -11,17 +11,17 @@ source=("https://samba.org/ftp/tevent/${pkgname}-${pkgver}.tar.gz")
 md5sums=('5ea8283263f84d25b72b5260bbea75ed')
 
 build() {
-	cd ${pkgname}-${pkgver}
+    cd ${pkgname}-${pkgver}
 
-	./configure --prefix=/usr
+    ./configure --prefix=/usr
 }
 
 package() {
-	cd ${pkgname}-${pkgver}
-	
-	make
-	make DESTDIR=${pkgdir}/ install
-	
-	install -D -m644 tevent_internal.h ${pkgdir}/usr/include/tevent_internal.h
+    cd ${pkgname}-${pkgver}
+
+    make
+    make DESTDIR=${pkgdir}/ install
+
+    install -D -m644 tevent_internal.h ${pkgdir}/usr/include/tevent_internal.h
 }
 

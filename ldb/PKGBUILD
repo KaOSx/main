@@ -1,7 +1,7 @@
 
 pkgname=ldb
 pkgver=2.4.1
-pkgrel=2
+pkgrel=3
 epoch=2
 pkgdesc="Provide a fast database with an LDAP-like API designed to be used within an application."
 arch=('x86_64')
@@ -12,21 +12,21 @@ source=("https://samba.org/ftp/ldb/${pkgname}-${pkgver}.tar.gz")
 md5sums=('ec2baff9c8e02fcbdd570401420589d5')
 
 build() {
-	cd ${pkgname}-${pkgver}
+    cd ${pkgname}-${pkgver}
 
-	./configure --prefix=/usr \
+    ./configure --prefix=/usr \
         --disable-rpath \
         --disable-rpath-install \
         --bundled-libraries=cmocka \
         --builtin-libraries=replace \
         --with-modulesdir=/usr/lib/ldb/modules \
         --with-privatelibdir=/usr/lib/ldb
-	make
+    make
 }
 
 package() {
-	cd ${pkgname}-${pkgver}
+    cd ${pkgname}-${pkgver}
 
-	make DESTDIR=${pkgdir}/ install
+    make DESTDIR=${pkgdir}/ install
 }
 

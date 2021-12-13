@@ -3,7 +3,7 @@
 pkgname=samba
 pkgver=4.15.3
 _pkgver=4.15.3
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 pkgdesc="The standard Windows interoperability suite of programs for Linux and Unix."
 url="https://www.samba.org"
@@ -36,7 +36,7 @@ build() {
   _samba4_idmap_modules=idmap_ad,idmap_rid,idmap_adex,idmap_hash,idmap_tdb2
   _samba4_pdb_modules=pdb_tdbsam,pdb_ldap,pdb_ads,pdb_smbpasswd,pdb_wbc_sam,pdb_samba4
   _samba4_auth_modules=auth_unix,auth_wbc,auth_server,auth_netlogond,auth_script,auth_samba4
-  
+
   ./configure --prefix=/usr \
               --libdir=/usr/lib/ \
               --localstatedir=/var \
@@ -50,6 +50,7 @@ build() {
               --with-pam \
               --with-pammodulesdir=/usr/lib/security \
               --with-ads \
+              --without-ad-dc \
               --with-acl-support \
               --with-ldap \
               --with-winbind \
@@ -82,7 +83,7 @@ package() {
 
   # fix logrotate
   sed -i -e 's|log.%m|%m.log|g' ${pkgdir}/etc/samba/smb.conf.default
-  
+
   # winbind krb5 locator
   mkdir -p ${pkgdir}/usr/lib/krb5/plugins/libkrb5
   mv  ${pkgdir}/usr/lib/samba/krb5/winbind_krb5_locator.so ${pkgdir}/usr/lib/krb5/plugins/libkrb5/
@@ -95,7 +96,7 @@ package() {
 
   # create non-persistent dirs via tmpfiles instead of shipping packaged-in
   install -D -m644 ${srcdir}/samba.conf ${pkgdir}/usr/lib/tmpfiles.d/samba.conf
-  
+
   rm -rf ${pkgdir}/var/run
 
   # copy ldap example
