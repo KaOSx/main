@@ -1,7 +1,7 @@
 
 pkgname=libproxy
 pkgver=0.4.17
-pkgrel=2
+pkgrel=3
 pkgdesc="A library that provides automatic proxy configuration management"
 arch=('x86_64')
 url="https://libproxy.github.io/libproxy"
@@ -15,24 +15,18 @@ options=('!libtool')
 md5sums=('74af4aa1e7920f3b6117203d55a9c524')
 
 build() {
-  cd ${pkgname}-${pkgver}
-  mkdir -p build
-  
-  cd build
-  cmake -DCMAKE_INSTALL_PREFIX=/usr \
+  cmake -B build -S ${pkgname}-${pkgver} \
     -DLIBEXEC_INSTALL_DIR=/usr/lib/libproxy \
     -DCMAKE_SKIP_RPATH=ON \
     -DPERL_VENDORINSTALL=yes \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_CXX_FLAGS="${CXXFLAGS}" \
     -DCMAKE_C_FLAGS="${CFLAGS}" \
-    -DPYTHON3_EXECUTABLE=/usr/bin/python3 \
-    ..
-  make
+    -DPYTHON3_EXECUTABLE=/usr/bin/python3
+  cmake --build build
 }
 
 package() {
-  cd ${pkgname}-${pkgver}/build
-  
-  make DESTDIR=${pkgdir} install
+
+  DESTDIR=${pkgdir} cmake --install build
 }

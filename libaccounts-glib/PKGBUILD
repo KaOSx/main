@@ -2,7 +2,7 @@
 pkgname=libaccounts-glib
 pkgver=1.25
 #_pkgver=VERSION_1.21-00254a604a7c7bd38c41794a80ad8930e90f21aa
-pkgrel=2
+pkgrel=3
 pkgdesc="Glib-based client library for accessing the online accounts database"
 arch=('x86_64')
 url="https://gitlab.com/groups/accounts-sso"
@@ -11,20 +11,20 @@ depends=('dbus-glib' 'libxml2' 'sqlite')
 makedepends=('python3-gobject3' 'docbook-xsl' 'meson' 'ninja' 'vala' 'check' 'gtk-doc')
 options=('!libtool')
 # check https://groups.google.com/forum/#!forum/accounts-sso-announce
-source=("https://gitlab.com/accounts-sso/libaccounts-glib/repository/archive.tar.bz2?ref=VERSION_${pkgver}")
-md5sums=('83bfa521c04ef358045e372f27f2a0ab')
+source=("https://gitlab.com/accounts-sso/libaccounts-glib/-/archive/${pkgver}/${pkgname}-${pkgver}.tar.bz2")
+md5sums=('fdfdb6fe13ac13a2738318bf12a62541')
 
 prepare() {
-  cd ${pkgname}-VERSION_${pkgver}-*
-  
+  cd ${pkgname}-${pkgver}
+
   sed -i "s|subdir('tests')||" meson.build
 }
 
 build() {
   mkdir -p build
   cd build
-  
-  meson ../${pkgname}-VERSION_${pkgver}-* \
+
+  meson ../${pkgname}-${pkgver} \
     --prefix=/usr \
     --buildtype=release
   ninja
@@ -32,6 +32,6 @@ build() {
 
 package() {
   cd build
-  
+
   DESTDIR=${pkgdir} ninja install
 }

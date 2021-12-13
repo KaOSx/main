@@ -1,7 +1,7 @@
 
 pkgname=libsignon-glib
 pkgver=2.1
-pkgrel=4
+pkgrel=5
 pkgdesc='Single signon authentication library for GLib applications'
 arch=('x86_64')
 url='https://gitlab.com/accounts-sso/libsignon-glib'
@@ -14,7 +14,7 @@ md5sums=('SKIP')
 
 prepare() {
   cd ${pkgname}
-  
+
   git submodule init
   git submodule update
 }
@@ -22,7 +22,7 @@ prepare() {
 build() {
   mkdir -p build
   cd build
-  
+
   meson ../${pkgname} \
     --prefix=/usr \
     --buildtype=release \

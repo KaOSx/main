@@ -1,7 +1,7 @@
 
 pkgname=gyp
 pkgver=20200512
-pkgrel=2
+pkgrel=3
 _commit=caa60026e223fc501e8b337fd5086ece4028b1c6
 pkgdesc='"GYP is a Meta-Build system: a build system that generates other build systems.'
 arch=('x86_64')
@@ -9,17 +9,17 @@ url="https://gyp.gsrc.io/"
 license=('custom:BSD')
 depends=('python3-setuptools' 'ninja')
 source=("https://chromium.googlesource.com/external/gyp/+archive/${_commit}.tar.gz")
-md5sums=('d9f82218b3955f57d2cc3f9629a6933f')
+md5sums=('c239d1cdc861db5bc137cde3fa783aac')
 
 build() {
   #cd ${pkgname}
-  
+
   python3 setup.py build
 }
 
 package() {
   #cd ${pkgname}
-  
+
   python3 setup.py install --root=${pkgdir} --optimize=1 --skip-build
   install -D -m644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }

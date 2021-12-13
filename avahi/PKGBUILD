@@ -2,7 +2,7 @@
 pkgname=avahi
 pkgver=0.8
 _pkgver=0.8
-pkgrel=3
+pkgrel=4
 pkgdesc="A multicast/unicast DNS-SD framework"
 arch=('x86_64')
 url="http://www.avahi.org/"
@@ -24,7 +24,7 @@ prepare() {
   cd ${pkgname}-${_pkgver}
   #patch -p1 -i ${srcdir}/python_gdbm.diff
   cp ${srcdir}/build-db service-type-database/
-  
+
   #NOCONFIGURE=1 ./autogen.sh
 }
 
@@ -57,15 +57,15 @@ build() {
 }
 
 package() {
-	cd ${pkgname}-${_pkgver}
-	make DESTDIR=${pkgdir} install
-	
-	rm -r ${pkgdir}/run
-	# avahi-discover is not build (gtk2), but installs files
-	rm ${pkgdir}/usr/bin/avahi-discover
-	rm -r ${pkgdir}/usr/share/applications
+    cd ${pkgname}-${_pkgver}
+    make DESTDIR=${pkgdir} install
 
-	# mdnsresponder compatability
-	 ln -s avahi-compat-libdns_sd/dns_sd.h ${pkgdir}/usr/include/dns_sd.h
+    rm -r ${pkgdir}/run
+    # avahi-discover is not build (gtk2), but installs files
+    rm ${pkgdir}/usr/bin/avahi-discover
+    rm -r ${pkgdir}/usr/share/applications
+
+    # mdnsresponder compatability
+        ln -s avahi-compat-libdns_sd/dns_sd.h ${pkgdir}/usr/include/dns_sd.h
 }
 

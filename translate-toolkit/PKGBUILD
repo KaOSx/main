@@ -2,7 +2,7 @@
 pkgname=translate-toolkit
 _pkgname=translate
 pkgver=3.5.1
-pkgrel=1
+pkgrel=2
 pkgdesc="Toolkit to convert between various different translation formats, help process and validate localisations"
 arch=('x86_64')
 url="https://toolkit.translatehouse.org/index.html"
@@ -18,5 +18,5 @@ package() {
 
   python3 -s setup.py install --root=${pkgdir} --optimize=1
 
-  rm -r ${pkgdir}/usr/lib/python3.8/site-packages/translate/docs/_build
+  rm -r ${pkgdir}/usr/lib/python3.9/site-packages/translate/docs/_build
 }
