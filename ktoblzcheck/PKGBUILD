@@ -1,7 +1,7 @@
 
 pkgname=ktoblzcheck
 pkgver=1.53
-pkgrel=2
+pkgrel=3
 pkgdesc="Tool for verification of account numbers and bank codes"
 arch=('x86_64')
 license=('LGPL')
@@ -12,19 +12,15 @@ source=("https://downloads.sourceforge.net/project/ktoblzcheck/${pkgname}-${pkgv
 md5sums=('5cedb258370acd22ec3d0c90e0e66fec')
 
 build() {
-  mkdir -p build
-  cd build
-  
-  cmake ../${pkgname}-${pkgver} \
+  cmake -B build -S ${pkgname}-${pkgver} \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=lib \
     -DINSTALL_RAW_BANKDATA_FILE=ON
-  make
+  cmake --build build
 }
 
 package() {
-  cd build
-  
-   make DESTDIR=${pkgdir} install
+
+  DESTDIR=${pkgdir} cmake --install build
 }
