@@ -2,7 +2,7 @@
 pkgname=python3-future
 _pkgname=future
 pkgver=0.18.2
-pkgrel=2
+pkgrel=3
 pkgdesc="Easy, clean, reliable Python 2/3 compatibility"
 arch=('x86_64')
 url="https://python-future.org/"
@@ -13,13 +13,13 @@ sha256sums=('b1bead90b70cf6ec3f0710ae53a525360fa360d306a86583adc6bf83a4db537d')
 
 build() {
   cd ${_pkgname}-${pkgver}
-  
+
   python3 setup.py build
 }
 
 package() {
   cd ${_pkgname}-${pkgver}
   python3 setup.py install --skip-build --prefix=/usr --root=${pkgdir}
-  
+
   install -Dm644 LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.txt
 }

@@ -11,15 +11,14 @@ source=("https://files.pythonhosted.org/packages/source/d/distro/distro-${pkgver
 sha256sums=('83f5e5a09f9c5f68f60173de572930effbcc0287bb84fdc4426cb4168c088424')
 
 build() {
-   cd distro-${pkgver}
+  cd distro-${pkgver}
 
-   python3 setup.py build
+  python3 setup.py build
 }
  
 package() {
-   cd distro-${pkgver}
+  cd distro-${pkgver}
 
-   python3 setup.py install --prefix=/usr --root=${pkgdir} --optimize=1 --skip-build
+  python3 setup.py install --prefix=/usr --root=${pkgdir} --optimize=1 --skip-build
 }
- 
 

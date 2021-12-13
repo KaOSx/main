@@ -15,9 +15,9 @@ build() {
     cd idna-${pkgver}
 
     python3 setup.py build
-    }
+}
 
-    package() {
+package() {
     cd idna-${pkgver}
 
     python3 setup.py install --prefix=/usr --root=${pkgdir} --optimize=1 --skip-build
