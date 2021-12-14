@@ -1,8 +1,8 @@
 
 pkgname=perl-template-toolkit
 _pkgname=Template-Toolkit
-pkgver=3.009
-pkgrel=2
+pkgver=3.010
+pkgrel=1
 pkgdesc="Perl template processing system"
 arch=('x86_64')
 url="https://metacpan.org/release/Template-Toolkit"
@@ -10,17 +10,17 @@ license=('PerlArtistic')
 depends=('perl')
 options=('!emptydirs')
 source=("https://cpan.metacpan.org/authors/id/A/AT/ATOOMIC/${_pkgname}-${pkgver}.tar.gz")
-md5sums=('f1c401067b728337a8a8c0d4ae642af8')
+md5sums=('352af62d9be343ca97a186b9255772e5')
 
 build() {
   cd ${_pkgname}-${pkgver}
-  
+
   perl Makefile.PL INSTALLDIRS=vendor TT_ACCEPT=y
   make
 }
 
 package() {
   cd ${_pkgname}-${pkgver}
-  
+
   make install DESTDIR=${pkgdir}
 } 

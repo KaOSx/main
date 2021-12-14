@@ -3,8 +3,8 @@ _extramodules=extramodules-5.15-next
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=nvidia-470xx-next
-pkgver=470.86
-pkgrel=5
+pkgver=470.94
+pkgrel=1
 pkgdesc="NVIDIA drivers for linux."
 arch=('x86_64')
 url="http://www.nvidia.com/"
@@ -19,7 +19,7 @@ options=('!strip')
 _pkg="NVIDIA-Linux-x86_64-${pkgver}"
 
 source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run")
-md5sums=('6620e8c931b5e33c5860793e5242edcf')
+md5sums=('dc073d2b85d429e185fa5521b527784c')
 
 build() {
     cd ${srcdir}
