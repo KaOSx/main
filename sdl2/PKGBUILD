@@ -1,7 +1,7 @@
 
 pkgname=sdl2
 pkgver=2.0.18
-pkgrel=1
+pkgrel=2
 pkgdesc="Library for portable low-level access to a video framebuffer, audio output, mouse, and keyboard (Version 2)"
 arch=('x86_64')
 url="https://www.libsdl.org"
@@ -9,8 +9,16 @@ license=('MIT')
 depends=('glibc' 'libxcursor' 'libxext' 'libxrender' 'libx11' 'libglvnd' 'pulseaudio'
          'alsa-lib' 'mesa' 'wayland-protocols')
 makedepends=('cmake' 'libxrandr' 'libxinerama' 'libxkbcommon' 'fcitx' 'pipewire')
-source=("https://www.libsdl.org/release/SDL2-${pkgver}.tar.gz")
-md5sums=('c1dd33299db5b7091f37d989c68d5212')
+source=("https://www.libsdl.org/release/SDL2-${pkgver}.tar.gz"
+        "https://github.com/libsdl-org/SDL/commit/e2ade2bfc46d915cd306c63c830b81d800b2575f.diff")
+md5sums=('c1dd33299db5b7091f37d989c68d5212'
+         'd9a0056c864544bcdb31f1026a6abdfd')
+
+prepare() {
+  cd SDL2-${pkgver}
+  # wayland 1.20 needed
+  patch -p1 -i ${srcdir}/e2ade2bfc46d915cd306c63c830b81d800b2575f.diff
+}
 
 build() {
 cmake -B build -S SDL2-${pkgver} \
@@ -18,17 +26,17 @@ cmake -B build -S SDL2-${pkgver} \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=lib \
     -DSDL_STATIC=OFF \
-    -DARTS=OFF \
-    -DESD=OFF \
-    -DNAS=OFF \
-    -DALSA=ON \
-    -DHIDAPI=ON \
-    -DPULSEAUDIO_SHARED=ON \
-    -DVIDEO_WAYLAND=ON \
-    -DRPATH=OFF \
-    -DCLOCK_GETTIME=ON \
-    -DJACK_SHARED=ON \
-    -DPIPEWIRE_SHARED=ON
+    -DSDL_ARTS=OFF \
+    -DSDL_ESD=OFF \
+    -DSDL_NAS=OFF \
+    -DSDL_ALSA=ON \
+    -DSDL_HIDAPI=ON \
+    -DSDL_PULSEAUDIO_SHARED=ON \
+    -DSDL_WAYLAND_SHARED=ON \
+    -DSDL_RPATH=OFF \
+    -DSDL_CLOCK_GETTIME=ON \
+    -DSDL_JACK_SHARED=ON \
+    -DSDL_PIPEWIRE_SHARED=ON
   cmake --build build
 }
 
