@@ -1,19 +1,20 @@
  
 pkgname=ndctl
-pkgver=71.1
+pkgver=72
 pkgrel=1
 pkgdesc='Utility library for managing the libnvdimm (non-volatile memory device) sub-system in the Linux kernel'
 arch=('x86_64')
 url="https://github.com/pmem/ndctl"
 license=('GPLv2')
-depends=('json-c' 'systemd')
+depends=('json-c' 'systemd' 'iniparser')
 makedepends=('asciidoc' 'xmlto' 'bash-completion')
 source=("https://github.com/pmem/ndctl/archive/v${pkgver}.tar.gz")
-md5sums=('473b701d5250392ac570ed271cacd778')
+md5sums=('f53c7039e0162adc6ae54a8cc0a596fa')
 
 build() {
   cd ${pkgname}-${pkgver}
-  
+  sed -e "s|<iniparser/iniparser.h>|<iniparser.h>|" -i util/parse-configs.c
+
   ./autogen.sh
   ./configure --prefix=/usr \
     --sysconfdir=/etc \
@@ -25,12 +26,12 @@ build() {
 # needs nfit_test.ko to run any tests, disable for now
 #check() {
 #  cd ${pkgname}-${pkgver}
-  
+
 #  make check
 #}
 
 package() {
   cd ${pkgname}-${pkgver}
-  
+
   make DESTDIR=${pkgdir} install
 }
