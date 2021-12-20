@@ -1,7 +1,7 @@
 
 pkgname=fail2ban
 pkgver=0.11.2
-pkgrel=2
+pkgrel=3
 pkgdesc='Scans log files like /var/log/auth.log and bans IP addresses conducting too many failed login attempts.'
 url='https://www.fail2ban.org/'
 license=('GPL')
@@ -21,8 +21,8 @@ prepare() {
 
 build() {
   cd ${pkgname}-${pkgver}
-  
-  ./fail2ban-2to3
+
+  #./fail2ban-2to3
   python3 setup.py build
 }
 
