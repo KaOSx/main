@@ -3,8 +3,8 @@ _extramodules=extramodules-5.15-next
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=nvidia-390xx-next
-pkgver=390.144
-pkgrel=21
+pkgver=390.147
+pkgrel=1
 pkgdesc="NVIDIA drivers for linux-next, 390xx legacy version."
 arch=('x86_64')
 url="https://www.nvidia.com/page/home.html"
@@ -20,7 +20,7 @@ _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
         'linux-5.13.patch'
         'linux-5.14.patch')
-md5sums=('258c635ac21824b282db79745867024d'
+md5sums=('7f2c2c04c6039b177d50b23a1ae223d6'
          '2d4294cf94d9cc76b19694242d4ebf1e'
          'b75c09ec4a5057079cb3ec2f188bdba2')
 
@@ -30,7 +30,7 @@ build() {
     
     cd ${_pkg}
     patch -p1 -i ${srcdir}/linux-5.13.patch
-    patch -p1 -i ${srcdir}/linux-5.14.patch
+    #patch -p1 -i ${srcdir}/linux-5.14.patch
     # linux 4.20 needed
     #sed -i -e 's|ipmi_user_t         p_user;|struct ipmi_user    *p_user;|g' kernel/nvidia/os-interface.c
     
