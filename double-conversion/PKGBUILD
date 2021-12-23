@@ -1,6 +1,6 @@
 
 pkgname=double-conversion
-pkgver=3.1.6
+pkgver=3.1.7
 pkgrel=1
 pkgdesc='Efficient binary-decimal and decimal-binary conversion routines for IEEE doubles.'
 arch=('x86_64')
@@ -9,8 +9,7 @@ license=('BSD')
 depends=('gcc-libs')
 makedepends=('cmake')
 source=("https://github.com/google/double-conversion/archive/v${pkgver}.tar.gz")
-md5sums=('432fa87cc342a5c45ed812cdc1f8c209')
-
+md5sums=('b69c62168f8342bacb62bd44a0a4b20e')
 
 build() {
   cmake -B build -S ${pkgname}-${pkgver} \
