@@ -1,6 +1,6 @@
 
 pkgname=libgsf
-pkgver=1.14.47
+pkgver=1.14.48
 _pkgver=1.14
 pkgrel=1
 arch=('x86_64')
@@ -11,11 +11,11 @@ depends=('libxml2' 'glib2' 'bzip2')
 makedepends=('intltool' 'pkgconfig' 'gobject-introspection')
 options=('!libtool')
 source=("https://download.gnome.org/sources/libgsf/${_pkgver}/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('d188ebd3787b5375a8fd38ee6f761a2007de5e98fa0cf5623f271daa67ba774d')
+sha256sums=('ff86d7f1d46dd0ebefb7bd830a74a41db64362b987bf8853fff6ab4c1132b837')
 
 build() {
   cd ${pkgname}-${pkgver}
-  
+
   ./configure --prefix=/usr \
     --sysconfdir=/etc \
     --localstatedir=/var \
@@ -28,7 +28,7 @@ build() {
 package() {
   cd ${pkgname}-${pkgver}
   make DESTDIR=${pkgdir} install 
-  
+
   #All removes will strip gnome specific stuff
   rm -f ${pkgdir}/usr/share/man/man1/gsf-office-thumbnailer.1
   rm -f ${pkgdir}/usr/lib/libgsf-gnome*
