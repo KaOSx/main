@@ -1,6 +1,6 @@
 
 pkgname=doxygen
-pkgver=1.9.2
+pkgver=1.9.3
 pkgrel=1
 pkgdesc="A documentation system for C++, C, Java, IDL and PHP"
 license=('GPL')
@@ -10,31 +10,27 @@ depends=('gcc-libs' 'qt5-base' 'clang')
 makedepends=('flex' 'texlive-core' 'ghostscript' 'texlive-latexextra' 'python3' 'cmake') # 'clang-tools-extra')
 source=("https://doxygen.nl/files/${pkgname}-${pkgver}.src.tar.gz"
         "https://github.com/doxygen/doxygen/commit/850f0ce7eaf0a689a8e8ef7f3ca05b7a152ab0ad.diff")
-md5sums=('84c0522bb65d17f9127896268b72ea2a'
+md5sums=('d0368fba9dc6e354163089255b224a45'
          'e502de93b8ac36f15bf3b34b01cff223')
 
 prepare() {
   cd ${pkgname}-${pkgver}
-  
+
   #patch -p1 -i $srcdir/850f0ce7eaf0a689a8e8ef7f3ca05b7a152ab0ad.diff
 }
 
 
 build() { 
-  mkdir -p build
-  cd build
-  
-  cmake ../${pkgname}-${pkgver} \
+  cmake -B build -S ${pkgname}-${pkgver} \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -Dbuild_wizard=YES \
     -Dbuild_doc=OFF \
     -Duse_libclang=OFF
-  make
+  cmake --build build
 }
 
 package() {
-  cd build
-  
-  make DESTDIR=$pkgdir install
+
+  DESTDIR=${pkgdir} cmake --install build
 }
