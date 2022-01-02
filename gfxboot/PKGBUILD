@@ -1,6 +1,6 @@
 
 pkgname=gfxboot
-pkgver=4.5.79
+pkgver=4.5.80
 _pkgver=1.1
 pkgrel=1
 arch=('x86_64')
@@ -14,15 +14,15 @@ options=('docs')
 source=("https://download.opensuse.org/source/tumbleweed/repo/oss/src/${pkgname}-${pkgver}-${_pkgver}.src.rpm"
         'gfxboot.html'
         'isolinux.patch')
-md5sums=('dabef03b288c44e64c56ee3aa8071449'
+md5sums=('5be02eb178c8f36d71aced32ffe46601'
          'f824c5bc2f716f8029677cae6956c1c7'
          '224289270f7ea288aaded3272a9c53f4')
 
 build() {
   cd ${srcdir}
-    
+
   rpmextract.sh ${pkgname}-${pkgver}-${_pkgver}.src.rpm 
-  
+
   for i in $(find -name '*.tar.xz');do tar -Jxf $i;done
   mv -f themes ${pkgname}-${pkgver}/
 
