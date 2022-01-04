@@ -3,7 +3,7 @@
 pkgname=samba
 pkgver=4.15.3
 _pkgver=4.15.3
-pkgrel=2
+pkgrel=3
 arch=('x86_64')
 pkgdesc="The standard Windows interoperability suite of programs for Linux and Unix."
 url="https://www.samba.org"
@@ -44,13 +44,12 @@ build() {
               --sysconfdir=/etc \
               --with-configdir=/etc/samba \
               --with-lockdir=/var/cache/samba \
-              --with-sockets-dir=/var/run/samba \
-              --with-piddir=/var/run/ \
+              --with-sockets-dir=/run/samba \
+              --with-piddir=/run/ \
               --enable-fhs \
               --with-pam \
               --with-pammodulesdir=/usr/lib/security \
               --with-ads \
-              --without-ad-dc \
               --with-acl-support \
               --with-ldap \
               --with-winbind \
