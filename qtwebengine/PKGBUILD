@@ -10,8 +10,8 @@ pkgname=('qtwebengine') # 'qtwebengine-examples')
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-_commit=f0a1cb8da24518c03858b85378f9ad82b0603a1a
-pkgrel=2
+_commit=96e932d73057c3e705b849249fb02e1837b7576d
+pkgrel=1
 pkgdesc="Chromium-based web engine to replace Qt WebKit"
 url="https://www.qt.io/"
 arch=('x86_64')
@@ -30,8 +30,7 @@ source=("git+https://github.com/qt/qtwebengine.git#commit=${_commit}"
         'quicknanobrowser.desktop'
         'markdowneditor.desktop'
         'python-patches.diff'
-        'rule_bison.diff'
-        "https://gitweb.gentoo.org/repo/gentoo.git/plain/dev-qt/qtwebengine/files/qtwebengine-5.15.2_p20210406-glibc-2.33.patch")
+        'rule_bison.diff')
 #md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
 md5sums=('SKIP'
          'SKIP'
@@ -40,8 +39,7 @@ md5sums=('SKIP'
          '6d62ba455c7d70870fb28c9362c9c591'
          '5ea5aa48c198a8de1398fc9e7a4abd14'
          '699b9a97d0164c0c62bfb1700fa31832'
-         '9830c8af376817b2812775b547734873'
-         '62855be92cd3bd1b5cc7fedeca587179')
+         '9830c8af376817b2812775b547734873')
 
 prepare() {
     mkdir -p build
