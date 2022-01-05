@@ -1,6 +1,6 @@
  
 pkgname=whois
-pkgver=5.5.10
+pkgver=5.5.11
 pkgrel=1
 pkgdesc="Intelligent WHOIS client"
 arch=('x86_64')
@@ -10,7 +10,7 @@ depends=('libidn2')
 makedepends=('perl')
 backup=('etc/whois.conf')
 source=("http://ftp.debian.org/debian/pool/main/w/whois/${pkgname}_${pkgver}.tar.xz")
-md5sums=('4db48a482a06261ffa358d9f52c9bd7e')
+md5sums=('7c93595b0bb68c6fce66dad2f8585c26')
 
 build() {
   cd ${pkgname}
@@ -22,6 +22,6 @@ package() {
   cd ${pkgname}
   make prefix=/usr BASEDIR=${pkgdir} install-whois
   make prefix=/usr BASEDIR=${pkgdir} install-pos
-  
+
   install -D -m644 COPYING  ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
 }
