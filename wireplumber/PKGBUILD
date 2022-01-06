@@ -1,6 +1,6 @@
 
 pkgname=wireplumber
-pkgver=0.4.5
+pkgver=0.4.6
 pkgrel=1
 pkgdesc="Modular session/policy manager for PipeWire and a GObject-based library that wraps PipeWire's API."
 url="https://gitlab.freedesktop.org/pipewire/wireplumber"
@@ -9,8 +9,8 @@ arch=('x86_64')
 depends=('pipewire' 'glib2')
 makedepends=('meson' 'ninja' 'gobject-introspection')
 install=wireplumber.install
-source=("https://gitlab.freedesktop.org/pipewire/wireplumber/-/archive/0.4.5/wireplumber-0.4.5.tar.bz2")
-md5sums=('0c87f03bc3d0129278749f6ea1f6b21b')
+source=("https://gitlab.freedesktop.org/pipewire/wireplumber/-/archive/${pkgver}/wireplumber-${pkgver}.tar.bz2")
+md5sums=('2ab3ba8816ff5617590cee6e2ae001a9')
 
 build() {
   mkdir -p build
