@@ -1,0 +1,20 @@
+--- a/kernel/nvidia-uvm/uvm_migrate_pageable.c	2022-01-08 21:51:32.672454683 +0100
++++ b/kernel/nvidia-uvm/uvm_migrate_pageable.c	2022-01-08 21:51:52.298644944 +0100
+@@ -406,7 +406,7 @@
+         uvm_push_set_flag(&push, UVM_PUSH_FLAG_CE_NEXT_MEMBAR_NONE);
+         copying_gpu->parent->ce_hal->memset_8(&push, dst_address, 0, PAGE_SIZE);
+ 
+-        dst[i] = migrate_pfn(page_to_pfn(dst_page)) | MIGRATE_PFN_LOCKED;
++        dst[i] = migrate_pfn(page_to_pfn(dst_page));
+     }
+ 
+     if (copying_gpu) {
+@@ -490,7 +490,7 @@
+         uvm_push_set_flag(&push, UVM_PUSH_FLAG_CE_NEXT_MEMBAR_NONE);
+         copying_gpu->parent->ce_hal->memcopy(&push, dst_address, src_address, PAGE_SIZE);
+ 
+-        dst[i] = migrate_pfn(page_to_pfn(dst_page)) | MIGRATE_PFN_LOCKED;
++        dst[i] = migrate_pfn(page_to_pfn(dst_page));
+     }
+ 
+     // TODO: Bug 1766424: If the destination is a GPU and the copy was done by

@@ -1,6 +1,7 @@
 
 pkgname=cpupower
-pkgver=5.14.12
+pkgver=5.16.0
+_pkgver=5.16
 pkgrel=1
 pkgdesc='Linux kernel tool to examine and tune power saving related features of your processor'
 license=('GPL2')
@@ -10,12 +11,12 @@ depends=('pciutils')
 makedepends=('asciidoc' 'xmlto')
 backup=('etc/default/cpupower')
 options=('!strip')
-source=("https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-${pkgver}.tar.xz"
+source=("https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-${_pkgver}.tar.xz"
         #"https://cdn.kernel.org/pub/linux/kernel/v4.x/patch-${pkgver}.5.xz"
         'cpupower.conf'
         'cpupower.service'
         'cpupower.systemd')
-md5sums=('a52286fe206a3f7664ca5a6c5995b9ed'
+md5sums=('e6680ce7c989a3efe58b51e3f3f0bf93'
          'fb4b3d184850f5972c5a1bba3ead4e05'
          '2450e8ff41b30eb58d43b5fffbfde1f4'
          'e02e88977fbdde29a2ae38aa064a367d')
@@ -25,7 +26,7 @@ build() {
     patch -p1 -i ${srcdir}/patch-*
   fi
 
-  pushd linux-${pkgver}/tools/power/cpupower
+  pushd linux-${_pkgver}/tools/power/cpupower
   
   LDFLAGS=${LDFLAGS:+"$LDFLAGS,--no-as-needed"}
   make VERSION=${pkgver}-${pkgrel}
@@ -33,7 +34,7 @@ build() {
 }
 
 package() {
-  pushd linux-${pkgver}/tools/power/cpupower
+  pushd linux-${_pkgver}/tools/power/cpupower
   make \
     DESTDIR=${pkgdir} \
     mandir='/usr/share/man' \
