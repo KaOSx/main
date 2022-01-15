@@ -1,6 +1,6 @@
 
 pkgname=jack2
-pkgver=1.9.19
+pkgver=1.9.20
 pkgrel=1
 _commit=ce825c6
 pkgdesc="The next-generation JACK with SMP support"
@@ -8,26 +8,27 @@ arch=('x86_64')
 url="https://jackaudio.org/"
 backup=(etc/security/limits.d/99-audio.conf)
 license=('GPL')
-depends=('libsamplerate' 'opus' 'libffado' 'dbus' 'opus')
+depends=('libsamplerate' 'opus' 'libffado' 'dbus' 'eigen3')
 makedepends=('python3')
 provides=('jack')
 source=("https://github.com/jackaudio/jack2/archive/v${pkgver}.tar.gz"
         '99-audio.conf'
         '40-hpet-permissions.rules')
-md5sums=('ca263ffba14abce859c0ee7680faf510'
+md5sums=('76095094ecdd9a213dd6faf427b89515'
          '4d928a76e3f3d77d037c42ab75ac0f0b'
          '23eba69d2dbbb800f68176e5d38b9af5')
 
 build() {
   cd ${pkgname}-${pkgver}
-  
+
   LDFLAGS="$LDFLAGS,--no-as-needed -lm" python3 ./waf configure \
     --prefix=/usr \
     --alsa \
     --classic \
     --dbus \
     --firewire \
-    --systemd-unit
+    --systemd-unit \
+    --example-tools
 
   python3 ./waf build
 

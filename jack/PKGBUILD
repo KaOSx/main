@@ -1,7 +1,7 @@
 
 pkgname=jack
-pkgver=0.125.0
-pkgrel=5
+pkgver=0.126.0
+pkgrel=1
 pkgdesc="A low-latency audio server"
 arch=('x86_64')
 url="https://jackaudio.org/"
@@ -12,15 +12,15 @@ conflicts=('jack2')
 backup=(etc/conf.d/jack-audio-connection-kit)
 options=('!libtool')
 install=${pkgname}.install
-source=("https://mirror.sobukus.de/files/grimoire/audio-drivers/jack-audio-connection-kit-${pkgver}.tar.gz"
+source=("https://github.com/jackaudio/jack1/releases/download/0.126.0/jack1-${pkgver}.tar.gz"
         "99-audio.conf"
         "40-hpet-permissions.rules")
-md5sums=('d9b7e230aeae2d5b45c7a822b2d2dd15'
+md5sums=('5913c06644855f472894da53a624e63f'
          '4d928a76e3f3d77d037c42ab75ac0f0b'
          '23eba69d2dbbb800f68176e5d38b9af5')
 
 build() {
-  cd jack-audio-connection-kit-${pkgver}
+  cd jack1-${pkgver}
 
   ./configure --prefix=/usr \
         --libdir=/usr/lib
@@ -28,11 +28,11 @@ build() {
 }
 
 package() {
-  cd jack-audio-connection-kit-${pkgver}
+  cd jack1-${pkgver}
   make DESTDIR=${pkgdir} install
 
   install -Dm644 ${srcdir}/99-audio.conf $pkgdir/etc/security/limits.d/99-audio.conf
-  install -Dm644 ${srcdir}/40-hpet-permissions.rules ${pkgdir}/lib/udev/rules.d/40-hpet-permissions.rules
-  install -Dm644 ${srcdir}/jack-audio-connection-kit-$pkgver/jack/jslist.h ${pkgdir}/usr/include/jack/jslist.h
+  install -Dm644 ${srcdir}/40-hpet-permissions.rules ${pkgdir}/usr/lib/udev/rules.d/40-hpet-permissions.rules
+  install -Dm644 ${srcdir}/jack1-$pkgver/jack/jslist.h ${pkgdir}/usr/include/jack/jslist.h
 }
 
