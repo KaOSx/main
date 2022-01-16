@@ -1,7 +1,7 @@
 
 pkgname=cups-filters
-pkgver=1.28.10
-pkgrel=8
+pkgver=1.28.11
+pkgrel=1
 pkgdesc="OpenPrinting CUPS Filters"
 arch=('x86_64')
 url="http://www.linuxfoundation.org/collaborate/workgroups/openprinting"
@@ -19,14 +19,14 @@ backup=(etc/fonts/conf.d/99pdftoopvp.conf)
 options=('!libtool')
 source=("https://www.openprinting.org/download/cups-filters/${pkgname}-${pkgver}.tar.xz"
         "https://github.com/OpenPrinting/cups-filters/commit/50d984a621524c2e2857ad84eb4b71933c8821be.diff")
-md5sums=('828b8c81534ecb996d6c6b7e1332412f'
+md5sums=('f6d3c5ca06d992dd80e7cbd47e2399f4'
          '895186801ce1c988738e5306b09fe2c8')
 
 build() {
   cd ${pkgname}-${pkgver}
   #patch -p1 -i ${srcdir}/50d984a621524c2e2857ad84eb4b71933c8821be.diff
   #sed -e "s|cpp/poppler-version.h|poppler/cpp/poppler-version.h|" -i filter/pdftoopvp/oprs/OPRS.cxx
-  
+
   ./configure --prefix=/usr  \
     --sysconfdir=/etc \
     --with-rcdir=no \
@@ -38,7 +38,7 @@ build() {
 
 check() {
   cd ${pkgname}-${pkgver}
-  
+
   make -k check
 }
 
