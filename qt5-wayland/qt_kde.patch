@@ -73,18 +73,77 @@ index 87dd6cea..b6ee43c9 100644
  }
  
 diff --git a/src/client/qwaylanddatadevice.cpp b/src/client/qwaylanddatadevice.cpp
-index 19944a34..bbd2d568 100644
+index 19944a34..fbb5aa91 100644
 --- a/src/client/qwaylanddatadevice.cpp
 +++ b/src/client/qwaylanddatadevice.cpp
-@@ -124,6 +124,7 @@ bool QWaylandDataDevice::startDrag(QMimeData *mimeData, QWaylandWindow *icon)
+@@ -72,6 +72,8 @@ QWaylandDataDevice::QWaylandDataDevice(QWaylandDataDeviceManager *manager, QWayl
+ 
+ QWaylandDataDevice::~QWaylandDataDevice()
+ {
++    if (wl_data_device_get_version(object()) >= WL_DATA_DEVICE_RELEASE_SINCE_VERSION)
++        release();
+ }
+ 
+ QWaylandDataOffer *QWaylandDataDevice::selectionOffer() const
+@@ -110,7 +112,7 @@ QWaylandDataOffer *QWaylandDataDevice::dragOffer() const
+     return m_dragOffer.data();
+ }
+ 
+-bool QWaylandDataDevice::startDrag(QMimeData *mimeData, QWaylandWindow *icon)
++bool QWaylandDataDevice::startDrag(QMimeData *mimeData, Qt::DropActions supportedActions, QWaylandWindow *icon)
+ {
+     auto *seat = m_display->currentInputDevice();
+     auto *origin = seat->pointerFocus();
+@@ -123,7 +125,28 @@ bool QWaylandDataDevice::startDrag(QMimeData *mimeData, QWaylandWindow *icon)
+     }
  
      m_dragSource.reset(new QWaylandDataSource(m_display->dndSelectionHandler(), mimeData));
++
++    if (wl_data_device_get_version(object()) >= 3)
++        m_dragSource->set_actions(dropActionsToWl(supportedActions));
++
      connect(m_dragSource.data(), &QWaylandDataSource::cancelled, this, &QWaylandDataDevice::dragSourceCancelled);
-+    connect(m_dragSource.data(), &QWaylandDataSource::targetChanged, this, &QWaylandDataDevice::dragSourceTargetChanged);
++    connect(m_dragSource.data(), &QWaylandDataSource::dndResponseUpdated, this, [this](bool accepted, Qt::DropAction action) {
++            auto drag = static_cast<QWaylandDrag *>(QGuiApplicationPrivate::platformIntegration()->drag());
++            // in old versions drop action is not set, so we guess
++            if (wl_data_source_get_version(m_dragSource->object()) < 3) {
++                drag->setResponse(accepted);
++            } else {
++                QPlatformDropQtResponse response(accepted, action);
++                drag->setResponse(response);
++            }
++    });
++    connect(m_dragSource.data(), &QWaylandDataSource::dndDropped, this, [](bool accepted, Qt::DropAction action) {
++        QPlatformDropQtResponse response(accepted, action);
++        static_cast<QWaylandDrag *>(QGuiApplicationPrivate::platformIntegration()->drag())->setDropResponse(response);
++    });
++    connect(m_dragSource.data(), &QWaylandDataSource::finished, this, []() {
++        static_cast<QWaylandDrag *>(QGuiApplicationPrivate::platformIntegration()->drag())->finishDrag();
++    });
  
      start_drag(m_dragSource->object(), origin->wlSurface(), icon->wlSurface(), m_display->currentInputDevice()->serial());
      return true;
-@@ -168,7 +169,7 @@ void QWaylandDataDevice::data_device_drop()
+@@ -152,7 +175,7 @@ void QWaylandDataDevice::data_device_drop()
+         supportedActions = drag->supportedActions();
+     } else if (m_dragOffer) {
+         dragData = m_dragOffer->mimeData();
+-        supportedActions = Qt::CopyAction | Qt::MoveAction | Qt::LinkAction;
++        supportedActions = m_dragOffer->supportedActions();
+     } else {
+         return;
+     }
+@@ -162,13 +185,17 @@ void QWaylandDataDevice::data_device_drop()
+                                                                           QGuiApplication::keyboardModifiers());
+ 
+     if (drag) {
+-        static_cast<QWaylandDrag *>(QGuiApplicationPrivate::platformIntegration()->drag())->finishDrag(response);
++        auto drag =  static_cast<QWaylandDrag *>(QGuiApplicationPrivate::platformIntegration()->drag());
++        drag->setDropResponse(response);
++        drag->finishDrag();
++    } else if (m_dragOffer) {
++        m_dragOffer->finish();
+     }
+ }
  
  void QWaylandDataDevice::data_device_enter(uint32_t serial, wl_surface *surface, wl_fixed_t x, wl_fixed_t y, wl_data_offer *id)
  {
@@ -93,8 +152,307 @@ index 19944a34..bbd2d568 100644
      if (!dragWaylandWindow)
          return; // Ignore foreign surfaces
  
+@@ -186,7 +213,7 @@ void QWaylandDataDevice::data_device_enter(uint32_t serial, wl_surface *surface,
+         supportedActions = drag->supportedActions();
+     } else if (m_dragOffer) {
+         dragData = m_dragOffer->mimeData();
+-        supportedActions = Qt::CopyAction | Qt::MoveAction | Qt::LinkAction;
++        supportedActions = m_dragOffer->supportedActions();
+     }
+ 
+     const QPlatformDragQtResponse &response = QWindowSystemInterface::handleDrag(m_dragWindow, dragData, m_dragPoint, supportedActions,
+@@ -197,11 +224,7 @@ void QWaylandDataDevice::data_device_enter(uint32_t serial, wl_surface *surface,
+         static_cast<QWaylandDrag *>(QGuiApplicationPrivate::platformIntegration()->drag())->setResponse(response);
+     }
+ 
+-    if (response.isAccepted()) {
+-        wl_data_offer_accept(m_dragOffer->object(), m_enterSerial, m_dragOffer->firstFormat().toUtf8().constData());
+-    } else {
+-        wl_data_offer_accept(m_dragOffer->object(), m_enterSerial, nullptr);
+-    }
++    sendResponse(supportedActions, response);
+ }
+ 
+ void QWaylandDataDevice::data_device_leave()
+@@ -235,10 +258,10 @@ void QWaylandDataDevice::data_device_motion(uint32_t time, wl_fixed_t x, wl_fixe
+         supportedActions = drag->supportedActions();
+     } else {
+         dragData = m_dragOffer->mimeData();
+-        supportedActions = Qt::CopyAction | Qt::MoveAction | Qt::LinkAction;
++        supportedActions = m_dragOffer->supportedActions();
+     }
+ 
+-    QPlatformDragQtResponse response = QWindowSystemInterface::handleDrag(m_dragWindow, dragData, m_dragPoint, supportedActions,
++    const QPlatformDragQtResponse response = QWindowSystemInterface::handleDrag(m_dragWindow, dragData, m_dragPoint, supportedActions,
+                                                                           QGuiApplication::mouseButtons(),
+                                                                           QGuiApplication::keyboardModifiers());
+ 
+@@ -246,11 +269,7 @@ void QWaylandDataDevice::data_device_motion(uint32_t time, wl_fixed_t x, wl_fixe
+         static_cast<QWaylandDrag *>(QGuiApplicationPrivate::platformIntegration()->drag())->setResponse(response);
+     }
+ 
+-    if (response.isAccepted()) {
+-        wl_data_offer_accept(m_dragOffer->object(), m_enterSerial, m_dragOffer->firstFormat().toUtf8().constData());
+-    } else {
+-        wl_data_offer_accept(m_dragOffer->object(), m_enterSerial, nullptr);
+-    }
++    sendResponse(supportedActions, response);
+ }
+ #endif // QT_CONFIG(draganddrop)
+ 
+@@ -280,11 +299,6 @@ void QWaylandDataDevice::dragSourceCancelled()
+     m_dragSource.reset();
+ }
+ 
+-void QWaylandDataDevice::dragSourceTargetChanged(const QString &mimeType)
+-{
+-    static_cast<QWaylandDrag *>(QGuiApplicationPrivate::platformIntegration()->drag())->updateTarget(mimeType);
+-}
+-
+ QPoint QWaylandDataDevice::calculateDragPosition(int x, int y, QWindow *wnd) const
+ {
+     QPoint pnt(wl_fixed_to_int(x), wl_fixed_to_int(y));
+@@ -297,6 +311,33 @@ QPoint QWaylandDataDevice::calculateDragPosition(int x, int y, QWindow *wnd) con
+     }
+     return pnt;
+ }
++
++void QWaylandDataDevice::sendResponse(Qt::DropActions supportedActions, const QPlatformDragQtResponse &response)
++{
++    if (response.isAccepted()) {
++        if (wl_data_device_get_version(object()) >= 3)
++            m_dragOffer->set_actions(dropActionsToWl(supportedActions), dropActionsToWl(response.acceptedAction()));
++
++        m_dragOffer->accept(m_enterSerial, m_dragOffer->firstFormat());
++    } else {
++        m_dragOffer->accept(m_enterSerial, QString());
++    }
++}
++
++int QWaylandDataDevice::dropActionsToWl(Qt::DropActions actions)
++{
++
++    int wlActions = WL_DATA_DEVICE_MANAGER_DND_ACTION_NONE;
++    if (actions & Qt::CopyAction)
++        wlActions |= WL_DATA_DEVICE_MANAGER_DND_ACTION_COPY;
++    if (actions & (Qt::MoveAction | Qt::TargetMoveAction))
++        wlActions |= WL_DATA_DEVICE_MANAGER_DND_ACTION_MOVE;
++
++    // wayland does not support LinkAction at the time of writing
++    return wlActions;
++}
++
++
+ #endif // QT_CONFIG(draganddrop)
+ 
+ }
+diff --git a/src/client/qwaylanddatadevice_p.h b/src/client/qwaylanddatadevice_p.h
+index 16c3ad28..801dcc2c 100644
+--- a/src/client/qwaylanddatadevice_p.h
++++ b/src/client/qwaylanddatadevice_p.h
+@@ -64,6 +64,7 @@ QT_REQUIRE_CONFIG(wayland_datadevice);
+ QT_BEGIN_NAMESPACE
+ 
+ class QMimeData;
++class QPlatformDragQtResponse;
+ class QWindow;
+ 
+ namespace QtWaylandClient {
+@@ -89,7 +90,7 @@ public:
+ 
+ #if QT_CONFIG(draganddrop)
+     QWaylandDataOffer *dragOffer() const;
+-    bool startDrag(QMimeData *mimeData, QWaylandWindow *icon);
++    bool startDrag(QMimeData *mimeData, Qt::DropActions supportedActions, QWaylandWindow *icon);
+     void cancelDrag();
+ #endif
+ 
+@@ -109,13 +110,16 @@ private Q_SLOTS:
+ 
+ #if QT_CONFIG(draganddrop)
+     void dragSourceCancelled();
+-    void dragSourceTargetChanged(const QString &mimeType);
+ #endif
+ 
+ private:
+ #if QT_CONFIG(draganddrop)
+     QPoint calculateDragPosition(int x, int y, QWindow *wnd) const;
+ #endif
++    void sendResponse(Qt::DropActions supportedActions, const QPlatformDragQtResponse &response);
++
++    static int dropActionsToWl(Qt::DropActions dropActions);
++
+ 
+     QWaylandDisplay *m_display = nullptr;
+     QWaylandInputDevice *m_inputDevice = nullptr;
+diff --git a/src/client/qwaylanddatadevicemanager.cpp b/src/client/qwaylanddatadevicemanager.cpp
+index 35d67307..6dc4f77f 100644
+--- a/src/client/qwaylanddatadevicemanager.cpp
++++ b/src/client/qwaylanddatadevicemanager.cpp
+@@ -50,8 +50,8 @@ QT_BEGIN_NAMESPACE
+ 
+ namespace QtWaylandClient {
+ 
+-QWaylandDataDeviceManager::QWaylandDataDeviceManager(QWaylandDisplay *display, uint32_t id)
+-    : wl_data_device_manager(display->wl_registry(), id, 1)
++QWaylandDataDeviceManager::QWaylandDataDeviceManager(QWaylandDisplay *display, int version, uint32_t id)
++    : wl_data_device_manager(display->wl_registry(), id, qMin(version, 3))
+     , m_display(display)
+ {
+     // Create transfer devices for all input devices.
+diff --git a/src/client/qwaylanddatadevicemanager_p.h b/src/client/qwaylanddatadevicemanager_p.h
+index bd05c0fb..510d9be4 100644
+--- a/src/client/qwaylanddatadevicemanager_p.h
++++ b/src/client/qwaylanddatadevicemanager_p.h
+@@ -68,7 +68,7 @@ class QWaylandInputDevice;
+ class Q_WAYLAND_CLIENT_EXPORT QWaylandDataDeviceManager : public QtWayland::wl_data_device_manager
+ {
+ public:
+-    QWaylandDataDeviceManager(QWaylandDisplay *display, uint32_t id);
++    QWaylandDataDeviceManager(QWaylandDisplay *display, int version, uint32_t id);
+     ~QWaylandDataDeviceManager() override;
+ 
+     QWaylandDataDevice *getDataDevice(QWaylandInputDevice *inputDevice);
+diff --git a/src/client/qwaylanddataoffer.cpp b/src/client/qwaylanddataoffer.cpp
+index 2297e8a1..c9e158cc 100644
+--- a/src/client/qwaylanddataoffer.cpp
++++ b/src/client/qwaylanddataoffer.cpp
+@@ -82,6 +82,15 @@ QMimeData *QWaylandDataOffer::mimeData()
+     return m_mimeData.data();
+ }
+ 
++Qt::DropActions QWaylandDataOffer::supportedActions() const
++{
++    if (wl_data_offer_get_version(const_cast<::wl_data_offer*>(object())) < 3) {
++        return Qt::MoveAction | Qt::CopyAction;
++    }
++
++    return m_supportedActions;
++}
++
+ void QWaylandDataOffer::startReceiving(const QString &mimeType, int fd)
+ {
+     receive(mimeType, fd);
+@@ -93,6 +102,22 @@ void QWaylandDataOffer::data_offer_offer(const QString &mime_type)
+     m_mimeData->appendFormat(mime_type);
+ }
+ 
++void QWaylandDataOffer::data_offer_action(uint32_t dnd_action)
++{
++    Q_UNUSED(dnd_action);
++    // This is the compositor telling the drag target what action it should perform
++    // It does not map nicely into Qt final drop semantics, other than pretending there is only one supported action?
++}
++
++void QWaylandDataOffer::data_offer_source_actions(uint32_t source_actions)
++{
++    m_supportedActions = Qt::DropActions();
++    if (source_actions & WL_DATA_DEVICE_MANAGER_DND_ACTION_MOVE)
++        m_supportedActions |= Qt::MoveAction;
++    if (source_actions & WL_DATA_DEVICE_MANAGER_DND_ACTION_COPY)
++        m_supportedActions |= Qt::CopyAction;
++}
++
+ QWaylandMimeData::QWaylandMimeData(QWaylandAbstractDataOffer *dataOffer)
+     : m_dataOffer(dataOffer)
+ {
+diff --git a/src/client/qwaylanddataoffer_p.h b/src/client/qwaylanddataoffer_p.h
+index 9cf1483c..6f667398 100644
+--- a/src/client/qwaylanddataoffer_p.h
++++ b/src/client/qwaylanddataoffer_p.h
+@@ -82,6 +82,7 @@ public:
+     explicit QWaylandDataOffer(QWaylandDisplay *display, struct ::wl_data_offer *offer);
+     ~QWaylandDataOffer() override;
+     QMimeData *mimeData() override;
++    Qt::DropActions supportedActions() const;
+ 
+     QString firstFormat() const;
+ 
+@@ -89,10 +90,13 @@ public:
+ 
+ protected:
+     void data_offer_offer(const QString &mime_type) override;
++    void data_offer_source_actions(uint32_t source_actions) override;
++    void data_offer_action(uint32_t dnd_action) override;
+ 
+ private:
+     QWaylandDisplay *m_display = nullptr;
+     QScopedPointer<QWaylandMimeData> m_mimeData;
++    Qt::DropActions m_supportedActions;
+ };
+ 
+ 
+diff --git a/src/client/qwaylanddatasource.cpp b/src/client/qwaylanddatasource.cpp
+index f45122fb..5599cbd4 100644
+--- a/src/client/qwaylanddatasource.cpp
++++ b/src/client/qwaylanddatasource.cpp
+@@ -101,7 +101,32 @@ void QWaylandDataSource::data_source_send(const QString &mime_type, int32_t fd)
+ 
+ void QWaylandDataSource::data_source_target(const QString &mime_type)
+ {
+-    Q_EMIT targetChanged(mime_type);
++    m_accepted = !mime_type.isEmpty();
++    Q_EMIT dndResponseUpdated(m_accepted, m_dropAction);
++}
++
++void QWaylandDataSource::data_source_action(uint32_t action)
++{
++    Qt::DropAction qtAction = Qt::IgnoreAction;
++
++    if (action == WL_DATA_DEVICE_MANAGER_DND_ACTION_MOVE)
++        qtAction = Qt::MoveAction;
++    else if (action == WL_DATA_DEVICE_MANAGER_DND_ACTION_COPY)
++        qtAction = Qt::CopyAction;
++
++    m_dropAction = qtAction;
++    Q_EMIT dndResponseUpdated(m_accepted, m_dropAction);
++}
++
++void QWaylandDataSource::data_source_dnd_finished()
++{
++    Q_EMIT finished();
++}
++
++void QWaylandDataSource::data_source_dnd_drop_performed()
++{
++
++    Q_EMIT dndDropped(m_accepted, m_dropAction);
+ }
+ 
+ }
+diff --git a/src/client/qwaylanddatasource_p.h b/src/client/qwaylanddatasource_p.h
+index 25afff79..96f07bc3 100644
+--- a/src/client/qwaylanddatasource_p.h
++++ b/src/client/qwaylanddatasource_p.h
+@@ -77,17 +77,25 @@ public:
+     QMimeData *mimeData() const;
+ 
+ Q_SIGNALS:
+-    void targetChanged(const QString &mime_type);
+     void cancelled();
++    void finished();
++
++    void dndResponseUpdated(bool accepted, Qt::DropAction action);
++    void dndDropped(bool accepted, Qt::DropAction action);
+ 
+ protected:
+     void data_source_cancelled() override;
+     void data_source_send(const QString &mime_type, int32_t fd) override;
+     void data_source_target(const QString &mime_type) override;
++    void data_source_dnd_drop_performed() override;
++    void data_source_dnd_finished() override;
++    void data_source_action(uint32_t action) override;
+ 
+ private:
+     QWaylandDisplay *m_display = nullptr;
+     QMimeData *m_mime_data = nullptr;
++    bool m_accepted = false;
++    Qt::DropAction m_dropAction = Qt::IgnoreAction;
+ };
+ 
+ }
 diff --git a/src/client/qwaylanddisplay.cpp b/src/client/qwaylanddisplay.cpp
-index fe094f6f..9f595af3 100644
+index fe094f6f..ea344c61 100644
 --- a/src/client/qwaylanddisplay.cpp
 +++ b/src/client/qwaylanddisplay.cpp
 @@ -206,10 +206,11 @@ void QWaylandDisplay::checkError() const
@@ -111,6 +469,15 @@ index fe094f6f..9f595af3 100644
  }
  
  void QWaylandDisplay::flushRequests()
+@@ -353,7 +354,7 @@ void QWaylandDisplay::registry_global(uint32_t id, const QString &interface, uin
+         mInputDevices.append(inputDevice);
+ #if QT_CONFIG(wayland_datadevice)
+     } else if (interface == QStringLiteral("wl_data_device_manager")) {
+-        mDndSelectionHandler.reset(new QWaylandDataDeviceManager(this, id));
++        mDndSelectionHandler.reset(new QWaylandDataDeviceManager(this, version, id));
+ #endif
+     } else if (interface == QStringLiteral("qt_surface_extension")) {
+         mWindowExtension.reset(new QtWayland::qt_surface_extension(registry, id, 1));
 @@ -451,9 +452,10 @@ void QWaylandDisplay::addRegistryListener(RegistryListener listener, void *data)
  
  void QWaylandDisplay::removeListener(RegistryListener listener, void *data)
@@ -205,6 +572,108 @@ index 188e9131..09a1736a 100644
  
      void registry_global(uint32_t id, const QString &interface, uint32_t version) override;
      void registry_global_remove(uint32_t id) override;
+diff --git a/src/client/qwaylanddnd.cpp b/src/client/qwaylanddnd.cpp
+index 6535aa16..7c53f5fa 100644
+--- a/src/client/qwaylanddnd.cpp
++++ b/src/client/qwaylanddnd.cpp
+@@ -66,7 +66,7 @@ void QWaylandDrag::startDrag()
+ {
+     QBasicDrag::startDrag();
+     QWaylandWindow *icon = static_cast<QWaylandWindow *>(shapedPixmapWindow()->handle());
+-    if (m_display->currentInputDevice()->dataDevice()->startDrag(drag()->mimeData(), icon)) {
++    if (m_display->currentInputDevice()->dataDevice()->startDrag(drag()->mimeData(), drag()->supportedActions(), icon)) {
+         icon->addAttachOffset(-drag()->hotSpot());
+     } else {
+         // Cancelling immediately does not work, since the event loop for QDrag::exec is started
+@@ -80,6 +80,9 @@ void QWaylandDrag::cancel()
+     QBasicDrag::cancel();
+ 
+     m_display->currentInputDevice()->dataDevice()->cancelDrag();
++
++    if (drag())
++        drag()->deleteLater();
+ }
+ 
+ void QWaylandDrag::move(const QPoint &globalPos, Qt::MouseButtons b, Qt::KeyboardModifiers mods)
+@@ -103,33 +106,41 @@ void QWaylandDrag::endDrag()
+     m_display->currentInputDevice()->handleEndDrag();
+ }
+ 
+-void QWaylandDrag::updateTarget(const QString &mimeType)
++void QWaylandDrag::setResponse(bool accepted)
+ {
+-    setCanDrop(!mimeType.isEmpty());
+-
+-    if (canDrop()) {
+-        updateCursor(defaultAction(drag()->supportedActions(), m_display->currentInputDevice()->modifiers()));
+-    } else {
+-        updateCursor(Qt::IgnoreAction);
+-    }
++    // This method is used for old DataDevices where the drag action is not communicated
++    Qt::DropAction action = defaultAction(drag()->supportedActions(), m_display->currentInputDevice()->modifiers());
++    setResponse(QPlatformDropQtResponse(accepted, action));
+ }
+ 
+-void QWaylandDrag::setResponse(const QPlatformDragQtResponse &response)
++void QWaylandDrag::setResponse(const QPlatformDropQtResponse &response)
+ {
+     setCanDrop(response.isAccepted());
+ 
+     if (canDrop()) {
+-        updateCursor(defaultAction(drag()->supportedActions(), m_display->currentInputDevice()->modifiers()));
++        updateCursor(response.acceptedAction());
+     } else {
+         updateCursor(Qt::IgnoreAction);
+     }
+ }
+ 
+-void QWaylandDrag::finishDrag(const QPlatformDropQtResponse &response)
++void QWaylandDrag::setDropResponse(const QPlatformDropQtResponse &response)
+ {
+     setExecutedDropAction(response.acceptedAction());
++}
++
++void QWaylandDrag::finishDrag()
++{
+     QKeyEvent event(QEvent::KeyPress, Qt::Key_Escape, Qt::NoModifier);
+     eventFilter(shapedPixmapWindow(), &event);
++
++    if (drag())
++        drag()->deleteLater();
++}
++
++bool QWaylandDrag::ownsDragObject() const
++{
++    return true;
+ }
+ 
+ }
+diff --git a/src/client/qwaylanddnd_p.h b/src/client/qwaylanddnd_p.h
+index 474fe2ab..46f629ac 100644
+--- a/src/client/qwaylanddnd_p.h
++++ b/src/client/qwaylanddnd_p.h
+@@ -71,9 +71,10 @@ public:
+     QWaylandDrag(QWaylandDisplay *display);
+     ~QWaylandDrag() override;
+ 
+-    void updateTarget(const QString &mimeType);
+-    void setResponse(const QPlatformDragQtResponse &response);
+-    void finishDrag(const QPlatformDropQtResponse &response);
++    void setResponse(bool accepted);
++    void setResponse(const QPlatformDropQtResponse &response);
++    void setDropResponse(const QPlatformDropQtResponse &response);
++    void finishDrag();
+ 
+ protected:
+     void startDrag() override;
+@@ -82,6 +83,7 @@ protected:
+     void drop(const QPoint &globalPos, Qt::MouseButtons b, Qt::KeyboardModifiers mods) override;
+     void endDrag() override;
+ 
++    bool ownsDragObject() const override;
+ 
+ private:
+     QWaylandDisplay *m_display = nullptr;
 diff --git a/src/client/qwaylandinputcontext.cpp b/src/client/qwaylandinputcontext.cpp
 index e9afe05e..e290baa2 100644
 --- a/src/client/qwaylandinputcontext.cpp
@@ -577,7 +1046,7 @@ index df1c94f2..050cfdc0 100644
  
  #if QT_CONFIG(cursor)
 diff --git a/src/client/qwaylandwindow.cpp b/src/client/qwaylandwindow.cpp
-index bc031ed5..ba881cb3 100644
+index bc031ed5..1597f67e 100644
 --- a/src/client/qwaylandwindow.cpp
 +++ b/src/client/qwaylandwindow.cpp
 @@ -96,7 +96,6 @@ QWaylandWindow::QWaylandWindow(QWindow *window, QWaylandDisplay *display)
@@ -645,16 +1114,18 @@ index bc031ed5..ba881cb3 100644
          mShellSurface->setWindowGeometry(windowContentGeometry());
  
      if (isOpaque() && mMask.isEmpty())
-@@ -429,7 +438,7 @@ void QWaylandWindow::setVisible(bool visible)
+@@ -427,9 +436,8 @@ void QWaylandWindow::setVisible(bool visible)
+         if (window()->type() == Qt::Popup || window()->type() == Qt::ToolTip)
+             activePopups << this;
          initWindow();
-         mDisplay->flushRequests();
+-        mDisplay->flushRequests();
  
 -        setGeometry(window()->geometry());
 +        setGeometry(windowGeometry());
          // Don't flush the events here, or else the newly visible window may start drawing, but since
          // there was no frame before it will be stuck at the waitForFrameSync() in
          // QWaylandShmBackingStore::beginPaint().
-@@ -456,14 +465,15 @@ void QWaylandWindow::lower()
+@@ -456,14 +464,15 @@ void QWaylandWindow::lower()
  
  void QWaylandWindow::setMask(const QRegion &mask)
  {
@@ -673,7 +1144,7 @@ index bc031ed5..ba881cb3 100644
      if (mMask.isEmpty()) {
          mSurface->set_input_region(nullptr);
  
-@@ -613,9 +623,13 @@ void QWaylandWindow::commit()
+@@ -613,9 +622,13 @@ void QWaylandWindow::commit()
  
  const wl_callback_listener QWaylandWindow::callbackListener = {
      [](void *data, wl_callback *callback, uint32_t time) {
@@ -688,7 +1159,7 @@ index bc031ed5..ba881cb3 100644
          window->handleFrameCallback();
      }
  };
-@@ -1070,10 +1084,18 @@ bool QWaylandWindow::setMouseGrabEnabled(bool grab)
+@@ -1070,10 +1083,18 @@ bool QWaylandWindow::setMouseGrabEnabled(bool grab)
      return true;
  }
  
@@ -708,7 +1179,7 @@ index bc031ed5..ba881cb3 100644
      mLastReportedWindowStates = states;
  }
  
-@@ -1161,16 +1183,15 @@ void QWaylandWindow::requestUpdate()
+@@ -1161,16 +1182,15 @@ void QWaylandWindow::requestUpdate()
  void QWaylandWindow::handleUpdate()
  {
      qCDebug(lcWaylandBackingstore) << "handleUpdate" << QThread::currentThread();
@@ -729,7 +1200,7 @@ index bc031ed5..ba881cb3 100644
      QMutexLocker locker(mFrameQueue.mutex);
      struct ::wl_surface *wrappedSurface = reinterpret_cast<struct ::wl_surface *>(wl_proxy_create_wrapper(mSurface->object()));
      wl_proxy_set_queue(reinterpret_cast<wl_proxy *>(wrappedSurface), mFrameQueue.queue);
-@@ -1231,12 +1252,14 @@ bool QWaylandWindow::isOpaque() const
+@@ -1231,12 +1251,14 @@ bool QWaylandWindow::isOpaque() const
  
  void QWaylandWindow::setOpaqueArea(const QRegion &opaqueArea)
  {
@@ -1142,6 +1613,19 @@ index a5fdd34d..051a91dc 100644
                  if (QImageWriter::supportedImageFormats().contains(imgFmt))
                      fmt = imgFmt;
              }
+diff --git a/tests/auto/client/datadevicev1/tst_datadevicev1.cpp b/tests/auto/client/datadevicev1/tst_datadevicev1.cpp
+index 1568b3b9..067410d0 100644
+--- a/tests/auto/client/datadevicev1/tst_datadevicev1.cpp
++++ b/tests/auto/client/datadevicev1/tst_datadevicev1.cpp
+@@ -35,7 +35,7 @@
+ 
+ using namespace MockCompositor;
+ 
+-constexpr int dataDeviceVersion = 1;
++constexpr int dataDeviceVersion = 3;
+ 
+ class DataDeviceCompositor : public DefaultCompositor {
+ public:
 diff --git a/tests/auto/client/surface/tst_surface.cpp b/tests/auto/client/surface/tst_surface.cpp
 index b8a65f15..95e4e609 100644
 --- a/tests/auto/client/surface/tst_surface.cpp
