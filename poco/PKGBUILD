@@ -1,0 +1,24 @@
+
+pkgname=poco
+pkgver=1.11.1
+pkgrel=1
+arch=('x86_64')
+pkgdesc="Cross-platform C++ libraries for building network- and internet-based applications."
+url="https://pocoproject.org/"
+license=('custom:boost')
+depends=('mariadb' 'unixodbc')
+makedepends=('cmake')
+source=("https://pocoproject.org/releases/${pkgname}-${pkgver}/${pkgname}-${pkgver}-all.tar.bz2")
+sha256sums=('85efbc085f64f8a3facb4961cdde80f85af507601a47a8204d086ff172e31ec6')
+
+build() {
+  cmake -B build -S ${pkgname}-${pkgver}-all \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr
+  cmake --build build
+}
+
+package() {
+
+  DESTDIR=${pkgdir} cmake --install build
+}
