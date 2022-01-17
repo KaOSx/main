@@ -1,35 +1,33 @@
  
 pkgname=libwacom
-pkgver=1.12
+pkgver=2.0.0
 pkgrel=1
 pkgdesc="Library that provides applications with a way to get information about any tablets that are currently connected."
 arch=('x86_64')
 url="https://github.com/linuxwacom/libwacom/wiki"
 license=('GPLv2')
 depends=('glib2' 'libgudev')
-makedepends=('python3')
-source=("https://github.com/linuxwacom/libwacom/releases/download/${pkgname}-${pkgver}/${pkgname}-${pkgver}.tar.bz2"
+makedepends=('python3' 'meson' 'ninja')
+source=("https://github.com/linuxwacom/libwacom/releases/download/${pkgname}-${pkgver}/${pkgname}-${pkgver}.tar.xz"
         "https://github.com/linuxwacom/libwacom/commit/007c25052bf20adc1f5311c3e5668f6f343ac18b.diff")
-sha256sums=('290450d604f78bbd956eddb69f79f8d56f8ed1a5ccbb5e88e22fa84fa2fceb4f'
+sha256sums=('4923bdf3e7b4940bd81d3e7c1b8ab1843597a1bdf1e6f627840e0c87c381fe0a'
             'b1588dac7bff6f6988434041c0bf7bded7c09f1bfcd47db2922dca4555c5a4a1')
 
 build() {
-  cd ${pkgname}-${pkgver}
-  #patch -p1 -i ${srcdir}/007c25052bf20adc1f5311c3e5668f6f343ac18b.diff
-  
-  ./configure --prefix=/usr
-  make
-}
+  mkdir -p build
+  cd build
 
-check() {
-  cd ${pkgname}-${pkgver}
-
-  make check
+  meson ../${pkgname}-${pkgver} \
+    --prefix=/usr \
+    --buildtype=release \
+    -Dtests=disabled
+  ninja
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
-  make DESTDIR=${pkgdir} install
-  
-  install -D -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+  cd build
+
+  DESTDIR=${pkgdir} ninja install
 }
+
+#  install -D -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
