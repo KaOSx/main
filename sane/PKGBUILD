@@ -1,7 +1,7 @@
 
 pkgname=sane
-pkgver=1.0.32
-pkgrel=2
+pkgver=1.1.1
+pkgrel=1
 pkgdesc="Application programming interface (API) that provides standardized access to any raster image scanner hardware."
 url="http://www.sane-project.org"
 arch=('x86_64')
@@ -12,14 +12,14 @@ options=(!libtool)
 backup=(etc/sane.d/{abaton.conf,agfafocus.conf,apple.conf,artec.conf,artec_eplus48u.conf,avision.conf,bh.conf,canon.conf,canon630u.conf,canon_dr.conf,canon_pp.conf,cardscan.conf,coolscan2.conf,coolscan3.conf,coolscan.conf,dc25.conf,dc210.conf,dc240.conf,dell1600n_net.conf,dll.conf,dmc.conf,epjitsu.conf,epson.conf,epson2.conf,fujitsu.conf,genesys.conf,gphoto2.conf,gt68xx.conf,hp.conf,hp3900.conf,hp4200.conf,hp5400.conf,hpsj5s.conf,hs2p.conf,ibm.conf,kodak.conf,leo.conf,lexmark.conf,ma1509.conf,magicolor.conf,matsushita.conf,microtek.conf,microtek2.conf,mustek.conf,mustek_pp.conf,mustek_usb.conf,mustek_usb2.conf,nec.conf,net.conf,p5.conf,pie.conf,pixma.conf,plustek.conf,plustek_pp.conf,qcam.conf,ricoh.conf,rts8891.conf,s9036.conf,saned.conf,sceptre.conf,sharp.conf,sm3840.conf,snapscan.conf,sp15c.conf,st400.conf,stv680.conf,tamarack.conf,teco1.conf,teco2.conf,teco3.conf,test.conf,u12.conf,umax.conf,umax1220u.conf,umax_pp.conf,xerox_mfp.conf,v4l.conf} 
 etc/xinetd.d/sane)
 # download version 1-3, create tar with:  cat sane-backends-1.0.23.tar.gz.[1-3] > sane-backends-1.0.23.tar.gz
-source=("https://gitlab.com/sane-project/backends/uploads/104f09c07d35519cc8e72e604f11643f/${pkgname}-backends-${pkgver}.tar.gz"
+source=("https://gitlab.com/sane-project/backends/uploads/7d30fab4e115029d91027b6a58d64b43/${pkgname}-backends-${pkgver}.tar.gz"
         #ftp://ftp2.sane-project.org/pub/sane/$pkgname-backends-$pkgver/$pkgname-backends-$pkgver.tar.gz
         'sane.xinetd'
         'saned.socket'
         'saned.service'
         "https://gitlab.com/sane-project/backends/-/commit/580c278dcafe4159213406b4307ee8598fe08fe7.diff")
 options=('!libtool')
-sha256sums=('3a28c237c0a72767086202379f6dc92dbb63ec08dfbab22312cba80e238bb114'
+sha256sums=('dd4b04c37a42f14c4619e8eea6a957f4c7c617fe59e32ae2872b373940a8b603'
             '4fcf740a4003de71c68f0d40fe80e125c3bb5f74249864eeabbd1afd860305ea'
             'c06fdd54128b06efbf8fbcb40b145512fa8e8a1c470c5cb60abc839a6002fdf1'
             '58698587610819ac87c2ac1fbb6e4fd184e8a9f24f79e81bc75c1c3d11585c77'
@@ -28,7 +28,7 @@ sha256sums=('3a28c237c0a72767086202379f6dc92dbb63ec08dfbab22312cba80e238bb114'
 build() {
   cd ${pkgname}-backends-${pkgver}
   # https://forum.kaosx.us/d/2775-scanner/11
-  patch -p1 -i ${srcdir}/580c278dcafe4159213406b4307ee8598fe08fe7.diff
+  #patch -p1 -i ${srcdir}/580c278dcafe4159213406b4307ee8598fe08fe7.diff
 
   ./configure --prefix=/usr \
     --sysconfdir=/etc \
