@@ -1,6 +1,6 @@
 
 pkgname=libbsd
-pkgver=0.11.3
+pkgver=0.11.4
 pkgrel=1
 pkgdesc="Provides useful functions commonly found on BSD systems like strlcpy()"
 arch=('x86_64')
@@ -9,11 +9,11 @@ license=('custom')
 depends=('glibc' 'libmd')
 options=('!libtool')
 source=("https://libbsd.freedesktop.org/releases/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('ff95cf8184151dacae4247832f8d4ea8800fa127dbd15033ecfe839f285b42a1')
+sha256sums=('570abb5c9cdf33a91a3f7748a3771f715079b5ee886221edbdedab45f88d5037')
 
 build() {
   cd ${pkgname}-${pkgver}
-  
+
  ./configure --prefix=/usr
   make
 }
@@ -27,6 +27,6 @@ check() {
 package() {
   cd ${pkgname}-${pkgver}
   make DESTDIR=${pkgdir} install
-  
+
   install -D -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
