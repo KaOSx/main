@@ -1,7 +1,7 @@
 
 pkgname=xf86-video-vmware
 pkgver=13.3.0
-pkgrel=12
+pkgrel=13
 pkgdesc="X.org vmware video driver"
 arch=('x86_64')
 url="https://xorg.freedesktop.org/"
@@ -23,7 +23,7 @@ build() {
 package() {
   cd ${pkgname}-${pkgver}
   make DESTDIR=${pkgdir} install
-  
+
   install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
   install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
 }
