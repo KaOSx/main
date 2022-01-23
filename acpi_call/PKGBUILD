@@ -1,5 +1,5 @@
 
-_extramodules=extramodules-5.14
+_extramodules=extramodules-5.15
 _kver="$(cat /lib/modules/${_extramodules}/version)"
 
 pkgname=acpi_call
@@ -10,7 +10,7 @@ pkgdesc="A kernel module that enables you to call parameterless ACPI methods by 
 arch=('x86_64')
 url="https://github.com/teleshoes/acpi_call"
 license=('GPL')
-depends=('linux>=5.14.21' 'linux<5.15' 'linux-headers')
+depends=('linux>=5.15.16' 'linux<5.16' 'linux-headers')
 makedepends=('git' 'elfutils')
 install=acpi_call.install
 options=('!strip')
@@ -21,7 +21,7 @@ md5sums=('f0bf4bd1e211bd995144174d0d8eeb58'
 
 build() {
   cd $pkgname-${pkgver}
-  sed -i -e 's|$(shell uname -r)|5.14.21-1|' Makefile
+  sed -i -e 's|$(shell uname -r)|5.15.16-1|' Makefile
 
   #patch -p1 -i ${srcdir}/0297c31fd9d0d7a0363b6ab6932f6420a6a6b2bc.diff
 
