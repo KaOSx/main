@@ -1,7 +1,7 @@
 
 pkgname=xf86-input-libinput
-pkgver=1.2.0
-pkgrel=2
+pkgver=1.2.1
+pkgrel=1
 pkgdesc="X driver based on libinput."
 arch=('x86_64')
 url="https://cgit.freedesktop.org/xorg/driver/xf86-input-libinput/tree/README.md"
@@ -10,8 +10,8 @@ depends=('libinput')
 makedepends=('xorg-server' 'xorgproto')
 options=('!libtool' '!makeflags')
 groups=('xorg-drivers' 'xorg')
-source=("https://xorg.freedesktop.org/releases/individual/driver/${pkgname}-${pkgver}.tar.bz2")
-sha256sums=('f80da3c514fe1cbf57fa1b1bd6ff97f6b0a1f87466ad89247bac59cd0a5869f6')
+source=("https://xorg.freedesktop.org/releases/individual/driver/${pkgname}-${pkgver}.tar.xz")
+sha256sums=('8151db5b9ddb317c0ce92dcb62da9a8db5079e5b8a95b60abc854da21e7e971b')
 
 build() {
   cd ${pkgname}-${pkgver}
