@@ -1,13 +1,13 @@
 
 pkgname=enca
 pkgver=1.19
-pkgrel=5
+pkgrel=6
 pkgdesc="Detects character set and encoding of text files and can also convert them to other encodings"
 arch=('x86_64')
 url="https://cihar.com/software/enca/"
 options=('!libtool')
 license=('GPL')
-depends=('bash')
+depends=('recode')
 source=("https://dl.cihar.com/enca/${pkgname}-${pkgver}.tar.xz")
 md5sums=('a7a0c152658e012db701a48ae8b79525')
 
@@ -15,10 +15,10 @@ build() {
   cd ${pkgname}-${pkgver}
 
   ./configure --prefix=/usr \
-              --libexecdir=/usr/lib \
-              --mandir=/usr/share/man \
-              --without-librecode \
-              --enable-external
+    --libexecdir=/usr/lib \
+    --mandir=/usr/share/man \
+    --with-librecode=/usr \
+    --enable-external
   make
 }
 
