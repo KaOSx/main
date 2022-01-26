@@ -1,10 +1,10 @@
 
 pkgname=hunspell
 pkgver=1.7.0
-pkgrel=4
+pkgrel=5
 pkgdesc="Spell checker and morphological analyzer library and program"
 arch=('x86_64')
-url="http://hunspell.github.io/"
+url="https://hunspell.github.io/"
 license=('GPL' 'LGPL' 'MPL')
 depends=('gcc-libs' 'readline')
 optdepends=('perl')
@@ -14,7 +14,7 @@ md5sums=('b2399a4aa927e8b3e171d9ea6737cc02')
 
 build() {
   cd hunspell-${pkgver}
-  
+
   autoreconf -vfi   #;  automake --add-missing
   ./configure --prefix=/usr \
         --disable-static \
@@ -26,6 +26,6 @@ build() {
 
 package() {
   cd hunspell-${pkgver}
-  
+
   make DESTDIR=${pkgdir} install
 }

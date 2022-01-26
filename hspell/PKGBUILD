@@ -2,7 +2,7 @@
 pkgbase=hspell
 pkgname=('hspell' 'hunspell-he')
 pkgver=1.4
-pkgrel=3
+pkgrel=4
 arch=('x86_64')
 license=('GPL')
 url="http://hspell.ivrix.org.il/"
@@ -13,7 +13,7 @@ md5sums=('55d9cdc4fe576db8515945e663ef4791')
 
 build() {
   cd ${pkgname}-${pkgver}
-  
+
   export PERLLIB="$PWD"
   ./configure --prefix=/usr \
         --mandir=/usr/share/man \
@@ -36,7 +36,7 @@ package_hspell() {
 
 package_hunspell-he() {
   pkgdesc="Hebrew hunspell dictionary"
-  
+
   cd ${pkgbase}-${pkgver}
 
   install -dm755 ${pkgdir}/usr/share/hunspell

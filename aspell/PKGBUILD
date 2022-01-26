@@ -2,7 +2,7 @@
 pkgname=aspell
 pkgver=0.60.8
 _pkgver=0.60.8
-pkgrel=2
+pkgrel=3
 pkgdesc="A spell checker designed to eventually replace Ispell"
 url="http://aspell.net/"
 arch=('x86_64')
@@ -15,7 +15,7 @@ md5sums=('012fa9209203ae4e5a61c2a668fd10e3')
 
 build() {
   cd ${pkgname}-${_pkgver}
-  
+
   ./configure --prefix=/usr --sysconfdir=/etc
   make
 }
@@ -23,6 +23,6 @@ build() {
 package() {
   cd ${pkgname}-${_pkgver}
   make DESTDIR=${pkgdir} install
-  
+
   ln -s ${pkgname}-0.60 ${pkgdir}/usr/lib/${pkgname}
 }

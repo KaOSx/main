@@ -2,7 +2,7 @@
 pkgbase=hyphen
 pkgname=('hyphen' 'hyphen-en')
 pkgver=2.8.8
-pkgrel=6
+pkgrel=7
 arch=('x86_64')
 url="http://hunspell.sf.net"
 license=('GPL2' 'LGPL2' 'MPL')
@@ -13,7 +13,7 @@ md5sums=('5ade6ae2a99bc1e9e57031ca88d36dad')
 
 build() {
   cd ${pkgbase}-${pkgver}
-  
+
   ./configure --prefix=/usr --disable-static
   make
 }
@@ -38,12 +38,12 @@ package_hyphen-en() {
   make DESTDIR=${pkgdir}/ install-hyphDATA
 
   pushd ${pkgdir}/usr/share/hyphen/
-   en_US_aliases="en_AG en_AU en_BS en_BW en_BZ en_CA en_DK en_GB en_GH en_HK en_IE en_IN en_JM en_NA en_NZ en_PH en_SG en_TT en_ZA en_ZW"
-   for lang in $en_US_aliases; do
+    en_US_aliases="en_AG en_AU en_BS en_BW en_BZ en_CA en_DK en_GB en_GH en_HK en_IE en_IN en_JM en_NA en_NZ en_PH en_SG en_TT en_ZA en_ZW"
+    for lang in $en_US_aliases; do
         ln -s hyph_en_US.dic hyph_$lang.dic
-   done
+    done
   popd
-  
+
   install -dm755 ${pkgdir}/usr/share/myspell/dicts
   pushd ${pkgdir}/usr/share/myspell/dicts
     for file in ${pkgdir}/usr/share/hyphen/*; do
