@@ -1,7 +1,7 @@
 
 pkgname=imake
 pkgver=1.0.8
-pkgrel=3
+pkgrel=4
 pkgdesc="X.Org imake program and related utilities"
 arch=('x86_64')
 url="https://xorg.freedesktop.org/wiki/"
@@ -27,7 +27,7 @@ sha256sums=('b8d2e416b3f29cd6482bcffaaf19286d32917a164d07102a0e531ccd41a2a702'
 build() {
   cd ${srcdir}/xorg-cf-files-1.0.6
   patch -p1 -i ${srcdir}/linuxconfig.patch
-  
+
   cd ${srcdir}
   for i in *; do
     if [ -d "${i}" ]; then

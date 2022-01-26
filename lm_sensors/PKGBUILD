@@ -2,7 +2,7 @@
 pkgname=lm_sensors
 pkgver=3.6.0
 _pkgver=3-6-0
-pkgrel=3
+pkgrel=4
 pkgdesc="Collection of user space tools for general SMBus access and hardware monitoring"
 arch=('x86_64')
 url="https://github.com/groeck/lm-sensors"
@@ -26,7 +26,7 @@ build() {
   cd lm-sensors-${_pkgver}
   sed -i 's|/etc/sysconfig|/etc/conf.d|' prog/{detect/sensors-detect,init/lm_sensors.service}
   sed -i 's|EnvironmentFile=|EnvironmentFile=-|' prog/init/lm_sensors.service
-  
+
   make PREFIX=/usr
 }
 
@@ -34,10 +34,10 @@ package() {
   cd lm-sensors-${_pkgver}
   make BUILD_STATIC_LIB=0 \
     PREFIX=/usr MANDIR=/usr/share/man DESTDIR=${pkgdir} install
-    
+
   install -D -m644 prog/init/fancontrol.service ${pkgdir}/usr/lib/systemd/system/fancontrol.service
   install -D -m644 prog/init/lm_sensors.service ${pkgdir}/usr/lib/systemd/system/lm_sensors.service
-  
+
   install -D -m755 ${srcdir}/healthd ${pkgdir}/usr/sbin/healthd
   install -D -m644 ${srcdir}/healthd.conf ${pkgdir}/etc/conf.d/healthd
   install -D -m644 ${srcdir}/sensord.conf ${pkgdir}/etc/conf.d/sensord

@@ -1,7 +1,7 @@
 
 pkgname=libwpg
 pkgver=0.3.3
-pkgrel=2
+pkgrel=3
 pkgdesc="Library for importing and converting Corel WordPerfect(tm) Graphics images."
 arch=('x86_64')
 url="http://libwpg.sourceforge.net/"
@@ -13,13 +13,13 @@ md5sums=('c3727b1196506fc77f6f916866884411')
 
 build() {
   cd ${pkgname}-${pkgver}
-  
+
   ./configure --prefix=/usr
   make
 }
 
 package() {
   cd ${pkgname}-${pkgver}
-  
+
   make DESTDIR=${pkgdir} install
 }
