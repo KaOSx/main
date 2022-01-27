@@ -1,7 +1,7 @@
 
 pkgname=perl-http-date
 pkgver=6.05
-pkgrel=2
+pkgrel=3
 pkgdesc="date conversion routines"
 arch=('x86_64')
 url="https://metacpan.org/release/HTTP-Date"
@@ -13,19 +13,19 @@ md5sums=('2ecbb3aedf6aef062605191813ca3027')
 
 build() {
     cd HTTP-Date-${pkgver}
-    
+
     perl Makefile.PL INSTALLDIRS=vendor
     make
 }
 
 check() {
     cd HTTP-Date-${pkgver}
-    
+
     make test
 }
 
 package() {
     cd HTTP-Date-${pkgver}
-    
+
     make DESTDIR=${pkgdir} install
 }

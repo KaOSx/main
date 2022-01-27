@@ -2,7 +2,7 @@
 pkgname=perl-archive-zip
 _pkgname=Archive-Zip
 pkgver=1.68
-pkgrel=2
+pkgrel=3
 pkgdesc="Provide a perl interface to ZIP archive files"
 arch=('x86_64')
 license=('GPL' 'PerlArtistic')
@@ -21,6 +21,6 @@ build() {
 
 package() {
   cd ${_pkgname}-${pkgver}
-  
+
   make install DESTDIR=${pkgdir}
 }

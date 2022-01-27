@@ -1,7 +1,7 @@
 
 pkgname=r
 pkgver=4.1.2
-pkgrel=2
+pkgrel=3
 pkgdesc="Language and environment for statistical computing and graphics"
 arch=('x86_64')
 license=('GPL')
@@ -22,12 +22,12 @@ md5sums=('6e28db9d02c6d3dae51a149b8e261ab1'
          '1dfa62c812aed9642f6e4ac34999b9fe')
 
 build() {
-   cd R-${pkgver}
-   sed -i 's|$(rsharedir)/texmf|${datarootdir}/texmf|' share/Makefile.in
-   sed -i 's|test ${makeinfo_version_min} -lt 7|test ${makeinfo_version_min} -lt 0|' configure
-   sed -i 's|ZLIB_VERSION, "1.2.5", 5|ZLIB_VERSION, "1.2.1", 6|' configure
-   
-   ./configure  --prefix=/usr \
+    cd R-${pkgver}
+    sed -i 's|$(rsharedir)/texmf|${datarootdir}/texmf|' share/Makefile.in
+    sed -i 's|test ${makeinfo_version_min} -lt 7|test ${makeinfo_version_min} -lt 0|' configure
+    sed -i 's|ZLIB_VERSION, "1.2.5", 5|ZLIB_VERSION, "1.2.1", 6|' configure
+
+    ./configure  --prefix=/usr \
         --libdir=/usr/lib \
         --sysconfdir=/etc/R \
         --datarootdir=/usr/share \
@@ -40,34 +40,34 @@ build() {
         --with-blas \
         F77=gfortran \
         LIBnn=lib
-   make
-   
-   cd src/nmath/standalone
-   make shared
+    make
+
+    cd src/nmath/standalone
+    make shared
 }
 
 package() {
-   cd R-${pkgver}
-   make -j1 DESTDIR=${pkgdir} install
-   
-   cd src/nmath/standalone
-   make DESTDIR=${pkgdir} install
+    cd R-${pkgver}
+    make -j1 DESTDIR=${pkgdir} install
 
-   # R wrapper scripts.
-   sed -i "s|${pkgdir} ||" ${pkgdir}/usr/bin/R
-   rm ${pkgdir}/usr/lib/R/bin/R
-   cd ${pkgdir}/usr/lib/R/bin
-   ln -s ../../../bin/R
+    cd src/nmath/standalone
+    make DESTDIR=${pkgdir} install
 
-  install -Dm644 ${srcdir}/r.desktop ${pkgdir}/usr/share/applications/r.desktop
-  install -Dm644 ${srcdir}/r.png ${pkgdir}/usr/share/pixmaps/r.png
+    # R wrapper scripts.
+    sed -i "s|${pkgdir} ||" ${pkgdir}/usr/bin/R
+    rm ${pkgdir}/usr/lib/R/bin/R
+    cd ${pkgdir}/usr/lib/R/bin
+    ln -s ../../../bin/R
 
-  install -d ${pkgdir}/etc/R
-  cd ${pkgdir}/usr/lib/R/etc
-  for i in *; do
-    mv -f ${i} ${pkgdir}/etc/R
-    ln -s /etc/R/${i} ${i}
-  done
-  
-  install -Dm644 ${srcdir}/R.conf ${pkgdir}/etc/ld.so.conf.d/R.conf
+    install -Dm644 ${srcdir}/r.desktop ${pkgdir}/usr/share/applications/r.desktop
+    install -Dm644 ${srcdir}/r.png ${pkgdir}/usr/share/pixmaps/r.png
+
+    install -d ${pkgdir}/etc/R
+    cd ${pkgdir}/usr/lib/R/etc
+    for i in *; do
+        mv -f ${i} ${pkgdir}/etc/R
+        ln -s /etc/R/${i} ${i}
+    done
+
+    install -Dm644 ${srcdir}/R.conf ${pkgdir}/etc/ld.so.conf.d/R.conf
 }

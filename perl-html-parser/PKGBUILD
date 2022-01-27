@@ -2,7 +2,7 @@
 pkgname=perl-html-parser
 _pkgname=HTML-Parser
 pkgver=3.76
-pkgrel=1
+pkgrel=2
 pkgdesc="Perl HTML parser class"
 arch=('x86_64')
 license=('PerlArtistic')
@@ -15,7 +15,7 @@ md5sums=('60e266d5a07fbea671a0383dd8af7b6c')
 
 build() {
   cd ${_pkgname}-${pkgver}
-  
+
   # install module in vendor directories.
   perl Makefile.PL INSTALLDIRS=vendor
   make
@@ -29,6 +29,6 @@ check() {
 
 package() {
   cd ${_pkgname}-${pkgver}
-  
+
   make install DESTDIR=${pkgdir}
 }

@@ -2,7 +2,7 @@
 pkgname=perl-file-next
 _pkgname=File-Next
 pkgver=1.18
-pkgrel=2
+pkgrel=3
 pkgdesc='File::Next - File-finding iterator'
 arch=('x86_64')
 license=('GPL' 'PerlArtistic')
@@ -18,7 +18,7 @@ build() {
       PERL_MM_OPT="INSTALLDIRS=vendor"       \
       PERL_MB_OPT="--installdirs vendor"     \
       MODULEBUILDRC=/dev/null
-      
+    
     cd ${_pkgname}-${pkgver}
 
     /usr/bin/perl Makefile.PL 
@@ -28,7 +28,7 @@ build() {
 
 check() {
   cd ${_pkgname}-${pkgver}
-  
+
   ( export PERL_MM_USE_DEFAULT=1 PERL5LIB=""
     make test
   )

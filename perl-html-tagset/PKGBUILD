@@ -2,7 +2,7 @@
 pkgname=perl-html-tagset
 _pkgname=HTML-Tagset
 pkgver=3.20
-pkgrel=13
+pkgrel=14
 pkgdesc="Data tables useful in parsing HTML"
 arch=('x86_64')
 license=('PerlArtistic')
@@ -14,19 +14,19 @@ md5sums=('d2bfa18fe1904df7f683e96611e87437')
 
 build() {
   cd ${_pkgname}-${pkgver}
-  
+
   perl Makefile.PL INSTALLDIRS=vendor
   make
 }
 
 check() {
   cd ${_pkgname}-${pkgver}
-  
+
   make test
 }
 
 package() {
   cd ${_pkgname}-${pkgver}
-  
+
   make install DESTDIR=${pkgdir}
 }

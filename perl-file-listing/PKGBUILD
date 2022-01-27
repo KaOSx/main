@@ -1,7 +1,7 @@
 
 pkgname=perl-file-listing
 pkgver=6.14
-pkgrel=2
+pkgrel=3
 pkgdesc="Parse directory listing"
 arch=('x86_64')
 url="https://metacpan.org/release/File-Listing"
@@ -13,19 +13,19 @@ md5sums=('cf60a79563185391831613178a79b4cd')
 
 build() {
     cd File-Listing-${pkgver}
-    
+
     perl Makefile.PL INSTALLDIRS=vendor
     make
 }
 
 check() {
     cd File-Listing-${pkgver}
-    
+
     make test
 }
 
 package() {
     cd File-Listing-${pkgver}
-    
+
     make DESTDIR=${pkgdir} install
 }
