@@ -2,7 +2,7 @@
 _pkgbase=pidgin
 pkgname=libpurple
 pkgver=2.14.8
-pkgrel=3
+pkgrel=4
 pkgdesc="IM library extracted from Pidgin"
 arch=('x86_64')
 url="https://pidgin.im/"
@@ -37,8 +37,8 @@ build() {
 
 package() {
     cd ${_pkgbase}-${pkgver}
-    
+
     for dir in libpurple share/sounds share/ca-certs m4macros po
-    do  make -C "${dir}" DESTDIR="${pkgdir}" install
+        do  make -C ${dir} DESTDIR=${pkgdir} install
     done
 }
