@@ -1,6 +1,6 @@
 
 pkgname=python3-cython
-pkgver=0.29.26
+pkgver=0.29.27
 pkgrel=1
 arch=('x86_64')
 url="https://cython.org/"
@@ -10,10 +10,10 @@ depends=('python3')
 makedepends=('python3-setuptools')
 source=("https://github.com/cython/cython/releases/download/${pkgver}/Cython-${pkgver}.tar.gz")
 #source=("https://files.pythonhosted.org/packages/source/C/Cython/Cython-${pkgver}.tar.gz")
-sha256sums=('af377d543a762867da11fcf6e558f7a4a535ff8693f30cce123fab10c00fa312')
+sha256sums=('c6a442504db906dfc13a480e96850cced994ecdc076bcf492c43515b78f70da2')
 
 package() {
   cd Cython-${pkgver}
-  
+
   python3 setup.py install --root=${pkgdir}
 }
