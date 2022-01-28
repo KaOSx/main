@@ -20,29 +20,35 @@ options=('!makeflags' '!emptydirs' '!buildflags')
 source=("https://www.kernel.org/pub/linux/utils/boot/syslinux/Testing/6.04/${pkgname}-${_pkgver}.tar.xz"
         'syslinux.cfg'
         'syslinux-install_update'
-        'gcc5.patch')
+        "https://gitweb.gentoo.org/repo/gentoo.git/plain/sys-boot/syslinux/files/syslinux-6.03-sysmacros.patch"
+        "https://gitweb.gentoo.org/repo/gentoo.git/plain/sys-boot/syslinux/files/syslinux-6.04_pre1-fcommon.patch"
+        "https://gitweb.gentoo.org/repo/gentoo.git/plain/sys-boot/syslinux/files/syslinux-6.04_pre1-singleloadsegment.patch")
 md5sums=('f9c956fde0de29be297402ecbc8ff4d0'
          '049abfd5b26432f89e8fe3a370fd35fc'
          '3fcba3efe6beda6fc4935c1914393377'
-         '3fc0ea96652b100f71be89d6ac4df8d7')
-         
+         '3f1370d9ad233b9c717f14d5ae9859c1'
+         '2a3cfebc46eabc6c519c87933621d96f'
+         '545162d3be583900777eab858a4d90ba')
+
 prepare() {
     cd ${pkgname}-${_pkgver}
-    
+
     sed 's|/usr/man|/usr/share/man|g' -i mk/syslinux.mk
-    #patch -p1 -i ${srcdir}/gcc5.patch
+    patch -p1 -i ${srcdir}/syslinux-6.03-sysmacros.patch
+    patch -p1 -i ${srcdir}/syslinux-6.04_pre1-fcommon.patch
+    patch -p1 -i ${srcdir}/syslinux-6.04_pre1-singleloadsegment.patch
 }
 
 _build_syslinux_bios() {
     export LDFLAGS+=--no-dynamic-linker
+    export EXTRA_CFLAGS=-fno-PIE
 
     rm -rf ${srcdir}/${pkgname}-${_pkgver}-bios/ 
     cp -r ${srcdir}/${pkgname}-${_pkgver} ${srcdir}/${pkgname}-${_pkgver}-bios
     cd ${srcdir}/${pkgname}-${_pkgver}-bios/
     
-    make bios  PYTHON=python3
+    #make bios  PYTHON=python3
     make bios installer PYTHON=python3
-    
 }
 
 _build_syslinux_efi64() {
@@ -50,10 +56,9 @@ _build_syslinux_efi64() {
     rm -rf ${srcdir}/${pkgname}-${_pkgver}-efi64/ 
     cp -r ${srcdir}/${pkgname}-${_pkgver} ${srcdir}/${pkgname}-${_pkgver}-efi64
     cd ${srcdir}/${pkgname}-${_pkgver}-efi64/
-    
-    make PYTHON=python3 efi64
+
+    #make PYTHON=python3 efi64
     make PYTHON=python3 efi64 installer
-    
 }
 
 
@@ -72,10 +77,10 @@ build() {
 _package_syslinux_bios() {
 
     cd ${srcdir}/${pkgname}-${_pkgver}-bios/
-    
+
     ## Install Syslinux bios
     make INSTALLROOT=${pkgdir}/ AUXDIR=/usr/lib/syslinux/bios/ bios install
-    
+
     rm ${pkgdir}/usr/lib/syslinux/bios/syslinux.com
     
     ## Remove com32, dosutil and diag dirs
