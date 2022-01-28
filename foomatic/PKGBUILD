@@ -2,20 +2,21 @@
 pkgbase="foomatic"
 pkgname=('foomatic-db' 'foomatic-db-engine' 'foomatic-db-nonfree')
 arch=('x86_64') 
-_snapdate=20210824
-_relver=4.0
-pkgver=${_relver}_${_snapdate}
-pkgrel=2
-epoch=1
+pkgver=20220127
+_commit=0a400987587af5c9138bf1eb8197ed115874a210
+_db_engine_commit=bd265b77a9f66f672bf1e3f0803145f2eccabf06
+_db_nonfree_commit=6ddae02ac89240c019f8b5026cfe70e30fd2b3db
+pkgrel=1
+epoch=2
 url="https://www.linuxprinting.org/foomatic.html"
 makedepends=('cups' 'perl' 'libxml2' 'enscript' 'perl' 'net-snmp' 'bash')
-source=("https://www.openprinting.org/download/foomatic/${pkgbase}-db-engine-${_relver}-${_snapdate}.tar.gz"
-        "https://www.openprinting.org/download/foomatic/${pkgbase}-db-${_relver}-${_snapdate}.tar.gz"
-        "https://www.openprinting.org/download/foomatic/${pkgbase}-db-nonfree-${_snapdate}.tar.gz")
+source=("https://github.com/OpenPrinting/foomatic-db-engine-4/archive/${_db_engine_commit}.zip"
+        "https://github.com/OpenPrinting/foomatic-db/archive/${_commit}.zip"
+        "https://github.com/OpenPrinting/foomatic-db-nonfree/archive/${_db_nonfree_commit}.zip")
 options=('!emptydirs')
-md5sums=('fc638829433c38285e3b1959402ff723'
-         '45b744a2c753efccd6e1250498bdf465'
-         '36a6b230aa604f8b501a6b65e9ee5eb8') 
+md5sums=('d18c75b01cc68394d12f26b7ee0535cd'
+         '959a82dc92bea53c959951d79e975f6c'
+         '8da836a712bacd7aeaaebad36c98ccbf') 
 
 package_foomatic-db() {
 
@@ -24,10 +25,11 @@ package_foomatic-db() {
   license=('GPL' 'custom')
   depends=('perl' 'libxml2')
 
-  cd ${pkgname}-${_snapdate}
+  cd ${pkgname}-${_commit}
+  ./make_configure
   ./configure --prefix=/usr
   make DESTDIR=${pkgdir} install 
-  install -v -Dm0644 ${srcdir}/${pkgname}-${_snapdate}/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
+  install -v -Dm0644 ${srcdir}/${pkgname}-${_commit}/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
 }
 
 package_foomatic-db-engine() {
@@ -37,7 +39,8 @@ package_foomatic-db-engine() {
   license=('GPL')
   depends=('perl' 'libxml2' 'cups-filters' 'bash')
 
-  cd foomatic-db-engine-${_relver}-${_snapdate}
+  cd foomatic-db-engine-4-${_db_engine_commit}
+  ./make_configure
   ./configure --prefix=/usr
   make 
   eval `perl -V:archname`
@@ -57,7 +60,8 @@ package_foomatic-db-nonfree() {
   license=('custom')
   depends=('perl' 'libxml2' "foomatic-db-engine" 'foomatic-db')
 
-  cd foomatic-db-nonfree-${_snapdate}
+  cd foomatic-db-nonfree-${_db_nonfree_commit}
+  ./make_configure
   ./configure --prefix=/usr
   make DESTDIR=${pkgdir} install 
   install -Dm644 COPYING ${pkgdir}/usr/share/licenses/foomatic-db-nonfree/COPYING
