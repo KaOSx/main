@@ -1,15 +1,15 @@
 --- php.ini-production.orig
 +++ php.ini-production
-@@ -760,7 +760,7 @@
+@@ -756,7 +756,7 @@
  
  ; Directory in which the loadable extensions (modules) reside.
- ; https://php.net/extension-dir
+ ; http://php.net/extension-dir
 -;extension_dir = "./"
-+extension_dir = "/usr/lib/php/modules/"
++extension_dir = "/usr/lib/php7/modules/"
  ; On windows:
  ;extension_dir = "ext"
  
-@@ -908,51 +908,44 @@
+@@ -904,49 +904,45 @@
  ; deprecated in a future PHP major version. So, when it is possible, please
  ; move to the new ('extension=<ext>) syntax.
  ;
@@ -30,7 +30,8 @@
  ;extension=ffi
  ;extension=ftp
 -;extension=fileinfo
- ;extension=gd
+-;extension=gd2
++;extension=gd
  ;extension=gettext
  ;extension=gmp
 -;extension=intl
@@ -42,7 +43,6 @@
 -;extension=exif      ; Must be after mbstring as it depends on it
  ;extension=mysqli
 -;extension=oci8_12c  ; Use with Oracle Database 12c Instant Client
--;extension=oci8_19  ; Use with Oracle Database 19 Instant Client
  ;extension=odbc
 -;extension=openssl
 -;extension=pdo_firebird
@@ -58,7 +58,7 @@
  ;extension=shmop
 -
 -; The MIBS data available in the PHP distribution must be installed.
--; See https://www.php.net/manual/en/snmp.installation.php
+-; See http://www.php.net/manual/en/snmp.installation.php
  ;extension=snmp
 -
  ;extension=soap
@@ -69,9 +69,8 @@
 +;extension=sysvsem
 +;extension=sysvshm
  ;extension=tidy
+ ;extension=xmlrpc
  ;extension=xsl
--
--;zend_extension=opcache
 +extension=zip
  
  ;;;;;;;;;;;;;;;;;;;
