@@ -1,8 +1,8 @@
 
 pkgname=imagemagick
-pkgver=7.1.0.20
-_pkgver=7.1.0-20
-pkgrel=2
+pkgver=7.1.0.21
+_pkgver=7.1.0-21
+pkgrel=1
 pkgdesc="An image viewing/manipulation program"
 arch=('x86_64')
 url="https://www.imagemagick.org/"
@@ -14,7 +14,7 @@ makedepends=('opencl-headers' 'subversion')
 options=('!docs' 'libtool' '!emptydirs')
 source=("https://download.imagemagick.org/ImageMagick/download/releases/ImageMagick-${_pkgver}.tar.xz"
         'perlmagick.rpath.patch')
-md5sums=('7db5dc07c40af5ff58c95d4262313697'
+md5sums=('96c647089f99388e4c5efe6f582d510c'
          '0faf7158fd3a0904d9a70dd3e3c1fe9c')
 
 build() {
@@ -22,7 +22,7 @@ build() {
     sed '/AC_PATH_XTRA/d' -i configure.ac
     autoreconf --force --install
 
-    patch -p0 -i ${srcdir}/perlmagick.rpath.patch 
+    patch -p0 -i ${srcdir}/perlmagick.rpath.patch
 
     ./configure --prefix=/usr \
         --sysconfdir=/etc \
