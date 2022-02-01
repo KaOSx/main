@@ -1,6 +1,6 @@
 
 pkgname=libnfs
-pkgver=5.0.0
+pkgver=5.0.1
 pkgrel=1
 pkgdesc="Client library for accessing NFS shares over a network."
 arch=('x86_64')
@@ -8,16 +8,13 @@ url="https://github.com/sahlberg/libnfs"
 license=('GPL')
 depends=('glibc')
 source=("https://github.com/sahlberg/libnfs/archive/${pkgname}-${pkgver}.tar.gz"
-        "https://github.com/sahlberg/libnfs/commit/382905495fd3cbee45eeeae91fe53161e6f39d78.diff"
-        "https://github.com/sahlberg/libnfs/commit/c33e0c3825cbf891d1ef6240256e692786473a42.diff")
-md5sums=('fd65f2f9e72d332f9c084fe5e832bd10'
-         '8689db7102e6fd0d3257c2fff26cc207'
-         '0f4439780dad9d8a41425632134c7b14')
+        "https://github.com/sahlberg/libnfs/commit/382905495fd3cbee45eeeae91fe53161e6f39d78.diff")
+md5sums=('4bd3d1fc097c9ba51c7182980b44ab5f'
+         '8689db7102e6fd0d3257c2fff26cc207')
 
 build() {
   cd ${pkgname}-${pkgname}-${pkgver}
-  patch -p1 -i ${srcdir}/382905495fd3cbee45eeeae91fe53161e6f39d78.diff
-  patch -p1 -i ${srcdir}/c33e0c3825cbf891d1ef6240256e692786473a42.diff
+  #patch -p1 -i ${srcdir}/382905495fd3cbee45eeeae91fe53161e6f39d78.diff
 
   ./bootstrap
     ./configure --prefix=/usr
