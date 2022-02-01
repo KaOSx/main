@@ -2,7 +2,7 @@
 pkgbase=nvidia-utils
 pkgname=('nvidia-utils' 'opencl-nvidia' 'nvidia-settings')
 # Edit hardware-detection/hooks/hwdetect_7_graphics and Installer job 11 on version jump from 43x.xx
-pkgver=495.46
+pkgver=510.47.03
 pkgrel=1
 epoch=1
 arch=('x86_64')
@@ -16,7 +16,7 @@ source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.ru
 #source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}.run"
         'nvidia-restore-settings.desktop'
         'nvidia-drm-outputclass.conf')
-md5sums=('db1d6b0f9e590249bbf940a99825f000'
+md5sums=('1059d74ba891c412dcc8ae448fecd4ef'
          '9237516792da7b6df32f8c7e8a98f475'
          'cb27b0f4a78af78aa96c5aacae23256c')
 
@@ -160,6 +160,7 @@ package_nvidia-utils() {
   install -D -m644 systemd/system/nvidia-resume.service "${pkgdir}/usr/lib/systemd/system/nvidia-resume.service"
   install -D -m755 systemd/system-sleep/nvidia "${pkgdir}/usr/lib/systemd/system-sleep/nvidia"
   install -D -m755 systemd/nvidia-sleep.sh "${pkgdir}/usr/bin/nvidia-sleep.sh"
+  install -D -m644 nvidia-powerd "${pkgdir}/usr/bin/nvidia-powerd"
   
   # nvidia-persistenced
   install -D -m755 nvidia-persistenced ${pkgdir}/usr/bin/nvidia-persistenced
