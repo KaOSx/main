@@ -1,6 +1,6 @@
 
 pkgname=gstreamer-vaapi
-pkgver=1.18.5
+pkgver=1.18.6
 pkgrel=1
 pkgdesc="GStreamer Multimedia Framework Vaapi Plugin"
 arch=('x86_64')
@@ -10,7 +10,7 @@ depends=('gst-plugins-bad' 'libva' 'libxrandr')
 makedepends=('python3' 'gobject-introspection' 'meson' 'ninja')
 options=('!libtool')
 source=("https://gstreamer.freedesktop.org/src/gstreamer-vaapi/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('4a460fb95559f41444eb24864ad2d9e37922b6eea941510310319fc3e0ba727b')
+sha256sums=('ab6270f1e5e4546fbe6f5ea246d86ca3d196282eb863d46e6cdcc96f867449e0')
 
 build() {
   mkdir -p build
@@ -19,7 +19,6 @@ build() {
   meson ../${pkgname}-${pkgver} \
     --prefix=/usr \
     --buildtype=release \
-    -Dpackage-name="GStreamer Good (KaOS)" \
     -Dpackage-origin="https://kaosx.us/" 
   ninja
 }
