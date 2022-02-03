@@ -1,6 +1,7 @@
 
 pkgname=lcms2
-pkgver=2.13
+pkgver=2.13.1
+_pkgver=2.13
 pkgrel=1
 pkgdesc="Small-footprint color management engine"
 arch=('x86_64')
@@ -8,8 +9,8 @@ url="https://www.littlecms.com/"
 license=('MIT')
 depends=('libtiff')
 options=(!libtool)
-source=("https://downloads.sourceforge.net/project/lcms/lcms/${pkgver}/${pkgname}-${pkgver}.tar.gz")
-md5sums=('51ab625cbe41bd22a4d998b3cc49bf59')
+source=("https://downloads.sourceforge.net/project/lcms/lcms/${_pkgver}/${pkgname}-${pkgver}.tar.gz")
+md5sums=('47a99e781b89c958a773e2012e81ae8c')
 
 build() {
   cd ${pkgname}-${pkgver}
