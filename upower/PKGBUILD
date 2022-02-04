@@ -1,40 +1,43 @@
 
 pkgname=upower
-pkgver=0.99.13
+pkgver=0.99.14
 pkgrel=1
 pkgdesc="Abstraction for enumerating power devices, listening to device events and querying history and statistics"
 arch=('x86_64')
 url="https://upower.freedesktop.org"
 license=('GPL')
 depends=('systemd' 'libgudev' 'polkit' 'dbus-glib' 'libimobiledevice')
-makedepends=('pkg-config' 'intltool' 'docbook-xsl')
+makedepends=('meson' 'ninja' 'pkg-config' 'intltool' 'docbook-xsl' 'gtk-doc')
 options=('!libtool')
 install=upower.install
-#source=("https://upower.freedesktop.org/releases/${pkgname}-${pkgver}.tar.xz"
-source=("https://gitlab.freedesktop.org/upower/upower/uploads/177df5b9f9b76f25a2ad9da41aa0c1fa/${pkgname}-${pkgver}.tar.xz"
+source=("https://gitlab.freedesktop.org/upower/upower/-/archive/v${pkgver}/upower-v${pkgver}.tar.bz2"
+#source=("https://gitlab.freedesktop.org/upower/upower/uploads/177df5b9f9b76f25a2ad9da41aa0c1fa/${pkgname}-${pkgver}.tar.xz"
         "https://gitlab.freedesktop.org/upower/upower/commit/1c6a6bfbbb01aa92b4550c1e3a087b1c0f7ef310.diff")
-sha1sums=('243293648009763df9fe46aec9390cedfa129a3b'
+sha1sums=('b3dbd1f021ba382a1117642776665451c834ddfb'
           '803bde9f6996ac81fc5c6e9750e1bebde20a4829')
 
-build() {
-  cd ${pkgname}-${pkgver}
-  #patch -p1 -R -i ${srcdir}/1c6a6bfbbb01aa92b4550c1e3a087b1c0f7ef310.diff
-  sed -e "s|PrivateUsers=yes|PrivateUsers=no|" -i src/upower.service.in
-  #sed -e "s|libplist >= 0.12|libplist-2.0|" -i configure
+prepare() {
+  cd ${pkgname}-v${pkgver}
 
-  ./configure --prefix=/usr \
-      --sysconfdir=/etc \
-      --localstatedir=/var \
-      --libexecdir=/usr/lib/upower \
-      --with-systemdsystemunitdir=/usr/lib/systemd/system \
-      --disable-static \
-      --enable-deprecated \
-      --with-idevice
-  make
+  sed -e "s|PrivateUsers=yes|PrivateUsers=no|" -i src/upower.service.in
+}
+
+build() {
+  mkdir -p build
+  cd build
+
+  meson ../${pkgname}-v${pkgver} \
+    --prefix=/usr \
+    --buildtype=release \
+    --libexecdir=/usr/lib \
+    -Dgtk-doc=false \
+    -Dsystemdsystemunitdir=/usr/lib/systemd/system \
+    -Didevice=enabled
+  ninja
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
-  
-  make DESTDIR=${pkgdir} install
+  cd build
+
+  DESTDIR=${pkgdir} ninja install
 }
