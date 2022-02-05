@@ -1,7 +1,7 @@
 
 pkgname=upower
 pkgver=0.99.14
-pkgrel=1
+pkgrel=2
 pkgdesc="Abstraction for enumerating power devices, listening to device events and querying history and statistics"
 arch=('x86_64')
 url="https://upower.freedesktop.org"
@@ -32,6 +32,7 @@ build() {
     --libexecdir=/usr/lib \
     -Dgtk-doc=false \
     -Dsystemdsystemunitdir=/usr/lib/systemd/system \
+    -Dudevrulesdir=/usr/lib/udev/rules.d \
     -Didevice=enabled
   ninja
 }
