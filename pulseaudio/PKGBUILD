@@ -3,7 +3,7 @@ pkgname=pulseaudio
 pkgdesc="A featureful, general-purpose sound server"
 pkgver=15.0
 _commit=613c2994af42ff08fe0a9d0e4bfce42ef781e8f6
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 url="https://www.freedesktop.org/wiki/Software/PulseAudio/"
 license=('GPL' 'LGPL')
@@ -50,11 +50,11 @@ package() {
 
   rm ${pkgdir}/etc/dbus-1/system.d/pulseaudio-system.conf
   #rm ${pkgdir}/etc/xdg/autostart/pulseaudio.desktop
-  
+
   # fix no sound after logout https://github.com/KaOSx/apps/issues/112
   sed -e 's|load-module module-esound-protocol-unix|##load-module module-esound-protocol-unix|' \
     -i ${pkgdir}/etc/pulse/default.pa
-    
+
   # former pulseaudio-alsa, integrated into pulseaudio
   install -Dm644 ../asound.conf ${pkgdir}/etc/asound.conf
 }

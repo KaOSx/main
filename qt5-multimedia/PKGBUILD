@@ -6,7 +6,7 @@ pkgname=qt5-multimedia
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=1
+pkgrel=2
 pkgdesc="A cross-platform application and UI framework, QtMultimedia files"
 arch=('x86_64')
 url='https://www.qt.io/'
@@ -30,12 +30,12 @@ build() {
 package() {
     cd $srcdir/$_pkgfqn
     make INSTALL_ROOT=$pkgdir install
-    
+
     mkdir -p ${pkgdir}/usr/bin
     for i in $(ls ${pkgdir}/usr/lib/qt5/bin); do
         ln -s /usr/lib/qt5/bin/${i} ${pkgdir}/usr/bin/${i}-qt5
     done
-    
+
     install -D -m644 LICENSE.LGPL3 ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.LGPL3
 }
 

@@ -1,7 +1,7 @@
 
 pkgname=libnice
 pkgver=0.1.18
-pkgrel=1
+pkgrel=2
 pkgdesc="An implementation of the IETF's draft ICE (for p2p UDP data streams)"
 arch=('x86_64')
 url="https://libnice.freedesktop.org/"
@@ -15,7 +15,7 @@ md5sums=('408482fa4bab7c6b884b0fb9ad57a038')
 build() {
   mkdir -p build
   cd build
-  
+
   meson ../${pkgname}-${pkgver} \
     --prefix=/usr \
     --buildtype=release \
@@ -26,7 +26,7 @@ build() {
 
 package() {
   cd build
-  
+
   DESTDIR=${pkgdir} ninja install
 }
 

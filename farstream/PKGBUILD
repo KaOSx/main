@@ -1,7 +1,7 @@
 
 pkgname=farstream
 pkgver=0.2.9
-pkgrel=1
+pkgrel=2
 pkgdesc="Farstream - Audio/Video Communications Framework"
 arch=('x86_64')
 url="https://www.freedesktop.org/wiki/Software/Farstream"
@@ -17,7 +17,7 @@ md5sums=('35ad6b9e0fb52debeaa2d5194bf5153c'
 build() {
   cd  ${pkgname}-${pkgver}
   patch -p1 -i ${srcdir}/54987d445ea714b467d901b7daf8c09ed0644189.diff
-  
+
   ./autogen.sh
   ./configure --prefix=/usr \
     --with-package-name='KaOS Farstream package' \
@@ -28,6 +28,6 @@ build() {
 
 package() {
   cd ${pkgname}-${pkgver}
-  
+
   make DESTDIR=${pkgdir} install
 }

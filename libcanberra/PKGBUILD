@@ -1,7 +1,7 @@
 
 pkgname=libcanberra
 pkgver=0.30
-pkgrel=4
+pkgrel=5
 pkgdesc="A small and lightweight implementation of the XDG Sound Theme Specification"
 arch=('x86_64')
 url="http://0pointer.de/lennart/projects/libcanberra"
@@ -14,7 +14,7 @@ md5sums=('34cb7e4430afaf6f447c4ebdb9b42072')
 
 build() {
   cd ${pkgname}-${pkgver}
-  
+
     ./configure --sysconfdir=/etc \
         --prefix=/usr \
         --localstatedir=/var \
@@ -33,7 +33,7 @@ build() {
 package() {
   cd ${pkgbase}-${pkgver}
   make -j1 DESTDIR=${pkgdir} install
-  
+
   rm -f ${pkgdir}/usr/lib/libcanberra-gtk.la
   rm -f ${pkgdir}/usr/lib/gtk-2.0/modules/*.la
 }

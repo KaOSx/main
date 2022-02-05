@@ -2,7 +2,7 @@
 pkgname=phonon-qt5-backend-gstreamer
 _pkgname=phonon-backend-gstreamer
 pkgver=4.10.0
-pkgrel=2
+pkgrel=3
 pkgdesc="Phonon GStreamer backend Qt5 version"
 arch=('x86_64')
 url='https://community.kde.org/Phonon'
@@ -18,23 +18,19 @@ sha256sums=('c5871835521d015ef2ad1276b1f58340d946c2903466337f3170bac3c58d61f2'
 
 prepare() {
     cd ${_pkgname}-${pkgver}
-    
+
     #patch -p1 -i ${srcdir}/fca0714fd37b2276eb663f649b6b9871a3973fa4.diff
 }
 
 build() { 
-	mkdir -p build
-	cd build
-	
-	cmake ../${_pkgname}-${pkgver} \
-		 -DCMAKE_BUILD_TYPE=Release \
-		 -DCMAKE_INSTALL_PREFIX=/usr \
-		 -DCMAKE_INSTALL_LIBDIR=lib 
-	make
+    cmake -B build -S ${_pkgname}-${pkgver} \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_INSTALL_PREFIX=/usr \
+        -DCMAKE_INSTALL_LIBDIR=lib 
+    cmake --build build
 }
 
 package() {
-	cd build
-	
-	make DESTDIR=${pkgdir} install
+
+  DESTDIR=${pkgdir} cmake --install build
 }
