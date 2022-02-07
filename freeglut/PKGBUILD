@@ -1,7 +1,7 @@
 
 pkgname=freeglut
-pkgver=3.2.1
-pkgrel=5
+pkgver=3.2.2
+pkgrel=1
 pkgdesc="Provides functionality for small OpenGL programs"
 arch=('x86_64')
 url="http://freeglut.sourceforge.net/"
@@ -10,22 +10,19 @@ depends=('libxi' 'libxrandr' 'libglvnd' 'libxxf86vm')
 makedepends=('cmake' 'mesa' 'glu')
 options=('!libtool')
 source=("https://downloads.sourceforge.net/freeglut/${pkgname}-${pkgver}.tar.gz")
-md5sums=('cd5c670c1086358598a6d4a9d166949d')
+md5sums=('485c1976165315fc42c0b0a1802816d9')
 
 build() {
-  mkdir -p build
-  cd build
-  
-  cmake ../${pkgname}-${pkgver} \
+  cmake -B build -S ${pkgname}-${pkgver} \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=lib 
-  make
+  cmake --build build
 }
 
 package() {
-  cd build
-  make DESTDIR=${pkgdir} install
-  
-  install -Dm644 ../${pkgname}-${pkgver}/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+
+  DESTDIR=${pkgdir} cmake --install build
+
+  install -Dm644 ${pkgname}-${pkgver}/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
