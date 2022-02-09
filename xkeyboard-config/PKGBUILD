@@ -1,36 +1,39 @@
 
 pkgname=xkeyboard-config
-pkgver=2.34
+pkgver=2.35.1
 pkgrel=1
 pkgdesc="X keyboard configuration files"
 arch=('x86_64')
 license=('custom')
 url="https://www.freedesktop.org/wiki/Software/XKeyboardConfig"
 depends=('xorg-xkb-utils')
-makedepends=('intltool' 'python3')
-source=("https://www.x.org/releases/individual/data/${pkgname}/${pkgname}-${pkgver}.tar.bz2"
+makedepends=('intltool' 'python3' 'meson' 'ninja')
+source=("https://www.x.org/releases/individual/data/${pkgname}/${pkgname}-${pkgver}.tar.xz"
         "https://gitlab.freedesktop.org/xkeyboard-config/xkeyboard-config/commit/af6c0f29dbee1cc7b280eed891592797c2e31220.patch")
-sha256sums=('b321d27686ee7e6610ffe7b56e28d5bbf60625a1f595124cd320c0caa717b8ce'
+sha256sums=('18ce50ff0c74ae6093062bce1aeab3d363913ea35162fe271f8a0ce399de85cc'
             '0d8439f64b6294086b55fdcd8a7adbe109b1d6659fd0998b6004f470a4386082')
 
 build() {
-  cd ${pkgname}-${pkgver}
+  mkdir -p build
+  cd build
 
-  #patch -p1 -i ${srcdir}/af6c0f29dbee1cc7b280eed891592797c2e31220.patch
-  
-  ./configure --prefix=/usr \
-      --with-xkb-base=/usr/share/X11/xkb \
-      --with-xkb-rules-symlink=xorg \
-      --enable-compat-rules=yes
-  make
+  meson ../${pkgname}-${pkgver} \
+    --prefix=/usr \
+    --buildtype=release \
+    -Dxkb-base=/usr/share/X11/xkb \
+    -Dxorg-rules-symlinks=true \
+    -Dcompat-rules=true
+  ninja
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
-  make DESTDIR=${pkgdir} install
-  
-  rm -f ${pkgdir}/usr/share/X11/xkb/compiled
+  cd build
+
+  DESTDIR=${pkgdir} ninja install
+
   install -m755 -d ${pkgdir}/var/lib/xkb
   install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
-  install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
+  install -m644 ../${pkgname}-${pkgver}/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
 }
+
+
