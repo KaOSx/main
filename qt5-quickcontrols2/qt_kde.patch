@@ -1,0 +1,542 @@
+diff --git a/src/imports/controls/designer/AbstractButtonSection.qml b/src/imports/controls/designer/AbstractButtonSection.qml
+index e8aa39c2a..35fad2abc 100644
+--- a/src/imports/controls/designer/AbstractButtonSection.qml
++++ b/src/imports/controls/designer/AbstractButtonSection.qml
+@@ -104,8 +104,8 @@ Section {
+         }
+ 
+         Label {
+-            text: qsTr("Repeat")
+-            tooltip: qsTr("Whether the button repeats while pressed and held down.")
++            text: qsTr("Auto-Repeat")
++            tooltip: qsTr("Whether the button repeats pressed(), released() and clicked() signals while the button is pressed and held down.")
+         }
+         SecondColumnLayout {
+             CheckBox {
+diff --git a/src/imports/controls/designer/ButtonSection.qml b/src/imports/controls/designer/ButtonSection.qml
+index fef460715..951c8cf41 100644
+--- a/src/imports/controls/designer/ButtonSection.qml
++++ b/src/imports/controls/designer/ButtonSection.qml
+@@ -43,17 +43,7 @@ Section {
+     caption: qsTr("Button")
+ 
+     SectionLayout {
+-        Label {
+-            text: qsTr("AutoRepeat")
+-            tooltip: qsTr("Whether the button repeats pressed(), released() and clicked() signals while the button is pressed and held down.")
+-        }
+-        SecondColumnLayout {
+-            CheckBox {
+-                text: backendValues.autoRepeat.valueToString
+-                backendValue: backendValues.autoRepeat
+-                Layout.fillWidth: true
+-            }
+-        }
++
+         Label {
+             text: qsTr("Flat")
+             tooltip: qsTr("Whether the button is flat.")
+diff --git a/src/imports/platform/qquickplatformfiledialog.cpp b/src/imports/platform/qquickplatformfiledialog.cpp
+index 2ef08ef63..81b851a5b 100644
+--- a/src/imports/platform/qquickplatformfiledialog.cpp
++++ b/src/imports/platform/qquickplatformfiledialog.cpp
+@@ -353,7 +353,6 @@ void QQuickPlatformFileDialog::resetNameFilters()
+ }
+ 
+ /*!
+-    \qmlpropertygroup Qt.labs.platform::FileDialog::selectedNameFilter
+     \qmlproperty int Qt.labs.platform::FileDialog::selectedNameFilter.index
+     \qmlproperty string Qt.labs.platform::FileDialog::selectedNameFilter.name
+     \qmlproperty list<string> Qt.labs.platform::FileDialog::selectedNameFilter.extensions
+diff --git a/src/imports/platform/qquickplatformmenu.cpp b/src/imports/platform/qquickplatformmenu.cpp
+index 1f5f52d78..b5289f333 100644
+--- a/src/imports/platform/qquickplatformmenu.cpp
++++ b/src/imports/platform/qquickplatformmenu.cpp
+@@ -610,10 +610,9 @@ void QQuickPlatformMenu::setFont(const QFont& font)
+ 
+ /*!
+     \since Qt.labs.platform 1.1 (Qt 5.12)
+-    \qmlpropertygroup Qt.labs.platform::MenuItem::icon
+-    \qmlproperty url Qt.labs.platform::MenuItem::icon.source
+-    \qmlproperty string Qt.labs.platform::MenuItem::icon.name
+-    \qmlproperty bool Qt.labs.platform::MenuItem::icon.mask
++    \qmlproperty url Qt.labs.platform::Menu::icon.source
++    \qmlproperty string Qt.labs.platform::Menu::icon.name
++    \qmlproperty bool Qt.labs.platform::Menu::icon.mask
+ 
+     This property holds the menu item's icon.
+ */
+diff --git a/src/imports/platform/qquickplatformmenuitem.cpp b/src/imports/platform/qquickplatformmenuitem.cpp
+index 72ad7d5d4..5a8b3798d 100644
+--- a/src/imports/platform/qquickplatformmenuitem.cpp
++++ b/src/imports/platform/qquickplatformmenuitem.cpp
+@@ -592,7 +592,6 @@ void QQuickPlatformMenuItem::setFont(const QFont& font)
+ 
+ /*!
+     \since Qt.labs.platform 1.1 (Qt 5.12)
+-    \qmlpropertygroup Qt.labs.platform::MenuItem::icon
+     \qmlproperty url Qt.labs.platform::MenuItem::icon.source
+     \qmlproperty string Qt.labs.platform::MenuItem::icon.name
+     \qmlproperty bool Qt.labs.platform::MenuItem::icon.mask
+diff --git a/src/imports/platform/qquickplatformsystemtrayicon.cpp b/src/imports/platform/qquickplatformsystemtrayicon.cpp
+index da4838229..442da0373 100644
+--- a/src/imports/platform/qquickplatformsystemtrayicon.cpp
++++ b/src/imports/platform/qquickplatformsystemtrayicon.cpp
+@@ -356,7 +356,6 @@ QRect QQuickPlatformSystemTrayIcon::geometry() const
+ 
+ /*!
+     \since Qt.labs.platform 1.1 (Qt 5.12)
+-    \qmlpropertygroup Qt.labs.platform::SystemTrayIcon::icon
+     \qmlproperty url Qt.labs.platform::SystemTrayIcon::icon.source
+     \qmlproperty string Qt.labs.platform::SystemTrayIcon::icon.name
+     \qmlproperty bool Qt.labs.platform::SystemTrayIcon::icon.mask
+diff --git a/src/quicktemplates2/qquickabstractbutton.cpp b/src/quicktemplates2/qquickabstractbutton.cpp
+index fc37b6f60..1df0c706d 100644
+--- a/src/quicktemplates2/qquickabstractbutton.cpp
++++ b/src/quicktemplates2/qquickabstractbutton.cpp
+@@ -387,6 +387,17 @@ void QQuickAbstractButtonPrivate::itemImplicitHeightChanged(QQuickItem *item)
+         emit q->implicitIndicatorHeightChanged();
+ }
+ 
++void QQuickAbstractButtonPrivate::itemDestroyed(QQuickItem *item)
++{
++    Q_Q(QQuickAbstractButton);
++    QQuickControlPrivate::itemDestroyed(item);
++    if (item == indicator) {
++        indicator = nullptr;
++        emit q->implicitIndicatorWidthChanged();
++        emit q->implicitIndicatorHeightChanged();
++    }
++}
++
+ QQuickAbstractButton *QQuickAbstractButtonPrivate::findCheckedButton() const
+ {
+     Q_Q(const QQuickAbstractButton);
+@@ -736,7 +747,6 @@ void QQuickAbstractButton::setIndicator(QQuickItem *indicator)
+ }
+ 
+ /*!
+-    \qmlpropertygroup QtQuick.Controls::AbstractButton::icon
+     \qmlproperty string QtQuick.Controls::AbstractButton::icon.name
+     \qmlproperty url QtQuick.Controls::AbstractButton::icon.source
+     \qmlproperty int QtQuick.Controls::AbstractButton::icon.width
+diff --git a/src/quicktemplates2/qquickabstractbutton_p_p.h b/src/quicktemplates2/qquickabstractbutton_p_p.h
+index 9291c1a87..b729720f2 100644
+--- a/src/quicktemplates2/qquickabstractbutton_p_p.h
++++ b/src/quicktemplates2/qquickabstractbutton_p_p.h
+@@ -109,6 +109,7 @@ public:
+ 
+     void itemImplicitWidthChanged(QQuickItem *item) override;
+     void itemImplicitHeightChanged(QQuickItem *item) override;
++    void itemDestroyed(QQuickItem *item) override;
+ 
+     // copied from qabstractbutton.cpp
+     static const int AUTO_REPEAT_DELAY = 300;
+diff --git a/src/quicktemplates2/qquickaction.cpp b/src/quicktemplates2/qquickaction.cpp
+index 0dab3b978..8610cdfae 100644
+--- a/src/quicktemplates2/qquickaction.cpp
++++ b/src/quicktemplates2/qquickaction.cpp
+@@ -145,7 +145,7 @@ int QQuickActionPrivate::ShortcutEntry::shortcutId() const
+ 
+ void QQuickActionPrivate::ShortcutEntry::grab(const QKeySequence &shortcut, bool enabled)
+ {
+-    if (shortcut.isEmpty())
++    if (shortcut.isEmpty() || m_shortcutId)
+         return;
+ 
+     Qt::ShortcutContext context = Qt::WindowShortcut; // TODO
+@@ -381,7 +381,6 @@ void QQuickAction::setText(const QString &text)
+ }
+ 
+ /*!
+-    \qmlpropertygroup QtQuick.Controls::Action::icon
+     \qmlproperty string QtQuick.Controls::Action::icon.name
+     \qmlproperty url QtQuick.Controls::Action::icon.source
+     \qmlproperty int QtQuick.Controls::Action::icon.width
+diff --git a/src/quicktemplates2/qquickcontainer.cpp b/src/quicktemplates2/qquickcontainer.cpp
+index f38c2b09c..6eed2a024 100644
+--- a/src/quicktemplates2/qquickcontainer.cpp
++++ b/src/quicktemplates2/qquickcontainer.cpp
+@@ -225,6 +225,7 @@ void QQuickContainerPrivate::cleanup()
+     QObject::disconnect(contentModel, &QQmlObjectModel::countChanged, q, &QQuickContainer::countChanged);
+     QObject::disconnect(contentModel, &QQmlObjectModel::childrenChanged, q, &QQuickContainer::contentChildrenChanged);
+     delete contentModel;
++    contentModel = nullptr;
+ }
+ 
+ QQuickItem *QQuickContainerPrivate::itemAt(int index) const
+@@ -436,7 +437,7 @@ void QQuickContainerPrivate::contentChildren_clear(QQmlListProperty<QQuickItem>
+ void QQuickContainerPrivate::updateContentWidth()
+ {
+     Q_Q(QQuickContainer);
+-    if (hasContentWidth || qFuzzyCompare(contentWidth, implicitContentWidth))
++    if (hasContentWidth || qFuzzyCompare(contentWidth, implicitContentWidth) || !contentModel)
+         return;
+ 
+     contentWidth = implicitContentWidth;
+@@ -446,7 +447,7 @@ void QQuickContainerPrivate::updateContentWidth()
+ void QQuickContainerPrivate::updateContentHeight()
+ {
+     Q_Q(QQuickContainer);
+-    if (hasContentHeight || qFuzzyCompare(contentHeight, implicitContentHeight))
++    if (hasContentHeight || qFuzzyCompare(contentHeight, implicitContentHeight) || !contentModel)
+         return;
+ 
+     contentHeight = implicitContentHeight;
+diff --git a/src/quicktemplates2/qquickdialogbuttonbox.cpp b/src/quicktemplates2/qquickdialogbuttonbox.cpp
+index e6db14eb5..6197d1547 100644
+--- a/src/quicktemplates2/qquickdialogbuttonbox.cpp
++++ b/src/quicktemplates2/qquickdialogbuttonbox.cpp
+@@ -237,7 +237,7 @@ static QRectF alignedRect(Qt::LayoutDirection direction, Qt::Alignment alignment
+ void QQuickDialogButtonBoxPrivate::resizeContent()
+ {
+     Q_Q(QQuickDialogButtonBox);
+-    if (!contentItem)
++    if (!contentItem || !contentModel)
+         return;
+ 
+     QRectF geometry = q->boundingRect().adjusted(q->leftPadding(), q->topPadding(), -q->rightPadding(), -q->bottomPadding());
+@@ -322,6 +322,9 @@ void QQuickDialogButtonBoxPrivate::updateLayout()
+ qreal QQuickDialogButtonBoxPrivate::getContentWidth() const
+ {
+     Q_Q(const QQuickDialogButtonBox);
++    if (!contentModel)
++        return 0;
++
+     const int count = contentModel->count();
+     const qreal totalSpacing = qMax(0, count - 1) * spacing;
+     qreal totalWidth = totalSpacing;
+@@ -341,6 +344,9 @@ qreal QQuickDialogButtonBoxPrivate::getContentWidth() const
+ qreal QQuickDialogButtonBoxPrivate::getContentHeight() const
+ {
+     Q_Q(const QQuickDialogButtonBox);
++    if (!contentModel)
++        return 0;
++
+     const int count = contentModel->count();
+     qreal maxHeight = 0;
+     for (int i = 0; i < count; ++i) {
+diff --git a/src/quicktemplates2/qquickheaderview.cpp b/src/quicktemplates2/qquickheaderview.cpp
+index 85291bcbf..d99c09ebf 100644
+--- a/src/quicktemplates2/qquickheaderview.cpp
++++ b/src/quicktemplates2/qquickheaderview.cpp
+@@ -364,18 +364,22 @@ QModelIndex QHeaderDataProxyModel::parent(const QModelIndex &child) const
+     return QModelIndex();
+ }
+ 
+-QModelIndex QHeaderDataProxyModel::sibling(int row, int column, const QModelIndex &idx) const
++QModelIndex QHeaderDataProxyModel::sibling(int row, int column, const QModelIndex &) const
+ {
+-    return index(row, column, idx);
++    return index(row, column);
+ }
+ 
+ int QHeaderDataProxyModel::rowCount(const QModelIndex &parent) const
+ {
++    if (parent.isValid())
++        return 0;
+     return m_model.isNull() ? -1 : (m_orientation == Qt::Horizontal ? 1 : m_model->rowCount(parent));
+ }
+ 
+ int QHeaderDataProxyModel::columnCount(const QModelIndex &parent) const
+ {
++    if (parent.isValid())
++        return 0;
+     return m_model.isNull() ? -1 : (m_orientation == Qt::Vertical ? 1 : m_model->columnCount(parent));
+ }
+ 
+@@ -401,7 +405,8 @@ bool QHeaderDataProxyModel::setData(const QModelIndex &index, const QVariant &va
+ 
+ bool QHeaderDataProxyModel::hasChildren(const QModelIndex &parent) const
+ {
+-    Q_UNUSED(parent)
++    if (!parent.isValid())
++        return rowCount(parent) > 0 && columnCount(parent) > 0;
+     return false;
+ }
+ 
+diff --git a/src/quicktemplates2/qquickoverlay.cpp b/src/quicktemplates2/qquickoverlay.cpp
+index b8d417f29..c8cd142ae 100644
+--- a/src/quicktemplates2/qquickoverlay.cpp
++++ b/src/quicktemplates2/qquickoverlay.cpp
+@@ -399,8 +399,11 @@ void QQuickOverlay::itemChange(ItemChange change, const ItemChangeData &data)
+     Q_D(QQuickOverlay);
+     QQuickItem::itemChange(change, data);
+ 
+-    if (change == ItemChildAddedChange || change == ItemChildRemovedChange)
++    if (change == ItemChildAddedChange || change == ItemChildRemovedChange) {
+         setVisible(!d->allDrawers.isEmpty() || !childItems().isEmpty());
++        if (data.item->parent() == d->mouseGrabberPopup)
++            d->setMouseGrabberPopup(nullptr);
++    }
+ }
+ 
+ void QQuickOverlay::geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry)
+diff --git a/src/quicktemplates2/qquickpopup.cpp b/src/quicktemplates2/qquickpopup.cpp
+index 1a7731f4c..7130d2ea5 100644
+--- a/src/quicktemplates2/qquickpopup.cpp
++++ b/src/quicktemplates2/qquickpopup.cpp
+@@ -575,7 +575,6 @@ void QQuickPopupPrivate::setBottomMargin(qreal value, bool reset)
+ 
+ /*!
+     \since QtQuick.Controls 2.5 (Qt 5.12)
+-    \qmlpropertygroup QtQuick.Controls::Popup::anchors
+     \qmlproperty Object QtQuick.Controls::Popup::anchors.centerIn
+ 
+     Anchors provide a way to position an item by specifying its
+diff --git a/src/quicktemplates2/qquickrangeslider.cpp b/src/quicktemplates2/qquickrangeslider.cpp
+index 3702c9719..eb9c1bb1c 100644
+--- a/src/quicktemplates2/qquickrangeslider.cpp
++++ b/src/quicktemplates2/qquickrangeslider.cpp
+@@ -746,7 +746,6 @@ qreal QQuickRangeSlider::valueAt(qreal position) const
+ }
+ 
+ /*!
+-    \qmlpropertygroup QtQuick.Controls::RangeSlider::first
+     \qmlproperty real QtQuick.Controls::RangeSlider::first.value
+     \qmlproperty real QtQuick.Controls::RangeSlider::first.position
+     \qmlproperty real QtQuick.Controls::RangeSlider::first.visualPosition
+@@ -825,7 +824,6 @@ QQuickRangeSliderNode *QQuickRangeSlider::first() const
+ */
+ 
+ /*!
+-    \qmlpropertygroup QtQuick.Controls::RangeSlider::second
+     \qmlproperty real QtQuick.Controls::RangeSlider::second.value
+     \qmlproperty real QtQuick.Controls::RangeSlider::second.position
+     \qmlproperty real QtQuick.Controls::RangeSlider::second.visualPosition
+diff --git a/src/quicktemplates2/qquickspinbox.cpp b/src/quicktemplates2/qquickspinbox.cpp
+index f04ceff88..a3a73472f 100644
+--- a/src/quicktemplates2/qquickspinbox.cpp
++++ b/src/quicktemplates2/qquickspinbox.cpp
+@@ -726,7 +726,6 @@ void QQuickSpinBox::setValueFromText(const QJSValue &callback)
+ }
+ 
+ /*!
+-    \qmlpropertygroup QtQuick.Controls::SpinBox::up
+     \qmlproperty bool QtQuick.Controls::SpinBox::up.pressed
+     \qmlproperty Item QtQuick.Controls::SpinBox::up.indicator
+     \qmlproperty bool QtQuick.Controls::SpinBox::up.hovered
+@@ -747,7 +746,6 @@ QQuickSpinButton *QQuickSpinBox::up() const
+ }
+ 
+ /*!
+-    \qmlpropertygroup QtQuick.Controls::SpinBox::down
+     \qmlproperty bool QtQuick.Controls::SpinBox::down.pressed
+     \qmlproperty Item QtQuick.Controls::SpinBox::down.indicator
+     \qmlproperty bool QtQuick.Controls::SpinBox::down.hovered
+diff --git a/src/quicktemplates2/qquicksplitview.cpp b/src/quicktemplates2/qquicksplitview.cpp
+index a3566c560..a06c8d310 100644
+--- a/src/quicktemplates2/qquicksplitview.cpp
++++ b/src/quicktemplates2/qquicksplitview.cpp
+@@ -49,7 +49,7 @@ QT_BEGIN_NAMESPACE
+ 
+ /*!
+     \qmltype SplitView
+-    \inherits Control
++    \inherits Container
+ //!     \instantiates QQuickSplitView
+     \inqmlmodule QtQuick.Controls
+     \since 5.13
+diff --git a/src/quicktemplates2/qquickswipedelegate.cpp b/src/quicktemplates2/qquickswipedelegate.cpp
+index c62142430..018768a2f 100644
+--- a/src/quicktemplates2/qquickswipedelegate.cpp
++++ b/src/quicktemplates2/qquickswipedelegate.cpp
+@@ -1025,7 +1025,6 @@ QQuickSwipeDelegate::QQuickSwipeDelegate(QQuickItem *parent)
+ */
+ 
+ /*!
+-    \qmlpropertygroup QtQuick.Controls::SwipeDelegate::swipe
+     \qmlproperty real QtQuick.Controls::SwipeDelegate::swipe.position
+     \qmlproperty bool QtQuick.Controls::SwipeDelegate::swipe.complete
+     \qmlproperty bool QtQuick.Controls::SwipeDelegate::swipe.enabled
+diff --git a/tests/auto/controls/data/tst_switch.qml b/tests/auto/controls/data/tst_switch.qml
+index b3fab41ca..10b6baa02 100644
+--- a/tests/auto/controls/data/tst_switch.qml
++++ b/tests/auto/controls/data/tst_switch.qml
+@@ -608,4 +608,27 @@ TestCase {
+         mouseClick(control.indicator)
+         verify(control.activeFocus)
+     }
++
++    Component {
++        id: deletionOrder1
++        Item {
++            Image { id: innerImage }
++            Switch { indicator: innerImage }
++        }
++    }
++
++    Component {
++        id: deletionOrder2
++        Item {
++            Switch { indicator: innerImage }
++            Image { id: innerImage }
++        }
++    }
++
++    function test_deletionOrder() {
++        var control1 = createTemporaryObject(deletionOrder1, testCase)
++        verify(control1)
++        var control2 = createTemporaryObject(deletionOrder2, testCase)
++        verify(control2)
++    }
+ }
+diff --git a/tests/auto/qquickheaderview/tst_qquickheaderview.cpp b/tests/auto/qquickheaderview/tst_qquickheaderview.cpp
+index 611e39cb4..f335aa869 100644
+--- a/tests/auto/qquickheaderview/tst_qquickheaderview.cpp
++++ b/tests/auto/qquickheaderview/tst_qquickheaderview.cpp
+@@ -58,8 +58,10 @@ public:
+     {
+     }
+ 
+-    int rowCount(const QModelIndex & = QModelIndex()) const override
++    int rowCount(const QModelIndex &index = QModelIndex()) const override
+     {
++        if (index.isValid())
++            return 0;
+         return m_rows;
+     }
+     virtual void setRowCount(int count)
+@@ -70,8 +72,10 @@ public:
+         endResetModel();
+     }
+ 
+-    int columnCount(const QModelIndex & = QModelIndex()) const override
++    int columnCount(const QModelIndex &index = QModelIndex()) const override
+     {
++        if (index.isValid())
++            return 0;
+         return m_cols;
+     }
+     virtual void setColumnCount(int count)
+diff --git a/tests/auto/qquickpopup/data/releaseAfterExitTransition.qml b/tests/auto/qquickpopup/data/releaseAfterExitTransition.qml
+new file mode 100644
+index 000000000..9e4598b9f
+--- /dev/null
++++ b/tests/auto/qquickpopup/data/releaseAfterExitTransition.qml
+@@ -0,0 +1,78 @@
++/****************************************************************************
++**
++** Copyright (C) 2021 The Qt Company Ltd.
++** Contact: https://www.qt.io/licensing/
++**
++** This file is part of the test suite of the Qt Toolkit.
++**
++** $QT_BEGIN_LICENSE:BSD$
++** Commercial License Usage
++** Licensees holding valid commercial Qt licenses may use this file in
++** accordance with the commercial license agreement provided with the
++** Software or, alternatively, in accordance with the terms contained in
++** a written agreement between you and The Qt Company. For licensing terms
++** and conditions see https://www.qt.io/terms-conditions. For further
++** information use the contact form at https://www.qt.io/contact-us.
++**
++** BSD License Usage
++** Alternatively, you may use this file under the terms of the BSD license
++** as follows:
++**
++** "Redistribution and use in source and binary forms, with or without
++** modification, are permitted provided that the following conditions are
++** met:
++**   * Redistributions of source code must retain the above copyright
++**     notice, this list of conditions and the following disclaimer.
++**   * Redistributions in binary form must reproduce the above copyright
++**     notice, this list of conditions and the following disclaimer in
++**     the documentation and/or other materials provided with the
++**     distribution.
++**   * Neither the name of The Qt Company Ltd nor the names of its
++**     contributors may be used to endorse or promote products derived
++**     from this software without specific prior written permission.
++**
++**
++** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
++** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
++** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
++** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
++** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
++** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
++** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
++** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
++** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
++** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
++** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
++**
++** $QT_END_LICENSE$
++**
++****************************************************************************/
++
++import QtQuick 2.15
++import QtQuick.Controls 2.15
++
++ApplicationWindow {
++    id: window
++    width: 400
++    height: 400
++    title: "releaseAfterExitTransition"
++
++    property alias popup: popup
++    property alias modalPopup: modalPopup
++
++    Popup {
++        id: popup
++        y: parent.height - height
++        width: 50
++        height: 50
++    }
++
++    Popup {
++        id: modalPopup
++        modal: true
++        y: parent.height - height
++        width: 50
++        height: 50
++        exit:  Transition { PauseAnimation { duration: 100 } }
++    }
++}
+diff --git a/tests/auto/qquickpopup/tst_qquickpopup.cpp b/tests/auto/qquickpopup/tst_qquickpopup.cpp
+index 41955d7d0..38936620d 100644
+--- a/tests/auto/qquickpopup/tst_qquickpopup.cpp
++++ b/tests/auto/qquickpopup/tst_qquickpopup.cpp
+@@ -96,6 +96,7 @@ private slots:
+     void tabFence();
+     void invisibleToolTipOpen();
+     void centerInOverlayWithinStackViewItem();
++    void releaseAfterExitTransition();
+ };
+ 
+ void tst_QQuickPopup::initTestCase()
+@@ -1429,6 +1430,34 @@ void tst_QQuickPopup::centerInOverlayWithinStackViewItem()
+     // Shouldn't crash on exit.
+ }
+ 
++
++void tst_QQuickPopup::releaseAfterExitTransition()
++{
++    QQuickApplicationHelper helper(this, "releaseAfterExitTransition.qml");
++    QVERIFY2(helper.ready, helper.failureMessage());
++
++    QQuickWindow *window = helper.window;
++    window->show();
++    QVERIFY(QTest::qWaitForWindowActive(window));
++
++    QQuickOverlay *overlay = QQuickOverlay::overlay(window);
++    QQuickPopup *modalPopup = window->property("modalPopup").value<QQuickPopup *>();
++    QQuickPopup *popup = window->property("popup").value<QQuickPopup *>();
++
++    modalPopup->open();
++    QTRY_VERIFY(modalPopup->isOpened());
++
++    QTest::mousePress(window, Qt::LeftButton, Qt::NoModifier, QPoint(1, 1));
++    // wait until the transition is finished and the overlay hides itself
++    QTRY_VERIFY(!overlay->isVisible());
++    QTest::mouseRelease(window, Qt::LeftButton, Qt::NoModifier, QPoint(1, 1));
++
++    popup->open();
++    QTRY_VERIFY(popup->isOpened());
++    QTest::mouseClick(window, Qt::LeftButton, Qt::NoModifier, QPoint(1, 1));
++    QTRY_VERIFY(!popup->isOpened());
++}
++
+ QTEST_QUICKCONTROLS_MAIN(tst_QQuickPopup)
+ 
+ #include "tst_qquickpopup.moc"

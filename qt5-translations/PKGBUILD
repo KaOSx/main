@@ -6,7 +6,7 @@ pkgname=qt5-translations
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=1
+pkgrel=2
 pkgdesc="A cross-platform application and UI framework, translations"
 arch=('x86_64')
 url='https://www.qt.io/'
@@ -16,12 +16,15 @@ makedepends=('qt5-tools')
 groups=('qt5')
 options=('!libtool')
 _pkgfqn="qttranslations-everywhere-src-${subver}"
-source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
+source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz"
+        'qt_kde.patch')
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
-md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`)
+md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
+         'f9f1f9fe5785f82b293d732f483bcc74')
 
 build() {
     cd $srcdir/$_pkgfqn
+    patch -p1 -i ${srcdir}/qt_kde.patch
 
     /usr/lib/qt5/bin/qmake
     make
@@ -30,7 +33,7 @@ build() {
 package() {
     cd $srcdir/$_pkgfqn
     make INSTALL_ROOT=$pkgdir install
-    
+
     mkdir -p ${pkgdir}/usr/bin
     for i in $(ls ${pkgdir}/usr/lib/qt5/bin); do
         ln -s /usr/lib/qt5/bin/${i} ${pkgdir}/usr/bin/${i}-qt5
