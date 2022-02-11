@@ -1,8 +1,8 @@
 
 pkgname=libsigc++
-pkgver=2.10.7
+pkgver=2.10.8
 _pkgver=2.10
-pkgrel=2
+pkgrel=1
 pkgdesc="Libsigc++ implements a full callback system for use in widget libraries - V2."
 arch=('x86_64')
 url="https://libsigcplusplus.github.io/libsigcplusplus/"
@@ -11,11 +11,11 @@ depends=('gcc-libs')
 makedepends=('meson' 'ninja' 'mm-common')
 options=('!libtool' '!emptydirs')
 source=("https://download.gnome.org/sources/libsigc++/${_pkgver}/libsigc++-${pkgver}.tar.xz")
-sha256sums=('d082a2ce72c750f66b1a415abe3e852df2eae1e8af53010f4ac2ea261a478832')
+sha256sums=('235a40bec7346c7b82b6a8caae0456353dc06e71f14bc414bcc858af1838719a')
 
 build() {
-  mkdir -p bld
-  cd bld
+  mkdir -p build
+  cd build
 
   meson ../${pkgname}-${pkgver} \
     --prefix=/usr \
@@ -26,7 +26,7 @@ build() {
 }
 
 package() {
-  cd bld
+  cd build
 
   DESTDIR=${pkgdir} ninja install
 }
