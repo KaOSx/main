@@ -8,8 +8,8 @@ pkgdesc="Network Management daemon"
 arch=('x86_64')
 license=('GPL')
 url="https://wiki.gnome.org/Projects/NetworkManager"
-depends=('dbus-glib' 'iproute2' 'libnl' 'nss' 'polkit' 'systemd' 'wpa_supplicant' 'ppp' 'dhcpcd'
-         'modemmanager' 'libndp' 'libteam' 'curl' 'iptables' 'bluez' 'iwd' 'mobile-broadband-provider-info') # 'libgudev' no longer needed for 1.8)
+depends=('dbus-glib' 'iproute2' 'libnl' 'nss' 'polkit' 'systemd' 'ppp' 'dhcpcd'
+         'modemmanager' 'libndp' 'libteam' 'curl' 'iptables' 'bluez' 'iwd' 'mobile-broadband-provider-info') # 'libgudev' no longer needed for 1.8)'wpa_supplicant' 
 makedepends=('intltool' 'dhclient' 'gobject-introspection' 'netctl' 'python3-gobject3')
 optdepends=('dhclient: alternative DHCP/DHCPv6 client'
             'dnsmasq: Connection sharing')
@@ -50,7 +50,8 @@ build() {
     --disable-static \
     --enable-more-warnings=no \
     --enable-modify-system \
-    --with-pppd-plugin-dir=/usr/lib/pppd/2.4.8
+    --with-pppd-plugin-dir=/usr/lib/pppd/2.4.8 \
+    --with-config-wifi-backend-default=iwd
 
   make
 }
