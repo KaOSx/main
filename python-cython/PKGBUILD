@@ -1,6 +1,6 @@
 
 pkgname=python3-cython
-pkgver=0.29.27
+pkgver=0.29.28
 pkgrel=1
 arch=('x86_64')
 url="https://cython.org/"
@@ -8,9 +8,9 @@ license=('APACHE')
 pkgdesc="C-Extensions for Python 3"
 depends=('python3')
 makedepends=('python3-setuptools')
-source=("https://github.com/cython/cython/releases/download/${pkgver}/Cython-${pkgver}.tar.gz")
-#source=("https://files.pythonhosted.org/packages/source/C/Cython/Cython-${pkgver}.tar.gz")
-sha256sums=('c6a442504db906dfc13a480e96850cced994ecdc076bcf492c43515b78f70da2')
+#source=("https://github.com/cython/cython/releases/download/${pkgver}/Cython-${pkgver}.tar.gz")
+source=("https://files.pythonhosted.org/packages/source/C/Cython/Cython-${pkgver}.tar.gz")
+sha256sums=('d6fac2342802c30e51426828fe084ff4deb1b3387367cf98976bb2e64b6f8e45')
 
 package() {
   cd Cython-${pkgver}
