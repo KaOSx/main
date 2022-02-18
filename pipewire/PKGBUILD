@@ -1,18 +1,20 @@
 
 pkgname=pipewire
-pkgver=0.3.46
+pkgver=0.3.47
 pkgrel=1
 pkgdesc="Project that aims to greatly improve handling of audio and video under Linux"
 url="https://pipewire.org"
 arch=("x86_64")
 license=('MIT')
-depends=('gst-plugins-base' 'v4l-utils' 'sbc' 'ffmpeg' 'rtkit' 'bluez' 'jack2' 'vulkan-loader' 'lilv'
+depends=('gst-plugins-base' 'v4l-utils' 'sbc' 'ffmpeg' 'rtkit' 'bluez' 'vulkan-loader' 'lilv'
          'libcanberra')
 makedepends=('meson' 'ninja' 'vulkan-headers' 'wireplumber')
+provides=('jack2' 'jack') # 'pulseaudio')
+conflicts=('jack2')
 install=pipewire.install
 source=("https://gitlab.freedesktop.org/pipewire/pipewire/-/archive/${pkgver}/${pkgname}-${pkgver}.tar.bz2"
         "https://github.com/PipeWire/pipewire/commit/37613b67ba52b5ad4e81d7ea38adc04027d9f9e5.diff")
-md5sums=('414b83371b3dcfb31e37423aef94a470'
+md5sums=('80cd7e0e9a1711594dd5caa418a5d85f'
          '560cef2b24700df8d2c84019e1891b66')
 
 prepare() {
@@ -31,7 +33,10 @@ build() {
     -Dman=disabled \
     -Dudevrulesdir=/usr/lib/udev/rules.d \
     -Dsystemd-system-service=enabled \
-    -Dsession-managers=[]
+    -Dsession-managers=[] \
+    -Djack-devel=true \
+    -Djack=disabled \
+    -Dlibjack-path=/usr/lib/jack
   ninja
 }
 

@@ -1,13 +1,13 @@
 # fails with gcc 6.4.0, builds with gcc 6.3.1
 pkgname=('openjdk' 'openjdk-src')
 pkgbase='openjdk'
-_icedtea_release="3.19.0"
+_icedtea_release="3.21.0"
 _icedtea_jdkver="8"
 # ${srcdir}/build/ChangeLog for versions
-_openjdk_build="b10"
-_pkgver="8u292"
+_openjdk_build="b07"
+_pkgver="8u312"
 pkgver="${_pkgver}_${_openjdk_build}_${_icedtea_release}"
-pkgrel=2
+pkgrel=1
 pkgdesc="An open-source implementation of the seventh edition of the Java SE Platform."
 arch=('x86_64')
 url="https://icedtea.classpath.org/"
@@ -18,7 +18,7 @@ makedepends=('java-environment=8' 'apache-ant' 'zip' 'unzip'
              'libpng' 'lcms2' 'freetype2' 'rhino' 'nss' 'libxt' 'pkg-config'
              'libxtst' 'libxp' 'libxrender' 'libxinerama' 'libxcomposite' 'pcsclite') #'giflib'
 
-_hg_url="https://icedtea.wildebeest.org/download/drops/icedtea8/${_icedtea_release}"
+_hg_url="https://icedtea.classpath.org/download/drops/icedtea8/${_icedtea_release}"
 _jvmdir="/usr/lib/jvm/java-8-openjdk"
 
 source=("https://icedtea.classpath.org/download/source/icedtea-${_icedtea_release}.tar.xz"
@@ -35,15 +35,15 @@ source=("https://icedtea.classpath.org/download/source/icedtea-${_icedtea_releas
         'command_path.diff'
         'openjdk.profile.sh'
         'openjdk.profile.csh')
-sha256sums=('eed61e51ba35635b2292a6e67404d5e3f4bf7cc5d69bc1b81f5b69b1d8d1b5b2'
-            '19b87e02b27a7312fa0835660159bee55a9e8867fd0013dc36acc057dc331076'
-            'b9d78eec0ae71332b61e44f71bcf991d3af60663028fdb10bdb1c497cb186f10'
-            '197053d93fc478adf0645577e85feca004b1496a29dc0d98acc256b1c9be80dd'
-            '3bc3dcaa1f9d109ed99139e1108a691964c68ad90375214a841fd1522aa3829c'
-            '0b94950c68153862c315e1aae62de58a95bc9487ea197723bcb435d6c53d3f22'
-            'c9d0f566a2cf9d4150a16b7c68b07ccdeeb317b7d055c56f671a0d3d5afd6bd0'
-            '2451e97fe9b4c3d14859170c9621ce1323075e97f6148890ba3644512f3bd695'
-            'a2417711339f3c1bb3b32612022e331fe090037b11ef98d989c1fab1acebcab9'
+sha256sums=('f83ee85d39f39a304dbd6c79aaeb4fa04257fc2e61031d0a28587a1953ba2459'
+            'ab0bff4445822c5e5741088da0e83a9bc20d059b8a95fcffd5885c03969bbeeb'
+            'c5bb8b86a8d24ca7abde8f6cf15dec18c6e9a5201e4942a7ef117b28c960f54f'
+            '6a1244d4b8c0f78d34e44edb92a96cb127ec4b43847a6d5a176c37f392499993'
+            'eab27c3ad455b68b29fec2f59730d48c97f53699000da21a5e1640b825840385'
+            '499c749aa8dbe120bde899d0712d47e3cebc7d4a0a4b4c9b6afb2b0bdda98b82'
+            'ea3fe2097a0ce02e6781e8a0cc1b923ab52803a527cc34ef686779c04a3e1c21'
+            '495276d1e1e6b3a5a0d257c21b2e6349b000ac083be209a47a01b45894a65d59'
+            '4231a4b534b1c44aaf5e0b51833f0e40f0654dcaa41c6259cf65037eccd427ae'
             '9ad943ceb3dbcdf45d72974fc3667886a7ed65c69ab9abc17be5412827551a7f'
             'b23a0e6b6bd11e8db3c3a7040887bca955a9821fc11bf351e11d97b3e5fde05b'
             '0ad6a9c361176a63537d14faf23c1a8100558f33f4aa222c29d7034a055a384c'

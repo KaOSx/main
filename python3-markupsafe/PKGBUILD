@@ -1,7 +1,7 @@
 
 pkgname=python3-markupsafe
-pkgver=2.0.1
-pkgrel=2
+pkgver=2.1.0
+pkgrel=1
 pkgdesc="Implements a XML/HTML/XHTML Markup safe string for Python"
 arch=('x86_64')
 url="https://pypi.python.org/pypi/MarkupSafe"
@@ -9,11 +9,11 @@ license=('custom')
 depends=('python3')
 makedepends=('python3-setuptools')
 source=("https://pypi.io/packages/source/M/MarkupSafe/MarkupSafe-${pkgver}.tar.gz")
-sha256sums=('594c67807fb16238b30c44bdf74f36c02cdf22d1c8cda91ef8a0ed8dabf5620a')
+sha256sums=('80beaf63ddfbc64a0452b841d8036ca0611e049650e20afcb882f5d3c266d65f')
 
 check() {
   cd ${srcdir}/MarkupSafe-${pkgver}
-  
+
   python3 setup.py test
 }
 
