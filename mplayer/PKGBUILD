@@ -1,11 +1,11 @@
 
 pkgname=mplayer
 pkgver=38304
-pkgrel=2
+pkgrel=3
 pkgdesc="Multimedia player."
 arch=('x86_64')
 depends=('a52dec' 'aalib' 'alsa-lib' 'bzip2' 'enca' 'faad2'
-         'fontconfig' 'freetype2' 'fribidi' 'gcc-libs' 'giflib' 'glibc' 'gsm' 'jack' 'ladspa' 'lame'
+         'fontconfig' 'freetype2' 'fribidi' 'gcc-libs' 'giflib' 'glibc' 'gsm' 'pipewire' 'ladspa' 'lame'
          'libass' 'libbluray' 'libcaca' 'libcdio' 'libcdio-paranoia' 'libdca' 'libdv' 'libdvdnav' 'libglvnd' 
          'libjpeg-turbo' 'libmad' 'libmng' 'libmpeg2' 'libogg' 'libpng'
          'pulseaudio' 'libtheora' 'libvdpau' 'libvpx' 'libx11' 'libxext' 'libxinerama'
@@ -17,7 +17,7 @@ license=('GPL2')
 url="http://www.mplayerhq.hu/"
 groups=('multimedia')
 backup=('etc/mplayer/codecs.conf' 'etc/mplayer/input.conf')
-source=("http://sourceforge.net/projects/kaosx/files/sources/${pkgname}/${pkgname}-${pkgver}.tar.xz"
+source=("https://sourceforge.net/projects/kaosx/files/sources/${pkgname}/${pkgname}-${pkgver}.tar.xz"
         'mplayer.desktop'
         'mplayer.png'
         'cdio-includes.patch')
@@ -66,15 +66,15 @@ build() {
 
 package() {
   cd ${pkgname}               
-  
+
   make DESTDIR=${pkgdir} install
-  
+
   install -Dm644 etc/{codecs.conf,input.conf,example.conf} ${pkgdir}/etc/mplayer/               
-  
+
   install -dm755 ${pkgdir}/usr/share/mplayer/           
   ln -s /usr/share/fonts/TTF/DejaVuSans.ttf ${pkgdir}/usr/share/mplayer/subfont.ttf             
   rm -rf ${pkgdir}/usr/share/mplayer/font               
-  
+
   # Desktop Integration.
   install -Dm644 ${srcdir}/mplayer.desktop ${pkgdir}/usr/share/applications/mplayer.desktop             
   install -Dm644 ${srcdir}/mplayer.png ${pkgdir}/usr/share/pixmaps/mplayer.png
