@@ -1,6 +1,6 @@
  
 pkgname=tpm2-tss
-pkgver=3.1.0
+pkgver=3.2.0
 pkgrel=1
 pkgdesc="OSS implementation of the TCG Trusted Platform Module 2.0 Software Stack (TSS2)"
 arch=('x86_64')
@@ -8,11 +8,11 @@ url="https://tpm2-software.github.io/"
 license=('BSD')
 depends=('openssl' 'json-c')
 source=("https://github.com/tpm2-software/tpm2-tss/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.gz")
-md5sums=('4d04cf52fff4ee061bb3f7b4f4ea03b7')
+md5sums=('0d60d0df3fd0daae66881a3022281323')
 
 build() {
     cd ${pkgname}-${pkgver}
-    
+
     ./configure --prefix=/usr \
         --with-udevrulesprefix=60- \
         --localstatedir=/var \
@@ -27,6 +27,6 @@ build() {
 package() {
     cd ${pkgname}-${pkgver}
     make DESTDIR=${pkgdir} install
-    
+
     install -Dm644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}/
 }
