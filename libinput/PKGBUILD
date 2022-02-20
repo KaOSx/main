@@ -1,7 +1,7 @@
 
 pkgname=libinput
-pkgver=1.19.3
-pkgrel=2
+pkgver=1.20.0
+pkgrel=1
 pkgdesc="Library to handle input devices in Wayland compositors and to provide a generic X.Org input driver"
 arch=('x86_64')
 url="https://www.freedesktop.org/wiki/Software/libinput/"
@@ -9,9 +9,9 @@ license=('custom:X11')
 depends=('mtdev' 'systemd' 'libevdev' 'libwacom')
 makedepends=('meson' 'ninja')
 options=('!libtool')
-source=("https://freedesktop.org/software/libinput/${pkgname}-${pkgver}.tar.xz"
+source=("https://gitlab.freedesktop.org/libinput/libinput/-/archive/${pkgver}/${pkgname}-${pkgver}.tar.bz2"
         "https://gitlab.freedesktop.org/libinput/libinput/commit/7c51c881dc72827ca50ae9eea3d123eef9cb4a66.diff")
-sha256sums=('3cae78ccde19d7d0f387e58bc734d4d17ab5f6426f54a9e8b728c90b17baa068'
+sha256sums=('6c1f97892a7d599f97349e5e7c1239901fe00edcd4f6289f410034d5dc06cc85'
             '4d2a810c1c42541303de8ad8b75ee4c89081718be8b1ac7dcf8dfb28ada672e9')
 
 prepare() {
@@ -23,8 +23,6 @@ prepare() {
 build() {
     mkdir -p build
     cd build
-    
-    export LANG=en_US.UTF-8
 
     meson ../${pkgname}-${pkgver} \
         --prefix=/usr \
@@ -33,8 +31,7 @@ build() {
         -Dtests=false \
         -Ddebug-gui=false \
         -Ddocumentation=false
-    ninja    
-   
+    ninja
 }
 
 package() {
