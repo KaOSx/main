@@ -3,17 +3,17 @@ pkgname=pulseaudio
 pkgdesc="A featureful, general-purpose sound server"
 pkgver=15.0
 _commit=613c2994af42ff08fe0a9d0e4bfce42ef781e8f6
-pkgrel=3
+pkgrel=4
 arch=('x86_64')
 url="https://www.freedesktop.org/wiki/Software/PulseAudio/"
 license=('GPL' 'LGPL')
 depends=('dbus' 'xcb-util' 'libasyncns' 'libcap' 'libxtst' 'libsm' 'libsndfile' 
          'rtkit' 'speex' 'tdb' 'fftw' 'orc' 'webrtc-audio-processing' 'systemd'
          'sbc' 'libsoxr' 'openssl' 'bluez' 'gst-plugins-base')
-makedepends=('attr' 'libltdl' 'avahi' 'intltool' 'pipewire' 'pkgconfig' 'sh' 'meson'
+makedepends=('attr' 'libltdl' 'avahi' 'intltool' 'jack2' 'pkgconfig' 'sh' 'meson'
              'ninja' 'check')
 optdepends=('avahi: zeroconf support'
-            'pipewire: jack support')
+            'jack2: jack support')
 provides=('pulseaudio-alsa')
 conflicts=('pulseaudio-alsa')
 replaces=('pulseaudio-alsa')

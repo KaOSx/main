@@ -1,12 +1,12 @@
 
 pkgname=dssi
 pkgver=1.1.1
-pkgrel=6
+pkgrel=7
 pkgdesc="API for audio plugins, with particular application for software synthesis plugins with native user interfaces."
 arch=("x86_64")
 url="http://dssi.sourceforge.net/"
 license=('LGPL' 'BSD' 'custom')
-depends=('gcc-libs' 'liblo' 'pipewire' 'libsamplerate' 'libx11')
+depends=('gcc-libs' 'liblo' 'jack2' 'libsamplerate' 'libx11')
 makedepends=('ladspa' 'pkgconfig')
 options=('!libtool')
 source=("https://downloads.sourceforge.net/dssi/${pkgname}-${pkgver}.tar.gz"
