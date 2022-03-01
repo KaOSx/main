@@ -18,10 +18,10 @@ build() {
   cd ${pkgname}-${pkgver}
 
   ./configure --prefix=/usr \
-              --sysconfdir=/etc \
-              --with-drivedbdir \
-              --with-systemdsystemunitdir=/usr/lib/systemd/system \
-              --with-systemdenvfile=/etc/conf.d/smartd
+    --sysconfdir=/etc \
+    --with-drivedbdir \
+    --with-systemdsystemunitdir=/usr/lib/systemd/system \
+    --with-systemdenvfile=/etc/conf.d/smartd
   make
 }
 
