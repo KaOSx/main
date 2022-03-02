@@ -3,7 +3,7 @@
 pkgname=gdal
 pkgver=3.4.1
 _pkgver=3.4.1
-pkgrel=3
+pkgrel=4
 pkgdesc="A translator library for raster geospatial data formats"
 arch=('x86_64')
 url="https://www.gdal.org/"
@@ -18,14 +18,14 @@ replaces=('python3-gdal')
 conflicts=('python3-gdal')
 source=("https://download.osgeo.org/gdal/${pkgver}/${pkgname}-${pkgver}.tar.xz"
 #source=("https://github.com/OSGeo/gdal/archive/v${_pkgver}.tar.gz"
-        "https://github.com/OSGeo/gdal/commit/9c09870e374ca21d558101af3f4c09a6164fdfc3.diff")
+        "https://github.com/OSGeo/gdal/commit/17e98757e78969a199d1d6318f53d088da192191.diff")
 md5sums=('6c42056c81abf84edcb2022b53fb2974'
-         '99542f856ea646fd386601305942b948')
+         'f41a77dd0955eaf52bd99d555ad4e076')
 
 prepare() {
   cd ${pkgname}-${_pkgver}
-  # poppler 20.10.0 needed
-  #patch -p0 -i ${srcdir}/9c09870e374ca21d558101af3f4c09a6164fdfc3.diff
+  # poppler 22.03.0 needed
+  patch -p1 -i ${srcdir}/17e98757e78969a199d1d6318f53d088da192191.diff
 }
 
 build() {
