@@ -6,7 +6,7 @@ pkgname=qt5-translations
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=2
+pkgrel=1
 pkgdesc="A cross-platform application and UI framework, translations"
 arch=('x86_64')
 url='https://www.qt.io/'
@@ -24,7 +24,7 @@ md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
 
 build() {
     cd $srcdir/$_pkgfqn
-    patch -p1 -i ${srcdir}/qt_kde.patch
+    #patch -p1 -i ${srcdir}/qt_kde.patch
 
     /usr/lib/qt5/bin/qmake
     make

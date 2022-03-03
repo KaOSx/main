@@ -6,7 +6,7 @@ pkgname=qt5-base
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=15
+pkgrel=11
 pkgdesc="A cross-platform application and UI framework"
 arch=('x86_64')
 url='https://www.qt.io/'
@@ -20,7 +20,8 @@ makedepends=('postgresql-libs' 'cups' 'gperf' 'ruby' 'pulseaudio' 'vulkan-header
 optdepends=('postgresql-libs: PostgreSQL driver')
 groups=('qt5')
 options=('!libtool' 'debug')
-_pkgfqn="qtbase-everywhere-src-${subver}"
+__pkgfqn="qtbase-everywhere-src-${subver}"
+_pkgfqn="qtbase-everywhere-opensource-src-${subver}"
 source=("${_qtmirror}/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz"
         'qt_kde.patch')
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz")
@@ -28,10 +29,10 @@ md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
          '79ee2397c0f7821bf8b4ff056e70180f')
 
 build() {
-    cd ${srcdir}/${_pkgfqn}
+    cd ${srcdir}/${__pkgfqn}
     
     # https://community.kde.org/Qt5PatchCollection
-    patch -p1 -i ${srcdir}/qt_kde.patch
+    #patch -p1 -i ${srcdir}/qt_kde.patch
     
     #sed -i 's|libs": "-lmysqlclient_r"|libs": "-lmariadb"|' src/sql/configure.json
         
@@ -72,7 +73,7 @@ build() {
 }
 
 package() {
-    cd ${srcdir}/${_pkgfqn}
+    cd ${srcdir}/${__pkgfqn}
     make INSTALL_ROOT=$pkgdir install
 	
     cd ${srcdir}
