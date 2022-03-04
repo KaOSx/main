@@ -1,9 +1,9 @@
 
 pkgname=shiboken2
 _pkgname=pyside-setup-opensource-src
-pkgver=5.15.2.1
-_pkgver=5.15.2
-pkgrel=2
+pkgver=5.15.3
+_pkgver=5.15.3
+pkgrel=1
 pkgdesc="Plugin (front-end) for Generator Runner. It generates bindings for C++ libraries using CPython source code"
 arch=('x86_64')
 license=('LGPL')
@@ -11,8 +11,8 @@ url="http://code.qt.io/cgit/pyside/shiboken.git/tree/README.md"
 depends=('python3' 'qt5-xmlpatterns' 'libxslt' 'clang')
 makedepends=('cmake' 'python3-sphinx')
 #source=("git://code.qt.io/pyside/pyside-setup.git")
-source=("https://download.qt.io/official_releases/QtForPython/${pkgname}/PySide2-${pkgver}-src/${_pkgname}-${pkgver}.tar.gz")
-md5sums=('6d89ef7a160fbb895db56e77cee81735')
+source=("https://download.qt.io/official_releases/QtForPython/${pkgname}/PySide2-${pkgver}-src/${_pkgname}-${pkgver}.tar.xz")
+sha256sums=('69481d137d80ed42461cbdb06cee06477f0a8cbe235d61b56472a66ed7982093')
 
 build() {
   cmake -B build -S ${_pkgname}-${_pkgver}/sources/shiboken2 \
