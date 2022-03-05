@@ -1,7 +1,7 @@
 
 pkgbase=gtk3
 pkgname=('gtk3' 'gtk-update-icon-cache')
-pkgver=3.24.32
+pkgver=3.24.33
 _pkgver=3.24
 pkgrel=1
 arch=('x86_64')
@@ -16,7 +16,7 @@ source=("https://ftp.gnome.org/pub/gnome/sources/gtk+/${_pkgver}/gtk+-${pkgver}.
         'gtk-update-icon-cache.hook'
         'gtk-update-icon-cache.script'
         'gcc11.diff')
-sha256sums=('a667e13f8f86ea44455b0443f4870bf23f53f6707c1df436eb2b516c62496bff'
+sha256sums=('588b06522e25d1579e989b6f9d8a1bdbf2fe13cde01a04e904ff346a225e7801'
             '2d435e3bec8b79b533f00f6d04decb1d7c299c6e89b5b175f20be0459f003fe8'
             'bbe06e1b4e1ad5d61a4e703445a2bb93c6be918964d6dd76c0420c6667fa11eb'
             'f62d5e7f7ae9694021ba87e232dbcd3ba402987132708baff282b34c508c1b53')
@@ -24,7 +24,7 @@ sha256sums=('a667e13f8f86ea44455b0443f4870bf23f53f6707c1df436eb2b516c62496bff'
 prepare() {
   cd gtk+-${pkgver}
 
-  patch -p1 -i ${srcdir}/gcc11.diff
+  #patch -p1 -i ${srcdir}/gcc11.diff
 }
 
 build() {

@@ -14,22 +14,23 @@ license=('GPL3' 'LGPL')
 depends=('qtwebengine' 'qt5-location')
 groups=('qt5')
 options=('!libtool')
-_pkgfqn="qtwebview-everywhere-src-${subver}"
+_pkgfqn="qtwebview-everywhere-opensource-src-${subver}"
+__pkgfqn="qtwebview-everywhere-src-${subver}"
 source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`)
 
 build() {
-    cd $srcdir/$_pkgfqn
+    cd ${__pkgfqn}
 
     /usr/lib/qt5/bin/qmake
     make
 }
 
 package() {
-    cd $srcdir/$_pkgfqn
+    cd ${__pkgfqn}
     make INSTALL_ROOT=$pkgdir install
-    
+
     install -D -m644 LICENSE.LGPLv3 \
     ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.LGPLv3
 }
