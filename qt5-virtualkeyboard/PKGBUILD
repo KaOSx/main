@@ -14,7 +14,8 @@ license=('GPL3')
 depends=('hunspell' 'qt5-declarative' 'qt5-svg' 'qt5-quickcontrols2')
 groups=('qt5')
 options=('!libtool')
-_pkgfqn="qtvirtualkeyboard-everywhere-src-${subver}"
+_pkgfqn="qtvirtualkeyboard-everywhere-opensource-src-${subver}"
+__pkgfqn="qtvirtualkeyboard-everywhere-src-${subver}"
 source=("${_qtmirror}/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz"
         'virtualkeyboard.desktop')
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
@@ -22,7 +23,7 @@ md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
          'd5f233aa149751819c2e8dfcd2fc13e2')
 
 build() {
-    cd $srcdir/$_pkgfqn
+    cd ${__pkgfqn}
     # Security warning KDE ml
     #patch -p1 -i ${srcdir}/c7a94110987672308ed04b40fd8ed207d1c8d93b.diff
 
@@ -35,9 +36,9 @@ build() {
 }
 
 package() {
-    cd $srcdir/$_pkgfqn
+    cd ${__pkgfqn}
     make INSTALL_ROOT=$pkgdir install
-    
+
     install -D -m644 LICENSE.GPL3 ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.GPL3
     # install a QML example
     install -D -m755 examples/virtualkeyboard/basic/basic ${pkgdir}/usr/bin/basic

@@ -28,7 +28,7 @@ build() {
 }
 
 package() {
-    cd ${_pkgfqn}
+    cd ${__pkgfqn}
     make INSTALL_ROOT=$pkgdir install
 
     mkdir -p ${pkgdir}/usr/bin

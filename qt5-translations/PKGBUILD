@@ -15,23 +15,24 @@ depends=('qt5-declarative' 'libtiff' 'libmng')
 makedepends=('qt5-tools')
 groups=('qt5')
 options=('!libtool')
-_pkgfqn="qttranslations-everywhere-src-${subver}"
+_pkgfqn="qttranslations-everywhere-opensource-src-${subver}"
+__pkgfqn="qttranslations-everywhere-src-${subver}"
 source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz"
         'qt_kde.patch')
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
-         'f9f1f9fe5785f82b293d732f483bcc74')
+         'ab4cafa4d9f6eb4b14f7c2887709d4ec')
 
 build() {
-    cd $srcdir/$_pkgfqn
-    #patch -p1 -i ${srcdir}/qt_kde.patch
+    cd ${__pkgfqn}
+    patch -p1 -i ${srcdir}/qt_kde.patch
 
     /usr/lib/qt5/bin/qmake
     make
 }
 
 package() {
-    cd $srcdir/$_pkgfqn
+    cd ${__pkgfqn}
     make INSTALL_ROOT=$pkgdir install
 
     mkdir -p ${pkgdir}/usr/bin

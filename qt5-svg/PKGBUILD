@@ -14,23 +14,24 @@ license=('GPL3' 'LGPL')
 depends=('qt5-declarative')
 groups=('qt5')
 options=('!libtool')
-_pkgfqn="qtsvg-everywhere-src-${subver}"
+_pkgfqn="qtsvg-everywhere-opensource-src-${subver}"
+__pkgfqn="qtsvg-everywhere-src-${subver}"
 source=("${_qtmirror}/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz"
         'qt_kde.patch')
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
-         '44e9c1fd80397e100649cc5a0b2d8376')
+         '0f83104557f3e3af3433f515599a6927')
 
 build() {
-    cd ${_pkgfqn}
-    #patch -p1 -i ${srcdir}/qt_kde.patch
+    cd ${__pkgfqn}
+    patch -p1 -i ${srcdir}/qt_kde.patch
 
     /usr/lib/qt5/bin/qmake
     make
 }
 
 package() {
-    cd ${_pkgfqn}
+    cd ${__pkgfqn}
     make INSTALL_ROOT=${pkgdir} install
 
     mkdir -p ${pkgdir}/usr/bin

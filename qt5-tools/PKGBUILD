@@ -17,7 +17,8 @@ makedepends=('clang' 'vulkan-headers' 'qtwebkit-tp')
 optdepends=('qt5-doc: offline help documentation')
 groups=('qt5')
 options=('!libtool')
-_pkgfqn="qttools-everywhere-src-${subver}"
+_pkgfqn="qttools-everywhere-opensource-src-${subver}"
+__pkgfqn="qttools-everywhere-src-${subver}"
 source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz"
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz"
         'assistant.desktop'
@@ -28,18 +29,18 @@ md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
          '892d3632bdcd9a22f191aa8f28a3c0e1'
          '208921efc9e4c11fae762e9580ca23aa'
          '59cbeef3e6090dcb7d2a7d32cd62ea08'
-         '643c5f28e42352a6e815d83f3ef49be8')
+         '406918ede3058ba1a07d289d834515e3')
 
 build() {
-    cd ${srcdir}/${_pkgfqn}
-    #patch -p1 -i ${srcdir}/qt_kde.patch
+    cd ${__pkgfqn}
+    patch -p1 -i ${srcdir}/qt_kde.patch
 
     /usr/lib/qt5/bin/qmake # INCLUDEPATH="/usr/include/QtWebKit /usr/include/QtWebKitWidgets"
     make
 }
 
 package() {
-    cd ${srcdir}/${_pkgfqn}
+    cd ${__pkgfqn}
     make INSTALL_ROOT=$pkgdir install
 
     install -d ${pkgdir}/usr/share/applications
