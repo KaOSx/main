@@ -14,23 +14,24 @@ license=('GPL3' 'LGPL' 'FDL' 'custom')
 depends=('qt5-base' 'speech-dispatcher' 'qt5-multimedia')
 conflicts=('qtspeech')
 replaces=('qtspeech')
-_pkgfqn="qtspeech-everywhere-src-${subver}"
+_pkgfqn="qtspeech-everywhere-opensource-src-${subver}"
+__pkgfqn="qtspeech-everywhere-src-${subver}"
 source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`)
 
 build() {
-    cd ${_pkgfqn} 
+    cd ${__pkgfqn} 
     mkdir build   
     cd build 
-  
+
     /usr/lib/qt5/bin/qmake ../qtspeech.pro
-    make -j1
+    make -j4
 }
 
 package() {
-  cd ${_pkgfqn}/build
-  
+  cd ${__pkgfqn}/build
+
   make INSTALL_ROOT=${pkgdir} install
-  
+
   install -Dm644 ../LICENSE.LGPLv3 ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.LGPLv3
 }

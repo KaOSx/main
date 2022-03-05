@@ -18,15 +18,16 @@ provides=('qtwayland')
 conflicts=('qtwayland')
 replaces=('qtwayland')
 options=('debug')
-_pkgfqn="qtwayland-everywhere-src-${subver}"
+_pkgfqn="qtwayland-everywhere-opensource-src-${subver}"
+__pkgfqn="qtwayland-everywhere-src-${subver}"
 source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz"
         'qt_kde.patch')
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
-         'dc659611af7eee738afa63106160c7da')
+         '68e09337e2f3c9584163ca37bab4162e')
 
 build() {
-    cd ${_pkgfqn}
+    cd ${__pkgfqn}
     #patch -p1 -i ${srcdir}/qt_kde.patch
 
     /usr/lib/qt5/bin/qmake
@@ -34,7 +35,7 @@ build() {
 }
 
 package() {
-    cd ${_pkgfqn}
+    cd ${__pkgfqn}
     make INSTALL_ROOT=$pkgdir install
 
     install -D -m644 LICENSE.LGPL3 ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.LGPL3

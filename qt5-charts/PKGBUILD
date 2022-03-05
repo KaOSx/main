@@ -14,22 +14,23 @@ license=('GPL3')
 depends=('qt5-declarative')
 groups=('qt5')
 options=('!libtool')
-_pkgfqn="qtcharts-everywhere-src-${subver}"
+_pkgfqn="qtcharts-everywhere-opensource-src-${subver}"
+__pkgfqn="qtcharts-everywhere-src-${subver}"
 source=("${_qtmirror}/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz")
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`)
 
 build() {
-    cd ${_pkgfqn}
+    cd ${__pkgfqn}
 
     /usr/lib/qt5/bin/qmake
     make
 }
 
 package() {
-    cd ${_pkgfqn}
+    cd ${__pkgfqn}
     make INSTALL_ROOT=${pkgdir} install
-    
+
     install -D -m644 LICENSE.GPL3 \
     ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.GPL3
 }
