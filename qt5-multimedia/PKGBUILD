@@ -15,20 +15,21 @@ depends=('qt5-declarative' 'openal' 'libxslt' 'libxcomposite' 'gst-plugins-base'
          'gst-plugins-good' 'gst-plugins-bad' 'pulseaudio')
 options=('!libtool')
 groups=('qt5')
-_pkgfqn="qtmultimedia-everywhere-src-${subver}"
+_pkgfqn="qtmultimedia-everywhere-opensource-src-${subver}"
+__pkgfqn="qtmultimedia-everywhere-src-${subver}"
 source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`)
 
 build() {
-    cd $srcdir/$_pkgfqn
+    cd ${__pkgfqn}
 
     /usr/lib/qt5/bin/qmake GST_VERSION=1.0
     make
 }
 
 package() {
-    cd $srcdir/$_pkgfqn
+    cd ${__pkgfqn}
     make INSTALL_ROOT=$pkgdir install
 
     mkdir -p ${pkgdir}/usr/bin

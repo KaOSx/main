@@ -14,13 +14,14 @@ license=('GPL3' 'LGPL')
 depends=('qt5-declarative')
 groups=('qt5')
 options=('!libtool')
-_pkgfqn="qtxmlpatterns-everywhere-src-${subver}"
+_pkgfqn="qtxmlpatterns-everywhere-opensource-src-${subver}"
+__pkgfqn="qtxmlpatterns-everywhere-src-${subver}"
 source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`)
 
 build() {
-    cd $srcdir/$_pkgfqn
+    cd ${__pkgfqn}
 
     /usr/lib/qt5/bin/qmake
     make
@@ -28,7 +29,7 @@ build() {
 }
 
 package() {
-    cd $srcdir/$_pkgfqn
+    cd ${__pkgfqn}
     make INSTALL_ROOT=$pkgdir install
     #make INSTALL_ROOT=$pkgdir install_docs
     

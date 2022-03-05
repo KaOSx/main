@@ -15,16 +15,17 @@ depends=('qt5-base' 'mesa')
 makedepends=('python3' 'vulkan-headers')
 options=('!libtool' 'debug')
 groups=('qt5')
-_pkgfqn="qtdeclarative-everywhere-src-${subver}"
+__pkgfqn="qtdeclarative-everywhere-src-${subver}"
+_pkgfqn="qtdeclarative-everywhere-opensource-src-${subver}"
 source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz"
         'qt_kde.patch')
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
-         '5e34777301ff963f6335b6da391d06d0')
+         '4ebc95c584be9350a9cbd2e02f6d8418')
 
 build() {
-    cd $srcdir/$_pkgfqn
-    #patch -p1 -i ${srcdir}/qt_kde.patch
+    cd ${__pkgfqn}
+    patch -p1 -i ${srcdir}/qt_kde.patch
 
     /usr/lib/qt5/bin/qmake
     make
@@ -32,8 +33,8 @@ build() {
 }
 
 package() {
-    cd $srcdir/$_pkgfqn
-    make INSTALL_ROOT=$pkgdir install
+    cd ${__pkgfqn}
+    make INSTALL_ROOT=${pkgdir} install
 
     mkdir -p ${pkgdir}/usr/bin
     for i in $(ls ${pkgdir}/usr/lib/qt5/bin); do

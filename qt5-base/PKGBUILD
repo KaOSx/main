@@ -26,13 +26,13 @@ source=("${_qtmirror}/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz"
         'qt_kde.patch')
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
-         '79ee2397c0f7821bf8b4ff056e70180f')
+         '538fe081b132ac9a52c559e104d9dcaa')
 
 build() {
     cd ${srcdir}/${__pkgfqn}
     
     # https://community.kde.org/Qt5PatchCollection
-    #patch -p1 -i ${srcdir}/qt_kde.patch
+    patch -p1 -i ${srcdir}/qt_kde.patch
     
     #sed -i 's|libs": "-lmysqlclient_r"|libs": "-lmariadb"|' src/sql/configure.json
         
@@ -77,7 +77,7 @@ package() {
     make INSTALL_ROOT=$pkgdir install
 	
     cd ${srcdir}
-    install -D -m644 ${_pkgfqn}/LICENSE* -t ${pkgdir}/usr/share/licenses/${pkgname}
+    install -D -m644 ${__pkgfqn}/LICENSE* -t ${pkgdir}/usr/share/licenses/${pkgname}
     
     mkdir -p ${pkgdir}/usr/bin
     for i in $(ls ${pkgdir}/usr/lib/qt5/bin); do

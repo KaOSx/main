@@ -15,27 +15,28 @@ depends=('qt5-declarative')
 makedepends=('vulkan-headers')
 groups=('qt5')
 options=('!libtool')
-_pkgfqn="qt3d-everywhere-src-${subver}"
+_pkgfqn="qt3d-everywhere-opensource-src-${subver}"
+__pkgfqn="qt3d-everywhere-src-${subver}"
 source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`)
 
 build() {
-    cd $srcdir/$_pkgfqn
+    cd ${__pkgfqn}
 
     /usr/lib/qt5/bin/qmake
     make
 }
 
 package() {
-    cd $srcdir/$_pkgfqn
+    cd ${__pkgfqn}
     make INSTALL_ROOT=$pkgdir install
-    
+
     mkdir -p ${pkgdir}/usr/bin
     for i in $(ls ${pkgdir}/usr/lib/qt5/bin); do
         ln -s /usr/lib/qt5/bin/${i} ${pkgdir}/usr/bin/${i}-qt5
     done
-    
+
     install -D -m644 LICENSE.LGPLv3 \
     ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.LGPLv3
 }
