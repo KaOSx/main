@@ -1,8 +1,8 @@
 
 pkgname=fontforge
-pkgver=20201107
-_pkgver=20201107
-pkgrel=2
+pkgver=20220308
+_pkgver=20220308
+pkgrel=1
 pkgdesc="An outline and bitmap font editor"
 arch=('x86_64')
 url="https://fontforge.github.io/"
@@ -13,15 +13,15 @@ makedepends=('cmake')
 options=('!libtool' '!makeflags')
 source=("https://github.com/fontforge/fontforge/releases/download/${_pkgver}/fontforge-${_pkgver}.tar.xz"
         'https://fontforge.github.io/cidmaps.tgz')
-md5sums=('efc0b3c79ba576133de70d67ccadcf24'
+md5sums=('aca35e33415ad41552ef7c98edc3ca5f'
          '063691163e592515b31514515bb3ce8c')
+
 build() {
   cmake -B build -S ${pkgname}-${pkgver} \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DENABLE_DOCS=OFF \
     -DENABLE_X11=ON \
-    -DENABLE_LIBUNINAMESLIST=OFF \
     -DENABLE_LIBSPIRO=OFF \
     -DENABLE_FONTFORGE_EXTRAS=ON \
     -DENABLE_MAINTAINER_TOOLS=ON

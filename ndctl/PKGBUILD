@@ -1,26 +1,25 @@
  
 pkgname=ndctl
-pkgver=72.1
+pkgver=73
 pkgrel=1
 pkgdesc='Utility library for managing the libnvdimm (non-volatile memory device) sub-system in the Linux kernel'
 arch=('x86_64')
 url="https://github.com/pmem/ndctl"
 license=('GPLv2')
 depends=('json-c' 'systemd' 'iniparser')
-makedepends=('asciidoc' 'xmlto' 'bash-completion')
+makedepends=('asciidoctor' 'xmlto' 'bash-completion' 'meson' 'ninja')
 source=("https://github.com/pmem/ndctl/archive/v${pkgver}.tar.gz")
-md5sums=('faa0fa043dbd922d13ecb6f31b00e3b2')
+md5sums=('0c9f6f8c0bcc29ed7fcae3b1df7f61d6')
 
 build() {
-  cd ${pkgname}-${pkgver}
-  sed -e "s|<iniparser/iniparser.h>|<iniparser.h>|" -i util/parse-configs.c
+  mkdir -p build
+  cd build
 
-  ./autogen.sh
-  ./configure --prefix=/usr \
-    --sysconfdir=/etc \
-    --libdir=/usr/lib \
-    --disable-asciidoctor
-  make
+  meson ../${pkgname}-${pkgver} \
+    --prefix=/usr \
+    --buildtype=release \
+    -Dasciidoctor=enabled
+  ninja
 }
 
 # needs nfit_test.ko to run any tests, disable for now
@@ -31,7 +30,9 @@ build() {
 #}
 
 package() {
-  cd ${pkgname}-${pkgver}
+  cd build
 
-  make DESTDIR=${pkgdir} install
+  DESTDIR=${pkgdir} ninja install
 }
+
+
