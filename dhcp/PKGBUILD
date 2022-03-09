@@ -1,8 +1,8 @@
 
 pkgbase=dhcp
 pkgname=('dhcp' 'dhclient')
-pkgver=4.4.2.P1
-_pkgver=4.4.2-P1
+pkgver=4.4.3
+_pkgver=4.4.3
 pkgrel=1
 arch=('x86_64')
 license=('MPL 2.0.')
@@ -12,7 +12,7 @@ source=("https://ftp.isc.org/isc/dhcp/${_pkgver}/${pkgbase}-${_pkgver}.tar.gz"
         'dhcpd4.service'
         'dhcpd6.service'
         "https://gitlab.isc.org/isc-projects/dhcp/-/commit/6c7e61578b1b449272dbb40dd8b98d03dad8a57a.diff")
-md5sums=('3089a1ebd20a802ec0870ae337d43907'
+md5sums=('9076af4cc1293dde5a7c6cae7de6ab45'
          '7045e63a5d294c761ce306084eec2c67'
          'a2ebf4460c049cbee3e49cb26a475f68'
          'eef25d700f3f054cf05ad3d786dc0f28')
@@ -23,16 +23,14 @@ build() {
   # Define _GNU_SOURCE to fix IPV6.
   sed '/^CFLAGS="$CFLAGS/ s/INGS"/INGS -D_GNU_SOURCE"/' -i configure
   # use patches from LFS http://www.linuxfromscratch.org/blfs/view/cvs/basicnet/dhcp.html
-  #patch -p1 -i ${srcdir}/dhcp-${_pkgver}-missing_ipv6-1.patch
-  # needed for GCC 10 & up
-  patch -p1 -i ${srcdir}/6c7e61578b1b449272dbb40dd8b98d03dad8a57a.diff
+  #patch -p1 -i ${srcdir}/6c7e61578b1b449272dbb40dd8b98d03dad8a57a.diff
 
   ./configure --prefix=/usr \
-              --sysconfdir=/etc \
-              --with-srv-lease-file=/var/state/dhcp/dhcpd.leases \
-              --with-srv6-lease-file=/var/state/dhcp/dhcpd6.leases \
-              --with-cli-lease-file=/var/state/dhclient/dhclient.leases \
-              --with-cli6-lease-file=/var/state/dhclient/dhclient6.leases
+    --sysconfdir=/etc \
+    --with-srv-lease-file=/var/state/dhcp/dhcpd.leases \
+    --with-srv6-lease-file=/var/state/dhcp/dhcpd6.leases \
+    --with-cli-lease-file=/var/state/dhclient/dhclient.leases \
+    --with-cli6-lease-file=/var/state/dhclient/dhclient6.leases
 
   make -j1
 }
@@ -41,7 +39,7 @@ package_dhcp() {
   pkgdesc="A DHCP server, client, and relay agent"
   backup=('etc/dhcpd.conf')
   install=dhcp.install
-  
+
   cd ${pkgname}-${_pkgver}
   make DESTDIR=${pkgdir} install
 
@@ -55,7 +53,7 @@ package_dhcp() {
   
   # move back to config. This file is in backup array, so pacman will not overwrite a changed config.
   mv ${pkgdir}/etc/dhcpd.conf.example ${pkgdir}/etc/dhcpd.conf
-  
+
   # Remove dhclient
   make -C client DESTDIR=${pkgdir} uninstall 
 
@@ -66,7 +64,7 @@ package_dhclient() {
   _pkgname=dhcp
   pkgdesc="dhclient is standalone client from the dhcp package"
   depends=('bash' 'iproute2')
-  
+
   cd ${_pkgname}-${_pkgver}
   make -C client DESTDIR=${pkgdir} install 
 
