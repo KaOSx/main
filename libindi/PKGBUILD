@@ -1,7 +1,7 @@
 
 pkgname=libindi
 _pkgname=indi
-pkgver=1.9.5
+pkgver=1.9.5.1
 _pkgver=1.9.5
 pkgrel=1
 pkgdesc="Interface control protocol providing backend driver support and
@@ -14,7 +14,7 @@ depends=('gcc-libs' 'zlib' 'libnova' 'cfitsio' 'libusb' 'boost-libs' 'libjpeg-tu
 makedepends=('boost' 'cmake' 'googletest')
 source=("https://github.com/indilib/indi/archive/v${pkgver}.tar.gz")
 options=('!libtool')
-md5sums=('a0e39c94ba2ddc499d1c6f8d53d3e748')
+md5sums=('e891824ba3df0165b58c7791fcdbc7b5')
 
 build() {
     cmake -B build -S ${_pkgname}-${pkgver} \
