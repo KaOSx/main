@@ -1,7 +1,7 @@
 
 pkgname=rrdtool
-pkgver=1.7.2
-pkgrel=7
+pkgver=1.8.0
+pkgrel=1
 pkgdesc="Data logging and graphing application"
 arch=('x86_64')
 url="https://www.rrdtool.org"
@@ -9,12 +9,12 @@ license=('GPL')
 depends=('libpng' 'libxml2' 'pango' 'ttf-dejavu' 'ruby' 'tcl' 'lua' 'perl')
 makedepends=('intltool' 'groff')
 options=('!libtool' '!emptydirs' '!makeflags')
-source=("https://oss.oetiker.ch/rrdtool/pub/rrdtool-${pkgver}.tar.gz")
-md5sums=('638e3a0a1609d97e9f82e8832759dcd2')
+source=("https://github.com/oetiker/rrdtool-1.x/releases/download/v${pkgver}/rrdtool-${pkgver}.tar.gz")
+md5sums=('852754364cbd0703a099b5eb32932851')
 
 build() {
   cd ${pkgname}-${pkgver}
-  sed -e 's|$(RUBY) extconf.rb|& --vendor|' -i bindings/Makefile.in
+  #sed -e 's|$(RUBY) extconf.rb|& --vendor|' -i bindings/Makefile.in
 
   ./configure --prefix=/usr \
     --localstatedir=/var \
