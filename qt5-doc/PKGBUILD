@@ -17,13 +17,14 @@ options=('!libtool')
 conflicts=('qt5-base-docs' 'qt5-declarative-docs')
 provides=('qt5-base-docs' 'qt5-declarative-docs')
 replaces=('qt5-base-docs' 'qt5-declarative-docs')
-_pkgfqn="qt-everywhere-src-${subver}"
+__pkgfqn="qt-everywhere-src-${subver}"
+_pkgfqn="qt-everywhere-opensource-src-${subver}"
 source=("${_qtmirror}/${_pkgver}/${subver}/single/${_pkgfqn}.tar.xz")
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz")
-md5sums=('e1447db4f06c841d8947f0a6ce83a7b5')
+md5sums=('a1c893731d6a4500cd08409911b7cb72')
 
 build() {
-    cd ${_pkgfqn}
+    cd ${__pkgfqn}
     
     ln -sf /usr/lib/qt5/bin qttools/
     ln -sf /usr/lib/qt5/bin/moc qtbase/bin/
@@ -57,7 +58,7 @@ build() {
 }
 
 package() {
-    cd ${_pkgfqn}
+    cd ${__pkgfqn}
     
     make -j1 INSTALL_ROOT=${pkgdir} install_docs
     
