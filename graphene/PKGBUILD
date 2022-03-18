@@ -1,6 +1,7 @@
 
 pkgname=graphene
-pkgver=1.10.6
+pkgver=1.10.8
+_pkgver=1.10
 pkgrel=1
 pkgdesc="Thin layer of types for graphic libraries"
 arch=('x86_64')
@@ -9,8 +10,8 @@ license=('MIT')
 depends=('glib2')
 makedepends=('gobject-introspection' 'meson' 'ninja')
 options=('!libtool')
-source=("https://github.com/ebassi/graphene/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('80ae57723e4608e6875626a88aaa6f56dd25df75024bd16e9d77e718c3560b25')
+source=("https://download.gnome.org/sources/graphene/${_pkgver}/${pkgname}-${pkgver}.tar.xz")
+sha256sums=('a37bb0e78a419dcbeaa9c7027bcff52f5ec2367c25ec859da31dfde2928f279a')
 
 build() {
   mkdir -p build
