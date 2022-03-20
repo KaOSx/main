@@ -1,39 +1,36 @@
 
 pkgname=cairo
-pkgver=1.17.4
-pkgrel=3
+pkgver=1.17.6
+pkgrel=1
 pkgdesc="Cairo vector graphics library"
 arch=('x86_64')
 license=('LGPL' 'MPL')
 url="https://cairographics.org/"
 depends=('libpng' 'libxrender' 'libxext' 'fontconfig' 'pixman' 'glib2' 'sh' 'mesa'
-         'libgl' 'lzo2')
-makedepends=('librsvg' 'poppler' 'libspectre')
+         'libglvnd' 'lzo2')
+makedepends=('librsvg' 'poppler' 'libspectre' 'meson' 'ninja')
 options=('!libtool')
-source=("https://www.cairographics.org/snapshots/${pkgname}-${pkgver}.tar.xz")
-sha1sums=('68712ae1039b114347be3b7200bc1c901d47a636')
+#source=("https://www.cairographics.org/snapshots/${pkgname}-${pkgver}.tar.xz")
+source=("https://gitlab.freedesktop.org/cairo/cairo/-/archive/${pkgver}/${pkgname}-${pkgver}.tar.bz2")
+sha1sums=('51f2e2e5525665c0b25bea18826d2283a76801a9')
 
 build() {
-  cd ${pkgname}-${pkgver}
+  mkdir -p build
+  cd build
 
-#  autoreconf -vfi
-  ./configure --prefix=/usr \
-	--sysconfdir=/etc \
-	--localstatedir=/var \
-	--disable-static \
-	--enable-tee \
-	--enable-gl \
-	--enable-egl \
-	--enable-svg \
-	--enable-ps \
-	--enable-pdf \
-	--disable-xlib-xcb 
-
-  make
+  meson ../${pkgname}-${pkgver} \
+    --prefix=/usr \
+    --buildtype=release \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    -Dtee=enabled \
+    -Dgl-backend=gl \
+    -Dtests=disabled
+  ninja
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
-  
-  make DESTDIR=${pkgdir} install
+  cd build
+
+  DESTDIR=${pkgdir} ninja install
 }
