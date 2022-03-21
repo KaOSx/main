@@ -1,0 +1,26 @@
+
+pkgname=python3-importlib-metadata
+_pkgname=importlib_metadata
+pkgver=4.8.3
+pkgrel=1
+pkgdesc="Library to access the metadata for a Python package."
+arch=('x86_64')
+url='https://github.com/python/importlib_metadata'
+license=('BSD')
+depends=('python3-zipp')
+makedepends=('python3-setuptools')
+source=("https://files.pythonhosted.org/packages/source/i/importlib_metadata/${_pkgname}-${pkgver}.tar.gz")
+sha256sums=('766abffff765960fcc18003801f7044eb6755ffae4521c8e8ce8e83b9c9b0668')
+
+build() {
+  cd ${_pkgname}-${pkgver}
+
+  python3 setup.py build
+}
+
+package() {
+  cd ${_pkgname}-${pkgver}
+
+  python3 setup.py install --root=${pkgdir} --optimize=0
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}

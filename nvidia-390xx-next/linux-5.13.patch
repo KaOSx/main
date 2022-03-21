@@ -390,3 +390,26 @@
  
  static struct nv_drm_gem_object_funcs __nv_gem_user_memory_ops = {
      .free = __nv_drm_gem_user_memory_free,
+diff --git a/kernel/common/inc/nv-procfs.h b/kernel/common/inc/nv-procfs.h
+index 7c3e1a3..462eac1 100644
+--- a/kernel/common/inc/nv-procfs.h
++++ b/kernel/common/inc/nv-procfs.h
+@@ -10,6 +10,7 @@
+ #ifndef _NV_PROCFS_UTILS_H
+ #define _NV_PROCFS_UTILS_H
+
++#include <linux/version.h>
+ #include "conftest.h"
+
+ #ifdef CONFIG_PROC_FS
+@@ -87,6 +88,8 @@ typedef struct file_operations nv_proc_ops_t;
+
+ #if defined(NV_PDE_DATA_PRESENT)
+ # define NV_PDE_DATA(inode) PDE_DATA(inode)
++#elif (LINUX_VERSION_CODE >= KERNEL_VERSION(5, 17, 0))
++# define NV_PDE_DATA(inode) pde_data(inode)
+ #else
+ # define NV_PDE_DATA(inode) PDE(inode)->data
+ #endif
+--
+2.34.1

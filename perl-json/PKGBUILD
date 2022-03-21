@@ -1,0 +1,25 @@
+
+pkgname=perl-json
+_pkgname=JSON
+pkgver=4.05
+pkgrel=1
+pkgdesc="JSON (JavaScript Object Notation) encoder/decoder."
+arch=('x86_64')
+url="https://metacpan.org/dist/JSON"
+license=('GPL' 'PerlArtistic')
+depends=('perl')
+source=("https://cpan.metacpan.org/authors/id/I/IS/ISHIGAKI/${_pkgname}-${pkgver}.tar.gz")
+sha256sums=('53839373210bebea0b24fe459d0a8232446b62015c8dc42dc36051da67336bf0')
+
+build() {
+  cd ${_pkgname}-${pkgver}
+
+  perl Makefile.PL INSTALLDIRS=vendor
+  make
+}
+
+package() {
+  cd ${_pkgname}-${pkgver}
+
+  make install DESTDIR=${pkgdir}
+}

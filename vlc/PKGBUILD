@@ -28,11 +28,11 @@ install="vlc.install"
 source=("https://get.videolan.org/vlc/${pkgver}/vlc-${pkgver}.tar.xz"
         '0001-Add-lssl-and-lcrypto-to-liblive555_plugin_la_LIBADD.patch'
         '0001-Get-addr-by-ref.-from-getConnectionEndpointAddress.patch'
-        "https://code.videolan.org/videolan/vlc/-/commit/dbf45cea2a8abdfbef897b8a71f3eb782bb1b712.diff")
+        'dav1d.diff')
 sha256sums=('6f7e90ef8973d31d96de64db817173e345150829717a94084b1bb8321cde2014'
             '81c1db61be41bfe31cedcdc83fe6ecf8178708d3ab372a0c4811008a3eded1a1'
             '8ab6bb3244f654700b5a41271a2336d6fd04240e52a8db3aafdd47303c23d77d'
-            '547502849e170165c5f036041cd827bfebc8b0217b37a4a19e40e7823f23b1b9')
+            'f0813f718d6ca3cc5f30cc697ebe09e654622aba32c6e9e28a1890c62f904747')
 
 prepare() {
   cd ${pkgname}-${pkgver}
@@ -41,7 +41,7 @@ prepare() {
   patch -p1 -i ${srcdir}/0001-Get-addr-by-ref.-from-getConnectionEndpointAddress.patch
   #sed -i -e 's|5.5.0|5.5.4|' configure.ac
   # dav1d 1.0.x needed
-  patch -p1 -i ${srcdir}/dbf45cea2a8abdfbef897b8a71f3eb782bb1b712.diff
+  patch -p1 -i ${srcdir}/dav1d.diff
   #autoreconf -fi
   # move to gitlab rls tar seems to presume git checkout
   #touch src/revision.txt
