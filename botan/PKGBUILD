@@ -1,0 +1,36 @@
+
+pkgname=botan
+_pkgname=Botan
+pkgver=2.19.1
+pkgrel=1
+pkgdesc='Botan (Japanese for peony flower) is a C++ cryptography.'
+arch=('x86_64')
+url='https://botan.randombit.net/'
+license=('BSD')
+depends=('python3' 'sqlite' 'xz' 'zlib')
+makedepends=('openssl')
+source=("https://botan.randombit.net/releases/${_pkgname}-${pkgver}.tar.xz")
+sha256sums=('e26e00cfefda64082afdd540d3c537924f645d6a674afed2cd171005deff5560')
+
+build() {
+  cd ${_pkgname}-${pkgver}
+
+  ./configure.py \
+    --prefix=/usr \
+    --with-bzip \
+    --with-lzma \
+    --with-zlib \
+    --with-openssl \
+    --with-sqlite3 \
+    --with-os-feature='getrandom, getentropy' \
+    --distribution-info=KaOS \
+    --disable-static-library
+  make
+}
+
+package() {
+  cd ${_pkgname}-${pkgver}
+
+  make DESTDIR=${pkgdir} install
+  install -Dm644 license.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
