@@ -4,35 +4,35 @@ diff -ru lua-5.2.1/Makefile lua-5.2.1.new/Makefile
 @@ -52,7 +52,7 @@
  all:	$(PLAT)
  
- $(PLATS) clean:
--	cd src && $(MAKE) $@
-+	cd src && $(MAKE) $@ V=$(V) R=$(R)
+ $(PLATS) help test clean:
+-	@cd src && $(MAKE) $@
++	@cd src && $(MAKE) $@ V=$(V) R=$(R)
  
- test:	dummy
- 	src/lua -v
+ install: dummy
+ 	cd src && $(MKDIR) $(INSTALL_BIN) $(INSTALL_INC) $(INSTALL_LIB) $(INSTALL_MAN) $(INSTALL_LMOD) $(INSTALL_CMOD)
 diff -ru lua-5.2.1/src/luaconf.h lua-5.2.1.new/src/luaconf.h
 --- lua-5.2.1/src/luaconf.h	2012-05-11 16:14:42.000000000 +0200
 +++ lua-5.2.1.new/src/luaconf.h	2012-09-12 22:40:27.986622772 +0200
-@@ -100,7 +100,7 @@
+@@ -227,7 +227,7 @@
+ 
  #else			/* }{ */
  
- #define LUA_VDIR	LUA_VERSION_MAJOR "." LUA_VERSION_MINOR "/"
 -#define LUA_ROOT	"/usr/local/"
 +#define LUA_ROOT	"/usr/"
- #define LUA_LDIR	LUA_ROOT "share/lua/" LUA_VDIR
- #define LUA_CDIR	LUA_ROOT "lib/lua/" LUA_VDIR
- #define LUA_PATH_DEFAULT  \
+ #define LUA_LDIR	LUA_ROOT "share/lua/" LUA_VDIR "/"
+ #define LUA_CDIR	LUA_ROOT "lib/lua/" LUA_VDIR "/"
+ 
 diff -ru lua-5.2.1/src/Makefile lua-5.2.1.new/src/Makefile
 --- lua-5.2.1/src/Makefile	2012-03-09 17:32:16.000000000 +0100
 +++ lua-5.2.1.new/src/Makefile	2012-09-12 22:38:08.591386896 +0200
 @@ -29,6 +29,7 @@
- PLATS= aix ansi bsd freebsd generic linux macosx mingw posix solaris
+ PLATS= guess aix bsd c89 freebsd generic linux linux-readline macosx mingw posix solaris
  
  LUA_A=	liblua.a
 +LUA_SO= liblua.so
- CORE_O=	lapi.o lcode.o lctype.o ldebug.o ldo.o ldump.o lfunc.o lgc.o llex.o \
- 	lmem.o lobject.o lopcodes.o lparser.o lstate.o lstring.o ltable.o \
- 	ltm.o lundump.o lvm.o lzio.o
+ CORE_O=	lapi.o lcode.o lctype.o ldebug.o ldo.o ldump.o lfunc.o lgc.o llex.o lmem.o lobject.o lopcodes.o lparser.o lstate.o lstring.o ltable.o ltm.o lundump.o lvm.o lzio.o
+ LIB_O=	lauxlib.o lbaselib.o lcorolib.o ldblib.o liolib.o lmathlib.o loadlib.o loslib.o lstrlib.o ltablib.o lutf8lib.o linit.o
+ BASE_O= $(CORE_O) $(LIB_O) $(MYOBJS)
 @@ -43,7 +44,7 @@
  LUAC_O=	luac.o
  
