@@ -1,14 +1,14 @@
 
 pkgname=hunspell-pt-br
-pkgver=3.2
-pkgrel=3
+pkgver=3.2.15
+pkgrel=1
 pkgdesc="Portuguese (Brazil) dictionary."
 arch=('x86_64')
 url="https://pt-br.libreoffice.org/projetos/vero"
 license=('LGPL-2.1')
 depends=('hunspell')
-source=("https://pt-br.libreoffice.org/assets/Uploads/PT-BR-Documents/VERO/VeroptBRV320AOC.oxt")
-md5sums=('9a9ac174c401406604bfcf101de2a7ba')
+source=("https://pt-br.libreoffice.org/assets/Uploads/PT-BR-Documents/VERO/VeroptBR3215AOC.oxt")
+md5sums=('ddfe6249452b2bfd1fe4cd95b3b0120e')
 
 package() {
   install -D -m644 pt_BR.dic ${pkgdir}/usr/share/hunspell/pt_BR.dic
