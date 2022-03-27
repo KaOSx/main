@@ -1,37 +1,50 @@
 
 pkgname=libsndfile
-pkgver=1.0.31
+pkgver=1.1.0
 pkgrel=1
 pkgdesc="A C library for reading and writing files containing sampled sound"
 arch=('x86_64')
 url="http://libsndfile.github.io/libsndfile/"
 license=('LGPL')
-depends=('alsa-lib' 'flac' 'libvorbis' 'python3' 'opus' 'speex')
-makedepends=('cmake')
+depends=('alsa-lib' 'flac' 'libvorbis' 'python3' 'opus' 'speex' 'lame' 'mpg123')
+#makedepends=('cmake')
 options=('!libtool')
-source=("https://github.com/erikd/libsndfile/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.bz2"
+source=("https://github.com/libsndfile/libsndfile/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz"
         "https://github.com/erikd/libsndfile/commit/a722c93f6999a5d6025bd90bb42cbb2733d54ce7.diff")
-md5sums=('3f3b2a86a032f064ef922a2c8c191f7b'
-         '2507c13ae7717dc67f1999749f8888fc')
+md5sums=('e63dead2b4f0aaf323687619d007ee6a'
+         '8175576805bac7bbd248c9a0693d569f')
 
 prepare() {
   cd ${pkgname}-${pkgver}
-  
+
   #patch -p1 -i ${srcdir}/a722c93f6999a5d6025bd90bb42cbb2733d54ce7.diff
 }
 
 build() {
-  cmake -B build -S ${pkgname}-${pkgver} \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_INSTALL_PREFIX=/usr \
-    -DBUILD_SHARED_LIBS=ON \
-    -DBUILD_TESTING=OFF
+   cd ${pkgname}-${pkgver}
 
-  cmake --build build
+  ./configure --prefix=/usr --disable-sqlite
+  make
 }
 
 package() {
+  cd ${pkgname}-${pkgver}
 
-  DESTDIR=${pkgdir} cmake --install build
+  make DESTDIR=${pkgdir} install
 }
+
+#build() {
+#  cmake -B build -S ${pkgname}-${pkgver} \
+#    -DCMAKE_BUILD_TYPE=Release \
+#    -DCMAKE_INSTALL_PREFIX=/usr \
+#    -DBUILD_SHARED_LIBS=ON \
+#    -DBUILD_TESTING=OFF \
+#    -DENABLE_MPEG=ON
+#  cmake --build build
+#}
+
+#package() {
+
+#  DESTDIR=${pkgdir} cmake --install build
+#}
 
