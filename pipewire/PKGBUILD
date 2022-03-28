@@ -1,7 +1,7 @@
 
 pkgname=pipewire
 pkgver=0.3.48
-pkgrel=1
+pkgrel=2
 pkgdesc="Project that aims to greatly improve handling of audio and video under Linux"
 url="https://pipewire.org"
 arch=("x86_64")
@@ -31,7 +31,7 @@ build() {
     --buildtype=release \
     -Dman=disabled \
     -Dudevrulesdir=/usr/lib/udev/rules.d \
-    -Dsystemd-system-service=disabled \
+    -Dsystemd-system-service=enabled \
     -Dsession-managers=[] \
     -Djack-devel=false \
     -Ddbus=enabled \
