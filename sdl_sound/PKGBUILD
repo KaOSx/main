@@ -1,31 +1,29 @@
 
 pkgname=sdl_sound
-pkgver=1.0.3
-pkgrel=18
+pkgver=2.0.1
+pkgrel=1
 pkgdesc="A library to decode several popular sound file formats, such as .WAV and .MP3"
 arch=('x86_64')
 url="https://icculus.org/SDL_sound/"
 license=('LGPL')
-depends=('libmodplug' 'sdl' 'libmikmod' 'libvorbis' 'flac' 'speex' 'smpeg')
+depends=('libmodplug' 'sdl2' 'libmikmod' 'libvorbis' 'flac' 'speex' 'smpeg')
 options=('!libtool')
-source=("https://icculus.org/SDL_sound/downloads/SDL_sound-$pkgver.tar.gz" 
+source=("https://github.com/icculus/SDL_sound/archive/refs/tags/v${pkgver}.tar.gz" 
         'flac.patch')
-md5sums=('aa09cd52df85d29bee87a664424c94b5'
+md5sums=('4917a87b45f7b940a68cd1b60881cabb'
          '302aa9dc94cc71dd3339ca3177d36e1c')
 
 build() {
-  cd SDL_sound-${pkgver}
-
-  CFLAGS="$CFLAGS -I/usr/include/smpeg" \
-  CXXFLAGS="$CXXFLAGS -I/usr/include/smpeg" \
-  ./configure --prefix=/usr
-
-  make 
+  cmake -B build -S SDL_sound-${pkgver} \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DSDLSOUND_BUILD_STATIC=FALSE
+  cmake --build build
 }
 
 package() {
-  cd SDL_sound-${pkgver}
-  
-  make DESTDIR=${pkgdir} install
+
+  DESTDIR=${pkgdir} cmake --install build
 }
+
 
