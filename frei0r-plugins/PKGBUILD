@@ -1,7 +1,7 @@
 
 pkgname=frei0r-plugins
-pkgver=1.7.0
-pkgrel=5
+pkgver=1.8.0
+pkgrel=1
 pkgdesc="Large collection of free and portable video plugins"
 arch=('x86_64')
 url="https://www.dyne.org/software/frei0r/"
@@ -11,13 +11,13 @@ makedepends=('doxygen' 'cmake')
 options=('!emptydirs')
 source=("https://files.dyne.org/frei0r/${pkgname}-${pkgver}.tar.gz"
         "https://github.com/dyne/frei0r/commit/c0c8eed79fc8abe6c9881a53d7391efb526a3064.diff")
-sha256sums=('1b1ff8f0f9bc23eed724e94e9a7c1d8f0244bfe33424bb4fe68e6460c088523a'
+sha256sums=('45a28655caf057227b442b800ca3899e93490515c81e212d219fdf4a7613f5c4'
             'c4a2ffe5e23e7755aee7b1db87bda029f99c4358c3715f04316fa29030e54f46')
 
 prepare() {
   cd ${pkgname}-${pkgver}
   # opencv 4 support
-  patch -p1 -i ${srcdir}/c0c8eed79fc8abe6c9881a53d7391efb526a3064.diff
+  #patch -p1 -i ${srcdir}/c0c8eed79fc8abe6c9881a53d7391efb526a3064.diff
 
   #sed -i -e 's|AM_INIT_AUTOMAKE|AM_INIT_AUTOMAKE([foreign])|g' configure.ac
 }
