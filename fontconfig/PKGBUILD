@@ -1,22 +1,41 @@
 # check frescobaldi on updates
 pkgname=fontconfig
-pkgver=2.13.1
-pkgrel=2
+pkgver=2.14.0
+pkgrel=1
 epoch=1
 pkgdesc="A library for configuring and customizing font access"
 arch=('x86_64')
 url="https://www.freedesktop.org/wiki/Software/fontconfig/"
 license=('custom')
 depends=('expat' 'freetype2')
-makedepends=('gperf')
+makedepends=('gperf' 'python3')
 options=('!libtool')
 install='fontconfig.install'
-source=("https://www.freedesktop.org/software/fontconfig/release/${pkgname}-${pkgver}.tar.bz2"
+source=("https://www.freedesktop.org/software/fontconfig/release/${pkgname}-${pkgver}.tar.xz"
         '29-replace-bitmap-fonts.conf'
         'fc-cache-install.hook')
-sha256sums=('f655dd2a986d7aa97e052261b36aa67b0a64989496361eca8d604e6414006741'
+sha256sums=('dcbeb84c9c74bbfdb133d535fe1c7bedc9f2221a8daf3914b984c44c520e9bac'
             '752fe94e93fe6abfd4ff46653d312d497223bdffbecc4effd413b0010f8de2bf'
             '8883f7e6e9d574ed52b89256507a6224507925715ddc85b3dfab9683df2f1e25')
+
+#build() {
+#  mkdir -p build
+#  cd build
+
+#  meson ../${pkgname}-${pkgver} \
+#    --prefix=/usr \
+#    --buildtype=release \
+#    -Dtools=enabled \
+#    -Dcache-build=disabled \
+#    -Dtests=enabled
+#  ninja
+#}
+
+#package() {
+#  cd build
+
+#  DESTDIR=${pkgdir} ninja install
+#}
 
 build() {
   cd ${pkgname}-${pkgver}
@@ -34,20 +53,20 @@ build() {
 
 check() {
   cd  ${pkgname}-${pkgver}
-  
+
   make -k check
 }
 
 package() {
   cd  ${pkgname}-${pkgver}
   make DESTDIR=${pkgdir} install
-  
+
   install -m644 ${srcdir}/29-replace-bitmap-fonts.conf ${pkgdir}/etc/fonts/conf.avail
   ln -s ../conf.avail/29-replace-bitmap-fonts.conf \
     ${pkgdir}/etc/fonts/conf.d/29-replace-bitmap-fonts.conf
 
   install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
   install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}
-  
+
   install -Dm644 ../fc-cache-install.hook ${pkgdir}/usr/share/libalpm/hooks/fc-cache-install.hook
 }
