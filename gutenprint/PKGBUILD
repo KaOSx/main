@@ -1,7 +1,7 @@
 
 pkgname=gutenprint
 pkgver=5.3.4
-pkgrel=1
+pkgrel=2
 pkgdesc="Top quality printer drivers for POSIX systems."
 arch=('x86_64')
 url="http://gimp-print.sourceforge.net/"
@@ -20,15 +20,16 @@ build() {
   ./configure --prefix=/usr \
     --disable-samples \
     --with-cups \
-	--disable-translated-cups-ppds \
-	--enable-cups-ppds \
-	--enable-cups-ppds-at-top-level \
-	--disable-globalized-cups-ppds
+    --disable-translated-cups-ppds \
+    --enable-cups-ppds \
+    --enable-cups-ppds-at-top-level \
+    --disable-globalized-cups-ppds
   make
 }
 
 package() {
   cd ${pkgname}-${pkgver}
+  
   
   make DESTDIR=${pkgdir} install
 }
