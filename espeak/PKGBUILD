@@ -1,6 +1,6 @@
 
 pkgname=espeak
-pkgver=1.50
+pkgver=1.51
 pkgrel=1
 pkgdesc="Text to Speech engine for good quality English, with support for other languages"
 arch=('x86_64')
@@ -9,21 +9,21 @@ license=('GPL')
 depends=('gcc-libs' 'portaudio' 'pulseaudio' 'pcaudiolib')
 options=('!emptydirs')
 source=("https://github.com/espeak-ng/espeak-ng/archive/${pkgver}/${pkgname}-ng-${pkgver}.tar.gz")
-md5sums=('7fccc4669d939c330c49b53d94c4c3af')
+md5sums=('00852ea6657bef6c9fcf5d9ce908be7b')
 
 
 build() {
   cd ${pkgname}-ng-${pkgver}
-  
+
   ./autogen.sh
   ./configure --prefix=/usr
-  
-  make -j1 
+
+  make
 }
 
 package() {
   cd ${pkgname}-ng-${pkgver}
   make DESTDIR=${pkgdir} install
-  
+
   chmod 644 ${pkgdir}/usr/lib/libespeak-ng.a
 }

@@ -1,7 +1,7 @@
 
 pkgname=xorg-res-utils
-pkgver=1.0.8
-pkgrel=2
+pkgver=1.0.9
+pkgrel=1
 pkgdesc="X.Org X11 resource utilities"
 arch=('x86_64')
 url="https://xorg.freedesktop.org/"
@@ -9,22 +9,22 @@ license=('custom')
 depends=('libxaw')
 makedepends=('pkgconfig')
 groups=('xorg')
-source=("https://xorg.freedesktop.org/releases/individual/app/appres-1.0.5.tar.bz2"
-        "https://xorg.freedesktop.org/releases/individual/app/editres-1.0.7.tar.bz2"
-        "https://xorg.freedesktop.org/releases/individual/app/listres-1.0.4.tar.bz2"
+source=("https://xorg.freedesktop.org/releases/individual/app/appres-1.0.6.tar.xz"
+        "https://xorg.freedesktop.org/releases/individual/app/editres-1.0.8.tar.xz"
+        "https://xorg.freedesktop.org/releases/individual/app/listres-1.0.5.tar.xz"
         "https://xorg.freedesktop.org/releases/individual/app/viewres-1.0.6.tar.bz2"
         'LICENSE.listres'
         'LICENSE.viewres')
-sha256sums=('ffad893712c81943b919e3cbfe46fc65259cc0d9eb96d5e658670e3fbb265928'
-            '089ad34628e55a779b97e369f55fb12caefc96d684b508d9022eb9e12b775c11'
-            '6a1229f478796e141d6658762f432ebbe1f6083b27550847d52239b3f7ec2b10'
+sha256sums=('8b2257e2a0a1ad8330323aec23f07c333075d7fe4e6efd88e0c18fba8223590b'
+            '83cf5dffb1883635fd9c6a8dc48ff9e560f6c6d8ce1a0e929d5f409cba18b6f9'
+            'ce2a00bbe7d2eb8d75177006f343c80443a22d52570c48a43c6fe70ea074dc9d'
             '11c15db02066c1d5fc3febf9b185d16c1112f87e37c4b101a484dcefffb80934'
             'c4023f9b75d3e51b0f4298785c1a6f1b7b1eca7155e267f22cb5c9a09edf67cd'
             'c4023f9b75d3e51b0f4298785c1a6f1b7b1eca7155e267f22cb5c9a09edf67cd')
 
 build() {
   cd ${srcdir}
-  
+
   for i in *; do
     if [ -d ${i} ]; then
       pushd ${i}
@@ -37,7 +37,7 @@ build() {
 
 package() {
   cd ${srcdir}
-  
+
   for i in *; do
     if [ -d ${i} ]; then
       pushd ${i}
