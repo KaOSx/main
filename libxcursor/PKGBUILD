@@ -1,7 +1,7 @@
 
 pkgname=libxcursor
-pkgver=1.2.0
-pkgrel=2
+pkgver=1.2.1
+pkgrel=1
 pkgdesc="X cursor management library"
 arch=('x86_64')
 url="https://xorg.freedesktop.org/"
@@ -9,12 +9,12 @@ license=('custom')
 depends=('libxfixes' 'libxrender')
 makedepends=('xorg-util-macros')
 options=('!libtool')
-source=("https://xorg.freedesktop.org/releases/individual/lib/libXcursor-${pkgver}.tar.bz2")
-sha256sums=('3ad3e9f8251094af6fe8cb4afcf63e28df504d46bfa5a5529db74a505d628782')
+source=("https://xorg.freedesktop.org/releases/individual/lib/libXcursor-${pkgver}.tar.xz")
+sha256sums=('46c143731610bafd2070159a844571b287ac26192537d047a39df06155492104')
 
 build() {
   cd libXcursor-${pkgver}
-  
+
   ./configure --prefix=/usr --sysconfdir=/etc --disable-static
   make
 }
