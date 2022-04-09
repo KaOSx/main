@@ -1,23 +1,29 @@
 
 pkgname=nvme-cli
-pkgver=1.16
+pkgver=2.0
 pkgrel=1
 pkgdesc="The NVM Express family of specifications define how host software communicates with non-volatile memory across multiple transports like PCI Express, RDMA, TCP and more"
 arch=('x86_64')
 url="https://nvmexpress.org/"
 license=('GPL')
 depends=('util-linux' 'systemd')
+makedepends=('meson' 'ninja')
 source=("https://github.com/linux-nvme/nvme-cli/archive/v${pkgver}.tar.gz")
-md5sums=('17d52e529daa2568a89edb55ed5bbe26')
+md5sums=('2edf71b1b5ce1255940588fa0300c6dc')
 
 build() {
-    cd ${pkgname}-${pkgver}
+  mkdir -p build
+  cd build
 
-    make PREFIX=/usr
+  meson ../${pkgname}-${pkgver} \
+    --prefix=/usr \
+    --buildtype=release \
+    -Dudevrulesdir=/usr/lib/udev/rules.d
+  ninja
 }
 
 package() {
-    cd ${pkgname}-${pkgver}
+  cd build
 
-    make DESTDIR=${pkgdir} UDEVDIR=/usr/lib/udev PREFIX=/usr install-spec
+  DESTDIR=${pkgdir} ninja install
 }
