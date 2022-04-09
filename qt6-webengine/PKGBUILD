@@ -15,7 +15,7 @@ license=('GPL3' 'LGPL')
 depends=('qt6-declarative' 'mesa' 'systemd' 'pango' 'nss' 'speex' 'libevent' 'libcups'
          'libxslt' 'libpng' 'libjpeg-turbo' 'libwebp' 'zlib' 'pciutils' 'jsoncpp' 'pulseaudio' 'libxcomposite'
          'qt6-location' 'qt6-webchannel' 'ffmpeg' 'libxss' 'opus' 'libvpx' 'pipewire')
-makedepends=('cmake' 'ninja' 'python3' 'python2' 'gperf' 'yasm' 'openssh' 'icu' 'qt6-tools' 'nodejs')
+makedepends=('cmake' 'ninja' 'python3' 'gperf' 'yasm' 'openssh' 'icu' 'qt6-tools' 'nodejs')
 groups=('qt6')
 options=('!libtool')
 _pkgfqn="qtwebengine-everywhere-src-${subver}"
@@ -30,10 +30,11 @@ build() {
         -DQT_FEATURE_webengine_proprietary_codecs=ON \
         -DQT_FEATURE_webengine_system_ffmpeg=ON \
         -DQT_FEATURE_webengine_system_opus=ON \
-        -DQT_FEATURE_webengine_system_icu=ON \
+        -DQT_FEATURE_webengine_system_icu=OFF \
         -DQT_FEATURE_webengine_kerberos=ON \
         -DQT_FEATURE_webengine_system_libevent=ON \
-        -DQT_FEATURE_webengine_webrtc_pipewire=ON
+        -DQT_FEATURE_webengine_webrtc_pipewire=ON \
+        -DQT_FEATURE_webengine_system_libxml=ON
     cmake --build build
 }
 
