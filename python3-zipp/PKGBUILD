@@ -8,19 +8,19 @@ arch=('x86_64')
 url='https://github.com/jaraco/zipp'
 license=('BSD')
 depends=('python3')
-makedepends=('python3-setuptools')
+makedepends=('python3-build' 'python3-pip' 'python3-setuptools-scm' 'python3-toml' 'python3-wheel')
 source=("https://files.pythonhosted.org/packages/source/z/zipp/${_pkgname}-${pkgver}.tar.gz")
 sha256sums=('56bf8aadb83c24db6c4b577e13de374ccfb67da2078beba1d037c17980bf43ad')
 
 build() {
   cd ${_pkgname}-${pkgver}
 
-  python3 setup.py build
+  python3 -m build -nw
 }
 
 package() {
   cd ${_pkgname}-${pkgver}
 
-  python3 setup.py install --root=${pkgdir} --optimize=0
+  PIP_CONFIG_FILE=/dev/null pip3 install --isolated --root=${pkgdir} --ignore-installed --no-deps dist/*.whl
   install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }

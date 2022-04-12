@@ -1,0 +1,28 @@
+
+pkgname=python3-tomli
+_pkgname=tomli
+pkgver=2.0.1
+pkgrel=1
+pkgdesc="A lil' TOML parser."
+arch=('x86_64')
+url='https://github.com/hukkin/tomli'
+license=('MIT')
+depends=('python3')
+makedepends=('python3-build' 'python3-flit' 'python3-pip')
+source=("https://files.pythonhosted.org/packages/source/t/tomli/${_pkgname}-${pkgver}.tar.gz")
+sha256sums=('de526c12914f0c550d15924c62d72abc48d6fe7364aa87328337a31007fe8a4f')
+
+build() {
+  cd ${_pkgname}-${pkgver}
+
+  python3 -m build -nw
+}
+
+package() {
+  cd ${_pkgname}-${pkgver}
+
+  PIP_CONFIG_FILE=/dev/null pip install --isolated --root=${pkgdir} --ignore-installed --no-deps dist/*.whl
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
+
+
