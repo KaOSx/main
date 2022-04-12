@@ -7,7 +7,7 @@ arch=('x86_64')
 url='https://pypi.org/project/pyparsing/'
 license=('MIT')
 depends=('python3')
-makedepends=('python3-setuptools')
+makedepends=('python3-build' 'python3-flit' 'python3-pip')
 source=("https://files.pythonhosted.org/packages/source/p/pyparsing/pyparsing-${pkgver}.tar.gz")
 sha256sums=('7bf433498c016c4314268d95df76c81b842a4cb2b276fa3312cfb1e1d85f6954')
 
@@ -21,7 +21,8 @@ package() {
   cd pyparsing-${pkgver}
 
   #python3 setup.py install --prefix=/usr --root=${pkgdir} --optimize=1
-  flit install
+  #flit install --python=${pgdir}
+  PIP_CONFIG_FILE=/dev/null pip3 install --isolated --root=${pkgdir} --ignore-installed --no-deps dist/*.whl
   install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/python3-pyparsing/LICENSE
 }
 
