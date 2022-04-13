@@ -1,6 +1,6 @@
 
 pkgname=lapack
-pkgver=3.10.0
+pkgver=3.10.1
 pkgrel=1
 arch=('x86_64')
 url="https://www.netlib.org/lapack"
@@ -12,7 +12,7 @@ replaces=('blas' 'atlas-lapack')
 provides=('blas')
 license=("custom")
 source=("https://github.com/Reference-LAPACK/lapack/archive/v${pkgver}.tar.gz")
-md5sums=('d70fc27a8bdebe00481c97c728184f09')
+md5sums=('722407217a080a0012ae3d6913fb8008')
 
 build() {
   cmake -B build -S ${pkgname}-${pkgver} \
@@ -28,11 +28,11 @@ build() {
 
 package() {
   DESTDIR=${pkgdir} cmake --install build
-  
+
   # install the test bin options
   #install -m755 -d ${pkgdir}/usr/bin
   #install -m755 ${srcdir}/build/bin/* ${pkgdir}/usr/bin
-  
+
   install -m755 -d ${pkgdir}/usr/share/licenses/lapack
   install -m644 ${srcdir}/${pkgname}-${pkgver}/LICENSE  ${pkgdir}/usr/share/licenses/lapack/
 }
