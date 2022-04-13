@@ -1,23 +1,23 @@
 
 pkgname=libaio
-pkgver=0.3.112
-pkgrel=2
+pkgver=0.3.113
+pkgrel=1
 pkgdesc="The Linux-native asynchronous I/O facility (aio) library"
 arch=('x86_64')
 url="https://pagure.io/libaio"
 license=('LGPL')
 source=("https://pagure.io/libaio/archive/libaio-0.3.112/libaio-${pkgname}-${pkgver}.tar.gz")
-md5sums=('b474652f91f1ff65ecb1a0245563a8f1')
+md5sums=('65a533288c42bd9ef03f971896298be4')
 
 build() {
   cd libaio-${pkgname}-${pkgver}
-  
+
   make
 }
 
 package() {
   cd libaio-${pkgname}-${pkgver}
-  
+
   make prefix=${pkgdir}/usr install
 }
 
