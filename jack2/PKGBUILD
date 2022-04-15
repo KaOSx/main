@@ -1,6 +1,6 @@
 
 pkgname=jack2
-pkgver=1.9.20
+pkgver=1.9.21
 pkgrel=1
 _commit=ce825c6
 pkgdesc="The next-generation JACK with SMP support"
@@ -14,7 +14,7 @@ provides=('jack')
 source=("https://github.com/jackaudio/jack2/archive/v${pkgver}.tar.gz"
         '99-audio.conf'
         '40-hpet-permissions.rules')
-md5sums=('76095094ecdd9a213dd6faf427b89515'
+md5sums=('48515d41a3e8de2464efc583d2b9a596'
          '4d928a76e3f3d77d037c42ab75ac0f0b'
          '23eba69d2dbbb800f68176e5d38b9af5')
 
@@ -27,8 +27,7 @@ build() {
     --classic \
     --dbus \
     --firewire \
-    --systemd-unit \
-    --example-tools
+    --systemd-unit
 
   python3 ./waf build
 
