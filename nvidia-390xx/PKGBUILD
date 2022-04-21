@@ -1,13 +1,13 @@
 
-_extramodules=extramodules-5.15
+_extramodules=extramodules-5.17
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=('nvidia-390xx' 'khd-nvidia-390xx')
 pkgver=390.147
-pkgrel=12
+pkgrel=13
 arch=('x86_64')
 url="https://www.nvidia.com/page/home.html"
-makedepends=('linux-headers' 'linux>=5.15.16' 'linux<5.16' "nvidia-390xx-utils=${pkgver}")
+makedepends=('linux-headers' 'linux>=5.17.4' 'linux<5.18' "nvidia-390xx-utils=${pkgver}")
 license=('custom')
 options=('!strip')
 
@@ -19,7 +19,7 @@ source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.ru
         'linux-5.14.patch')
 md5sums=('7f2c2c04c6039b177d50b23a1ae223d6'
          '282f73f1a7326339a7b0e0716eee4f76'
-         '2d4294cf94d9cc76b19694242d4ebf1e'
+         '4b323b268cc96a5c0d0d406722d69c90'
          'b75c09ec4a5057079cb3ec2f188bdba2')
 
 build() {
@@ -40,7 +40,7 @@ build() {
 
 package_nvidia-390xx() {
     pkgdesc="NVIDIA drivers for linux, 390xx legacy version."
-    depends=('linux>=5.15.16' 'linux<5.16' "nvidia-390xx-utils=${pkgver}")
+    depends=('linux>=5.17.4' 'linux<5.18' "nvidia-390xx-utils=${pkgver}")
     conflicts=('nvidia' 'nvidia-470xx')
     install=nvidia.install
     
