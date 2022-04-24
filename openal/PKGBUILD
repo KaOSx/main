@@ -1,17 +1,17 @@
 
 pkgname=openal
-pkgver=1.21.1
+pkgver=1.22.0
 pkgrel=1
 pkgdesc="OpenAL is a cross-platform 3D audio library for use with OpenGL"
 arch=('x86_64')
 url="https://openal-soft.org/"
 license=('LGPL')
-depends=('glibc')
-makedepends=('alsa-lib' 'sdl2' 'cmake' 'pulseaudio' 'qt5-base')
+depends=('alsa-lib' 'ffmpeg' 'fluidsynth' 'jack2' 'pipewire' 'pulseaudio' 'qt5-base' 'sdl2')
+makedepends=('cmake')
 options=('!libtool')
 source=("https://openal-soft.org/openal-releases/${pkgname}-soft-${pkgver}.tar.bz2"
         "https://github.com/kcat/openal-soft/commit/d4f3490a880f779f460332689a396ade69840f50.diff")
-md5sums=('a936806ebd8de417b0ffd8cf3f48f456'
+md5sums=('40e5b29a241e1e320b5b16ed8f912257'
          '11d80b1b3d70e3bb7e470bfdc632b8b9')
 
 prepare() {
@@ -21,17 +21,14 @@ prepare() {
 }
          
 build() {
-  cd ${pkgname}-soft-${pkgver}/build
-  
-  cmake \
+  cmake -B build -S ${pkgname}-soft-${pkgver} \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_INSTALL_LIBDIR=lib ..
-  make
+    -DCMAKE_INSTALL_LIBDIR=lib
+  cmake --build build
 }
 
 package() {
-  cd ${pkgname}-soft-${pkgver}
-  
-  make -C build DESTDIR=${pkgdir}/ install
+
+  DESTDIR=${pkgdir} cmake --install build
 }
