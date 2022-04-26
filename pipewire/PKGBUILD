@@ -1,7 +1,7 @@
 
 pkgname=pipewire
 pkgver=0.3.50
-pkgrel=1
+pkgrel=2
 pkgdesc="Project that aims to greatly improve handling of audio and video under Linux"
 url="https://pipewire.org"
 arch=("x86_64")
@@ -12,14 +12,14 @@ makedepends=('meson' 'ninja' 'vulkan-headers' 'wireplumber')
 #conflicts=('jack2')
 install=pipewire.install
 source=("https://gitlab.freedesktop.org/pipewire/pipewire/-/archive/${pkgver}/${pkgname}-${pkgver}.tar.bz2"
-        "https://github.com/PipeWire/pipewire/commit/37613b67ba52b5ad4e81d7ea38adc04027d9f9e5.diff")
+        "https://gitlab.freedesktop.org/pipewire/pipewire/-/commit/d3ea3142e1a4de206e616bc18f63a529e6b4986a.diff")
 md5sums=('a89cebd5238d048d0e8b446748b50d11'
-         '560cef2b24700df8d2c84019e1891b66')
+         '64a53f1b0d95958575ab7de357d1a3cf')
 
 prepare() {
   cd ${pkgname}-${pkgver}
-  # alsa 1.1.9 changes
-  #patch -p1 -i ${srcdir}/37613b67ba52b5ad4e81d7ea38adc04027d9f9e5.diff
+  # sdl2 2.0.22 needed
+  patch -p1 -i ${srcdir}/d3ea3142e1a4de206e616bc18f63a529e6b4986a.diff
 }
 
 build() {
