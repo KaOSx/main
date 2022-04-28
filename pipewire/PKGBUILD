@@ -1,7 +1,7 @@
 
 pkgname=pipewire
-pkgver=0.3.50
-pkgrel=2
+pkgver=0.3.51
+pkgrel=1
 pkgdesc="Project that aims to greatly improve handling of audio and video under Linux"
 url="https://pipewire.org"
 arch=("x86_64")
@@ -13,13 +13,13 @@ makedepends=('meson' 'ninja' 'vulkan-headers' 'wireplumber')
 install=pipewire.install
 source=("https://gitlab.freedesktop.org/pipewire/pipewire/-/archive/${pkgver}/${pkgname}-${pkgver}.tar.bz2"
         "https://gitlab.freedesktop.org/pipewire/pipewire/-/commit/d3ea3142e1a4de206e616bc18f63a529e6b4986a.diff")
-md5sums=('a89cebd5238d048d0e8b446748b50d11'
+md5sums=('a63ff8c12652657f049329568756c9c3'
          '64a53f1b0d95958575ab7de357d1a3cf')
 
 prepare() {
   cd ${pkgname}-${pkgver}
   # sdl2 2.0.22 needed
-  patch -p1 -i ${srcdir}/d3ea3142e1a4de206e616bc18f63a529e6b4986a.diff
+  #patch -p1 -i ${srcdir}/d3ea3142e1a4de206e616bc18f63a529e6b4986a.diff
 }
 
 build() {
