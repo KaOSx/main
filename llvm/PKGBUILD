@@ -1,7 +1,7 @@
 
 pkgbase="llvm"
 pkgname=('llvm' 'clang' 'clang-analyzer' 'clang-tools-extra')
-pkgver=13.0.1
+pkgver=14.0.3
 _gcc_ver=11.2.0
 pkgrel=1
 arch=('x86_64')
@@ -13,10 +13,10 @@ source=("https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver
         "https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver}/clang-${pkgver}.src.tar.xz"
         "https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver}/clang-tools-extra-$pkgver.src.tar.xz"
         "https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver}/compiler-rt-${pkgver}.src.tar.xz")
-md5sums=('4ca3266b539ccec41cb5094c510221a1'
-         '89017bafd256ac5ad766920d15d8deba'
-         '00efa2ac5b911c69f427a1b5b98b9d00'
-         'f534ab8fb371ec1a8a22a6fa5809be46')
+md5sums=('69b637cfee09e3f5d2ec5cc16681cbe7'
+         'e8313d85699d8023c8121a31ef75c4e9'
+         'b3d44407cb0a8046c031fa1e0759e905'
+         '09f91b35d57af6ecc396552b236ccdaf')
 
 prepare() {
     cd ${pkgbase}-${pkgver}.src
@@ -54,6 +54,7 @@ build() {
             -DLLVM_BUILD_LLVM_DYLIB:BOOL=ON \
             -DLLVM_LINK_LLVM_DYLIB:BOOL=ON \
             -DLLVM_BINUTILS_INCDIR:PATH=/usr/include \
+            -DLLVM_INCLUDE_BENCHMARKS=OFF \
             "../${pkgbase}-${pkgver}.src"
 
     make
