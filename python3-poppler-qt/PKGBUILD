@@ -1,8 +1,8 @@
 
 pkgname=python3-poppler-qt
 _pkgname=python-poppler-qt5
-pkgver=21.1.0
-pkgrel=2
+pkgver=21.3.0
+pkgrel=1
 pkgdesc="A Python 3 binding to poppler-qt, early Qt 5 port"
 arch=('x86_64')
 url="https://github.com/frescobaldi/python-poppler-qt5"
@@ -12,12 +12,12 @@ makedepends=('pkg-config')
 source=("https://github.com/frescobaldi/python-poppler-qt5/archive/v${pkgver}.tar.gz"
         "https://github.com/frescobaldi/python-poppler-qt5/commit/92e5962ec3751ab051d0b655fd61afc7a1cf709e.diff")
 #source=("https://github.com/zehome/python-poppler-qt5/archive/v${pkgver}.tar.gz")
-md5sums=('0225ff40fba3662e3d437bf48ae47d06'
+md5sums=('1084790693f8130bdedd85ea3be15560'
          'ff4b6d8f63ae630b464844717e8c46de')
  
 build() {
     cd ${_pkgname}-${pkgver}
-    patch -p1 -i ${srcdir}/92e5962ec3751ab051d0b655fd61afc7a1cf709e.diff
+    #patch -p1 -i ${srcdir}/92e5962ec3751ab051d0b655fd61afc7a1cf709e.diff
 
     python3 setup.py build_ext --qmake-bin='/usr/lib/qt5/bin/qmake' --pyqt-sip-dir='/usr/share/sip/PyQt5'
 }
