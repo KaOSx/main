@@ -1,12 +1,12 @@
 
 pkgname=valgrind
 pkgver=3.19.0
-pkgrel=1
+pkgrel=2
 pkgdesc="A tool to help find memory-management problems in programs"
 arch=('x86_64')
 license=('GPL')
 url="https://valgrind.org/"
-depends=('glibc>=2.33' 'glibc<2.34' 'perl')
+depends=('glibc>=2.35' 'glibc<2.36' 'perl')
 makedepends=('gdb')
 options=('!emptydirs' '!buildflags')
 source=("https://sourceware.org/pub/valgrind/${pkgname}-${pkgver}.tar.bz2")
