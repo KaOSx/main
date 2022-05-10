@@ -1,20 +1,21 @@
 
 pkgname=libpaper
-pkgver=1.1.28
+pkgver=1.2.0
 #_pkgver=1.1.24+nmu5
-pkgrel=2
+pkgrel=1
 pkgdesc='Library for handling paper characteristics'
 arch=('x86_64')
 url='https://packages.debian.org/unstable/source/libpaper'
 license=('GPL')
 depends=('sh' 'run-parts')
-source=("https://deb.debian.org/debian/pool/main/libp/libpaper/${pkgname}_${pkgver}.tar.gz")
-md5sums=('58dcdb3e1074f571b86d0ee937ed0072')
+makedepends=('help2man')
+source=("https://github.com/rrthomas/libpaper/releases/download/v1.2.0/${pkgname}-${pkgver}.tar.gz")
+md5sums=('d5f10092cd3c13d0530850020b6c9150')
 
 build() {
   cd ${pkgname}-${pkgver}
 
-  autoreconf -vi
+  #autoreconf -vi
   ./configure --prefix=/usr --sysconfdir=/etc 
   make
 }
