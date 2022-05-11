@@ -1,3 +1,35 @@
+diff --git a/src/imports/controls/imagine/qquickninepatchimage.cpp b/src/imports/controls/imagine/qquickninepatchimage.cpp
+index 712439889..7d5e4f719 100644
+--- a/src/imports/controls/imagine/qquickninepatchimage.cpp
++++ b/src/imports/controls/imagine/qquickninepatchimage.cpp
+@@ -386,12 +386,7 @@ void QQuickNinePatchImage::pixmapChange()
+ {
+     Q_D(QQuickNinePatchImage);
+     if (QFileInfo(d->url.fileName()).completeSuffix().toLower() == QLatin1String("9.png")) {
+-        // Keep resetNode if it is already set, we do not want to miss an
+-        // ImageNode->NinePatchNode change.  Without this there's a chance one gets
+-        // an incorrect cast on oldNode every once in a while with source changes.
+-        if (!d->resetNode)
+-            d->resetNode = d->ninePatch.isNull();
+-
++        d->resetNode = d->ninePatch.isNull();
+         d->ninePatch = d->pix.image();
+         if (d->ninePatch.depth() != 32)
+             d->ninePatch = d->ninePatch.convertToFormat(QImage::Format_ARGB32);
+@@ -454,13 +449,6 @@ QSGNode *QQuickNinePatchImage::updatePaintNode(QSGNode *oldNode, UpdatePaintNode
+     qsgnode_set_description(patchNode, QString::fromLatin1("QQuickNinePatchImage: '%1'").arg(d->url.toString()));
+ #endif
+ 
+-    // The image may wrap non-owned data (due to pixmapChange). Ensure we never
+-    // pass such an image to the scenegraph, because with a separate render
+-    // thread the data may become invalid (in a subsequent pixmapChange on the
+-    // gui thread) by the time the renderer gets to do something with the QImage
+-    // passed in here.
+-    image.detach();
+-
+     QSGTexture *texture = window()->createTextureFromImage(image);
+     patchNode->initialize(texture, sz * d->devicePixelRatio, image.size(), d->xDivs, d->yDivs, d->devicePixelRatio);
+     return patchNode;
 diff --git a/src/quicktemplates2/qquickabstractbutton.cpp b/src/quicktemplates2/qquickabstractbutton.cpp
 index 950e4e099..1df0c706d 100644
 --- a/src/quicktemplates2/qquickabstractbutton.cpp
@@ -45,6 +77,23 @@ index 2041e7741..8610cdfae 100644
          return;
  
      Qt::ShortcutContext context = Qt::WindowShortcut; // TODO
+diff --git a/src/quicktemplates2/qquickcombobox.cpp b/src/quicktemplates2/qquickcombobox.cpp
+index b715659f1..ea8d3d1d7 100644
+--- a/src/quicktemplates2/qquickcombobox.cpp
++++ b/src/quicktemplates2/qquickcombobox.cpp
+@@ -1740,11 +1740,7 @@ void QQuickComboBox::focusInEvent(QFocusEvent *event)
+ {
+     Q_D(QQuickComboBox);
+     QQuickControl::focusInEvent(event);
+-    // Setting focus on TextField should not be done when drop down indicator was clicked
+-    // That is why, if focus is not set with key reason, it should not be passed to textEdit by default.
+-    // Focus on Edit Text should be set only intentionally by user.
+-    if ((event->reason() == Qt::TabFocusReason || event->reason() == Qt::BacktabFocusReason ||
+-            event->reason() == Qt::ShortcutFocusReason) && d->contentItem && isEditable())
++    if (d->contentItem && isEditable())
+         d->contentItem->forceActiveFocus(event->reason());
+ }
+ 
 diff --git a/src/quicktemplates2/qquickcontainer.cpp b/src/quicktemplates2/qquickcontainer.cpp
 index f38c2b09c..6eed2a024 100644
 --- a/src/quicktemplates2/qquickcontainer.cpp
@@ -125,6 +174,101 @@ index b8d417f29..c8cd142ae 100644
  }
  
  void QQuickOverlay::geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry)
+diff --git a/src/quicktemplates2/qtquicktemplates2global.cpp b/src/quicktemplates2/qtquicktemplates2global.cpp
+index 5d7816b41..9b79d60c2 100644
+--- a/src/quicktemplates2/qtquicktemplates2global.cpp
++++ b/src/quicktemplates2/qtquicktemplates2global.cpp
+@@ -42,7 +42,7 @@
+ QT_BEGIN_NAMESPACE
+ 
+ #if QT_CONFIG(accessibility)
+-static QAccessibleInterface *qQuickAccessibleFactory(const QString &classname, QObject *object)
++QAccessibleInterface *qQuickAccessibleFactory(const QString &classname, QObject *object)
+ {
+     if (classname == u"QQuickPage") {
+         return new QAccessibleQuickPage(qobject_cast<QQuickPage *>(object));
+diff --git a/tests/auto/controls/data/tst_combobox.qml b/tests/auto/controls/data/tst_combobox.qml
+index eaf9b3c6c..cd4c8466d 100644
+--- a/tests/auto/controls/data/tst_combobox.qml
++++ b/tests/auto/controls/data/tst_combobox.qml
+@@ -1547,7 +1547,7 @@ TestCase {
+         control.editText = ""
+         compare(control.acceptableInput, true)
+         control.editText = ""
+-        control.contentItem.forceActiveFocus()
++        control.forceActiveFocus()
+         keyPress(Qt.Key_A)
+         compare(control.editText, "")
+         keyPress(Qt.Key_A)
+@@ -1584,7 +1584,7 @@ TestCase {
+ 
+         compare(control.currentIndex, 0)
+         compare(control.currentText, "first")
+-        control.contentItem.forceActiveFocus()
++        control.forceActiveFocus()
+         compare(control.activeFocus, true)
+ 
+         control.selectAll()
+@@ -1607,7 +1607,7 @@ TestCase {
+         var control = createTemporaryObject(comboBox, testCase, {editable: true, model: ["Banana", "Coco", "Coconut", "Apple", "Cocomuffin"]})
+         verify(control)
+ 
+-        control.contentItem.forceActiveFocus()
++        control.forceActiveFocus()
+         verify(control.activeFocus)
+ 
+         var acceptCount = 0
+@@ -1758,7 +1758,7 @@ TestCase {
+         var control = createTemporaryObject(keysAttachedBox, testCase)
+         verify(control)
+ 
+-        control.contentItem.forceActiveFocus()
++        control.forceActiveFocus()
+         verify(control.activeFocus)
+ 
+         verify(!control.gotit)
+@@ -2013,7 +2013,7 @@ TestCase {
+ 
+         // Give the first ComboBox focus and type in 0 to select "Item 10" (default is "Item 1").
+         waitForRendering(comboBox1)
+-        comboBox1.contentItem.forceActiveFocus()
++        comboBox1.forceActiveFocus()
+         verify(comboBox1.activeFocus)
+         keyClick(Qt.Key_0)
+         compare(comboBox1.editText, "Item 10")
+@@ -2031,7 +2031,7 @@ TestCase {
+ 
+         // Give focus back to the first ComboBox, and try the same thing except
+         // with non-existing text; the currentIndex should not change.
+-        comboBox1.contentItem.forceActiveFocus()
++        comboBox1.forceActiveFocus()
+         verify(comboBox1.activeFocus)
+         keySequence(StandardKey.SelectAll)
+         compare(comboBox1.contentItem.selectedText, "Item 10")
+@@ -2043,23 +2043,4 @@ TestCase {
+         compare(comboBox1.currentIndex, 9)
+         compare(currentIndexSpy.count, 1)
+     }
+-
+-    // QTBUG-61021: text line should not be focused by default
+-    // It causes (e.g. on Android) showing virtual keyboard when it is not needed
+-    function test_doNotFocusTextLineByDefault() {
+-        var control = createTemporaryObject(comboBox, testCase)
+-        // Focus not set after creating combobox
+-        verify(!control.activeFocus)
+-        verify(!control.contentItem.focus)
+-
+-        // After setting focus on combobox, text line should not be focused
+-        control.forceActiveFocus()
+-        verify(control.activeFocus)
+-        verify(!control.contentItem.focus)
+-
+-        // Text line is focused after intentional setting focus on it
+-        control.contentItem.forceActiveFocus()
+-        verify(control.activeFocus)
+-        verify(control.contentItem.focus)
+-    }
+ }
 diff --git a/tests/auto/controls/data/tst_switch.qml b/tests/auto/controls/data/tst_switch.qml
 index b3fab41ca..10b6baa02 100644
 --- a/tests/auto/controls/data/tst_switch.qml
