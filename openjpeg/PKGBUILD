@@ -1,18 +1,18 @@
 
 pkgname=openjpeg
-pkgver=2.4.0
-_pkgver=2.4
+pkgver=2.5.0
+_pkgver=2.5
 pkgrel=1
 pkgdesc="An open source JPEG 2000 codec"
 arch=('x86_64')
 license=('BSD')
-url="http://www.openjpeg.org"
+url="https://www.openjpeg.org"
 depends=('zlib' 'libpng' 'libtiff' 'lcms2')
 makedepends=('cmake' 'doxygen')
 options=('!libtool')
 source=("https://github.com/uclouvain/openjpeg/archive/v${pkgver}.tar.gz"
         "https://github.com/szukw000/openjpeg/commit/cadff5fb.diff")
-md5sums=('4d388298335947367e91f1d100468af1'
+md5sums=('5cbb822a1203dd75b85639da4f4ecaab'
          '90d91a567c7316bc4892e4c296ba8b71')
 
 prepare() {
@@ -22,23 +22,20 @@ prepare() {
 }
 
 build() {
-  mkdir -p build
-  cd build
-  
-  cmake ../${pkgname}-${pkgver} \
+  cmake -B build -S ${pkgname}-${pkgver} \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_BUILD_TYPE=Release \
     -DBUILD_TESTING:BOOL=OFF \
     -DBUILD_DOC=ON
-  make 
+  cmake --build build
 }
 
 package() {
-  cd build
-  make DESTDIR=${pkgdir} install
-  
+
+  DESTDIR=${pkgdir} cmake --install build
+
   install -m755 -d ${pkgdir}/usr/share/licenses/openjpeg
-  install -m644 ../${pkgname}-${pkgver}/LICENSE ${pkgdir}/usr/share/licenses/openjpeg/LICENSE
+  install -m644 ${pkgname}-${pkgver}/LICENSE ${pkgdir}/usr/share/licenses/openjpeg/LICENSE
   # from doc build, just use the man pages
   rm -r ${pkgdir}/usr/share/doc/${pkgname}-${_pkgver}/html
 }
