@@ -1,31 +1,32 @@
 
 pkgname=libmp4v2
-_pkgname=Release-ThirdParty-MP4v2
-pkgver=5.0.1
+_pkgname=mp4v2
+pkgver=2.1.1
+epoch=1
 pkgrel=1
 pkgdesc="Library that provides an API to create and modify mp4 files as defined by ISO-IEC:14496-1:2001 MPEG-4 Systems"
 arch=('x86_64')
 license=('MPL')
-url="https://github.com/TechSmith/mp4v2/"
+url="https://mp4v2.org/"
 depends=('gcc-libs')
+makedepends=('cmake')
 options=('!libtool')
-source=("https://github.com/TechSmith/mp4v2/archive/${_pkgname}-${pkgver}.tar.gz"
+source=("https://github.com/enzo1982/mp4v2/releases/download/v${pkgver}/${_pkgname}-${pkgver}.tar.bz2"
         "https://github.com/TechSmith/mp4v2/commit/15730113969eb1e3e515676dd55dccbb339a0db4.diff")
-md5sums=('e56bd6f6016089ee381416162d3b13bb'
+md5sums=('92e4f46e7454f41c137e35a27d810ef3'
          '96b295c3a1938d2b1b3eb125d733224b')
 
 build() {
-  cd mp4v2-${_pkgname}-${pkgver}
-  #patch -p1 -i ${srcdir}/15730113969eb1e3e515676dd55dccbb339a0db4.diff
-
-  CXXFLAGS="$CXXFLAGS -Wno-narrowing"
-  ./configure --prefix=/usr
-  make
+  cmake -B build -S ${_pkgname}-${pkgver} \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib 
+  cmake --build build
 }
 
 package() {
-  cd mp4v2-${_pkgname}-${pkgver}
+  DESTDIR=${pkgdir} cmake --install build
   
-  make DESTDIR=${pkgdir} install
-  make DESTDIR=${pkgdir} install-man
+  #make DESTDIR=${pkgdir} install
+  #make DESTDIR=${pkgdir} install-man
 }
