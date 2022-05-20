@@ -1,5 +1,5 @@
 pkgname=vc
-pkgver=1.4.2
+pkgver=1.4.3
 pkgrel=1
 pkgdesc="A library to ease explicit vectorization of C++ code"
 url='https://github.com/VcDevel/Vc/'
@@ -7,29 +7,19 @@ arch=('x86_64')
 license=('LGPL3')
 makedepends=('cmake')
 source=("https://github.com/VcDevel/Vc/releases/download/${pkgver}/Vc-${pkgver}.tar.gz")
-md5sums=('92ea7b772cc58ab8705a764c0afb1774')
+md5sums=('02d33a9d560a14bb23204be235713f65')
  
 build() {
-  mkdir build 
-  
-  cd build
-  cmake ../Vc-${pkgver} \
+  cmake -B build -S Vc-${pkgver} \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_BUILD_TYPE=Release \
     -DBUILD_TESTING=OFF
     #-DTARGET_ARCHITECTURE=core  leaving empty will use auto, other options to test are generic and amd
-  make
+  cmake --build build
 }
 
-#check() {
-#  cd build
-
-#  make test
-#}
-
 package() {
-  cd build
-  
-  make DESTDIR="${pkgdir}" install
+
+  DESTDIR=${pkgdir} cmake --install build
 }
 
