@@ -1,0 +1,38 @@
+
+pkgname=power-profiles-daemon
+pkgver=0.11.1
+pkgrel=1
+pkgdesc="Makes power profiles handling available over D-Bus."
+arch=('x86_64')
+license=('LGPL' 'MPL')
+url="https://gitlab.freedesktop.org/hadess/power-profiles-daemon"
+depends=('polkit' 'upower')
+makedepends=('meson' 'ninja')
+install=power-profiles-daemon.install
+source=("https://gitlab.freedesktop.org/hadess/power-profiles-daemon/-/archive/${pkgver}/${pkgname}-${pkgver}.tar.bz2")
+sha256sums=('15604b38faf23c61bc88cde7ac745100fb74019e38b65917a5d966883d886592')
+
+prepare() {
+  cd ${pkgname}-${pkgver}
+
+  sed -e "s|subdir('tests')|#subdir('tests')|" -i meson.build
+}
+
+build() {
+  mkdir -p build
+  cd build
+
+  meson ../${pkgname}-${pkgver} \
+    --prefix=/usr \
+    --buildtype=release \
+    --libexec=lib \
+    -Dgtk_doc=false \
+    -Dpylint=false
+  ninja
+}
+
+package() {
+  cd build
+
+  DESTDIR=${pkgdir} ninja install
+}
