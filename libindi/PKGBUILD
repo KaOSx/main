@@ -1,9 +1,9 @@
 
 pkgname=libindi
 _pkgname=indi
-pkgver=1.9.5.1
-_pkgver=1.9.5
-pkgrel=2
+pkgver=1.9.6
+_pkgver=1.9.6
+pkgrel=1
 pkgdesc="Interface control protocol providing backend driver support and
         automation for a wide range of Astronomical devices (telescopes, focusers, CCDs..etc)."
 url="https://www.indilib.org/"
@@ -14,7 +14,7 @@ depends=('gcc-libs' 'zlib' 'libnova' 'cfitsio' 'libusb' 'boost-libs' 'libjpeg-tu
 makedepends=('boost' 'cmake' 'googletest')
 source=("https://github.com/indilib/indi/archive/v${pkgver}.tar.gz")
 options=('!libtool')
-md5sums=('e891824ba3df0165b58c7791fcdbc7b5')
+md5sums=('303f2eb9c0487991dc0d17bcbcce2263')
 
 build() {
     cmake -B build -S ${_pkgname}-${pkgver} \
