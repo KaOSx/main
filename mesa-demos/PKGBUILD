@@ -1,28 +1,32 @@
 
 pkgname=mesa-demos
-pkgver=8.4.0
-pkgrel=2
+pkgver=8.5.0
+pkgrel=1
 arch=('x86_64')
 pkgdesc="Mesa demos and tools"
 url="http://mesa3d.sourceforge.net"
 license=('custom')
-depends=('glew' 'freeglut')
-source=("https://mesa.freedesktop.org/archive/demos/mesa-demos-${pkgver}.tar.bz2"
+depends=('glew' 'freeglut' 'wayland-protocols')
+makedepends=('meson' 'ninja')
+source=("https://archive.mesa3d.org/demos/${pkgver}/mesa-demos-${pkgver}.tar.bz2"
         'LICENSE')
-sha256sums=('01e99c94a0184e63e796728af89bfac559795fb2a0d6f506fa900455ca5fff7d'
+sha256sums=('cea2df0a80f09a30f635c4eb1a672bf90c5ddee0b8e77f4d70041668ef71aac1'
             '7fdc119cf53c8ca65396ea73f6d10af641ba41ea1dd2bd44a824726e01c8b3f2')
 
 build() {
-  cd mesa-demos-${pkgver}
+  mkdir -p build
+  cd build
   
-  ./configure --prefix=/usr # --disable-egl
-  make
+  meson ../${pkgname}-${pkgver} \
+    --prefix=/usr \
+    --buildtype=release
+  ninja
 }
 
 package() {
-  cd mesa-demos-${pkgver}
-  make DESTDIR=${pkgdir} install
-  
+  cd build
+  DESTDIR=${pkgdir} ninja install
+
   install -m755 -d ${pkgdir}/usr/share/licenses/mesa-demos
   install -m755 ${srcdir}/LICENSE ${pkgdir}/usr/share/licenses/mesa-demos/
 }
