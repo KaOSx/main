@@ -1,7 +1,7 @@
 
 pkgname=alsa-topology-conf
 pkgver=1.2.5.1
-pkgrel=1
+pkgrel=2
 pkgdesc="ALSA topology configuration files"
 arch=('x86_64')
 url="https://www.alsa-project.org"
@@ -13,9 +13,9 @@ md5sums=('066d6a980e09a2fa44b4cc1d06ecc0ea')
 
 package() {
   cd ${pkgname}-${pkgver}
-  
+
   install -d -m755 ${pkgdir}/usr/share/alsa/
   cp -r topology ${pkgdir}/usr/share/alsa/
-  
+
   install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }

@@ -1,7 +1,7 @@
 
 pkgname=alsa-oss
 pkgver=1.1.8
-pkgrel=5
+pkgrel=6
 pkgdesc="OSS compatibility library"
 arch=('x86_64')
 license=('GPL')
@@ -13,14 +13,14 @@ md5sums=('9ec4bb783fdce19032aace086d65d874')
 
 build() {
   cd ${pkgname}-${pkgver}
-  
+
   ./configure --prefix=/usr
   make
 }
 
 package() {
   cd ${pkgname}-${pkgver}
-  
+
   make DESTDIR=${pkgdir} install
 }
 
