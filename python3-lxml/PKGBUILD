@@ -1,15 +1,16 @@
 
 pkgname=python3-lxml
-pkgver=4.8.0
+pkgver=4.9.0
 pkgrel=1
 pkgdesc="Python3 binding for the libxml2 and libxslt libraries"
 arch=('x86_64')
 license=('BSD' 'GPL' 'custom')
 url="https://lxml.de/"
 depends=('python3-cython' 'libxslt')
+makedepends=('python3-setuptools')
 source=("https://pypi.io/packages/source/l/lxml/lxml-${pkgver}.tar.gz")
 #source=("https://github.com/lxml/lxml/archive/refs/tags/lxml-${pkgver}.tar.gz")
-sha256sums=('f63f62fc60e6228a4ca9abae28228f35e1bd3ce675013d1dfb828688d50c6e23')
+sha256sums=('520461c36727268a989790aef08884347cd41f2d8ae855489ccf40b50321d8d7')
 
 build() {
   cd lxml-${pkgver}
