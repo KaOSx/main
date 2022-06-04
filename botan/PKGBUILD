@@ -1,16 +1,16 @@
 
 pkgname=botan
 _pkgname=Botan
-pkgver=2.19.1
+pkgver=2.19.2
 pkgrel=1
 pkgdesc='Botan (Japanese for peony flower) is a C++ cryptography.'
 arch=('x86_64')
 url='https://botan.randombit.net/'
 license=('BSD')
 depends=('python3' 'sqlite' 'xz' 'zlib')
-makedepends=('openssl')
+#makedepends=('openssl')
 source=("https://botan.randombit.net/releases/${_pkgname}-${pkgver}.tar.xz")
-sha256sums=('e26e00cfefda64082afdd540d3c537924f645d6a674afed2cd171005deff5560')
+sha256sums=('3af5f17615c6b5cd8b832d269fb6cb4d54ec64f9eb09ddbf1add5093941b4d75')
 
 build() {
   cd ${_pkgname}-${pkgver}
@@ -20,7 +20,6 @@ build() {
     --with-bzip \
     --with-lzma \
     --with-zlib \
-    --with-openssl \
     --with-sqlite3 \
     --with-os-feature='getrandom, getentropy' \
     --distribution-info=KaOS \
