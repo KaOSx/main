@@ -1,0 +1,78 @@
+
+pkgname=mesa-amber
+_pkgname=mesa
+pkgver=21.3.9
+pkgrel=1
+arch=('x86_64')
+pkgdesc="Classic Mesa 3-D graphics libraries and include files"
+url="https://www.mesa3d.org/"
+license=('custom')
+depends=('libx11' 'libxt' 'gcc-libs' 'libvdpau' 'xorgproto' 'wayland' 'elfutils'
+         'libdrm' 'libxxf86vm' 'libxdamage' 'expat' 'libxshmfence' 'llvm'
+         'lm_sensors' 'libunwind' 'libxvmc' 'libxrandr' 'libglvnd' 'zstd') 
+makedepends=('libva' 'llvm' 'libxml2' 'imake' 'clang' 'python3-mako'
+             'wayland-protocols' 'meson' 'ninja' 'valgrind' 'vulkan-loader')
+conflicts=('mesa')
+provides=('mesa')
+source=("https://mesa.freedesktop.org/archive/${_pkgname}-${pkgver}.tar.xz"
+        "https://gitlab.freedesktop.org/pzanoni/mesa/-/commit/168f177b8a910004de768b1a89a0adea383fa6bc.diff"
+        'LICENSE')
+sha256sums=('91fe6f20339884e37a7c47bfba42fb1cd397512c9ed5ad423de369f047cd8b5c'
+            '348275bfda308f2e8cc79e2a72ecc8362672076f795779ff750818f11c69e811'
+            '7fdc119cf53c8ca65396ea73f6d10af641ba41ea1dd2bd44a824726e01c8b3f2')
+
+prepare() {
+    cd ${_pkgname}-${pkgver}
+
+    #patch -p1 -i ${srcdir}/168f177b8a910004de768b1a89a0adea383fa6bc.diff
+}
+
+build() {
+    mkdir -p build
+    cd build
+
+  # use order in meson_options.txt to list build options, fill options from meson.build
+  meson ../${_pkgname}-${pkgver} \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --buildtype=release \
+    -Db_ndebug=true \
+    -Dplatforms=x11,wayland \
+    -Damber=true \
+    -Ddri3=enabled \
+    -Ddri-drivers=i915,i965,r200,nouveau \
+    -Dgallium-drivers=iris,r300,r600,nouveau,radeonsi,svga,swrast,virgl \
+    -Dgallium-extra-hud=true \
+    -Dgallium-vdpau=enabled \
+    -Dgallium-xvmc=enabled \
+    -Dgallium-omx=disabled \
+    -Dgallium-va=enabled \
+    -Dgallium-xa=enabled \
+    -Dgallium-nine=true \
+    -Dgallium-opencl=disabled \
+    -Dvulkan-drivers=amd,intel,swrast \
+    -Dvulkan-layers=device-select,intel-nullhw \
+    -Dshared-glapi=enabled \
+    -Dgles1=enabled \
+    -Dgles2=enabled \
+    -Dopengl=true \
+    -Dgbm=enabled \
+    -Dglx=dri \
+    -Degl=enabled \
+    -Dglvnd=true \
+    -Dllvm=enabled \
+    -Dvalgrind=disabled \
+    -Dlibunwind=enabled \
+    -Dlmsensors=enabled \
+    -Dbuild-tests=false \
+    -Dosmesa=true
+    ninja
+}
+
+package() {
+  cd build  
+  DESTDIR=${pkgdir} ninja install
+
+  install -m755 -d ${pkgdir}/usr/share/licenses/mesa-amber
+  install -m644 ${srcdir}/LICENSE ${pkgdir}/usr/share/licenses/mesa-amber/
+}
