@@ -1,6 +1,6 @@
 
 pkgname=lldb
-pkgver=14.0.4
+pkgver=14.0.5
 pkgrel=1
 pkgdesc="Next generation, high-performance debugger, built as a set of reusable components in the LLVM Project."
 arch=('x86_64')
@@ -9,7 +9,7 @@ license=('custom:University of Illinois/NCSA Open Source License')
 depends=("llvm=${pkgver}" 'libedit' 'libxml2' 'ncurses' 'python3-six')
 makedepends=('groff' 'swig' 'cmake' 'clang-tools-extra')
 source=("https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver}/lldb-${pkgver}.src.tar.xz")
-md5sums=('8741b5d30a5390a7daef639cf4042f0c')
+md5sums=('710dbf2bd5338c31f3efa03eb5e6d168')
 
 build() {
     cmake -B build -S ${pkgname}-${pkgver}.src \
