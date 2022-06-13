@@ -1,4 +1,4 @@
-# fails with gcc 6.4.0, builds with gcc 6.3.1
+
 pkgname=('openjdk' 'openjdk-src')
 pkgbase='openjdk'
 _icedtea_release="3.21.0"
@@ -7,7 +7,7 @@ _icedtea_jdkver="8"
 _openjdk_build="b07"
 _pkgver="8u312"
 pkgver="${_pkgver}_${_openjdk_build}_${_icedtea_release}"
-pkgrel=1
+pkgrel=2
 pkgdesc="An open-source implementation of the seventh edition of the Java SE Platform."
 arch=('x86_64')
 url="https://icedtea.classpath.org/"
@@ -142,11 +142,6 @@ optdepends=('icedtea-web: web browser plugin and Java Web Start support')
      "${pkgdir}"/usr/share/man/man2/
   mv "${pkgdir}"/${_jvmdir#/}/man/ja_JP.UTF-8/* \
      "${pkgdir}"/usr/share/man/ja
-
-  # link JKS keystore from ca-certificates-java
-  rm -f "${pkgdir}/${_jvmdir#/}/jre/lib/security/cacerts"
-  ln -s /etc/ssl/certs/java/cacerts \
-        "${pkgdir}/${_jvmdir#/}/jre/lib/security/cacerts"
 
   # Setup the shell profile dropin configuration
   install -D -m755 "${srcdir}/openjdk.profile.sh" \
