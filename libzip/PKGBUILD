@@ -1,8 +1,8 @@
 
 pkgname=libzip
-pkgver=1.8.0
+pkgver=1.9.0
 pkgrel=1
-pkgdesc="A C library for reading, creating, and modifying zip archives"
+pkgdesc="C library for reading, creating, and modifying zip archives"
 url="https://libzip.org/"
 license=('GPL2')
 arch=('x86_64')
@@ -10,22 +10,17 @@ depends=('zlib' 'openssl' 'nettle')
 makedepends=('cmake')
 options=('!libtool')
 source=("https://libzip.org/download/${pkgname}-${pkgver}.tar.xz")
-md5sums=('c0448fb7be85bc1caa87bc2fe5ab5ff8')
+md5sums=('c7176558c5459430ec58a2dbf8ab2548')
 
 build() {
-  mkdir -p build
-  cd build
-  
-  cmake ../${pkgname}-${pkgver} \
+  cmake -B build -S ${pkgname}-${pkgver} \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=lib
-    
-  make
+  cmake --build build
 }
 
 package() {
-  cd build
-  make DESTDIR=${pkgdir} install
-  
-  install -Dm644 ../${pkgname}-${pkgver}/LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+  DESTDIR=${pkgdir} cmake --install build
+
+  install -Dm644 ${pkgname}-${pkgver}/LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
