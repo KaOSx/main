@@ -1,0 +1,25 @@
+
+pkgname=python3-html5lib
+pkgver=1.1
+pkgrel=1
+pkgdesc="Standards-compliant library for parsing and serializing HTML documents and fragments in Python."
+arch=('x86_64')
+license=('MIT')
+url="https://html5lib.readthedocs.io/en/latest/"
+depends=('python3-lxml' 'python3-chardet' 'python3-six' 'python3-webencodings')
+makedepends=('python3-setuptools')
+source=("https://files.pythonhosted.org/packages/source/h/html5lib/html5lib-${pkgver}.tar.gz")
+sha256sums=('b2e5b40261e20f354d198eae92afc10d750afb487ed5e50f9c4eaf07c184146f')
+
+build() {
+    cd html5lib-${pkgver}
+
+    python3 setup.py build
+    }
+
+package() {
+    cd html5lib-${pkgver}
+
+    python3 setup.py install --prefix=/usr --root=${pkgdir} --optimize=1 --skip-build
+    install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}

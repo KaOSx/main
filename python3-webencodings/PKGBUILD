@@ -1,0 +1,25 @@
+
+pkgname=python3-webencodings
+pkgver=0.5.1
+pkgrel=1
+pkgdesc="Python implementation of the WHATWG Encoding standard."
+arch=('x86_64')
+license=('BSD')
+url="https://pythonhosted.org/webencodings/"
+depends=('python3')
+makedepends=('python3-setuptools')
+#source=("https://github.com/gsnedders/python-webencodings/archive/refs/tags/v${pkgver}.tar.gz")
+source=("https://files.pythonhosted.org/packages/source/w/webencodings/webencodings-${pkgver}.tar.gz")
+sha256sums=('b36a1c245f2d304965eb4e0a82848379241dc04b865afcc4aab16748587e1923')
+
+build() {
+    cd webencodings-${pkgver}
+
+    python3 setup.py build
+    }
+
+package() {
+    cd webencodings-${pkgver}
+
+    python3 setup.py install --prefix=/usr --root=${pkgdir} --optimize=1 --skip-build
+}
