@@ -1,19 +1,21 @@
 
 pkgname=speexdsp
-pkgver=1.2.0
-pkgrel=2
+pkgver=1.2.1
+pkgrel=1
 pkgdesc="Speex DSP library with NEON optimizations"
 arch=('x86_64')
 url="https://www.speex.org/"
 license=('BSD')
 depends=('glibc')
 options=('!libtool')
-source=("https://downloads.us.xiph.org/releases/speex/${pkgname}-${pkgver}.tar.gz")
-sha256sums=('682042fc6f9bee6294ec453f470dadc26c6ff29b9c9e9ad2ffc1f4312fd64771')
+#source=("https://downloads.us.xiph.org/releases/speex/${pkgname}-${pkgver}.tar.gz")
+source=("https://gitlab.xiph.org/xiph/speexdsp/-/archive/SpeexDSP-${pkgver}/speexdsp-SpeexDSP-${pkgver}.tar.bz2")
+sha256sums=('b36d4f16e42b7103b7fc3e4a8f98b6bf889dd1f70f65c2365af07be82844db29')
 
 build() {
-  cd ${pkgname}-${pkgver}
+  cd ${pkgname}-SpeexDSP-${pkgver}
 
+  ./autogen.sh
   ./configure --prefix=/usr \
        --sysconfdir=/etc \
        --localstatedir=/var
@@ -21,7 +23,7 @@ build() {
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
+  cd ${pkgname}-SpeexDSP-${pkgver}
   make DESTDIR=${pkgdir} install
 
   install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
