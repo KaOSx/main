@@ -12,7 +12,7 @@ pkgver=5.15.10
 subver=${subver}
 _pkgver=${_qtver}
 _commit=572277538333e998e4bdfea74acb395333d3d7c8
-pkgrel=2
+pkgrel=3
 pkgdesc="Chromium-based web engine to replace Qt WebKit"
 url="https://www.qt.io/"
 arch=('x86_64')
@@ -47,7 +47,7 @@ prepare() {
     cd ${_pkgfqn}
     # move to python3, freebsd patch https://github.com/freebsd/freebsd-ports-kde/blob/webengine-python3/www/qt5-webengine/python-patches.diff
     #patch -p1 -i ${srcdir}/python-patches.diff
-    sed -i 's|MODULE_VERSION = 5.15.10|MODULE_VERSION = 5.15.4|' .qmake.conf
+    sed -i 's|MODULE_VERSION = 5.15.10|MODULE_VERSION = 5.15.5|' .qmake.conf
 
     git submodule init
     git submodule set-url src/3rdparty ${srcdir}/qtwebengine-chromium
