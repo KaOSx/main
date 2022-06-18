@@ -20,11 +20,11 @@ source=("${_qtmirror}/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz"
         'qt_kde.patch')
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
-         '153f7535e3b615d40bcd60f99e2ea018')
+         'f88e2f70c95f407f88a1db36123b76d8')
 
 build() {
     cd ${__pkgfqn}
-    patch -p1 -i ${srcdir}/qt_kde.patch
+    #patch -p1 -i ${srcdir}/qt_kde.patch
 
     /usr/lib/qt5/bin/qmake
     make

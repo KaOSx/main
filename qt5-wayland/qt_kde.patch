@@ -1174,21 +1174,10 @@ index 474fe2ab..46f629ac 100644
  private:
      QWaylandDisplay *m_display = nullptr;
 diff --git a/src/client/qwaylandinputcontext.cpp b/src/client/qwaylandinputcontext.cpp
-index ef5aa375..e290baa2 100644
+index 8b79c08f..84a34674 100644
 --- a/src/client/qwaylandinputcontext.cpp
 +++ b/src/client/qwaylandinputcontext.cpp
-@@ -51,6 +51,10 @@
- #include "qwaylandinputmethodeventbuilder_p.h"
- #include "qwaylandwindow_p.h"
- 
-+#if QT_CONFIG(xkbcommon)
-+#include <locale.h>
-+#endif
-+
- QT_BEGIN_NAMESPACE
- 
- Q_LOGGING_CATEGORY(qLcQpaInputMethods, "qt.qpa.input.methods")
-@@ -383,8 +387,10 @@ void QWaylandTextInput::zwp_text_input_v2_input_method_changed(uint32_t serial,
+@@ -387,8 +387,10 @@ void QWaylandTextInput::zwp_text_input_v2_input_method_changed(uint32_t serial,
  Qt::KeyboardModifiers QWaylandTextInput::modifiersToQtModifiers(uint32_t modifiers)
  {
      Qt::KeyboardModifiers ret = Qt::NoModifier;
@@ -1202,7 +1191,7 @@ index ef5aa375..e290baa2 100644
      return ret;
  }
 diff --git a/src/client/qwaylandinputdevice.cpp b/src/client/qwaylandinputdevice.cpp
-index 613fe862..aca42cdc 100644
+index 613fe862..c3cc4eca 100644
 --- a/src/client/qwaylandinputdevice.cpp
 +++ b/src/client/qwaylandinputdevice.cpp
 @@ -685,6 +685,11 @@ public:
@@ -1244,21 +1233,6 @@ index 613fe862..aca42cdc 100644
      mParent->mQDisplay->handleKeyboardFocusChanged(mParent);
      mRepeatTimer.stop();
  }
-@@ -1407,14 +1399,6 @@ void QWaylandInputDevice::handleTouchPoint(int id, Qt::TouchPointState state, co
-         it = mTouch->mPendingTouchPoints.insert(end, QWindowSystemInterface::TouchPoint());
-         it->id = id;
-     }
--    // If the touch points were up and down in same frame, send out frame right away
--    else if ((it->state == Qt::TouchPointPressed && state == Qt::TouchPointReleased)
--            || (it->state == Qt::TouchPointReleased && state == Qt::TouchPointPressed)) {
--        mTouch->touch_frame();
--        it = mTouch->mPendingTouchPoints.insert(mTouch->mPendingTouchPoints.end(), QWindowSystemInterface::TouchPoint());
--        it->id = id;
--    }
--
-     QWindowSystemInterface::TouchPoint &tp = *it;
- 
-     // Only moved and pressed needs to update/set position
 diff --git a/src/client/qwaylandintegration.cpp b/src/client/qwaylandintegration.cpp
 index c53ccb78..fbf00c6b 100644
 --- a/src/client/qwaylandintegration.cpp
@@ -1803,19 +1777,6 @@ index bcfd5215..da95d07b 100644
          }
      },
  
-diff --git a/src/compositor/extensions/qwaylandtextinputmanager.cpp b/src/compositor/extensions/qwaylandtextinputmanager.cpp
-index d9938d1f..495ebae8 100644
---- a/src/compositor/extensions/qwaylandtextinputmanager.cpp
-+++ b/src/compositor/extensions/qwaylandtextinputmanager.cpp
-@@ -51,8 +51,6 @@ void QWaylandTextInputManagerPrivate::zwp_text_input_manager_v2_get_text_input(R
-         textInput = new QWaylandTextInput(seat, compositor);
-     }
-     textInput->add(resource->client(), id, wl_resource_get_version(resource->handle));
--    if (!textInput->isInitialized())
--        textInput->initialize();
- }
- 
- QWaylandTextInputManager::QWaylandTextInputManager()
 diff --git a/src/hardwareintegration/client/wayland-egl/qwaylandeglwindow.cpp b/src/hardwareintegration/client/wayland-egl/qwaylandeglwindow.cpp
 index 7889f575..201b583b 100644
 --- a/src/hardwareintegration/client/wayland-egl/qwaylandeglwindow.cpp
