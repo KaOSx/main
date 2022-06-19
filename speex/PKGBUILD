@@ -1,26 +1,28 @@
 
 pkgname=speex
-pkgver=1.2.0
-pkgrel=3
+pkgver=1.2.1
+pkgrel=1
 pkgdesc="A free codec for free speech"
 arch=('x86_64')
 url="https://www.speex.org/"
 license=('BSD')
 depends=('libogg' 'speexdsp')
 options=('!libtool')
-source=("https://downloads.us.xiph.org/releases/speex/${pkgname}-${pkgver}.tar.gz")
-sha256sums=('eaae8af0ac742dc7d542c9439ac72f1f385ce838392dc849cae4536af9210094')
+#source=("https://downloads.us.xiph.org/releases/speex/${pkgname}-${pkgver}.tar.gz")
+source=("https://gitlab.xiph.org/xiph/speex/-/archive/Speex-${pkgver}/speex-Speex-${pkgver}.tar.bz2")
+sha256sums=('cc55cce69d8753940d56936f7a1fe6db4b302df144aec93a92de1c65b1a87681')
 
 
 build() {
-  cd ${pkgname}-${pkgver}
+  cd ${pkgname}-Speex-${pkgver}
 
+  ./autogen.sh
   ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var
   make
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
+  cd ${pkgname}-Speex-${pkgver}
   make DESTDIR=${pkgdir} install
 
   install -Dm644 COPYING $pkgdir/usr/share/licenses/${pkgname}/LICENSE
