@@ -57241,6 +57241,49 @@ index e0c3b75efe..3414f9d8ba 100644
      { 0x8D64,  8 },   // GL_ETC1_RGB8_OES
      { 0x9274,  8 },   // GL_COMPRESSED_RGB8_ETC2
      { 0, 0 },         // unused (obsolete)
+diff --git a/src/network/access/http2/http2protocol_p.h b/src/network/access/http2/http2protocol_p.h
+index b0af5aa919..ed5f2bf561 100644
+--- a/src/network/access/http2/http2protocol_p.h
++++ b/src/network/access/http2/http2protocol_p.h
+@@ -133,9 +133,6 @@ enum Http2PredefinedParameters
+     maxPayloadSize = (1 << 24) - 1, // HTTP/2 6.5.2
+ 
+     defaultSessionWindowSize = 65535, // HTTP/2 6.5.2
+-    // Using 1000 (rather arbitrarily), just to
+-    // impose *some* upper limit:
+-    maxPeerConcurrentStreams  = 1000,
+     maxConcurrentStreams = 100 // HTTP/2, 6.5.2
+ };
+ 
+diff --git a/src/network/access/qhttp2protocolhandler.cpp b/src/network/access/qhttp2protocolhandler.cpp
+index f513139304..21f1c91e29 100644
+--- a/src/network/access/qhttp2protocolhandler.cpp
++++ b/src/network/access/qhttp2protocolhandler.cpp
+@@ -393,7 +393,8 @@ bool QHttp2ProtocolHandler::sendRequest()
+         initReplyFromPushPromise(message, key);
+     }
+ 
+-    const auto streamsToUse = std::min<quint32>(maxConcurrentStreams - activeStreams.size(),
++    const auto streamsToUse = std::min<quint32>(maxConcurrentStreams > activeStreams.size()
++                                                ? maxConcurrentStreams - activeStreams.size() : 0,
+                                                 requests.size());
+     auto it = requests.begin();
+     for (quint32 i = 0; i < streamsToUse; ++i) {
+@@ -1084,13 +1085,8 @@ bool QHttp2ProtocolHandler::acceptSetting(Http2::Settings identifier, quint32 ne
+         QMetaObject::invokeMethod(this, "resumeSuspendedStreams", Qt::QueuedConnection);
+     }
+ 
+-    if (identifier == Settings::MAX_CONCURRENT_STREAMS_ID) {
+-        if (newValue > maxPeerConcurrentStreams) {
+-            connectionError(PROTOCOL_ERROR, "SETTINGS invalid number of concurrent streams");
+-            return false;
+-        }
++    if (identifier == Settings::MAX_CONCURRENT_STREAMS_ID)
+         maxConcurrentStreams = newValue;
+-    }
+ 
+     if (identifier == Settings::MAX_FRAME_SIZE_ID) {
+         if (newValue < Http2::minPayloadLimit || newValue > Http2::maxPayloadSize) {
 diff --git a/src/network/access/qhttpnetworkconnection.cpp b/src/network/access/qhttpnetworkconnection.cpp
 index b093eec161..1bef9157e6 100644
 --- a/src/network/access/qhttpnetworkconnection.cpp
@@ -58633,6 +58676,19 @@ index 8da9837a59..feff54de4a 100644
                          break;
                      }
                      case QVariant::Int:
+diff --git a/src/plugins/sqldrivers/sqlite/qsql_sqlite.cpp b/src/plugins/sqldrivers/sqlite/qsql_sqlite.cpp
+index 3ca793061c..36cb7e1a7b 100644
+--- a/src/plugins/sqldrivers/sqlite/qsql_sqlite.cpp
++++ b/src/plugins/sqldrivers/sqlite/qsql_sqlite.cpp
+@@ -501,7 +501,7 @@ bool QSQLiteResult::exec()
+     if (paramCountIsValid) {
+         for (int i = 0; i < paramCount; ++i) {
+             res = SQLITE_OK;
+-            const QVariant value = values.at(i);
++            const QVariant &value = values.at(i);
+ 
+             if (value.isNull()) {
+                 res = sqlite3_bind_null(d->stmt, i + 1);
 diff --git a/src/printsupport/dialogs/images/print-24.png b/src/printsupport/dialogs/images/printer-24.png
 similarity index 100%
 rename from src/printsupport/dialogs/images/print-24.png
