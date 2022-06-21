@@ -1,7 +1,7 @@
 
 pkgname=libproxy
-pkgver=0.4.17
-pkgrel=5
+pkgver=0.4.18
+pkgrel=1
 pkgdesc="A library that provides automatic proxy configuration management"
 arch=('x86_64')
 url="https://libproxy.github.io/libproxy"
@@ -12,7 +12,7 @@ optdepends=('networkmanager: NetworkManager configuration module'
             'perl: Perl bindings')
 source=("https://github.com/libproxy/libproxy/archive/${pkgver}.tar.gz")
 options=('!libtool')
-md5sums=('74af4aa1e7920f3b6117203d55a9c524')
+md5sums=('21d13e5d699c3c21ab5eb2260ed9247a')
 
 build() {
   cmake -B build -S ${pkgname}-${pkgver} \

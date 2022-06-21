@@ -1,25 +1,26 @@
 
 pkgname=aspell-da
-pkgver=1.7.42
+pkgver=3.2
 pkgrel=1
 pkgdesc="Danish dictionary for aspell"
 arch=('x86_64')
 url="https://da.speling.org"
 license=('GPLv2')
 depends=('aspell')
-source=("https://da.speling.org/filer/new_${pkgname}-${pkgver}.tar.bz2")
-md5sums=('f487f3d712f0862b42130b453d27b22d')
+#source=("https://da.speling.org/filer/new_${pkgname}-${pkgver}.tar.bz2")
+source=("https://github.com/mortenivar/aspell-da/archive/refs/tags/${pkgver}.tar.gz")
+md5sums=('a8d9b142f88ae05e6865466e8f9c9c52')
 
 build() {
-  cd new_${pkgname}-${pkgver}
+  cd ${pkgname}-${pkgver}
 
   ./configure
   make
 }
 
 package() {
-  cd new_${pkgname}-${pkgver}
+  cd ${pkgname}-${pkgver}
 
   make DESTDIR=${pkgdir} install
-  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
+  install -Dm644 Copyright ${pkgdir}/usr/share/licenses/${pkgname}/Copyright
 }
