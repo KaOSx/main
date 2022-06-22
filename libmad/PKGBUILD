@@ -1,40 +1,33 @@
 
 pkgname=libmad
-pkgver=0.15.1b
-pkgrel=9
+pkgver=0.16.1
+pkgrel=1
 pkgdesc="A high-quality MPEG audio decoder"
 arch=('x86_64')
 url="https://www.underbit.com/products/mad/"
 license=('GPL')
 depends=('glibc')
-makedepends=('autoconf')
+makedepends=('cmake')
 options=('!libtool')
-source=("https://downloads.sourceforge.net/sourceforge/mad/${pkgname}-${pkgver}.tar.gz"
+source=("https://github.com/tenacityteam/libmad/archive/refs/tags/${pkgver}.tar.gz"
         'libmad.patch'
         'amd64-64bit.diff' 
         'frame_length.diff' 
         'optimize.diff')
-md5sums=('1be543bc30c56fb6bea1d7bf6a64e66c'
+md5sums=('0196d0b09aa6480fe6a6b7d53ccd926b'
          'fbcca0267a423bae45389666f4cb04d5'
          '8d8bd64a2842dd59153b3a6642059e23'
          '3329b032118a68e18908197e65b3198d'
          '3e52afe2103f367810a18bef9e82eb9f')
-         
+
 build() {
-  cd ${pkgname}-${pkgver}
-  patch -p1 -i ${srcdir}/libmad.patch
-  patch -p1 -i ${srcdir}/amd64-64bit.diff
-  patch -p1 -i ${srcdir}/frame_length.diff 
-  patch -p1 -i ${srcdir}/optimize.diff
-  
-  CFLAGS="$CFLAGS -ftree-vectorize -ftree-vectorizer-verbose=1"
-  autoconf
-  ./configure --prefix=/usr
-  make
+  cmake -B build -S ${pkgname}-${pkgver} \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr
+  cmake --build build
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
-  
-  make DESTDIR=${pkgdir} install
+
+  DESTDIR=${pkgdir} cmake --install build
 }
