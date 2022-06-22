@@ -1,0 +1,29 @@
+
+pkgname=python3-typing_extensions
+_pkgname=typing_extensions
+pkgver=4.2.0
+_commit=1baf0a58b2b4c5327871d06801187cba47aa6975
+pkgrel=1
+pkgdesc="Backported and experimental type hints for Python."
+arch=('x86_64')
+url='https://github.com/python/typing_extensions'
+license=('custom')
+depends=('python3')
+makedepends=('python3-build' 'python3-flit' 'python3-wheel')
+source=("https://github.com/python/typing_extensions/archive/${_commit}.zip")
+sha256sums=('8984e873b73a393b69180f8c581249f75110f282a245f0c932326880860409d3')
+
+build() {
+  cd ${_pkgname}-${_commit}
+
+  PYTHONPATH=flit_core python3 -m flit build --format wheel
+}
+
+package() {
+  cd ${_pkgname}-${_commit}
+
+  PIP_CONFIG_FILE=/dev/null pip3 install --isolated --root=${pkgdir} --ignore-installed --no-deps dist/*.whl
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
+
+ 
