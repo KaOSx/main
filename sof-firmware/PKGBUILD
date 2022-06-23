@@ -1,8 +1,9 @@
 
 # check branch for version
 pkgname=sof-firmware
-pkgver=2.1.1
-_pkgver=stable-v1.7
+pkgver=2.1.1.a
+_pkgver=2.1.1
+__pkgver=2.1.1a
 pkgrel=1
 pkgdesc="Sound Open Firmware is an audio DSP firmware and SDK that provides audio firmware infrastructure"
 arch=('x86_64')
@@ -10,20 +11,23 @@ url="https://www.sofproject.org/"
 license=('custom:BSD' 'custom:ISC')
 depends=('alsa-lib')
 options=('!strip')
-source=("https://github.com/thesofproject/sof-bin/releases/download/v${pkgver}/sof-bin-v${pkgver}.tar.gz")
-md5sums=('937cf6c3848603d45b3e1120fe5b7865')
+#source=("https://github.com/thesofproject/sof-bin/releases/download/v${pkgver}/sof-bin-v${_pkgver}.tar.gz")
+# go back to the bin release once sof-tlpg-v2.1.1a is part of the bin again
+source=("https://github.com/thesofproject/sof-bin/archive/refs/tags/v${__pkgver}.tar.gz")
+md5sums=('c2a821e95a15b5ee24f89164204f5b03')
 
 package() {
-  cd sof-bin-v${pkgver}
+  cd sof-bin-${__pkgver}/v2.1.x
 
-  mkdir -p ${pkgdir}/lib/firmware/intel/sof
+  mkdir -p ${pkgdir}/lib/firmware/intel
   mkdir -p ${pkgdir}/lib/firmware/intel/sof-tplg
   mkdir -p ${pkgdir}/usr/bin
 
-  cp -a sof-v${pkgver} ${pkgdir}/lib/firmware/intel/sof
-  cp -a sof-tplg-v${pkgver} ${pkgdir}/lib/firmware/intel/sof-tplg
-  mv tools-v${pkgver}/* ${pkgdir}/usr/bin
+  cp -a sof-v${_pkgver} ${pkgdir}/lib/firmware/intel/sof
+  cp -a sof-tplg-v${_pkgver} ${pkgdir}/lib/firmware/intel/sof-tplg
+  cp -a sof-tplg-v${__pkgver} ${pkgdir}/lib/firmware/intel/sof-tplg
+  mv tools-v${_pkgver}/* ${pkgdir}/usr/bin
 
-  install -Dm644 LICENCE.Intel ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.Intel
-  install -Dm644 LICENCE.NXP ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.NXP
+  install -Dm644 ../LICENCE.Intel ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.Intel
+  install -Dm644 ../LICENCE.NXP ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.NXP
 }
