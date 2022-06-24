@@ -2,7 +2,7 @@
 pkgname=mariadb
 pkgver=10.7.4
 _pkgver=10.7.4
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 license=('GPL')
 url='https://mariadb.org/'
@@ -69,7 +69,11 @@ build() {
     -DWITH_PARTITION_STORAGE_ENGINE=1 \
     -DWITHOUT_EXAMPLE_STORAGE_ENGINE=1 \
     -DWITHOUT_FEDERATED_STORAGE_ENGINE=1 \
-    -DWITHOUT_TOKUDB_STORAGE_ENGINE=1
+    -DWITHOUT_TOKUDB_STORAGE_ENGINE=1 \
+    -DPLUGIN_PROVIDER_BZIP2=NO \
+    -DPLUGIN_PROVIDER_LZ4=NO \
+    -DPLUGIN_PROVIDER_LZMA=NO \
+    -DPLUGIN_PROVIDER_LZO=NO
 
   make
 }
