@@ -1,6 +1,6 @@
 
 pkgname=power-profiles-daemon
-pkgver=0.11.1
+pkgver=0.12
 pkgrel=1
 pkgdesc="Makes power profiles handling available over D-Bus."
 arch=('x86_64')
@@ -10,7 +10,7 @@ depends=('polkit' 'upower')
 makedepends=('meson' 'ninja')
 install=power-profiles-daemon.install
 source=("https://gitlab.freedesktop.org/hadess/power-profiles-daemon/-/archive/${pkgver}/${pkgname}-${pkgver}.tar.bz2")
-sha256sums=('15604b38faf23c61bc88cde7ac745100fb74019e38b65917a5d966883d886592')
+sha256sums=('8ce5576b2b7dfe24bc646555f1e08256e3023208713e51d18b55c4b84a7c2293')
 
 prepare() {
   cd ${pkgname}-${pkgver}
