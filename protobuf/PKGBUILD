@@ -1,16 +1,16 @@
 
 pkgname=protobuf
-pkgver=21.1
+pkgver=21.2
 pkgrel=1
 pkgdesc="A way of encoding structured data in an efficient yet extensible format."
 arch=('x86_64')
-url="https://github.com/google/protobuf/"
+url="https://github.com/protocolbuffers/protobuf"
 license=('APACHE')
 depends=('gcc-libs' 'zlib')
 makedepends=('unzip')
 options=('!libtool')
-source=("https://github.com/google/protobuf/archive/v${pkgver}.tar.gz")
-md5sums=('ee40438d7e7ea8c20d88aadacfecbd73')
+source=("https://github.com/protocolbuffers/protobuf/archive/v${pkgver}.tar.gz")
+md5sums=('933e858f5c849debb1bb79561bda0a4b')
 
 build() {
   cd ${pkgname}-${pkgver}
