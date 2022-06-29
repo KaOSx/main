@@ -6,7 +6,7 @@ pkgname=rtl8192eu-next
 _pkgname=rtl8192eu-linux-driver
 pkgver=4.4.1.10
 _commit=6ba1f320963376f15ea216238c0b62ff3e71fa82
-pkgrel=8
+pkgrel=9
 pkgdesc="Drivers for the rtl8192eu chipset for wireless adapters (D-Link DWA-131 rev E1 included)"
 arch=('x86_64')
 url="https://github.com/Mange/rtl8192eu-linux-driver"
@@ -24,7 +24,7 @@ md5sums=('085454036111f2240aa55d141ac2990c'
 build() {
   cd ${_pkgname}-${_commit}
   #patch -p1 -i ${srcdir}/80a0cb2c1aa10e52bc653e7455a6f1b64fdccd09.diff
-  sed -i -e 's|$(shell uname -r)|5.18.7-1-next|' Makefile
+  sed -i -e 's|$(shell uname -r)|5.18.8-1-next|' Makefile
 
   make
 }
