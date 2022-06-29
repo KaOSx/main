@@ -1,6 +1,6 @@
 
 pkgname=libzip
-pkgver=1.9.1
+pkgver=1.9.2
 pkgrel=1
 pkgdesc="C library for reading, creating, and modifying zip archives"
 url="https://libzip.org/"
@@ -10,7 +10,7 @@ depends=('zlib' 'openssl' 'nettle')
 makedepends=('cmake')
 options=('!libtool')
 source=("https://libzip.org/download/${pkgname}-${pkgver}.tar.xz")
-md5sums=('7c2af38e64154e0e0af021421c2c6170')
+md5sums=('52c0c606d08bd796eae07630264c3cc9')
 
 build() {
   cmake -B build -S ${pkgname}-${pkgver} \
