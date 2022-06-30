@@ -2,7 +2,7 @@
 pkgname=mesa-amber
 _pkgname=mesa
 pkgver=21.3.9
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 pkgdesc="Classic Mesa 3-D graphics libraries and include files"
 url="https://www.mesa3d.org/"
@@ -38,7 +38,7 @@ build() {
     --buildtype=release \
     -Db_ndebug=true \
     -Dplatforms=x11,wayland \
-    -Damber=true \
+    -Damber=false \
     -Ddri3=enabled \
     -Ddri-drivers=i915,i965,r200,nouveau \
     -Dgallium-drivers=iris,r300,r600,nouveau,radeonsi,svga,swrast,virgl \
