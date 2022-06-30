@@ -2,18 +2,18 @@
 pkgname=mesa-amber
 _pkgname=mesa
 pkgver=21.3.9
-pkgrel=2
+pkgrel=3
 arch=('x86_64')
 pkgdesc="Classic Mesa 3-D graphics libraries and include files"
 url="https://www.mesa3d.org/"
 license=('custom')
 depends=('libx11' 'libxt' 'gcc-libs' 'libvdpau' 'xorgproto' 'wayland' 'elfutils'
-         'libdrm' 'libxxf86vm' 'libxdamage' 'expat' 'libxshmfence' 'llvm'
-         'lm_sensors' 'libunwind' 'libxvmc' 'libxrandr' 'libglvnd' 'zstd') 
+         'libdrm' 'libxxf86vm' 'libxdamage' 'expat' 'libxshmfence' 'libxvmc' 
+         'libxrandr' 'libglvnd' 'zstd' 'mesa') 
 makedepends=('libva' 'llvm' 'libxml2' 'imake' 'clang' 'python3-mako'
              'wayland-protocols' 'meson' 'ninja' 'valgrind' 'vulkan-loader')
-conflicts=('mesa')
-provides=('mesa')
+#conflicts=('mesa')
+#provides=('mesa')
 source=("https://mesa.freedesktop.org/archive/${_pkgname}-${pkgver}.tar.xz"
         "https://gitlab.freedesktop.org/pzanoni/mesa/-/commit/168f177b8a910004de768b1a89a0adea383fa6bc.diff"
         'LICENSE')
@@ -38,34 +38,34 @@ build() {
     --buildtype=release \
     -Db_ndebug=true \
     -Dplatforms=x11,wayland \
-    -Damber=false \
-    -Ddri3=enabled \
-    -Ddri-drivers=i915,i965,r200,nouveau \
-    -Dgallium-drivers=iris,r300,r600,nouveau,radeonsi,svga,swrast,virgl \
-    -Dgallium-extra-hud=true \
-    -Dgallium-vdpau=enabled \
-    -Dgallium-xvmc=enabled \
+    -Damber=true \
+    -Dglvnd-vendor-name=amber \
+    -Ddri3=disabled \
+    -Ddri-drivers=i915,i965,r100,r200,nouveau \
+    -Dgallium-drivers= \
+    -Dgallium-extra-hud=false \
+    -Dgallium-vdpau=disabled \
+    -Dgallium-xvmc=disabled \
     -Dgallium-omx=disabled \
-    -Dgallium-va=enabled \
-    -Dgallium-xa=enabled \
-    -Dgallium-nine=true \
+    -Dgallium-va=disabled \
+    -Dgallium-xa=disabled \
+    -Dgallium-nine=false \
     -Dgallium-opencl=disabled \
-    -Dvulkan-drivers=amd,intel,swrast \
-    -Dvulkan-layers=device-select,intel-nullhw \
+    -Dvulkan-drivers= \
     -Dshared-glapi=enabled \
     -Dgles1=enabled \
     -Dgles2=enabled \
     -Dopengl=true \
-    -Dgbm=enabled \
+    -Dgbm=disabled \
     -Dglx=dri \
     -Degl=enabled \
     -Dglvnd=true \
-    -Dllvm=enabled \
+    -Dllvm=disabled \
     -Dvalgrind=disabled \
-    -Dlibunwind=enabled \
-    -Dlmsensors=enabled \
+    -Dlibunwind=disabled \
+    -Dlmsensors=disabled \
     -Dbuild-tests=false \
-    -Dosmesa=true
+    -Dosmesa=false
     ninja
 }
 
@@ -75,4 +75,12 @@ package() {
 
   install -m755 -d ${pkgdir}/usr/share/licenses/mesa-amber
   install -m644 ${srcdir}/LICENSE ${pkgdir}/usr/share/licenses/mesa-amber/
+
+  # Make mesa-amber co-installable with mesa, remove conflicting files, rename i915 so files
+  #rm -r ${pkgdir}/usr/lib/libgbm.so*
+  #rm -r ${pkgdir}/usr/lib/libglapi.so*
+  #rm -r ${pkgdir}/usr/lib/pkgconfig
+  #rm -r ${pkgdir}/usr/include
+  mv ${pkgdir}/usr/share/drirc.d/00-mesa-defaults.conf ${pkgdir}/usr/share/drirc.d/00-amber-defaults.conf
+  #mv ${pkgdir}/usr/lib/dri/i915_dri.so ${pkgdir}/usr/lib/dri/i915c_dri.so
 }

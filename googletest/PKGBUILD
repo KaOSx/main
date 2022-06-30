@@ -1,7 +1,7 @@
 
 pkgname=googletest
-pkgver=1.12.0
-_pkgver=release-1.12.0
+pkgver=1.12.1
+_pkgver=release-1.12.1
 pkgrel=1
 pkgdesc='Googles C++ test framework'
 url='https://github.com/google/googletest/'
@@ -11,7 +11,7 @@ depends=('gcc-libs' 'sh')
 makedepends=('cmake' 'python3')
 options=('!makeflags')
 source=("https://github.com/google/googletest/archive/${_pkgver}.tar.gz")
-md5sums=('c483d6c24846cea536a9c2b44085bc14')
+md5sums=('e82199374acdfda3f425331028eb4e2a')
 
 build() {
   cmake -B build -S ${pkgname}-${_pkgver} \
