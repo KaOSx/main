@@ -1,26 +1,27 @@
 
 pkgname=protobuf
 pkgver=21.2
-pkgrel=1
+pkgrel=2
 pkgdesc="A way of encoding structured data in an efficient yet extensible format."
 arch=('x86_64')
 url="https://github.com/protocolbuffers/protobuf"
 license=('APACHE')
 depends=('gcc-libs' 'zlib')
-makedepends=('unzip')
+makedepends=('cmake' 'unzip')
 options=('!libtool')
 source=("https://github.com/protocolbuffers/protobuf/archive/v${pkgver}.tar.gz")
 md5sums=('933e858f5c849debb1bb79561bda0a4b')
 
 build() {
-  cd ${pkgname}-${pkgver}
-
-  ./autogen.sh 
-  ./configure --prefix=/usr --disable-static 
+  cmake -B build -S ${pkgname}-${pkgver} \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -Dprotobuf_BUILD_TESTS=OFF \
+    -DBUILD_SHARED_LIBS=ON
+  cmake --build build
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
 
-  make DESTDIR=${pkgdir} install
+    DESTDIR=${pkgdir} cmake --install build
 }
