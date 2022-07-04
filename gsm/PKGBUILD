@@ -15,7 +15,7 @@ md5sums=('d02d9fcc60145641e970988c81f58e8d'
 
 build() {
   cd ${pkgname}-${_pkgver}/
-  patch -p1 -i ${srcdir}/${pkgname}.patch
+  patch -p1 -i ${srcdir}/gsm.patch
 
   # flags for shared lib
   CFLAGS="${CFLAGS} -fPIC"
