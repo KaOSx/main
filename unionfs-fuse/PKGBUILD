@@ -1,15 +1,15 @@
 
 pkgname=unionfs-fuse
-pkgver=2.2
+pkgver=3.1
 pkgrel=1
 pkgdesc="Userland unionfs implementation that is way more flexible than the current in-kernel based unionfs solution."
 arch=('x86_64')
 url="https://github.com/rpodgorny/unionfs-fuse"
 license=('BSD')
-depends=('fuse')
+depends=('fuse3')
 makedepends=('cmake')
 source=("https://github.com/rpodgorny/unionfs-fuse/archive/v${pkgver}.tar.gz")
-md5sums=('296a6e614f31c5b8d6c8375ee903c383')
+md5sums=('b92894e671bb7c2e1c41bd10629be4cf')
 
 build() {
   cd ${pkgname}-${pkgver}
