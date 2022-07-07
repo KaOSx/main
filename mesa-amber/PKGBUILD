@@ -2,7 +2,7 @@
 pkgname=mesa-amber
 _pkgname=mesa
 pkgver=21.3.9
-pkgrel=3
+pkgrel=4
 arch=('x86_64')
 pkgdesc="Classic Mesa 3-D graphics libraries and include files"
 url="https://www.mesa3d.org/"
@@ -40,16 +40,16 @@ build() {
     -Dplatforms=x11,wayland \
     -Damber=true \
     -Dglvnd-vendor-name=amber \
-    -Ddri3=disabled \
+    -Ddri3=enabled \
     -Ddri-drivers=i915,i965,r100,r200,nouveau \
-    -Dgallium-drivers= \
-    -Dgallium-extra-hud=false \
+    -Dgallium-drivers=nouveau,radeonsi,svga,swrast \
+    -Dgallium-extra-hud=true \
     -Dgallium-vdpau=disabled \
     -Dgallium-xvmc=disabled \
     -Dgallium-omx=disabled \
-    -Dgallium-va=disabled \
+    -Dgallium-va=enabled \
     -Dgallium-xa=disabled \
-    -Dgallium-nine=false \
+    -Dgallium-nine=true \
     -Dgallium-opencl=disabled \
     -Dvulkan-drivers= \
     -Dshared-glapi=enabled \
@@ -60,7 +60,7 @@ build() {
     -Dglx=dri \
     -Degl=enabled \
     -Dglvnd=true \
-    -Dllvm=disabled \
+    -Dllvm=enabled \
     -Dvalgrind=disabled \
     -Dlibunwind=disabled \
     -Dlmsensors=disabled \
@@ -78,9 +78,17 @@ package() {
 
   # Make mesa-amber co-installable with mesa, remove conflicting files, rename i915 so files
   #rm -r ${pkgdir}/usr/lib/libgbm.so*
-  #rm -r ${pkgdir}/usr/lib/libglapi.so*
-  #rm -r ${pkgdir}/usr/lib/pkgconfig
-  #rm -r ${pkgdir}/usr/include
+  rm -r ${pkgdir}/usr/lib/d3d
+  rm -r ${pkgdir}/usr/lib/libglapi.so*
+  rm -r ${pkgdir}/usr/lib/dri/nouveau_dri.so
+  rm -r ${pkgdir}/usr/lib/dri/nouveau_drv_video.so
+  rm -r ${pkgdir}/usr/lib/dri/radeonsi_dri.so
+  rm -r ${pkgdir}/usr/lib/dri/radeonsi_drv_video.so
+  rm -r ${pkgdir}/usr/lib/dri/swrast_dri.so
+  rm -r ${pkgdir}/usr/lib/dri/kms_swrast_dri.so
+  rm -r ${pkgdir}/usr/lib/dri/vmwgfx_dri.so
+  rm -r ${pkgdir}/usr/lib/pkgconfig
+  rm -r ${pkgdir}/usr/include
   mv ${pkgdir}/usr/share/drirc.d/00-mesa-defaults.conf ${pkgdir}/usr/share/drirc.d/00-amber-defaults.conf
-  #mv ${pkgdir}/usr/lib/dri/i915_dri.so ${pkgdir}/usr/lib/dri/i915c_dri.so
+  mv ${pkgdir}/usr/lib/dri/i915_dri.so ${pkgdir}/usr/lib/dri/i915c_dri.so
 }
