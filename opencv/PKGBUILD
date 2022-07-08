@@ -1,8 +1,8 @@
 
 # check digikam & libopenshot on any update
 pkgname=opencv
-pkgver=4.5.5
-_pkgver=4.5.5
+pkgver=4.6.0
+_pkgver=4.6.0
 pkgrel=1
 pkgdesc="Open Source Computer Vision Library"
 arch=('x86_64')
@@ -16,14 +16,14 @@ options=('!libtool')
 source=("https://github.com/opencv/opencv/archive/${_pkgver}.tar.gz"
         "opencv_contrib-${_pkgver}::https://github.com/opencv/opencv_contrib/archive/${_pkgver}.tar.gz"
         "https://github.com/opencv/opencv_contrib/commit/c4419e4e65a8d9e0b5a15e9a5242453f261bee46.diff")
-md5sums=('a9782f01883fcf51451a183d05bda33d'
-         '073793e8085ec2490b3386e04ee20fbc'
+md5sums=('2f52df67b255fcc2c36632a9e9f723f6'
+         '30bdfbaa6e268485767a6b2e3da915ab'
          'ca884d27cca217f84e3b86dcd658bc69')
 
 prepare () {
   cd opencv_contrib-${_pkgver}
   # https://github.com/opencv/opencv_contrib/issues/3063
-  sed -e 's|HAVE_QT5|HAVE_QT|' -i modules/cvv/CMakeLists.txt
+  #sed -e 's|HAVE_QT5|HAVE_QT|' -i modules/cvv/CMakeLists.txt
   #patch -p1 -i ${srcdir}/c4419e4e65a8d9e0b5a15e9a5242453f261bee46.diff
 }
          
