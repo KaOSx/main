@@ -2,13 +2,13 @@
 pkgname=jpeg-xl
 _pkgname=libjxl
 pkgver=0.6.1
-pkgrel=2
+pkgrel=3
 pkgdesc='JPEG XL image format reference implementation, called libjxl'
 arch=('x86_64')
 url='https://jpeg.org/jpegxl/'
 license=('Apache')
 depends=('brotli' 'gdk-pixbuf2' 'giflib' 'libjpeg-turbo' 'libpng' 'libwebp' 'openexr' 'zlib'
-         'libglvnd' 'freeglut')
+         'libglvnd' 'freeglut' 'lcms2')
 makedepends=('cmake' 'clang' 'git' 'googletest' 'python3' 'graphviz')
 source=("git+https://github.com/libjxl/libjxl.git")
 #source=("git+https://gitlab.com/wg1/jpeg-xl.git")
@@ -28,6 +28,7 @@ build() {
     cmake -B build -S ${_pkgname} \
         -DCMAKE_BUILD_TYPE=Release \
         -DCMAKE_INSTALL_PREFIX=/usr \
+        -DBUILD_SHARED_LIBS=ON \
         -DJPEGXL_ENABLE_BENCHMARK=OFF \
         -DJPEGXL_ENABLE_FUZZERS=OFF \
         -DJPEGXL_ENABLE_TCMALLOC=OFF \
@@ -36,13 +37,15 @@ build() {
         -DJPEGXL_FORCE_SYSTEM_BROTLI=ON \
         -DJPEGXL_FORCE_SYSTEM_GTEST=ON \
         -DJPEGXL_FORCE_SYSTEM_HWY=OFF \
+        -DJPEGXL_FORCE_SYSTEM_LCMS2=ON \
+        -DJPEGXL_BUNDLE_GFLAGS=ON \
         -DJPEGXL_WARNINGS_AS_ERRORS=OFF
     cmake --build build
 }
 
-check() {
-    make -C build test
-}
+#check() {
+    #make -C build test
+#}
 
 package() {
     DESTDIR=${pkgdir} cmake --install build
