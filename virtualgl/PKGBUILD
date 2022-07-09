@@ -6,10 +6,18 @@ pkgdesc="Redirects 3D commands from an OpenGL application onto a server-side 3D 
 arch=('x86_64')
 url="https://virtualgl.org"
 license=('LGPL')
-depends=('mesa' 'libxv' 'libjpeg-turbo' 'glu' 'opencl-headers' 'xcb-util-keysyms' 'fltk')
+depends=('mesa' 'libxv' 'libjpeg-turbo' 'glu' 'opencl-headers' 'xcb-util-keysyms')
 makedepends=('cmake' 'libxtst')
-source=("https://sourceforge.net/projects/virtualgl/files/${pkgver}/VirtualGL-${pkgver}.tar.gz")
-md5sums=('e7ec38c7e69a2d8db10941057b753aa6')
+source=("https://sourceforge.net/projects/virtualgl/files/${pkgver}/VirtualGL-${pkgver}.tar.gz"
+        "https://github.com/VirtualGL/virtualgl/commit/46d09529563127fef0d42a4fb2681ae8d65a856b.diff")
+md5sums=('e7ec38c7e69a2d8db10941057b753aa6'
+         'ef47ea86ff47af3d12ac2d070d758444')
+
+prepare() {
+  cd VirtualGL-${pkgver}
+
+  patch -p1 -i ${srcdir}/46d09529563127fef0d42a4fb2681ae8d65a856b.diff
+}
 
 build() {
   mkdir -p build
@@ -24,8 +32,8 @@ build() {
     -DTJPEG_INCLUDE_DIR=/usr/include \
     -DTJPEG_LIBRARY=/usr/lib/libturbojpeg.so \
     -DVGL_FAKEOPENCL=0 \
-    -DVGL_SYSTEMFLTK=1
-  make -j1
+    -DVGL_FAKEXCB=1
+  make
 }
 
 package() {

@@ -1,7 +1,7 @@
 
 pkgname=wavpack
 _pkgname=WavPack
-pkgver=5.4.0
+pkgver=5.5.0
 _commit=e4e8d191e8dd74cbdbeaef3232c16a7ef517e68d
 pkgrel=1
 pkgdesc="Audio compression format with lossless, lossy, and hybrid compression modes"
@@ -12,11 +12,11 @@ depends=('glibc')
 options=('!libtool')
 #source=("https://www.wavpack.com/${pkgname}-${pkgver}.tar.bz2")
 source=("https://github.com/dbry/WavPack/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
-md5sums=('d21570637fe5d5cee06039707c2d9d6e')
+md5sums=('9501de7a8ac23649b06f4e470d5ff299')
 
 build() {
 	cd ${pkgname}-${pkgver}
-	
+
 	#./autogen.sh
 	./configure --prefix=/usr \
 	      --libdir=/usr/lib \
@@ -27,6 +27,6 @@ build() {
 package() {
 	cd ${pkgname}-${pkgver}
 	make DESTDIR=${pkgdir} install 
-	
+
 	install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
