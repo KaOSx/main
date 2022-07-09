@@ -8,53 +8,62 @@ source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
 pkgbase=qtwebengine
 pkgname=('qtwebengine') # 'qtwebengine-examples')
 #pkgver=${qtver}
-pkgver=5.15.10
+pkgver=5.15.11
 subver=${subver}
 _pkgver=${_qtver}
-_commit=572277538333e998e4bdfea74acb395333d3d7c8
-pkgrel=3
+_commit=c107eb20a25157836fcf3be91566d8ea38490f40
+pkgrel=1
 pkgdesc="Chromium-based web engine to replace Qt WebKit"
 url="https://www.qt.io/"
 arch=('x86_64')
 license=('GPL3')
 makedepends=('qt5-declarative' 'python3' 'mesa' 'systemd' 'pango' 'nss' 'speex' 'libevent' 'libcups'
-         'libxslt' 'libpng' 'libjpeg-turbo' 'libwebp' 'zlib' 'pciutils' 'jsoncpp' 'pulseaudio' 'libxcomposite'
+         'libxslt' 'libpng' 'libjpeg-turbo' 'libwebp' 'zlib' 'pciutils' 'jsoncpp' 'pipewire' 'libxcomposite'
          'qt5-location' 'qt5-webchannel' 'ffmpeg' 'libxss' 'protobuf' 'opus' 'libvpx'
-         'gperf' 'yasm' 'openssh' 'icu' 'qt5-tools' 'nodejs' 'python2')
+         'gperf' 'yasm' 'openssh' 'icu' 'qt5-tools' 'nodejs' 'python3')
 #_pkgfqn="qtwebengine-everywhere-src-${subver}"
 _pkgfqn="qtwebengine"
 #source=("${_qtmirror}/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz"
 source=("git+https://github.com/qt/qtwebengine.git#commit=${_commit}"
         "git+https://github.com/qt/qtwebengine-chromium.git"
-        'nss321.diff'
         'demobrowser.desktop'
         'quicknanobrowser.desktop'
         'markdowneditor.desktop'
-        'python-patches.diff'
-        'rule_bison.diff')
+        "https://raw.githubusercontent.com/archlinux/svntogit-packages/packages/qt5-webengine/trunk/qt5-webengine-chromium-python3.patch"
+        "https://raw.githubusercontent.com/archlinux/svntogit-packages/packages/qt5-webengine/trunk/qt5-webengine-python3.patch"
+        "https://raw.githubusercontent.com/archlinux/svntogit-packages/packages/qt5-webengine/trunk/qt5-webengine-pipewire-0.3.patch"
+        'drop-catapult.patch'
+        'chromium-drop-catapult.patch')
 #md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
 md5sums=('SKIP'
          'SKIP'
-         '5c297bd337ffab4a2d075a7c85d55ef3'
          'f11d24801322ef41f8a44eedc5e104c2'
          '6d62ba455c7d70870fb28c9362c9c591'
          '5ea5aa48c198a8de1398fc9e7a4abd14'
-         '699b9a97d0164c0c62bfb1700fa31832'
-         '9830c8af376817b2812775b547734873')
+         '7fc674703ddd8277f43ae7e3a5eac29c'
+         '3ebcc2f174d39c98a817861d33b9ad7d'
+         'a21aa28d235877e7dcc35055d67d417d'
+         '1e2bf35ced2fa754cf04eb85762bb2e8'
+         'bf595b1346aab831c778e7ae30fbcb79')
 
 prepare() {
     mkdir -p build
     cd ${_pkgfqn}
-    # move to python3, freebsd patch https://github.com/freebsd/freebsd-ports-kde/blob/webengine-python3/www/qt5-webengine/python-patches.diff
-    #patch -p1 -i ${srcdir}/python-patches.diff
-    sed -i 's|MODULE_VERSION = 5.15.10|MODULE_VERSION = 5.15.5|' .qmake.conf
+
+    sed -i 's|MODULE_VERSION = 5.15.11|MODULE_VERSION = 5.15.5|' .qmake.conf
 
     git submodule init
     git submodule set-url src/3rdparty ${srcdir}/qtwebengine-chromium
     git submodule set-branch --branch 87-based src/3rdparty
     git submodule update
 
-    #patch -p1 -i ${srcdir}/qtwebengine-5.15.2_p20210406-glibc-2.33.patch
+    # move to python3, freebsd patch https://github.com/freebsd/freebsd-ports-kde/blob/webengine-python3/www/qt5-webengine/python-patches.diff, moved to patches from ArchLinux & Gentoo
+    patch -p1 -i ${srcdir}/qt5-webengine-python3.patch
+    patch -p1 -i ${srcdir}/drop-catapult.patch
+    patch -p1 -i ${srcdir}/chromium-drop-catapult.patch
+    cd src/3rdparty
+    patch -p1 -i ${srcdir}/qt5-webengine-chromium-python3.patch
+    patch -p1 -i ${srcdir}/qt5-webengine-pipewire-0.3.patch
 }
 
 build() {
@@ -65,7 +74,9 @@ build() {
     -webengine-proprietary-codecs \
     -webengine-ffmpeg \
     -webengine-opus \
-    -webengine-spellchecker
+    -webengine-spellchecker \
+    -webengine-webp \
+    -webengine-webrtc-pipewire
     make 
 
     #/usr/lib/qt5/bin/qmake ../examples/webenginewidgets/demobrowser/demobrowser.pro
@@ -84,7 +95,7 @@ package_qtwebengine() {
     pkgdesc="Chromium-based web engine to replace Qt WebKit"
     depends=('qt5-declarative' 'mesa' 'systemd' 'pango' 'nss' 'speex' 'libevent' 'libcups'
             'libxslt' 'libpng' 'libjpeg-turbo' 'libwebp' 'zlib' 'pciutils' 'jsoncpp' 'pulseaudio' 'libxcomposite'
-            'qt5-webchannel' 'ffmpeg' 'libxss' 'protobuf' 'opus' 'libvpx' 'qt5-location')
+            'qt5-webchannel' 'ffmpeg' 'libxss' 'protobuf' 'opus' 'libvpx' 'qt5-location' 'pipewire')
     groups=('qt5')
 
     cd build/   
