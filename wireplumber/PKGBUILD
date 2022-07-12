@@ -1,7 +1,7 @@
 
 pkgname=wireplumber
 pkgver=0.4.11
-pkgrel=1
+pkgrel=2
 pkgdesc="Modular session/policy manager for PipeWire and a GObject-based library that wraps PipeWire's API."
 url="https://gitlab.freedesktop.org/pipewire/wireplumber"
 license=('MIT')
@@ -11,10 +11,18 @@ makedepends=('meson' 'ninja' 'gobject-introspection')
 install=wireplumber.install
 source=("https://gitlab.freedesktop.org/pipewire/wireplumber/-/archive/${pkgver}/wireplumber-${pkgver}.tar.bz2"
         '50-alsa-config.lua'
-        '50-default-access-config.lua')
+        '50-default-access-config.lua'
+        "https://gitlab.freedesktop.org/pipewire/wireplumber/-/commit/c16e637c329bc9dda8544b18f5bd47a8d63ee253.diff")
 md5sums=('6db6998ba8c2b0c4295b1d464ca5867f'
          'a2005379e7c93bc3f9b9ae78da11589c'
-         '02135ac26307e8b56a0bd78642e8f12f')
+         '02135ac26307e8b56a0bd78642e8f12f'
+         'b5e9928cdfd5ab9a7d4b76feab1d163f')
+
+prepare() {
+  cd ${pkgname}-${pkgver}
+  # Fixes sound in virtualbox
+  patch -p1 -i ${srcdir}/c16e637c329bc9dda8544b18f5bd47a8d63ee253.diff
+}
 
 build() {
   mkdir -p build
