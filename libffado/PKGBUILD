@@ -1,6 +1,6 @@
 
 pkgname=libffado
-pkgver=2.4.5
+pkgver=2.4.6
 pkgrel=1
 pkgdesc="Driver for FireWire audio devices"
 arch=('x86_64')
@@ -10,11 +10,11 @@ depends=('libiec61883' 'libavc1394' 'libsigc++' 'libxml++' 'alsa-lib' 'dbus' 'li
          'dbus-c++')
 makedepends=('scons' 'jack')
 source=("http://www.ffado.org/files/${pkgname}-${pkgver}.tgz")
-md5sums=('474fe28a1735eeb80c9a5f5e5fc24233')
+md5sums=('f32ed3df9601424b39a9a7f9dd00ac57')
 
 prepare() {
   cd ${pkgname}-${pkgver}
-  
+
   #patch -p1 -i $srcdir/gcc6.patch
   #sed -i -e 's|which pyuic4|which pyuic5|g' SConstruct
   #sed -i -e 's|dbus.mainloop.qt|dbus.mainloop.pyqt5|g' SConstruct
