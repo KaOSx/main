@@ -2,7 +2,7 @@
 pkgname=mesa
 pkgver=22.1.3
 _pkgver=22.1.3
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 pkgdesc="Mesa 3-D graphics libraries and include files"
 depends=('libx11' 'libxt' 'gcc-libs' 'libvdpau' 'xorgproto' 'wayland' 'elfutils'
@@ -37,7 +37,7 @@ build() {
     -Db_ndebug=true \
     -Dplatforms=x11,wayland \
     -Ddri3=enabled \
-    -Dgallium-drivers=iris,r300,r600,i915,d3d12,nouveau,radeonsi,svga,swrast,virgl,zink \
+    -Dgallium-drivers=iris,r300,r600,crocus,d3d12,nouveau,radeonsi,svga,swrast,virgl,zink \
     -Dgallium-extra-hud=true \
     -Dgallium-vdpau=enabled \
     -Dgallium-xvmc=enabled \
