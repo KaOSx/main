@@ -1,29 +1,31 @@
 
 pkgname=serd
-pkgver=0.30.12
+pkgver=0.30.14
 pkgrel=1
 pkgdesc="A lightweight C library for RDF syntax which supports reading and writing Turtle and NTriples."
 arch=('x86_64')
 url="https://drobilla.net/software/serd.html"
 license=('custom:ISC')
 depends=('glibc')
-makedepends=('python3')
-source=("https://download.drobilla.net/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('3afd30ba776698531e4ab2b19fdbc538')
+makedepends=('meson' 'ninja')
+source=("https://download.drobilla.net/${pkgname}-${pkgver}.tar.xz")
+md5sums=('423dfab6a4f3c917d62d4b5f4f9b9b95')
 
 build() {
-  cd ${pkgname}-${pkgver}
-  sed -i "/ldconfig/d" wscript
+  mkdir -p build
+  cd build
 
-  python3 ./waf configure --prefix=/usr \
-                          --mandir=/usr/share/man
-  python3 ./waf
+  meson ../${pkgbase}-${pkgver} \
+    --prefix=/usr \
+    --buildtype=release \
+    -Dstatic=false
+  ninja
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
-  DESTDIR=${pkgdir} python3 ./waf install
+  cd build
 
-  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+  DESTDIR=${pkgdir} ninja install
+  install -Dm644 ../${pkgbase}-${pkgver}/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
 
