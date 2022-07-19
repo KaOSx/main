@@ -1,26 +1,30 @@
 
 pkgname=lv2
-pkgver=1.18.4
+pkgver=1.18.6
 pkgrel=1
 pkgdesc="Successor to the LADSPA audio plug-in standard"
 url="https://lv2plug.in/"
 license=('LGPL' 'custom')
 arch=('x86_64')
 depends=('python3' 'libsndfile' 'cairo' 'harfbuzz')
-source=("https://lv2plug.in/spec/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('2f326113d9acb041dcf3c34e367053ea')
+makedepends=('meson' 'ninja')
+source=("https://lv2plug.in/spec/${pkgname}-${pkgver}.tar.xz")
+md5sums=('65cfd7bdb68250bf9896be9846e106d7')
 
 build() {
-    cd ${pkgname}-${pkgver}
+  mkdir -p build
+  cd build
 
-    python3 waf configure --prefix=/usr
-    python3 waf build $MAKEFLAGS
+  meson ../${pkgbase}-${pkgver} \
+    --prefix=/usr \
+    --buildtype=release \
+    -Ddocs=disabled
+  ninja
 }
 
 package() {
-    cd ${pkgname}-${pkgver}
+  cd build
 
-    python3 waf install --destdir=${pkgdir}
-
-    install -Dm644 COPYING  ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
+  DESTDIR=${pkgdir} ninja install
+  install -Dm644 ../${pkgbase}-${pkgver}/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }

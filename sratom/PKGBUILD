@@ -1,28 +1,30 @@
 
 pkgname=sratom
-pkgver=0.6.10
+pkgver=0.6.12
 pkgrel=1
 pkgdesc="An LV2 Atom RDF serialisation library"
 arch=('x86_64')
 url="https://drobilla.net/software/sratom.html"
 license=('custom:ISC')
 depends=('lv2' 'sord')
-makedepends=('python3')
-source=("https://download.drobilla.net/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('bb883224e73ed937cd58b25436dae260')
+makedepends=('python3' 'meson' 'ninja')
+source=("https://download.drobilla.net/${pkgname}-${pkgver}.tar.xz")
+md5sums=('c3fe960ad49fd3ebac6b060063a204fa')
 
 build() {
-  cd ${pkgname}-${pkgver}
-  sed -i '/ldconfig/d' wscript
+  mkdir -p build
+  cd build
 
-  python3 waf configure --prefix=/usr
-  python3 waf build $MAKEFLAGS
+  meson ../${pkgbase}-${pkgver} \
+    --prefix=/usr \
+    --buildtype=release \
+    -Ddocs=disabled
+  ninja
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
+  cd build
 
-  python3 waf install --destdir=${pkgdir}
-
-  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+  DESTDIR=${pkgdir} ninja install
+  install -Dm644 ../${pkgbase}-${pkgver}/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }

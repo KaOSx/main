@@ -1,29 +1,31 @@
 
 pkgname=sord
-pkgver=0.16.10
+pkgver=0.16.12
 pkgrel=1
 pkgdesc="A lightweight C library for storing RDF data in memory"
 arch=('x86_64')
 url="https://drobilla.net/software/sord.html"
 license=('custom:ISC')
 depends=('serd' 'pcre')
-makedepends=('python3')
-source=("https://download.drobilla.net/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('13c37ed45b2adbc319b98c56eae1e240')
+makedepends=('python3' 'meson' 'ninja')
+source=("https://download.drobilla.net/${pkgname}-${pkgver}.tar.xz")
+md5sums=('f0fa98fcb0dc24a05eee518d41fae070')
 
 build() {
-  cd ${pkgname}-${pkgver}
-  sed -i "/ldconfig/d" wscript
+  mkdir -p build
+  cd build
 
-  python3 waf configure --prefix=/usr
-  python3 waf build $MAKEFLAGS
+  meson ../${pkgbase}-${pkgver} \
+    --prefix=/usr \
+    --buildtype=release \
+    -Ddocs=disabled
+  ninja
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
+  cd build
 
-  python3 waf install --destdir=${pkgdir}
-
-  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+  DESTDIR=${pkgdir} ninja install
+  install -Dm644 ../${pkgbase}-${pkgver}/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
 

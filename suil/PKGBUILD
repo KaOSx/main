@@ -1,29 +1,32 @@
 
 pkgname=suil
-pkgver=0.10.12
+pkgver=0.10.14
 pkgrel=1
 pkgdesc="A lightweight C library for loading and wrapping LV2 plugin UIs"
 arch=('x86_64')
 url="https://drobilla.net/software/suil.html"
 license=('custom:ISC')
 depends=('lv2' 'qt5-x11extras')
-makedepends=('python3')
-source=("https://download.drobilla.net/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('2a53940829a427a202ba6ffd608c2398')
+makedepends=('python3' 'meson' 'ninja')
+source=("https://download.drobilla.net/${pkgname}-${pkgver}.tar.xz")
+md5sums=('2b5e354a977d3659f751b480619275cf')
 
 build() {
-  cd ${pkgname}-${pkgver}
-  sed -i "/ldconfig/d" wscript
+  mkdir -p build
+  cd build
 
-  python3 waf configure --prefix=/usr
-  python3 waf
+  meson ../${pkgbase}-${pkgver} \
+    --prefix=/usr \
+    --buildtype=release \
+    -Ddocs=disabled \
+    -Dqt5=enabled
+  ninja
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
+  cd build
 
-  python3 waf install --destdir=${pkgdir}
-
-  install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+  DESTDIR=${pkgdir} ninja install
+  install -Dm644 ../${pkgbase}-${pkgver}/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
 

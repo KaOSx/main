@@ -1,32 +1,31 @@
 
 pkgname=lilv
-pkgver=0.24.14
+pkgver=0.24.16
 pkgrel=1
 pkgdesc="A library to make the use of LV2 plugins as simple as possible for applications"
 arch=('x86_64')
 url="https://drobilla.net/software/lilv.html"
 license=('custom:ISC')
 depends=('sratom' 'python3')
-makedepends=('swig')
-source=("https://download.drobilla.net/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('2b129163c0ea2a13a06d70025170cb87')
+makedepends=('meson' 'ninja')
+source=("https://download.drobilla.net/${pkgname}-${pkgver}.tar.xz")
+md5sums=('5071d35ffccebcae13925008ee4c8592')
 
 build() {
-  cd ${pkgname}-${pkgver}
-  sed -i "/ldconfig/d" wscript
+  mkdir -p build
+  cd build
 
-  python3 waf configure --prefix=/usr \
-                        --configdir=/etc \
-                        --dyn-manifest
-
-  python3 waf build $MAKEFLAGS
+  meson ../${pkgbase}-${pkgver} \
+    --prefix=/usr \
+    --buildtype=release \
+    -Ddocs=disabled
+  ninja
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
+  cd build
 
-  python3 waf install --destdir=${pkgdir}
-
-  install -Dm644 COPYING  ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+  DESTDIR=${pkgdir} ninja install
+  install -Dm644 ../${pkgbase}-${pkgver}/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
 
