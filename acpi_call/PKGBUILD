@@ -31,7 +31,7 @@ package() {
   cd $pkgname-${pkgver}
   install -dm 755 ${pkgdir}/lib/{modules/${_extramodules},modules-load.d}
   install -m 644 ${pkgname}.ko ${pkgdir}/lib/modules/${_extramodules}
-  
+
   # sign the module
   _file=/usr/src/linux-${_kver}/scripts/sign-file
   _pem=/$HOME/signing_key.pem
