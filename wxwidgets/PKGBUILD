@@ -1,21 +1,21 @@
 
 pkgname=wxwidgets
 _pkgname=wxWidgets
-pkgver=3.0.5.1
-pkgrel=3
+pkgver=3.2.0
+pkgrel=1
 epoch=1
 pkgdesc="Open source cross-platform C++ framework for writing advanced GUI applications using native controls."
 arch=('x86_64')
 url="http://wxwidgets.org"
 license=('custom:wxWindows')
-depends=('gtk3' 'glu' 'gst-plugins-base')
-makedepends=('gtk2')
+depends=('gtk3' 'glu' 'gst-plugins-base' 'libnotify' 'sdl2') # 'pcre2' no build flag available to use system version
+#makedepends=('cmake')
 options=('!emptydirs')
 conflicts=('wxgtk')
 replaces=('wxgtk')
 provides=('wxgtk')
 source=("https://github.com/wxWidgets/wxWidgets/releases/download/v${pkgver}/${_pkgname}-${pkgver}.tar.bz2")
-sha1sums=('406ac736f61d88a3a866aa501e01e408a642c6e7')
+sha1sums=('412e6aad037417527fa79fda028c89df685aacbd')
 
 prepare() {
   cd ${_pkgname}-${pkgver}
@@ -39,6 +39,7 @@ build() {
     --with-libxpm=sys \
     --with-libjpeg=sys \
     --with-libtiff=sys \
+    --with-sdl \
     --disable-precomp-headers
   make
   make -C locale allmo
