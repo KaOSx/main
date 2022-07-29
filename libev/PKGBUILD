@@ -1,0 +1,29 @@
+
+pkgname=libev
+pkgver=4.33
+pkgrel=1
+pkgdesc="High-performance event loop/event model with lots of feature"
+arch=('x86_64')
+url="http://software.schmorp.de/pkg/libev.html"
+license=('BSD')
+depends=('glibc')
+source=("http://dist.schmorp.de/libev/${pkgname}-${pkgver}.tar.gz")
+md5sums=('a3433f23583167081bf4acdd5b01b34f')
+
+build() {
+  cd ${pkgname}-${pkgver}
+  # event.h is part of libevent
+  sed -i -e 's|include_HEADERS = ev.h ev++.h event.h|include_HEADERS = ev.h ev++.h |' Makefile.in
+
+  ./configure --prefix=/usr \
+    --disable-static
+  make
+}
+
+
+package() {
+  cd ${pkgname}-${pkgver}
+
+  make DESTDIR=${pkgdir} install
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}

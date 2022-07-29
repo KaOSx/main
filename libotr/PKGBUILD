@@ -1,22 +1,25 @@
 
 pkgname=libotr
 pkgver=4.1.1
-pkgrel=3
+pkgrel=4
 pkgdesc='Off-the-Record Messaging Library and Toolkit.'
 arch=('x86_64')
 url='https://www.cypherpunks.ca/otr/'
 license=('GPL' 'LGPL')
 depends=('libgcrypt')
 options=('!libtool')
-source=("https://www.cypherpunks.ca/otr/${pkgname}-${pkgver}.tar.gz")
-md5sums=('dac5a8778a35f674c046ddf5d97e4d81')
+source=("https://www.cypherpunks.ca/otr/${pkgname}-${pkgver}.tar.gz"
+        "https://gitweb.gentoo.org/repo/gentoo.git/plain/net-libs/libotr/files/libotr-4.1.1-fix-build-with-libgcrypt-1.10.patch")
+md5sums=('dac5a8778a35f674c046ddf5d97e4d81'
+         'e08a0475211af2303fd67cda0d06f02b')
 
 build() {
     cd ${pkgname}-${pkgver}
+    patch -p1 -i $srcdir/libotr-4.1.1-fix-build-with-libgcrypt-1.10.patch
 
     ./configure --prefix=/usr \
         --mandir=/usr/share/man \
-        --disable-static 
+        --disable-static
     make
 }
 
