@@ -1,7 +1,7 @@
 
 pkgname=libetonyek
 pkgver=0.1.10
-pkgrel=5
+pkgrel=6
 pkgdesc="Library and a set of tools for reading and converting Apple Keynote presentations."
 arch=('x86_64')
 url="https://wiki.documentfoundation.org/DLP/Libraries/libetonyek"
@@ -9,15 +9,11 @@ license=('MPL2')
 options=('!libtool')
 depends=('libwpd' 'libxml2' 'gperf' 'zlib' 'librevenge' 'liblangtag')
 makedepends=('boost' 'glm' 'cppunit' 'mdds' 'clang')
-source=("https://dev-www.libreoffice.org/src/libetonyek/${pkgname}-${pkgver}.tar.xz"
-        "https://gitweb.gentoo.org/repo/gentoo.git/plain/app-text/libetonyek/files/libetonyek-0.1.9-boost-1.73.patch")
-md5sums=('c29792ef7d4cb98463e3c3ec3e56ace6'
-         '35dc01073704667b82631648a2fbf413')
+source=("https://dev-www.libreoffice.org/src/libetonyek/${pkgname}-${pkgver}.tar.xz")
+md5sums=('c29792ef7d4cb98463e3c3ec3e56ace6')
 
 build() {
   cd ${pkgname}-${pkgver}
-
-  #patch -p1 -i ${srcdir}/libetonyek-0.1.9-boost-1.73.patch
 
   export CC=/usr/bin/clang
   export CXX=/usr/bin/clang++
