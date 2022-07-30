@@ -6,14 +6,14 @@ pkgname=qt5-tools
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=1
+pkgrel=2
 pkgdesc="A cross-platform application and UI framework, development tools and help files"
 arch=('x86_64')
 url='https://www.qt.io/'
 license=('GPL3' 'LGPL' 'FDL' 'custom')
 depends=('qt5-declarative' 'desktop-file-utils' 'qt5-location' 'hicolor-icon-theme' 'xdg-utils'
          'qt5-translations')
-makedepends=('clang' 'vulkan-headers' 'qtwebkit-tp')
+makedepends=('clang' 'vulkan-headers')
 optdepends=('qt5-doc: offline help documentation')
 groups=('qt5')
 options=('!libtool')
@@ -35,7 +35,7 @@ build() {
     cd ${__pkgfqn}
     #patch -p1 -i ${srcdir}/qt_kde.patch
 
-    /usr/lib/qt5/bin/qmake # INCLUDEPATH="/usr/include/QtWebKit /usr/include/QtWebKitWidgets"
+    /usr/lib/qt5/bin/qmake
     make
 }
 
