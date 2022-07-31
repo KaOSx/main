@@ -1,7 +1,7 @@
 
 pkgname=harfbuzz
-pkgver=5.0.1
-pkgrel=2
+pkgver=5.1.0
+pkgrel=1
 pkgdesc="OpenType text shaping engine."
 arch=('x86_64')
 url="https://harfbuzz.github.io/"
@@ -10,7 +10,7 @@ depends=('icu' 'glib2' 'freetype2' 'graphite' 'cairo')
 makedepends=('meson' 'ninja' 'gobject-introspection')
 options=('!libtool')
 source=("https://github.com/harfbuzz/harfbuzz/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('d0094299a36346b9f5540aa159b358425c022b19fcdf72165eaf94046a179166')
+sha256sums=('2edb95db668781aaa8d60959d21be2ff80085f31b12053cdd660d9a50ce84f05')
 
 build() {
   mkdir -p build
