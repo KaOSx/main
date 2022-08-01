@@ -2,7 +2,7 @@
 # rebuild maxima on updates
 pkgname=sbcl
 pkgver=2.2.7
-pkgrel=1
+pkgrel=2
 pkgdesc="Steel Bank Common Lisp"
 arch=('x86_64')
 url="http://www.sbcl.org/"
@@ -12,14 +12,14 @@ makedepends=('sbcl')
 provides=('common-lisp' 'cl-asdf')
 source=("https://downloads.sourceforge.net/project/sbcl/sbcl/${pkgver}/${pkgname}-${pkgver}-source.tar.bz2"
         'fixes.lisp'
-        "https://github.com/sbcl/sbcl/commit/d0243a9f9961f0afdc09b555821b88edb2488be9.diff")
+        "https://github.com/sbcl/sbcl/commit/48d686f9718f98122547a9006c871cfcd50439ab.diff")
 md5sums=('1e4edd5e0d283b53e7298db57ab65be0'
          '7ac0c1936547f4278198b8bf7725204d'
-         'a925fee020d789d31884295949a350c0')
+         '5006310c88ced32ac722c4b91a2dd640')
 
 build() {
   cd ${pkgname}-${pkgver}
-  #patch -p1 -i ${srcdir}/d0243a9f9961f0afdc09b555821b88edb2488be9.diff
+  patch -p1 -i ${srcdir}/48d686f9718f98122547a9006c871cfcd50439ab.diff
 
   sh make.sh sbcl --prefix=/usr --fancy
 }
