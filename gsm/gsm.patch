@@ -82,12 +82,12 @@
  
  $(TOAST_INSTALL_BIN)/untoast:	$(TOAST_INSTALL_BIN)/toast
  		-rm $(RMFLAGS) $@
--		ln $? $@
+-		$(LN) $? $@
 +		$(LN) toast $@
  
  $(TOAST_INSTALL_BIN)/tcat:	$(TOAST_INSTALL_BIN)/toast
  		-rm $(RMFLAGS) $@
--		ln $? $@
+-		$(LN) $? $@
 +		$(LN) toast $@
  
  $(TOAST_INSTALL_MAN)/toast.1:	$(MAN)/toast.1

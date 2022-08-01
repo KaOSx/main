@@ -1,7 +1,7 @@
 
 pkgname=gsm
-pkgver=1.0.20
-_pkgver=1.0-pl20
+pkgver=1.0.21
+_pkgver=1.0-pl21
 pkgrel=1
 pkgdesc="Shared libraries for GSM 06.10 lossy speech compression"
 arch=('x86_64')
@@ -10,8 +10,8 @@ license=('custom')
 depends=('glibc')
 source=("http://www.quut.com/gsm/${pkgname}-${pkgver}.tar.gz"
         'gsm.patch')
-md5sums=('d02d9fcc60145641e970988c81f58e8d'
-         '84a8659f2eed82ba48974b6231c0f516')
+md5sums=('76267aaf7b66ee3160884f3e00e6c6ca'
+         '5592b2b0e545ded578ef0746e491b2e4')
 
 build() {
   cd ${pkgname}-${_pkgver}/
