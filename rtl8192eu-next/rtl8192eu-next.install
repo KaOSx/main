@@ -1,16 +1,16 @@
 post_install() {
-    EXTRAMODULES='extramodules-5.18-next'
+    EXTRAMODULES='extramodules-5.19-next'
     depmod -a $(cat /lib/modules/$EXTRAMODULES/version)
     echo 'In order to use the rtl8192-next module, reboot the system.'
 }
 
 post_upgrade() {
-    EXTRAMODULES='extramodules-5.18-next'
+    EXTRAMODULES='extramodules-5.19-next'
     depmod -a $(cat /lib/modules/$EXTRAMODULES/version)
 }
 
 post_remove() {
-    EXTRAMODULES='extramodules-5.18-next'
+    EXTRAMODULES='extramodules-5.19-next'
     depmod -a $(cat /lib/modules/$EXTRAMODULES/version)
     
 }
