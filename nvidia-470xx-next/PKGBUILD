@@ -18,15 +18,17 @@ options=('!strip')
 
 _pkg="NVIDIA-Linux-x86_64-${pkgver}"
 
-source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run")
-md5sums=('1a9c8ad241e693dcdafc62c37e7c1cdc')
+source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
+        'linux-5.19.patch')
+md5sums=('1a9c8ad241e693dcdafc62c37e7c1cdc'
+         '5aaa53ced729963498f88196c7e414e0')
 
 build() {
     cd ${srcdir}
     sh ${_pkg}.run --extract-only
 
     cd ${_pkg}
-    #patch -p1 -i ${srcdir}/linux-5.14.patch
+    patch -p1 -i ${srcdir}/linux-5.19.patch
 
     cd ${srcdir}/${_pkg}/kernel
     make SYSSRC=/lib/modules/${_kver}/build module
