@@ -1,13 +1,13 @@
 
-_extramodules=extramodules-5.17
+_extramodules=extramodules-5.18
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=('nvidia-390xx' 'khd-nvidia-390xx')
 pkgver=390.151
-pkgrel=2
+pkgrel=3
 arch=('x86_64')
 url="https://www.nvidia.com/page/home.html"
-makedepends=('linux-headers' 'linux>=5.17.4' 'linux<5.18' "nvidia-390xx-utils=${pkgver}")
+makedepends=('linux-headers' 'linux>=5.18.16' 'linux<5.19' "nvidia-390xx-utils=${pkgver}")
 license=('custom')
 options=('!strip')
 
@@ -15,20 +15,17 @@ _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 
 source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
         'nvidia_supported'
-        'linux-5.13.patch'
-        'linux-5.14.patch')
+        'linux-5.18.patch')
 md5sums=('9f91d1b97c6f4d66c4690dc4f6c1486f'
          '282f73f1a7326339a7b0e0716eee4f76'
-         '4b323b268cc96a5c0d0d406722d69c90'
-         'b75c09ec4a5057079cb3ec2f188bdba2')
+         '413c994ebbbead3e84c5adb102a94c5b')
 
 build() {
     cd "${srcdir}"
     sh "${_pkg}.run" --extract-only
     
     cd "${_pkg}"
-    #patch -p1 -i ${srcdir}/linux-5.13.patch
-    #patch -p1 -i ${srcdir}/linux-5.14.patch
+    patch -p1 -i ${srcdir}/linux-5.18.patch
     # linux 4.19 needed
     #sed -i -e 's|drm_mode_connector_attach_encoder|drm_connector_attach_encoder|g' kernel/nvidia-drm/nvidia-drm-encoder.c
     
@@ -40,7 +37,7 @@ build() {
 
 package_nvidia-390xx() {
     pkgdesc="NVIDIA drivers for linux, 390xx legacy version."
-    depends=('linux>=5.17.4' 'linux<5.18' "nvidia-390xx-utils=${pkgver}")
+    depends=('linux>=5.18.16' 'linux<5.19' "nvidia-390xx-utils=${pkgver}")
     conflicts=('nvidia' 'nvidia-470xx')
     install=nvidia.install
     
