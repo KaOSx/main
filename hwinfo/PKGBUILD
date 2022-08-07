@@ -1,34 +1,31 @@
 
 pkgname=hwinfo
-pkgver=21.82
-_minorver=1.1
+pkgver=22.0
 pkgrel=1
 pkgdesc="Simple program that lists results from the hardware detection library."
 arch=('x86_64')
 url="https://github.com/openSUSE/hwinfo"
 license=('GPL2')
 depends=('perl' 'libx86emu')
-makedepends=('sysfsutils' 'rpmextract' 'flex')
+makedepends=('sysfsutils' 'flex')
 options=('!emptydirs')
-source=("https://download.opensuse.org/source/tumbleweed/repo/oss/src/${pkgname}-${pkgver}-${_minorver}.src.rpm"
+source=("https://github.com/openSUSE/hwinfo/archive/refs/tags/${pkgver}.tar.gz"
         "kbd.patch")
-sha256sums=('fb5769c82e36d16270d50e6e8f69ac298e9a4434a05e2611c065d3d13dd31dc5'
+sha256sums=('7ba4042f492e2337b6f18782737f6a5238841352d69457b128cbaf0e40ef2a6e'
             '6e83b50aa34f31db5fe6de938402e7c4dda6ffa9ffe1346c076e4779018fcf1d')
 
 build() {
-  cd ${srcdir}
-
-  rpmextract.sh ${pkgname}-${pkgver}-${_minorver}.src.rpm
-  tar -xJf ${pkgname}-${pkgver}.tar.xz
   cd ${pkgname}-${pkgver}
+  #patch -p0 -i ${srcdir}/kbd.patch
 
-  #patch -p0 -i ${srcdir}/kbd.patch 
-
-  make -j1 CFLAGS+="-fPIC -I${srcdir}/${pkgname}-${pkgver}/src/hd" LIBDIR=/usr/lib
+  make -j1 CFLAGS+="-fPIC -I${srcdir}/${pkgname}-${pkgver}/src/hd" \
+    LIBDIR=/usr/lib \
+    HWINFO_VERSION=${pkgver}
 }
 
 package() {
   cd ${pkgname}-${pkgver}
+  echo touch changelog > git2log
 
   make LIBDIR=/usr/lib DESTDIR=${pkgdir} install
 }
