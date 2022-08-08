@@ -1,19 +1,19 @@
 
 # rebuild amule on any 8.x update
 pkgname=crypto++
-pkgver=8.6.0
-_pkgver=860
+pkgver=8.7.0
+_pkgver=870
 pkgrel=1
 pkgdesc="A free C++ class library of cryptographic schemes."
 arch=('x86_64')
+url="https://www.cryptopp.com/"
 license=('custom')
 makedepends=('unzip')
 options=('!staticlibs')
-url="https://www.cryptopp.com/"
 #source=("https://github.com/weidai11/cryptopp/archive/CRYPTOPP_${_pkgver}.tar.gz"
 source=("https://www.cryptopp.com/cryptopp${_pkgver}.zip"
         'libcrypto++.pc') # set to remove after testing cmake build setup, needed for clementine
-sha256sums=('20aa413957d9c8ae353ee2f7747bd7ac392f933c60a53e3fd1e41cadbc48d193'
+sha256sums=('d0d3a28fcb5a1f6ed66b3adf57ecfaed234a7e194e42be465c2ba70c744538dd'
             '81697b17cd4d89a058e6c6bb6d1e42b29a2c2b35536cf6dfdd058f75a3087569')
 
 build() {
