@@ -1,8 +1,8 @@
 
 pkgname=gdk-pixbuf2
-pkgver=2.42.8
+pkgver=2.42.9
 _pkgver=2.42
-pkgrel=4
+pkgrel=1
 pkgdesc="An image loading library"
 arch=('x86_64')
 url="https://gitlab.gnome.org/GNOME/gdk-pixbuf"
@@ -13,7 +13,7 @@ options=('!libtool')
 install=gdk-pixbuf2.install
 source=("https://download.gnome.org/sources/gdk-pixbuf/${_pkgver}/gdk-pixbuf-${pkgver}.tar.xz"
         'gdk-pixbuf-query-loaders.hook')
-sha256sums=('84acea3acb2411b29134b32015a5b1aaa62844b19c4b1ef8b8971c6b0759f4c6'
+sha256sums=('28f7958e7bf29a32d4e963556d241d0a41a6786582ff6a5ad11665e0347fc962'
             '9fb71d95e6a212779eb0f88dde5a3cee0df7f4d9183f8f9ce286f8cdc14428f0')
 
 build() {
@@ -23,6 +23,10 @@ build() {
   meson ../gdk-pixbuf-${pkgver} \
     --prefix=/usr \
     --buildtype=release \
+    -D installed_tests=false \
+    -D gtk_doc=false \
+    -D man=false \
+    -D tests=false \
     -D installed_tests=false
   ninja
 }
