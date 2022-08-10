@@ -1,6 +1,6 @@
 
 pkgname=gpgme
-pkgver=1.17.1
+pkgver=1.18.0
 pkgrel=1
 pkgdesc="A C wrapper library for GnuPG"
 arch=('x86_64')
@@ -13,13 +13,12 @@ replaces=('gpgmepp')
 conflicts=('gpgmepp')
 options=('!libtool' '!emptydirs')
 source=("https://www.gnupg.org/ftp/gcrypt/gpgme/${pkgname}-${pkgver}.tar.bz2")
-sha1sums=('73d5c863ba5478370b191e79b19733807fef529e')
+sha1sums=('d559f7994f9dfd1af611f1f14313b2abbea2a33b')
 
 build() {
   cd ${pkgname}-${pkgver}
-  
   #sed -i -e 's|libgpgme@libsuffix@;@LIBASSUAN_LIBS@|libgpgme.so;@LIBASSUAN_LIBS@|' lang/cpp/src/GpgmeppConfig.cmake.in.in
-  
+
   ./configure --prefix=/usr \
        --disable-static \
        --disable-gpgsm-test \
@@ -35,6 +34,6 @@ check() {
 
 package() {
   cd ${pkgname}-${pkgver}
-  
+
   make DESTDIR=${pkgdir} install
 }
