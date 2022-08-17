@@ -16,14 +16,14 @@ makedepends=('linux-next-headers' 'elfutils')
 options=('!strip')
 install=rtl8192eu-next.install
 source=("https://github.com/Mange/rtl8192eu-linux-driver/archive/${_commit}.zip"
-        "https://github.com/Mange/rtl8192eu-linux-driver/pull/70/commits/80a0cb2c1aa10e52bc653e7455a6f1b64fdccd09.diff")
+        'linux5.19.2.diff')
 md5sums=('085454036111f2240aa55d141ac2990c'
-         'f4bdf5763cf321e03555b1b830e6b972')
+         '2feeecf718daaa8652a790c5b2765cc5')
 
 
 build() {
   cd ${_pkgname}-${_commit}
-  #patch -p1 -i ${srcdir}/80a0cb2c1aa10e52bc653e7455a6f1b64fdccd09.diff
+  #patch -p1 -i ${srcdir}/linux5.19.2.diff
   sed -i -e 's|$(shell uname -r)|5.19.2-1-next|' Makefile
 
   make
