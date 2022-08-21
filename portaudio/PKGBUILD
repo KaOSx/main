@@ -1,15 +1,15 @@
 
 pkgname=portaudio
-pkgver=19.6
-_pkgver=190600_20161030
-pkgrel=3
+#pkgver=19.7
+pkgver=190700_20210406
+pkgrel=1
 pkgdesc="PortAudio is a free, cross platform, open-source, audio I/O library."
 arch=('x86_64')
 url="http://www.portaudio.com"
 license=('MIT')
 depends=('jack2')
-source=("http://www.portaudio.com/archives/pa_stable_v${_pkgver}.tgz")
-md5sums=('4df8224e047529ca9ad42f0521bf81a8')
+source=("http://files.portaudio.com/archives/pa_stable_v${pkgver}.tgz")
+md5sums=('ad319249932c6794b551d954b8844402')
 
 build() {
   cd ${pkgname}
