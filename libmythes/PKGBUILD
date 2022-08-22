@@ -1,8 +1,8 @@
 
 pkgname=libmythes
 _pkgname=mythes
-pkgver=1.2.4
-pkgrel=8
+pkgver=1.2.5
+pkgrel=1
 pkgdesc="A simple thesaurus"
 arch=('x86_64')
 url="https://hunspell.github.io/"
@@ -10,16 +10,15 @@ license=('custom')
 depends=('glibc' 'perl')
 makedepends=('hunspell')
 options=('!libtool')
-source=("https://downloads.sourceforge.net/hunspell/${_pkgname}-${pkgver}.tar.gz")
-md5sums=('a8c2c5b8f09e7ede322d5c602ff6a4b6')
+source=("https://github.com/hunspell/mythes/releases/download/v${pkgver}/${_pkgname}-${pkgver}.tar.xz")
+md5sums=('169fe3970e000d0dd2f1bfd246d082fa')
 
 build() {
   cd ${_pkgname}-${pkgver}
-  ./configure --prefix=/usr --disable-static
-  make
 
-  ./example th_en_US_new.idx th_en_US_new.dat checkme.lst
-  ./example morph.idx morph.dat morph.lst morph.aff morph.dic
+  ./configure --prefix=/usr \
+    --disable-static
+  make
 }
 
 package() {
