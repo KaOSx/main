@@ -1,12 +1,12 @@
 
 pkgname=cups-filters
-pkgver=1.28.15
-pkgrel=4
+pkgver=1.28.16
+pkgrel=1
 pkgdesc="OpenPrinting CUPS Filters"
 arch=('x86_64')
 url="http://www.linuxfoundation.org/collaborate/workgroups/openprinting"
 license=('GPL')
-depends=('lcms2' 'poppler' 'qpdf' 'libldap')
+depends=('lcms2' 'poppler' 'qpdf' 'libldap' 'libexif')
 makedepends=('ghostscript' 'ttf-dejavu' 'python3') 
 optdepends=('ghostscript: for non-PostScript printers to print with CUPS to convert PostScript to raster images'
             'foomatic-db: drivers use Ghostscript to convert PostScript to a printable form directly'
@@ -19,7 +19,7 @@ backup=(etc/fonts/conf.d/99pdftoopvp.conf)
 options=('!libtool')
 source=("https://www.openprinting.org/download/cups-filters/${pkgname}-${pkgver}.tar.xz"
         "https://github.com/OpenPrinting/cups-filters/commit/50d984a621524c2e2857ad84eb4b71933c8821be.diff")
-md5sums=('b6891109445e147a38198d42c3127903'
+md5sums=('24bed15110499fd652d65d6baab85ca6'
          '895186801ce1c988738e5306b09fe2c8')
 
 build() {
