@@ -1,0 +1,36 @@
+
+pkgname=qca-qt6
+_pkgname=qca
+pkgver=2.3.4
+pkgrel=1
+pkgdesc="Qt Cryptographic Architecture - Qt6 version"
+arch=('x86_64')
+url="https://userbase.kde.org/QCA"
+license=('LGPL')
+depends=('qt6-base' 'qt6-5compat' 'ca-certificates' 'nss')
+makedepends=('cmake' 'doxygen')
+source=("https://download.kde.org/stable/qca/${pkgver}/${_pkgname}-${pkgver}.tar.xz")
+#source=("https://github.com/KDE/qca/archive/${_commit}.zip")
+sha256sums=('6b695881a7e3fd95f73aaee6eaeab96f6ad17e515e9c2b3d4b3272d7862ff5c4')
+
+prepare() {
+  cd ${_pkgname}-${pkgver}
+  #patch -p1 -i ${srcdir}/qt5.5.diff
+}
+
+build() {
+  cmake -B build -S ${_pkgname}-${pkgver} \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DQCA_SUFFIX=qt6 \
+    -DQT6=ON \
+    -DQCA_FEATURE_INSTALL_DIR=${CMAKE_INSTALL_PREFIX}/usr/lib/qt6/mkspecs/features/ \
+    -DQCA_PLUGINS_INSTALL_DIR=${CMAKE_INSTALL_PREFIX}/usr/lib/qt6/plugins/
+    #-DQCA_INSTALL_IN_QT_PREFIX=ON
+  cmake --build build
+}
+
+package() {
+
+  DESTDIR=${pkgdir} cmake --install build
+}
