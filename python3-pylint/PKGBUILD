@@ -24,8 +24,4 @@ package() {
 
     PIP_CONFIG_FILE=/dev/null pip3 install --isolated --root=${pkgdir} --ignore-installed --no-deps dist/*.whl
     install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
-    #python3 setup.py install --prefix=/usr --root=${pkgdir} --skip-build --optimize=1
-
-    #install -d ${pkgdir}/usr/share/man/man1
-    #install -m644 man/* ${pkgdir}/usr/share/man/man1
 }

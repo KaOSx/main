@@ -1,7 +1,7 @@
 
 pkgname=libxau
-pkgver=1.0.9
-pkgrel=2
+pkgver=1.0.10
+pkgrel=1
 pkgdesc="X11 authorisation library"
 arch=('x86_64')
 url="https://xorg.freedesktop.org/"
@@ -9,19 +9,19 @@ depends=('glibc')
 makedepends=('pkgconfig' 'xorgproto')
 license=('custom')
 options=('!libtool')
-source=("https://xorg.freedesktop.org/releases/individual/lib/libXau-${pkgver}.tar.bz2")
-sha256sums=('ccf8cbf0dbf676faa2ea0a6d64bcc3b6746064722b606c8c52917ed00dcb73ec')
+source=("https://xorg.freedesktop.org/releases/individual/lib/libXau-${pkgver}.tar.xz")
+sha256sums=('8be6f292334d2f87e5b919c001e149a9fdc27005d6b3e053862ac6ebbf1a0c0a')
 
 build() {
   cd libXau-${pkgver}
-  
+
   ./configure --prefix=/usr --sysconfdir=/etc
   make
 }
 
 package () {
   cd libXau-${pkgver}
-  
+
   make DESTDIR=${pkgdir} install
   install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
 }
