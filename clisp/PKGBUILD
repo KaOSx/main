@@ -1,8 +1,8 @@
 
 pkgname=clisp
-pkgver=2.49.93
-_commit=c26de78733578fc38952d2485313065eba4f5caa
-pkgrel=3
+pkgver=2.50.0
+_commit=de01f0f47bb44d3a0f9e842464cf2520b238f356
+pkgrel=1
 pkgdesc="ANSI Common Lisp interpreter, compiler and debugger"
 arch=('x86_64')
 license=('GPL')
@@ -12,7 +12,7 @@ makedepends=('ffcall')
 options=('!makeflags' '!emptydirs')
 #source=("https://downloads.sourceforge.net/sourceforge/clisp/clisp-${pkgver}.tar.bz2")
 source=("https://gitlab.com/gnu-clisp/clisp/-/archive/${_commit}/clisp-${_commit}.tar.bz2")
-md5sums=('890870db816ce165a559ed01b1015902')
+md5sums=('4219191380f97b29d6603b0d58768c32')
 
 build() {
   cd ${pkgname}-${_commit}
