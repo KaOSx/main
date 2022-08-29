@@ -1,25 +1,24 @@
 
 pkgname=networkmanager-openvpn
 _pkgname=NetworkManager-openvpn
-pkgver=1.8.18
-_pkgver=1.8
+pkgver=1.10.0
+_pkgver=1.10
 pkgrel=1
 pkgdesc="NetworkManager VPN plugin for OpenVPN"
 arch=('x86_64')
 license=('GPL')
 url="https://gitlab.gnome.org/GNOME/NetworkManager-openvpn"
 depends=('networkmanager' 'openvpn')
-makedepends=('intltool') 
 options=('!libtool')
 install=${pkgname}.install
 source=("https://ftp.gnome.org/pub/GNOME/sources/NetworkManager-openvpn/${_pkgver}/${_pkgname}-${pkgver}.tar.xz"
         'nm-openvpn.conf')
-sha256sums=('53dfb0acf64478adc728074f162f62e60bff62a605bd897eb88b267e7057927a'
+sha256sums=('5745d4107f3398a97afbb93f69239b510c9e45eb7fb62d60d9ed0a7297f4d101'
             '04a8f6f8ea581e2c9d57ad904f75a7ac896ea122ee29d6eea2533592bc1d5a73')
 
 build() {
   cd ${_pkgname}-${pkgver}
-  
+
   ./configure --prefix=/usr \
   	--sysconfdir=/etc \
 	--libexecdir=/usr/lib/networkmanager \
@@ -34,6 +33,6 @@ build() {
 package() {
   cd ${_pkgname}-${pkgver}
   make DESTDIR=${pkgdir} install 
-  
+
   install -D -m 0644 ../nm-openvpn.conf ${pkgdir}/usr/lib/sysusers.d/nm-openvpn.conf
 }
