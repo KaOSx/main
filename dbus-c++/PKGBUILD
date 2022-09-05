@@ -23,7 +23,7 @@ build() {
     cd ${_pkgname}-${pkgver}pw
     #patch -p0 -i ${srcdir}/patch-gcc47.patch
     patch -p1 -i ${srcdir}/gcc.patch
-    
+
     export LDFLAGS="${LDFLAGS} -lexpat -lpthread"
     ./autogen.sh --prefix=/usr \
           --disable-static \
@@ -34,6 +34,6 @@ build() {
 
 package() {
     cd ${_pkgname}-${pkgver}pw
-    
+
     make DESTDIR=${pkgdir} install
 }
