@@ -13,6 +13,7 @@ md5sums=('9027eac4b8ca57574012cb061ba9ce4d')
 
 build() {
   cd ${pkgname}-${pkgver}
+  export CPPFLAGS="-DOPENSSL_API_COMPAT=10101"
 
   ./configure --prefix=/usr \
     --mandir=/usr/share/man \
