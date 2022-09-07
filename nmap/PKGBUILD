@@ -1,19 +1,21 @@
 
 pkgname=nmap
 pkgver=7.93
-pkgrel=1
+pkgrel=2
 pkgdesc="Network exploration tool and security/port scanner"
 arch=('x86_64')
 url="https://nmap.org"
 license=('Nmap Public Source License')
 depends=('pcre' 'openssl' 'libpcap') # 'lua')
 makedepends=('python3')
-source=("https://nmap.org/dist/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('9027eac4b8ca57574012cb061ba9ce4d')
+source=("https://nmap.org/dist/${pkgname}-${pkgver}.tar.bz2"
+        "https://github.com/nmap/nmap/commit/d6bea8dcdee36a3902cece14097993350306f1b6.diff")
+md5sums=('9027eac4b8ca57574012cb061ba9ce4d'
+         '4f0e99876c6b23831005b3fb07a50ea8')
 
 build() {
   cd ${pkgname}-${pkgver}
-  export CPPFLAGS="-DOPENSSL_API_COMPAT=10101"
+  patch -p1 -i ${srcdir}/d6bea8dcdee36a3902cece14097993350306f1b6.diff
 
   ./configure --prefix=/usr \
     --mandir=/usr/share/man \
