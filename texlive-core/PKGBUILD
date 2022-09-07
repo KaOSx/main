@@ -1,8 +1,8 @@
 
 pkgname=texlive-core
-pkgver=2021.58710
-_revnr=${pkgver#2021.}
-pkgrel=2
+pkgver=2022.63035
+_revnr=${pkgver#2022.}
+pkgrel=1
 pkgdesc="TeX Live core distribution"
 license=('GPL')
 arch=('x86_64')
@@ -42,7 +42,7 @@ backup=(etc/texmf/web2c/texmf.cnf \
         etc/texmf/web2c/fmtutil.cnf \
         etc/texmf/web2c/mktex.cnf \
         etc/texmf/xdvi/XDvi)
-md5sums=('102766d99788368f256fe32d1af5d805'
+md5sums=('0b34237f83bd7eafc55f47e84550862f'
          'ae4f25a5e69e3debd0e662bd2231ff95'
          '48b50bff6e9774563161545daca53e66'
          '2bbbef810687f4b2804a4b8cb91ce02f'
@@ -213,12 +213,14 @@ latexpand/latexpand
 light-latex-make/llmk.lua
 ltxfileinfo/ltxfileinfo
 ltximg/ltximg.pl
+luafindfont/luafindfont.lua
 luaotfload/luaotfload-tool.lua
 lwarp/lwarpmk.lua
 make4ht/make4ht
 match_parens/match_parens
 mf2pt1/mf2pt1.pl
 mkjobtexmf/mkjobtexmf.pl
+optexcount/optexcount
 pdfbook2/pdfbook2
 pdfcrop/pdfcrop.pl
 pdfjam/pdfjam
@@ -269,6 +271,8 @@ texlive-extra/texconfig-dialog.sh
 texlive-extra/texconfig-sys.sh
 texlive-extra/texconfig.sh
 texlive-extra/texlinks.sh
+texlive-extra/xelatex-unsafe.sh
+texlive-extra/xetex-unsafe.sh
 texlive/fmtutil-sys.sh
 texlive/fmtutil-user.sh
 texlive/fmtutil.pl
@@ -282,6 +286,8 @@ texlive/updmap-user.sh
 texlive/updmap.pl
 texliveonfly/texliveonfly.py
 texloganalyser/texloganalyser
+texlogfilter/texlogfilter
+texlogsieve/texlogsieve
 texplate/texplate.sh
 thumbpdf/thumbpdf.pl
 typeoutfileinfo/typeoutfileinfo.sh

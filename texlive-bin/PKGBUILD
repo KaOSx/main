@@ -1,16 +1,17 @@
 
+# tagged versions at https://tug.org/svn/texlive/tags/
 pkgname=texlive-bin
-pkgver=2021.58837
+pkgver=2022.62885
 #_pkgver=svn58837
-_commit=3d38702c81f33d85306323a6a540112bf6159d73
-pkgrel=4
+_commit=f398692b64d6462c35939ec9489694d0828edee5
+pkgrel=1
 pkgdesc="TeX Live binaries"
 url='https://tug.org/texlive/'
 license=('GPL')
 arch=('x86_64')
 depends=('t1lib' 'gd' 'libsigsegv' 'zziplib' 'libpng' 'libjpeg-turbo' 'freetype2'
-         'cairo' 'pixman' 'graphite' 'icu' 'harfbuzz' 'libpaper')
-makedepends=('perl' 'clisp' 'ffcall')
+         'cairo' 'pixman' 'graphite' 'icu' 'harfbuzz' 'libpaper' 'ffcall')
+makedepends=('perl' 'clisp')
 optdepends=('ed: for texconfig')
 options=('!libtool' '!strip')
 #install="texlive.install"
@@ -18,18 +19,20 @@ options=('!libtool' '!strip')
 #source=("https://mirrors.kernel.org/archlinux/other/texlive/texlive-bin-source-${pkgver}.tar.xz"
 source=("https://github.com/TeX-Live/texlive-source/archive/${_commit}.tar.gz"
         'poppler0.8x.patch')
-md5sums=('6fdb650049dc134a27819086eb915d10'
+md5sums=('4a9f47f5e1e6dab3b6303ba9475b4f6d'
          '5fa627950138922977baa71cbc3e2ff3')
 
 prepare() {
    cd texlive-source-${_commit}
-   
+
+   sed -i '/AC_SEARCH_LIBS/a KPSE_KPATHSEA_FLAGS' texk/bibtex-x/configure.ac
+    (cd texk/bibtex-x && autoreconf)
    # t4ht expects to be in /usr/share/texmf/bin/t4ht
    sed -i s/SELFAUTOPARENT/TEXMFROOT/ texk/tex4htk/t4ht.c
 
    #cp -pv texk/web2c/pdftexdir/pdftoepdf{-poppler0.86.0,}.cc
    #cp -pv texk/web2c/pdftexdir/pdftosrc{-poppler0.83.0,}.cc
-   
+
    #patch -p1 -i ${srcdir}/poppler0.8x.patch
 }
 
@@ -39,10 +42,11 @@ build() {
    cd texlive-source-${_commit}
    mkdir -p Work
    cd Work
-   
+
    echo "--> Initial configuration..."
    # use temporary prefix to avoid messing the existing
    # $pkgdir/usr/share/texmf tree
+   ax_cv_c_float_words_bigendian=no \
    ../configure --prefix=/usr -C \
      --sysconfdir=/etc \
      --datarootdir=/usr/share \
@@ -145,6 +149,7 @@ bibexport
 bibmradd
 biburl2doi
 bibzbladd
+citeproc
 convertgls2bib
 listbib
 ltx2crossrefxml
@@ -227,6 +232,7 @@ listings-ext.sh
 llmk
 ltxfileinfo
 ltximg
+luafindfont
 luaotfload-tool
 luatools
 lwarpmk
@@ -244,6 +250,7 @@ mktextfm
 mptopdf
 mtxrun
 mtxrunjit
+optexcount
 ot2kpx
 pamphletangler
 pdfatfi
@@ -285,6 +292,8 @@ texindy
 texlinks
 texliveonfly
 texloganalyser
+texlogfilter
+texlogsieve
 texmfstart
 texosquery
 texosquery-jre5
@@ -299,6 +308,8 @@ updmap-sys
 updmap-user
 vpl2ovp
 vpl2vpl
+xelatex-unsafe
+xetex-unsafe
 xhlatex
 xindex
 xindy
