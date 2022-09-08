@@ -1,8 +1,8 @@
 
 pkgname=shiboken2
 _pkgname=pyside-setup-opensource-src
-pkgver=5.15.5
-_pkgver=5.15.5
+pkgver=5.15.6
+_pkgver=5.15.6
 pkgrel=1
 pkgdesc="Python binding generator that Qt for Python uses to create the PySide module."
 arch=('x86_64')
@@ -11,7 +11,7 @@ url="https://wiki.qt.io/Qt_for_Python/Shiboken"
 depends=('python3' 'qt5-xmlpatterns' 'libxslt' 'clang')
 makedepends=('cmake' 'python3-sphinx')
 source=("https://download.qt.io/official_releases/QtForPython/${pkgname}/PySide2-${pkgver}-src/${_pkgname}-${pkgver}.tar.xz")
-sha256sums=('3920a4fb353300260c9bc46ff70f1fb975c5e7efa22e9d51222588928ce19b33')
+sha256sums=('171ee058d056599b8e9e8605fe3dae5dabdab7764285b21b28f64760a0f6779d')
 
 build() {
   cmake -B build -S ${_pkgname}-${_pkgver}/sources/shiboken2 \
