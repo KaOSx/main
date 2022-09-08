@@ -6,7 +6,7 @@ pkgname=qt5-svg
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=2
+pkgrel=1
 pkgdesc="A cross-platform application and UI framework, QtSvg files"
 arch=('x86_64')
 url='https://www.qt.io/'
@@ -20,7 +20,7 @@ source=("${_qtmirror}/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz"
         'qt_kde.patch')
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
-         'b5500941bee8fa180002beb2696aa221')
+         '9f541a49f7e83bf0031d90f3e1a1c363')
 
 build() {
     cd ${__pkgfqn}

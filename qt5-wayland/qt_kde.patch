@@ -1194,7 +1194,7 @@ index 8b79c08f..84a34674 100644
      return ret;
  }
 diff --git a/src/client/qwaylandinputdevice.cpp b/src/client/qwaylandinputdevice.cpp
-index 613fe862..c3cc4eca 100644
+index 613fe862..4b90de84 100644
 --- a/src/client/qwaylandinputdevice.cpp
 +++ b/src/client/qwaylandinputdevice.cpp
 @@ -685,6 +685,11 @@ public:
@@ -1236,6 +1236,14 @@ index 613fe862..c3cc4eca 100644
      mParent->mQDisplay->handleKeyboardFocusChanged(mParent);
      mRepeatTimer.stop();
  }
+@@ -1396,6 +1388,7 @@ void QWaylandInputDevice::Touch::touch_cancel()
+     if (touchExt)
+         touchExt->touchCanceled();
+ 
++    mFocus = nullptr;
+     QWindowSystemInterface::handleTouchCancelEvent(nullptr, mParent->mTouchDevice);
+ }
+ 
 diff --git a/src/client/qwaylandintegration.cpp b/src/client/qwaylandintegration.cpp
 index c53ccb78..fbf00c6b 100644
 --- a/src/client/qwaylandintegration.cpp
@@ -1405,7 +1413,7 @@ index df1c94f2..050cfdc0 100644
  
  #if QT_CONFIG(cursor)
 diff --git a/src/client/qwaylandwindow.cpp b/src/client/qwaylandwindow.cpp
-index e96d8fe9..c90a0ebf 100644
+index afdebf55..c6477ec4 100644
 --- a/src/client/qwaylandwindow.cpp
 +++ b/src/client/qwaylandwindow.cpp
 @@ -76,7 +76,6 @@ QWaylandWindow *QWaylandWindow::mMouseGrab = nullptr;
@@ -1443,7 +1451,23 @@ index e96d8fe9..c90a0ebf 100644
  }
  
  QWaylandWindow *QWaylandWindow::fromWlSurface(::wl_surface *surface)
-@@ -374,7 +373,7 @@ void QWaylandWindow::setGeometry(const QRect &rect)
+@@ -359,11 +358,12 @@ void QWaylandWindow::setGeometry(const QRect &rect)
+         if (mWindowDecoration)
+             mWindowDecoration->update();
+ 
+-        if (mResizeAfterSwap && windowType() == Egl && mSentInitialResize)
++        if (mResizeAfterSwap && windowType() == Egl && mSentInitialResize) {
++            QMutexLocker lock(&mResizeLock);
+             mResizeDirty = true;
+-        else
++        } else {
+             QWindowSystemInterface::handleGeometryChange(window(), geometry());
+-
++        }
+         mSentInitialResize = true;
+     }
+     QRect exposeGeometry(QPoint(), geometry().size());
+@@ -374,7 +374,7 @@ void QWaylandWindow::setGeometry(const QRect &rect)
          mShellSurface->setWindowGeometry(windowContentGeometry());
  
      if (isOpaque() && mMask.isEmpty())
@@ -1452,7 +1476,7 @@ index e96d8fe9..c90a0ebf 100644
  }
  
  void QWaylandWindow::resizeFromApplyConfigure(const QSize &sizeWithMargins, const QPoint &offset)
-@@ -399,21 +398,6 @@ void QWaylandWindow::sendExposeEvent(const QRect &rect)
+@@ -399,21 +399,6 @@ void QWaylandWindow::sendExposeEvent(const QRect &rect)
      mLastExposeGeometry = rect;
  }
  
@@ -1473,8 +1497,8 @@ index e96d8fe9..c90a0ebf 100644
 -
  QPlatformScreen *QWaylandWindow::calculateScreenFromSurfaceEvents() const
  {
-     if (mSurface) {
-@@ -432,10 +416,7 @@ void QWaylandWindow::setVisible(bool visible)
+     QReadLocker lock(&mSurfaceLock);
+@@ -433,10 +418,7 @@ void QWaylandWindow::setVisible(bool visible)
      lastVisible = visible;
  
      if (visible) {
@@ -1485,7 +1509,7 @@ index e96d8fe9..c90a0ebf 100644
  
          setGeometry(windowGeometry());
          // Don't flush the events here, or else the newly visible window may start drawing, but since
-@@ -443,7 +424,6 @@ void QWaylandWindow::setVisible(bool visible)
+@@ -444,7 +426,6 @@ void QWaylandWindow::setVisible(bool visible)
          // QWaylandShmBackingStore::beginPaint().
      } else {
          sendExposeEvent(QRect());
@@ -1493,39 +1517,24 @@ index e96d8fe9..c90a0ebf 100644
          reset();
      }
  }
-@@ -464,14 +444,15 @@ void QWaylandWindow::lower()
- 
- void QWaylandWindow::setMask(const QRegion &mask)
- {
-+    QReadLocker locker(&mSurfaceLock);
-+    if (!mSurface)
-+        return;
-+
-     if (mMask == mask)
-         return;
- 
-     mMask = mask;
- 
--    if (!mSurface)
--        return;
--
-     if (mMask.isEmpty()) {
-         mSurface->set_input_region(nullptr);
- 
-@@ -554,8 +535,8 @@ void QWaylandWindow::sendRecursiveExposeEvent()
+@@ -556,12 +537,12 @@ void QWaylandWindow::sendRecursiveExposeEvent()
  
  void QWaylandWindow::attach(QWaylandBuffer *buffer, int x, int y)
  {
 -    Q_ASSERT(!buffer->committed());
+     QReadLocker locker(&mSurfaceLock);
+     if (mSurface == nullptr)
+         return;
+ 
      if (buffer) {
 +        Q_ASSERT(!buffer->committed());
          handleUpdate();
          buffer->setBusy();
  
-@@ -573,7 +554,11 @@ void QWaylandWindow::attachOffset(QWaylandBuffer *buffer)
+@@ -583,7 +564,11 @@ void QWaylandWindow::damage(const QRect &rect)
+     if (mSurface == nullptr)
+         return;
  
- void QWaylandWindow::damage(const QRect &rect)
- {
 -    mSurface->damage(rect.x(), rect.y(), rect.width(), rect.height());
 +    const int s = scale();
 +    if (mDisplay->compositorVersion() >= 4)
@@ -1535,7 +1544,7 @@ index e96d8fe9..c90a0ebf 100644
  }
  
  void QWaylandWindow::safeCommit(QWaylandBuffer *buffer, const QRegion &damage)
-@@ -607,8 +592,14 @@ void QWaylandWindow::commit(QWaylandBuffer *buffer, const QRegion &damage)
+@@ -619,8 +604,14 @@ void QWaylandWindow::commit(QWaylandBuffer *buffer, const QRegion &damage)
          return;
  
      attachOffset(buffer);
@@ -1552,7 +1561,7 @@ index e96d8fe9..c90a0ebf 100644
      Q_ASSERT(!buffer->committed());
      buffer->setCommitted();
      mSurface->commit();
-@@ -621,42 +612,50 @@ void QWaylandWindow::commit()
+@@ -635,42 +626,50 @@ void QWaylandWindow::commit()
  
  const wl_callback_listener QWaylandWindow::callbackListener = {
      [](void *data, wl_callback *callback, uint32_t time) {
@@ -1618,7 +1627,7 @@ index e96d8fe9..c90a0ebf 100644
  
      if (mWaitingForFrameCallback) {
          qCDebug(lcWaylandBackingstore) << "Didn't receive frame callback in time, window should now be inexposed";
-@@ -805,7 +804,7 @@ bool QWaylandWindow::createDecoration()
+@@ -821,7 +820,7 @@ bool QWaylandWindow::createDecoration()
          decoration = false;
      if (mSubSurfaceWindow)
          decoration = false;
@@ -1627,7 +1636,7 @@ index e96d8fe9..c90a0ebf 100644
          decoration = false;
  
      bool hadDecoration = mWindowDecoration;
-@@ -1078,10 +1077,18 @@ bool QWaylandWindow::setMouseGrabEnabled(bool grab)
+@@ -1094,10 +1093,18 @@ bool QWaylandWindow::setMouseGrabEnabled(bool grab)
      return true;
  }
  
@@ -1647,7 +1656,7 @@ index e96d8fe9..c90a0ebf 100644
      mLastReportedWindowStates = states;
  }
  
-@@ -1144,8 +1151,11 @@ void QWaylandWindow::requestUpdate()
+@@ -1160,8 +1167,11 @@ void QWaylandWindow::requestUpdate()
      Q_ASSERT(hasPendingUpdateRequest()); // should be set by QPA
  
      // If we have a frame callback all is good and will be taken care of there
@@ -1661,7 +1670,7 @@ index e96d8fe9..c90a0ebf 100644
  
      // If we've already called deliverUpdateRequest(), but haven't seen any attach+commit/swap yet
      // This is a somewhat redundant behavior and might indicate a bug in the calling code, so log
-@@ -1158,7 +1168,12 @@ void QWaylandWindow::requestUpdate()
+@@ -1174,7 +1184,12 @@ void QWaylandWindow::requestUpdate()
      // so use invokeMethod to delay the delivery a bit.
      QMetaObject::invokeMethod(this, [this] {
          // Things might have changed in the meantime
@@ -1675,7 +1684,7 @@ index e96d8fe9..c90a0ebf 100644
              deliverUpdateRequest();
      }, Qt::QueuedConnection);
  }
-@@ -1169,19 +1184,19 @@ void QWaylandWindow::requestUpdate()
+@@ -1185,19 +1200,19 @@ void QWaylandWindow::requestUpdate()
  void QWaylandWindow::handleUpdate()
  {
      qCDebug(lcWaylandBackingstore) << "handleUpdate" << QThread::currentThread();
@@ -1701,7 +1710,7 @@ index e96d8fe9..c90a0ebf 100644
      mFrameCallback = wl_surface_frame(wrappedSurface);
      wl_proxy_wrapper_destroy(wrappedSurface);
      wl_callback_add_listener(mFrameCallback, &QWaylandWindow::callbackListener, this);
-@@ -1191,6 +1206,8 @@ void QWaylandWindow::handleUpdate()
+@@ -1207,6 +1222,8 @@ void QWaylandWindow::handleUpdate()
      // Start a timer for handling the case when the compositor stops sending frame callbacks.
      if (mFrameCallbackTimeout > 0) {
          QMetaObject::invokeMethod(this, [this] {
@@ -1710,7 +1719,7 @@ index e96d8fe9..c90a0ebf 100644
              if (mWaitingForFrameCallback) {
                  if (mFrameCallbackCheckIntervalTimerId < 0)
                      mFrameCallbackCheckIntervalTimerId = startTimer(mFrameCallbackTimeout);
-@@ -1251,6 +1268,20 @@ void QWaylandWindow::setOpaqueArea(const QRegion &opaqueArea)
+@@ -1267,6 +1284,20 @@ void QWaylandWindow::setOpaqueArea(const QRegion &opaqueArea)
      wl_region_destroy(region);
  }
  
@@ -1732,7 +1741,7 @@ index e96d8fe9..c90a0ebf 100644
  
  QT_END_NAMESPACE
 diff --git a/src/client/qwaylandwindow_p.h b/src/client/qwaylandwindow_p.h
-index 6cc1664b..d211178a 100644
+index 01337cff..2be87bc0 100644
 --- a/src/client/qwaylandwindow_p.h
 +++ b/src/client/qwaylandwindow_p.h
 @@ -148,6 +148,7 @@ public:
@@ -2329,6 +2338,53 @@ index 1568b3b9..067410d0 100644
  
  class DataDeviceCompositor : public DefaultCompositor {
  public:
+diff --git a/tests/auto/client/seatv5/tst_seatv5.cpp b/tests/auto/client/seatv5/tst_seatv5.cpp
+index 9312c2e5..b063e0d9 100644
+--- a/tests/auto/client/seatv5/tst_seatv5.cpp
++++ b/tests/auto/client/seatv5/tst_seatv5.cpp
+@@ -73,6 +73,7 @@ private slots:
+     void multiTouch();
+     void multiTouchUpAndMotionFrame();
+     void tapAndMoveInSameFrame();
++    void cancelTouch();
+ };
+ 
+ void tst_seatv5::bindsToSeat()
+@@ -646,5 +647,34 @@ void tst_seatv5::tapAndMoveInSameFrame()
+     QTRY_COMPARE(window.m_events.last().touchPoints.first().state(), Qt::TouchPointState::TouchPointReleased);
+ }
+ 
++void tst_seatv5::cancelTouch()
++{
++    TouchWindow window;
++    QCOMPOSITOR_TRY_VERIFY(xdgSurface() && xdgSurface()->m_committedConfigureSerial);
++
++    exec([=] {
++        auto *t = touch();
++        auto *c = client();
++        t->sendDown(xdgToplevel()->surface(), {32, 32}, 1);
++        t->sendFrame(c);
++        t->sendCancel(c);
++        t->sendFrame(c);
++    });
++
++    QTRY_VERIFY(!window.m_events.empty());
++    {
++        auto e = window.m_events.takeFirst();
++        QCOMPARE(e.type, QEvent::TouchBegin);
++        QCOMPARE(e.touchPointStates, QEventPoint::State::Pressed);
++        QCOMPARE(e.touchPoints.length(), 1);
++        QCOMPARE(e.touchPoints.first().position(), QPointF(32-window.frameMargins().left(), 32-window.frameMargins().top()));
++    }
++    {
++        auto e = window.m_events.takeFirst();
++        QCOMPARE(e.type, QEvent::TouchCancel);
++        QCOMPARE(e.touchPoints.length(), 0);
++    }
++}
++
+ QCOMPOSITOR_TEST_MAIN(tst_seatv5)
+ #include "tst_seatv5.moc"
 diff --git a/tests/auto/client/shared/corecompositor.cpp b/tests/auto/client/shared/corecompositor.cpp
 index 5c6c83ba..fa9b7662 100644
 --- a/tests/auto/client/shared/corecompositor.cpp
@@ -2341,8 +2397,26 @@ index 5c6c83ba..fa9b7662 100644
  
  namespace MockCompositor {
  
+diff --git a/tests/auto/client/shared/coreprotocol.cpp b/tests/auto/client/shared/coreprotocol.cpp
+index 0d988521..d1a2e7cb 100644
+--- a/tests/auto/client/shared/coreprotocol.cpp
++++ b/tests/auto/client/shared/coreprotocol.cpp
+@@ -451,6 +451,13 @@ void Touch::sendFrame(wl_client *client)
+         send_frame(r->handle);
+ }
+ 
++void Touch::sendCancel(wl_client *client)
++{
++    const auto touchResources = resourceMap().values(client);
++    for (auto *r : touchResources)
++        send_cancel(r->handle);
++}
++
+ uint Keyboard::sendEnter(Surface *surface)
+ {
+     auto serial = m_seat->m_compositor->nextSerial();
 diff --git a/tests/auto/client/shared/coreprotocol.h b/tests/auto/client/shared/coreprotocol.h
-index a1af137a..296dbf47 100644
+index a1af137a..210d8ddb 100644
 --- a/tests/auto/client/shared/coreprotocol.h
 +++ b/tests/auto/client/shared/coreprotocol.h
 @@ -158,7 +158,7 @@ class WlCompositor : public Global, public QtWaylandServer::wl_compositor
@@ -2354,6 +2428,14 @@ index a1af137a..296dbf47 100644
          : QtWaylandServer::wl_compositor(compositor->m_display, version)
          , m_compositor(compositor)
      {}
+@@ -364,6 +364,7 @@ public:
+     uint sendUp(wl_client *client, int id);
+     void sendMotion(wl_client *client, const QPointF &position, int id);
+     void sendFrame(wl_client *client);
++    void sendCancel(wl_client *client);
+ 
+     Seat *m_seat = nullptr;
+ };
 diff --git a/tests/auto/client/shared_old/mockcompositor.cpp b/tests/auto/client/shared_old/mockcompositor.cpp
 index a415cbf5..b1d3d07d 100644
 --- a/tests/auto/client/shared_old/mockcompositor.cpp

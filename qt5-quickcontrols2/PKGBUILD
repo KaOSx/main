@@ -6,7 +6,7 @@ pkgname=qt5-quickcontrols2
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=3
+pkgrel=1
 pkgdesc="A cross-platform application and UI framework, QtControls"
 arch=('x86_64')
 url='https://www.qt.io/'
@@ -17,16 +17,14 @@ options=('!libtool')
 _pkgfqn="qtquickcontrols2-everywhere-opensource-src-${subver}"
 __pkgfqn="qtquickcontrols2-everywhere-src-${subver}"
 source=("${_qtmirror}/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz"
-        'qt_kde.patch'
-        "https://invent.kde.org/qt/qt/qtquickcontrols2/-/commit/d0642867ab629daf36a1194274a74758111140be.diff")
+        'qt_kde.patch')
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
-         'de35978373607338531cab3fadae67d0'
-         '94bf9ce555f69887ff1533e886dd0ac7')
+         '37ac1e1262a0368a33e28743a0e846c5')
 
 build() {
     cd ${__pkgfqn}
-    patch -p1 -i ${srcdir}/d0642867ab629daf36a1194274a74758111140be.diff
+    patch -p1 -i ${srcdir}/qt_kde.patch
 
     /usr/lib/qt5/bin/qmake
     make
