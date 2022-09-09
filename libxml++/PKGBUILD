@@ -1,22 +1,22 @@
 
 pkgname=libxml++
-pkgver=3.2.3
+pkgver=3.2.4
 _pkgver=3.2
 pkgrel=1
 pkgdesc="C++ bindings to libxml2."
 arch=('x86_64')
 license=('LGPL')
-url="http://libxmlplusplus.sourceforge.net/"
+url="https://libxmlplusplus.github.io/libxmlplusplus/"
 depends=('glibmm' 'libxml2')
 makedepends=('meson' 'ninja')
 options=('!libtool' '!emptydirs')
 source=("https://download.gnome.org/sources/libxml++/${_pkgver}/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('9541f6d2eede269498bb32e4193a41b631453654f407d47a876d62ab73beb7b5')
+sha256sums=('ba53f5eaca45b79f4ec1b3b28bc8136fce26873cd38f2e381d9355289e432405')
 
 build() {
   mkdir -p build
   cd build
-  
+
   meson ../${pkgname}-${pkgver} \
     --prefix=/usr \
     --buildtype=release
@@ -25,6 +25,6 @@ build() {
 
 package() {
   cd build
-  
+
   DESTDIR=${pkgdir} ninja install
 }

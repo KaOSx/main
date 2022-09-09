@@ -1,7 +1,7 @@
 
 pkgname=vorbis-tools
 pkgver=1.4.2
-pkgrel=1
+pkgrel=2
 pkgdesc="Extra tools for Ogg-Vorbis"
 arch=('x86_64')
 url='https://www.xiph.org/vorbis/'
@@ -14,7 +14,7 @@ md5sums=('998fca293bd4e4bdc2b96fb70f952f4e')
 
 build() {
   cd ${pkgname}-${pkgver}
-  
+
   ./configure --prefix=/usr \
     --without-speex \
     --enable-vcut 
@@ -23,6 +23,6 @@ build() {
 
 package() {
   cd ${pkgname}-${pkgver}
-  
+
   make DESTDIR=${pkgdir} install 
 }
