@@ -1,8 +1,8 @@
 
 pkgbase=libofx
 pkgname=('libofx' 'libofx-doc')
-pkgver=0.10.6
-pkgrel=2
+pkgver=0.10.7
+pkgrel=1
 pkgdesc="API for the OFX banking standard"
 arch=('x86_64')
 url="https://github.com/libofx/libofx"
@@ -12,12 +12,12 @@ checkdepends=('gnupg' 'doxygen')
 #source=("https://downloads.sourceforge.net/libofx/${pkgbase}-${pkgver}.tar.gz")
 source=("https://github.com/libofx/libofx/releases/download/${pkgver}/${pkgbase}-${pkgver}.tar.gz"
         "https://github.com/libofx/libofx/commit/aef85c5e11bfd5c5d82c4c73a44f79dd8aa8f55e.diff")
-md5sums=('4c9033c31bb3e5cdec47415b1d6deb0c'
+md5sums=('cfee60ff81968f02f8063034c37d05ec'
          'ce6831e4c9c1204e4a4a21cdd899b878' )
 
 build() {
   cd ${pkgbase}-${pkgver}
-  patch -p1 -i ${srcdir}/aef85c5e11bfd5c5d82c4c73a44f79dd8aa8f55e.diff
+  #patch -p1 -i ${srcdir}/aef85c5e11bfd5c5d82c4c73a44f79dd8aa8f55e.diff
 
   ./configure --prefix=/usr
   make
