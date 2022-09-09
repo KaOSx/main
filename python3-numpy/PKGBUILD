@@ -1,16 +1,16 @@
 
 pkgname=python3-numpy
-pkgver=1.23.2
-_pkgver=1.23.2
+pkgver=1.23.3
+_pkgver=1.23.3
 pkgrel=1
 pkgdesc="Scientific tools for Python"
 arch=('x86_64')
 license=('custom')
 url="https://www.numpy.org/"
 depends=('lapack' 'python3-nose' 'python3-cython')
-#source=("https://github.com/numpy/numpy/releases/download/v${pkgver}/numpy-${_pkgver}.tar.gz")
-source=("https://pypi.io/packages/source/n/numpy/numpy-${_pkgver}.tar.gz")
-sha256sums=('b78d00e48261fbbd04aa0d7427cf78d18401ee0abd89c7559bbf422e5b1c7d01')
+source=("https://github.com/numpy/numpy/releases/download/v${pkgver}/numpy-${_pkgver}.tar.gz")
+#source=("https://pypi.io/packages/source/n/numpy/numpy-${_pkgver}.tar.gz")
+sha256sums=('51bf49c0cd1d52be0a240aa66f3458afc4b95d8993d2d04f0d91fa60c10af6cd')
 
 build() {
   cd numpy-${pkgver}
