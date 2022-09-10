@@ -1,6 +1,6 @@
 
 pkgname=libxft
-pkgver=2.3.5
+pkgver=2.3.6
 pkgrel=2
 pkgdesc="FreeType-based font drawing library for X"
 arch=('x86_64')
@@ -11,12 +11,12 @@ makedepends=('pkgconfig')
 options=('!libtool')
 source=("https://xorg.freedesktop.org/releases/individual/lib/libXft-${pkgver}.tar.xz"
         "https://gitlab.freedesktop.org/xorg/lib/libxft/-/commit/95284856783b824a714b7506762f4adce3bb17ce.diff")
-sha256sums=('684fd6ec83db80b391b8111f604d9225772b26bb78bba261d77a5eaddab6a1ee'
+sha256sums=('60a6e7319fc938bbb8d098c9bcc86031cc2327b5d086d3335fc5c76323c03022'
             '93c3e46ef66ca7c8ecf3488abeff88d2e84f20400fe0cf1a33168bcae4bff2dd')
 
 build() {
   cd libXft-${pkgver}
-  patch -p1 -i ${srcdir}/95284856783b824a714b7506762f4adce3bb17ce.diff
+  #patch -p1 -i ${srcdir}/95284856783b824a714b7506762f4adce3bb17ce.diff
 
   ./configure --prefix=/usr \
         --sysconfdir=/etc \

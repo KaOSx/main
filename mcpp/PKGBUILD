@@ -1,15 +1,16 @@
 
 pkgname=mcpp
-pkgver=2.7.2
-pkgrel=7
+pkgver=2.7.2.1
+pkgrel=1
 pkgdesc="Matsui's CPP implementation precisely conformed to standards"
 arch=('x86_64')
 license=('custom')
 url="http://mcpp.sourceforge.net"
 depends=('glibc')
 options=('!libtool')
-source=("https://downloads.sourceforge.net/mcpp/${pkgname}-${pkgver}.tar.gz")
-md5sums=('512de48c87ab023a69250edc7a0c7b05')
+#source=("https://downloads.sourceforge.net/mcpp/${pkgname}-${pkgver}.tar.gz")
+source=("https://github.com/museoa/mcpp/archive/refs/tags/${pkgver}.tar.gz")
+md5sums=('b1613ccd21076e6a81b35472c5ac801b')
 
 build() {
   cd ${pkgname}-${pkgver}
