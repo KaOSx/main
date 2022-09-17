@@ -1,7 +1,7 @@
 
 pkgname=speech-dispatcher
 pkgver=0.11.2
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 url="https://devel.freebsoft.org/speechd"
 pkgdesc="High-level device independent layer for speech synthesis interface"
@@ -35,7 +35,10 @@ md5sums=('38f5386b0597fd24347c68cbe1ba69ed'
 build() {
   cd ${pkgname}-${pkgver}
 
-  ./configure --prefix=/usr --sysconfdir=/etc --without-flite
+  ./configure --prefix=/usr \
+    --sysconfdir=/etc \
+    --without-flite \
+    --libexecdir=/usr/lib/speech-dispatcher/
   make
 }
 
