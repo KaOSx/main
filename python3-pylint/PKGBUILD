@@ -1,8 +1,8 @@
 
 pkgname=python3-pylint
 _pkgname=pylint
-pkgver=2.15.2
-pkgrel=2
+pkgver=2.15.3
+pkgrel=1
 pkgdesc="Tool that checks for errors in Python code and tries to enforce a coding standard"
 arch=('x86_64')
 url="https://pylint.pycqa.org/en/latest/"
@@ -11,7 +11,7 @@ depends=('python3' 'python3-astroid')
 makedepends=('python3-build' 'python3-pip' 'python3-setuptools' 'python3-wheel')
 #source=("https://github.com/PyCQA/pylint/archive/v${pkgver}.tar.gz")
 source=("https://pypi.python.org/packages/source/p/${_pkgname}/${_pkgname}-${pkgver}.tar.gz")
-sha256sums=('f63404a2547edb5247da263748771ac9a806ed1de4174cda01293c08ddbc2999')
+sha256sums=('5fdfd44af182866999e6123139d265334267339f29961f00c89783155eacc60b')
 
 build() {
     cd ${_pkgname}-${pkgver}
