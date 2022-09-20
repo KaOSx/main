@@ -33,7 +33,7 @@ package() {
   cd ${_pkgname}-${_commit}
 
   install -D -m644 8192eu.ko ${pkgdir}/lib/modules/${_kver}/kernel/drivers/net/wireless/8192eu.ko
-  
+
   # sign the module
   _file=/usr/src/linux-${_kver}/scripts/sign-file
   _pem=/$HOME/signing_key.pem
