@@ -19,7 +19,7 @@ source=("https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download
 sha512sums=('fe5a5103c081dd87cf8b3e0bbbd0df004c0e4e04e41bded7c70372916e6e26249a0e8fa434b561292964c5f3820ee6c60ef1557827a6efb5676012ccb73ded85')
 
 build() {
-  cd ${srcdir}/ghostscript-${pkgver}
+  cd ghostscript-${pkgver}
 
   # force it to use system-libs
   rm -rf jpeg tiff freetype lcms2 libpng expat
@@ -40,18 +40,18 @@ build() {
   # Build IJS
   cd ${srcdir}/ghostscript-${pkgver}/ijs
   sed -i "s:AM_PROG_CC_STDC:AC_PROG_CC:g" configure.ac
-  
+
   ./autogen.sh
   ./configure --prefix=/usr --enable-shared --disable-static
   make
 }
 
 package() {
-  cd ${srcdir}/ghostscript-${pkgver}
+  cd ghostscript-${pkgver}
   make DESTDIR=${pkgdir} \
 	cups_serverroot=${pkgdir}/etc/cups \
 	cups_serverbin=${pkgdir}/usr/lib/cups install soinstall
-  
+
   mkdir -p ${pkgdir}/usr/share/licenses/${pkgname}
   install -m644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/
 
@@ -61,7 +61,7 @@ package() {
   # install IJS
   cd ${srcdir}/ghostscript-${pkgver}/ijs
   make DESTDIR=${pkgdir} install
-  
+
   # cups-filters 1.36 conflict
   rm -rf $pkgdir/usr/lib/cups/filter/{gstopxl,gstoraster}
 }
