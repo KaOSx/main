@@ -1,18 +1,20 @@
 
 pkgname=sdl_mixer
-pkgver=1.2.12
-pkgrel=13
+pkgver=1.2.12.20220607
+_commit=3a4cdce6dca7413fc37bf5f6d81cd53d3b54e9d7
+pkgrel=1
 pkgdesc="A simple multi-channel audio mixer"
 arch=('x86_64')
 url="http://www.libsdl.org/projects/SDL_mixer/"
 license=('custom')
 depends=('sdl' 'libvorbis' 'libmikmod' 'smpeg' 'fluidsynth')
 options=('!libtool')
-source=("https://www.libsdl.org/projects/SDL_mixer/release/SDL_mixer-${pkgver}.tar.gz")
-md5sums=('e03ff73d77a55e3572ad0217131dc4a1')
+#source=("https://www.libsdl.org/projects/SDL_mixer/release/SDL_mixer-${pkgver}.tar.gz")
+source=("https://github.com/libsdl-org/SDL_mixer/archive/${_commit}.zip")
+md5sums=('9f1508139bf0b0e437e6db3c7ca9da18')
 
 build() {
-  cd SDL_mixer-${pkgver}
+  cd SDL_mixer-${_commit}
 
   sed -e "/CONFIG_FILE_ETC/s|/etc/timidity.cfg|/etc/timidity++/timidity.cfg|" \
       -e "/DEFAULT_PATH/s|/etc/timidity|/etc/timidity++|" \
@@ -24,7 +26,7 @@ build() {
 }
 
 package() {
-  cd SDL_mixer-${pkgver}
+  cd SDL_mixer-${_commit}
   make DESTDIR=${pkgdir} install
 
   install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE

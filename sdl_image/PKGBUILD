@@ -1,26 +1,28 @@
 
 pkgname=sdl_image
 pkgver=1.2.12
-pkgrel=6
+_commit=633dc522f5114f6d473c910dace62e8ca27a1f7d
+pkgrel=7
 pkgdesc="Simple library to load images of various formats as SDL surfaces"
 arch=('x86_64')
 url="https://www.libsdl.org/projects/SDL_image/"
 license=('custom')
 depends=('sdl' 'libpng' 'libjpeg-turbo' 'libtiff' 'zlib')
 options=('!libtool')
-source=("https://www.libsdl.org/projects/SDL_image/release/SDL_image-${pkgver}.tar.gz")
-md5sums=('a0f9098ebe5400f0bdc9b62e60797ecb')
+#source=("https://www.libsdl.org/projects/SDL_image/release/SDL_image-${pkgver}.tar.gz")
+source=("https://github.com/libsdl-org/SDL_image/archive/${_commit}.zip")
+md5sums=('42c03491dd0c953db5f31ebfe86f2a29')
 
 build() {
-  cd SDL_image-${pkgver}
-  
+  cd SDL_image-${_commit}
+
   ./configure --prefix=/usr --disable-static
   make 
 }
 
 package() {
-  cd SDL_image-${pkgver}
-  
+  cd SDL_image-${_commit}
+
   make DESTDIR=${pkgdir} install
   install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
