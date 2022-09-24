@@ -1,6 +1,6 @@
 
 pkgname=python3-sphinx
-pkgver=5.1.1
+pkgver=5.2.0
 pkgrel=1
 pkgdesc="Python documentation generator"
 arch=('x86_64')
@@ -8,21 +8,21 @@ url="https://www.sphinx-doc.org/en/master/"
 license=('GPL')
 depends=('python3-babel' 'python3-pygments' 'python3-docutils' 'python3-jinja'
          'python3-requests' 'python3-packaging')
-makedepends=('python3-setuptools')
+makedepends=('python3-build' 'python3-flit' 'python3-pip')
 optdepends=('texlive-latexextra: for generation of PDF documentation')
 source=("https://files.pythonhosted.org/packages/source/S/Sphinx/Sphinx-${pkgver}.tar.gz")
-sha256sums=('ba3224a4e206e1fbdecf98a4fae4992ef9b24b85ebf7b584bb340156eaf08d89')
+sha256sums=('1790c2098937dcfa7871c9d102c24eccd4a8b883b67c5c1e26892fb52d102542')
 
 build() {
     # run prior to building:
     export LC_ALL="en_US.UTF-8"
     cd Sphinx-${pkgver}
 
-    make build
+    flit build --format wheel
 }
 
 package() {
     cd Sphinx-${pkgver}
 
-    python3 setup.py install --root=${pkgdir} -O1 --skip-build
+    PIP_CONFIG_FILE=/dev/null pip3 install --isolated --root=${pkgdir} --ignore-installed --no-deps dist/*.whl
 }
