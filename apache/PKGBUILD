@@ -12,7 +12,7 @@ backup=(etc/httpd/conf/httpd.conf
         etc/httpd/conf/extra/httpd-{manual,mpm,multilang-errordoc}.conf
         etc/httpd/conf/extra/httpd-{ssl,userdir,vhosts}.conf
         etc/logrotate.d/httpd)
-depends=('openssl' 'zlib' 'apr-util' 'pcre' 'systemd' 'libxcrypt' 'libldap')
+depends=('openssl' 'zlib' 'apr-util' 'pcre2' 'systemd' 'libxcrypt' 'libldap')
 makedepends=('apr')
 install=${pkgname}.install
 source=("https://www.apache.org/dist/httpd/httpd-${pkgver}.tar.bz2"
@@ -60,7 +60,7 @@ build() {
         --enable-dbd \
         --with-apr=/usr/bin/apr-1-config \
         --with-apr-util=/usr/bin/apu-1-config \
-        --with-pcre=/usr 
+        --with-pcre2
         #--with-mpm="${mpm}"
         #--with-suexec-uidmin=99 --with-suexec-gidmin=99 \
 

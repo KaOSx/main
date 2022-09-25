@@ -5,7 +5,7 @@ pkgrel=1
 pkgdesc='Cross-platform, linkable library implementation of Git that you can use in your application.'
 arch=('x86_64')
 url="https://libgit2.org/"
-depends=('openssl' 'pcre' 'zlib')
+depends=('openssl' 'pcre2' 'zlib')
 makedepends=('cmake' 'libssh2' 'python3')
 license=('GPL2')
 source=("https://github.com/libgit2/libgit2/archive/refs/tags/v${pkgver}.tar.gz")
@@ -15,7 +15,8 @@ build() {
   cmake -B build -S ${pkgname}-${pkgver} \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_BUILD_TYPE=Release \
-    -DUSE_HTTP_PARSER=builtin
+    -DUSE_HTTP_PARSER=builtin \
+    -DREGEX_BACKEND=pcre2
   cmake --build build
 }
 
