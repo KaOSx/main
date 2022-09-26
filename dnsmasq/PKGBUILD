@@ -1,6 +1,6 @@
 
 pkgname=dnsmasq
-pkgver=2.86
+pkgver=2.87
 pkgrel=1
 pkgdesc="Network infrastructure for small networks: DNS, DHCP, router advertisement, network boot, tethering on smartphones and portable hotspots"
 url="https://www.thekelleys.org.uk/dnsmasq/doc.html"
@@ -12,13 +12,13 @@ backup=('etc/dnsmasq.conf')
 source=("https://www.thekelleys.org.uk/dnsmasq/${pkgname}-${pkgver}.tar.xz"
         'dnsmasq.service'
         "https://github.com/themiron/dnsmasq/commit/6fd9aba7abe1e084123bc5002959350897774ace.diff")
-md5sums=('227fd0e81a5ed8134e1f60e175324c99'
+md5sums=('9513c4e6a6c0b544594064dd3eda8dba'
          '596c88fc2492f99edf71e398b85a69f4'
          'ce755e41c27f867d861572fe63602ca7')
 
 build() {
   cd ${pkgname}-${pkgver}
-  
+
   #patch -p1 -i ${srcdir}/6fd9aba7abe1e084123bc5002959350897774ace.diff
   #sed -e "s|nettle_secp_256r1|nettle_get_secp_256r1|" -i src/crypto.c
 
