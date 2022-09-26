@@ -1,7 +1,7 @@
 
 pkgname=libmpcdec
 pkgver=1.2.6
-pkgrel=6
+pkgrel=7
 pkgdesc="Musepack decoding library"
 arch=('x86_64')
 url="https://musepack.net/"
@@ -13,14 +13,14 @@ md5sums=('7f7a060e83b4278acf4b77d7a7b9d2c0')
 
 build() {
   cd ${pkgname}-${pkgver}
-  
+
   ./configure --prefix=/usr --disable-static
   make
 }
 
 package() {
   cd ${pkgname}-${pkgver}
-  
+
   make DESTDIR=${pkgdir} install
   install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
 }

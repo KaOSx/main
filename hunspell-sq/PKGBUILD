@@ -1,7 +1,7 @@
 
 pkgname=hunspell-sq
 pkgver=1.6.4
-pkgrel=3
+pkgrel=4
 pkgdesc="Albanian hunspell dictionaries"
 arch=('x86_64')
 url="https://www.shkenca.org/k6i/albanian_dictionary_for_myspell_en.html"
@@ -23,7 +23,7 @@ package() {
       ln -sv /usr/share/hunspell/$(basename $file) .
     done
   popd
-  
+
   install -Dm644 README.txt ${pkgdir}/usr/share/doc/${pkgname}/README.txt
   install -Dm644 Copyright ${pkgdir}/usr/share/doc/${pkgname}/Copyright
 }

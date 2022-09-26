@@ -2,21 +2,21 @@
 pkgname=tex-gyre-fonts
 pkgver=2.501
 _pkgver=2_501
-pkgrel=1
+pkgrel=2
 pkgdesc="Extensive remake and extension of the freely available 35 base PostScript fonts"
 arch=('x86_64')
-url="http://www.gust.org.pl/projects/e-foundry/tex-gyre"
+url="https://www.gust.org.pl/projects/e-foundry/tex-gyre"
 license=('custom')
 depends=('fontconfig')
 install=tex-gyre-fonts.install
-source=("http://www.gust.org.pl/projects/e-foundry/tex-gyre/whole/tg${_pkgver}otf.zip"
-        "http://www.gust.org.pl/projects/e-foundry/licenses/GUST-FONT-LICENSE.txt")
+source=("https://www.gust.org.pl/projects/e-foundry/tex-gyre/whole/tg${_pkgver}otf.zip"
+        "https://www.gust.org.pl/projects/e-foundry/licenses/GUST-FONT-LICENSE.txt")
 md5sums=('b2396c8180a48b4f915eedccae508383'
          '7ab98aedba83bca3de4a3ca3792e7390')
 
 package() {
   install -d ${pkgdir}/usr/share/fonts/tex-gyre
   install -m0644 tg${_pkgver}otf/*.otf ${pkgdir}/usr/share/fonts/tex-gyre/
-  
+
   install -Dm644 GUST-FONT-LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }

@@ -1,7 +1,7 @@
 
 pkgname=xcb-util-wm
 pkgver=0.4.1
-pkgrel=3
+pkgrel=4
 pkgdesc="Utility libraries for XC Binding"
 arch=('x86_64')
 url="https://xcb.freedesktop.org"
@@ -16,7 +16,7 @@ md5sums=('87b19a1cd7bfcb65a24e36c300e03129'
 
 build() {
   cd ${pkgname}-${pkgver}
-  
+
   ./configure --prefix=/usr --disable-static
   make
 }
