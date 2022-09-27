@@ -1,7 +1,7 @@
 
 pkgname=libxtst
-pkgver=1.2.3
-pkgrel=3
+pkgver=1.2.4
+pkgrel=1
 pkgdesc="X11 Testing -- Resource extension library"
 arch=('x86_64')
 url="https://xorg.freedesktop.org/"
@@ -9,8 +9,8 @@ license=('custom')
 depends=('libxext' 'libxi' 'xorgproto')
 makedepends=('xorg-util-macros')
 options=('!libtool')
-source=("https://xorg.freedesktop.org/releases/individual/lib/libXtst-${pkgver}.tar.bz2")
-md5sums=('ef8c2c1d16a00bd95b9fdcef63b8a2ca')
+source=("https://xorg.freedesktop.org/releases/individual/lib/libXtst-${pkgver}.tar.xz")
+sha256sums=('84f5f30b9254b4ffee14b5b0940e2622153b0d3aed8286a3c5b7eeb340ca33c8')
 
 build() {
   cd libXtst-${pkgver}
