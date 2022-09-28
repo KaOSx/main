@@ -1,7 +1,7 @@
 
 pkgname=fail2ban
-pkgver=0.11.2
-pkgrel=3
+pkgver=1.0.1
+pkgrel=1
 pkgdesc='Scans log files like /var/log/auth.log and bans IP addresses conducting too many failed login attempts.'
 url='https://www.fail2ban.org/'
 license=('GPL')
@@ -12,7 +12,7 @@ backup=('etc/fail2ban/fail2ban.conf'
         'etc/fail2ban/jail.conf'
         'etc/logrotate.d/fail2ban')
 source=("https://github.com/fail2ban/fail2ban/archive/${pkgver}.tar.gz")
-md5sums=('dbeaad971a1127320b949b0f29d7b1f9')
+md5sums=('b74ebf3b1630f66b0dee3bcafa7a3ef9')
 
 prepare() {
   cd ${pkgname}-${pkgver}
