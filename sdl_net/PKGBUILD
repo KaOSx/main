@@ -1,25 +1,27 @@
 
 pkgname=sdl_net
-pkgver=1.2.8
-pkgrel=4
+pkgver=1.2.8.20220916
+_commit=a226428f2d8c041ed1b280b1558e4ee3e03762fb
+pkgrel=1
 pkgdesc="Small sample cross-platform networking library"
 arch=('x86_64')
 license=('custom')
-url="https://www.libsdl.org/projects/SDL_net/"
+url="https://github.com/libsdl-org/SDL_net"
 depends=('sdl')
 options=('!libtool')
-source=("https://www.libsdl.org/projects/SDL_net/release/SDL_net-${pkgver}.tar.gz")
-md5sums=('20e64e61d65662db66c379034f11f718')
+#source=("https://www.libsdl.org/projects/SDL_net/release/SDL_net-${pkgver}.tar.gz")
+source=("https://github.com/libsdl-org/SDL_net/archive/${_commit}.zip")
+md5sums=('4cad2739fe35e0ef0903146d26cd4bfe')
 
 build() {
-  cd SDL_net-${pkgver}
-  
+  cd SDL_net-${_commit}
+
   ./configure --prefix=/usr --disable-static
   make
 }
 
 package() {
-  cd SDL_net-${pkgver}
+  cd SDL_net-${_commit}
   make DESTDIR=${pkgdir} install
 
   install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
