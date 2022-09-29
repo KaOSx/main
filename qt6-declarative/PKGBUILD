@@ -12,7 +12,7 @@ arch=('x86_64')
 url='https://www.qt.io/'
 license=('GPL3' 'LGPL' 'FDL' 'custom')
 depends=('qt6-base' 'qt6-shadertools' 'qt6-languageserver')
-makedepends=('cmake' 'ninja' 'python3')
+makedepends=('cmake' 'ninja' 'python3' 'qt6-tools')
 options=('!libtool' 'debug')
 provides=('qt6-quickcontrols2')
 replaces=('qt6-quickcontrols2')
@@ -25,14 +25,15 @@ md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`)
 build() {
     cmake -B build -S ${_pkgfqn} -G Ninja \
         -DCMAKE_BUILD_TYPE=Release \
-        -DCMAKE_INSTALL_PREFIX=/usr 
+        -DCMAKE_INSTALL_PREFIX=/usr \
+        -DCMAKE_MESSAGE_LOG_LEVEL=STATUS
     cmake --build build
 }
 
 package() {
     DESTDIR=${pkgdir} cmake --install build
 
-    install -D -m644 ${_pkgfqn}/LICENSE* -t ${pkgdir}/usr/share/licenses/${pkgname}
+    install -D -m644 ${_pkgfqn}/LICENSES/* -t ${pkgdir}/usr/share/licenses/${pkgname}
 
     mkdir -p ${pkgdir}/usr/bin
     for i in $(ls ${pkgdir}/usr/lib/qt6/bin); do

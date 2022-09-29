@@ -47,14 +47,15 @@ build() {
         -DINPUT_openssl=linked \
         -DFEATURE_system_freetype=ON \
         -DFEATURE_system_sqlite=ON \
-        -DFEATURE_system_xcb_xinput=ON
+        -DFEATURE_system_xcb_xinput=ON \
+        -DCMAKE_MESSAGE_LOG_LEVEL=STATUS
     cmake --build build
 }
 
 package() {
     DESTDIR=${pkgdir} cmake --install build
 
-    install -D -m644 ${_pkgfqn}/LICENSE* -t ${pkgdir}/usr/share/licenses/${pkgname}
+    install -D -m644 ${_pkgfqn}/LICENSES/* -t ${pkgdir}/usr/share/licenses/${pkgname}
 
     mkdir -p ${pkgdir}/usr/bin
     for i in $(ls ${pkgdir}/usr/lib/qt6/bin); do

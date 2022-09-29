@@ -22,19 +22,19 @@ md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`)
 build() {
     cmake -B build -S ${_pkgfqn} -G Ninja \
         -DCMAKE_BUILD_TYPE=Release \
-        -DCMAKE_INSTALL_PREFIX=/usr
+        -DCMAKE_INSTALL_PREFIX=/usr \
+        -DCMAKE_MESSAGE_LOG_LEVEL=STATUS
     cmake --build build
 }
 
 package() {
     DESTDIR=${pkgdir} cmake --install build
-    
+
     mkdir -p ${pkgdir}/usr/bin
     for i in $(ls ${pkgdir}/usr/lib/qt6/bin); do
         ln -s /usr/lib/qt6/bin/${i} ${pkgdir}/usr/bin/${i}-qt6
     done
-    
-    install -D -m644 ${_pkgfqn}/LICENSE.GPL3 \
-    ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.GPL3
+
+    install -D -m644 ${_pkgfqn}/LICENSES/* -t ${pkgdir}/usr/share/licenses/${pkgname}
 }
 
