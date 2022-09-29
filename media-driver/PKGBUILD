@@ -1,7 +1,7 @@
 
 pkgname=media-driver
 _pkgname=intel-media
-pkgver=22.5.3
+pkgver=22.5.3.1
 pkgrel=1
 pkgdesc="Intel Media Driver is a VA-API user mode driver for GEN based graphics hardware."
 arch=('x86_64')
@@ -11,7 +11,7 @@ depends=('intel-gmmlib' 'libdrm' 'libpciaccess' 'libva' 'python3')
 makedepends=('cmake')
 options=('!libtool')
 source=("https://github.com/intel/media-driver/archive/${_pkgname}-${pkgver}.tar.gz")
-sha1sums=('90bedaa5fefd9a6fe07b3078abd075426b7cfa4c')
+sha1sums=('5215e25a432a1ca65c1f786f495d4ffc7f2329f3')
 
 build() {
   cmake -B build -S ${pkgname}-${_pkgname}-${pkgver} \
