@@ -20,8 +20,8 @@ source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`)
 
 build() {
-    cd ${__pkgfqn} 
-    mkdir build   
+    cd ${__pkgfqn}
+    mkdir build
     cd build 
 
     /usr/lib/qt5/bin/qmake ../qtspeech.pro
