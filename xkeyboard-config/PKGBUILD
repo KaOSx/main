@@ -1,7 +1,7 @@
 
 pkgname=xkeyboard-config
-pkgver=2.36
-pkgrel=2
+pkgver=2.37
+pkgrel=1
 pkgdesc="X keyboard configuration files"
 arch=('x86_64')
 license=('custom')
@@ -10,13 +10,13 @@ depends=('xorg-xkb-utils')
 makedepends=('intltool' 'python3' 'meson' 'ninja')
 source=("https://www.x.org/releases/individual/data/${pkgname}/${pkgname}-${pkgver}.tar.xz"
         "https://gitlab.freedesktop.org/xkeyboard-config/xkeyboard-config/commit/8ac41c50ab0aa7cd3a7e94313074115de2a172d2.diff")
-sha256sums=('1f1bb1292a161d520a3485d378609277d108cd07cde0327c16811ff54c3e1595'
+sha256sums=('eb1383a5ac4b6210d7c7302b9d6fab052abdf51c5d2c9b55f1f779997ba68c6c'
             '51282679b9f13a75048709ac1a5c4540ed7282e3c78d432755a77ea9596bca9c')
 
 prepare() {
   cd ${pkgname}-${pkgver}
   # https://github.com/calamares/calamares/issues/1988
-  patch -p1 -i ${srcdir}/8ac41c50ab0aa7cd3a7e94313074115de2a172d2.diff
+  #patch -p1 -i ${srcdir}/8ac41c50ab0aa7cd3a7e94313074115de2a172d2.diff
 }
 
 build() {
