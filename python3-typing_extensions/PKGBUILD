@@ -1,7 +1,7 @@
 
 pkgname=python3-typing_extensions
 _pkgname=typing_extensions
-pkgver=4.3.0
+pkgver=4.4.0
 _commit=1baf0a58b2b4c5327871d06801187cba47aa6975
 pkgrel=1
 pkgdesc="Backported and experimental type hints for Python."
@@ -11,7 +11,7 @@ license=('custom')
 depends=('python3')
 makedepends=('python3-build' 'python3-flit' 'python3-wheel')
 source=("https://files.pythonhosted.org/packages/source/t/typing-extensions/${_pkgname}-${pkgver}.tar.gz")
-sha256sums=('e6d2677a32f47fc7eb2795db1dd15c1f34eff616bcaf2cfb5e997f854fa1c4a6')
+sha256sums=('1511434bb92bf8dd198c12b1cc812e800d4181cfcb867674e0f8279cc93087aa')
 
 build() {
   cd ${_pkgname}-${pkgver}
@@ -25,5 +25,3 @@ package() {
   PIP_CONFIG_FILE=/dev/null pip3 install --isolated --root=${pkgdir} --ignore-installed --no-deps dist/*.whl
   install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
-
- 
