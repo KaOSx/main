@@ -382,6 +382,19 @@ index 64123c82c4..aede212126 100644
              // wrapped around, avoid endless loops
              if (item == contentItem) {
                  qCDebug(DBG_FOCUS) << "QQuickItemPrivate::nextPrevItemInTabFocusChain: looped, return contentItem";
+diff --git a/src/quick/items/qquickitemview.cpp b/src/quick/items/qquickitemview.cpp
+index 010a0152e1..f8ad168a17 100644
+--- a/src/quick/items/qquickitemview.cpp
++++ b/src/quick/items/qquickitemview.cpp
+@@ -1785,7 +1785,7 @@ void QQuickItemViewPrivate::refill(qreal from, qreal to)
+ 
+     do {
+         bufferPause.stop();
+-        if (currentChanges.hasPendingChanges() || bufferedChanges.hasPendingChanges()) {
++        if (currentChanges.hasPendingChanges() || bufferedChanges.hasPendingChanges() || currentChanges.active) {
+             currentChanges.reset();
+             bufferedChanges.reset();
+             releaseVisibleItems(reusableFlag);
 diff --git a/src/quick/items/qquickloader.cpp b/src/quick/items/qquickloader.cpp
 index cb4f79a3c2..7fbe66fdda 100644
 --- a/src/quick/items/qquickloader.cpp
