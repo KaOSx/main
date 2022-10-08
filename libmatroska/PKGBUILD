@@ -1,6 +1,6 @@
 
 pkgname=libmatroska
-pkgver=1.7.0
+pkgver=1.7.1
 pkgrel=1
 pkgdesc="C++ libary to parse Matroska files"
 arch=('x86_64')
@@ -10,7 +10,7 @@ depends=('libebml')
 makedepends=('cmake')
 options=('!staticlibs')
 source=("https://dl.matroska.org/downloads/libmatroska/${pkgname}-${pkgver}.tar.xz")
-sha512sums=('e635958113ab57fb6c7e808d4ad51f87c38ec6ff348b202df1789b34d25ca22bc00fbdf1ec4f386bc803ef3da9f57057bae78ecf22deabdf1399755b1c6fdd3e')
+sha512sums=('a6f38d388f6c9bfe399b9263ba4ef0965cfb4e27b39ac04453d5c9a9db8eac719a04c87b58d88b612902297e17aa7437382a66332f3f5b3d41744a13351751fd')
 
 build() {
   cmake -B build -S ${pkgname}-${pkgver} \
