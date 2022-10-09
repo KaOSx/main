@@ -1,0 +1,30 @@
+
+pkgname=compiler-rt
+pkgver=15.0.2
+pkgrel=1
+pkgdesc="Compiler runtime libraries for use in Clang and LLVM projects"
+arch=('x86_64')
+url="https://llvm.org/"
+license=('custom:University of Illinois/NCSA Open Source License')
+depends=("llvm=${pkgver}-${pkgrel}" 'gcc')
+makedepends=('cmake' 'python3')
+source=("https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver}/${pkgname}-${pkgver}.src.tar.xz"
+        "https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver}/cmake-${pkgver}.src.tar.xz")
+md5sums=('1f990209b6c102e41a45bec854b76fa2'
+         'f4b68e2c84d3a14d289ff0379ff30ed3')
+
+build() {
+    cmake -B build -S ${pkgname}-${pkgver}.src \
+        -DCMAKE_BUILD_TYPE:STRING=Release \
+        -DCMAKE_INSTALL_PREFIX:PATH=/usr \
+        -DCMAKE_MODULE_PATH="${srcdir}/cmake-${pkgver}.src/Modules" \
+        -DCOMPILER_RT_INSTALL_PATH=/usr/lib/clang/${pkgver}
+    cmake --build build
+}
+
+package() {
+
+    DESTDIR=${pkgdir} cmake --install build
+
+    install -D -m644 ${pkgname}-${pkgver}.src/LICENSE.TXT ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}

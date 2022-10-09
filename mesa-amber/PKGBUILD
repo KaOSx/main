@@ -2,7 +2,7 @@
 pkgname=mesa-amber
 _pkgname=mesa
 pkgver=21.3.9
-pkgrel=5
+pkgrel=6
 arch=('x86_64')
 pkgdesc="Classic Mesa 3-D graphics libraries and include files"
 url="https://www.mesa3d.org/"
@@ -10,7 +10,7 @@ license=('custom')
 depends=('libx11' 'libxt' 'gcc-libs' 'libvdpau' 'xorgproto' 'wayland' 'elfutils'
          'libdrm' 'libxxf86vm' 'libxdamage' 'expat' 'libxshmfence' 'libxvmc' 
          'libxrandr' 'libglvnd' 'zstd' 'mesa') 
-makedepends=('libva' 'llvm' 'libxml2' 'imake' 'clang' 'python3-mako'
+makedepends=('libva' 'libxml2' 'imake' 'clang' 'python3-mako'
              'wayland-protocols' 'meson' 'ninja' 'valgrind' 'vulkan-loader')
 #conflicts=('mesa')
 #provides=('mesa')
@@ -42,7 +42,7 @@ build() {
     -Dglvnd-vendor-name=amber \
     -Ddri3=enabled \
     -Ddri-drivers=i915,i965,r100,r200,nouveau \
-    -Dgallium-drivers=nouveau,radeonsi,svga,swrast \
+    -Dgallium-drivers=nouveau,svga,swrast \
     -Dgallium-extra-hud=true \
     -Dgallium-vdpau=disabled \
     -Dgallium-xvmc=disabled \
@@ -60,7 +60,7 @@ build() {
     -Dglx=dri \
     -Degl=enabled \
     -Dglvnd=true \
-    -Dllvm=enabled \
+    -Dllvm=disabled \
     -Dvalgrind=disabled \
     -Dlibunwind=disabled \
     -Dlmsensors=disabled \
@@ -82,8 +82,8 @@ package() {
   rm -r ${pkgdir}/usr/lib/libglapi.so*
   rm -r ${pkgdir}/usr/lib/dri/nouveau_dri.so
   rm -r ${pkgdir}/usr/lib/dri/nouveau_drv_video.so
-  rm -r ${pkgdir}/usr/lib/dri/radeonsi_dri.so
-  rm -r ${pkgdir}/usr/lib/dri/radeonsi_drv_video.so
+  #rm -r ${pkgdir}/usr/lib/dri/radeonsi_dri.so
+  #rm -r ${pkgdir}/usr/lib/dri/radeonsi_drv_video.so
   rm -r ${pkgdir}/usr/lib/dri/swrast_dri.so
   rm -r ${pkgdir}/usr/lib/dri/kms_swrast_dri.so
   rm -r ${pkgdir}/usr/lib/dri/vmwgfx_dri.so
