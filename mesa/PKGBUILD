@@ -1,8 +1,8 @@
 
 pkgname=mesa
-pkgver=22.1.7
-_pkgver=22.1.7
-pkgrel=2
+pkgver=22.2.0
+_pkgver=22.2.0
+pkgrel=1
 arch=('x86_64')
 pkgdesc="Mesa 3-D graphics libraries and include files"
 depends=('libx11' 'libxt' 'gcc-libs' 'libvdpau' 'xorgproto' 'wayland' 'elfutils'
@@ -15,7 +15,7 @@ license=('custom')
 source=("https://mesa.freedesktop.org/archive/${pkgname}-${pkgver}.tar.xz"
         "https://gitlab.freedesktop.org/pzanoni/mesa/-/commit/168f177b8a910004de768b1a89a0adea383fa6bc.diff"
         'LICENSE')
-sha256sums=('da838eb2cf11d0e08d0e9944f6bd4d96987fdc59ea2856f8c70a31a82b355d89'
+sha256sums=('b1f9c8fd08f2cae3adf83355bef4d2398e8025f44947332880f2d0066bdafa8c'
             '348275bfda308f2e8cc79e2a72ecc8362672076f795779ff750818f11c69e811'
             '7fdc119cf53c8ca65396ea73f6d10af641ba41ea1dd2bd44a824726e01c8b3f2')
 
@@ -46,7 +46,7 @@ build() {
     -Dgallium-xa=enabled \
     -Dgallium-nine=true \
     -Dgallium-opencl=disabled \
-    -Dvulkan-drivers=amd,intel,swrast \
+    -Dvulkan-drivers=intel,swrast \
     -Dvulkan-layers=device-select,intel-nullhw \
     -Dshared-glapi=enabled \
     -Dgles1=enabled \
@@ -61,7 +61,8 @@ build() {
     -Dlibunwind=enabled \
     -Dlmsensors=enabled \
     -Dbuild-tests=false \
-    -Dosmesa=true
+    -Dosmesa=true \
+    -Dvideo-codecs=vc1dec,h264dec,h264enc,h265dec,h265enc
     ninja
 }
 
