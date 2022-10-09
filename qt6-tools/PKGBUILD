@@ -13,13 +13,22 @@ url='https://www.qt.io/'
 license=('GPL3' 'LGPL' 'FDL' 'custom')
 depends=('qt6-declarative' 'desktop-file-utils' 'hicolor-icon-theme' 'xdg-utils')
          #'qt6-translations' 'qt5-location')
-makedepends=('cmake' 'ninja' 'clang-tools-extra' 'vulkan-headers')
+makedepends=('cmake' 'ninja' 'clang' 'vulkan-headers')
 #optdepends=('qt6-doc: offline help documentation')
 groups=('qt6')
 options=('!libtool')
 _pkgfqn="qttools-everywhere-src-${subver}"
-source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
-md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`)
+source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz"
+        "https://github.com/qt/qttools/commit/01cae372619369d1a5a04f4d0f87817011029b78.diff")
+md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
+         '91b8b9403c9331cd717edb7ffe31f44a')
+
+prepare() {
+  cd ${_pkgfqn}
+
+  # LLVM 15 needed fix
+  patch -p1 -i ${srcdir}/01cae372619369d1a5a04f4d0f87817011029b78.diff
+}
 
 build() {
     cmake -B build -S ${_pkgfqn} -G Ninja \
