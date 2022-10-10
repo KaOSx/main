@@ -1,33 +1,37 @@
 
 pkgname=clang
 pkgver=15.0.2
-pkgrel=1
+pkgrel=2
 pkgdesc="C/C++/Objective-C compiler, which aims to deliver amazingly fast compiles, extremely useful error and warning messages and to provide a platform for building great source level tools."
 arch=('x86_64')
 url="https://llvm.org/"
 license=('custom:University of Illinois/NCSA Open Source License')
-depends=("llvm=${pkgver}-${pkgrel}" 'gcc' 'compiler-rt')
+depends=("llvm=${pkgver}" 'gcc' 'compiler-rt')
 makedepends=('python3' 'cmake')
 provides=('clang-analyzer' 'clang-tools-extra')
 replaces=('clang-analyzer' 'clang-tools-extra')
 conflicts=('clang-analyzer' 'clang-tools-extra')
 source=("https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver}/clang-${pkgver}.src.tar.xz"
         "https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver}/clang-tools-extra-${pkgver}.src.tar.xz"
-        "https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver}/cmake-${pkgver}.src.tar.xz")
+        "https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver}/cmake-${pkgver}.src.tar.xz"
+        "https://src.fedoraproject.org/rpms/clang14/raw/rawhide/f/0003-PATCH-clang-Don-t-install-static-libraries.patch")
 md5sums=('f2679a17d6be9d1a2298f546c0b4e844'
          '45741472f0b8a0f4261f4599a1387acd'
-         'f4b68e2c84d3a14d289ff0379ff30ed3')
+         'f4b68e2c84d3a14d289ff0379ff30ed3'
+         '2ba9b14ee03279853f1803071e7bb101')
 
 prepare() {
     cd ${pkgname}-${pkgver}.src
 
     mv ${srcdir}/clang-tools-extra-${pkgver}.src tools/extra
+    patch -p1 -i ${srcdir}/0003-PATCH-clang-Don-t-install-static-libraries.patch
 }
 
 build() {
     cmake -B build -S ${pkgname}-${pkgver}.src \
         -DCMAKE_BUILD_TYPE:STRING=Release \
         -DCMAKE_INSTALL_PREFIX:PATH=/usr \
+        -DCMAKE_INSTALL_LIBEXECDIR=lib/clang \
         -DCMAKE_MODULE_PATH="${srcdir}/cmake-${pkgver}.src/Modules" \
         -DCLANG_BUILT_STANDALONE=ON \
         -DCLANG_LINK_CLANG_DYLIB=ON \
@@ -40,13 +44,8 @@ package() {
 
     DESTDIR=${pkgdir} cmake --install build
 
-    chmod -x ${pkgdir}/usr/lib/*.a
-
-    # remove files from /usr/libexec
-    mv ${pkgdir}/usr/libexec/* ${pkgdir}/usr/lib/clang/
-    rmdir ${pkgdir}/usr/libexec
-    sed -i 's|libexec|lib/clang|' ${pkgdir}/usr/bin/scan-build
-    sed -i 's|libexec|lib/clang|' ${pkgdir}/usr/lib/libscanbuild/analyze.py
+    #sed -i 's|libexec|lib/clang|' ${pkgdir}/usr/bin/scan-build
+    #sed -i 's|libexec|lib/clang|' ${pkgdir}/usr/lib/libscanbuild/analyze.py
 
     # Python scripts
     #python3 -m compileall ${pkgdir}/usr/lib/clang-analyzer
