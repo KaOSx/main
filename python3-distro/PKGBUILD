@@ -7,18 +7,20 @@ arch=('x86_64')
 license=('Apache-2.0')
 url="https://github.com/nir0s/distro"
 depends=('python3-setuptools')
+makedepends=('python3-build' 'python3-pip' 'python3-wheel')
 source=("https://files.pythonhosted.org/packages/source/d/distro/distro-${pkgver}.tar.gz")
 sha256sums=('02e111d1dc6a50abb8eed6bf31c3e48ed8b0830d1ea2a1b78c61765c2513fdd8')
 
 build() {
   cd distro-${pkgver}
 
-  python3 setup.py build
+  python3 -m build -nw
 }
  
 package() {
   cd distro-${pkgver}
 
-  python3 setup.py install --prefix=/usr --root=${pkgdir} --optimize=1 --skip-build
+  PIP_CONFIG_FILE=/dev/null pip3 install --isolated --root=${pkgdir} --ignore-installed --no-deps dist/*.whl
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
 
