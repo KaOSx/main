@@ -2,13 +2,13 @@
 pkgname=mesa
 pkgver=22.2.0
 _pkgver=22.2.0
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 pkgdesc="Mesa 3-D graphics libraries and include files"
 depends=('libx11' 'libxt' 'gcc-libs' 'libvdpau' 'xorgproto' 'wayland' 'elfutils'
          'libdrm' 'libxxf86vm' 'libxdamage' 'expat' 'libxshmfence' 'llvm'
          'lm_sensors' 'libunwind' 'libxvmc' 'libxrandr' 'libglvnd' 'zstd') 
-makedepends=('libva' 'llvm' 'libxml2' 'imake' 'clang' 'python3-mako'
+makedepends=('libva' 'llvm' 'libxml2' 'imake' 'clang' 'python3-mako' 'glslang'
              'wayland-protocols' 'meson' 'ninja' 'valgrind' 'vulkan-loader')
 url="https://www.mesa3d.org/"
 license=('custom')
@@ -46,8 +46,8 @@ build() {
     -Dgallium-xa=enabled \
     -Dgallium-nine=true \
     -Dgallium-opencl=disabled \
-    -Dvulkan-drivers=intel,swrast \
-    -Dvulkan-layers=device-select,intel-nullhw \
+    -Dvulkan-drivers=amd,intel,swrast \
+    -Dvulkan-layers=device-select,intel-nullhw,overlay \
     -Dshared-glapi=enabled \
     -Dgles1=enabled \
     -Dgles2=enabled \
