@@ -1,6 +1,6 @@
 
 pkgname=gst-plugins-base
-pkgver=1.20.3
+pkgver=1.20.4
 pkgrel=1
 pkgdesc="GStreamer Multimedia Framework Base Plugins"
 arch=('x86_64')
@@ -12,7 +12,7 @@ makedepends=('pkgconfig' 'gobject-introspection' 'qt5-x11extras' 'qt5-tools'
              'python3' 'meson' 'ninja' 'graphene')
 options=('!libtool' '!emptydirs')
 source=("https://gstreamer.freedesktop.org/src/gst-plugins-base/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('7e30b3dd81a70380ff7554f998471d6996ff76bbe6fc5447096f851e24473c9f')
+sha256sums=('8d181b7abe4caf23ee9f9ec5b4d3e232640452464e39495bfffb6d776fc97225')
 
 build() {
   mkdir -p build
@@ -30,8 +30,8 @@ build() {
 
 check() {
   cd build
-  # 14 fail, elements_glimagesink             FAIL
-  # 83/121 elements_textoverlay
+  # 117/121 fail, elements_glimagesink             FAIL
+  # 91/121 elements_textoverlay
   meson test
 }
 
