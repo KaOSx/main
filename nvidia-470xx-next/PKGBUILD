@@ -4,7 +4,7 @@ _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=nvidia-470xx-next
 pkgver=470.141.03
-pkgrel=14
+pkgrel=15
 pkgdesc="NVIDIA drivers for linux."
 arch=('x86_64')
 url="http://www.nvidia.com/"
@@ -21,14 +21,14 @@ _pkg="NVIDIA-Linux-x86_64-${pkgver}"
 source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
         'linux-6.0.patch')
 md5sums=('ff6d869676ddfd7852aa7de77d7a0eb9'
-         'daee8e04b7cec055a5c7e76742c30a8a')
+         '51d80b7c8b3a93e2d4bc38bf131095e9')
 
 build() {
     cd ${srcdir}
     sh ${_pkg}.run --extract-only
 
     cd ${_pkg}
-    patch -p0 -i ${srcdir}/linux-6.0.patch
+    patch -p1 -i ${srcdir}/linux-6.0.patch
 
     cd ${srcdir}/${_pkg}/kernel
     make SYSSRC=/lib/modules/${_kver}/build module

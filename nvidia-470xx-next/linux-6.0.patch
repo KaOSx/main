@@ -11,8 +11,8 @@ Subject: [PATCH] Tentative fix for NVIDIA 470.141.03 driver for Linux 6.0-rc1
 
 diff --git a/nvidia-drm/nvidia-drm-helper.c b/nvidia-drm/nvidia-drm-helper.c
 index 3831180..fa03d51 100644
---- a/nvidia-drm/nvidia-drm-helper.c
-+++ b/nvidia-drm/nvidia-drm-helper.c
+--- a/kernel/nvidia-drm/nvidia-drm-helper.c
++++ b/kernel/nvidia-drm/nvidia-drm-helper.c
 @@ -41,6 +41,11 @@
  #include <drm/drm_atomic_uapi.h>
  #endif
@@ -27,8 +27,8 @@ index 3831180..fa03d51 100644
  #if defined(NV_DRM_FRAMEBUFFER_GET_PRESENT)
 diff --git a/nvidia/nv-acpi.c b/nvidia/nv-acpi.c
 index 2b7b988..76c36fa 100644
---- a/nvidia/nv-acpi.c
-+++ b/nvidia/nv-acpi.c
+--- a/kernel/nvidia/nv-acpi.c
++++ b/kernel/nvidia/nv-acpi.c
 @@ -16,7 +16,10 @@
  
  #include <linux/acpi.h>
@@ -43,8 +43,8 @@ index 2b7b988..76c36fa 100644
  static NV_STATUS   nv_acpi_extract_package (const union acpi_object *, void *, NvU32, NvU32 *);
 diff --git a/nvidia/nv.c b/nvidia/nv.c
 index ab7d17c..e313e2e 100644
---- a/nvidia/nv.c
-+++ b/nvidia/nv.c
+--- a/kernel/nvidia/nv.c
++++ b/kernel/nvidia/nv.c
 @@ -5423,7 +5423,8 @@ NvBool NV_API_CALL nv_s2idle_pm_configured(void)
  {
      NvU8 buf[8];
