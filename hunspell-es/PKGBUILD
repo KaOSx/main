@@ -1,6 +1,6 @@
 
 pkgname=hunspell-es
-pkgver=2.6
+pkgver=2.7
 pkgrel=1
 pkgdesc="Spanish hunspell dictionaries"
 arch=('x86_64')
@@ -32,36 +32,36 @@ source=("https://github.com/sbosio/rla-es/releases/download/v${pkgver}/es.oxt"
         "https://github.com/sbosio/rla-es/releases/download/v${pkgver}/es_SV.oxt"
         "https://github.com/sbosio/rla-es/releases/download/v${pkgver}/es_UY.oxt"
         "https://github.com/sbosio/rla-es/releases/download/v${pkgver}/es_VE.oxt")
-md5sums=('59a6bd0ad94bea5b0fa53892529e5c16'
-         '00ff4bb8c08911410d89145d5bb4f43b'
-         'a5d7c3c7a17e31ce7161fdb74d6d2250'
-         '911c963ba9cf76a4179ff75be0790f8d'
-         '7765b8a2c0db9c6b2d110d1d60887caa'
-         '1831c15f8916e36f737df5cbdb094d8b'
-         'e7d993a2ae0233d524c4a1155b9d63f5'
-         'cc3561f2f4acdaf4fc8c1d4c197b313f'
-         'bf00d03d2081389dc62835b2c4fbb4b1'
-         '6d14a8bec7bc02145eb4ce2767115aa1'
-         '9806eb61d4c3c0e090042137471f499b'
-         '434891cb19bd717ea03eef58bf93097c'
-         '70b7752aea073c9458e80d8a0cbcc282'
-         'ffe0d11d32d261b4c59a51070eb702d4'
-         'cfbce489d8a5bc93d58697f4acb59523'
-         '5bbecbb1765458ad9f48fdb16213eb9a'
-         '907cbe79f1a70c9c4cfe61ddaa3cf6ff'
-         '4aa5082eb8f78e451a169bea3f8027f3'
-         '5614da62cf99a8ea0812c5c46c49d378'
-         'a3a1d783100fdd04dd4f9912f07eba1f'
-         'd60daf3b1990a4053c7926106d3fd992')
+md5sums=('2cd21e9b04872b996ccd826b514863a6'
+         '21e3584ff340c24a39e7c7cc4531535b'
+         '6f4228941cdc981f611608f127fe9e3a'
+         '037aefc8281e6c1309a312fe7c3479cf'
+         '6b79ba08cce52696a3c667b52076e29d'
+         '1c48d06a8e84e9227356531c0a796ba8'
+         'abc773d8818539fd205189fcfdd8532c'
+         '5adf9fb1960619261af8e7af7b7a0403'
+         '7e42fab86549c161303b9bb61508d8d2'
+         'd34140e4f729ebb43d31756efc95ba1e'
+         '03ecc3a82c3aa68fe6d1c561e30200aa'
+         'dbb5e7d7f64668b275c3496935e7b07e'
+         'fd53e52738b8a356d91f366388fe177c'
+         '4bb0d4dc7d195c749af7baeaae904860'
+         'b2e50db4a7e1ba14de63bb6cd6ae82cb'
+         '72ffe57dd707e8a9fcc557970b4c4448'
+         'fa1a6f911f8cd027f82205bb2850778b'
+         'a492b32042eafdda98f6d1ddcda11d55'
+         '120d42bb013c190fe3a491a93f22306f'
+         'ce124b724591214dafada82b7c8f1c11'
+         '70768eb0172ca6636d7031e526de19f8')
 
 package() {
 
-  export LANG=en_US.UTF-8
-  
+  #export LANG=en_US.UTF-8
+
   for file in *.oxt; do
     LANG=en_US.utf8 bsdtar -xf $file
   done
-  
+
   install -dm755 ${pkgdir}/usr/share/hunspell
   cp -p es_*.dic es_*.aff $pkgdir/usr/share/hunspell
 
@@ -71,7 +71,7 @@ package() {
       ln -sv /usr/share/hunspell/$(basename $file) .
     done
   popd
-  
+
   install -dm755 ${pkgdir}/usr/share/doc/$pkgname
   cp -p README.txt $pkgdir/usr/share/doc/$pkgname
 }

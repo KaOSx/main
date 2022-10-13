@@ -1,17 +1,17 @@
 
 pkgname=perl-html-parser
 _pkgname=HTML-Parser
-pkgver=3.78
+pkgver=3.79
 pkgrel=1
 pkgdesc="Perl HTML parser class"
 arch=('x86_64')
 license=('PerlArtistic')
 url="https://metacpan.org/release/HTML-Parser"
 depends=('perl-html-tagset' 'perl')
-checkdepends=('perl-test-pod')
+checkdepends=('perl-test-pod' 'perl-json' 'perl-uri')
 options=(!emptydirs)
 source=("https://cpan.metacpan.org/authors/id/O/OA/OALDERS/${_pkgname}-${pkgver}.tar.gz")
-md5sums=('6d7c1ca50623cd2b398d1898e48f1ea6')
+md5sums=('e39bbc692fa8955f87eea92f38f973a0')
 
 build() {
   cd ${_pkgname}-${pkgver}
