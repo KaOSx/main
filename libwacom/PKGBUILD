@@ -1,6 +1,6 @@
  
 pkgname=libwacom
-pkgver=2.4.0
+pkgver=2.5.0
 pkgrel=1
 pkgdesc="Library that provides applications with a way to get information about any tablets that are currently connected."
 arch=('x86_64')
@@ -10,7 +10,7 @@ depends=('glib2' 'libgudev')
 makedepends=('python3' 'meson' 'ninja')
 source=("https://github.com/linuxwacom/libwacom/releases/download/${pkgname}-${pkgver}/${pkgname}-${pkgver}.tar.xz"
         "https://github.com/linuxwacom/libwacom/commit/007c25052bf20adc1f5311c3e5668f6f343ac18b.diff")
-sha256sums=('d0d022761e3f9ab23e329583b7d2bd470b0450dfb077caeb22c5a0d66c2bd414'
+sha256sums=('40b69a4c38bbcbc80b1231bc115551107ebbc0ba14d2ad1c3e54355dcd876816'
             'b1588dac7bff6f6988434041c0bf7bded7c09f1bfcd47db2922dca4555c5a4a1')
 
 build() {
@@ -28,6 +28,6 @@ package() {
   cd build
 
   DESTDIR=${pkgdir} ninja install
+  install -D -m644 ../${pkgname}-${pkgver}/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
 
-#  install -D -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
