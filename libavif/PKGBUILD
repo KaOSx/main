@@ -1,6 +1,6 @@
 
 pkgname=libavif
-pkgver=0.10.1
+pkgver=0.11.0
 pkgrel=1
 pkgdesc="Library that aims to be a friendly, portable C implementation of the AV1 Image File Format"
 arch=('x86_64')
@@ -9,7 +9,7 @@ license=('BSD')
 depends=('dav1d' 'libjpeg' 'libpng' 'zlib')
 makedepends=('cmake' 'gdk-pixbuf2' 'nasm' 'pkg-config')
 source=("https://github.com/AOMediaCodec/libavif/archive/refs/tags/v${pkgver}.tar.gz")
-sha256sums=('66e82854ceb84a3e542bc140a343bc90e56c68f3ecb4fff63e636c136ed9a05e')
+sha256sums=('0c34937f5a1f2e105734dba2fc6dc4d9b12636e17964df705d3d96c5aa52667c')
 
 build() {
   cmake -B build -S ${pkgname}-${pkgver} \
