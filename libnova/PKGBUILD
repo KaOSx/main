@@ -1,9 +1,9 @@
 
 pkgname=libnova
 pkgver=0.16.0
-pkgrel=1
+pkgrel=2
 pkgdesc="General purpose, double precision, celestial mechanics, astrometry and astrodynamics library."
-url="http://libnova.sourceforge.net/"
+url="https://libnova.sourceforge.net/"
 license=('GPL2')
 arch=('x86_64')
 depends=('glibc')
@@ -15,7 +15,7 @@ md5sums=('181e41156e4bcf0f23ff723d77b7b881')
 
 build() {
     cd ${pkgname}-${pkgver}
-    
+
     autoreconf -i
     ./configure --prefix=/usr
     make
@@ -23,7 +23,7 @@ build() {
 
 package() {
     cd ${pkgname}-${pkgver}
-    
+
     make DESTDIR=${pkgdir}/ install
 }
 

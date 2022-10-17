@@ -1,26 +1,29 @@
 
 pkgname=libwpd
 pkgver=0.10.3
-pkgrel=2
+pkgrel=3
 pkgdesc="Library for importing WordPerfect (tm) documents"
 arch=('x86_64')
-url="http://libwpd.sourceforge.net/"
+url="https://libwpd.sourceforge.net/"
 license=('LGPL')
 depends=('gcc-libs' 'librevenge')
 makedepends=('libgsf' 'boost')
 options=('!libtool' '!emptydirs')
-source=("https://sourceforge.net/projects/libwpd/files/libwpd/${pkgname}-${pkgver}/${pkgname}-${pkgver}.tar.xz")
-md5sums=('d5e44712c4674d499afb8e89d830fcad')
+source=("https://sourceforge.net/projects/libwpd/files/libwpd/${pkgname}-${pkgver}/${pkgname}-${pkgver}.tar.xz"
+        "https://gitweb.gentoo.org/repo/gentoo.git/plain/app-text/libwpd/files/libwpd-0.10.3-gcc-4.8.patch")
+md5sums=('d5e44712c4674d499afb8e89d830fcad'
+         '4d8d0125fda20cbe34ada0249086631b')
 
 build() {
   cd ${pkgname}-${pkgver}
-  
+  patch -p1 -i ${srcdir}/libwpd-0.10.3-gcc-4.8.patch
+
   ./configure --prefix=/usr --disable-static
   make
 }
 
 package() {
   cd ${pkgname}-${pkgver}
-  
+
   make DESTDIR=${pkgdir} install
 }

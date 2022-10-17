@@ -1,10 +1,10 @@
 
 pkgname=liblo
 pkgver=0.31
-pkgrel=1
+pkgrel=2
 pkgdesc="Lightweight OSC implementation: an implementation of the Open Sound Control protocol for POSIX systems"
 arch=('x86_64')
-url="http://liblo.sourceforge.net/"
+url="https://liblo.sourceforge.net/"
 license=('GPL')
 depends=('glibc')
 options=('!libtool')
@@ -13,13 +13,13 @@ md5sums=('14378c1e74c58e777fbb4fcf33ac5315')
 
 build() {
   cd ${pkgname}-${pkgver}
-  
+
   ./configure --prefix=/usr
   make
 }
 
 package() {
   cd ${pkgname}-${pkgver}
-  
+
   make DESTDIR=$pkgdir install
 }
