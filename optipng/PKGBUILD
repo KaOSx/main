@@ -1,10 +1,10 @@
  
 pkgname=optipng
 pkgver=0.7.7
-pkgrel=1
+pkgrel=2
 pkgdesc="PNG optimizer that recompresses image files to a smaller size, without losing any information."
 arch=('x86_64')
-url="http://optipng.sourceforge.net"
+url="https://optipng.sourceforge.net"
 license=('ZLIB')
 depends=('libpng' 'zlib')
 source=("https://sourceforge.net/projects/optipng/files/OptiPNG/${pkgname}-${pkgver}/${pkgname}-${pkgver}.tar.gz")
@@ -12,7 +12,7 @@ md5sums=('211101965baf42fd24a2aa990b7e842e')
 
 build() {
   cd ${pkgname}-${pkgver}
-  
+
   ./configure --prefix=/usr \
     --mandir=/usr/share/man \
     --with-system-libs
@@ -21,6 +21,6 @@ build() {
 
 package() {
   cd ${pkgname}-${pkgver}
-  
+
   make DESTDIR=${pkgdir} install
 }

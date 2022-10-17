@@ -2,10 +2,10 @@
 pkgname=zip
 pkgver=3.0
 _pkgver=30
-pkgrel=6
+pkgrel=7
 pkgdesc="Creates PKZIP-compatible .zip files"
 arch=('x86_64')
-url="http://www.info-zip.org/pub/infozip/Zip.html"
+url="https://infozip.sourceforge.net/Zip.html"
 license=('BSD')
 depends=('glibc' 'bzip2')
 makedepends=('unzip')
@@ -14,15 +14,15 @@ source=("https://downloads.sourceforge.net/infozip/${pkgname}${_pkgver}.tar.gz")
 md5sums=('7b74551e63f8ee6aab6fbc86676c0d37')
 
 build() {
-   cd ${pkgname}${_pkgver}
-   make -f unix/Makefile LOCAL_ZIP="$CFLAGS" prefix=/usr generic_gcc 
+  cd ${pkgname}${_pkgver}
+  make -f unix/Makefile LOCAL_ZIP="$CFLAGS" prefix=/usr generic_gcc 
 }
 
 package() {
-   cd ${pkgname}${_pkgver}
-   
-   make -f unix/Makefile INSTALL=/bin/install prefix=${pkgdir}/usr \
-     MANDIR=${pkgdir}/usr/share/man/man1 install
-   install -D -m644 LICENSE ${pkgdir}/usr/share/licenses/$pkgname/LICENSE
+  cd ${pkgname}${_pkgver}
+
+  make -f unix/Makefile INSTALL=/bin/install prefix=${pkgdir}/usr \
+    MANDIR=${pkgdir}/usr/share/man/man1 install
+  install -D -m644 LICENSE ${pkgdir}/usr/share/licenses/$pkgname/LICENSE
 }
 
