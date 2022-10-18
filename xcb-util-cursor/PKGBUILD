@@ -1,14 +1,14 @@
 
 pkgname=xcb-util-cursor
-pkgver=0.1.3
-pkgrel=3
+pkgver=0.1.4
+pkgrel=1
 pkgdesc='XCB cursor port of libxcursor'
 arch=('x86_64')
 url='https://gitlab.freedesktop.org/xorg/lib/libxcb-cursor'
 license=('custom:MIT')
 depends=('libxcb' 'xcb-util-image' 'xcb-util-renderutil')
-source=("https://xcb.freedesktop.org/dist/xcb-util-cursor-${pkgver}.tar.bz2")
-md5sums=('6ac3b17cba51aaaa36ba035a53527214')
+source=("https://xcb.freedesktop.org/dist/xcb-util-cursor-${pkgver}.tar.xz")
+sha256sums=('28dcfe90bcab7b3561abe0dd58eb6832aa9cc77cfe42fcdfa4ebe20d605231fb')
 
 build() {
   cd ${pkgname}-${pkgver}
