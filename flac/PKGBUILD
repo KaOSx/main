@@ -1,6 +1,6 @@
 
 pkgname=flac
-pkgver=1.4.1
+pkgver=1.4.2
 pkgrel=1
 pkgdesc="Free Lossless Audio Codec"
 arch=('x86_64')
@@ -9,8 +9,9 @@ license=('custom:Xiph' 'LGPL' 'GPL' 'FDL')
 depends=('libogg')
 makedepends=('nasm') 
 options=('!libtool' '!makeflags')
-source=("https://ftp.osuosl.org/pub/xiph/releases/flac/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('91303c3e5dfde52c3e94e75976c0ab3ee14ced278ab8f60033a3a12db9209ae6')
+#source=("https://ftp.osuosl.org/pub/xiph/releases/flac/${pkgname}-${pkgver}.tar.xz")
+source=("https://github.com/xiph/flac/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
+sha256sums=('e322d58a1f48d23d9dd38f432672865f6f79e73a6f9cc5a5f57fcaa83eb5a8e4')
 
 build() {
   cd ${pkgname}-${pkgver}
