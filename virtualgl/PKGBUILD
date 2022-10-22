@@ -1,6 +1,6 @@
 
 pkgname=virtualgl
-pkgver=3.0.1
+pkgver=3.0.2
 pkgrel=1
 pkgdesc="Redirects 3D commands from an OpenGL application onto a server-side 3D graphics card."
 arch=('x86_64')
@@ -10,13 +10,13 @@ depends=('mesa' 'libxv' 'libjpeg-turbo' 'glu' 'opencl-headers' 'xcb-util-keysyms
 makedepends=('cmake' 'libxtst')
 source=("https://sourceforge.net/projects/virtualgl/files/${pkgver}/VirtualGL-${pkgver}.tar.gz"
         "https://github.com/VirtualGL/virtualgl/commit/46d09529563127fef0d42a4fb2681ae8d65a856b.diff")
-md5sums=('e7ec38c7e69a2d8db10941057b753aa6'
+md5sums=('7421b98a124c78980b4f1189a22e45b9'
          'ef47ea86ff47af3d12ac2d070d758444')
 
 prepare() {
   cd VirtualGL-${pkgver}
 
-  patch -p1 -i ${srcdir}/46d09529563127fef0d42a4fb2681ae8d65a856b.diff
+  #patch -p1 -i ${srcdir}/46d09529563127fef0d42a4fb2681ae8d65a856b.diff
 }
 
 build() {
