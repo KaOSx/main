@@ -53,7 +53,10 @@ package() {
 
   gzip ${pkgdir}/lib/modules/${_extramodules}/*.ko
   install -d -m755 ${pkgdir}/etc/modprobe.d
+  install -d -m755 ${pkgdir}/etc/dracut.conf.d
 
   echo "blacklist nouveau" >> ${pkgdir}/etc/modprobe.d/nvidia.conf
+  # adding nvidia drivers to the dracut initrd, might load nvidia too late otherwise
+  echo 'add_drivers+=" nvidia nvidia-drm nvidia-modeset nvidia-uvm "' >> ${pkgdir}/etc/dracut.conf.d/nvidia.conf
   sed -i -e "s/EXTRAMODULES='.*'/EXTRAMODULES='${_extramodules}'/" ${startdir}/nvidia-next.install
 }
