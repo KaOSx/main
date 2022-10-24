@@ -1,10 +1,10 @@
 
 pkgname=glew
 pkgver=2.2.0
-pkgrel=1
+pkgrel=2
 pkgdesc="A cross-platform C/C++ extension loading library"
 arch=('x86_64')
-url="http://glew.sourceforge.net"
+url="https://glew.sourceforge.net"
 license=('BSD' 'MIT' 'GPL')
 depends=('libxmu' 'libxi' 'mesa' 'glu')
 makedepends=('cmake')
@@ -12,21 +12,16 @@ source=("https://downloads.sourceforge.net/glew/${pkgname}-${pkgver}.tgz")
 md5sums=('3579164bccaef09e36c0af7f4fd5c7c7')
 
 build() {
-  mkdir -p build
-  cd build
-  
-  cmake ../${pkgname}-${pkgver}/build/cmake \
+  cmake -B build -S ${pkgname}-${pkgver}/build/cmake \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_BUILD_TYPE=Release \
     -DBUILD_SHARED_LIBS=ON \
     -DCMAKE_INSTALL_LIBDIR=lib
-    
-  make
+  cmake --build build
 }
 
 package() {
-  cd build
-  make DESTDIR=${pkgdir} install
-  
-  install -D -m644 ../${pkgname}-${pkgver}/LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+
+  DESTDIR=${pkgdir} cmake --install build
+  install -D -m644 ${pkgname}-${pkgver}/LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
