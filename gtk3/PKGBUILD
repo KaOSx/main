@@ -3,12 +3,12 @@ pkgbase=gtk3
 pkgname=('gtk3' 'gtk-update-icon-cache')
 pkgver=3.24.34
 _pkgver=3.24
-pkgrel=3
+pkgrel=4
 arch=('x86_64')
 url="https://www.gtk.org/"
 makedepends=('gobject-introspection' 'cairo' 'libcups' 'libxcursor' 'libxinerama' 'libxrandr' 
              'libxi' 'libxcomposite' 'libxdamage' 'pango' 'shared-mime-info' 'gdk-pixbuf2' 
-             'colord' 'at-spi2-atk' 'libepoxy' 'libxkbcommon' 'librsvg' 'wayland' 
+             'colord' 'at-spi2-core' 'libepoxy' 'libxkbcommon' 'librsvg' 'wayland' 
              'wayland-protocols' 'iso-codes' 'sassc' 'meson' 'ninja')
 options=('!libtool' '!docs')
 license=('LGPL')
@@ -49,7 +49,7 @@ package_gtk3() {
   pkgdesc="The GTK+ Toolkit (v3)"
   depends=('cairo' 'libcups' 'libxcursor' 'libxinerama' 'libxrandr' 
           'libxi' 'libxcomposite' 'libxdamage' 'pango' 'shared-mime-info' 
-          'colord' 'at-spi2-atk' 'libepoxy' 'libxkbcommon' 'wayland' 
+          'colord' 'at-spi2-core' 'libepoxy' 'libxkbcommon' 'wayland' 
           'wayland-protocols' 'iso-codes' 'gtk-update-icon-cache')
   install="gtk3.install"
 
@@ -68,7 +68,7 @@ package_gtk-update-icon-cache() {
     cd build/gtk
 
     install -Dm755 gtk-update-icon-cache ${pkgdir}/usr/bin/gtk-update-icon-cache
-    
+
     install -Dm644 ../../gtk-update-icon-cache.hook ${pkgdir}/usr/share/libalpm/hooks/gtk-update-icon-cache.hook
     install -Dm755 ../../gtk-update-icon-cache.script ${pkgdir}/usr/share/libalpm/scripts/gtk-update-icon-cache
 }
