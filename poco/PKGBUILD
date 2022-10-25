@@ -1,7 +1,7 @@
 
 # rebuild mumble on updates, always .so up
 pkgname=poco
-pkgver=1.12.2
+pkgver=1.12.3
 pkgrel=1
 arch=('x86_64')
 pkgdesc="Cross-platform C++ libraries for building network- and internet-based applications."
@@ -10,7 +10,7 @@ license=('custom:boost')
 depends=('mariadb' 'unixodbc')
 makedepends=('cmake')
 source=("https://pocoproject.org/releases/${pkgname}-${pkgver}/${pkgname}-${pkgver}-all.tar.bz2")
-sha256sums=('25749bf14dac26af7c44cf2a6ace136252e8d781d54aef5b4722fefc16c24826')
+sha256sums=('a970b24c4fe98f37cbb26a402c6c431e8e1a2ef42eb81a30be7b2feaef55b639')
 
 build() {
   cmake -B build -S ${pkgname}-${pkgver}-all \
