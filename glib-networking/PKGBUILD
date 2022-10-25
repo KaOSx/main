@@ -1,7 +1,7 @@
 
 pkgname=glib-networking
-pkgver=2.72.2
-_pkgver=2.72
+pkgver=2.74.0
+_pkgver=2.74
 pkgrel=1
 pkgdesc="Network-related giomodules for glib"
 arch=('x86_64')
@@ -10,7 +10,7 @@ license=('GPL2')
 depends=('glib2' 'libproxy' 'gnutls' 'ca-certificates' 'libtasn1') # 'gsettings-desktop-schemas')
 makedepends=('intltool' 'meson' 'ninja')
 source=("https://download.gnome.org/sources/glib-networking/${_pkgver}/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('cd2a084c7bb91d78e849fb55d40e472f6d8f6862cddc9f12c39149359ba18268')
+sha256sums=('1f185aaef094123f8e25d8fa55661b3fd71020163a0174adb35a37685cda613b')
 
 build() {
   mkdir -p build
@@ -20,15 +20,13 @@ build() {
     --prefix=/usr \
     --buildtype=release \
     --libexecdir=/usr/lib/${pkgname} \
-    -Dinstalled_tests=false \
-    -Dstatic_modules=false \
     -Dgnome_proxy=disabled
   ninja
 }
 
 check() {
   cd build
-
+  # 1 fail: 4/5 connection-gnutls-tls1.2        FAIL
   meson test
 }
 
