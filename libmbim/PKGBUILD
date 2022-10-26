@@ -1,37 +1,38 @@
 
 pkgname=libmbim
-pkgver=1.26.4
+pkgver=1.28.0
 pkgrel=1
 pkgdesc="Glib-based library for talking to WWAN modems and devices which speak the Mobile Interface Broadband Model"
 arch=('x86_64')
 url="https://www.freedesktop.org/wiki/Software/libmbim/"
 license=('GPL2')
 depends=('glib2' 'bash' 'libgudev' 'systemd')
-makedepends=('python3' 'vala')
+makedepends=('help2man' 'meson' 'ninja' 'python3' 'vala')
 options=('!libtool')
-source=("https://www.freedesktop.org/software/libmbim/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('f688cec4c4586a17575f5e327448ce62f2000ef6a07c9e4589873d4a68568ad9')
+source=("https://gitlab.freedesktop.org/mobile-broadband/libmbim/-/archive/${pkgver}/${pkgname}-${pkgver}.tar.bz2")
+sha256sums=('65880409d45d013342aecd644974d9b24f4ccc5800bca65e2afedece5ed0fc0d')
 
 build() {
-  cd ${pkgname}-${pkgver}
+  mkdir -p build
+  cd build
 
-  ./configure --prefix=/usr \
-    --sysconfdir=/etc \
+  meson ../${pkgname}-${pkgver} \
+    --prefix=/usr \
+    --buildtype=release \
     --libexecdir=/usr/lib \
-    --localstatedir=/var \
-    --disable-static \
-    --enable-introspection=no
-  make
+    -Dintrospection=false \
+    -Dgtk_doc=false
+  ninja
 }
 
 check() {
-  cd ${pkgname}-${pkgver}
+  cd build
 
-  make check
+  meson test
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
+  cd build
 
-  make DESTDIR=${pkgdir} install
+  DESTDIR=${pkgdir} ninja install
 }
