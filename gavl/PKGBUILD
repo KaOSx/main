@@ -1,10 +1,10 @@
 
 pkgname=gavl
 pkgver=1.4.0
-pkgrel=7
+pkgrel=8
 pkgdesc="A low level library, upon which multimedia APIs can be built."
 arch=('x86_64')
-url="http://gmerlin.sourceforge.net/"
+url="https://gmerlin.sourceforge.net/"
 license=('GPL')
 depends=('glibc' 'libpng')
 optios=('!libtool')
@@ -23,6 +23,6 @@ build() {
 
 package() {
   cd ${pkgname}-${pkgver}
-  
+
   make DESTDIR=$pkgdir install
 }
