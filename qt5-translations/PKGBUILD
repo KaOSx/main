@@ -25,7 +25,7 @@ md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
 
 build() {
     cd ${__pkgfqn}
-    patch -p1 -i ${srcdir}/qt_kde.patch
+    #patch -p1 -i ${srcdir}/qt_kde.patch
 
     /usr/lib/qt5/bin/qmake
     make
