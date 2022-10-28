@@ -13,3 +13,335 @@ index feab1e2d5..cbfb82507 100644
          m_query->prepare(QLatin1String("INSERT INTO FileAttributeSetTable "
              "VALUES(?, ?)"));
          m_query->bindValue(0, filterSetId);
+diff --git a/src/linguist/Qt5LinguistToolsMacros.cmake b/src/linguist/Qt5LinguistToolsMacros.cmake
+index ab1534144..20fb14935 100644
+--- a/src/linguist/Qt5LinguistToolsMacros.cmake
++++ b/src/linguist/Qt5LinguistToolsMacros.cmake
+@@ -47,7 +47,7 @@ function(QT5_CREATE_TRANSLATION _qm_files)
+         list(GET _lupdate_options ${_extensions_index} _extensions_list)
+         string(REPLACE "," ";" _extensions_list "${_extensions_list}")
+         list(TRANSFORM _extensions_list STRIP)
+-        list(TRANSFORM _extensions_list REPLACE "^\\." "")
++        list(TRANSFORM _extensions_list REPLACE "^\." "")
+         list(TRANSFORM _extensions_list PREPEND "*.")
+     else()
+         set(_extensions_list "*.java;*.jui;*.ui;*.c;*.c++;*.cc;*.cpp;*.cxx;*.ch;*.h;*.h++;*.hh;*.hpp;*.hxx;*.js;*.qs;*.qml;*.qrc")
+diff --git a/src/macdeployqt/shared/shared.h b/src/macdeployqt/shared/shared.h
+index 9785d8cbc..ab28360d5 100644
+--- a/src/macdeployqt/shared/shared.h
++++ b/src/macdeployqt/shared/shared.h
+@@ -62,7 +62,7 @@ public:
+ 
+     bool isDebugLibrary() const
+     {
+-        return binaryName.endsWith(QStringLiteral("_debug"));
++        return binaryName.contains(QLatin1String("_debug"));
+     }
+ };
+ 
+diff --git a/src/qdoc/doc/qdoc-manual-qdocconf.qdoc b/src/qdoc/doc/qdoc-manual-qdocconf.qdoc
+index f0efb33ce..ef92cc99e 100644
+--- a/src/qdoc/doc/qdoc-manual-qdocconf.qdoc
++++ b/src/qdoc/doc/qdoc-manual-qdocconf.qdoc
+@@ -1365,6 +1365,10 @@
+     qhp.QtQuick.indexTitle          = Qt Quick
+     qhp.QtQuick.indexRoot           =
+ 
++    qhp.QtQuick.filterAttributes    = qtquick $QT_VERSION qtrefdoc
++    qhp.QtQuick.customFilters.Qt.name = QtQuick $QT_VERSION
++    qhp.QtQuick.customFilters.Qt.filterAttributes = qtquick $QT_VERSION
++
+     qhp.QtQuick.subprojects         = qmltypes classes examples
+ 
+     qhp.QtQuick.subprojects.qmltypes.title = QML Types
+diff --git a/src/qdoc/doc/qtgui-qdocconf.qdoc b/src/qdoc/doc/qtgui-qdocconf.qdoc
+index 8602326bb..89c46ff94 100644
+--- a/src/qdoc/doc/qtgui-qdocconf.qdoc
++++ b/src/qdoc/doc/qtgui-qdocconf.qdoc
+@@ -56,6 +56,10 @@ every statement in the qdocconf file.
+    qhp.QtGui.indexTitle          = Qt GUI
+    qhp.QtGui.indexRoot           =
+ 
++   qhp.QtGui.filterAttributes    = qtgui $QT_VERSION qtrefdoc
++   qhp.QtGui.customFilters.Qt.name = Qtgui $QT_VERSION
++   qhp.QtGui.customFilters.Qt.filterAttributes = qtgui $QT_VERSION
++
+    qhp.QtGui.subprojects         = classes
+    qhp.QtGui.subprojects.classes.title = C++ Classes
+    qhp.QtGui.subprojects.classes.indexTitle = Qt GUI C++ Classes
+@@ -194,6 +198,20 @@ This is the title of the page that has the contents.
+ Specifies the title of the root (namespace) page to generate the documentation for.
+ Typically defined as an empty string.
+ 
++\badcode
++   qhp.QtGui.filterAttributes    = qtgui $QT_VERSION qtrefdoc
++   qhp.QtGui.customFilters.Qt.name = QtGui $QT_VERSION
++   qhp.QtGui.customFilters.Qt.filterAttributes = qtgui $QT_VERSION
++\endcode
++
++The documentation set (one per QDoc project) can have any number of filter
++attributes assigned to it. A filter attribute is an ordinary string which
++can be freely chosen. Additionally, custom filters that reference above
++attributes can be defined. Qt Assistant will display the name of the custom
++filter in its \gui{Filtered by} drop-down list. Only the documentation sets
++that have their filter attributes match the attributes of the selected
++custom filter will be shown.
++
+ \badcode
+    qhp.QtGui.subprojects         = classes
+    qhp.QtGui.subprojects.classes.title = C++ Classes
+diff --git a/src/qdoc/htmlgenerator.cpp b/src/qdoc/htmlgenerator.cpp
+index d78877ea6..aaea6a65f 100644
+--- a/src/qdoc/htmlgenerator.cpp
++++ b/src/qdoc/htmlgenerator.cpp
+@@ -661,7 +661,7 @@ int HtmlGenerator::generateAtom(const Atom *atom, const Node *relative, CodeMark
+             if (relative->isExample()) {
+                 qDebug() << "GENERATE FILE LIST CALLED" << relative->name() << atom->string();
+             } else
+-                relative->location().warning(QString("'\\generatelist %1' can only be used with "
++                relative->location().warning(QString("'\\generatelist \1' can only be used with "
+                                                      "'\\example' topic command")
+                                                      .arg(atom->string()));
+         } else if (atom->string() == QLatin1String("classhierarchy")) {
+@@ -699,10 +699,10 @@ int HtmlGenerator::generateAtom(const Atom *atom, const Node *relative, CodeMark
+             if (cn) {
+                 if (!generateGroupList(const_cast<CollectionNode *>(cn)))
+                     relative->location().warning(
+-                            QString("'\\generatelist %1' group is empty").arg(atom->string()));
++                            QString("'\\generatelist \1' group is empty").arg(atom->string()));
+             } else {
+                 relative->location().warning(
+-                        QString("'\\generatelist %1' no such group").arg(atom->string()));
++                        QString("'\\generatelist \1' no such group").arg(atom->string()));
+             }
+         }
+         break;
+diff --git a/src/qdoc/sections.cpp b/src/qdoc/sections.cpp
+index 08594abf4..00357c246 100644
+--- a/src/qdoc/sections.cpp
++++ b/src/qdoc/sections.cpp
+@@ -283,7 +283,9 @@ void Section::reduce()
+ {
+     if (!isEmpty()) {
+         keys_ = memberMap_.keys();
++        obsoleteKeys_ = obsoleteMemberMap_.keys();
+         members_ = memberMap_.values().toVector();
++        obsoleteMembers_ = obsoleteMemberMap_.values().toVector();
+         reimplementedMembers_ = reimplementedMemberMap_.values().toVector();
+         for (int i = 0; i < classMapList_.size(); i++) {
+             ClassMap *cm = classMapList_[i];
+@@ -294,10 +296,6 @@ void Section::reduce()
+             classKeysNodesList_.append(ckn);
+         }
+     }
+-    if (!obsoleteMemberMap_.isEmpty()) {
+-        obsoleteKeys_ = obsoleteMemberMap_.keys();
+-        obsoleteMembers_ = obsoleteMemberMap_.values().toVector();
+-    }
+ }
+ 
+ /*!
+diff --git a/tests/auto/qdoc/generatedoutput/expected_output/docbook/testqdoc-testderived.xml b/tests/auto/qdoc/generatedoutput/expected_output/docbook/testqdoc-testderived.xml
+index 0ceeb351c..ced1bea5b 100644
+--- a/tests/auto/qdoc/generatedoutput/expected_output/docbook/testqdoc-testderived.xml
++++ b/tests/auto/qdoc/generatedoutput/expected_output/docbook/testqdoc-testderived.xml
+@@ -76,28 +76,4 @@
+ </db:methodsynopsis>
+ <db:para>Reimplements: <db:link xlink:href="testqdoc-test.xml#virtualFun" type="function">Test::virtualFun()</db:link>.</db:para>
+ </db:section>
+-<db:section xml:id="obsolete">
+-<db:title>Obsolete Members for TestDerived</db:title>
+-<db:para><db:emphasis role="bold">The following members of class <db:link xlink:href="testqdoc-testderived.xml">TestDerived</db:link> are obsolete.</db:emphasis> They are provided to keep old source code working. We strongly advise against using them in new code.</db:para>
+-<db:section xml:id="member-function-documentation">
+-<db:title>Member Function Documentation</db:title>
+-<db:section xml:id="staticObsoleteMember">
+-<db:title>[static] TestDerived::void staticObsoleteMember()</db:title>
+-<db:methodsynopsis>
+-<db:modifier>static</db:modifier>
+-<db:void/>
+-<db:methodname>staticObsoleteMember</db:methodname>
+-<db:void/>
+-<db:synopsisinfo db:role="meta">plain</db:synopsisinfo>
+-<db:synopsisinfo db:role="signature">void staticObsoleteMember()</db:synopsisinfo>
+-<db:synopsisinfo db:role="access">public</db:synopsisinfo>
+-<db:synopsisinfo db:role="status">obsolete</db:synopsisinfo>
+-<db:synopsisinfo db:role="threadsafeness">unspecified</db:synopsisinfo>
+-<db:synopsisinfo db:role="module">TestCPP</db:synopsisinfo>
+-</db:methodsynopsis>
+-<db:para>This function is obsolete. It is provided to keep old source code working. We strongly advise against using it in new code.</db:para>
+-<db:para>Static obsolete method.</db:para>
+-</db:section>
+-</db:section>
+-</db:section>
+ </db:section></db:article>
+diff --git a/tests/auto/qdoc/generatedoutput/expected_output/dontdocument/dontdocument.qhp b/tests/auto/qdoc/generatedoutput/expected_output/dontdocument/dontdocument.qhp
+index 2003f97a1..098200a95 100644
+--- a/tests/auto/qdoc/generatedoutput/expected_output/dontdocument/dontdocument.qhp
++++ b/tests/auto/qdoc/generatedoutput/expected_output/dontdocument/dontdocument.qhp
+@@ -14,7 +14,6 @@
+                     </section>
+                     <section ref="testqdoc-testderived.html" title="TestQDoc::TestDerived Class Reference">
+                         <section ref="testqdoc-testderived-members.html" title="List of all members"/>
+-                        <section ref="testqdoc-testderived-obsolete.html" title="Obsolete members"/>
+                     </section>
+                 </section>
+             </section>
+@@ -38,7 +37,6 @@
+             <keyword name="overload" id="Test::overload" ref="testqdoc-test.html#overload"/>
+             <keyword name="someFunction" id="Test::someFunction" ref="testqdoc-test.html#someFunction"/>
+             <keyword name="someFunctionDefaultArg" id="Test::someFunctionDefaultArg" ref="testqdoc-test.html#someFunctionDefaultArg"/>
+-            <keyword name="staticObsoleteMember" id="TestDerived::staticObsoleteMember" ref="testqdoc-testderived-obsolete.html#staticObsoleteMember"/>
+             <keyword name="virtualFun" id="Test::virtualFun" ref="testqdoc-test.html#virtualFun"/>
+             <keyword name="virtualFun" id="TestDerived::virtualFun" ref="testqdoc-testderived.html#virtualFun"/>
+         </keywords>
+@@ -50,7 +48,6 @@
+             <file>testqdoc-test-obsolete.html</file>
+             <file>testqdoc-test.html</file>
+             <file>testqdoc-testderived-members.html</file>
+-            <file>testqdoc-testderived-obsolete.html</file>
+             <file>testqdoc-testderived.html</file>
+             <file>testqdoc.html</file>
+         </files>
+diff --git a/tests/auto/qdoc/generatedoutput/expected_output/html/testqdoc-testderived.webxml b/tests/auto/qdoc/generatedoutput/expected_output/html/testqdoc-testderived.webxml
+index 4fe2a5627..7711b09df 100644
+--- a/tests/auto/qdoc/generatedoutput/expected_output/html/testqdoc-testderived.webxml
++++ b/tests/auto/qdoc/generatedoutput/expected_output/html/testqdoc-testderived.webxml
+@@ -5,11 +5,6 @@
+             <description>
+                 <brief>A derived class in a namespace.</brief>
+             </description>
+-            <function name="staticObsoleteMember" fullname="TestQDoc::TestDerived::staticObsoleteMember" href="testqdoc-testderived-obsolete.html#staticObsoleteMember" status="obsolete" access="public" location="testcpp.h" documented="true" meta="plain" virtual="non" const="false" static="true" final="false" override="false" type="void" signature="void staticObsoleteMember()">
+-                <description>
+-                    <para>Static obsolete method.</para>
+-                </description>
+-            </function>
+             <function name="virtualFun" fullname="TestQDoc::TestDerived::virtualFun" href="testqdoc-testderived.html#virtualFun" status="active" access="public" location="testcpp.h" documented="true" meta="plain" virtual="virtual" const="false" static="false" final="false" override="true" type="void" signature="void virtualFun() override">
+                 <description/>
+             </function>
+diff --git a/tests/auto/qdoc/generatedoutput/expected_output/test.qhp b/tests/auto/qdoc/generatedoutput/expected_output/test.qhp
+index 1ea93d57b..3f3a78968 100644
+--- a/tests/auto/qdoc/generatedoutput/expected_output/test.qhp
++++ b/tests/auto/qdoc/generatedoutput/expected_output/test.qhp
+@@ -22,7 +22,6 @@
+                     </section>
+                     <section ref="testqdoc-testderived.html" title="TestQDoc::TestDerived Class Reference">
+                         <section ref="testqdoc-testderived-members.html" title="List of all members"/>
+-                        <section ref="testqdoc-testderived-obsolete.html" title="Obsolete members"/>
+                     </section>
+                 </section>
+                 <section ref="uicomponents-qmlmodule.html" title="QML Types">
+@@ -105,7 +104,6 @@
+             <keyword name="secondColor" id="ProgressBar::secondColor" ref="qml-uicomponents-progressbar.html#secondColor-prop"/>
+             <keyword name="someFunction" id="Test::someFunction" ref="testqdoc-test.html#someFunction"/>
+             <keyword name="someFunctionDefaultArg" id="Test::someFunctionDefaultArg" ref="testqdoc-test.html#someFunctionDefaultArg"/>
+-            <keyword name="staticObsoleteMember" id="TestDerived::staticObsoleteMember" ref="testqdoc-testderived-obsolete.html#staticObsoleteMember"/>
+             <keyword name="toggle" id="Switch::toggle" ref="qml-uicomponents-switch.html#toggle-method"/>
+             <keyword name="type" id="Type::type" ref="qml-qdoc-test-type.html#type-attached-prop"/>
+             <keyword name="value" id="ProgressBar::value" ref="qml-uicomponents-progressbar.html#value-prop"/>
+@@ -143,7 +141,6 @@
+             <file>testqdoc-test-obsolete.html</file>
+             <file>testqdoc-test.html</file>
+             <file>testqdoc-testderived-members.html</file>
+-            <file>testqdoc-testderived-obsolete.html</file>
+             <file>testqdoc-testderived.html</file>
+             <file>testqdoc.html</file>
+             <file>uicomponents-qmlmodule.html</file>
+diff --git a/tests/auto/qdoc/generatedoutput/expected_output/testcpp.index b/tests/auto/qdoc/generatedoutput/expected_output/testcpp.index
+index 292efaf4e..3c0a54885 100644
+--- a/tests/auto/qdoc/generatedoutput/expected_output/testcpp.index
++++ b/tests/auto/qdoc/generatedoutput/expected_output/testcpp.index
+@@ -32,7 +32,6 @@
+                 <typedef name="SomeType" fullname="TestQDoc::Test::SomeType" href="testqdoc-test.html#SomeType-typedef" status="active" access="public" location="testcpp.h" documented="true"/>
+             </class>
+             <class name="TestDerived" fullname="TestQDoc::TestDerived" href="testqdoc-testderived.html" status="active" access="public" location="testcpp.h" documented="true" bases="TestQDoc::Test" module="TestCPP" brief="A derived class in a namespace">
+-                <function name="staticObsoleteMember" fullname="TestQDoc::TestDerived::staticObsoleteMember" href="testqdoc-testderived-obsolete.html#staticObsoleteMember" status="obsolete" access="public" location="testcpp.h" documented="true" meta="plain" virtual="non" const="false" static="true" final="false" override="false" type="void" signature="void staticObsoleteMember()"/>
+                 <function name="virtualFun" fullname="TestQDoc::TestDerived::virtualFun" href="testqdoc-testderived.html#virtualFun" status="active" access="public" location="testcpp.h" documented="true" meta="plain" virtual="virtual" const="false" static="false" final="false" override="true" type="void" signature="void virtualFun() override"/>
+                 <alias name="DerivedType" fullname="TestQDoc::TestDerived::DerivedType" href="testqdoc-testderived.html#DerivedType-alias" status="active" access="public" location="testcpp.h" documented="true" aliasedtype="Test::SomeType"/>
+                 <alias name="NotTypedef" fullname="TestQDoc::TestDerived::NotTypedef" href="testqdoc-testderived.html#NotTypedef-alias" status="active" access="public" location="testcpp.h" documented="true" aliasedtype="int"/>
+diff --git a/tests/auto/qdoc/generatedoutput/expected_output/testqdoc-testderived-obsolete.html b/tests/auto/qdoc/generatedoutput/expected_output/testqdoc-testderived-obsolete.html
+deleted file mode 100644
+index d35dd5837..000000000
+--- a/tests/auto/qdoc/generatedoutput/expected_output/testqdoc-testderived-obsolete.html
++++ /dev/null
+@@ -1,24 +0,0 @@
+-<!DOCTYPE html>
+-<html lang="en">
+-<head>
+-  <meta charset="utf-8">
+-<!-- testcpp.cpp -->
+-  <title>Obsolete Members for TestDerived | TestCPP</title>
+-</head>
+-<body>
+-<li>TestDerived</li>
+-<div class="sidebar"><div class="sidebar-content" id="sidebar-content"></div></div>
+-<h1 class="title">Obsolete Members for TestDerived</h1>
+-<p><b>The following members of class <a href="testqdoc-testderived.html">TestDerived</a> are obsolete.</b> They are provided to keep old source code working. We strongly advise against using them in new code.</p>
+-<h2>Static Public Members</h2>
+-<div class="table"><table class="alignedsummary">
+-<tr><td class="memItemLeft topAlign rightAlign"> <code>(obsolete) </code>void </td><td class="memItemRight bottomAlign"><b><a href="testqdoc-testderived-obsolete.html#staticObsoleteMember">staticObsoleteMember</a></b>()</td></tr>
+-</table></div>
+-<h2>Member Function Documentation</h2>
+-<!-- $$$staticObsoleteMember[overload1]$$$staticObsoleteMember -->
+-<h3 class="fn" id="staticObsoleteMember"><a name="staticObsoleteMember"></a><code>[static] </code><span class="type">void</span> TestDerived::<span class="name">staticObsoleteMember</span>()</h3>
+-<p>This function is obsolete. It is provided to keep old source code working. We strongly advise against using it in new code.</p>
+-<p>Static obsolete method.</p>
+-<!-- @@@staticObsoleteMember -->
+-</body>
+-</html>
+diff --git a/tests/auto/qdoc/generatedoutput/expected_output/testqdoc-testderived.html b/tests/auto/qdoc/generatedoutput/expected_output/testqdoc-testderived.html
+index bfbc272f5..d3bd69b50 100644
+--- a/tests/auto/qdoc/generatedoutput/expected_output/testqdoc-testderived.html
++++ b/tests/auto/qdoc/generatedoutput/expected_output/testqdoc-testderived.html
+@@ -26,7 +26,6 @@
+ <tr><td class="memItemLeft rightAlign topAlign"> Header:</td><td class="memItemRight bottomAlign"> <span class="preprocessor">#include &lt;TestDerived&gt;</span>
+ </td></tr><tr><td class="memItemLeft rightAlign topAlign"> qmake:</td><td class="memItemRight bottomAlign"> QT += testcpp</td></tr><tr><td class="memItemLeft rightAlign topAlign"> Inherits:</td><td class="memItemRight bottomAlign"> <a href="testqdoc-test.html">TestQDoc::Test</a></td></tr></table></div><ul>
+ <li><a href="testqdoc-testderived-members.html">List of all members, including inherited members</a></li>
+-<li><a href="testqdoc-testderived-obsolete.html">Obsolete members</a></li>
+ </ul>
+ <a name="public-types"></a>
+ <h2 id="public-types">Public Types</h2>
+diff --git a/tests/auto/qdoc/generatedoutput/testdata/testcpp/testcpp.cpp b/tests/auto/qdoc/generatedoutput/testdata/testcpp/testcpp.cpp
+index 98c8514dd..2f6cd8805 100644
+--- a/tests/auto/qdoc/generatedoutput/testdata/testcpp/testcpp.cpp
++++ b/tests/auto/qdoc/generatedoutput/testdata/testcpp/testcpp.cpp
+@@ -187,16 +187,6 @@ void TestDerived::virtualFun()
+     I'm an alias, not a typedef.
+ */
+ 
+-/*!
+-    \obsolete
+-
+-    Static obsolete method.
+-*/
+-void TestDerived::staticObsoleteMember()
+-{
+-    return;
+-}
+-
+ /*!
+ \if defined(test_template)
+     \fn template <typename T1, typename T2> void TestQDoc::Test::funcTemplate(T1 a, T2 b)
+diff --git a/tests/auto/qdoc/generatedoutput/testdata/testcpp/testcpp.h b/tests/auto/qdoc/generatedoutput/testdata/testcpp/testcpp.h
+index c293638a1..b3dc3df2a 100644
+--- a/tests/auto/qdoc/generatedoutput/testdata/testcpp/testcpp.h
++++ b/tests/auto/qdoc/generatedoutput/testdata/testcpp/testcpp.h
+@@ -74,7 +74,6 @@ public:
+     using DerivedType = Test::SomeType;
+     using NotTypedef = int;
+     void virtualFun() override;
+-    static void staticObsoleteMember();
+ };
+ 
+ } // namespace TestQDoc
+diff --git a/tests/auto/qdoc/generatedoutput/tst_generatedoutput.cpp b/tests/auto/qdoc/generatedoutput/tst_generatedoutput.cpp
+index 712050ea1..a83ba337f 100644
+--- a/tests/auto/qdoc/generatedoutput/tst_generatedoutput.cpp
++++ b/tests/auto/qdoc/generatedoutput/tst_generatedoutput.cpp
+@@ -220,7 +220,6 @@ void tst_generatedOutput::htmlFromCpp()
+                    "testqdoc-test-members.html "
+                    "testqdoc-testderived.html "
+                    "testqdoc-testderived-members.html "
+-                   "testqdoc-testderived-obsolete.html "
+                    "testqdoc.html");
+ }
+ 

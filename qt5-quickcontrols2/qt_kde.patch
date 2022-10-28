@@ -1,3 +1,40 @@
+diff --git a/src/quickcontrols2/qquickiconimage.cpp b/src/quickcontrols2/qquickiconimage.cpp
+index 11bb3bcaa..d86afd7fc 100644
+--- a/src/quickcontrols2/qquickiconimage.cpp
++++ b/src/quickcontrols2/qquickiconimage.cpp
+@@ -42,12 +42,6 @@
+ 
+ QT_BEGIN_NAMESPACE
+ 
+-QQuickIconImagePrivate::~QQuickIconImagePrivate()
+-{
+-    qDeleteAll(icon.entries);
+-    icon.entries.clear();
+-}
+-
+ bool QQuickIconImagePrivate::updateDevicePixelRatio(qreal targetDevicePixelRatio)
+ {
+     if (isThemeIcon) {
+@@ -138,7 +132,6 @@ void QQuickIconImage::setName(const QString &name)
+     if (d->icon.iconName == name)
+         return;
+ 
+-    qDeleteAll(d->icon.entries);
+     d->icon = QIconLoader::instance()->loadIcon(name);
+     if (isComponentComplete())
+         d->updateIcon();
+diff --git a/src/quickcontrols2/qquickiconimage_p_p.h b/src/quickcontrols2/qquickiconimage_p_p.h
+index 11bf5e92a..0c755ff6c 100644
+--- a/src/quickcontrols2/qquickiconimage_p_p.h
++++ b/src/quickcontrols2/qquickiconimage_p_p.h
+@@ -59,7 +59,6 @@ class Q_QUICKCONTROLS2_PRIVATE_EXPORT QQuickIconImagePrivate : public QQuickImag
+     Q_DECLARE_PUBLIC(QQuickIconImage)
+ 
+ public:
+-    ~QQuickIconImagePrivate() override;
+     void updateIcon();
+     void updateFillMode();
+     qreal calculateDevicePixelRatio() const;
 diff --git a/src/quicktemplates2/qquickabstractbutton.cpp b/src/quicktemplates2/qquickabstractbutton.cpp
 index 950e4e099..1df0c706d 100644
 --- a/src/quicktemplates2/qquickabstractbutton.cpp
@@ -302,6 +339,20 @@ index b3fab41ca..10b6baa02 100644
 +        verify(control2)
 +    }
  }
+diff --git a/tests/auto/qquickpopup/BLACKLIST b/tests/auto/qquickpopup/BLACKLIST
+deleted file mode 100644
+index 9246d3010..000000000
+--- a/tests/auto/qquickpopup/BLACKLIST
++++ /dev/null
+@@ -1,8 +0,0 @@
+-# See qtbase/src/testlib/qtestblacklist.cpp for format
+-
+-# QTBUG-94251
+-[closePolicy]
+-opensuse-leap
+-
+-[cursorShape]
+-opensuse-leap
 diff --git a/tests/auto/qquickpopup/data/releaseAfterExitTransition.qml b/tests/auto/qquickpopup/data/releaseAfterExitTransition.qml
 new file mode 100644
 index 000000000..9e4598b9f
