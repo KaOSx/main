@@ -11,64 +11,6 @@ index b65b994d6c..15a8cd6878 100644
              memcpy(data, static_cast<const void*>(vector.constData()), count * sizeof(T));
          }
      }
-diff --git a/src/qml/common/qv4compileddata_p.h b/src/qml/common/qv4compileddata_p.h
-index be0ca3f477..a5a1cf8969 100644
---- a/src/qml/common/qv4compileddata_p.h
-+++ b/src/qml/common/qv4compileddata_p.h
-@@ -1330,8 +1330,7 @@ public:
-     template<typename Char>
-     bool saveToDisk(const std::function<bool(const Char *, quint32)> &writer) const
-     {
--        const quint32_le oldFlags = mutableFlags();
--        auto cleanup = qScopeGuard([this, oldFlags]() { mutableFlags() = oldFlags; });
-+        auto cleanup = qScopeGuard([this]() { mutableFlags() ^= temporaryFlags; });
-         mutableFlags() |= temporaryFlags;
-         return writer(data<Char>(), size());
-     }
-diff --git a/src/qml/doc/snippets/qml/integrating-javascript/includejs/script.mjs b/src/qml/doc/snippets/qml/integrating-javascript/includejs/script.mjs
-index 1326b8c87a..86c3e078c8 100644
---- a/src/qml/doc/snippets/qml/integrating-javascript/includejs/script.mjs
-+++ b/src/qml/doc/snippets/qml/integrating-javascript/includejs/script.mjs
-@@ -50,9 +50,8 @@
- //![0]
- // script.mjs
- import { factorial } from "factorial.mjs"
--export { factorial }
- 
--export function showCalculations(value) {
-+function showCalculations(value) {
-     console.log(
-         "Call factorial() from script.js:",
-         factorial(value));
-diff --git a/src/qml/doc/src/javascript/imports.qdoc b/src/qml/doc/src/javascript/imports.qdoc
-index 8d49c02f62..9227f0e604 100644
---- a/src/qml/doc/src/javascript/imports.qdoc
-+++ b/src/qml/doc/src/javascript/imports.qdoc
-@@ -95,18 +95,17 @@ or modules).
- 
- A JavaScript resource may import another in the following fashion:
- \code
--import * as MathFunctions from "factorial.mjs";
-+.import "filename.js" as Qualifier
- \endcode
--Or:
-+For example:
- \code
--.import "filename.js" as Qualifier
-+import * as MathFunctions from "factorial.mjs";
- \endcode
- 
--The former is standard ECMAScript syntax for importing ECMAScript modules, and
-+The latter is standard ECMAScript syntax for importing ECMAScript modules, and
- only works from within ECMAScript modules as denoted by the \c mjs file
--extension. The latter is an extension to JavaScript provided by the \c QML
--engine and will work also with non-modules. As an extension superseded by the
--ECMAScript standard, its usage is discouraged.
-+extension. The former is an extension to JavaScript provided by the \c QML
-+engine and will work also with non-modules.
- 
- When a JavaScript file is imported this way, it is imported with a qualifier.
- The functions in that file are then accessible from the importing script via the
 diff --git a/src/qml/jsruntime/qv4qobjectwrapper.cpp b/src/qml/jsruntime/qv4qobjectwrapper.cpp
 index 9899c9274e..272b85069f 100644
 --- a/src/qml/jsruntime/qv4qobjectwrapper.cpp
@@ -105,144 +47,6 @@ index 06caf04e5a..da149a67c4 100644
                  it = multiplyWrappedQObjects->erase(it);
              else
                  ++it;
-diff --git a/src/qml/qml/qqmlcontext.cpp b/src/qml/qml/qqmlcontext.cpp
-index f293ff8e9c..305c610a8f 100644
---- a/src/qml/qml/qqmlcontext.cpp
-+++ b/src/qml/qml/qqmlcontext.cpp
-@@ -82,11 +82,11 @@ QQmlContextPrivate::QQmlContextPrivate()
-     context->setContextProperty("myModel", &modelData);
- 
-     QQmlComponent component(&engine);
--    component.setData("import QtQuick 2.0; ListView { model: myModel }", QUrl());
-+    component.setData("import QtQuick 2.0\nListView { model: myModel }", QUrl());
-     QObject *window = component.create(context);
-     \endcode
- 
--    \note It is the responsibility of the creator to delete any QQmlContext it
-+    Note it is the responsibility of the creator to delete any QQmlContext it
-     constructs. If the \c context object in the example is no longer needed when the
-     \c window component instance is destroyed, the \c context must be destroyed explicitly.
-     The simplest way to ensure this is to set \c window as the parent of \c context.
-@@ -102,10 +102,10 @@ QQmlContextPrivate::QQmlContextPrivate()
-     object.
- 
-     \code
--    class MyDataSet : public QObject {
--        // ...
-+    class MyDataSet : ... {
-+        ...
-         Q_PROPERTY(QAbstractItemModel *myModel READ model NOTIFY modelChanged)
--        // ...
-+        ...
-     };
- 
-     MyDataSet myDataSet;
-@@ -114,7 +114,7 @@ QQmlContextPrivate::QQmlContextPrivate()
-     context->setContextObject(&myDataSet);
- 
-     QQmlComponent component(&engine);
--    component.setData("import QtQuick 2.0; ListView { model: myModel }", QUrl());
-+    component.setData("import QtQuick 2.0\nListView { model: myModel }", QUrl());
-     component.create(context);
-     \endcode
- 
-@@ -138,10 +138,10 @@ QQmlContextPrivate::QQmlContextPrivate()
-     QQmlContext *context1 = new QQmlContext(engine.rootContext());
-     QQmlContext *context2 = new QQmlContext(context1);
- 
--    context1->setContextProperty("a", 9001);
--    context1->setContextProperty("b", 9001);
-+    context1->setContextProperty("a", 12);
-+    context1->setContextProperty("b", 12);
- 
--    context2->setContextProperty("b", 42);
-+    context2->setContextProperty("b", 15);
-     \endcode
- 
-     While QML objects instantiated in a context are not strictly owned by that
-@@ -235,7 +235,7 @@ bool QQmlContext::isValid() const
- }
- 
- /*!
--    Return the context's QQmlEngine, or \nullptr if the context has no QQmlEngine or the
-+    Return the context's QQmlEngine, or 0 if the context has no QQmlEngine or the
-     QQmlEngine was destroyed.
- */
- QQmlEngine *QQmlContext::engine() const
-@@ -245,7 +245,7 @@ QQmlEngine *QQmlContext::engine() const
- }
- 
- /*!
--    Return the context's parent QQmlContext, or \nullptr if this context has no
-+    Return the context's parent QQmlContext, or 0 if this context has no
-     parent or if the parent has been destroyed.
- */
- QQmlContext *QQmlContext::parentContext() const
-@@ -255,7 +255,7 @@ QQmlContext *QQmlContext::parentContext() const
- }
- 
- /*!
--    Return the context object, or \nullptr if there is no context object.
-+    Return the context object, or 0 if there is no context object.
- */
- QObject *QQmlContext::contextObject() const
- {
-diff --git a/src/qml/qml/qqmlengine.cpp b/src/qml/qml/qqmlengine.cpp
-index dcc2f8f7f5..54cc07af2e 100644
---- a/src/qml/qml/qqmlengine.cpp
-+++ b/src/qml/qml/qqmlengine.cpp
-@@ -1063,16 +1063,6 @@ QQmlEngine::~QQmlEngine()
-   Once the component cache has been cleared, components must be loaded before
-   any new objects can be created.
- 
--  \note Any existing objects created from QML components retain their types,
--  even if you clear the component cache. This includes singleton objects. If you
--  create more objects from the same QML code after clearing the cache, the new
--  objects will be of different types than the old ones. Assigning such a new
--  object to a property of its declared type belonging to an object created
--  before clearing the cache won't work.
--
--  As a general rule of thumb, make sure that no objects created from QML
--  components are alive when you clear the component cache.
--
-   \sa trimComponentCache()
-  */
- void QQmlEngine::clearComponentCache()
-diff --git a/src/qml/qml/qqmlexpression.cpp b/src/qml/qml/qqmlexpression.cpp
-index e9f8bce942..f6a5afb891 100644
---- a/src/qml/qml/qqmlexpression.cpp
-+++ b/src/qml/qml/qqmlexpression.cpp
-@@ -204,7 +204,7 @@ QQmlExpression::~QQmlExpression()
- }
- 
- /*!
--    Returns the QQmlEngine this expression is associated with, or \nullptr if there
-+    Returns the QQmlEngine this expression is associated with, or 0 if there
-     is no association or the QQmlEngine has been destroyed.
- */
- QQmlEngine *QQmlExpression::engine() const
-@@ -214,7 +214,7 @@ QQmlEngine *QQmlExpression::engine() const
- }
- 
- /*!
--    Returns the QQmlContext this expression is associated with, or \nullptr if there
-+    Returns the QQmlContext this expression is associated with, or 0 if there
-     is no association or the QQmlContext has been destroyed.
- */
- QQmlContext *QQmlExpression::context() const
-diff --git a/src/qml/qml/qqmlfileselector.cpp b/src/qml/qml/qqmlfileselector.cpp
-index c386f2727b..32dce8b4bc 100644
---- a/src/qml/qml/qqmlfileselector.cpp
-+++ b/src/qml/qml/qqmlfileselector.cpp
-@@ -148,7 +148,7 @@ QQmlFileSelectorPrivate::~QQmlFileSelectorPrivate()
- /*!
-   Sets the QFileSelector instance for use by the QQmlFileSelector to \a selector.
-   QQmlFileSelector does not take ownership of the new QFileSelector. To reset QQmlFileSelector
--  to use its internal QFileSelector instance, call setSelector(\nullptr).
-+  to use its internal QFileSelector instance, call setSelector(0).
- */
- 
- void QQmlFileSelector::setSelector(QFileSelector *selector)
 diff --git a/src/qmlmodels/qqmldelegatemodel.cpp b/src/qmlmodels/qqmldelegatemodel.cpp
 index 2079a8ed04..a577cb2351 100644
 --- a/src/qmlmodels/qqmldelegatemodel.cpp
@@ -326,75 +130,8 @@ index 8aab4badca..d140bfbaaf 100644
      void _q_rowsAboutToBeRemoved(const QModelIndex &parent, int begin, int end);
      void _q_rowsRemoved(const QModelIndex &,int,int);
      void _q_rowsMoved(const QModelIndex &, int, int, const QModelIndex &, int);
-diff --git a/src/quick/handlers/qquickpinchhandler.cpp b/src/quick/handlers/qquickpinchhandler.cpp
-index bf43d56a93..5b30d08557 100644
---- a/src/quick/handlers/qquickpinchhandler.cpp
-+++ b/src/quick/handlers/qquickpinchhandler.cpp
-@@ -85,14 +85,7 @@ Q_LOGGING_CATEGORY(lcPinchHandler, "qt.quick.handler.pinch")
- 
-     \image touchpoints-pinchhandler.png
- 
--    \note The pinch begins when the number of fingers pressed is between
--    \l {MultiPointHandler::minimumPointCount}{minimumPointCount} and
--    \l {MultiPointHandler::maximumPointCount}{maximumPointCount}, inclusive.
--    Until then, PinchHandler tracks the positions of any pressed fingers,
--    but if it's a disallowed number, it does not scale or rotate
--    its \l target, and the \l active property remains \c false.
--
--    \sa PinchArea, QPointerEvent::pointCount()
-+    \sa PinchArea
- */
- 
- QQuickPinchHandler::QQuickPinchHandler(QQuickItem *parent)
-@@ -255,13 +248,20 @@ bool QQuickPinchHandler::wantsPointerEvent(QQuickPointerEvent *event)
-     If \c enabled is true, vertical dragging is allowed.
-  */
- 
-+/*!
-+    \qmlproperty int QtQuick::PinchHandler::minimumTouchPoints
-+
-+    The pinch begins when this number of fingers are pressed.
-+    Until then, PinchHandler tracks the positions of any pressed fingers,
-+    but if it's an insufficient number, it does not scale or rotate
-+    its \l target, and the \l active property will remain false.
-+*/
-+
- /*!
-     \qmlproperty bool QtQuick::PinchHandler::active
- 
--    This property is \c true when all the constraints (epecially
--    \l {MultiPointHandler::minimumPointCount}{minimumPointCount} and
--    \l {MultiPointHandler::maximumPointCount}{maximumPointCount}) are satisfied
--    and the \l target, if any, is being manipulated.
-+    This property is true when all the constraints (epecially \l minimumTouchPoints)
-+    are satisfied and the \l target, if any, is being manipulated.
- */
- 
- void QQuickPinchHandler::onActiveChanged()
-diff --git a/src/quick/items/context2d/qquickcontext2dtexture.cpp b/src/quick/items/context2d/qquickcontext2dtexture.cpp
-index 3f28620d90..0ebd1a66c9 100644
---- a/src/quick/items/context2d/qquickcontext2dtexture.cpp
-+++ b/src/quick/items/context2d/qquickcontext2dtexture.cpp
-@@ -165,15 +165,8 @@ void QQuickContext2DTexture::setItem(QQuickCanvasItem* item)
- 
- bool QQuickContext2DTexture::setCanvasWindow(const QRect& r)
- {
--    bool ok = false;
--    static qreal overriddenDevicePixelRatio =
--        !qEnvironmentVariableIsEmpty("QT_CANVAS_OVERRIDE_DEVICEPIXELRATIO") ?
--        qgetenv("QT_CANVAS_OVERRIDE_DEVICEPIXELRATIO").toFloat(&ok) : 0.0;
--    qreal canvasDevicePixelRatio = overriddenDevicePixelRatio;
--    if (overriddenDevicePixelRatio == 0.0) {
--        canvasDevicePixelRatio = (m_item && m_item->window()) ?
--            m_item->window()->effectiveDevicePixelRatio() : qApp->devicePixelRatio();
--    }
-+    qreal canvasDevicePixelRatio = (m_item && m_item->window()) ?
-+        m_item->window()->effectiveDevicePixelRatio() : qApp->devicePixelRatio();
-     if (!qFuzzyCompare(m_canvasDevicePixelRatio, canvasDevicePixelRatio)) {
-         qCDebug(lcCanvas, "%s device pixel ratio %.1lf -> %.1lf",
-                 (m_item->objectName().isEmpty() ? "Canvas" : qPrintable(m_item->objectName())),
 diff --git a/src/quick/items/qquickflickable.cpp b/src/quick/items/qquickflickable.cpp
-index e12e85db64..2a5b16c31a 100644
+index e12e85db64..2fa3b7142c 100644
 --- a/src/quick/items/qquickflickable.cpp
 +++ b/src/quick/items/qquickflickable.cpp
 @@ -62,6 +62,8 @@
@@ -553,29 +290,7 @@ index e12e85db64..2a5b16c31a 100644
  }
  
  void QQuickFlickable::viewportMoved(Qt::Orientations orient)
-@@ -2445,20 +2468,7 @@ bool QQuickFlickable::filterMouseEvent(QQuickItem *receiver, QMouseEvent *event)
- bool QQuickFlickable::childMouseEventFilter(QQuickItem *i, QEvent *e)
- {
-     Q_D(QQuickFlickable);
--    auto wantsPointerEvent_helper = [=]() {
--        bool wants = true;
--        if (e->type() >= QEvent::MouseButtonPress && e->type() <= QEvent::MouseMove) {
--            QMouseEvent *me = static_cast<QMouseEvent*>(e);
--            QPointF itemLocalPos = me->localPos();
--            me->setLocalPos(mapFromItem(i, itemLocalPos));
--            wants = d->wantsPointerEvent(e);
--            // re-localize event back to \a i before returning
--            me->setLocalPos(itemLocalPos);
--        }
--        return wants;
--    };
--
--    if (!isVisible() || !isEnabled() || !isInteractive() || !wantsPointerEvent_helper()) {
-+    if (!isVisible() || !isEnabled() || !isInteractive() || !d->wantsPointerEvent(e)) {
-         d->cancelInteraction();
-         return QQuickItem::childMouseEventFilter(i, e);
-     }
-@@ -2504,9 +2514,23 @@ void QQuickFlickable::setMaximumFlickVelocity(qreal v)
+@@ -2504,9 +2527,23 @@ void QQuickFlickable::setMaximumFlickVelocity(qreal v)
  
  /*!
      \qmlproperty real QtQuick::Flickable::flickDeceleration
@@ -602,7 +317,7 @@ index e12e85db64..2a5b16c31a 100644
  */
  qreal QQuickFlickable::flickDeceleration() const
  {
-@@ -2519,7 +2543,7 @@ void QQuickFlickable::setFlickDeceleration(qreal deceleration)
+@@ -2519,7 +2556,7 @@ void QQuickFlickable::setFlickDeceleration(qreal deceleration)
      Q_D(QQuickFlickable);
      if (deceleration == d->deceleration)
          return;
@@ -624,7 +339,7 @@ index 414c9c33d6..6163613493 100644
      enum FixupMode { Normal, Immediate, ExtentChanged };
      FixupMode fixupMode;
 diff --git a/src/quick/items/qquickitem.cpp b/src/quick/items/qquickitem.cpp
-index 75f1457816..aede212126 100644
+index 75f1457816..9de244ed9e 100644
 --- a/src/quick/items/qquickitem.cpp
 +++ b/src/quick/items/qquickitem.cpp
 @@ -59,6 +59,7 @@
@@ -635,15 +350,6 @@ index 75f1457816..aede212126 100644
  
  #include <private/qqmlglobal_p.h>
  #include <private/qqmlengine_p.h>
-@@ -905,7 +906,7 @@ bool QQuickKeysAttached::isConnected(const char *signalName) const
- */
- 
- /*!
--    \qmlproperty list<Item> QtQuick::Keys::forwardTo
-+    \qmlproperty list<Object> QtQuick::Keys::forwardTo
- 
-     This property provides a way to forward key presses, key releases, and keyboard input
-     coming from input methods to other items. This can be useful when you want
 @@ -2526,6 +2527,7 @@ QQuickItem* QQuickItemPrivate::nextPrevItemInTabFocusChain(QQuickItem *item, boo
      QQuickItem *current = item;
      qCDebug(DBG_FOCUS) << "QQuickItemPrivate::nextPrevItemInTabFocusChain: startItem:" << startItem;
@@ -664,16 +370,6 @@ index 75f1457816..aede212126 100644
              // wrapped around, avoid endless loops
              if (item == contentItem) {
                  qCDebug(DBG_FOCUS) << "QQuickItemPrivate::nextPrevItemInTabFocusChain: looped, return contentItem";
-@@ -3717,9 +3722,6 @@ QList<QQuickItem *> QQuickItem::childItems() const
- 
-   If clipping is enabled, an item will clip its own painting, as well
-   as the painting of its children, to its bounding rectangle.
--
--  \note Clipping can affect rendering performance. See \l {Clipping} for more
--  information.
- */
- /*!
-   \property QQuickItem::clip
 diff --git a/src/quick/items/qquickitemview.cpp b/src/quick/items/qquickitemview.cpp
 index 13e7b87049..f8ad168a17 100644
 --- a/src/quick/items/qquickitemview.cpp
@@ -716,25 +412,6 @@ index fba383e268..0d63618622 100644
      QPointF startScene;
      QPointF targetStartPos;
      QPointF lastPos;
-diff --git a/src/quick/items/qquickopenglshadereffectnode.cpp b/src/quick/items/qquickopenglshadereffectnode.cpp
-index bc50099903..5721f116e8 100644
---- a/src/quick/items/qquickopenglshadereffectnode.cpp
-+++ b/src/quick/items/qquickopenglshadereffectnode.cpp
-@@ -120,13 +120,10 @@ void QQuickCustomMaterialShader::updateState(const RenderState &state, QSGMateri
-                                                                      : QQuickShaderEffect::Error);
-     }
- 
--    if (newEffect != oldEffect)
--        m_initialized = false;
--
-     int textureProviderIndex = 0;
-     if (!m_initialized) {
-         for (int shaderType = 0; shaderType < QQuickOpenGLShaderEffectMaterialKey::ShaderTypeCount; ++shaderType) {
--            m_uniformLocs[shaderType].clear();
-+            Q_ASSERT(m_uniformLocs[shaderType].isEmpty());
-             m_uniformLocs[shaderType].reserve(material->uniforms[shaderType].size());
-             for (int i = 0; i < material->uniforms[shaderType].size(); ++i) {
-                 const UniformData &d = material->uniforms[shaderType].at(i);
 diff --git a/src/quick/items/qquickshadereffectsource.cpp b/src/quick/items/qquickshadereffectsource.cpp
 index 4f61d61309..b298ed74da 100644
 --- a/src/quick/items/qquickshadereffectsource.cpp
@@ -786,88 +463,6 @@ index 6230186933..e823ca1095 100644
      \endcode
  
      \c Text.StyledText parser is strict, requiring tags to be correctly nested.
-diff --git a/src/quick/items/qquicktextinput.cpp b/src/quick/items/qquicktextinput.cpp
-index bfdb107ef8..b4b64d59cc 100644
---- a/src/quick/items/qquicktextinput.cpp
-+++ b/src/quick/items/qquicktextinput.cpp
-@@ -2105,7 +2105,7 @@ void QQuickTextInput::undo()
- {
-     Q_D(QQuickTextInput);
-     if (!d->m_readOnly) {
--        d->cancelInput();
-+        d->resetInputMethod();
-         d->internalUndo();
-         d->finishChange(-1, true);
-     }
-@@ -2121,7 +2121,7 @@ void QQuickTextInput::redo()
- {
-     Q_D(QQuickTextInput);
-     if (!d->m_readOnly) {
--        d->cancelInput();
-+        d->resetInputMethod();
-         d->internalRedo();
-         d->finishChange();
-     }
-@@ -2748,13 +2748,11 @@ void QQuickTextInputPrivate::init()
-     m_inputControl = new QInputControl(QInputControl::LineEdit, q);
- }
- 
--void QQuickTextInputPrivate::cancelInput()
-+void QQuickTextInputPrivate::resetInputMethod()
- {
--#if QT_CONFIG(im)
-     Q_Q(QQuickTextInput);
-     if (!m_readOnly && q->hasActiveFocus() && qGuiApp)
--        cancelPreedit();
--#endif // im
-+        QGuiApplication::inputMethod()->reset();
- }
- 
- void QQuickTextInput::updateCursorRectangle(bool scroll)
-@@ -4697,7 +4695,7 @@ void QQuickTextInput::ensureVisible(int position)
- void QQuickTextInput::clear()
- {
-     Q_D(QQuickTextInput);
--    d->cancelInput();
-+    d->resetInputMethod();
-     d->clear();
- }
- 
-diff --git a/src/quick/items/qquicktextinput_p_p.h b/src/quick/items/qquicktextinput_p_p.h
-index 6c11ca0a0b..fa92e608b7 100644
---- a/src/quick/items/qquicktextinput_p_p.h
-+++ b/src/quick/items/qquicktextinput_p_p.h
-@@ -173,7 +173,7 @@ public:
-     }
- 
-     void init();
--    void cancelInput();
-+    void resetInputMethod();
-     void startCreatingCursor();
-     void ensureVisible(int position, int preeditCursor = 0, int preeditLength = 0);
-     void updateHorizontalScroll();
-diff --git a/src/quick/scenegraph/coreapi/qsgbatchrenderer.cpp b/src/quick/scenegraph/coreapi/qsgbatchrenderer.cpp
-index ec65dce95b..a0a97c779a 100644
---- a/src/quick/scenegraph/coreapi/qsgbatchrenderer.cpp
-+++ b/src/quick/scenegraph/coreapi/qsgbatchrenderer.cpp
-@@ -4042,14 +4042,12 @@ void Renderer::renderBatches()
-         if (Q_LIKELY(renderAlpha)) {
-             for (int i=0; i<m_alphaBatches.size(); ++i) {
-                 Batch *b = m_alphaBatches.at(i);
--                if (b->merged) {
-+                if (b->merged)
-                     renderMergedBatch(b);
--                } else if (b->isRenderNode) {
--                    m_current_projection_matrix = projectionMatrix();
-+                else if (b->isRenderNode)
-                     renderRenderNode(b);
--                } else {
-+                else
-                     renderUnmergedBatch(b);
--                }
-             }
-         }
- 
 diff --git a/src/quick/scenegraph/qsgrhidistancefieldglyphcache.cpp b/src/quick/scenegraph/qsgrhidistancefieldglyphcache.cpp
 index 53b6fe117f..219cdd5966 100644
 --- a/src/quick/scenegraph/qsgrhidistancefieldglyphcache.cpp
@@ -1052,46 +647,6 @@ index 3b7d74df63..b75bf820d5 100644
  void tst_QJSEngine::gcWithNestedDataStructure()
  {
      // The GC must be able to traverse deeply nested objects, otherwise this
-diff --git a/tests/auto/qml/qmlcachegen/tst_qmlcachegen.cpp b/tests/auto/qml/qmlcachegen/tst_qmlcachegen.cpp
-index 65137c65a2..3810f505b3 100644
---- a/tests/auto/qml/qmlcachegen/tst_qmlcachegen.cpp
-+++ b/tests/auto/qml/qmlcachegen/tst_qmlcachegen.cpp
-@@ -37,7 +37,6 @@
- #include <QLoggingCategory>
- #include <private/qqmlcomponent_p.h>
- #include <private/qqmlscriptdata_p.h>
--#include <private/qv4compileddata_p.h>
- #include <qtranslator.h>
- 
- #include "../../shared/util.h"
-@@ -79,8 +78,6 @@ private slots:
-     void parameterAdjustment();
-     void inlineComponent();
-     void posthocRequired();
--
--    void saveableUnitPointer();
- };
- 
- // A wrapper around QQmlComponent to ensure the temporary reference counts
-@@ -716,18 +713,6 @@ void tst_qmlcachegen::posthocRequired()
-     QVERIFY(component.errorString().contains(QStringLiteral("Required property x was not initialized")));
- }
- 
--void tst_qmlcachegen::saveableUnitPointer()
--{
--    QV4::CompiledData::Unit unit;
--    unit.flags = QV4::CompiledData::Unit::StaticData | QV4::CompiledData::Unit::IsJavascript;
--    const auto flags = unit.flags;
--
--    QV4::CompiledData::SaveableUnitPointer pointer(&unit);
--
--    QVERIFY(pointer.saveToDisk<char>([](const char *, quint32) { return true; }));
--    QCOMPARE(unit.flags, flags);
--}
--
- QTEST_GUILESS_MAIN(tst_qmlcachegen)
- 
- #include "tst_qmlcachegen.moc"
 diff --git a/tests/auto/qml/qqmldelegatemodel/data/redrawUponColumnChange.qml b/tests/auto/qml/qqmldelegatemodel/data/redrawUponColumnChange.qml
 new file mode 100644
 index 0000000000..206133bb39
@@ -1179,36 +734,6 @@ index 5d635aa63b..824fd89e5b 100644
  
          // engine2 doesn't own the object as engine1 was the first to wrap it above.
          // Therefore, no effect here.
-diff --git a/tests/auto/qmltest/selftests/tst_grabImage.qml b/tests/auto/qmltest/selftests/tst_grabImage.qml
-index 714bc07f27..7ce7e93a07 100644
---- a/tests/auto/qmltest/selftests/tst_grabImage.qml
-+++ b/tests/auto/qmltest/selftests/tst_grabImage.qml
-@@ -34,7 +34,6 @@ TestCase {
-     id: testCase
-     name: "tst_grabImage"
-     when: windowShown
--    visible: true
- 
-     function test_equals() {
-         var rect = createTemporaryQmlObject("import QtQuick 2.0; Rectangle { color: 'red'; width: 10; height: 10; }", testCase);
-@@ -48,8 +47,6 @@ TestCase {
-         // Don't change anything...
-         newImage = grabImage(rect);
-         try {
--            // Check that we actually grabbed something
--            compare(newImage.pixel(0, 0), "#ff0000")
-             compare(newImage.size, oldImage.size);
-             verify(newImage.equals(oldImage));
-         } catch (ex) {
-@@ -89,8 +86,6 @@ TestCase {
- 
-         try {
-             verify(grabbedImage2.equals(grabbedImage))
--            // Check that we actually grabbed, saved, and loaded something
--            compare(grabbedImage2.pixel(0, 0), "#ff0000")
-         } catch (ex) {
-             grabbedImage2.save("tst_grabImage_test_save2.png")
-             throw ex;
 diff --git a/tests/auto/quick/qquickflickable/tst_qquickflickable.cpp b/tests/auto/quick/qquickflickable/tst_qquickflickable.cpp
 index f3659290eb..9fa51da6f8 100644
 --- a/tests/auto/quick/qquickflickable/tst_qquickflickable.cpp
@@ -1326,132 +851,6 @@ index c8f251dbe1..c8ef36ee68 100644
  void tst_QQuickItem::nextItemInFocusChain()
  {
      if (!qt_tab_all_widgets())
-diff --git a/tests/auto/quick/qquicklistview/data/delegateWithMouseArea2.qml b/tests/auto/quick/qquicklistview/data/delegateWithMouseArea2.qml
-deleted file mode 100644
-index dee89ae4cd..0000000000
---- a/tests/auto/quick/qquicklistview/data/delegateWithMouseArea2.qml
-+++ /dev/null
-@@ -1,120 +0,0 @@
--/****************************************************************************
--**
--** Copyright (C) 2021 The Qt Company Ltd.
--** Contact: https://www.qt.io/licensing/
--**
--** This file is part of the test suite of the Qt Toolkit.
--**
--** $QT_BEGIN_LICENSE:BSD$
--** Commercial License Usage
--** Licensees holding valid commercial Qt licenses may use this file in
--** accordance with the commercial license agreement provided with the
--** Software or, alternatively, in accordance with the terms contained in
--** a written agreement between you and The Qt Company. For licensing terms
--** and conditions see https://www.qt.io/terms-conditions. For further
--** information use the contact form at https://www.qt.io/contact-us.
--**
--** BSD License Usage
--** Alternatively, you may use this file under the terms of the BSD license
--** as follows:
--**
--** "Redistribution and use in source and binary forms, with or without
--** modification, are permitted provided that the following conditions are
--** met:
--**   * Redistributions of source code must retain the above copyright
--**     notice, this list of conditions and the following disclaimer.
--**   * Redistributions in binary form must reproduce the above copyright
--**     notice, this list of conditions and the following disclaimer in
--**     the documentation and/or other materials provided with the
--**     distribution.
--**   * Neither the name of The Qt Company Ltd nor the names of its
--**     contributors may be used to endorse or promote products derived
--**     from this software without specific prior written permission.
--**
--**
--** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
--** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
--** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
--** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
--** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
--** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
--** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
--** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
--** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
--** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
--** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
--**
--** $QT_END_LICENSE$
--**
--****************************************************************************/
--
--import QtQuick 2.15
--
--Rectangle {
--
--    width: 240
--    height: 320
--    color: "#ffffff"
--
--    Component {
--        id: myDelegate
--        Rectangle {
--            id: wrapper
--            width: list.orientation == ListView.Vertical ? 240 : 20
--            height: list.orientation == ListView.Vertical ? 20 : 240
--            border.width: 1
--            border.color: "black"
--            MouseArea {
--                anchors.fill: parent
--            }
--            Text {
--                text: index + ":" + (list.orientation == ListView.Vertical ? parent.y : parent.x).toFixed(0)
--            }
--            color: ListView.isCurrentItem ? "lightsteelblue" : "white"
--        }
--    }
--
--    ListView {
--        id: list
--        objectName: "list"
--        focus: true
--        width: 240
--        height: 200
--        clip: true
--        model: 30
--        headerPositioning: ListView.OverlayHeader
--        delegate: myDelegate
--
--        header: Rectangle {
--            width: list.orientation == Qt.Vertical ? 240 : 30
--            height: list.orientation == Qt.Vertical ? 30 : 240
--            color: "green"
--            z: 11
--            Text {
--                anchors.centerIn: parent
--                text: "header " + (list.orientation == ListView.Vertical ? parent.y : parent.x).toFixed(1)
--            }
--        }
--    }
--
--    // debug
--    Rectangle {
--        color: "#40ff0000"
--        border.width: txt.x
--        border.color: "black"
--        radius: 5
--        width: txt.implicitWidth + 50
--        height: txt.implicitHeight + 2 * txt.x
--        anchors.bottom: parent.bottom
--        anchors.right: parent.right
--        anchors.left: parent.left
--
--        Text {
--            id: txt
--            x: 3
--            y: x
--            text:  "header position: " + (list.orientation == ListView.Vertical ? list.headerItem.y : list.headerItem.x).toFixed(1)
--              + "\ncontent position: " + (list.orientation == ListView.Vertical ? list.contentY : list.contentX).toFixed(1)
--        }
--    }
--}
 diff --git a/tests/auto/quick/qquicklistview/data/qtbug86744.qml b/tests/auto/quick/qquicklistview/data/qtbug86744.qml
 deleted file mode 100644
 index 6dc82d57eb..0000000000
@@ -1480,112 +879,13 @@ index 6dc82d57eb..0000000000
 -    }
 -}
 diff --git a/tests/auto/quick/qquicklistview/tst_qquicklistview.cpp b/tests/auto/quick/qquicklistview/tst_qquicklistview.cpp
-index df329f8318..a7aefbe432 100644
+index df329f8318..b564fd3ba5 100644
 --- a/tests/auto/quick/qquicklistview/tst_qquicklistview.cpp
 +++ b/tests/auto/quick/qquicklistview/tst_qquicklistview.cpp
-@@ -299,9 +299,6 @@ private slots:
-     void requiredObjectListModel();
-     void clickHeaderAndFooterWhenClip();
-     void animatedDelegate();
--    void dragDelegateWithMouseArea();
--    void dragDelegateWithMouseArea_data();
--    void isCurrentItem_DelegateModel();
- 
- private:
-     template <class T> void items(const QUrl &source);
-@@ -10112,109 +10109,6 @@ void tst_QQuickListView::animatedDelegate()
+@@ -10201,20 +10201,6 @@ void tst_QQuickListView::dragDelegateWithMouseArea_data()
      }
  }
  
--static void dragListView(QWindow *window, QPoint *startPos, const QPoint &delta)
--{
--    auto drag_helper = [&](QWindow *window, QPoint *startPos, const QPoint &d) {
--        QPoint pos = *startPos;
--        const int dragDistance = d.manhattanLength();
--        const QPoint unitVector(qBound(-1, d.x(), 1), qBound(-1, d.y(), 1));
--        for (int i = 0; i < dragDistance; ++i) {
--            QTest::mouseMove(window, pos);
--            pos += unitVector;
--        }
--        // Move to the final position
--        pos = *startPos + d;
--        QTest::mouseMove(window, pos);
--        *startPos = pos;
--    };
--
--    if (delta.manhattanLength() == 0)
--        return;
--    const int dragThreshold = QGuiApplication::styleHints()->startDragDistance();
--    const QPoint unitVector(qBound(-1, delta.x(), 1), qBound(-1, delta.y(), 1));
--    // go just beyond the drag theshold
--    drag_helper(window, startPos, unitVector * (dragThreshold + 1));
--    drag_helper(window, startPos, unitVector);
--
--    // next drag will actually scroll the listview
--    drag_helper(window, startPos, delta);
--}
--
--void tst_QQuickListView::dragDelegateWithMouseArea()
--{
--    QFETCH(QQuickItemView::LayoutDirection, layoutDirection);
--
--    QScopedPointer<QQuickView> window(createView());
--    QVERIFY(window);
--    window->setSource(testFileUrl("delegateWithMouseArea2.qml"));
--    window->show();
--    QVERIFY(QTest::qWaitForWindowExposed(window.data()));
--
--    QQuickListView *listview = findItem<QQuickListView>(window->rootObject(), "list");
--    QVERIFY(listview != nullptr);
--
--    const bool horizontal = layoutDirection < QQuickItemView::VerticalTopToBottom;
--    listview->setOrientation(horizontal ? QQuickListView::Horizontal : QQuickListView::Vertical);
--
--    if (horizontal)
--        listview->setLayoutDirection(static_cast<Qt::LayoutDirection>(layoutDirection));
--    else
--        listview->setVerticalLayoutDirection(static_cast<QQuickItemView::VerticalLayoutDirection>(layoutDirection));
--
--    QVERIFY(QQuickTest::qWaitForItemPolished(listview));
--
--    auto contentPosition = [&](QQuickListView *listview) {
--        return (listview->orientation() == QQuickListView::Horizontal ? listview->contentX(): listview->contentY());
--    };
--
--    qreal expectedContentPosition = contentPosition(listview);
--    QPoint startPos = (QPointF(listview->width(), listview->height())/2).toPoint();
--    QTest::mousePress(window.data(), Qt::LeftButton, Qt::NoModifier, startPos, 200);
--
--    QPoint dragDelta(0, -10);
--
--    if (layoutDirection == QQuickItemView::RightToLeft || layoutDirection == QQuickItemView::VerticalBottomToTop)
--        dragDelta = -dragDelta;
--    expectedContentPosition -= dragDelta.y();
--    if (horizontal)
--        dragDelta = dragDelta.transposed();
--
--    dragListView(window.data(), &startPos, dragDelta);
--
--    QTest::mouseRelease(window.data(), Qt::LeftButton, Qt::NoModifier, startPos, 200);     // Wait 200 ms before we release to avoid trigger a flick
--
--    // wait for the "fixup" animation to finish
--    QVERIFY(QTest::qWaitFor([&]()
--        { return !listview->isMoving();}
--    ));
--
--    QCOMPARE(contentPosition(listview), expectedContentPosition);
--}
--
--void tst_QQuickListView::dragDelegateWithMouseArea_data()
--{
--    QTest::addColumn<QQuickItemView::LayoutDirection>("layoutDirection");
--
--    for (int layDir = QQuickItemView::LeftToRight; layDir <= (int)QQuickItemView::VerticalBottomToTop; layDir++) {
--        const char *enumValueName = QMetaEnum::fromType<QQuickItemView::LayoutDirection>().valueToKey(layDir);
--        QTest::newRow(enumValueName) << static_cast<QQuickItemView::LayoutDirection>(layDir);
--    }
--}
--
 -void tst_QQuickListView::isCurrentItem_DelegateModel()
 -{
 -    QScopedPointer<QQuickView> window(createView());
@@ -1603,62 +903,6 @@ index df329f8318..a7aefbe432 100644
  QTEST_MAIN(tst_QQuickListView)
  
  #include "tst_qquicklistview.moc"
-diff --git a/tests/auto/quick/qquicktextinput/tst_qquicktextinput.cpp b/tests/auto/quick/qquicktextinput/tst_qquicktextinput.cpp
-index 0ef1711fd6..7c5c09055d 100644
---- a/tests/auto/quick/qquicktextinput/tst_qquicktextinput.cpp
-+++ b/tests/auto/quick/qquicktextinput/tst_qquicktextinput.cpp
-@@ -5924,7 +5924,6 @@ void tst_qquicktextinput::clear()
- 
-     textInput->clear();
-     QVERIFY(textInput->text().isEmpty());
--    QVERIFY2(textInput->preeditText().isEmpty(), "Pre-edit text must be empty after clear");
- 
-     QCOMPARE(spy.count(), 3);
- 
-@@ -5933,7 +5932,6 @@ void tst_qquicktextinput::clear()
-     QVERIFY(!textInput->canUndo());
-     QCOMPARE(spy.count(), 4);
-     QCOMPARE(textInput->text(), QString("I am Legend"));
--    QVERIFY2(textInput->preeditText().isEmpty(), "Pre-edit text must be empty after undo");
- }
- 
- void tst_qquicktextinput::backspaceSurrogatePairs()
-diff --git a/tests/manual/tableview/storagemodel/storagemodel.cpp b/tests/manual/tableview/storagemodel/storagemodel.cpp
-index f0394db6b8..b43454b249 100644
---- a/tests/manual/tableview/storagemodel/storagemodel.cpp
-+++ b/tests/manual/tableview/storagemodel/storagemodel.cpp
-@@ -64,20 +64,17 @@ StorageModel::StorageModel(QObject *parent) :
- }
- 
- QHash<int, QByteArray> StorageModel::roleNames() const {
--    static auto roles = [this]() {
--        auto roles = QHash<int, QByteArray> {
--            { int(Role::Type), "type" },
--            { int(Role::Heading), "heading" },
--            { int(Role::Value), "value" },
--            { int(Role::ValueMax), "valueMax" },
--            { int(Role::ValueDisplay), "valueDisplay" },
--            { int(Role::ValueMaxDisplay), "valueMaxDisplay" },
--            { Qt::CheckStateRole, "checkState" }
--        };
--        roles.insert(QAbstractTableModel::roleNames());
--        return roles;
--    }();
--    return roles;
-+    static auto roles = QHash<int, QByteArray> {
-+        { int(Role::Type), "type" },
-+        { int(Role::Heading), "heading" },
-+        { int(Role::Value), "value" },
-+        { int(Role::ValueMax), "valueMax" },
-+        { int(Role::ValueDisplay), "valueDisplay" },
-+        { int(Role::ValueMaxDisplay), "valueMaxDisplay" },
-+        { Qt::CheckStateRole, "checkState" },
-+    };
-+    static auto ret = roles.unite(QAbstractTableModel::roleNames());;
-+    return ret;
- }
- 
- void StorageModel::refresh()
 diff --git a/tests/manual/touch/flicktext.qml b/tests/manual/touch/flicktext.qml
 index 9e84261687..e69d6207a9 100644
 --- a/tests/manual/touch/flicktext.qml
