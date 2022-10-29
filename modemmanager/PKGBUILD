@@ -1,38 +1,44 @@
 
 pkgname=modemmanager
 _pkgname=ModemManager
-pkgver=1.18.12
+pkgver=1.20.0
 pkgrel=1
 pkgdesc="Mobile broadband modem management service"
 arch=('x86_64')
 url="https://www.freedesktop.org/wiki/Software/ModemManager/"
 license=('GPL2' 'LGPL2.1')
 depends=('dbus-glib' 'systemd' 'libgudev' 'ppp' 'polkit' 'hicolor-icon-theme' 'libqmi' 'libmbim')
-makedepends=('python3')
+makedepends=('meson' 'ninja' 'python3')
 optdepends=('usb_modeswitch: install if your modem shows up as a storage drive')
 options=('!libtool')
 install=modemmanager.install
-source=("https://www.freedesktop.org/software/ModemManager/${_pkgname}-${pkgver}.tar.xz")
-sha256sums=('b464e4925d955a6ca86dd08616e763b26ae46d7fd37dbe281678e34065b1e430')
+source=("https://gitlab.freedesktop.org/mobile-broadband/${_pkgname}/-/archive/${pkgver}/${_pkgname}-${pkgver}.tar.bz2")
+sha256sums=('743d18b9685450c14ccfea005e3c34e2493d32170ebdb53136f50270741db508')
 
 build() {
-  cd ${_pkgname}-${pkgver}
+  mkdir -p build
+  cd build
 
-   ./configure --prefix=/usr \
-   	--sysconfdir=/etc \
-	--localstatedir=/var \
-	--with-udev-base-dir=/usr/lib/udev \
-	--disable-static \
-	--disable-gtk-doc \
-	--with-polkit=strict \
-	--with-systemd-journal \
-	--enable-introspection=no \
-	--enable-all-plugins
-  make
+  meson ../${_pkgname}-${pkgver} \
+    --prefix=/usr \
+    --buildtype=release \
+    --libexecdir=/usr/lib \
+    -Dudevdir=/usr/lib/udev \
+    -Dpolkit=strict \
+    -Dintrospection=false \
+    -Dgtk_doc=false \
+    -Dqrtr=false
+  ninja
+}
+
+check() {
+  cd build
+
+  meson test
 }
 
 package() {
-  cd ${_pkgname}-${pkgver}
+  cd build
 
-  make DESTDIR=${pkgdir} install
+  DESTDIR=${pkgdir} ninja install
 }

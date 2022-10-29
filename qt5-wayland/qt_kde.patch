@@ -1841,73 +1841,6 @@ index ccad0048..4cc9b3b8 100644
      }
      virtual void *nativeResourceForWindow(const QByteArray &resource, QWindow *window) {
          Q_UNUSED(resource);
-diff --git a/src/compositor/compositor_api/qwaylandquickitem.cpp b/src/compositor/compositor_api/qwaylandquickitem.cpp
-index a5d7e91e..81808908 100644
---- a/src/compositor/compositor_api/qwaylandquickitem.cpp
-+++ b/src/compositor/compositor_api/qwaylandquickitem.cpp
-@@ -253,16 +253,6 @@ void QWaylandBufferMaterial::ensureTextures(int count)
-         m_textures << nullptr;
-     }
- }
--
--void QWaylandBufferMaterial::setBufferRef(QWaylandQuickItem *surfaceItem, const QWaylandBufferRef &ref)
--{
--    Q_UNUSED(surfaceItem);
--    m_bufferRef = ref;
--    for (int plane = 0; plane < bufferTypes[ref.bufferFormatEgl()].planeCount; plane++)
--        if (auto texture = ref.toOpenGLTexture(plane))
--            setTextureForPlane(plane, texture);
--    bind();
--}
- #endif // QT_CONFIG(opengl)
- 
- QMutex *QWaylandQuickItemPrivate::mutex = nullptr;
-@@ -1421,20 +1411,13 @@ QSGNode *QWaylandQuickItem::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeDat
- 
-     if (d->newTexture) {
-         d->newTexture = false;
--        material->setBufferRef(this, ref);
-+        for (int plane = 0; plane < bufferTypes[ref.bufferFormatEgl()].planeCount; plane++)
-+            if (auto texture = ref.toOpenGLTexture(plane))
-+                material->setTextureForPlane(plane, texture);
-+        material->bind();
-     }
- 
--    const QSize surfaceSize = ref.size() / surface()->bufferScale();
--    const QRectF sourceGeometry = surface()->sourceGeometry();
--    const QRectF normalizedCoordinates =
--            sourceGeometry.isValid()
--            ? QRectF(sourceGeometry.x() / surfaceSize.width(),
--                     sourceGeometry.y() / surfaceSize.height(),
--                     sourceGeometry.width() / surfaceSize.width(),
--                     sourceGeometry.height() / surfaceSize.height())
--            : QRectF(0, 0, 1, 1);
--
--    QSGGeometry::updateTexturedRectGeometry(geometry, rect, normalizedCoordinates);
-+    QSGGeometry::updateTexturedRectGeometry(geometry, rect, QRectF(0, 0, 1, 1));
- 
-     node->setGeometry(geometry);
-     node->setFlag(QSGNode::OwnsGeometry, true);
-diff --git a/src/compositor/compositor_api/qwaylandquickitem_p.h b/src/compositor/compositor_api/qwaylandquickitem_p.h
-index a507cec0..a75cdb2b 100644
---- a/src/compositor/compositor_api/qwaylandquickitem_p.h
-+++ b/src/compositor/compositor_api/qwaylandquickitem_p.h
-@@ -80,7 +80,6 @@ public:
-     ~QWaylandBufferMaterial() override;
- 
-     void setTextureForPlane(int plane, QOpenGLTexture *texture);
--    void setBufferRef(QWaylandQuickItem *surfaceItem, const QWaylandBufferRef &ref);
- 
-     void bind();
- 
-@@ -93,7 +92,6 @@ private:
- 
-     const QWaylandBufferRef::BufferFormatEgl m_format;
-     QVarLengthArray<QOpenGLTexture*, 3> m_textures;
--    QWaylandBufferRef m_bufferRef;
- };
- #endif // QT_CONFIG(opengl)
- 
 diff --git a/src/compositor/configure.json b/src/compositor/configure.json
 index bcfd5215..da95d07b 100644
 --- a/src/compositor/configure.json
@@ -1973,35 +1906,6 @@ index bcfd5215..da95d07b 100644
 +            "use": "wayland-client"
          }
      },
- 
-diff --git a/src/compositor/extensions/qwaylandviewporter.cpp b/src/compositor/extensions/qwaylandviewporter.cpp
-index c34e3d0d..b98274b1 100644
---- a/src/compositor/extensions/qwaylandviewporter.cpp
-+++ b/src/compositor/extensions/qwaylandviewporter.cpp
-@@ -149,16 +149,14 @@ void QWaylandViewporterPrivate::Viewport::checkCommittedState()
-         return;
-     }
- 
--    if (m_surface->bufferSize().isValid()) {
--        QRectF max = QRectF(QPointF(), m_surface->bufferSize() / m_surface->bufferScale());
--        // We can't use QRectF.contains, because that would return false for values on the border
--        if (max.united(source) != max) {
--            wl_resource_post_error(resource()->handle, error_out_of_buffer,
--                                   "source %f,%f, %fx%f extends outside attached buffer %fx%f",
--                                   source.x(), source.y(), source.width(), source.height(),
--                                   max.width(), max.height());
--            return;
--        }
-+    QRectF max = QRectF(QPointF(), m_surface->bufferSize() / m_surface->bufferScale());
-+    // We can't use QRectF.contains, because that would return false for values on the border
-+    if (max.united(source) != max) {
-+        wl_resource_post_error(resource()->handle, error_out_of_buffer,
-+                               "source %f,%f, %fx%f extends outside attached buffer %fx%f",
-+                               source.x(), source.y(), source.width(), source.height(),
-+                               max.width(), max.height());
-+        return;
-     }
- }
  
 diff --git a/src/hardwareintegration/client/wayland-egl/qwaylandeglwindow.cpp b/src/hardwareintegration/client/wayland-egl/qwaylandeglwindow.cpp
 index 7889f575..64140672 100644
