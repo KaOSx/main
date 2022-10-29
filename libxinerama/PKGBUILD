@@ -1,7 +1,7 @@
 
 pkgname=libxinerama
-pkgver=1.1.4
-pkgrel=2
+pkgver=1.1.5
+pkgrel=1
 pkgdesc="X11 Xinerama extension library"
 arch=('x86_64')
 url="https://xorg.freedesktop.org/"
@@ -9,8 +9,8 @@ license=('custom')
 depends=('libxext' 'xorgproto')
 makedepends=('xorg-util-macros')
 options=('!libtool')
-source=("https://xorg.freedesktop.org/releases/individual/lib/libXinerama-${pkgver}.tar.bz2")
-sha256sums=('0008dbd7ecf717e1e507eed1856ab0d9cf946d03201b85d5dcf61489bb02d720')
+source=("https://xorg.freedesktop.org/releases/individual/lib/libXinerama-${pkgver}.tar.xz")
+sha256sums=('5094d1f0fcc1828cb1696d0d39d9e866ae32520c54d01f618f1a3c1e30c2085c')
 
 build() {
   cd libXinerama-${pkgver}
