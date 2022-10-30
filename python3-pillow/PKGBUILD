@@ -2,13 +2,13 @@
 pkgname=python3-pillow
 _pkgname=Pillow
 pkgver=9.3.0
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 pkgdesc="Python Imaging Library (PIL) fork. Python3 version."
 url="https://python-pillow.org/"
 license=('BSD')
 depends=('python3' 'lcms2' 'libwebp')
-makedepends=('python3-setuptools' 'libwebp' 'tk')
+makedepends=('python3-build' 'python3-pip' 'python3-wheel' 'python3-setuptools' 'tk')
 source=("https://files.pythonhosted.org/packages/source/P/Pillow/${_pkgname}-${pkgver}.tar.gz")
 #source=("https://github.com/python-pillow/Pillow/archive/${pkgver}.tar.gz")
 sha256sums=('c935a22a557a560108d780f9a0fc426dd7459940dc54faa49d83249c8d3e760f')
@@ -16,12 +16,12 @@ sha256sums=('c935a22a557a560108d780f9a0fc426dd7459940dc54faa49d83249c8d3e760f')
 build() { 
   cd ${_pkgname}-${pkgver}
 
-  python3 setup.py build
+  python3 -m build -nw
 }
 
 package() {
   cd ${_pkgname}-${pkgver}
-  python3 setup.py install --root=${pkgdir}/ --optimize=0
-  
-  install -Dm644 docs/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+  PIP_CONFIG_FILE=/dev/null pip3 install --root=${pkgdir} --ignore-installed --no-deps dist/*.whl
+
+  install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
