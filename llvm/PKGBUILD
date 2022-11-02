@@ -1,7 +1,7 @@
 
 pkgbase="llvm-project"
 pkgname='llvm'
-pkgver=15.0.3
+pkgver=15.0.4
 pkgrel=1
 pkgdesc="The LLVM Core libraries provide a modern source- and target-independent optimizer, along with code generation support for many popular CPUs."
 arch=('x86_64')
@@ -10,7 +10,7 @@ license=('custom:University of Illinois/NCSA Open Source License')
 depends=('perl' 'libffi')
 makedepends=('gcc-libs' 'python3' 'ocaml' 'gcc' 'groff' 'swig' 'cmake') # 'ocaml-ctypes' 'findlib' needed to have CMake build find ocaml
 source=("https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver}/${pkgbase}-${pkgver}.src.tar.xz")
-md5sums=('d435e1160fd16b8efe1e0f4d1058bd50')
+md5sums=('253aa1fa96359447da569e2b948fea4f')
 
 prepare() {
     cd ${pkgbase}-${pkgver}.src
