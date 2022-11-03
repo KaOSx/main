@@ -1,7 +1,7 @@
 
 pkgname=postfix
 pkgver=3.7.3
-pkgrel=1
+pkgrel=2
 pkgdesc='Secure, fast, easy to administer alternative to Sendmail'
 url='https://www.postfix.org/'
 arch=('x86_64')
@@ -12,17 +12,17 @@ install=${pkgname}.install
 source=("https://mirror.lhsolutions.nl/postfix-release/official/${pkgname}-${pkgver}.tar.gz"
         'aliases.patch'
         'postfix.service'
-        'glibc.patch')
+        "https://gitweb.gentoo.org/repo/gentoo.git/plain/mail-mta/postfix/files/linux-6.patch")
 md5sums=('bbb2168f85530fe4eaa65408a48e731b'
          '9cc2ee3c72e134c2da5a895abaa56f30'
          '24af169de13c34dac03d787c3e607ec5'
-         '33c2f08318f3caa6d7b9f5c68bbd2602')
+         '08967a35249243eb06e46b1868e2dae2')
 
 build() {
   cd ${pkgname}-${pkgver}
 
   #sed -i -e 's|34].*)|345].*)|g' makedefs
-  #patch -p1 -i ${srcdir}/glibc.patch
+  patch -p1 -i ${srcdir}/linux-6.patch
 
 	make makefiles DEBUG='' CCARGS=' \
 		-DUSE_SASL_AUTH -DUSE_CYRUS_SASL -I/usr/include/sasl \

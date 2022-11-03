@@ -1,7 +1,7 @@
 
 pkgname=gdb
 pkgver=12.1
-pkgrel=2
+pkgrel=3
 pkgdesc="The GNU Debugger"
 arch=('x86_64')
 url="https://www.gnu.org/software/gdb/"
@@ -10,11 +10,14 @@ depends=('ncurses' 'expat' 'python3' 'guile' 'source-highlight' 'boost-libs')
 makedepends=('texinfo')
 backup=('etc/gdb/gdbinit')
 options=('!libtool' '!buildflags')
-source=("https://ftp.gnu.org/gnu/gdb/${pkgname}-${pkgver}.tar.xz")
-md5sums=('759a1b8d2b4d403367dd0e14fa04643d')
+source=("https://ftp.gnu.org/gnu/gdb/${pkgname}-${pkgver}.tar.xz"
+        "https://gitweb.gentoo.org/repo/gentoo.git/plain/sys-devel/gdb/files/gdb-12.1-readline-8.2-build.patch")
+md5sums=('759a1b8d2b4d403367dd0e14fa04643d'
+         '1592107b83c56f19253cd317e41eb5d9')
 
 build() {
   cd ${pkgname}-${pkgver}
+  patch -p1 -i ${srcdir}/gdb-12.1-readline-8.2-build.patch
 
   mkdir -p build
   cd build
