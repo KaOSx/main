@@ -1,7 +1,7 @@
 
 pkgname=pugixml
-pkgver=1.12.1
-_pkgver=1.12
+pkgver=1.13
+_pkgver=1.13
 pkgrel=1
 pkgdesc="Light-weight C++ XML processing library with XPath support"
 url='https://pugixml.org'
@@ -9,24 +9,20 @@ arch=('x86_64')
 license=('MIT')
 makedepends=('cmake')
 source=("https://github.com/zeux/pugixml/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
-md5sums=('a91ebf0080cf5b0b9fae8195af67452e')
+md5sums=('3e4c588e03bdca140844f3c47c1a995e')
 
 build() {
-  mkdir -p build
-  cd build
-
-  cmake ../${pkgname}-${_pkgver} \
+  cmake -B build -S ${pkgname}-${_pkgver} \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=lib \
     -DBUILD_SHARED_LIBS=ON
-  make
+  cmake --build build
 }
 
 package() {
-  cd build
-  make DESTDIR=${pkgdir} install
 
-  install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
-  install -m644 ../${pkgname}-${_pkgver}/readme.txt ${pkgdir}/usr/share/licenses/${pkgname}/
+  DESTDIR=${pkgdir} cmake --install build
+
+  install -m644 -D ${pkgname}-${_pkgver}/readme.txt ${pkgdir}/usr/share/licenses/${pkgname}/readme.txt
 }
