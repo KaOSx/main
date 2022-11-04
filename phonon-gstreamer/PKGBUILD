@@ -1,0 +1,41 @@
+
+pkgname=phonon-gstreamer
+_commit=27e1a1d07b6874a88dbeb096d9af58f4cb59857b
+pkgver=4.10.0
+pkgrel=1
+pkgdesc="Phonon GStreamer backend Qt6 version"
+arch=('x86_64')
+url='https://community.kde.org/Phonon'
+license=('LGPL')
+depends=('gst-plugins-base' 'qt6-base')
+makedepends=('extra-cmake-modules' 'mesa' 'phonon-qt6' 'qt6-tools')
+provides=('phonon-backend-qt6')
+#groups=('kde-complete' 'kde-uninstall')
+#source=("https://download.kde.org/stable/phonon/${_pkgname}/${pkgver}/${_pkgname}-${pkgver}.tar.xz"
+source=("https://invent.kde.org/libraries/phonon-gstreamer/-/archive/${_commit}/${pkgname}-${_commit}.tar.bz2"
+        "https://github.com/KDE/phonon-gstreamer/commit/fca0714fd37b2276eb663f649b6b9871a3973fa4.diff")
+sha256sums=('4c504e32dbbc3f75504b4fe41e62da96d80d9eb4bfcf59658466a45ba847d0d3'
+            'f64ef452d3753776c4827d25bbb2b52cdff3d3f54722141d3cf1cb3c9e61b4cb')
+
+prepare() {
+  cd ${pkgname}-${_commit}
+
+  #patch -p1 -i ${srcdir}/fca0714fd37b2276eb663f649b6b9871a3973fa4.diff
+}
+
+build() {
+  cmake -B build -S ${pkgname}-${_commit} \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DKDE_INSTALL_LIBDIR=lib \
+    -DBUILD_TESTING=OFF \
+    -DBUILD_WITH_QT6=ON \
+    -DEXCLUDE_DEPRECATED_BEFORE_AND_AT=${_kf5ver} \
+    -DQT_MAJOR_VERSION=6
+  cmake --build build
+}
+
+package() {
+
+  DESTDIR=${pkgdir} cmake --install build
+}
