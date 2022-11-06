@@ -1,15 +1,16 @@
 
 pkgname=libkolabxml
-pkgver=1.1.6
-pkgrel=18
+pkgver=1.2.1
+pkgrel=1
 pkgdesc="Kolab XML Format Schema Definitions Library"
 url='https://www.kolab.org/'
 arch=('x86_64')
 license=('GPL')
 depends=('xerces-c' 'boost-libs') # 'qt5-base' 'kdelibs4support')
 makedepends=('extra-cmake-modules' 'boost' 'xsd' 'swig')
-source=("https://mirror.kolabenterprise.com/pub/releases/${pkgname}-${pkgver}.tar.gz")
-md5sums=('eec4b8bf117a6e263eed9ee800ae3aa6')
+#source=("https://mirror.kolabenterprise.com/pub/releases/${pkgname}-${pkgver}.tar.gz")
+source=("https://cgit.kolab.org/libkolabxml/snapshot/${pkgname}-${pkgver}.tar.gz")
+md5sums=('b2f4d62136c488cb4d644f7932f74282')
 
 build() {
   cmake -B build -S ${pkgname}-${pkgver} \
