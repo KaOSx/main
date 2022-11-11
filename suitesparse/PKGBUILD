@@ -1,6 +1,6 @@
 
 pkgname=suitesparse
-pkgver=5.13.0
+pkgver=6.0.0
 pkgrel=1
 epoch=1
 pkgdesc="A collection of sparse matrix libraries"
@@ -9,16 +9,20 @@ arch=('x86_64')
 depends=('lapack')
 makedepends=('cmake')
 license=('GPL')
-source=("https://github.com/DrTimothyAldenDavis/SuiteSparse/archive/v${pkgver}.tar.gz"
+source=("https://github.com/DrTimothyAldenDavis/SuiteSparse/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz"
         'Makefile.diff')
-md5sums=('e9e7bc594b77ae4b58d943cdc286d679'
+md5sums=('87aa9d4805eca85886d74e7611a21a64'
          '7bc5e2a12c2aa88d71786cc3f76b170e')
 
 build() {
   cd SuiteSparse-${pkgver}
-  patch -p1 -i ${srcdir}/Makefile.diff
+  #patch -p1 -i ${srcdir}/Makefile.diff
 
-  make BLAS=-lblas LAPACK=-llapack
+  CMAKE_OPTIONS="-DALLOW_64BIT_BLAS=ON \
+    -DBLA_VENDOR=ANY \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr"
+  make
 }
 
 
