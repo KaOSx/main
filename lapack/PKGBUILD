@@ -1,7 +1,7 @@
 
 pkgname=lapack
-pkgver=3.10.1
-pkgrel=2
+pkgver=3.11
+pkgrel=1
 arch=('x86_64')
 url="https://netlib.org/lapack"
 pkgdesc="Linear Algebra PACKage"
@@ -11,8 +11,8 @@ conflicts=('blas' 'atlas-lapack')
 replaces=('blas' 'atlas-lapack')
 provides=('blas')
 license=("custom")
-source=("https://github.com/Reference-LAPACK/lapack/archive/v${pkgver}.tar.gz")
-md5sums=('722407217a080a0012ae3d6913fb8008')
+source=("https://github.com/Reference-LAPACK/lapack/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
+md5sums=('e28b8a99ca5b77b4d1b095f21343db16')
 
 build() {
   cmake -B build -S ${pkgname}-${pkgver} \

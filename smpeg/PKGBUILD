@@ -2,7 +2,7 @@
 pkgname=smpeg
 pkgver=0.4.5
 _pkgver=0_4_5
-pkgrel=3
+pkgrel=4
 pkgdesc="SDL MPEG Player Library"
 arch=('x86_64')
 url="https://icculus.org/smpeg/"
@@ -10,15 +10,15 @@ license=('LGPL')
 depends=('glu' 'sdl')
 makedepends=('mesa')
 options=('!libtool')
-source=("https://github.com/Distrotech/smpeg/archive/release_${_pkgver}.tar.gz"
+source=("https://github.com/icculus/smpeg/archive/release_${_pkgver}.tar.gz"
         "https://gitweb.gentoo.org/repo/gentoo.git/plain/media-libs/smpeg/files/smpeg-0.4.4-gcc6.patch")
-md5sums=('e33e7f83608830efaa586990ce5e852c'
-         '476154a818dc3856c9ecec3dcda34138')
+md5sums=('5709917985054f5253eeb18205afe697'
+         '109fa35fa59e06bba8cd52560282907e')
 
 build() {
   cd ${pkgname}-release_${_pkgver}
   patch -p1 -i ${srcdir}/smpeg-0.4.4-gcc6.patch
-  
+
   ./autogen.sh
   ./configure --prefix=/usr \
     --mandir=/usr/share/man \
@@ -30,6 +30,6 @@ build() {
 
 package() {
   cd ${pkgname}-release_${_pkgver}
-  
+
   make DESTDIR=${pkgdir} install
 }

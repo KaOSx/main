@@ -10,32 +10,25 @@ depends=('lapack')
 makedepends=('cmake')
 license=('GPL')
 source=("https://github.com/DrTimothyAldenDavis/SuiteSparse/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz"
-        'Makefile.diff')
+        "https://github.com/DrTimothyAldenDavis/SuiteSparse/commit/769870a0d3304d93097d346dc466e8015bf4bab9.diff")
 md5sums=('87aa9d4805eca85886d74e7611a21a64'
-         '7bc5e2a12c2aa88d71786cc3f76b170e')
+         'ae696279e22905afc10261a7e0deae0b')
 
 build() {
   cd SuiteSparse-${pkgver}
-  #patch -p1 -i ${srcdir}/Makefile.diff
+  # octave rebuild on 6.0.0 fails without
+  patch -p1 -i ${srcdir}/769870a0d3304d93097d346dc466e8015bf4bab9.diff
 
-  CMAKE_OPTIONS="-DALLOW_64BIT_BLAS=ON \
-    -DBLA_VENDOR=ANY \
+  CMAKE_OPTIONS="-DNSTATIC=ON \
+    -DBLA_VENDOR=Generic \
     -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_INSTALL_PREFIX=/usr"
+    -DCMAKE_INSTALL_PREFIX=/usr" \
   make
 }
 
 
 package() {
   cd SuiteSparse-${pkgver}
-  install -dm755 ${pkgdir}/usr
 
-  cd metis-5.1.0
-  make install DESTDIR=${pkgdir}
-  mv ${pkgdir}/buildsys/main/suitesparse/src/SuiteSparse-${pkgver}/* ${pkgdir}/usr
-  rm -r ${pkgdir}/buildsys
-
-  cd ..
-
-  make BLAS=-lblas LAPACK=-llapack install INSTALL=${pkgdir}/usr INSTALL_LIB=${pkgdir}/usr/lib 
+  DESTDIR=${pkgdir} make install
 }
