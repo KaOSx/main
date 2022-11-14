@@ -1,8 +1,8 @@
 
 pkgname=babl
-pkgver=0.1.96
+pkgver=0.1.98
 _pkgver=0.1
-pkgrel=2
+pkgrel=1
 pkgdesc="Dynamic, any to any, pixel format conversion library"
 arch=('x86_64')
 url="https://gegl.org/babl/"
@@ -11,12 +11,12 @@ depends=('lcms2')
 makedepends=('meson' 'ninja' 'gobject-introspection')
 options=('!libtool' '!makeflags')
 source=("https://ftp.gimp.org/pub/babl/${_pkgver}/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('33673fe459a983f411245a49f81fd7f1966af1ea8eca9b095a940c542b8545f6')
+sha256sums=('f3b222f84e462735de63fa9c3651942f2b78fd314c73a22e05ff7c73afd23af1')
 
 prepare() {
   cd ${pkgname}-${pkgver}
   # needed for newer meson
-  sed -e "s|not stable, Description|not stable, description|" -i meson.build
+  #sed -e "s|not stable, Description|not stable, description|" -i meson.build
 }
 
 build() {
