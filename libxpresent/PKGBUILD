@@ -1,0 +1,27 @@
+
+pkgname=libxpresent
+_pkgname=libXpresent
+pkgver=1.0.1
+pkgrel=1
+pkgdesc="Xlib-based library for the X Present Extension"
+arch=('x86_64')
+url="https://gitlab.freedesktop.org/xorg/lib/libxpresent"
+license=('custom')
+depends=('libxfixes' 'libxrandr')
+makedepends=('xorg-util-macros')
+source=("https://xorg.freedesktop.org/archive/individual/lib/${_pkgname}-${pkgver}.tar.xz")
+sha256sums=('b964df9e5a066daa5e08d2dc82692c57ca27d00b8cc257e8e960c9f1cf26231b')
+
+build() {
+  cd ${_pkgname}-${pkgver}
+
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd ${_pkgname}-${pkgver}
+
+  make DESTDIR=${pkgdir} install
+  install -Dm0644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
+}

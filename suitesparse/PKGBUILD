@@ -1,6 +1,6 @@
 
 pkgname=suitesparse
-pkgver=6.0.0
+pkgver=6.0.1
 pkgrel=1
 epoch=1
 pkgdesc="A collection of sparse matrix libraries"
@@ -11,13 +11,13 @@ makedepends=('cmake')
 license=('GPL')
 source=("https://github.com/DrTimothyAldenDavis/SuiteSparse/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz"
         "https://github.com/DrTimothyAldenDavis/SuiteSparse/commit/769870a0d3304d93097d346dc466e8015bf4bab9.diff")
-md5sums=('87aa9d4805eca85886d74e7611a21a64'
+md5sums=('3bb660ac217791c7e9fabac944c8ee07'
          'ae696279e22905afc10261a7e0deae0b')
 
 build() {
   cd SuiteSparse-${pkgver}
   # octave rebuild on 6.0.0 fails without
-  patch -p1 -i ${srcdir}/769870a0d3304d93097d346dc466e8015bf4bab9.diff
+  #patch -p1 -i ${srcdir}/769870a0d3304d93097d346dc466e8015bf4bab9.diff
 
   CMAKE_OPTIONS="-DNSTATIC=ON \
     -DBLA_VENDOR=Generic \
