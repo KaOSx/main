@@ -1,7 +1,7 @@
 
 # rebuild vlc on any update, move to shared libs might change ABI
 pkgname=live-media
-pkgver=2022.10.01
+pkgver=2022.11.19
 pkgrel=1
 pkgdesc="A set of C++ libraries for multimedia streaming"
 arch=('x86_64')
@@ -10,8 +10,8 @@ url="http://live555.com/liveMedia"
 depends=('gcc-libs')
 source=("http://live555.com/liveMedia/public/live.${pkgver}.tar.gz"
         'config.kaos')
-md5sums=('835341a93ffe19c1b8c1d20cde8df73a'
-         'aaef317f7068eb1bb4470e33b1fcae84')
+sha1sums=('ba43cc402884c0e1c71f9cc92f1d58e9d75c1f20'
+          'ffeb7b4362e341d7011ec24fbc6b722f3d941b97')
 
 prepare() {
   cd live
