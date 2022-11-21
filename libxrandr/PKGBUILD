@@ -1,7 +1,7 @@
 
 pkgname=libxrandr
-pkgver=1.5.2
-pkgrel=2
+pkgver=1.5.3
+pkgrel=1
 pkgdesc="X11 RandR extension library"
 arch=('x86_64')
 license=('custom')
@@ -9,12 +9,12 @@ url="http://xorg.freedesktop.org/"
 depends=('libxext' 'libxrender' 'xorgproto')
 makedepends=('xorg-util-macros')
 options=('!libtool')
-source=("http://xorg.freedesktop.org/releases/individual/lib/libXrandr-${pkgver}.tar.bz2")
-sha256sums=('8aea0ebe403d62330bb741ed595b53741acf45033d3bda1792f1d4cc3daee023')
+source=("http://xorg.freedesktop.org/releases/individual/lib/libXrandr-${pkgver}.tar.xz")
+sha256sums=('897639014a78e1497704d669c5dd5682d721931a4452c89a7ba62676064eb428')
 
 build() {
   cd libXrandr-${pkgver}
-  
+
   ./configure --prefix=/usr --sysconfdir=/etc
   make
 }
@@ -22,7 +22,7 @@ build() {
 package() {
   cd libXrandr-${pkgver}
   make DESTDIR=${pkgdir} install
-  
+
   install -d -m755 ${pkgdir}/usr/share/licenses/${pkgname}
   install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
 }
