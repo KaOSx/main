@@ -1,10 +1,10 @@
  
 pkgname=libglvnd
-pkgver=1.5.0
+pkgver=1.6.0
 pkgrel=1
 pkgdesc="The GL Vendor-Neutral Dispatch library"
 arch=('x86_64')
-url="https://github.com/NVIDIA/libglvnd"
+url="https://gitlab.freedesktop.org/glvnd/libglvnd"
 license=('MIT')
 depends=('libx11' 'libxext' 'xorgproto')
 makedepends=('python3' 'meson' 'ninja')
@@ -12,7 +12,7 @@ provides=('libgl')
 conflicts=('libgl')
 replaces=('libgl')
 source=("https://gitlab.freedesktop.org/glvnd/libglvnd/-/archive/v${pkgver}/libglvnd-v${pkgver}.tar.bz2")
-sha256sums=('148bf421fef62a3c2bb0a7264292fc76743b2bbcebe9995be4b63fe5f15c471f')
+sha256sums=('2b22a72f9f35fe9ba630c2971f6cee6eefc0c8317e0eecc3c76134ed5f00bd8a')
 
 build() {
   mkdir -p build
