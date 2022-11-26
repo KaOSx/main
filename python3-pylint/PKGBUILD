@@ -2,7 +2,7 @@
 pkgname=python3-pylint
 _pkgname=pylint
 pkgver=2.15.6
-pkgrel=1
+pkgrel=2
 pkgdesc="Tool that checks for errors in Python code and tries to enforce a coding standard"
 arch=('x86_64')
 url="https://pylint.pycqa.org/en/latest/"
@@ -15,6 +15,7 @@ sha256sums=('25b13ddcf5af7d112cf96935e21806c1da60e676f952efb650130f2a4483421c')
 
 build() {
     cd ${_pkgname}-${pkgver}
+    sed -i -e 's|"setuptools~=62.6", "wheel~=0.37.1"|"setuptools", "wheel"|' pyproject.toml
 
     python3 -m build -nw
 }
