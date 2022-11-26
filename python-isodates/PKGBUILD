@@ -1,7 +1,7 @@
 
 pkgname=python3-isodate
 pkgver=0.6.1
-pkgrel=1
+pkgrel=2
 pkgdesc="An ISO 8601 date/time/duration parser and formater"
 arch=('x86_64')
 url="https://pypi.python.org/pypi/isodate"
@@ -14,7 +14,7 @@ sha256sums=('48c5881de7e8b0a0d648cb024c8062dc84e7b840ed81e864c7614fd3c127bde9')
 package() {
   cd isodate-${pkgver}
   python3 setup.py install --root=${pkgdir}/ --optimize=0
-  
+
   install -d ${pkgdir}/usr/share/licenses/${pkgname}
   head -26 src/isodate/isodates.py > ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
