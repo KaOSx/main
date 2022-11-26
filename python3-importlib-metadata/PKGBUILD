@@ -1,26 +1,26 @@
 
 pkgname=python3-importlib-metadata
 _pkgname=importlib_metadata
-pkgver=4.8.3
+pkgver=5.1.0
 pkgrel=1
 pkgdesc="Library to access the metadata for a Python package."
 arch=('x86_64')
 url='https://github.com/python/importlib_metadata'
 license=('BSD')
 depends=('python3-zipp')
-makedepends=('python3-setuptools')
+makedepends=('python3-build' 'python3-setuptools-scm' 'python3-wheel')
 source=("https://files.pythonhosted.org/packages/source/i/importlib_metadata/${_pkgname}-${pkgver}.tar.gz")
-sha256sums=('766abffff765960fcc18003801f7044eb6755ffae4521c8e8ce8e83b9c9b0668')
+sha256sums=('d5059f9f1e8e41f80e9c56c2ee58811450c31984dfa625329ffd7c0dad88a73b')
 
 build() {
   cd ${_pkgname}-${pkgver}
 
-  python3 setup.py build
+  python3 -m build -nw
 }
 
 package() {
   cd ${_pkgname}-${pkgver}
 
-  python3 setup.py install --root=${pkgdir} --optimize=0
+  PIP_CONFIG_FILE=/dev/null pip3 install --isolated --root=${pkgdir} --ignore-installed --no-deps dist/*.whl
   install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
