@@ -2,7 +2,7 @@
 pkgname=mesa
 pkgver=22.2.4
 _pkgver=22.2.4
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 pkgdesc="Mesa 3-D graphics libraries and include files"
 depends=('libx11' 'libxt' 'gcc-libs' 'libvdpau' 'xorgproto' 'wayland' 'elfutils'
@@ -13,16 +13,16 @@ makedepends=('libva' 'llvm' 'libxml2' 'imake' 'clang' 'python3-mako' 'glslang'
 url="https://www.mesa3d.org/"
 license=('custom')
 source=("https://mesa.freedesktop.org/archive/${pkgname}-${pkgver}.tar.xz"
-        "https://gitlab.freedesktop.org/pzanoni/mesa/-/commit/168f177b8a910004de768b1a89a0adea383fa6bc.diff"
+        "https://gitlab.freedesktop.org/pzanoni/mesa/-/commit/68e89401140d1b3a17052899c54577de3f008b67.diff"
         'LICENSE')
 sha256sums=('65d76b53ca5c7b46019e0e8e5b414de45d2fecd3fcd71707f6c3bc7691c9f7ab'
-            '348275bfda308f2e8cc79e2a72ecc8362672076f795779ff750818f11c69e811'
+            '52ffabfb10d822a14dd73490209e8917332da431a41fde051d022e3ef4b363e7'
             '7fdc119cf53c8ca65396ea73f6d10af641ba41ea1dd2bd44a824726e01c8b3f2')
 
 prepare() {
     cd ${pkgname}-${pkgver}
 
-    #patch -p1 -i ${srcdir}/168f177b8a910004de768b1a89a0adea383fa6bc.diff
+    patch -R -p1 -i ${srcdir}/68e89401140d1b3a17052899c54577de3f008b67.diff
 }
 
 build() {
