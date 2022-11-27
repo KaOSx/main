@@ -6,6 +6,7 @@ _kver="$(cat /lib/modules/${_extramodules}/version)"
 pkgname=broadcom-wl
 pkgver=6.30.223.271
 _pkgver=6_30_223_271
+_commit=452d163a8bac9b6aaef659ebb6b8fb805334f555
 pkgrel=119
 pkgdesc='Broadcom 802.11abgn hybrid Linux networking device driver'
 arch=('x86_64')
@@ -15,47 +16,42 @@ depends=('linux>=6.0.10' 'linux<6.1')
 makedepends=('linux-headers' 'elfutils')
 options=('!strip')
 install=install
-source=("https://docs.broadcom.com/docs-and-downloads/docs/linux_sta/hybrid-v35_64-nodebug-pcoem-${_pkgver}.tar.gz"
+#source=("https://docs.broadcom.com/docs-and-downloads/docs/linux_sta/hybrid-v35_64-nodebug-pcoem-${_pkgver}.tar.gz"
+source=("https://github.com/antoineco/broadcom-wl/archive/452d163a8bac9b6aaef659ebb6b8fb805334f555.zip"
         'modprobe.d'
         'license.patch'
         'linux-recent.patch')
-md5sums=('115903050c41d466161784d4c843f4f9'
+md5sums=('6ac72a40fa7528495e3e2a7d68c64139'
          '3600df7db49c759c655bc6a7789b28d4'
          '52f9dcef8112f8e325d9236e5290cb88'
-         '3607594faadee58ff40a6a455a6c471a')
+         '6b8664db058be12538f1c92b16909529')
 
 backup=('etc/modprobe.d/broadcom-wl.conf')
 
 build() {
-	cd "${srcdir}"
+    cd ${pkgname}-${_commit}
 
-	patch -p1 -i license.patch
-	patch -p1 -i linux-recent.patch
-	
-	sed -i 's|BRCM_WLAN_IFNAME eth|BRCM_WLAN_IFNAME wlan|' src/wl/sys/wl_linux.c
-	sed -i 's|get_ds()|KERNEL_DS|g' src/wl/sys/wl_iw.c
-    sed -i 's|get_ds()|KERNEL_DS|g' src/wl/sys/wl_cfg80211_hybrid.c
-    sed -i '/GE_49 :=/s|:= .*|:= 1|' Makefile
+    patch -p1 -i ${srcdir}/license.patch
 
-	make -C /lib/modules/"${_kver}"/build M=`pwd`
+    make -C /lib/modules/"${_kver}"/build M=`pwd`
 }
 
 package() {
-	cd "${srcdir}"
+    cd ${pkgname}-${_commit}
 
-	install -D -m 755 wl.ko "${pkgdir}/lib/modules/${_extramodules}/wl.ko"
+    install -D -m 755 wl.ko "${pkgdir}/lib/modules/${_extramodules}/wl.ko"
 
-	# sign the module
+    # sign the module
     _file=/usr/src/linux-${_kver}/scripts/sign-file
     _pem=/$HOME/signing_key.pem
     _key=/$HOME/signing_key.x509
 
     ${_file} sha256 ${_pem} ${_key} ${pkgdir}/lib/modules/${_extramodules}/wl.ko
-    
-	gzip "${pkgdir}/lib/modules/${_extramodules}/wl.ko"
 
-	install -D -m 644 lib/LICENSE.txt "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
-	install -D -m 644 modprobe.d "${pkgdir}"/etc/modprobe.d/broadcom-wl.conf
-	#automatically update install file
+    gzip "${pkgdir}/lib/modules/${_extramodules}/wl.ko"
+
+    install -D -m 644 lib/LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+    install -D -m 644 ${srcdir}/modprobe.d ${pkgdir}/etc/modprobe.d/broadcom-wl.conf
+    #automatically update install file
     sed -i -e "s/EXTRAMODULES='.*'/EXTRAMODULES='${_extramodules}'/" ${startdir}/install
 }
