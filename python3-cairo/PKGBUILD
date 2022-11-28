@@ -1,8 +1,8 @@
 
 pkgname=python3-cairo
 _pkgname=pycairo
-pkgver=1.22.0
-pkgrel=2
+pkgver=1.23.0
+pkgrel=1
 pkgdesc="Python bindings for the cairo graphics library"
 arch=('x86_64')
 url="https://www.cairographics.org/pycairo"
@@ -11,7 +11,7 @@ depends=('python3' 'cairo')
 makedepends=('python3-setuptools')
 options=('!libtool')
 source=("https://github.com/pygobject/pycairo/releases/download/v${pkgver}/${_pkgname}-${pkgver}.tar.gz")
-sha256sums=('b34517abdf619d4c7f0274f012b398d9b03bab7adc3efd2912bf36be3f911f3f')
+sha256sums=('9b61ac818723adc04367301317eb2e814a83522f07bbd1f409af0dada463c44c')
 
 build() {
   cd ${_pkgname}-${pkgver}
