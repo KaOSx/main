@@ -1,13 +1,13 @@
 
 pkgname=python3-chardet
 pkgver=5.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Character encoding auto-detection in Python. As smart as your browser."
 arch=('x86_64')
 license=('LGPL')
-url="http://chardet.readthedocs.org/"
+url="https://chardet.readthedocs.io/en/latest/"
 depends=('python3')
-makedepends=('python3-build' 'python3-pip'  'python3-wheel')
+makedepends=('python3-build' 'python3-installer' 'python3-setuptools' 'python3-wheel')
 #source=("https://github.com/chardet/chardet/archive/${pkgver}.tar.gz")
 source=("https://files.pythonhosted.org/packages/source/c/chardet/chardet-${pkgver}.tar.gz")
 sha256sums=('0d62712b956bc154f85fb0a266e2a3c5913c2967e00348701b32411d6def31e5')
@@ -21,6 +21,6 @@ build() {
 package() {
     cd chardet-${pkgver}
 
-    PIP_CONFIG_FILE=/dev/null pip3 install --isolated --root=${pkgdir} --ignore-installed --no-deps dist/*.whl
+    python3 -m installer --destdir=${pkgdir} dist/*.whl
     install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
