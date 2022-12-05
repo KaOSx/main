@@ -1,7 +1,7 @@
 
 pkgname=libxcomposite
-pkgver=0.4.5
-pkgrel=2
+pkgver=0.4.6
+pkgrel=1
 pkgdesc="X11 Composite extension library"
 arch=('x86_64')
 url="http://xorg.freedesktop.org/"
@@ -9,12 +9,12 @@ license=('custom')
 depends=('libxfixes' 'compositeproto')
 makedepends=('xorg-util-macros')
 options=('!libtool')
-source=("http://xorg.freedesktop.org/releases/individual/lib/libXcomposite-${pkgver}.tar.bz2")
-sha256sums=('b3218a2c15bab8035d16810df5b8251ffc7132ff3aa70651a1fba0bfe9634e8f')
+source=("http://xorg.freedesktop.org/releases/individual/lib/libXcomposite-${pkgver}.tar.xz")
+sha256sums=('fe40bcf0ae1a09070eba24088a5eb9810efe57453779ec1e20a55080c6dc2c87')
 
 build() {
   cd libXcomposite-${pkgver}
-  
+
   ./configure --prefix=/usr --sysconfdir=/etc --disable-static
   make
 }

@@ -1,7 +1,7 @@
 
 pkgname=libxv
-pkgver=1.0.11
-pkgrel=2
+pkgver=1.0.12
+pkgrel=1
 pkgdesc="X11 Video extension library"
 arch=('x86_64')
 license=('custom')
@@ -9,12 +9,12 @@ url="https://xorg.freedesktop.org/"
 depends=('libxext' 'xorgproto')
 makedepends=('pkgconfig')
 options=('!libtool')
-source=("https://xorg.freedesktop.org/releases/individual/lib/libXv-${pkgver}.tar.bz2")
-md5sums=('210b6ef30dda2256d54763136faa37b9')
+source=("https://xorg.freedesktop.org/releases/individual/lib/libXv-${pkgver}.tar.xz")
+sha256sums=('aaf7fa09f689f7a2000fe493c0d64d1487a1210db154053e9e2336b860c63848')
 
 build() {
   cd libXv-${pkgver}
-  
+
   ./configure --prefix=/usr --disable-static 
   make
 }

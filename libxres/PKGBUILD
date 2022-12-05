@@ -1,6 +1,6 @@
 
 pkgname=libxres
-pkgver=1.2.1
+pkgver=1.2.2
 pkgrel=1
 pkgdesc='X11 Resource extension library'
 arch=('x86_64')
@@ -9,12 +9,12 @@ license=('custom')
 depends=('libxext')
 makedepends=('xorgproto' 'xorg-util-macros')
 options=('!libtool')
-source=("https://xorg.freedesktop.org/releases/individual/lib/libXres-${pkgver}.tar.bz2")
-sha256sums=('b6e6fb1ebb61610e56017edd928fb89a5f53b3f4f990078309877468663b2b11')
+source=("https://xorg.freedesktop.org/releases/individual/lib/libXres-${pkgver}.tar.xz")
+sha256sums=('9a7446f3484b9b7538ac5ee30d2c1ce9e5b7fbbaf1440e02f6cca186a1fa745f')
 
 build() {
   cd libXres-${pkgver}
-  
+
   ./configure --prefix=/usr --sysconfdir=/etc --disable-static
   make
 }
