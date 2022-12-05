@@ -1,7 +1,7 @@
 
 pkgname=xkeyboard-config
 pkgver=2.37
-pkgrel=1
+pkgrel=2
 pkgdesc="X keyboard configuration files"
 arch=('x86_64')
 license=('custom')
@@ -9,14 +9,14 @@ url="https://www.freedesktop.org/wiki/Software/XKeyboardConfig"
 depends=('xorg-xkb-utils')
 makedepends=('intltool' 'python3' 'meson' 'ninja')
 source=("https://www.x.org/releases/individual/data/${pkgname}/${pkgname}-${pkgver}.tar.xz"
-        "https://gitlab.freedesktop.org/xkeyboard-config/xkeyboard-config/commit/8ac41c50ab0aa7cd3a7e94313074115de2a172d2.diff")
+        "https://gitlab.freedesktop.org/xkeyboard-config/xkeyboard-config/commit/e957016003d5342bcaec97d43ffbc49600726660.diff")
 sha256sums=('eb1383a5ac4b6210d7c7302b9d6fab052abdf51c5d2c9b55f1f779997ba68c6c'
-            '51282679b9f13a75048709ac1a5c4540ed7282e3c78d432755a77ea9596bca9c')
+            '46d050878041c0522d0c19a85f19242bfcba45c57b4304a008b650be19727594')
 
 prepare() {
   cd ${pkgname}-${pkgver}
-  # https://github.com/calamares/calamares/issues/1988
-  #patch -p1 -i ${srcdir}/8ac41c50ab0aa7cd3a7e94313074115de2a172d2.diff
+  # https://github.com/calamares/calamares/issues/2078
+  patch -p1 -i ${srcdir}/e957016003d5342bcaec97d43ffbc49600726660.diff
 }
 
 build() {
