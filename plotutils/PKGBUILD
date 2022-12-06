@@ -1,7 +1,7 @@
 
 pkgname=plotutils
 pkgver=2.6
-pkgrel=7
+pkgrel=8
 arch=('x86_64')
 pkgdesc="Set of utilities and libraries for plotting."
 url="https://directory.fsf.org/graphics/plotutils.html"
@@ -17,16 +17,16 @@ md5sums=('c08a424bd2438c80a786a7f4b5bb6a40'
 build() {
   cd ${pkgname}-${pkgver}
   patch -p0 -i ../plotutils-2.6-libpng-1.5.patch
-  
+
   ./configure --prefix=/usr \
-	--with-gnu-ld \
-	--with-x \
-	--enable-libplotter
+    --with-gnu-ld \
+    --with-x \
+    --enable-libplotter
   make
 }
 
 package() {
   cd ${pkgname}-${pkgver}
-  
+
   make DESTDIR=${pkgdir} install
 }

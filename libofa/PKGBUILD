@@ -2,7 +2,7 @@
 pkgname=libofa
 pkgver=0.9.3
 _commit=a395abfd37df5faa97f82e942f87b1dfa55e8a48
-pkgrel=5
+pkgrel=6
 pkgdesc="Open Fingerprint Architecture"
 arch=('x86_64')
 url="https://github.com/tanob/libofa"
@@ -10,18 +10,16 @@ license=('GPL2' 'custom')
 depends=('expat' 'curl' 'fftw' 'gcc-libs')
 makedepends=('pkgconfig')
 options=('!libtool')
-#source=("https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/musicip-libofa/$pkgname-$pkgver.tar.gz"
 source=("https://github.com/tanob/libofa/archive/${_commit}.zip"
         'gcc.diff')
 md5sums=('16c156a73fb68e76721affab7b005a90'
-         'dd57db13770b8f8d196e8a3d3a50e713'
          '92d17e57c9e1b7d2cbe1d883c01c404e')
 
 build() {
   cd ${pkgname}-${_commit}
 
   patch -p1 -i ${srcdir}/gcc.diff
-  
+
   ./configure --prefix=/usr
   make
 }
@@ -29,6 +27,6 @@ build() {
 package() {
   cd ${pkgname}-${_commit}
   make DESTDIR=${pkgdir} install
-  
+
   install -D -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }

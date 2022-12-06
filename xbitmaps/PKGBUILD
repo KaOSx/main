@@ -1,7 +1,7 @@
 
 pkgname=xbitmaps
 pkgver=1.1.2
-pkgrel=2
+pkgrel=3
 pkgdesc="X.org Bitmap files"
 arch=('x86_64')
 url="https://xorg.freedesktop.org/"
@@ -12,7 +12,7 @@ sha256sums=('b9f0c71563125937776c8f1f25174ae9685314cbd130fb4c2efce811981e07ee')
 
 build() {
   cd ${pkgname}-${pkgver}
-  
+
   ./configure --prefix=/usr
   make
 }
@@ -20,6 +20,6 @@ build() {
 package() {
   cd ${srcdir}/${pkgname}-${pkgver}
   make DESTDIR=${pkgdir} install
-  
+
   install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
 }

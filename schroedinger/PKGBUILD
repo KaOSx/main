@@ -1,13 +1,13 @@
 
 pkgname=schroedinger
 pkgver=1.0.11
-pkgrel=7
+pkgrel=8
 pkgdesc="An implemenation of the Dirac video codec in ANSI C code"
 arch=('x86_64')
 url="https://github.com/Distrotech/dirac"
 license=('GPL2' 'LGPL2' 'MPL' 'MIT')
 depends=('orc')
-makedepends=('pkgconfig')
+makedepends=('pkgconfig' 'gtk-doc')
 options=('!libtool' '!staticlibs')
 source=("https://github.com/Distrotech/dirac/archive/${pkgname}-${pkgver}.tar.gz")
 md5sums=('c30534f8b21b3f20b305e1a3e3e0ace3')
@@ -20,7 +20,7 @@ prepare() {
 
 build() {
   cd dirac-${pkgname}-${pkgver}
-  
+
   ./autogen.sh
   ./configure --prefix=/usr 
   make
