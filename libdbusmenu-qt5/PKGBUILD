@@ -13,7 +13,6 @@ options=('strip')
 source=("http://archive.ubuntu.com/ubuntu/pool/main/libd/libdbusmenu-qt/libdbusmenu-qt_${_pkgver}.orig.tar.gz")
 md5sums=('8b90312bd8654e026d814d4db986ce5e')
 
-
 build() {
   cmake -B build -S libdbusmenu-qt-${_pkgver} \
     -DCMAKE_INSTALL_PREFIX=/usr \

@@ -1,7 +1,7 @@
 
 pkgname=pth
 pkgver=2.0.7
-pkgrel=7
+pkgrel=8
 pkgdesc="The GNU Portable Threads."
 arch=('x86_64')
 url="https://www.gnu.org/software/pth/"
@@ -13,7 +13,7 @@ md5sums=('9cb4a25331a4c4db866a31cbe507c793')
 
 build() {
   cd ${pkgname}-${pkgver}
-  
+
   ./configure --prefix=/usr \
        --sysconfdir=/etc \
        --localstatedir=/var \
@@ -23,7 +23,7 @@ build() {
        --with-pic
        
   sed -i "s|awk=''|awk=/bin/awk|g" shtool 
-  
+
   make 
 }
 
@@ -35,6 +35,6 @@ check() {
 
 package() {
   cd ${pkgname}-${pkgver}
-  
+
   make DESTDIR=${pkgdir} install 
 }

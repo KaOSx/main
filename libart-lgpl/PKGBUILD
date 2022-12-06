@@ -2,7 +2,7 @@
 pkgname=libart-lgpl
 pkgver=2.3.21
 _pkgver=2.3
-pkgrel=6
+pkgrel=7
 pkgdesc="A library for high-performance 2D graphics"
 url="https://www.levien.com/libart/"
 arch=('x86_64')
@@ -14,13 +14,13 @@ sha256sums=('fdc11e74c10fc9ffe4188537e2b370c0abacca7d89021d4d303afdf7fd7476fa')
 
 build() {
   cd libart_lgpl-${pkgver}
-  
+
   ./configure --prefix=/usr
   make
 }
 
 package() {
   cd libart_lgpl-${pkgver}
-  
+
   make DESTDIR=${pkgdir} install
 }
