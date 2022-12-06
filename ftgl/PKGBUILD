@@ -1,7 +1,7 @@
 
 pkgname=ftgl
 pkgver=2.4.0
-pkgrel=1
+pkgrel=2
 pkgdesc="OpenGL library to use arbitrary fonts"
 arch=('x86_64')
 url="https://github.com/frankheckenbach/ftgl"
@@ -16,24 +16,20 @@ md5sums=('fba1e1c548ebe3ab362495e96a7a0670'
 
 prepare() {
   cd ${pkgname}-${pkgver}
-  
+
   patch -p1 -i ${srcdir}/835f2ba7911a6c15a1a314d5e3267fa089b5a319.diff
 }
 
 build() {
-  mkdir -p build
-  cd build
-  
-  cmake ../${pkgname}-${pkgver} \
+  cmake -B build -S ${pkgname}-${pkgver} \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_BUILD_TYPE=Release
-  make 
+  cmake --build build
 }
 
 package() {
-  cd build
-  make DESTDIR=${pkgdir} install
 
-  #install -m644 src/FT{Face,Library,Size}.h ${pkgdir}/usr/include/FTGL/
-  install -Dm644 ../${pkgname}-${pkgver}/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+  DESTDIR=${pkgdir} cmake --install build
+
+  install -Dm644 ${pkgname}-${pkgver}/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
