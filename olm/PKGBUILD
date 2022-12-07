@@ -1,6 +1,6 @@
  
 pkgname=olm
-pkgver=3.2.13
+pkgver=3.2.14
 pkgrel=1
 pkgdesc='Implementation of the olm and megolm cryptographic ratchets'
 arch=('x86_64')
@@ -9,7 +9,7 @@ license=('Apache')
 depends=('gcc-libs')
 makedepends=('cmake')
 source=("https://gitlab.matrix.org/matrix-org/olm/-/archive/${pkgver}/${pkgname}-${pkgver}.tar.bz2")
-sha256sums=('8ac0c5e4a62d5464f0a6f3f35dd41b53d31bc3a188e93e3614d38237e0a32f81')
+sha256sums=('099d93ef93cc9d6efb3dd0ed5eb5f675b550579d6ccff01abaeca18f8a5f7e77')
 
 build() {
   cmake -B build -S ${pkgname}-${pkgver} \
