@@ -1,32 +1,30 @@
 
 pkgname=python3-packaging
-pkgver=21.3
-pkgrel=3
+pkgver=22.0
+pkgrel=1
 pkgdesc="Core utilities for Python3 packages"
 arch=('x86_64')
 license=('Apache')
 url="https://github.com/pypa/packaging"
 depends=('python3-pyparsing')
-makedepends=('python3-setuptools') #'python3-pip' 'python3-flit')
+makedepends=('python3-build' 'python3-installer' 'python3-flit' 'python3-wheel')
 # https://pypi.org/project/packaging/#files
 source=("https://pypi.io/packages/source/p/packaging/packaging-${pkgver}.tar.gz"
         'setuptools_return.diff')
-sha256sums=('dd47c42927d89ab911e606518907cc2d3a1f38bbd026385970643f9c5b8ecfeb'
+sha256sums=('2198ec20bd4c017b8f9717e00f0c8714076fc2fd93816750ab48e2c41de2cfd3'
             'd807285cf28b12c0c48c003e7daeb5d7dd70e29481ff62ecdda71e12f94ad908')
 
 build() {
     cd packaging-${pkgver}
     #patch -p1 -i ${srcdir}/setuptools_return.diff
 
-    python3 setup.py build
-    # new ways are discussed https://github.com/pypa/packaging/issues/363
-    #python3 -m pip wheel --no-index --no-deps --no-clean --no-build-isolation --wheel-dir dist .
+    flit build --format wheel
 }
 
 package() {
     cd packaging-${pkgver}
 
-    python3 setup.py install --prefix=/usr --root="${pkgdir}" 
+    python3 -m installer --destdir=${pkgdir} dist/*.whl
     #rm ${pkgdir}/usr/bin/easy_install
 }
 
