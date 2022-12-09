@@ -1,7 +1,7 @@
 
 pkgname=cdparanoia
 pkgver=10.2
-pkgrel=6
+pkgrel=7
 pkgdesc="Compact Disc Digital Audio extraction tool"
 arch=('x86_64')
 url="https://www.xiph.org/paranoia/"
@@ -16,13 +16,13 @@ md5sums=('b304bbe8ab63373924a744eac9ebc652'
 build() {
   cd cdparanoia-III-${pkgver}
   patch -p0 -i ${srcdir}/gcc.patch
-  
+
   ./configure --prefix=/usr --mandir=/usr/share/man
   make
 }
 
 package() {
   cd cdparanoia-III-${pkgver}
-  
+
   make prefix=${pkgdir}/usr MANDIR=${pkgdir}/usr/share/man install
 }
