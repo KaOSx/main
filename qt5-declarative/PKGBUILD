@@ -6,7 +6,7 @@ pkgname=qt5-declarative
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=2
+pkgrel=3
 pkgdesc="A cross-platform application and UI framework, QtDeclarative files"
 arch=('x86_64')
 url='https://www.qt.io/'
@@ -21,7 +21,7 @@ source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz"
         'qt_kde.patch')
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
-         '3d4c7148c7d63fa378ff82253e1270db')
+         'a4dd1454d128536144da75a1215fe0f7')
 
 build() {
     cd ${__pkgfqn}

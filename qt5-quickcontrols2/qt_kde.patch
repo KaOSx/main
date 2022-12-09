@@ -1,5 +1,26 @@
+diff --git a/src/imports/platform/widgets/qwidgetplatformmenu.cpp b/src/imports/platform/widgets/qwidgetplatformmenu.cpp
+index e5fe734f7..e36922775 100644
+--- a/src/imports/platform/widgets/qwidgetplatformmenu.cpp
++++ b/src/imports/platform/widgets/qwidgetplatformmenu.cpp
+@@ -38,6 +38,7 @@
+ #include "qwidgetplatformmenuitem_p.h"
+ 
+ #include <QtGui/qwindow.h>
++#include <QtGui/private/qhighdpiscaling_p.h>
+ #include <QtWidgets/qmenu.h>
+ #include <QtWidgets/qaction.h>
+ 
+@@ -145,7 +146,7 @@ void QWidgetPlatformMenu::showPopup(const QWindow *window, const QRect &targetRe
+ 
+     QPoint targetPos = targetRect.bottomLeft();
+     if (window)
+-        targetPos = window->mapToGlobal(targetPos);
++        targetPos = window->mapToGlobal(QHighDpi::fromNativeLocalPosition(targetPos, window));
+ 
+     const QWidgetPlatformMenuItem *widgetItem = qobject_cast<const QWidgetPlatformMenuItem *>(item);
+     m_menu->popup(targetPos, widgetItem ? widgetItem->action() : nullptr);
 diff --git a/src/quicktemplates2/qquickabstractbutton.cpp b/src/quicktemplates2/qquickabstractbutton.cpp
-index 950e4e099..1df0c706d 100644
+index 950e4e099..b81fbea0b 100644
 --- a/src/quicktemplates2/qquickabstractbutton.cpp
 +++ b/src/quicktemplates2/qquickabstractbutton.cpp
 @@ -387,6 +387,17 @@ void QQuickAbstractButtonPrivate::itemImplicitHeightChanged(QQuickItem *item)
@@ -20,6 +41,31 @@ index 950e4e099..1df0c706d 100644
  QQuickAbstractButton *QQuickAbstractButtonPrivate::findCheckedButton() const
  {
      Q_Q(const QQuickAbstractButton);
+@@ -1176,6 +1187,12 @@ QAccessible::Role QQuickAbstractButton::accessibleRole() const
+     }
+     return QAccessible::Button;
+ }
++
++void QQuickAbstractButton::accessiblePressAction()
++{
++    Q_D(QQuickAbstractButton);
++    d->trigger();
++}
+ #endif
+ 
+ QT_END_NAMESPACE
+diff --git a/src/quicktemplates2/qquickabstractbutton_p.h b/src/quicktemplates2/qquickabstractbutton_p.h
+index 0fa48980e..ab66220d0 100644
+--- a/src/quicktemplates2/qquickabstractbutton_p.h
++++ b/src/quicktemplates2/qquickabstractbutton_p.h
+@@ -209,6 +209,7 @@ protected:
+ #if QT_CONFIG(accessibility)
+     void accessibilityActiveChanged(bool active) override;
+     QAccessible::Role accessibleRole() const override;
++    Q_INVOKABLE void accessiblePressAction();
+ #endif
+ 
+ private:
 diff --git a/src/quicktemplates2/qquickabstractbutton_p_p.h b/src/quicktemplates2/qquickabstractbutton_p_p.h
 index 9291c1a87..b729720f2 100644
 --- a/src/quicktemplates2/qquickabstractbutton_p_p.h
