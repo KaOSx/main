@@ -1,7 +1,7 @@
 
 pkgname=libdca
 pkgver=0.0.7
-pkgrel=1
+pkgrel=2
 pkgdesc="Free library for decoding DTS Coherent Acoustics streams"
 arch=('x86_64')
 url="https://www.videolan.org/developers/libdca.html"
@@ -13,7 +13,7 @@ sha512sums=('dae15d77d066687c882833d5bed8d65a585c1fc0277b7276563c89ddd5a83b35389
 
 build() {
   cd ${pkgname}-${pkgver}
-  
+
   ./bootstrap
   ./configure --prefix=/usr --mandir=/usr/share/man
   make

@@ -2,7 +2,7 @@
 pkgname=ttf-droid
 _pkgname=google-droid-fonts
 pkgver=20200215
-pkgrel=1
+pkgrel=2
 pkgdesc="A font created by Ascender Corporation for use by the Open Handset Alliance platform, Android."
 arch=('x86_64')
 license=('apache')
@@ -14,10 +14,10 @@ sha512sums=('4ab5462819fbef043e4cc7df565a11da21e0f6afaee002576d52decbf4344905391
 
 package() {
   cd ${_pkgname}-${pkgver}
-  
+
   install -d ${pkgdir}/usr/share/fonts/TTF/
   install -m0644 *.ttf ${pkgdir}/usr/share/fonts/TTF/
-  
+
   install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
   install -m644 ../${_pkgname}-${pkgver}/README.txt ${pkgdir}/usr/share/licenses/${pkgname}/
 }

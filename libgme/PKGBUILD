@@ -1,7 +1,7 @@
 
 pkgname=libgme
 pkgver=0.6.3
-pkgrel=1
+pkgrel=2
 pkgdesc="Video game music file emulation/playback library"
 url="https://bitbucket.org/mpyne/game-music-emu/wiki/Home"
 license=('LGPL')
@@ -12,16 +12,12 @@ source=("https://bitbucket.org/mpyne/game-music-emu/downloads/game-music-emu-${p
 md5sums=("c96c65efbadc9acb10c0f9382ba66e0d")
 
 build() {
-	cd game-music-emu-${pkgver}
-	mkdir build
-	
-	cd build
-	cmake .. -DCMAKE_INSTALL_PREFIX=/usr
-	make
+  cmake -B build -S game-music-emu-${pkgver} \
+    -DCMAKE_INSTALL_PREFIX=/usr
+  cmake --build build
 }
 
 package() {
-	cd game-music-emu-${pkgver}/build
-	
-	make DESTDIR=${pkgdir} install
+
+  DESTDIR=${pkgdir} cmake --install build
 }

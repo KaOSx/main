@@ -1,19 +1,19 @@
 
 pkgname=xautomation
 pkgver=1.09
-pkgrel=3
+pkgrel=4
 pkgdesc='Controls X from the command line and does "visual scraping".'
-url='https://hoopajoo.net/projects/xautomation.html'
+url='https://www.hoopajoo.net/projects/xautomation.html'
 arch=('x86_64')
 license=('GPL')
 depends=('libpng' 'libxtst')
-source=("https://hoopajoo.net/static/projects/${pkgname}-${pkgver}.tar.gz")
+source=("https://www.hoopajoo.net/static/projects/${pkgname}-${pkgver}.tar.gz")
 md5sums=('16b973fdb525feed876471225bba30ed')
 
 build() {
   cd ${pkgname}-${pkgver}
 
-  ./configure --prefix=/usr 
+  ./configure --prefix=/usr
   make
 }
 

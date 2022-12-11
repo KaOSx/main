@@ -1,32 +1,32 @@
 
 pkgname=libdiscid
 pkgver=0.6.2
-pkgrel=2
+pkgrel=3
 arch=('x86_64')
 license=('LGPL')
 pkgdesc="C library for creating MusicBrainz and freedb disc IDs from audio CDs."
 url="https://musicbrainz.org/doc/libdiscid"
 depends=('glibc')
 options=('!libtool')
-source=("http://ftp.musicbrainz.org/pub/musicbrainz/libdiscid/${pkgname}-${pkgver}.tar.gz")
+source=("https://ftp.musicbrainz.org/pub/musicbrainz/libdiscid/${pkgname}-${pkgver}.tar.gz")
 md5sums=('2812bb678f5142efdfd0d0f7d6ea87d6')
 
 build() {
   cd ${pkgname}-${pkgver}
-  
+
   ./configure --prefix=/usr
   make
 }
 
 check() {
   cd ${pkgname}-${pkgver}
-  
+
   make check
 }
 
 
 package() {
   cd ${pkgname}-${pkgver}
-  
+
   make prefix=${pkgdir}/usr install
 }
