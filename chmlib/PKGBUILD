@@ -1,7 +1,7 @@
 
 pkgname=chmlib
 pkgver=0.40
-pkgrel=6
+pkgrel=7
 pkgdesc="Library for reading Microsoft ITSS/CHM format files"
 arch=('x86_64')
 url="http://www.jedrea.com/chmlib/"
@@ -13,14 +13,14 @@ md5sums=('7ea49ed8c335215c1edc6fae83e6b912')
 
 build() {
   cd ${pkgname}-${pkgver}
-  
+
   ./configure --prefix=/usr --enable-examples=yes
   make
 }
 
 package() {
   cd ${pkgname}-${pkgver}
-  
+
   make DESTDIR=${pkgdir} install
 }
 

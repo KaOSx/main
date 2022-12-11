@@ -1,7 +1,7 @@
 
 pkgname=arpack
 pkgver=3.8.0
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 pkgdesc="Fortran77 subroutines designed to solve large scale eigenvalue problems"
 url="https://github.com/opencollab/arpack-ng"
@@ -13,7 +13,7 @@ md5sums=('bb4cf448f2480a0ffe5517d579f980c3')
 
 build() {
   cd ${pkgname}-ng-${pkgver}
-  
+
   sh bootstrap
   ./configure --prefix=/usr --enable-mpi
   make \
@@ -25,6 +25,6 @@ build() {
 package() {
   cd ${pkgname}-ng-${pkgver}
   make DESTDIR=${pkgdir} install
-  
+
   install -Dm644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
 }

@@ -2,7 +2,7 @@
 pkgname=accountsqt
 pkgver=1.16
 _pkgver=VERSION_1.14-a34ca4b6d250529c900b0382559553b6e5885918
-pkgrel=2
+pkgrel=3
 arch=('x86_64')
 pkgdesc="Accounts & SSO framework consists of a set of components and libraries which implement
          an account manager for a user's online accounts and a single-sign-on daemon"
@@ -13,11 +13,11 @@ makedepends=('doxygen')
 conflicts=('accountsqt-doc' 'accounts-qt5')
 replaces=('accountsqt-doc' 'accounts-qt5')
 provides=('accountsqt-doc' 'accounts-qt5')
-source=("https://gitlab.com/accounts-sso/libaccounts-qt/repository/archive.tar.bz2?ref=VERSION_${pkgver}")
-md5sums=('216dfb3f099a931ad90f5f35640b3476') 
+source=("https://gitlab.com/accounts-sso/libaccounts-qt/-/archive/VERSION_${pkgver}/libaccounts-qt-VERSION_${pkgver}.tar.bz2")
+md5sums=('36fd9d6b6fd5582bf6c503bfd3827a62') 
 
 build() {
-  cd libaccounts-qt-VERSION_${pkgver}*
+  cd libaccounts-qt-VERSION_${pkgver}
   #sed -i 's|SUBDIRS  += Accounts tests|SUBDIRS += Accounts|' accounts-qt.pro
   #sed -i 's|QHG_LOCATION           = qhelpgenerator|QHG_LOCATION = qhelpgenerator-qt5|' doc/doxy.conf
 
@@ -26,7 +26,7 @@ build() {
 }
 
 package() {
-  cd libaccounts-qt-VERSION_${pkgver}*
+  cd libaccounts-qt-VERSION_${pkgver}
 
   make INSTALL_ROOT=${pkgdir} install_subtargets
 }
