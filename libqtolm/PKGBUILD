@@ -1,7 +1,7 @@
  
 pkgname=libqtolm
 pkgver=3.0.1
-pkgrel=1
+pkgrel=2
 _commit=f2d8e235a4af0625fdedaaf727fef5d51293bf1b
 pkgdesc="Qt wrapper for libolm."
 arch=('x86_64')
@@ -13,23 +13,16 @@ source=("https://gitlab.com/b0/libqtolm/-/archive/v${pkgver}/${pkgname}-v${pkgve
 sha256sums=('e115d25af3d8a9d332b3e0bb3deeb0073fcb639c304361759c02b52040ede3e4')
 
 build() {
-    mkdir -p build
-    cd build
-
-    cmake ../${pkgname}-v${pkgver} \
-        -DCMAKE_INSTALL_PREFIX=/usr \
-        -DCMAKE_INSTALL_LIBDIR=lib \
-        -DCMAKE_INSTALL_INCLUDEDIR=include \
-        -DCMAKE_BUILD_TYPE=Release \
-        -DBUILD_SHARED_LIBS=ON
-
-    make
+  cmake -B build -S ${pkgname}-v${pkgver} \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_INSTALL_INCLUDEDIR=include \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DBUILD_SHARED_LIBS=ON
+  cmake --build build
 }
 
 package() {
-    cd build
-    
-    make DESTDIR=${pkgdir} install
-    # conflict with cdparanoia
-    #mv ${pkgdir}/usr/include/utils.h ${pkgdir}/usr/include/utils_libqtolm.h
+
+  DESTDIR=${pkgdir} cmake --install build
 }

@@ -1,10 +1,10 @@
 
 pkgname=libgadu
 pkgver=1.12.2
-pkgrel=15
+pkgrel=16
 pkgdesc="This library implements the client side of the Gadu-Gadu protocol"
 arch=('x86_64')
-url="http://libgadu.net/"
+url="https://libgadu.net/"
 license=('GPL')
 depends=('gnutls' 'zlib' 'protobuf-c' 'libidn2' 'nettle')
 options=('!libtool')
@@ -13,7 +13,7 @@ md5sums=('1eecae8245d696adfbcfd40a2b36f0ca')
 
 build() {
   cd ${pkgname}-${pkgver}
-  
+
   ./autogen.sh
   ./configure --prefix=/usr \
     --disable-static \
@@ -24,6 +24,6 @@ build() {
 
 package() {
   cd ${pkgname}-${pkgver}
-  
+
   make DESTDIR=${pkgdir} install
 }

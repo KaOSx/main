@@ -1,8 +1,8 @@
 
 pkgname=libdvbpsi
 pkgver=1.3.3
-pkgrel=1
-pkgdesc="A library designed for decoding and generation of MPEG TS and DVB PSI tables"
+pkgrel=2
+pkgdesc="Library designed for decoding and generation of MPEG TS and DVB PSI tables"
 arch=('x86_64')
 url="https://www.videolan.org/developers/libdvbpsi.html"
 license=('LGPL')
@@ -20,7 +20,7 @@ build() {
 
 package() {
   cd ${pkgname}-${pkgver}
-  
+
   make prefix=${pkgdir}/usr install
 }
 

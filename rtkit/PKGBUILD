@@ -1,7 +1,7 @@
 
 pkgname=rtkit
 pkgver=0.13
-pkgrel=1
+pkgrel=2
 pkgdesc="Realtime Policy and Watchdog Daemon"
 arch=('x86_64')
 url="http://0pointer.de/blog/projects/rtkit"
@@ -19,7 +19,7 @@ build() {
   cd ${pkgname}-${pkgver}
   #patch -p1 -i ${srcdir}/libsystemd.patch
   #patch -p1 -i ${srcdir}/cgroup.patch
-  
+
   autoreconf -fi
   ./configure \
     --prefix=/usr \
