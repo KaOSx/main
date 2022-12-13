@@ -2,7 +2,7 @@
 pkgname=aspell-es
 pkgver=1.11.2
 _pkgver=1.11-2
-pkgrel=1
+pkgrel=2
 pkgdesc="Spanish dictionary for aspell"
 arch=('x86_64')
 url="http://aspell.net/"
@@ -13,13 +13,13 @@ md5sums=('8406336a89c64e47e96f4153d0af70c4')
 
 build() {
   cd aspell6-es-${_pkgver}
-  
+
   ./configure
   make
 }
 
 package() {
   cd aspell6-es-${_pkgver}
-    
+
   make DESTDIR=${pkgdir} install
 }

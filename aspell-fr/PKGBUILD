@@ -2,7 +2,7 @@
 pkgname=aspell-fr
 pkgver=0.50.3
 _pkgver=0.50-3
-pkgrel=3
+pkgrel=4
 pkgdesc="French dictionary for aspell"
 arch=('x86_64')
 url="http://aspell.net/"
@@ -20,6 +20,6 @@ build() {
 
 package() {
   cd ${pkgname}-${_pkgver}
-  
+
   make DESTDIR=${pkgdir} install 
 }

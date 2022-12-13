@@ -2,7 +2,7 @@
 pkgname=aspell-it
 pkgver=2.4_20070901
 _pkgver=2.4-20070901-0
-pkgrel=1
+pkgrel=2
 pkgdesc="Italian dictionary for aspell"
 arch=('x86_64')
 url="http://aspell.net/"
@@ -13,13 +13,13 @@ md5sums=('e6037d18211afe8428186499ced30657')
 
 build() {
   cd aspell6-it-${_pkgver}
-  
+
   ./configure
   make
 }
 
 package() {
   cd aspell6-it-${_pkgver}
-  
+
   make DESTDIR=${pkgdir} install
 }

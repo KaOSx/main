@@ -3,7 +3,7 @@ pkgname=aspell-el
 _pkgname=aspell6-el
 pkgver=0.08
 _pkgver=0.08-0
-pkgrel=1
+pkgrel=2
 epoch=1
 pkgdesc="Greek dictionary for aspell."
 arch=('x86_64')
@@ -15,13 +15,13 @@ md5sums=('cf0e677c37ffb64e4b8ebe13acd233c7')
 
 build() {
   cd ${_pkgname}-${_pkgver}
-  
+
   ./configure
   make
 }
 
 package() {
   cd ${_pkgname}-${_pkgver}
-  
+
   make DESTDIR=${pkgdir} install
 }

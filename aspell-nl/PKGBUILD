@@ -1,7 +1,7 @@
 
 pkgname=aspell-nl
 pkgver=0.50.2
-pkgrel=4
+pkgrel=5
 pkgdesc="Dutch dictionary for aspell"
 arch=('x86_64')
 url="http://aspell.net/"
@@ -12,13 +12,13 @@ md5sums=('c3ef9fd7dc4c47d816eee9ef5149c76a')
 
 build() {
   cd ${pkgname}-0.50-2
-  
+
   ./configure
   make
 }
 package() {
   cd ${pkgname}-0.50-2
   make DESTDIR=${pkgdir} install
-  
+
   install -D -m644 Copyright $pkgdir/usr/share/licenses/${pkgname}/LICENSE
 }
