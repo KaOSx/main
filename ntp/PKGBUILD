@@ -2,26 +2,30 @@
 pkgname=ntp
 pkgver=4.2.8.15
 _pkgver=4.2.8p15
-pkgrel=1
+pkgrel=2
 pkgdesc="NTP (Network Time Protocol) tries to keep servers in sync"
 arch=('x86_64')
 license=('custom')
-url="http://www.ntp.org/"
+url="https://www.ntp.org/"
 depends=('openssl' 'readline' 'libcap' 'libedit')
 backup=('etc/ntp.conf')
 install=install
-source=("http://archive.ntp.org/ntp4/ntp-4.2/ntp-${_pkgver}.tar.gz"
+source=("https://archive.ntp.org/ntp4/ntp-4.2/ntp-${_pkgver}.tar.gz"
         'ntp.conf'
         'ntpd.service'
-        'ntpdate.service')
+        'ntpdate.service'
+        'glibc2.34.patch')
 sha256sums=('f65840deab68614d5d7ceb2d0bb9304ff70dcdedd09abb79754a87536b849c19'
             '3c089391cb70ee752a71396e7fde1be000acc199de08f02b9453510ef312c8f9'
             'e1f39fe1e60d4b507aa9d298b1f7ac77dcef19005249f42729043e0b8f0bb64a'
-            '15f4394fb7efddb5f600fea64a4fc72d0f4835b175461e0fc29d9d5853dd9486')
+            '15f4394fb7efddb5f600fea64a4fc72d0f4835b175461e0fc29d9d5853dd9486'
+            'c3fbc0766977bb768299ef32823ac234cdd3729b2af893f565cd353b77c54dcf')
 
 build() {
   cd ${pkgname}-${_pkgver}
-  
+  # https://bugs.ntp.org/show_bug.cgi?id=3741
+  patch -p1 -i ${srcdir}/glibc2.34.patch
+
   ./configure --prefix=/usr \
       --mandir=/usr/share/man \
       --libexecdir=/usr/lib \
@@ -36,7 +40,7 @@ package() {
   
   install -d -o 87 ${pkgdir}/var/lib/ntp
   echo > ${pkgdir}/var/lib/ntp/.placeholder
-  
+
   install -Dm644 ../ntp.conf ${pkgdir}/etc/ntp.conf
   install -Dm644 ../ntpd.service ${pkgdir}/usr/lib/systemd/system/ntpd.service
   install -Dm644 ../ntpdate.service ${pkgdir}/usr/lib/systemd/system/ntpdate.service

@@ -2,14 +2,14 @@
 pkgname=libusbmuxd
 pkgver=2.0.2
 _commit=c724e70fb52ba45291dc73a2e369c0c5bae0ec2e
-pkgrel=1
+pkgrel=2
 pkgdesc="USB Multiplex Daemon, libraries"
 url="http://marcansoft.com/blog/iphonelinux/usbmuxd/"
 arch=('x86_64')
 license=('LGPL2.1' 'GPL2')
 depends=('libusb' 'libplist')
-source=("http://www.libimobiledevice.org/downloads/${pkgname}-${pkgver}.tar.bz2")
-#source=("https://github.com/libimobiledevice/libusbmuxd/archive/${pkgver}.tar.gz")
+#source=("http://www.libimobiledevice.org/downloads/${pkgname}-${pkgver}.tar.bz2")
+source=("https://github.com/libimobiledevice/libusbmuxd/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.bz2")
 md5sums=('f1ae06b1342a7a795cc3a4fc76750f6e')
 
 build() {

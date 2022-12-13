@@ -1,7 +1,7 @@
 
 pkgname=desktop-file-utils
 pkgver=0.26
-pkgrel=1
+pkgrel=2
 pkgdesc="Command line utilities for working with desktop entries"
 arch=('x86_64')
 url="https://www.freedesktop.org/wiki/Software/desktop-file-utils"
@@ -16,7 +16,7 @@ sha256sums=('b26dbde79ea72c8c84fb7f9d870ffd857381d049a86d25e0038c4cef4c747309'
 build() {
   mkdir -p build
   cd build
-  
+
   meson ../${pkgname}-${pkgver} \
     --prefix=/usr \
     --buildtype=release 
@@ -25,7 +25,7 @@ build() {
 
 package() {
   cd build
-  
+
   DESTDIR=${pkgdir} ninja install
   install -Dm644 ../update-desktop-database.hook ${pkgdir}/usr/share/libalpm/hooks/update-desktop-database.hook
 }
