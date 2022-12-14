@@ -1,7 +1,7 @@
 
 pkgname=opusfile
 pkgver=0.12
-pkgrel=1
+pkgrel=2
 pkgdesc="Provides application developers with a high-level API for decoding and seeking in .opus files"
 arch=('x86_64')
 url="https://www.opus-codec.org/"
@@ -13,7 +13,7 @@ sha256sums=('118d8601c12dd6a44f52423e68ca9083cc9f2bfe72da7a8c1acb22a80ae3550b')
 
 build() {
   cd ${pkgname}-${pkgver}
-  
+
   ./configure --prefix=/usr 
   make
 }
@@ -21,7 +21,7 @@ build() {
 package() {
   cd ${pkgname}-${pkgver}
   make DESTDIR=${pkgdir} install
-  
+
   install -m755 -d ${pkgdir}/usr/share/licenses/opusfile
   install -m644 COPYING ${pkgdir}/usr/share/licenses/opusfile/
 }

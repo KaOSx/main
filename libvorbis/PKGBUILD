@@ -1,7 +1,7 @@
 
 pkgname=libvorbis
 pkgver=1.3.7
-pkgrel=1
+pkgrel=2
 pkgdesc="General purpose audio and music encoding format contemporary to MPEG-4's AAC and TwinVQ"
 arch=('x86_64')
 license=('custom')
@@ -20,14 +20,14 @@ build() {
 
 check() {
   cd ${pkgname}-${pkgver}
-  
-  make check
+
+  make -j1 check
 }
 
 
 package() {
   cd ${pkgname}-${pkgver}
   make DESTDIR=${pkgdir} install
-  
+
   install -Dm644 COPYING ${pkgdir}/usr/share/licenses/$pkgname/LICENSE
 }

@@ -13,14 +13,14 @@ md5sums=('afe828ce87262d7e043770553004e162')
 build() {
   cd ${pkgname}-${pkgver}
   RPM_OPT_FLAGS="$CFLAGS" make
-  
+
   make
 }
 
 package() {
   cd ${pkgname}-${pkgver}
   make DESTDIR=${pkgdir} install
-  
+
   chown root:utmp ${pkgdir}/usr/lib/utempter/utempter
   chmod 2755 ${pkgdir}/usr/lib/utempter/utempter
 }

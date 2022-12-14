@@ -1,7 +1,7 @@
 
 pkgname=usb_modeswitch
 pkgver=2.6.1
-pkgrel=1
+pkgrel=2
 _pkgdata=20191128
 pkgdesc="Activating switchable USB devices on Linux."
 arch=('x86_64')
@@ -25,11 +25,11 @@ prepare() {
   # exclude flip phones, see https://forum.kaosx.us/d/1790-kaos-and-doro-626/12
   patch -p1 -i ${srcdir}/40-usb_modeswitch.diff
 }
-         
+
 build() {
   cd usb-modeswitch-${pkgver}/
   make clean
-  
+
   make
 }
 
