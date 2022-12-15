@@ -1,6 +1,6 @@
 
 pkgname=rust
-pkgver=1.65.0
+pkgver=1.66.0
 pkgrel=1
 arch=('x86_64')
 pkgdesc='Systems programming language that runs fast, prevents segfaults, and guarantees thread safety.'
@@ -13,8 +13,8 @@ options=('!strip')
 # https://static.rust-lang.org/dist/index.html
 source=("https://static.rust-lang.org/dist/rustc-${pkgver}-src.tar.xz"
         'config.toml')
-sha256sums=('2d6aa2ea3fedd55acbbd65f78349385f9daa9c14e25db7a8df5d015588eee1cf'
-            '7731020826169a74354b3f620b19e061dfe151d85dd8948a11a5e6cec10790da')
+sha256sums=('0dc176e34fae9871f855a6ba4cb30fa19d69c5b4428d29281a07419c4950715c'
+            '015d5bfadfebb80bc075e3cb8429cfa3f0d6715ce8bf81cb88499e1fa1bc5b3f')
 
 build() {
   cd rustc-${pkgver}-src
