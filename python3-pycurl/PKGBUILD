@@ -1,18 +1,19 @@
 
 pkgname=python3-pycurl
 _pkgname=pycurl
-pkgver=7.45.1
-pkgrel=2
+pkgver=7.45.2
+pkgrel=1
 pkgdesc="A Python interface to libcurl."
 arch=('x86_64')
 url="http://pycurl.io/"
 license=('GPL3')
 depends=('python3' 'curl')
+makedepends=('python3-setuptools')
 replaces=('python2-pycurl')
 provides=('python2-pycurl')
 conflicts=('python2-pycurl')
 source=("https://files.pythonhosted.org/packages/source/p/pycurl/pycurl-${pkgver}.tar.gz")
-sha256sums=('a863ad18ff478f5545924057887cdae422e1b2746e41674615f687498ea5b88a')
+sha256sums=('5730590be0271364a5bddd9e245c9cc0fb710c4cbacbdd95264a3122d23224ca')
 
 build() {
   cd ${_pkgname}-${pkgver}
