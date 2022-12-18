@@ -18,6 +18,7 @@ sha256sums=('cdde80d15a49dab9a614ef98f804c8ce6e4cfe1339a3c240c34f3fb45436b85d'
 prepare () {
   cd ${pkgname}-${pkgver}
 
+  sed -i -e 's|->params.shot_select = o->image_num;|->rawparams.shot_select = o->image_num;|' operations/external/raw-load.c
   #patch -p1 -i ${srcdir}/499a239d158fadb3a04499255b5b282a8a6023bb.diff
 }
 
