@@ -1,6 +1,6 @@
 
 pkgname=nasm
-pkgver=2.15.05
+pkgver=2.16
 pkgrel=1
 pkgdesc="Netwide Assembler for 80x86 and x86-64 designed for portability and modularity"
 url="https://www.nasm.us"
@@ -8,8 +8,8 @@ license=('BSD')
 arch=('x86_64')
 depends=('glibc')
 makedepends=('ghostscript')
-source=("https://www.nasm.us/pub/nasm/releasebuilds/${pkgver}/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('b8985eddf3a6b08fc246c14f5889147c')
+source=("https://www.nasm.us/pub/nasm/releasebuilds/${pkgver}/${pkgname}-${pkgver}.tar.xz")
+md5sums=('30cec236d606dc2b808c56fc1cf735f0')
 
 build() {
   cd ${pkgname}-${pkgver}
@@ -20,7 +20,7 @@ build() {
 
 package() {
   cd ${pkgname}-${pkgver}
-  make DESTDIR=${pkgdir} install install_rdf
-  
+  make DESTDIR=${pkgdir} install
+
   install -D -m644 LICENSE ${pkgdir}/usr/share/licenses/nasm/LICENSE
 }

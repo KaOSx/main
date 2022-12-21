@@ -1,6 +1,6 @@
 
 pkgname=libgusb
-pkgver=0.4.2
+pkgver=0.4.3
 pkgrel=1
 pkgdesc="GLib wrapper around libusb1"
 arch=('x86_64')
@@ -8,9 +8,9 @@ url="https://github.com/hughsie/libgusb"
 license=('LGPL2.1')
 depends=('systemd' 'libusb' 'json-glib')
 makedepends=('gobject-introspection' 'vala' 'meson' 'ninja')
-source=("https://people.freedesktop.org/~hughsient/releases/${pkgname}-${pkgver}.tar.xz")
+source=("https://github.com/hughsie/libgusb/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 options=('!libtool')
-sha256sums=('02d3a992a0cd16c46a346439334417617cd7cd5b2ccc5fe0fe998e9ffb8d5d8a')
+sha256sums=('2f75147cd01d1c08cbf7adc17449cbdb3e394bf752ab3cbf45740da7c3759247')
 
 build() {
   mkdir -p build
