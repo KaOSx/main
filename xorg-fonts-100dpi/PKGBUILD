@@ -1,7 +1,7 @@
 
 pkgname=xorg-fonts-100dpi
 pkgver=1.0.3
-pkgrel=4
+pkgrel=5
 pkgdesc="X.org 100dpi fonts"
 arch=('x86_64')
 url="https://xorg.freedesktop.org/"
@@ -22,7 +22,7 @@ md5sums=('1347c3031b74c9e91dc4dfa53b12f143'
 
 build() {
   cd ${srcdir}
-  
+
   for dir in font-*-100dpi*; do
     if [ -d ${dir} ]; then
       pushd ${dir}
@@ -37,7 +37,7 @@ build() {
 package() {
   cd ${srcdir}
   install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
-  
+
   for dir in font-*-100dpi*; do
     if [ -d ${dir} ]; then
       pushd ${dir}
@@ -46,6 +46,6 @@ package() {
       popd
     fi
   done
-  
+
   rm -f ${pkgdir}/usr/share/fonts/100dpi/fonts.*
 }

@@ -1,7 +1,7 @@
 
 pkgname=xorg-fonts-misc
 pkgver=1.0.3
-pkgrel=4
+pkgrel=5
 pkgdesc="X.org misc fonts"
 arch=('x86_64')
 url="http://xorg.freedesktop.org/"
@@ -39,7 +39,7 @@ sha256sums=('505d9b12a7093389e67a925dfda6346bde26d114c67f0cdca7aeda6e5d3344f4'
 
 build() {
   cd ${srcdir}
-  
+
   for dir in *; do
     if [ -d ${dir} ]; then
       pushd ${dir}
@@ -54,7 +54,7 @@ build() {
 package() {
   cd ${srcdir}
   install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
-  
+
   for dir in *; do
     if [ -d ${dir} ]; then
       pushd ${dir}
@@ -63,6 +63,6 @@ package() {
       popd
     fi
   done
-  
+
   rm -f ${pkgdir}/usr/share/fonts/*/fonts.*
 }

@@ -1,7 +1,7 @@
 
 pkgname=npapi-sdk
 pkgver=0.27.2
-pkgrel=4
+pkgrel=5
 pkgdesc="Netscape Plugin API (NPAPI)"
 arch=('x86_64')
 url="https://github.com/mgorny/npapi-sdk"
@@ -11,14 +11,14 @@ md5sums=('e81db61e206cd615cf56c4a9f301e636')
 
 build() {
   cd ${pkgname}-${pkgver}
-  
+
   ./configure --prefix=/usr
   make
 }
 
 package() {
   cd ${pkgname}-${pkgver}
-  
+
   make DESTDIR=${pkgdir} install
 }
 

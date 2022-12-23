@@ -1,7 +1,7 @@
 
 pkgname=ttf-freefont
 pkgver=20120503
-pkgrel=5
+pkgrel=6
 pkgdesc="A set of free high-quality TrueType fonts covering the Unicode character set"
 arch=('x86_64')
 url="https://www.nongnu.org/freefont/"
@@ -13,7 +13,7 @@ md5sums=('879b76d2e3c8003d567b555743f39154')
 
 package() {
   cd freefont-${pkgver}
-  
+
   install -d ${pkgdir}/usr/share/fonts/TTF
   install -m0644 *.ttf ${pkgdir}/usr/share/fonts/TTF/
 }

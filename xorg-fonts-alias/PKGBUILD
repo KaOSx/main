@@ -1,7 +1,7 @@
 
 pkgname=xorg-fonts-alias
 pkgver=1.0.4
-pkgrel=1
+pkgrel=2
 pkgdesc="X.org font alias files"
 arch=('x86_64')
 url="https://xorg.freedesktop.org/"
@@ -13,7 +13,7 @@ sha256sums=('f3111ae8bf2e980f5f56af400e8eefe5fc9f4207f4a412ea79637fd66c945276'
 
 build() {
   cd font-alias-${pkgver}
-  
+
   ./configure --prefix=/usr --with-fontrootdir=/usr/share/fonts
   make
 }
@@ -21,6 +21,6 @@ build() {
 package() {
   cd font-alias-${pkgver}
   make DESTDIR=${pkgdir} install
-  
+
   install -Dm644 ../LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }

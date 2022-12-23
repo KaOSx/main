@@ -1,7 +1,7 @@
 
 pkgname=libiec61883
 pkgver=1.2.0
-pkgrel=7
+pkgrel=8
 pkgdesc="A higher level API for streaming DV, MPEG-2 and audio over Linux IEEE 1394"
 arch=('x86_64')
 url="https://www.kernel.org/pub/linux/libs/ieee1394/"
@@ -14,12 +14,12 @@ md5sums=('ed91bc1727fac8e019402fc3724a283d')
 build() {
   cd ${pkgname}-${pkgver}
 
-  ./configure --prefix=/usr 
+  ./configure --prefix=/usr
   make 
 }
 
 package() {
   cd ${pkgname}-${pkgver}
 
-  make DESTDIR=${pkgdir} install 
+  make DESTDIR=${pkgdir} install
 }
