@@ -1,12 +1,12 @@
 
 pkgname=wireplumber
 pkgver=0.4.13
-pkgrel=1
+pkgrel=2
 pkgdesc="Modular session/policy manager for PipeWire and a GObject-based library that wraps PipeWire's API."
 url="https://gitlab.freedesktop.org/pipewire/wireplumber"
 license=('MIT')
 arch=('x86_64')
-depends=('pipewire' 'glib2') # 'lua')
+depends=('pipewire' 'glib2' 'lua')
 makedepends=('meson' 'ninja' 'gobject-introspection')
 install=wireplumber.install
 source=("https://gitlab.freedesktop.org/pipewire/wireplumber/-/archive/${pkgver}/wireplumber-${pkgver}.tar.bz2"
@@ -28,13 +28,13 @@ build() {
   mkdir -p build
   cd build
 
-  meson ../${pkgname}-${pkgver} \
+  meson setup ../${pkgname}-${pkgver} \
     --prefix=/usr \
     --buildtype=release \
     -Ddoc=disabled \
     -Dtests=false \
     -Dsystemd-system-service=false \
-    -Dsystem-lua=false
+    -Dsystem-lua=true
   ninja
 }
 
