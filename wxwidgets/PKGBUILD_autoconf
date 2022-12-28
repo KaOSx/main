@@ -1,0 +1,53 @@
+
+pkgname=wxwidgets
+_pkgname=wxWidgets
+pkgver=3.2.1
+pkgrel=3
+epoch=1
+pkgdesc="Open source cross-platform C++ framework for writing advanced GUI applications using native controls."
+arch=('x86_64')
+url="https://wxwidgets.org"
+license=('custom:wxWindows')
+depends=('gtk3' 'glu' 'gst-plugins-base' 'libnotify' 'sdl2') # 'pcre2' no build flag available to use system version
+#makedepends=('cmake')
+options=('!emptydirs')
+conflicts=('wxgtk')
+replaces=('wxgtk')
+provides=('wxgtk')
+source=("https://github.com/wxWidgets/wxWidgets/releases/download/v${pkgver}/${_pkgname}-${pkgver}.tar.bz2")
+sha1sums=('b5299275abddc7cb5fa92f75c17475ade3bc0532')
+
+prepare() {
+  cd ${_pkgname}-${pkgver}
+  #patch -p1 -i ../wxGTK-2.9.5-collision.patch
+}
+
+build() {
+  cd ${_pkgname}-${pkgver}
+
+  ./configure --prefix=/usr \
+    --libdir=/usr/lib \
+    --with-gtk=3 \
+    --with-opengl \
+    --enable-unicode \
+    --enable-graphics_ctx \
+    --enable-mediactrl \
+    --disable-webview \
+    --disable-gtktest \
+    --with-regex=builtin \
+    --with-libpng=sys \
+    --with-libxpm=sys \
+    --with-libjpeg=sys \
+    --with-libtiff=sys \
+    --with-sdl \
+    --disable-precomp-headers
+  make
+  make -C locale allmo
+}
+
+package() {
+  cd ${_pkgname}-${pkgver}
+  make DESTDIR=${pkgdir} install
+
+  install -D -m644 docs/licence.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
