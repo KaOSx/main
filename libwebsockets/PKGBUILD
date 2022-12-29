@@ -1,0 +1,44 @@
+
+pkgname=libwebsockets
+pkgver=4.3.2
+pkgrel=1
+pkgdesc="Pure C library providing client and server for http/1, http/2, websockets"
+arch=('x86_64')
+url="https://libwebsockets.org"
+license=('MIT')
+depends=('libev' 'libuv' 'openssl' 'zlib')
+makedepends=('cmake' 'glib2' 'libcap' 'sqlite')
+source=("https://github.com/warmcat/libwebsockets/archive/v${pkgver}.tar.gz")
+sha256sums=('6a85a1bccf25acc7e8e5383e4934c9b32a102880d1e4c37c70b27ae2a42406e1')
+
+build() {
+  cmake -B build -S ${pkgname}-${pkgver} \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DDISABLE_WERROR=ON \
+    -DLWS_IPV6=ON \
+    -DLWS_WITH_GLIB=ON \
+    -DLWS_WITH_HTTP2=ON \
+    -DLWS_WITH_HTTP_PROXY=ON \
+    -DLWS_WITH_LIBEV=ON \
+    -DLWS_WITH_LIBEVENT=OFF \
+    -DLWS_WITH_LIBUV=ON \
+    -DLWS_WITH_STATIC=OFF \
+    -DLWS_WITH_THREADPOOL=ON \
+    -DLWS_WITH_ZIP_FOPS=ON \
+    -DLWS_WITHOUT_BUILTIN_GETIFADDRS=ON \
+    -DLWS_WITHOUT_BUILTIN_SHA1=ON \
+    -DLWS_WITHOUT_CLIENT=OFF \
+    -DLWS_WITHOUT_SERVER=OFF \
+    -DLWS_WITHOUT_TESTAPPS=ON \
+    -DLWS_WITHOUT_TEST_CLIENT=ON \
+    -DLWS_WITHOUT_TEST_PING=ON \
+    -DLWS_WITHOUT_TEST_SERVER_EXTPOLL=ON
+  cmake --build build
+}
+
+package() {
+
+  DESTDIR=${pkgdir} cmake --install build
+  install -vDm644 ${pkgname}-${pkgver}/LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}/
+}
