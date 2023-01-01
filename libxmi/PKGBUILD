@@ -1,7 +1,7 @@
 
 pkgname=libxmi
 pkgver=1.2
-pkgrel=4
+pkgrel=5
 pkgdesc="library for rasterizing 2-D vector graphics"
 arch=('x86_64')
 url="https://www.gnu.org/software/libxmi/libxmi.html"
@@ -12,14 +12,14 @@ md5sums=('4e6935484f0ad71b531920bf4c546b47')
 
 build() {
   cd ${pkgname}-${pkgver}
+
   autoreconf --force --install
-  
   ./configure --prefix=/usr --infodir=/usr/share/info
   make
 }
 
 package() {
   cd ${pkgname}-${pkgver}
-  
+
   make DESTDIR=${pkgdir} install
 }

@@ -1,17 +1,25 @@
 
 pkgname=mime-types
-pkgver=9
-pkgrel=4
+pkgver=2.1.53
+_pkgver=2-1-53
+pkgrel=1
+epoch=1
 pkgdesc='Provides /etc/mime.types'
-url='https://wiki.gentoo.org/wiki/No_homepage'
+url='https://pagure.io/mailcap'
 license=('GPL2')
 arch=('x86_64')
 backup=('etc/mime.types')
-source=("https://mirrors.kernel.org/gentoo/distfiles/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('75c88966b6516cf085125072dc8b39e5')
+source=("https://pagure.io/mailcap/archive/r${_pkgver}/mailcap-r${_pkgver}.tar.gz")
+md5sums=('2522007f2ecc1be37265527d8eedf979')
+
+build() {
+  cd mailcap-r${_pkgver}
+
+  make
+}
 
 package() {
-    cd ${pkgname}-${pkgver}
+  cd mailcap-r${_pkgver}
 
-    install -Dm644 mime.types ${pkgdir}/etc/mime.types
+  make DESTDIR=${pkgdir} install
 }

@@ -1,7 +1,7 @@
 
 pkgname=microdns
 pkgver=0.2.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Minimal mDNS resolver (and announcer) library."
 arch=('x86_64')
 url="https://github.com/videolabs/libmicrodns"
@@ -13,7 +13,7 @@ sha256sums=('2da28e7dda4861d76f797f92ac3e6c3e048333b95f9e4fc3a6548ad8afd8c446')
 build() {
   mkdir -p build
   cd build
-  
+
   meson ../${pkgname}-${pkgver} \
     --prefix=/usr \
     --buildtype=release 
@@ -22,6 +22,6 @@ build() {
 
 package() {
   cd build
-  
+
   DESTDIR=${pkgdir} ninja install
 }

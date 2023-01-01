@@ -1,7 +1,7 @@
 
 pkgname=telepathy-mission-control
 pkgver=5.16.6
-pkgrel=1
+pkgrel=2
 pkgdesc="Telepathy component implementing both the Account Manager and Channel Dispatcher specifications."
 arch=('x86_64')
 url="https://telepathy.freedesktop.org/wiki/Components/Mission_Control/"
@@ -15,7 +15,7 @@ md5sums=('911e990c7755eb98a8022223f649405d')
 
 build() {
     cd ${pkgname}-${pkgver}
-    
+
     ./configure --prefix=/usr \
         --libexecdir=/usr/lib/telepathy \
         --disable-schemas-compile \
@@ -25,6 +25,6 @@ build() {
 
 package() {
     cd ${pkgname}-${pkgver}
-    
+
     make DESTDIR=${pkgdir} install
 }

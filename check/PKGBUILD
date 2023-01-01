@@ -1,7 +1,7 @@
 
 pkgname=check
 pkgver=0.15.2
-pkgrel=1
+pkgrel=2
 pkgdesc="A unit testing framework for C"
 arch=('x86_64')
 url="https://libcheck.github.io/check"
@@ -12,13 +12,13 @@ md5sums=('50fcafcecde5a380415b12e9c574e0b2')
 
 build() {
   cd ${pkgname}-${pkgver}
-  
+
   ./configure --prefix=/usr --disable-static
   make
 }
 
 package() {
   cd ${pkgname}-${pkgver}
-  
+
   make DESTDIR=${pkgdir} install
 }
