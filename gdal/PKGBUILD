@@ -8,9 +8,9 @@ pkgdesc="A translator library for raster geospatial data formats"
 arch=('x86_64')
 url="https://www.gdal.org/"
 license=('custom')
-depends=('curl' 'geos' 'giflib' 'hdf5' 'libgeotiff' 'libjpeg-turbo' 'libpng' 'libtiff' 'netcdf'
+depends=('curl' 'geos' 'giflib' 'libgeotiff' 'libjpeg-turbo' 'libpng' 'libtiff' 'netcdf'
          'poppler' 'python3-numpy' 'sqlite3' 'mariadb' 'postgresql-libs' 'cfitsio' 'unixodbc'
-         'json-c' 'libspatialite' 'proj')
+         'json-c' 'libspatialite' 'proj') # currently not found 'hdf5'
 makedepends=('perl' 'swig')
 options=('!libtool' '!makeflags')
 provides=('python3-gdal')
@@ -20,7 +20,7 @@ source=("https://download.osgeo.org/gdal/${pkgver}/${pkgname}-${pkgver}.tar.xz"
 #source=("https://github.com/OSGeo/gdal/archive/v${_pkgver}.tar.gz"
         "https://github.com/OSGeo/gdal/commit/17e98757e78969a199d1d6318f53d088da192191.diff")
 md5sums=('885a6a27ebc7799dfbb56d3978dec9f3'
-         'f41a77dd0955eaf52bd99d555ad4e076')
+         '2f2ad74c557ab35c5089113592bdbd6b')
 
 prepare() {
   cd ${pkgname}-${_pkgver}

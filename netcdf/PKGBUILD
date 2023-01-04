@@ -1,7 +1,7 @@
 
 pkgname=netcdf
 pkgver=4.9.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Network Common Data Form interface for array-oriented data access and corresponding library."
 arch=("x86_64")
 url="https://www.unidata.ucar.edu/downloads/netcdf/"
@@ -13,7 +13,7 @@ md5sums=('26cfd1b2e32d511bd82477803976365d')
 
 build() {
   cd ${pkgname}-c-${pkgver}
-  export CPPFLAGS+=" -DH5_USE_110_API"
+  #export CPPFLAGS+=" -DH5_USE_110_API"
 
   ./configure --prefix=/usr \
         --enable-shared \
@@ -23,7 +23,7 @@ build() {
 
 check() {
   cd ${pkgname}-c-${pkgver}
-  # 2 tests fail in 4.8.1
+  # 1 test fails in 4.9.0
   make check 
 }
 
