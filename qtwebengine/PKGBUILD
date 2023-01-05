@@ -12,7 +12,7 @@ pkgver=5.15.12
 subver=${subver}
 _pkgver=${_qtver}
 _commit=4ea03a0affbfd6ff36a7defd391b7ca139d18c8e
-pkgrel=1
+pkgrel=2
 pkgdesc="Chromium-based web engine to replace Qt WebKit"
 url="https://www.qt.io/"
 arch=('x86_64')
@@ -52,7 +52,7 @@ prepare() {
     mkdir -p build
     cd ${_pkgfqn}
 
-    sed -i 's|MODULE_VERSION = 5.15.11|MODULE_VERSION = 5.15.6|' .qmake.conf
+    sed -i 's|MODULE_VERSION = 5.15.12|MODULE_VERSION = 5.15.8|' .qmake.conf
 
     git submodule init
     git submodule set-url src/3rdparty ${srcdir}/qtwebengine-chromium
