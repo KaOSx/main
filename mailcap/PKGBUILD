@@ -1,13 +1,15 @@
 
-pkgname=mime-types
+pkgname=mailcap
 pkgver=2.1.53
 _pkgver=2-1-53
 pkgrel=1
-epoch=1
-pkgdesc='Provides /etc/mime.types'
+pkgdesc='Helper application and MIME type associations for file types.'
 url='https://pagure.io/mailcap'
 license=('GPL2')
 arch=('x86_64')
+provides=('mime-types')
+replaces=('mime-types')
+conflicts=('mime-types')
 backup=('etc/mime.types')
 source=("https://pagure.io/mailcap/archive/r${_pkgver}/mailcap-r${_pkgver}.tar.gz")
 md5sums=('2522007f2ecc1be37265527d8eedf979')

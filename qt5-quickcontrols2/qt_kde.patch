@@ -215,7 +215,7 @@ index e6db14eb5..6197d1547 100644
      qreal maxHeight = 0;
      for (int i = 0; i < count; ++i) {
 diff --git a/src/quicktemplates2/qquickoverlay.cpp b/src/quicktemplates2/qquickoverlay.cpp
-index b8d417f29..c8cd142ae 100644
+index 91bd59184..0ce518f84 100644
 --- a/src/quicktemplates2/qquickoverlay.cpp
 +++ b/src/quicktemplates2/qquickoverlay.cpp
 @@ -399,8 +399,11 @@ void QQuickOverlay::itemChange(ItemChange change, const ItemChangeData &data)
@@ -433,10 +433,10 @@ index 000000000..9e4598b9f
 +    }
 +}
 diff --git a/tests/auto/qquickpopup/tst_qquickpopup.cpp b/tests/auto/qquickpopup/tst_qquickpopup.cpp
-index ede3640c2..f1840946b 100644
+index 54952d128..3d50e2dd4 100644
 --- a/tests/auto/qquickpopup/tst_qquickpopup.cpp
 +++ b/tests/auto/qquickpopup/tst_qquickpopup.cpp
-@@ -97,6 +97,7 @@ private slots:
+@@ -100,6 +100,7 @@ private slots:
      void invisibleToolTipOpen();
      void centerInOverlayWithinStackViewItem();
      void destroyDuringExitTransition();
@@ -444,7 +444,7 @@ index ede3640c2..f1840946b 100644
  };
  
  void tst_QQuickPopup::initTestCase()
-@@ -1459,6 +1460,34 @@ void tst_QQuickPopup::destroyDuringExitTransition()
+@@ -1575,6 +1576,34 @@ void tst_QQuickPopup::destroyDuringExitTransition()
      QVERIFY(!button->isDown());
  }
  
