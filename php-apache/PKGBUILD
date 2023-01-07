@@ -2,13 +2,13 @@
 pkgname=php-apache
 _pkgname=php
 pkgver=8.1.14
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 pkgdesc='Apache SAPI for PHP'
 license=('PHP')
 url='https://secure.php.net/'
 depends=("php>=${pkgver}" 'apache') 
-makedepends=('mariadb' 'postfix' 'libzip' 'file' 'libjpeg-turbo' 'openssl' 'db' 'gmp')
+makedepends=('mariadb' 'postfix' 'libzip' 'file' 'libjpeg-turbo' 'openssl' 'gmp')
 backup=('etc/httpd/conf/extra/php_module.conf')
 source=("http://www.php.net/distributions/${_pkgname}-${pkgver}.tar.xz"
         'apache.conf')
@@ -51,7 +51,6 @@ build() {
 		--enable-sysvshm=shared \
 		--with-bz2=shared \
 		--with-curl=shared \
-		--with-db4=/usr \
 		--with-enchant=shared \
 		--with-external-pcre \
 		--with-fpm-systemd \
