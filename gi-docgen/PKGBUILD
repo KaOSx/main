@@ -1,7 +1,8 @@
 
 pkgname=gi-docgen
-pkgver=2022.2
-pkgrel=2
+pkgver=2023.1
+_pkgver=2023
+pkgrel=1
 pkgdesc="Documentation tool for GObject-based libraries"
 arch=('x86_64')
 license=('Apache' 'GPL3')
@@ -9,8 +10,8 @@ url="https://gitlab.gnome.org/GNOME/gi-docgen"
 depends=('python3-jinja' 'python3-markdown' 'python3-markupsafe' 'python3-pygments'
          'python3-toml')
 makedepends=('python3-setuptools')
-source=("https://files.pythonhosted.org/packages/source/g/gi-docgen/${pkgname}-${pkgver}.tar.gz")
-sha256sums=('fc56df0c7d4ab9e5ed83f35b7483cb07d0bf91761e4f139eed363d7e42ffe0c0')
+source=("https://download.gnome.org/sources/gi-docgen/${_pkgver}/${pkgname}-${pkgver}.tar.xz")
+sha256sums=('a9a687c1b7c4a4139a214bd451e01ca86131a3161f68aa3e07325b06002bbfb6')
 
 build() {
    cd ${pkgname}-${pkgver}
