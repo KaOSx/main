@@ -1,6 +1,6 @@
 
 pkgname=fish
-pkgver=3.5.1
+pkgver=3.6.0
 pkgrel=1
 pkgdesc='Smart and user friendly shell intended mostly for interactive use'
 arch=('x86_64')
@@ -10,7 +10,7 @@ depends=('python3' 'inetutils' 'gcc-libs' 'ncurses' 'which' 'pcre2')
 makedepends=('doxygen' 'cmake')
 install=fish.install
 source=("https://github.com/fish-shell/fish-shell/releases/download/${pkgver}/fish-${pkgver}.tar.xz")
-sha256sums=('a6d45b3dc5a45dd31772e7f8dfdfecabc063986e8f67d60bd7ca60cc81db6928')
+sha256sums=('97044d57773ee7ca15634f693d917ed1c3dc0fa7fde1017f1626d60b83ea6181')
 
 build() {
   cmake -B build -S ${pkgname}-${pkgver} \
