@@ -1,43 +1,27 @@
 
 pkgname=sdl
-pkgver=1.2.15
-pkgrel=11
+pkgver=1.2.60
+pkgrel=1
 pkgdesc="A library for portable low-level access to a video framebuffer, audio output, mouse, and keyboard"
 arch=('x86_64')
 url="https://www.libsdl.org"
 license=('LGPL')
-depends=('glibc' 'libxext' 'libxrender' 'libx11' 'alsa-lib' 'pulseaudio' 'glu')
-makedepends=('mesa')
+depends=('glibc' 'libxext' 'libxrender' 'libx11' 'alsa-lib' 'pulseaudio' 'glu' 'sdl2')
+makedepends=('cmake' 'mesa')
 options=('!libtool')
-source=("https://www.libsdl.org/release/SDL-${pkgver}.tar.gz"
-        'sdl-1.2.14-fix-mouse-clicking.patch'
-        'sdl-1.2.14-disable-mmx.patch'
-        'resizing.patch'
-        'libx11.patch')
-md5sums=('9d96df8417572a2afb781a7c4c811a85'
-         'd79137e6bdadf21ff2f716590e9709ac'
-         'a19dabb85729fab36f2662e9e273a4d9'
-         '3dd50347d8856160a9cbd7f80383a1f8'
-         '148b285bccee9d21bb96db807363b962')
+#source=("https://www.libsdl.org/release/SDL-${pkgver}.tar.gz"
+source=("https://github.com/libsdl-org/sdl12-compat/archive/refs/tags/release-${pkgver}.tar.gz")
+md5sums=('a539a4a3ceb3d09b7bf312d96210443c')
 
 build() {
-  cd SDL-${pkgver}
-  patch -p1 -i $srcdir/sdl-1.2.14-fix-mouse-clicking.patch
-  patch -p1 -i $srcdir/sdl-1.2.14-disable-mmx.patch
-  patch -p1 -i $srcdir/resizing.patch
-  patch -p0 -i $srcdir/libx11.patch
-
-  ./configure --prefix=/usr \
-        --disable-nasm \
-        --enable-alsa \
-        --with-x \
-        --disable-rpath \
-        --disable-static
-  make
+  cmake -B build -S sdl12-compat-release-${pkgver} \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DSDL12TESTS=OFF
+  cmake --build build
 }
 
 package() {
-  cd SDL-${pkgver}
 
-  make DESTDIR=${pkgdir} install
+  DESTDIR=${pkgdir} cmake --install build 
 }
