@@ -1,6 +1,6 @@
  
 pkgname=libquotient
-pkgver=0.7.0
+pkgver=0.7.1
 pkgrel=1
 pkgdesc="Qt5 library to write cross-platform clients for Matrix"
 arch=('x86_64')
@@ -9,7 +9,7 @@ license=('LGPL2')
 depends=('qt5-multimedia' 'libqtolm' 'qtkeychain')
 makedepends=('cmake')
 source=("https://github.com/quotient-im/libQuotient/archive/${pkgver}.tar.gz")
-sha256sums=('2e46a9889c2ce86b780f04b0b831896179af6621177f805c1a650a980e041525')
+sha256sums=('48b15c666528405219ff0be8f0f336405c64deb1719115af75ef099cb3f86555')
 
 build() {
     cmake -B build -S libQuotient-${pkgver} \
