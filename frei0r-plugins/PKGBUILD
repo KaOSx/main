@@ -1,7 +1,8 @@
 
 pkgname=frei0r-plugins
-pkgver=1.8.0
-pkgrel=2
+_pkgname=frei0r
+pkgver=2.0.0
+pkgrel=1
 pkgdesc="Large collection of free and portable video plugins"
 arch=('x86_64')
 url="https://www.dyne.org/software/frei0r/"
@@ -9,13 +10,13 @@ license=('GPL')
 depends=('gcc-libs' 'gavl' 'opencv')
 makedepends=('doxygen' 'cmake')
 options=('!emptydirs')
-source=("https://files.dyne.org/frei0r/${pkgname}-${pkgver}.tar.gz"
+source=("https://github.com/dyne/frei0r/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz"
         "https://github.com/dyne/frei0r/commit/c0c8eed79fc8abe6c9881a53d7391efb526a3064.diff")
-sha256sums=('45a28655caf057227b442b800ca3899e93490515c81e212d219fdf4a7613f5c4'
+sha256sums=('cc3ce35f7c208a7a82ab5c4cfad2dde006b4c2db4724015570c155c5b36ac82b'
             'c4a2ffe5e23e7755aee7b1db87bda029f99c4358c3715f04316fa29030e54f46')
 
 prepare() {
-  cd ${pkgname}-${pkgver}
+  cd ${_pkgname}-${pkgver}
   # opencv 4 support
   #patch -p1 -i ${srcdir}/c0c8eed79fc8abe6c9881a53d7391efb526a3064.diff
 
@@ -23,7 +24,7 @@ prepare() {
 }
 
 build() {
-  cmake -B build -S ${pkgname}-${pkgver} \
+  cmake -B build -S ${_pkgname}-${pkgver} \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr 
   cmake --build build
@@ -32,7 +33,7 @@ build() {
 package() {
 
   DESTDIR=${pkgdir} cmake --install build
-  install -Dm644 ${pkgname}-${pkgver}/COPYING.txt ${pkgdir}/usr/share/licenses/${pkgname}/COPYING.txt
+  install -Dm644 ${_pkgname}-${pkgver}/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
 }
 
 
