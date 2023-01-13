@@ -1,7 +1,7 @@
 
 pkgname=fuse
 pkgver=2.9.9
-pkgrel=3
+pkgrel=4
 pkgdesc="A library that makes it possible to implement a filesystem in a userspace program."
 arch=('x86_64')
 url="https://github.com/libfuse/libfuse"
@@ -11,13 +11,17 @@ makedepends=('pkgconfig')
 backup=('etc/fuse.conf')
 options=('!libtool')
 source=("https://github.com/libfuse/libfuse/releases/download/fuse-${pkgver}/${pkgname}-${pkgver}.tar.gz"
-        'fuse.conf')
+        'fuse.conf'
+        "https://gitweb.gentoo.org/repo/gentoo.git/plain/sys-fs/fuse/files/fuse-2.9.9-closefrom-glibc-2-34.patch")
 md5sums=('8000410aadc9231fd48495f7642f3312'
-         'c9457cf5b2196da67d5ac816d1c86a4f')
+         'c9457cf5b2196da67d5ac816d1c86a4f'
+         '211cb4864a49375a0c00cf2ab344457e')
 
 build() {
   cd ${pkgname}-${pkgver}
+  patch -p1 -i ${srcdir}/fuse-2.9.9-closefrom-glibc-2-34.patch
 
+  autoreconf -vi
   ./configure --prefix=/usr \
         --libdir=/usr/lib \
         --enable-lib \
@@ -30,7 +34,7 @@ build() {
 package() {
   cd ${pkgname}-${pkgver}
   make DESTDIR=${pkgdir} install 
-  
+
   install -D -m644 ../fuse.conf ${pkgdir}/etc/fuse2.conf
 
   rm -rf ${pkgdir}/dev

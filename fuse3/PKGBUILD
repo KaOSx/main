@@ -1,6 +1,6 @@
 
 pkgname=fuse3
-pkgver=3.12.0
+pkgver=3.13.0
 pkgrel=1
 pkgdesc="A library that makes it possible to implement a filesystem in a userspace program, libfuse 3.x version."
 arch=('x86_64')
@@ -11,12 +11,12 @@ makedepends=('pkgconfig' 'meson' 'ninja')
 backup=('etc/fuse.conf')
 options=('!libtool')
 source=("https://github.com/libfuse/libfuse/releases/download/fuse-${pkgver}/fuse-${pkgver}.tar.xz")
-md5sums=('2640cd55b3c2a2eb9e78054f77f5c87a')
+md5sums=('abb22345822168b16d455a6fcd990d4b')
 
 build() {
   mkdir -p build
   cd build
-  
+
   meson ../fuse-${pkgver} \
     --prefix=/usr \
     --buildtype=release \
@@ -26,9 +26,9 @@ build() {
 
 package() {
   cd build
-  
+
   DESTDIR=${pkgdir} ninja install
-  
+
   #install -D -m644 ../fuse.conf ${pkgdir}/etc/fuse.conf
 
   rm -rf ${pkgdir}/dev
