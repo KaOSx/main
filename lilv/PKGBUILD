@@ -15,7 +15,7 @@ build() {
   mkdir -p build
   cd build
 
-  meson ../${pkgbase}-${pkgver} \
+  meson setup ../${pkgbase}-${pkgver} \
     --prefix=/usr \
     --buildtype=release \
     -Ddocs=disabled
@@ -26,6 +26,6 @@ package() {
   cd build
 
   DESTDIR=${pkgdir} ninja install
-  install -Dm644 ../${pkgbase}-${pkgver}/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+  install -Dm644 ../${pkgname}-${pkgver}/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
 
