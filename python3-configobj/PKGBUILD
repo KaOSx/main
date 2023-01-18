@@ -1,14 +1,16 @@
 
 pkgname=python3-configobj
-pkgver=5.0.6
-pkgrel=5
+pkgver=5.0.7
+pkgrel=1
 pkgdesc='Simple but powerful config file reader and writer for Python'
 arch=('x86_64')
 url='https://github.com/DiffSK/configobj'
 license=('BSD')
 depends=('python3' 'python3-six')
-source=("https://github.com/DiffSK/configobj/archive/v$pkgver.tar.gz")
-md5sums=('3ba0a72b09225a09c80b571ad60c3f54')
+makedepends=('python3-setuptools')
+#source=("https://github.com/DiffSK/configobj/archive/v$pkgver.tar.gz")
+source=("https://files.pythonhosted.org/packages/source/c/configobj/configobj-${pkgver}.tar.gz")
+sha256sums=('a4f856ffc73ebbc44c3830326a7c75ddcdb5941216030fc2115220e913a9939d')
 
 package() {
   cd configobj-${pkgver}
