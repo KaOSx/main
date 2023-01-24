@@ -1,6 +1,6 @@
 
 pkgname=gst-plugins-ugly
-pkgver=1.20.5
+pkgver=1.22.0
 pkgrel=1
 pkgdesc="GStreamer Multimedia Framework Ugly Plugins"
 arch=('x86_64')
@@ -11,13 +11,13 @@ depends=('gst-plugins-base' 'libdvdread' 'lame' 'libmpeg2' 'a52dec'
 makedepends=('python3' 'meson' 'ninja')
 options=('!libtool' '!emptydirs')
 source=("https://gstreamer.freedesktop.org/src/gst-plugins-ugly/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('af67d8ba7cab230f64d0594352112c2c443e2aa36a87c35f9f98a43d11430b87')
+sha256sums=('a644dc981afa2d8d3a913f763ab9523c0620ee4e65a7ec73c7721c29da3c5a0c')
 
 build() {
   mkdir -p build
   cd build
 
-  meson ../${pkgname}-${pkgver} \
+  meson setup ../${pkgname}-${pkgver} \
     --prefix=/usr \
     --buildtype=release \
     -Dpackage-name="GStreamer Good (KaOS)" \
