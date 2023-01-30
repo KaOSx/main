@@ -1,20 +1,40 @@
 
-pkgname=noto-fonts
-# version based on latest adjusted font in NotoSans-hinted.zip
-pkgver=20171024
-pkgrel=2
+pkgbase=noto-fonts
+pkgname=('noto-fonts' 'noto-fonts-otf')
+pkgver=2.010
+pkgrel=1
+epoch=1
 arch=('x86_64')
 pkgdesc="Font family by Google which aims to support all languages with a harmonious look and feel."
 license=('SIL Open Font License (OFL)')
-url="https://www.google.com/get/noto/"
-depends=('fontconfig' 'xorg-fonts-encodings' 'xorg-font-utils')
-nstall=noto-fonts.install
-source=("https://noto-website-2.storage.googleapis.com/pkgs/NotoSans-hinted.zip")
-md5sums=('3abea57292933806314dc9c4048ee033')
+url="https://fonts.google.com/noto"
+makedepends=('fontconfig' 'xorg-fonts-encodings' 'xorg-font-utils')
+#source=("https://noto-website-2.storage.googleapis.com/pkgs/NotoSans-hinted.zip")
+source=("https://github.com/notofonts/notofonts.github.io/archive/refs/tags/NotoSans-v${pkgver}.tar.gz")
+md5sums=('9fa08d0d0de46df600c3a8b07fc1e686')
 
 package_noto-fonts() {
+  pkgdesc="Font family by Google which aims to support all languages with a harmonious look and feel."
+  depends=('fontconfig' 'xorg-fonts-encodings' 'xorg-font-utils')
+  install=noto-fonts.install
+
+  cd notofonts.github.io-NotoSans-v${pkgver}
+
   install -d ${pkgdir}/usr/share/fonts/TTF
-  install -m0644 *.ttf ${pkgdir}/usr/share/fonts/TTF/
+  install -m0644 fonts/NotoSans/hinted/ttf/*.ttf ${pkgdir}/usr/share/fonts/TTF/
   
-  install -Dm644 LICENSE_OFL.txt $pkgdir/usr/share/licenses/$pkgname/LICENSE
+  install -Dm644 LICENSE $pkgdir/usr/share/licenses/$pkgname/LICENSE
+}
+
+package_noto-fonts-otf() {
+  pkgdesc="Google developed font family which aims to support all languages with a harmonious look and feel, OTF fonts "
+  depends=('fontconfig' 'xorg-fonts-encodings' 'xorg-font-utils')
+  install=noto-fonts-otf.install
+
+  cd notofonts.github.io-NotoSans-v${pkgver}
+
+  install -d $pkgdir/usr/share/fonts/OTF
+  install -m0644 fonts/NotoSans/unhinted/otf/*.otf ${pkgdir}/usr/share/fonts/OTF/
+
+  install -Dm644 LICENSE $pkgdir/usr/share/licenses/$pkgname/LICENSE
 }
