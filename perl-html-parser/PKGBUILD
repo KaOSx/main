@@ -1,7 +1,7 @@
 
 pkgname=perl-html-parser
 _pkgname=HTML-Parser
-pkgver=3.80
+pkgver=3.81
 pkgrel=1
 pkgdesc="Perl HTML parser class"
 arch=('x86_64')
@@ -11,7 +11,7 @@ depends=('perl-html-tagset' 'perl')
 checkdepends=('perl-test-pod' 'perl-json' 'perl-uri')
 options=(!emptydirs)
 source=("https://cpan.metacpan.org/authors/id/O/OA/OALDERS/${_pkgname}-${pkgver}.tar.gz")
-md5sums=('8e7151d08f30457a2ba80020b936285f')
+md5sums=('b9f5dd3b14632f7a60541a2b61389c06')
 
 build() {
   cd ${_pkgname}-${pkgver}
@@ -23,7 +23,7 @@ build() {
 
 check() {
   cd ${_pkgname}-${pkgver}
-  # 2 fail t/headparser-http.t t/linkextor-base.t
+  # 1 fail t/headparser-http.t
   make test
 }
 
