@@ -1,7 +1,7 @@
 
 pkgbase=noto-fonts
 pkgname=('noto-fonts' 'noto-fonts-otf')
-pkgver=2.010
+pkgver=23.2.1
 pkgrel=1
 epoch=1
 arch=('x86_64')
@@ -10,15 +10,15 @@ license=('SIL Open Font License (OFL)')
 url="https://fonts.google.com/noto"
 makedepends=('fontconfig' 'xorg-fonts-encodings' 'xorg-font-utils')
 #source=("https://noto-website-2.storage.googleapis.com/pkgs/NotoSans-hinted.zip")
-source=("https://github.com/notofonts/notofonts.github.io/archive/refs/tags/NotoSans-v${pkgver}.tar.gz")
-md5sums=('9fa08d0d0de46df600c3a8b07fc1e686')
+source=("https://github.com/notofonts/notofonts.github.io/archive/refs/tags/noto-monthly-release-${pkgver}.tar.gz")
+md5sums=('f63f2cb1e924e8497e148913462931c0')
 
 package_noto-fonts() {
   pkgdesc="Font family by Google which aims to support all languages with a harmonious look and feel."
   depends=('fontconfig' 'xorg-fonts-encodings' 'xorg-font-utils')
   install=noto-fonts.install
 
-  cd notofonts.github.io-NotoSans-v${pkgver}
+  cd notofonts.github.io-noto-monthly-release-${pkgver}
 
   install -d ${pkgdir}/usr/share/fonts/TTF
   install -m0644 fonts/NotoSans/hinted/ttf/*.ttf ${pkgdir}/usr/share/fonts/TTF/
@@ -31,7 +31,7 @@ package_noto-fonts-otf() {
   depends=('fontconfig' 'xorg-fonts-encodings' 'xorg-font-utils')
   install=noto-fonts-otf.install
 
-  cd notofonts.github.io-NotoSans-v${pkgver}
+  cd notofonts.github.io-noto-monthly-release-${pkgver}
 
   install -d $pkgdir/usr/share/fonts/OTF
   install -m0644 fonts/NotoSans/unhinted/otf/*.otf ${pkgdir}/usr/share/fonts/OTF/
