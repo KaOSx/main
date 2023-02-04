@@ -1,7 +1,7 @@
 
 pkgname=cdrdao
-pkgver=1.2.4
-pkgrel=6
+pkgver=1.2.5
+pkgrel=1
 arch=('x86_64')
 license=('GPL')
 url="https://cdrdao.sourceforge.net/"
@@ -10,7 +10,7 @@ depends=('lame' 'libmad' 'libvorbis' 'libao')
 makedepends=('libsigc++')
 source=("https://downloads.sourceforge.net/cdrdao/${pkgname}-${pkgver}.tar.bz2"
         'cdrdao-1.2.3-autoconf-update.patch')
-md5sums=('2ada887d1b30b440867b8df0d3023cf7'
+md5sums=('45adc4da3d7299471c01e14b80184e36'
          '8e53dfc174f7c0882194caa05e68b85e')
 
 build() {
@@ -20,8 +20,9 @@ build() {
     ./configure --prefix=/usr \
         --mandir=/usr/share/man \
         --sysconfdir=/etc \
-        --with-xdao --with-lame \
-        --with-ogg-support --with-mp3-support
+        --with-lame \
+        --with-ogg-support \
+        --with-mp3-support
     make
 }
 
