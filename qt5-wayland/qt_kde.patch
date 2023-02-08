@@ -1197,10 +1197,20 @@ index 474fe2ab..46f629ac 100644
  private:
      QWaylandDisplay *m_display = nullptr;
 diff --git a/src/client/qwaylandinputdevice.cpp b/src/client/qwaylandinputdevice.cpp
-index 613fe862..4b90de84 100644
+index 613fe862..4bea321e 100644
 --- a/src/client/qwaylandinputdevice.cpp
 +++ b/src/client/qwaylandinputdevice.cpp
-@@ -685,6 +685,11 @@ public:
+@@ -308,8 +308,7 @@ void QWaylandInputDevice::Pointer::updateCursor()
+     auto shape = seat()->mCursor.shape;
+ 
+     if (shape == Qt::BlankCursor) {
+-        if (mCursor.surface)
+-            mCursor.surface->hide();
++        getOrCreateCursorSurface()->hide();
+         return;
+     }
+ 
+@@ -685,6 +684,11 @@ public:
  
  void QWaylandInputDevice::Pointer::pointer_leave(uint32_t time, struct wl_surface *surface)
  {
@@ -1212,7 +1222,7 @@ index 613fe862..4b90de84 100644
      // The event may arrive after destroying the window, indicated by
      // a null surface.
      if (!surface)
-@@ -696,11 +701,6 @@ void QWaylandInputDevice::Pointer::pointer_leave(uint32_t time, struct wl_surfac
+@@ -696,11 +700,6 @@ void QWaylandInputDevice::Pointer::pointer_leave(uint32_t time, struct wl_surfac
  
      if (!QWaylandWindow::mouseGrab())
          setFrameEvent(new LeaveEvent(window, mSurfacePos, mGlobalPos));
@@ -1224,7 +1234,7 @@ index 613fe862..4b90de84 100644
  }
  
  class MotionEvent : public QWaylandPointerEvent
-@@ -1300,14 +1300,6 @@ void QWaylandInputDevice::Keyboard::handleFocusDestroyed()
+@@ -1300,14 +1299,6 @@ void QWaylandInputDevice::Keyboard::handleFocusDestroyed()
  void QWaylandInputDevice::Keyboard::handleFocusLost()
  {
      mFocus = nullptr;
@@ -1239,7 +1249,7 @@ index 613fe862..4b90de84 100644
      mParent->mQDisplay->handleKeyboardFocusChanged(mParent);
      mRepeatTimer.stop();
  }
-@@ -1396,6 +1388,7 @@ void QWaylandInputDevice::Touch::touch_cancel()
+@@ -1396,6 +1387,7 @@ void QWaylandInputDevice::Touch::touch_cancel()
      if (touchExt)
          touchExt->touchCanceled();
  
@@ -2323,7 +2333,7 @@ index 261f8cbb..c1bcd5c6 100644
  private:
      QScopedPointer<QWaylandXdgShellV6> m_xdgShell;
 diff --git a/src/plugins/shellintegration/xdg-shell/qwaylandxdgshell.cpp b/src/plugins/shellintegration/xdg-shell/qwaylandxdgshell.cpp
-index f3e3c330..fa6d5808 100644
+index f3e3c330..67342b0c 100644
 --- a/src/plugins/shellintegration/xdg-shell/qwaylandxdgshell.cpp
 +++ b/src/plugins/shellintegration/xdg-shell/qwaylandxdgshell.cpp
 @@ -67,11 +67,6 @@ QWaylandXdgSurface::Toplevel::Toplevel(QWaylandXdgSurface *xdgSurface)
@@ -2424,6 +2434,19 @@ index f3e3c330..fa6d5808 100644
  }
  
  QWaylandXdgSurface::~QWaylandXdgSurface()
+@@ -372,10 +384,10 @@ void QWaylandXdgSurface::setSizeHints()
+         const int minHeight = qMax(0, m_window->windowMinimumSize().height());
+         m_toplevel->set_min_size(minWidth, minHeight);
+ 
+-        int maxWidth = qMax(0, m_window->windowMaximumSize().width());
++        int maxWidth = qMax(minWidth, m_window->windowMaximumSize().width());
+         if (maxWidth == QWINDOWSIZE_MAX)
+             maxWidth = 0;
+-        int maxHeight = qMax(0, m_window->windowMaximumSize().height());
++        int maxHeight = qMax(minHeight, m_window->windowMaximumSize().height());
+         if (maxHeight == QWINDOWSIZE_MAX)
+             maxHeight = 0;
+         m_toplevel->set_max_size(maxWidth, maxHeight);
 @@ -400,8 +412,6 @@ void QWaylandXdgSurface::setPopup(QWaylandWindow *parent)
  {
      Q_ASSERT(!m_toplevel && !m_popup);

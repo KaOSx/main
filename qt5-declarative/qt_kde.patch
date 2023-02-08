@@ -47,6 +47,36 @@ index 06caf04e5a..da149a67c4 100644
                  it = multiplyWrappedQObjects->erase(it);
              else
                  ++it;
+diff --git a/src/qml/qml/qqmltypewrapper.cpp b/src/qml/qml/qqmltypewrapper.cpp
+index 175de8b936..a6ba4b8cb3 100644
+--- a/src/qml/qml/qqmltypewrapper.cpp
++++ b/src/qml/qml/qqmltypewrapper.cpp
+@@ -419,8 +419,10 @@ ReturnedValue QQmlTypeWrapper::virtualInstanceOf(const Object *typeObject, const
+             return Encode(false);
+ 
+         QQmlRefPointer<QQmlTypeData> td = qenginepriv->typeLoader.getType(typeWrapper->d()->type().sourceUrl());
+-        ExecutableCompilationUnit *cu = td->compilationUnit();
+-        myQmlType = qenginepriv->metaObjectForType(cu->metaTypeId);
++        if (ExecutableCompilationUnit *cu = td->compilationUnit())
++            myQmlType = qenginepriv->metaObjectForType(cu->metaTypeId);
++        else
++            return Encode(false); // It seems myQmlType has some errors, so we could not compile it.
+     } else {
+         myQmlType = qenginepriv->metaObjectForType(myTypeId);
+     }
+diff --git a/src/qml/types/qqmlconnections.cpp b/src/qml/types/qqmlconnections.cpp
+index 29ed62cd39..aba930dfe1 100644
+--- a/src/qml/types/qqmlconnections.cpp
++++ b/src/qml/types/qqmlconnections.cpp
+@@ -338,7 +338,7 @@ void QQmlConnections::connectSignalsToMethods()
+                    && propName.at(2).isUpper()) {
+             qmlWarning(this) << tr("Detected function \"%1\" in Connections element. "
+                                    "This is probably intended to be a signal handler but no "
+-                                   "signal of the target matches the name.").arg(propName);
++                                   "signal of the \"%2\" target matches the name.").arg(propName).arg(target->metaObject()->className());
+         }
+     }
+ }
 diff --git a/src/qmlmodels/qqmldelegatemodel.cpp b/src/qmlmodels/qqmldelegatemodel.cpp
 index 2079a8ed04..a577cb2351 100644
 --- a/src/qmlmodels/qqmldelegatemodel.cpp
@@ -1101,6 +1131,63 @@ index 35f1e2c94d..1722447830 100644
  QTEST_MAIN(tst_QQmlDelegateModel)
  
  #include "tst_qqmldelegatemodel.moc"
+diff --git a/tests/auto/qml/qqmllanguage/data/Broken.qml b/tests/auto/qml/qqmllanguage/data/Broken.qml
+new file mode 100644
+index 0000000000..e24d9112a8
+--- /dev/null
++++ b/tests/auto/qml/qqmllanguage/data/Broken.qml
+@@ -0,0 +1,5 @@
++import QtQml 2.15
++
++QtObject {
++    notThere: 5
++}
+diff --git a/tests/auto/qml/qqmllanguage/data/asBroken.qml b/tests/auto/qml/qqmllanguage/data/asBroken.qml
+new file mode 100644
+index 0000000000..bd88d14c76
+--- /dev/null
++++ b/tests/auto/qml/qqmllanguage/data/asBroken.qml
+@@ -0,0 +1,6 @@
++import QtQml 2.15
++
++QtObject {
++    id: self
++    property var selfAsBroken: self as Broken
++}
+diff --git a/tests/auto/qml/qqmllanguage/tst_qqmllanguage.cpp b/tests/auto/qml/qqmllanguage/tst_qqmllanguage.cpp
+index bffb62c59e..97cc64991f 100644
+--- a/tests/auto/qml/qqmllanguage/tst_qqmllanguage.cpp
++++ b/tests/auto/qml/qqmllanguage/tst_qqmllanguage.cpp
+@@ -336,6 +336,7 @@ private slots:
+     void bareInlineComponent();
+ 
+     void hangOnWarning();
++    void objectAsBroken();
+ 
+     void ambiguousContainingType();
+ 
+@@ -5876,6 +5877,21 @@ void tst_qqmllanguage::ambiguousContainingType()
+     }
+ }
+ 
++void tst_qqmllanguage::objectAsBroken()
++{
++    QQmlEngine engine;
++    QQmlComponent c(&engine, testFileUrl("asBroken.qml"));
++    QVERIFY2(c.isReady(), qPrintable(c.errorString()));
++    QScopedPointer<QObject> o(c.create());
++    QVERIFY(!o.isNull());
++    QVariant selfAsBroken = o->property("selfAsBroken");
++    QVERIFY(selfAsBroken.isValid());
++    // QCOMPARE(selfAsBroken.metaType(), QMetaType::fromType<std::nullptr_t>());
++
++    QQmlComponent b(&engine, testFileUrl("Broken.qml"));
++    QVERIFY(b.isError());
++}
++
+ QTEST_MAIN(tst_qqmllanguage)
+ 
+ #include "tst_qqmllanguage.moc"
 diff --git a/tests/auto/qml/qv4mm/tst_qv4mm.cpp b/tests/auto/qml/qv4mm/tst_qv4mm.cpp
 index 5d635aa63b..824fd89e5b 100644
 --- a/tests/auto/qml/qv4mm/tst_qv4mm.cpp
