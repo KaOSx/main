@@ -1,6 +1,6 @@
 
 pkgname=libjpeg-turbo
-pkgver=2.1.5
+pkgver=2.1.5.1
 pkgrel=1
 pkgdesc="libjpeg derivative with accelerated baseline JPEG compression and decompression"
 arch=('x86_64')
@@ -12,7 +12,7 @@ replaces=('libjpeg' 'libjpeg6')
 conflicts=('libjpeg' 'libjpeg6')
 options=('!libtool')
 source=("https://sourceforge.net/projects/libjpeg-turbo/files/${pkgver}/${pkgname}-${pkgver}.tar.gz")
-sha1sums=('edab071e7c5bc12f98a2a7ae499bd6b312770849')
+sha1sums=('3ec9f6a19781a583285d93c2c4653f3dbe845fcc')
 
 build() {
   cmake -B build -S ${pkgname}-${pkgver} \
