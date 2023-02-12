@@ -8,12 +8,15 @@ url="https://www.unidata.ucar.edu/downloads/netcdf/"
 license=('custom')
 depends=('gcc-libs' 'hdf5' 'curl')
 options=('!libtool' '!makeflags')
-source=("https://downloads.unidata.ucar.edu/netcdf-c/${pkgver}/netcdf-c-${pkgver}.tar.gz")
-md5sums=('f0500a0630ddac084ffad25ea781e26f')
+source=("https://downloads.unidata.ucar.edu/netcdf-c/${pkgver}/netcdf-c-${pkgver}.tar.gz"
+        "https://github.com/DennisHeimbigner/netcdf-c/commit/727fa749005fa7868735fff82474b4476c6f5c6f.diff")
+md5sums=('f0500a0630ddac084ffad25ea781e26f'
+         '9c7009d193cbee3769a55049a91442c6')
 
 build() {
   cd ${pkgname}-c-${pkgver}
   #export CPPFLAGS+=" -DH5_USE_110_API"
+  patch -p1 -i ${srcdir}/727fa749005fa7868735fff82474b4476c6f5c6f.diff
 
   ./configure --prefix=/usr \
         --enable-shared \
@@ -23,7 +26,7 @@ build() {
 
 check() {
   cd ${pkgname}-c-${pkgver}
-  # 1 test fails in 4.9.0
+  # 2 test fails in 4.9.1
   make check 
 }
 
