@@ -1,6 +1,6 @@
 
 pkgname=harfbuzz
-pkgver=6.0.0
+pkgver=7.0.0
 pkgrel=1
 pkgdesc="OpenType text shaping engine."
 arch=('x86_64')
@@ -10,13 +10,13 @@ depends=('icu' 'glib2' 'freetype2' 'graphite' 'cairo')
 makedepends=('meson' 'ninja' 'gobject-introspection')
 options=('!libtool')
 source=("https://github.com/harfbuzz/harfbuzz/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('1d1010a1751d076d5291e433c138502a794d679a7498d1268ee21e2d4a140eb4')
+sha256sums=('7b4685b7066c5c6b8dc6cd7b02f63c554fb8cc1c4ddcfc44bc284efa3c20cf28')
 
 build() {
   mkdir -p build
   cd build
 
-  meson ../${pkgname}-${pkgver} \
+  meson setup ../${pkgname}-${pkgver} \
     --prefix=/usr \
     --buildtype=release \
     -Dgraphite2=enabled
