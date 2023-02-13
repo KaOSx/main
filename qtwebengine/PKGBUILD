@@ -52,7 +52,7 @@ prepare() {
     mkdir -p build
     cd ${_pkgfqn}
 
-    sed -i 's|MODULE_VERSION = 5.15.12|MODULE_VERSION = 5.15.8|' .qmake.conf
+    sed -i 's|MODULE_VERSION = 5.15.13|MODULE_VERSION = 5.15.8|' .qmake.conf
 
     git submodule init
     git submodule set-url src/3rdparty ${srcdir}/qtwebengine-chromium
