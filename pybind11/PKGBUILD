@@ -1,0 +1,25 @@
+
+pkgname=pybind11
+pkgver=2.10.3
+pkgrel=1
+pkgdesc="Seamless operability between C++11 and Python."
+arch=('x86_64')
+license=('LGPL')
+url="https://pybind11.readthedocs.io/en/stable/"
+depends=('python3')
+makedepends=('boost' 'cmake' 'ninja' 'python3-build' 'python3-installer' 'python3-setuptools' 'python3-wheel')
+source=("https://files.pythonhosted.org/packages/source/p/pybind11/${pkgname}-${pkgver}.tar.gz")
+sha256sums=('08cfe6d4f73746447cc85a400c8169a91608b8a00c5feecd8ff251a70565d12f')
+
+build() {
+    cd ${pkgname}-${pkgver}
+
+    python3 -m build -nw
+}
+
+package() {
+    cd ${pkgname}-${pkgver}
+
+    python3 -m installer --destdir=${pkgdir} dist/*.whl
+    install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
