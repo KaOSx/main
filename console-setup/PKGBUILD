@@ -1,6 +1,6 @@
  
 pkgname=console-setup
-pkgver=1.216
+pkgver=1.217
 pkgrel=1
 pkgdesc="Translate XKB layout to loadkeys or kbdcontrol format"
 arch=('x86_64')
@@ -11,10 +11,10 @@ provides=('keyboardctl')
 conflicts=('keyboardctl')
 replaces=('keyboardctl')
 source=("http://ftp.de.debian.org/debian/pool/main/c/console-setup/${pkgname}_${pkgver}.tar.xz")
-md5sums=('472e6f6640a49f22e75b5744e4f175c5')
+md5sums=('a15267a5f7bfd9fb7dcaa98efee16e00')
 
 package() {
-  cd ${pkgname}-${pkgver}
+  cd ${pkgname} # -${pkgver}
 
   install -d ${pkgdir}/usr/bin/
   install -m755 Keyboard/ckbcomp ${pkgdir}/usr/bin/
