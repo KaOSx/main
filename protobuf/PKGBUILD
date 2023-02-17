@@ -1,23 +1,24 @@
 
 pkgname=protobuf
-pkgver=21.12
+pkgver=22.0
 pkgrel=1
 pkgdesc="A way of encoding structured data in an efficient yet extensible format."
 arch=('x86_64')
 url="https://github.com/protocolbuffers/protobuf"
 license=('APACHE')
-depends=('gcc-libs' 'zlib')
+depends=('gcc-libs' 'zlib' 'abseil-cpp')
 makedepends=('cmake' 'unzip')
 options=('!libtool')
 source=("https://github.com/protocolbuffers/protobuf/archive/v${pkgver}.tar.gz")
-md5sums=('41fe80037118f53dea3f0822aee96629')
+md5sums=('f4f3f55ee653eee95a1c9002cab6a9df')
 
 build() {
   cmake -B build -S ${pkgname}-${pkgver} \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -Dprotobuf_BUILD_TESTS=OFF \
-    -DBUILD_SHARED_LIBS=ON
+    -DBUILD_SHARED_LIBS=ON \
+    -Dprotobuf_ABSL_PROVIDER="package"
   cmake --build build
 }
 
