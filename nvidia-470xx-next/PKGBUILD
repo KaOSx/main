@@ -19,16 +19,17 @@ options=('!strip')
 _pkg="NVIDIA-Linux-x86_64-${pkgver}"
 
 source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
-        'linux-6.0.patch')
+        'linux-6.2.patch')
 md5sums=('0652fff030ee29664ad728dd86e9f5d6'
-         '51d80b7c8b3a93e2d4bc38bf131095e9')
+         '334d82cdc82c8172e9c21188c872523e')
 
 build() {
     cd ${srcdir}
     sh ${_pkg}.run --extract-only
 
-    cd ${_pkg}
-    #patch -p1 -i ${srcdir}/linux-6.0.patch
+    cd ${_pkg}/kernel
+    # patch from https://gist.github.com/joanbm?direction=desc&sort=updated
+    patch -p1 -i ${srcdir}/linux-6.2.patch
 
     cd ${srcdir}/${_pkg}/kernel
     make SYSSRC=/lib/modules/${_kver}/build module
