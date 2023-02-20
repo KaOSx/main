@@ -1,7 +1,7 @@
 
 pkgname=startup-notification
 pkgver=0.12
-pkgrel=6
+pkgrel=7
 pkgdesc="Monitor and display application startup."
 arch=('x86_64')
 url="https://www.freedesktop.org"
@@ -13,17 +13,17 @@ md5sums=('2cd77326d4dcaed9a5a23a1232fb38e9')
 
 build() {
   cd ${pkgname}-${pkgver}
-  
+
   ./configure --prefix=/usr \
     --localstatedir=/var \
     --sysconfdir=/etc
-    
+
   make
 }
 
 package() {
   cd ${pkgname}-${pkgver}
-  
+
   make DESTDIR=${pkgdir} install
 }
 
