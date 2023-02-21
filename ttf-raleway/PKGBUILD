@@ -1,7 +1,7 @@
 
 pkgname=ttf-raleway
 pkgver=4.101
-pkgrel=2
+pkgrel=3
 pkgdesc="A sans-serif typeface"
 arch=('x86_64')
 url="https://theleagueofmoveabletype.com/raleway/"
@@ -14,9 +14,9 @@ md5sums=('edededf8129ceb237aaa070bc1ead73a')
 
 package() {
     cd Raleway-${pkgver}
-    
+
     install -d ${pkgdir}/usr/share/fonts/TTF/
     install -Dm644 static/TTF/*.ttf ${pkgdir}/usr/share/fonts/TTF/
-    
+
     install -Dm644 OFL.md ${pkgdir}/usr/share/licenses/${pkgname}/OFL.md
 }

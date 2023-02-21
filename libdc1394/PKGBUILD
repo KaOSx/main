@@ -1,7 +1,7 @@
 
 pkgname=libdc1394
 pkgver=2.2.6
-pkgrel=2
+pkgrel=3
 pkgdesc="High level programming interface to control IEEE 1394 based cameras"
 arch=('x86_64')
 license=('LGPL')
@@ -13,14 +13,14 @@ md5sums=('9fad67bbff08fe2818d5ec81802ec89f')
 
 build() {
   cd ${pkgname}-${pkgver}
-  
+
   ./configure --prefix=/usr
   make
 }
 
 package() {
   cd ${pkgname}-${pkgver}
-  
+
   make DESTDIR=${pkgdir} install
 }
 

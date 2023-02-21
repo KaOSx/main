@@ -2,7 +2,7 @@
 pkgname=phonon-qt5
 _pkgname=phonon
 pkgver=4.11.1
-pkgrel=2
+pkgrel=3
 arch=('x86_64')
 url="https://community.kde.org/Phonon"
 license=('LGPL')
@@ -13,19 +13,14 @@ source=("https://download.kde.org/stable/phonon/${pkgver}/${_pkgname}-${pkgver}.
 sha256sums=('b4431ea2600df8137a717741ad9ebc7f7ec1649fa3e138541d8f42597144de2d')
 
 build() {
-  mkdir -p build
-  cd build
-  
-  cmake ../${_pkgname}-${pkgver} \
+  cmake -B build -S ${_pkgname}-${pkgver} \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_SKIP_RPATH=ON \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=lib 
-  make
+  cmake --build build
 }
 
-package(){
-  cd build
-  
-  make DESTDIR=${pkgdir} install
+package() {
+  DESTDIR=${pkgdir} cmake --install build
 }

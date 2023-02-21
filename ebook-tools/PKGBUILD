@@ -1,7 +1,7 @@
 
 pkgname=ebook-tools
 pkgver=0.2.2
-pkgrel=6
+pkgrel=7
 pkgdesc="Tools for accessing and converting various ebook file formats"
 arch=('x86_64')
 url="https://sourceforge.net/projects/ebook-tools"
@@ -15,22 +15,18 @@ md5sums=('67bce67ceb72dcc3578d6a81ef92b29b'
 
 prepare() {
   cd ${pkgname}-${pkgver}
-  patch -p1 -i $srcdir/navpoint.patch
+  patch -p1 -i ${srcdir}/navpoint.patch
 }
 
 build() {
-  mkdir -p build
-  cd build
-  
-  cmake ../${pkgname}-${pkgver} \
+  cmake -B build -S ${pkgname}-${pkgver} \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr
-  make
+  cmake --build build
 }
 
 package() {
-  cd $srcdir/build
-  make DESTDIR=${pkgdir} install
+  DESTDIR=${pkgdir} cmake --install build
 
-  install -Dm644 ${srcdir}/${pkgname}-${pkgver}/LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+  install -Dm644 ${pkgname}-${pkgver}/LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }

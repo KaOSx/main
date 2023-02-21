@@ -1,7 +1,7 @@
- 
+
 pkgname=dcadec
 pkgver=0.2.0
-pkgrel=3
+pkgrel=4
 pkgdesc='Free DTS Coherent Acoustics decoder with support for HD extensions'
 arch=('x86_64')
 url='https://github.com/foo86/dcadec'
@@ -23,7 +23,7 @@ package() {
   export PREFIX='/usr'
 
   make DESTDIR=${pkgdir} install
-  
+
   # avoid conflict with libdca
   mv ${pkgdir}/usr/bin/dcadec{,-dts}
 }

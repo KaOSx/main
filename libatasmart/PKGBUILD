@@ -1,7 +1,7 @@
 
 pkgname=libatasmart
 pkgver=0.19
-pkgrel=5
+pkgrel=6
 pkgdesc="ATA S.M.A.R.T. Reading and Parsing Library"
 arch=('x86_64')
 license=('LGPL')
@@ -13,7 +13,7 @@ md5sums=('53afe2b155c36f658e121fe6def33e77')
 
 build() {
   cd ${pkgname}-${pkgver}
-  
+
   ./configure --prefix=/usr \
     --sysconfdir=/etc \
     --localstatedir=/var \
@@ -23,6 +23,6 @@ build() {
 
 package() {
   cd ${pkgname}-${pkgver}
-  
+
   make DESTDIR=${pkgdir} install
 }

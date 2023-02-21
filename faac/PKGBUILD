@@ -2,7 +2,7 @@
 pkgname=faac
 pkgver=1.30
 _pkgver=1_30
-pkgrel=3
+pkgrel=4
 pkgdesc="MPEG-4 and MPEG-2 AAC encoder."
 arch=('x86_64')
 url="https://github.com/knik0/faac/"
@@ -16,7 +16,7 @@ md5sums=('8d61e6d55088e599aa91532d5e6995b0')
 
 build() {
   cd ${pkgname}-${_pkgver}
-  
+
   ./bootstrap
   ./configure --prefix=/usr 
   make 

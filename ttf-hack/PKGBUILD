@@ -3,7 +3,7 @@ pkgname=ttf-hack
 _pkgname=Hack
 pkgver=3.003
 _pkgver=3.003
-pkgrel=3
+pkgrel=4
 pkgdesc="Hack is hand groomed and optically balanced to be your go-to code face."
 arch=('x86_64')
 license=('Hack Open Font License v2.0 and the Bitstream Vera License')
@@ -18,9 +18,9 @@ md5sums=('cf274d8c32045a350e6d6a116fe463d7'
 package() {
   install -d ${pkgdir}/usr/share/fonts/TTF/
   install -D -m644 ${_pkgname}*.ttf ${pkgdir}/usr/share/fonts/TTF/
-  
+
   #install -Dm644 config/fontconfig/45-Hack.conf ${pkgdir}/etc/fonts/conf.avail/45-Hack.conf
   #ln -s ../conf.avail/45-Hack.conf ${pkgdir}/etc/fonts/conf.d/45-Hack.conf
-  
+
   install -D -m644 LICENSE.md ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.md
 }
