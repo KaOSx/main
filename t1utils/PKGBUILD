@@ -1,7 +1,7 @@
 
 pkgname=t1utils
 pkgver=1.42
-pkgrel=1
+pkgrel=2
 pkgdesc="Six free UNIX/Windows command-line tools for dealing with Type 1 fonts."
 arch=('x86_64')
 url="https://www.lcdf.org/~eddietwo/type/#t1utils"
@@ -14,7 +14,7 @@ md5sums=('acc4bc832bafbdc059fb3b0cad8c3ab0'
 
 build() {
   cd ${pkgname}-${pkgver}
-  
+
   ./configure --prefix=/usr
   make
 }
@@ -22,6 +22,6 @@ build() {
 package() {
   cd ${pkgname}-${pkgver}
   make DESTDIR=${pkgdir} install
-  
+
   install -D -m644 ../LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }

@@ -1,7 +1,7 @@
 
 pkgname=progsreiserfs
 pkgver=0.3.0.5
-pkgrel=12
+pkgrel=13
 pkgdesc="library for accessing and manipulating reiserfs partitions"
 arch=('x86_64')
 url="https://reiserfs.osdn.org.ua/"
@@ -26,7 +26,7 @@ build() {
 package() {
   cd ${pkgname}-${pkgver}
   make install DESTDIR=${pkgdir}
-  
+
   # progsreiserfs has been proven dangerous in the past, generating bad partitions and destroying
   # data on resize/cpfs operations, ship only libraries
   rm -r ${pkgdir}/usr/sbin
