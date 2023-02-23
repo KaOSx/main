@@ -1,21 +1,21 @@
  
 pkgname=ndctl
-pkgver=75
+pkgver=76
 pkgrel=1
 pkgdesc='Utility library for managing the libnvdimm (non-volatile memory device) sub-system in the Linux kernel'
 arch=('x86_64')
 url="https://github.com/pmem/ndctl"
 license=('GPLv2')
 depends=('json-c' 'systemd' 'iniparser')
-makedepends=('asciidoctor' 'xmlto' 'bash-completion' 'meson' 'ninja')
+makedepends=('asciidoctor' 'xmlto' 'bash-completion' 'meson' 'ninja' 'libtraceevent')
 source=("https://github.com/pmem/ndctl/archive/v${pkgver}.tar.gz")
-md5sums=('82d06d89d6d92e1077e27a63924f4813')
+md5sums=('7a33259185400b22ae079bb6ce8c4732')
 
 build() {
   mkdir -p build
   cd build
 
-  meson ../${pkgname}-${pkgver} \
+  meson setup ../${pkgname}-${pkgver} \
     --prefix=/usr \
     --buildtype=release \
     -Dasciidoctor=enabled
