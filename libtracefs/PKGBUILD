@@ -1,0 +1,25 @@
+
+pkgname=libtracefs
+pkgver=1.6.4
+pkgrel=1
+pkgdesc='Linux kernel trace file system library'
+url='https://git.kernel.org/pub/scm/libs/libtrace/libtracefs.git/'
+arch=('x86_64')
+license=('LGPL-2.1')
+depends=('libtraceevent')
+source=("https://git.kernel.org/pub/scm/libs/libtrace/libtracefs.git/snapshot/${pkgname}-${pkgver}.tar.gz")
+sha256sums=('52ce793dbb35a3e59bddce31de09a5d92cedd4d0702e64d0916f1ccdb00526c9')
+
+build() {
+    cd ${pkgname}-${pkgver}
+
+    make prefix=/usr libdir=/usr/lib
+}
+
+package() {
+    cd ${pkgname}-${pkgver}
+
+    make prefix=/usr libdir=/usr/lib DESTDIR=${pkgdir} install
+    # no make flag to remove static lib
+    rm ${pkgdir}/usr/lib/libtracefs.a
+}
