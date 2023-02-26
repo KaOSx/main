@@ -1,7 +1,7 @@
 
 pkgname=cups-filters
 pkgver=1.28.17
-pkgrel=1
+pkgrel=2
 pkgdesc="OpenPrinting CUPS Filters"
 arch=('x86_64')
 url="https://openprinting.github.io/projects/01-cups-filters/"
@@ -27,6 +27,7 @@ build() {
   cd ${pkgname}-${pkgver}
   #patch -p1 -i ${srcdir}/50d984a621524c2e2857ad84eb4b71933c8821be.diff
   #sed -e "s|cpp/poppler-version.h|poppler/cpp/poppler-version.h|" -i filter/pdftoopvp/oprs/OPRS.cxx
+  CXXFLAGS="-std=c++17"
 
   ./configure --prefix=/usr  \
     --sysconfdir=/etc \
