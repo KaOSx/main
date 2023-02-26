@@ -2,7 +2,7 @@
 pkgname=terminus-font
 pkgver=4.49.1
 _pkgver=4.49
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 url="https://sourceforge.net/projects/terminus-font/"
 pkgdesc="A superb, monospace bitmap font (for X11 and console)"
@@ -15,7 +15,7 @@ sha1sums=('4b8656f7bb34fe3f729774d06a94d4b204de3c21')
 
 build() { 
   cd ${pkgname}-${pkgver}
-  
+
   sh ./configure --prefix=/usr \
     --x11dir=/usr/share/fonts/local/ \
     --psfdir=/usr/share/kbd/consolefonts/ 

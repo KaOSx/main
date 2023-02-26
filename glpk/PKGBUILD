@@ -1,7 +1,7 @@
 
 pkgname=glpk
 pkgver=5.0
-pkgrel=1
+pkgrel=2
 pkgdesc="GNU Linear Programming Kit : solve LP, MIP and other problems."
 arch=('x86_64')
 url="https://www.gnu.org/software/glpk/glpk.html"
@@ -21,7 +21,7 @@ build() {
 package(){
   cd ${pkgname}-${pkgver}
   make DESTDIR=${pkgdir} install
-  
+
   install -Dm644 doc/glpk.pdf ${pkgdir}/usr/share/doc/glpk/glpk.pdf
   install -Dm644 doc/gmpl.pdf ${pkgdir}/usr/share/doc/glpk/gmpl.pdf
 }

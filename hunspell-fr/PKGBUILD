@@ -1,13 +1,14 @@
 
 pkgname=hunspell-fr
 pkgver=7.0
-pkgrel=1
+pkgrel=2
 pkgdesc="French (modern) hunspell dictionaries"
 arch=('x86_64')
 url="https://grammalecte.net"
 license=('GPL' 'MPL' 'LGPL')
 optdepends=('hunspell:	the spell checking libraries and apps')
-source=("https://grammalecte.net/download/fr/hunspell-french-dictionaries-v${pkgver}.zip")
+#source=("https://grammalecte.net/download/fr/hunspell-french-dictionaries-v${pkgver}.zip")
+source=("https://leaf.dragonflybsd.org/~marino/orphaned-distfiles/hunspell-french-dictionaries-v${pkgver}.zip")
 md5sums=('d403a9f7b4a69c51b16e5f8fe07bc040')
 
 package() {
@@ -31,6 +32,6 @@ package() {
       ln -sv /usr/share/hunspell/$(basename ${file}) .
     done
   popd
-  
+
   install -Dm644 README_dict_fr.txt $pkgdir/usr/share/doc/${pkgname}/README_fr.txt
 }

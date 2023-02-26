@@ -1,7 +1,7 @@
 
 pkgname=hunspell-en
 pkgver=2020.12.07
-pkgrel=1
+pkgrel=2
 pkgdesc="English hunspell dictionaries"
 arch=('x86_64')
 url="http://wordlist.aspell.net/"
@@ -43,7 +43,7 @@ package() {
       ln -sv /usr/share/hunspell/$(basename $file) .
     done
   popd
-  
+
   # docs
   install -dm755 ${pkgdir}/usr/share/doc/${pkgname}
   install -m644 README_en_??.txt ${pkgdir}/usr/share/doc/${pkgname}

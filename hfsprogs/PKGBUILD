@@ -3,7 +3,7 @@ pkgname=hfsprogs
 pkgver=540.1
 _pkgver=540.1.linux3
 _commit=0435afc389b919027b69616ad1b05709
-pkgrel=1
+pkgrel=2
 pkgdesc="HFS/HFS+ user space utils" 
 arch=('x86_64')
 depends=('libbsd')
@@ -11,7 +11,7 @@ makedepends=( 'clang')
 license=('custom:APSL')
 url="https://www.opensource.apple.com/"
 source=("https://src.fedoraproject.org/repo/pkgs/hfsplus-tools/diskdev_cmds-${_pkgver}.tar.gz/${_commit}/diskdev_cmds-${_pkgver}.tar.gz" 
-        "https://src.fedoraproject.org/rpms/hfsplus-tools/raw/master/f/hfsplus-tools-sysctl.patch"
+        "https://src.fedoraproject.org/rpms/hfsplus-tools/raw/rawhide/f/hfsplus-tools-sysctl.patch"
         'license'
         'makefile.patch')
 md5sums=('0435afc389b919027b69616ad1b05709'
@@ -22,7 +22,7 @@ md5sums=('0435afc389b919027b69616ad1b05709'
 build() {
     cd diskdev_cmds-${_pkgver}
     patch -p1 -i ${srcdir}/hfsplus-tools-sysctl.patch
-    
+
     make -f Makefile
 }
 
@@ -31,9 +31,9 @@ package() {
     install -d -m 755 ${pkgdir}/usr/share/hfsprogs
     install -D -m755 newfs_hfs.tproj/newfs_hfs ${pkgdir}/sbin/mkfs.hfsplus
     install -D -m755 fsck_hfs.tproj/fsck_hfs ${pkgdir}/sbin/fsck.hfsplus
-    
+
     install -D -m644 ../license ${pkgdir}/usr/share/licenses/hfsprogs/APSL
-    
+
     install -d -m 755 ${pkgdir}/usr/share/man/man8/
     install -m 644 newfs_hfs.tproj/newfs_hfs.8 ${pkgdir}/usr/share/man/man8/mkfs.hfsplus.8
     install -m 644 fsck_hfs.tproj/fsck_hfs.8 ${pkgdir}/usr/share/man/man8/fsck.hfsplus.8
