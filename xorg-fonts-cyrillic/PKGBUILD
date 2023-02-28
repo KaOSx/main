@@ -1,21 +1,21 @@
 
 pkgname=xorg-fonts-cyrillic
-pkgver=1.0.3
-pkgrel=5
+pkgver=1.0.4
+pkgrel=1
 pkgdesc="X.org cyrillic fonts"
 arch=('x86_64')
 url="https://xorg.freedesktop.org/"
 license=('custom')
 depends=('xorg-fonts-encodings' 'xorg-fonts-alias' 'xorg-font-utils' 'fontconfig')
 install=xfonts.install
-source=("https://xorg.freedesktop.org/releases/individual/font/font-cronyx-cyrillic-${pkgver}.tar.bz2"
-        "https://xorg.freedesktop.org/releases/individual/font/font-misc-cyrillic-${pkgver}.tar.bz2"
-        "https://xorg.freedesktop.org/releases/individual/font/font-screen-cyrillic-1.0.4.tar.bz2"
-        "https://xorg.freedesktop.org/releases/individual/font/font-winitzki-cyrillic-${pkgver}.tar.bz2")
-md5sums=('e452b94b59b9cfd49110bb49b6267fba'
-         '96109d0890ad2b6b0e948525ebb0aba8'
-         '6f3fdcf2454bf08128a651914b7948ca'
-         '829a3159389b7f96f629e5388bfee67b')
+source=("https://xorg.freedesktop.org/releases/individual/font/font-cronyx-cyrillic-${pkgver}.tar.xz"
+        "https://xorg.freedesktop.org/releases/individual/font/font-misc-cyrillic-${pkgver}.tar.xz"
+        "https://xorg.freedesktop.org/releases/individual/font/font-screen-cyrillic-1.0.5.tar.xz"
+        "https://xorg.freedesktop.org/releases/individual/font/font-winitzki-cyrillic-${pkgver}.tar.xz")
+sha256sums=('dc0781ce0dcbffdbf6aae1a00173a13403f92b0de925bca5a9e117e4e2d6b789'
+            '76021a7f53064001914a57fd08efae57f76b68f0a24dca8ab1b245474ee8e993'
+            '8f758bb8cd580c7e655487d1d0db69d319acae54d932b295d96d9d9b83fde5c0'
+            '3b6d82122dc14776e3afcd877833a7834e1f900c53fc1c7bb2d67c781cfa97a8')
 
 build() {
   cd ${srcdir}
