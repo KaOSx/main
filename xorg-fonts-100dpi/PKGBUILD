@@ -1,7 +1,7 @@
 
 pkgname=xorg-fonts-100dpi
-pkgver=1.0.3
-pkgrel=5
+pkgver=1.0.4
+pkgrel=1
 pkgdesc="X.org 100dpi fonts"
 arch=('x86_64')
 url="https://xorg.freedesktop.org/"
@@ -9,16 +9,16 @@ license=('custom')
 depends=('xorg-fonts-encodings' 'xorg-fonts-alias' 'xorg-font-utils' 'fontconfig')
 groups=('xorg')
 install=xfonts.install
-source=("https://xorg.freedesktop.org/releases/individual/font/font-adobe-100dpi-1.0.3.tar.bz2"
-        "https://xorg.freedesktop.org/releases/individual/font/font-adobe-utopia-100dpi-1.0.4.tar.bz2"
-        "https://xorg.freedesktop.org/releases/individual/font/font-bh-100dpi-1.0.3.tar.bz2"
-        "https://xorg.freedesktop.org/releases/individual/font/font-bh-lucidatypewriter-100dpi-1.0.3.tar.bz2"
-        "https://xorg.freedesktop.org/releases/individual/font/font-bitstream-100dpi-1.0.3.tar.bz2")
-md5sums=('1347c3031b74c9e91dc4dfa53b12f143'
-         '66fb6de561648a6dce2755621d6aea17'
-         '9f11ade089d689b9d59e0f47d26f39cd'
-         'c8b73a53dcefe3e8d3907d3500e484a9'
-         '6b223a54b15ecbd5a1bc52312ad790d8')
+source=("https://xorg.freedesktop.org/releases/individual/font/font-adobe-100dpi-1.0.4.tar.xz"
+        "https://xorg.freedesktop.org/releases/individual/font/font-adobe-utopia-100dpi-1.0.5.tar.xz"
+        "https://xorg.freedesktop.org/releases/individual/font/font-bh-100dpi-1.0.4.tar.xz"
+        "https://xorg.freedesktop.org/releases/individual/font/font-bh-lucidatypewriter-100dpi-1.0.4.tar.xz"
+        "https://xorg.freedesktop.org/releases/individual/font/font-bitstream-100dpi-1.0.4.tar.xz")
+sha256sums=('b67aff445e056328d53f9732d39884f55dd8d303fc25af3dbba33a8ba35a9ccf'
+            'fb84ec297a906973548ca59b7c6daeaad21244bec5d3fb1e7c93df5ef43b024b'
+            'fd8f5efe8491faabdd2744808d3d4eafdae5c83e617017c7fddd2716d049ab1e'
+            '76ec09eda4094a29d47b91cf59c3eba229c8f7d1ca6bae2abbb3f925e33de8f2'
+            '2d1cc682efe4f7ebdf5fbd88961d8ca32b2729968728633dea20a1627690c1a7')
 
 build() {
   cd ${srcdir}
