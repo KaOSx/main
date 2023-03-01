@@ -1,6 +1,6 @@
 
 pkgname=hwdetect
-pkgver=2023.02
+pkgver=2023.03
 pkgrel=1
 pkgdesc="Hardware detection script with loading modules and mkinitcpio.conf"
 arch=('x86_64')
@@ -10,7 +10,7 @@ optdepends=('cryptsetup: for encrypt config support'
             'lvm2:       for lvm2 config support'
             'mdadm:      for raid config support')
 source=('hwdetect')
-md5sums=('4a9d2b82af6e7e3143098de25ccdde37')
+md5sums=('e72311dc4d581dc9d566f9eed82a7ecb')
 
 package() {
   install -D -m 755 ${srcdir}/hwdetect ${pkgdir}/sbin/hwdetect
