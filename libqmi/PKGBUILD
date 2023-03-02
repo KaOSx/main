@@ -1,6 +1,6 @@
 
 pkgname=libqmi
-pkgver=1.32.2
+pkgver=1.32.4
 pkgrel=1
 pkgdesc="QMI modem protocol helper library"
 arch=('x86_64')
@@ -10,13 +10,13 @@ depends=('glib2' 'bash' 'libgudev' 'libmbim')
 makedepends=('meson' 'ninja' 'python3' 'help2man')
 options=('!libtool')
 source=("https://gitlab.freedesktop.org/mobile-broadband/libqmi/-/archive/${pkgver}/${pkgname}-${pkgver}.tar.bz2")
-sha256sums=('1fde620bdbc28fac3ae3e6cc916025a66145e8736816d62137715559ee03ae63')
+sha256sums=('344eed9810b718056f39932c774a9fba6a5809df9d5da1bc4c3d904949677563')
 
 build() {
   mkdir -p build
   cd build
 
-  meson ../${pkgname}-${pkgver} \
+  meson setup ../${pkgname}-${pkgver} \
     --prefix=/usr \
     --buildtype=release \
     --libexecdir=/usr/lib \

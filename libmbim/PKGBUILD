@@ -1,6 +1,6 @@
 
 pkgname=libmbim
-pkgver=1.28.2
+pkgver=1.28.4
 pkgrel=1
 pkgdesc="Glib-based library for talking to WWAN modems and devices which speak the Mobile Interface Broadband Model"
 arch=('x86_64')
@@ -10,13 +10,13 @@ depends=('glib2' 'bash' 'libgudev' 'systemd')
 makedepends=('help2man' 'meson' 'ninja' 'python3' 'vala')
 options=('!libtool')
 source=("https://gitlab.freedesktop.org/mobile-broadband/libmbim/-/archive/${pkgver}/${pkgname}-${pkgver}.tar.bz2")
-sha256sums=('c2ab730c03616e7f63614c7b16231c790245d979fb48713fc0c6f42a38159dbd')
+sha256sums=('2b3f3ae3caf7b4b970cfed0c2fc276e9ba8c436d7792b2e9e369d7ba272fa848')
 
 build() {
   mkdir -p build
   cd build
 
-  meson ../${pkgname}-${pkgver} \
+  meson setup ../${pkgname}-${pkgver} \
     --prefix=/usr \
     --buildtype=release \
     --libexecdir=/usr/lib \
