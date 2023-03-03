@@ -1,6 +1,6 @@
 
 pkgname=libdiscid
-pkgver=0.6.3
+pkgver=0.6.4
 pkgrel=1
 arch=('x86_64')
 license=('LGPL')
@@ -10,7 +10,7 @@ depends=('glibc')
 makedepends=('cmake')
 options=('!libtool')
 source=("http://ftp.eu.metabrainz.org/pub/musicbrainz/libdiscid/${pkgname}-${pkgver}.tar.gz")
-md5sums=('e7a11a4edcf87e9f23c852c2b8aa671d')
+md5sums=('774afc1c6eddad9c6db91efd35111d1b')
 
 build() {
   cmake -B build -S ${pkgname}-${pkgver} \
