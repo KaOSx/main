@@ -13,7 +13,7 @@ md5sums=('5ba16981e6515975e9a68a58d5ba69d1')
 
 build() {
   cd ${pkgname}-${pkgver}
-  
+
   ./configure --prefix=/usr
   make
 }
@@ -21,7 +21,7 @@ build() {
 package() {
   cd ${pkgname}-${pkgver}
   make DESTDIR=${pkgdir} install
-  
+
   install -D -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
 
