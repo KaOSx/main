@@ -1,18 +1,18 @@
 
 pkgname=qwt
 pkgver=6.2.0
-pkgrel=3
+pkgrel=4
 pkgdesc="Qt Widgets for Technical Applications"
 arch=('x86_64')
 url="https://qwt.sourceforge.io/"
-depends=('qt5-base' 'qt5-svg')
-makedepends=('qt5-tools')
+depends=('qt6-base' 'qt6-svg')
+makedepends=('qt6-tools')
 options=('!makeflags')
 license=("custom:$pkgname")
 source=("https://downloads.sourceforge.net/sourceforge/qwt/${pkgname}-${pkgver}.tar.bz2" 
         "qwtconfig.pri")
 md5sums=('00c94f0af8b29d4785cec47351127c00'
-         '472fa3edcd6f77d8461852e6c5e0ddd4')
+         '93dad0b9a37e082bbe392f5b62a97e37')
 
 build() {
   cd ${pkgname}-${pkgver}
@@ -20,7 +20,9 @@ build() {
   # adjusted config file, check with every update
   install -Dm644 ../qwtconfig.pri qwtconfig.pri
 
-  /usr/lib/qt5/bin/qmake qwt.pro
+  sed -i -e 's|Qt5|Qt6|g' src/src.pro
+
+  /usr/lib/qt6/bin/qmake qwt.pro
   make
 }
 
