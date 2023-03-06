@@ -2,8 +2,8 @@
 # update postgresql-check-db-dir on major new version
 pkgbase=postgresql
 pkgname=('postgresql-libs' 'postgresql-docs' 'postgresql')
-pkgver=14.7
-pkgrel=2
+pkgver=15.2
+pkgrel=1
 epoch=1
 arch=('x86_64')
 url="https://www.postgresql.org/"
@@ -16,13 +16,13 @@ source=("https://ftp.postgresql.org/pub/source/v${pkgver}/postgresql-${pkgver}.t
         'postgresql.service' 
         'postgresql.tmpfiles.conf' 
         'postgresql-check-db-dir')
-sha256sums=('cef60f0098fa8101c1546f4254e45b722af5431337945b37af207007630db331'
+sha256sums=('99a2171fc3d6b5b5f56b757a7a3cb85d509a38e4273805def23941ed2b8468c7'
             '32ff197098c800345c6a5dafb04ba22c8762a237e5f866ae623e9b00e76f1de9'
             '57dfd072fd7ef0018c6b0a798367aac1abb5979060ff3f9df22d1048bb71c0d5'
             '6abb842764bbed74ea4a269d24f1e73d1c0b1d8ecd6e2e6fb5fb10590298605e'
             'c69b614731fdd3f4e127540814f5999f423363523c5209e252e19b1d4362ad68'
             '7e086d70e0dcaa6ce45693b4e826ce92d770192b3aff5642319b1ef279d88dc4'
-            'ca036fc9137fc4345eff6bb96875ac65b67af5500631b25fa735441b7fb91ecf')
+            '64fa45cb8f31674ebfe808b9deb9f9a6506816f0ee9b8eab56188607bb280819')
 build() {
   cd postgresql-${pkgver}
   patch -p1 -i ${srcdir}/postgresql-run-socket.patch
@@ -33,6 +33,7 @@ build() {
     --sysconfdir=/etc \
     --with-krb5 \
     --with-libxml \
+    --with-lz4 \
     --with-openssl \
     --with-perl \
     --with-python \
@@ -40,6 +41,7 @@ build() {
     --with-pam \
     --with-system-tzdata=/usr/share/zoneinfo \
     --with-systemd \
+    --with-zstd \
     --enable-nls \
     --enable-thread-safety
   make
