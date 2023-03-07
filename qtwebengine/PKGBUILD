@@ -12,15 +12,15 @@ pkgver=5.15.12
 subver=${subver}
 _pkgver=${_qtver}
 _commit=c4e58804c9b10fa6a61918f13e9d9c3c488bf8b6
-pkgrel=3
+pkgrel=4
 pkgdesc="Chromium-based web engine to replace Qt WebKit"
 url="https://www.qt.io/"
 arch=('x86_64')
 license=('GPL3')
 makedepends=('qt5-declarative' 'python3' 'mesa' 'systemd' 'pango' 'nss' 'speex' 'libevent' 'libcups'
          'libxslt' 'libpng' 'libjpeg-turbo' 'libwebp' 'zlib' 'pciutils' 'jsoncpp' 'pipewire' 'libxcomposite'
-         'qt5-location' 'qt5-webchannel' 'ffmpeg' 'libxss' 'protobuf' 'opus' 'libvpx'
-         'gperf' 'yasm' 'openssh' 'icu' 'qt5-tools' 'nodejs' 'python3')
+         'qt5-location' 'qt5-webchannel' 'libxss' 'protobuf' 'opus' 'libvpx'
+         'gperf' 'yasm' 'openssh' 'icu' 'qt5-tools' 'nodejs' 'python3') # 'ffmpeg'
 #_pkgfqn="qtwebengine-everywhere-src-${subver}"
 _pkgfqn="qtwebengine"
 #source=("${_qtmirror}/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz"
@@ -75,7 +75,7 @@ build() {
 
     /usr/lib/qt5/bin/qmake ../${_pkgfqn}/qtwebengine.pro -- \
     -webengine-proprietary-codecs \
-    -webengine-ffmpeg \
+    -qt-ffmpeg \
     -webengine-opus \
     -webengine-spellchecker \
     -webengine-webp \
