@@ -1,7 +1,7 @@
 
 pkgname=gst-libav
 pkgver=1.22.1
-pkgrel=1
+pkgrel=2
 pkgdesc="Gstreamer libav Plugin"
 arch=('x86_64')
 license=('GPL')
@@ -19,7 +19,7 @@ build() {
   meson setup ../${pkgname}-${pkgver} \
     --prefix=/usr \
     --buildtype=release \
-    -Dpackage-name="GStreamer Good (KaOS)" \
+    -Dpackage-name="GStreamer Libav (KaOS)" \
     -Dpackage-origin="https://kaosx.us/" 
   ninja
 }

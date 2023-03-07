@@ -1,8 +1,8 @@
 
 # rebuild mpv on any update
 pkgname=ffmpeg
-pkgver=4.4.3
-pkgrel=2
+pkgver=5.1.2
+pkgrel=1
 pkgdesc="Complete and free Internet live audio and video broadcasting solution for Linux/Unix"
 arch=('x86_64')
 url="https://ffmpeg.org/"
@@ -13,13 +13,14 @@ depends=('bzip2' 'lame' 'sdl2' 'libvorbis' 'xvidcore' 'zlib' 'x264' 'libtheora' 
          'libass' 'dcadec' 'opus' 'dav1d' 'avisynthplus' 'samba' 'librsvg' 'vulkan-loader')
 makedepends=('yasm' 'vulkan-headers')
 source=("https://ffmpeg.org/releases/${pkgname}-${pkgver}.tar.xz"
-        'openjpeg2.2.patch')
-md5sums=('8d2fffc30adda112ab9216f55c7efca6'
-         'e70179f9572035a655c297a2892fae08')
+        'vulkan.patch')
+md5sums=('fa847c43407315c27231b9f883e62c0e'
+         '46ab3269d48fea91f742ca7a3a6d57db')
 
 build() {
   cd ${pkgname}-${pkgver}
-  #patch -p1 -i ${srcdir}/openjpeg2.2.patch
+  # from https://git.ffmpeg.org/gitweb/ffmpeg.git/commit/eb0455d64690
+  patch -p1 -i ${srcdir}/vulkan.patch
 
   ./configure --prefix=/usr \
               --enable-avisynth \

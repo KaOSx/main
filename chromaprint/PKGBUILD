@@ -1,18 +1,20 @@
 
 pkgname=chromaprint
 pkgver=1.5.1
-pkgrel=1
+_commit=aa67c95b9e486884a6d3ee8b0c91207d8c2b0551
+pkgrel=2
 pkgdesc='Client-side library that implements a custom algorithm for extracting fingerprints from any audio source'
 url='https://github.com/acoustid/chromaprint/'
 arch=('x86_64')
 license=('LGPL')
 depends=('ffmpeg')
 makedepends=('cmake')
-source=("https://github.com/acoustid/chromaprint/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
-md5sums=('54e71f86bcf1d34989db639044ba9628')
+#source=("https://github.com/acoustid/chromaprint/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
+source=("https://github.com/acoustid/chromaprint/archive/${_commit}.zip")
+md5sums=('ce6968a35f7848618a144d5a40efcb6f')
 
 build() {
-   cmake -B build -S ${pkgname}-${pkgver} \
+   cmake -B build -S ${pkgname}-${_commit} \
     -DCMAKE_BUILD_TYPE=Release \
     -DBUILD_TOOLS=ON \
     -DCMAKE_INSTALL_PREFIX=/usr
