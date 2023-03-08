@@ -1,7 +1,7 @@
 
 pkgname=octave
-pkgver=7.3.0
-pkgrel=4
+pkgver=8.1.0
+pkgrel=1
 pkgdesc="A high-level language, primarily intended for numerical computations."
 arch=('x86_64')
 url="https://www.octave.org"
@@ -13,14 +13,14 @@ options=('!emptydirs')
 source=("https://ftp.gnu.org/gnu/octave/octave-${pkgver}.tar.lz"
         '0001-Use-reentrant-libqhull_r.patch'
         "https://hg.savannah.gnu.org/hgweb/octave/raw-rev/aaffac4fbe30")
-md5sums=('20c51e5945625aef00659193c6434f39'
+md5sums=('b880cf1d1c58f29622d96cb09d8ad2d4'
          'a53f7eea9e8f23884787eaa4d9c6b797'
          'efc12e6bbd7b38c9ae16fa7f125be257')
 
 build() {
   cd ${pkgname}-${pkgver}
   # suitespares 7.0.0 needed, from https://savannah.gnu.org/bugs/?63684
-  patch -p1 -i ${srcdir}/aaffac4fbe30
+  #patch -p1 -i ${srcdir}/aaffac4fbe30
 
   autoreconf -vfi
 
