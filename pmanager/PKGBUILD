@@ -1,31 +1,30 @@
 
 pkgname=pmanager
-pkgver=0.3.4
+pkgver=0.4.0
 pkgrel=1
-_commit=351d8ba4f7368a0e72e40eccc4014b557291b638
 pkgdesc="Packages viewer & Mirrors status used by KaOS"
 arch=('x86_64')
-url="https://github.com/KaOSx/pmanager"
+url="https://codeberg.org/KaOS/pmanager"
 license=('Public Domain')
 depends=('go' 'sqlite')
 backup=('etc/pmanager/pmanager.conf')
-source=("https://github.com/KaOSx/pmanager/archive/${_commit}.zip"
+source=("https://codeberg.org/KaOS/pmanager/archive/v${pkgver}.tar.gz"
         'pmanager.service'
         'pmanager_update.service'
         'pmanager_update.timer')
-md5sums=('44b37622ea0af5661910986e67ea31bb'
+md5sums=('6709a922854fab49a3a9d7873185df47'
          '680f391419f6ced62a6984f9a1eb69ef'
          '4d340e0496cc1c69fb0a319ba460d39b'
          '9ae0fe194f318cff49054bf6d57d4978')
  
 build() {
-  cd ${pkgname}-${_commit}
+  cd ${pkgname}
 
   go build -o pmanager pmanager.go
 }
 
 package() {
-  cd ${pkgname}-${_commit} 
+  cd ${pkgname}
 
   install -Dm755 pmanager ${pkgdir}/usr/bin/pmanager
 
