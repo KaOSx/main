@@ -2,12 +2,12 @@
 pkgname=gd
 pkgver=2.3.3
 _pkgver=2.3.3
-pkgrel=5
+pkgrel=6
 pkgdesc="Library for the dynamic creation of images by programmers"
 arch=('x86_64')
 url="https://libgd.github.io/"
 license=('custom')
-depends=('libpng' 'fontconfig' 'libjpeg-turbo' 'libtiff' 'libxpm' 'libwebp' 'libavif')
+depends=('libpng' 'fontconfig' 'libjpeg-turbo' 'libtiff' 'libxpm' 'libwebp' 'libavif' 'libheif')
 makedepends=('ttf-liberation')
 options=('!libtool')
 source=("https://github.com/libgd/libgd/archive/gd-${_pkgver}.tar.gz")
@@ -23,7 +23,7 @@ build() {
 
 check() {
   cd libgd-gd-${_pkgver}
-  # avif/compare_avif_to_png fails
+  # avif/compare_avif_to_png & FAIL: heif/heif_im2im fails
   # TMP needed https://github.com/libgd/libgd/issues/763
   TMP=$(mktemp -d) make check
  }
