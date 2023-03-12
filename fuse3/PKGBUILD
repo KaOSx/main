@@ -1,7 +1,7 @@
 
 pkgname=fuse3
 pkgver=3.14.0
-pkgrel=1
+pkgrel=2
 pkgdesc="A library that makes it possible to implement a filesystem in a userspace program, libfuse 3.x version."
 arch=('x86_64')
 url="https://github.com/libfuse/libfuse"
@@ -21,7 +21,8 @@ build() {
   meson setup ../libfuse-fuse-${pkgver} \
     --prefix=/usr \
     --buildtype=release \
-    -Dexamples=false
+    -Dexamples=false \
+    -Dinitscriptdir=
   ninja
 }
 
@@ -33,8 +34,6 @@ package() {
   #install -D -m644 ../fuse.conf ${pkgdir}/etc/fuse.conf
 
   rm -rf ${pkgdir}/dev
-  # Remove init script
-  rm -rf ${pkgdir}/etc/init.d
   # remove duplicate udev rules
   rm -rf ${pkgdir}/etc/udev
 }
