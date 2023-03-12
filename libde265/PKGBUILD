@@ -1,6 +1,6 @@
 
 pkgname=libde265
-pkgver=1.0.5
+pkgver=1.0.11
 pkgrel=1
 pkgdesc="Open source implementation of the h.265 video codec."
 arch=('x86_64')
@@ -9,12 +9,13 @@ license=('LGPL3')
 depends=('sdl' 'qt5-base' 'ffmpeg')
 makedepends=('cmake')
 source=("https://github.com/strukturag/libde265/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
-md5sums=('385c88166cb255a068a8c936d0ab23ef')
+md5sums=('2b07416559819212aed2fd75f74fd393')
 
 build() {
   cd ${pkgname}-${pkgver}
 
-  ./configure --prefix=/usr
+  ./configure --prefix=/usr \
+    --enable-static=no
   make
 }
 

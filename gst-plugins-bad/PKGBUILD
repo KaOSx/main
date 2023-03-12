@@ -1,7 +1,7 @@
 
 pkgname=gst-plugins-bad
 pkgver=1.22.1
-pkgrel=2
+pkgrel=3
 pkgdesc="GStreamer Multimedia Framework Bad Plugins"
 arch=('x86_64')
 license=('LGPL')
@@ -11,7 +11,7 @@ depends=('mjpegtools' 'gst-plugins-base' 'curl' 'chromaprint' 'libmms' 'faad2'
          'libmodplug' 'libgme' 'opus' 'wayland' 'neon' 'libofa' 'fluidsynth' 'openjpeg'
          'libwebp' 'libsrtp' 'gnutls' 'librsvg' 'libpng' 'libgudev' 'sbc' 'glu'
          'qt5-x11extras' 'x265' 'libass' 'schroedinger' 'nettle' 'libdvdread'
-         'vulkan-validationlayers' 'microdns' 'libnice' 'flac')
+         'vulkan-validationlayers' 'microdns' 'libnice' 'flac' 'libde265')
 makedepends=('libexif' 'libvdpau' 'libmpeg2' 'python3' 'meson' 'ninja'
              'gobject-introspection' 'bluez' 'ladspa' 'openal' 'qt5-wayland')
 options=('!libtool' '!emptydirs')
@@ -35,7 +35,8 @@ build() {
     --sysconfdir=/etc \
     --localstatedir=/var \
     -D package-name="GStreamer Bad Plugins (KaOS)" \
-    -D package-origin="https://kaosx.us"
+    -D package-origin="https://kaosx.us" \
+    -D gpl=enabled
   ninja
 }
 
