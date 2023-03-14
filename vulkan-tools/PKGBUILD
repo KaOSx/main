@@ -7,7 +7,7 @@ arch=('x86_64')
 url="https://www.khronos.org/vulkan/"
 license=('APACHE')
 depends=('vulkan-loader' 'mesa' 'wayland' 'libx11' 'libxkbcommon' 'libxrandr')
-makedepends=('cmake' 'vulkan-headers' 'vulkan-validationlayers' 'python3-lxml')
+makedepends=('cmake' 'vulkan-headers' 'vulkan-validationlayers' 'python3-lxml' 'glslang')
 source=("https://github.com/KhronosGroup/Vulkan-Tools/archive/v${pkgver}.tar.gz")
 md5sums=('b545ad5d255b4cff27a3459905d6378e')
 
@@ -20,9 +20,10 @@ build() {
     -DBUILD_WSI_XCB_SUPPORT=ON \
     -DBUILD_WSI_XLIB_SUPPORT=ON \
     -DBUILD_WSI_WAYLAND_SUPPORT=ON \
-    -DBUILD_ICD=ON \
+    -DBUILD_ICD=OFF \
     -DINSTALL_ICD=OFF \
-    -DVULKAN_HEADERS_INSTALL_DIR=/usr/include
+    -DVULKAN_HEADERS_INSTALL_DIR=/usr/include \
+    -DGLSLANG_INSTALL_DIR=/usr
   cmake --build build
 }
 
