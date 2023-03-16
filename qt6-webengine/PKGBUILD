@@ -14,7 +14,7 @@ url='https://github.com/qt/qtwebengine'
 license=('GPL3' 'LGPL')
 depends=('qt6-declarative' 'mesa' 'systemd' 'pango' 'nss' 'speex' 'libevent' 'libcups'
          'libxslt' 'libpng' 'libjpeg-turbo' 'libwebp' 'zlib' 'pciutils' 'jsoncpp' 'pulseaudio' 'libxcomposite'
-         'qt6-location' 'qt6-webchannel' 'ffmpeg' 'libxss' 'opus' 'libvpx' 'pipewire')
+         'qt6-location' 'qt6-webchannel' 'libxss' 'opus' 'libvpx' 'pipewire') #'ffmpeg'
 makedepends=('cmake' 'ninja' 'python3' 'gperf' 'yasm' 'openssh' 'icu' 'qt6-tools' 'nodejs'
              'python3-html5lib' 'libepoxy')
 groups=('qt6')
@@ -29,7 +29,7 @@ build() {
         -DCMAKE_BUILD_TYPE=Release \
         -DCMAKE_INSTALL_PREFIX=/usr \
         -DQT_FEATURE_webengine_proprietary_codecs=ON \
-        -DQT_FEATURE_webengine_system_ffmpeg=ON \
+        -DQT_FEATURE_webengine_system_ffmpeg=OFF \
         -DQT_FEATURE_webengine_system_opus=ON \
         -DQT_FEATURE_webengine_system_icu=ON \
         -DQT_FEATURE_webengine_kerberos=ON \
