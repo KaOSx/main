@@ -1,7 +1,7 @@
 
 pkgname=glib-networking
-pkgver=2.74.0
-_pkgver=2.74
+pkgver=2.76.0
+_pkgver=2.76
 pkgrel=1
 pkgdesc="Network-related giomodules for glib"
 arch=('x86_64')
@@ -10,13 +10,13 @@ license=('GPL2')
 depends=('glib2' 'libproxy' 'gnutls' 'ca-certificates' 'libtasn1') # 'gsettings-desktop-schemas')
 makedepends=('intltool' 'meson' 'ninja')
 source=("https://download.gnome.org/sources/glib-networking/${_pkgver}/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('1f185aaef094123f8e25d8fa55661b3fd71020163a0174adb35a37685cda613b')
+sha256sums=('149a05a179e629a538be25662aa324b499d7c4549c5151db5373e780a1bf1b9a')
 
 build() {
   mkdir -p build
   cd build
 
-  meson ../${pkgname}-${pkgver} \
+  meson setup ../${pkgname}-${pkgver} \
     --prefix=/usr \
     --buildtype=release \
     --libexecdir=/usr/lib/${pkgname} \

@@ -1,7 +1,7 @@
 
 pkgname=gloox
-pkgver=1.0.24
-pkgrel=2
+pkgver=1.0.25
+pkgrel=1
 pkgdesc="C++ libraries for development of Jabber client/component/server"
 arch=('x86_64')
 url="https://camaya.net/gloox"
@@ -9,12 +9,12 @@ license=("GPL")
 depends=('libidn' 'gnutls')
 source=("https://camaya.net/download/${pkgname}-${pkgver}.tar.bz2"
         "https://gitweb.gentoo.org/repo/gentoo.git/plain/net-libs/gloox/files/gloox-1.0.24-fix-gcc12-time.patch")
-md5sums=('7311ab0456f4459be7b5a86f9008af03'
+md5sums=('06804028994e0143c0f69ce1a7952379'
          '9e8e90a5667596c093b8fcc48b932c57')
 
 build() {
   cd ${pkgname}-${pkgver}
-  patch -p1 -i ${srcdir}/gloox-1.0.24-fix-gcc12-time.patch
+  #patch -p1 -i ${srcdir}/gloox-1.0.24-fix-gcc12-time.patch
 
   ./configure --prefix=/usr --without-examples
   make
