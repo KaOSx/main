@@ -1,9 +1,9 @@
 
 pkgname=python3-gobject3 
 pkgbase=pygobject
-pkgver=3.42.2
-_pkgver=3.42
-pkgrel=3
+pkgver=3.44.0
+_pkgver=3.44
+pkgrel=1
 pkgdesc="Python3 bindings for GObject"
 arch=('x86_64')
 url="https://pygobject.readthedocs.io/en/latest/"
@@ -12,13 +12,13 @@ depends=('python3' 'python3-cairo' 'gobject-introspection')
 makedepends=('meson' 'ninja')
 source=("https://ftp.gnome.org/pub/gnome/sources/pygobject/${_pkgver}/${pkgbase}-${pkgver}.tar.xz")
 options=('!libtool')
-sha256sums=('ade8695e2a7073849dd0316d31d8728e15e1e0bc71d9ff6d1c09e86be52bc957')
+sha256sums=('f6863d6a3b70d9ace4c36a9901d39e42c8801d11309ca2a8b3459d1c24e34b7f')
 
 build() {
   mkdir -p build
   cd build
 
-  meson ../${pkgbase}-${pkgver} \
+  meson setup ../${pkgbase}-${pkgver} \
     --prefix=/usr \
     --buildtype=release \
     -D python=/usr/bin/python3
