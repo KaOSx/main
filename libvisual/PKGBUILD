@@ -1,6 +1,6 @@
 
 pkgname=libvisual
-pkgver=0.4.1
+pkgver=0.4.2
 pkgrel=1
 pkgdesc="Abstraction library that comes between applications and audio visualisation plugins"
 arch=("x86_64")
@@ -9,13 +9,14 @@ license=('LGPL')
 depends=('glibc')
 options=('!libtool')
 source=("https://github.com/Libvisual/libvisual/releases/download/${pkgname}-${pkgver}/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('7ad5a74317337d91e87c905fd5d8013e')
+sha256sums=('2aa5967c5c9522c8d7ab9bd9246c77a582c1aaf4f2b3f06493dbe3066f00380a')
 
 build() {
   cd ${pkgname}-${pkgver}
 
   ./configure --prefix=/usr \
-     --disable-examples
+     --disable-examples \
+     --disable-lv-tool
 make
 }
 
