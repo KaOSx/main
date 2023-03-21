@@ -1,12 +1,12 @@
 
 pkgname=libvisual
 pkgver=0.4.2
-pkgrel=1
+pkgrel=2
 pkgdesc="Abstraction library that comes between applications and audio visualisation plugins"
 arch=("x86_64")
 url="http://libvisual.org/"
 license=('LGPL')
-depends=('glibc')
+depends=('glibc' 'sdl')
 options=('!libtool')
 source=("https://github.com/Libvisual/libvisual/releases/download/${pkgname}-${pkgver}/${pkgname}-${pkgver}.tar.bz2")
 sha256sums=('2aa5967c5c9522c8d7ab9bd9246c77a582c1aaf4f2b3f06493dbe3066f00380a')
@@ -14,9 +14,12 @@ sha256sums=('2aa5967c5c9522c8d7ab9bd9246c77a582c1aaf4f2b3f06493dbe3066f00380a')
 build() {
   cd ${pkgname}-${pkgver}
 
+  export SDL_CFLAGS="-D_GNU_SOURCE=1 -D_REENTRANT -I/usr/include/SDL"
+  export SDL_LIBS="-lSDL"
+
   ./configure --prefix=/usr \
      --disable-examples \
-     --disable-lv-tool
+     --enable-lv-tool
 make
 }
 
