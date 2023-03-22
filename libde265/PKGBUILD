@@ -1,7 +1,7 @@
 
 pkgname=libde265
 pkgver=1.0.11
-pkgrel=1
+pkgrel=2
 pkgdesc="Open source implementation of the h.265 video codec."
 arch=('x86_64')
 url="http://www.libde265.org/"
@@ -13,6 +13,9 @@ md5sums=('2b07416559819212aed2fd75f74fd393')
 
 build() {
   cd ${pkgname}-${pkgver}
+
+  export SDL_CFLAGS="-D_GNU_SOURCE=1 -D_REENTRANT -I/usr/include/SDL"
+  export SDL_LIBS="-lSDL"
 
   ./configure --prefix=/usr \
     --enable-static=no
