@@ -1,23 +1,23 @@
 
 pkgname=mesa-demos
-pkgver=8.5.0
-pkgrel=2
+pkgver=9.0.0
+pkgrel=1
 arch=('x86_64')
 pkgdesc="Mesa demos and tools"
 url="https://www.mesa3d.org/"
 license=('custom')
 depends=('glew' 'freeglut' 'wayland-protocols')
 makedepends=('meson' 'ninja')
-source=("https://archive.mesa3d.org/demos/${pkgver}/mesa-demos-${pkgver}.tar.bz2"
+source=("https://archive.mesa3d.org/demos/mesa-demos-${pkgver}.tar.xz"
         'LICENSE')
-sha256sums=('cea2df0a80f09a30f635c4eb1a672bf90c5ddee0b8e77f4d70041668ef71aac1'
+sha256sums=('3046a3d26a7b051af7ebdd257a5f23bfeb160cad6ed952329cdff1e9f1ed496b'
             '7fdc119cf53c8ca65396ea73f6d10af641ba41ea1dd2bd44a824726e01c8b3f2')
 
 build() {
   mkdir -p build
   cd build
 
-  meson ../${pkgname}-${pkgver} \
+  meson setup ../${pkgname}-${pkgver} \
     --prefix=/usr \
     --buildtype=release
   ninja
