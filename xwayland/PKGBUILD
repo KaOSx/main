@@ -1,6 +1,6 @@
 
 pkgname=xwayland
-pkgver=22.1.8
+pkgver=23.1.0
 pkgrel=1
 pkgdesc="X.Org X servers for Wayland"
 arch=('x86_64')
@@ -12,13 +12,13 @@ options=('!libtool')
 groups=('xorg')
 # https://gitlab.freedesktop.org/xorg/xserver/-/tree/xwayland-21.1
 source=("https://xorg.freedesktop.org/archive/individual/xserver/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('d11eeee73290b88ea8da42a7d9350dedfaba856ce4ae44e58c045ad9ecaa2f73')
+sha256sums=('40e0a0c050446ac558ec0f54be4930ffef6be63c6ea980fb654f264ef065af9e')
 
 build() {
   mkdir -p build
   cd build
 
-  meson ../${pkgname}-${pkgver} \
+  meson setup ../${pkgname}-${pkgver} \
     --prefix=/usr \
     --buildtype=release \
     -Dglamor=true \
