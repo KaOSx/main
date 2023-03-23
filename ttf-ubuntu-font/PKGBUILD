@@ -1,22 +1,35 @@
 
-_pkgname=ubuntu-font-family
+_pkgname=fonts-ubuntu
 pkgname=ttf-ubuntu-font
-pkgver=0.83
-pkgrel=4
+pkgver=0.862
+pkgrel=1
 pkgdesc="The default TTF font family used by Ubuntu."
 arch=('x86_64')
 url="https://design.ubuntu.com/font/"
 license=('custom:ubuntu-font-licence-1.0')
 depends=('fontconfig' 'xorg-font-utils')
-source=("https://assets.ubuntu.com/v1/0cef8205-${_pkgname}-${pkgver}.zip")
+#source=("https://assets.ubuntu.com/v1/0cef8205-${_pkgname}-${pkgver}.zip")
+source=("https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/fonts-ubuntu/${pkgver}-0ubuntu2/fonts-ubuntu_${pkgver}.orig.tar.gz")
 install=${pkgname}.install
-md5sums=('c5a5059d6856b4ddf79d824dcaf5ad32')
+md5sums=('b6f9382b44766f94b467a934bfdf2b1e')
 
 package() {
   cd ${_pkgname}-${pkgver}
 
   install -dm755 ${pkgdir}/usr/share/fonts/TTF
-  install -m0644 Ubuntu-{L,R,B,C,M}*.ttf ${pkgdir}/usr/share/fonts/TTF/
-  install -m0644 UbuntuMono-*.ttf ${pkgdir}/usr/share/fonts/TTF/
+  install -m0644 Ubuntu*.ttf ${pkgdir}/usr/share/fonts/TTF/
+
+  ln -s ${pkgdir}/usr/share/fonts/TTF/Ubuntu[wdth,wght].ttf ${pkgdir}/usr/share/fonts/TTF/Ubuntu-B.ttf
+  ln -s ${pkgdir}/usr/share/fonts/TTF/Ubuntu[wdth,wght].ttf ${pkgdir}/usr/share/fonts/TTF/Ubuntu-C.ttf
+  ln -s ${pkgdir}/usr/share/fonts/TTF/Ubuntu[wdth,wght].ttf ${pkgdir}/usr/share/fonts/TTF/Ubuntu-L.ttf
+  ln -s ${pkgdir}/usr/share/fonts/TTF/Ubuntu[wdth,wght].ttf ${pkgdir}/usr/share/fonts/TTF/Ubuntu-M.ttf
+  ln -s ${pkgdir}/usr/share/fonts/TTF/Ubuntu[wdth,wght].ttf ${pkgdir}/usr/share/fonts/TTF/Ubuntu-R.ttf
+
+  ln -s ${pkgdir}/usr/share/fonts/TTF/UbuntuMono[wdth,wght].ttf ${pkgdir}/usr/share/fonts/TTF/UbuntuMono-B.ttf
+  ln -s ${pkgdir}/usr/share/fonts/TTF/UbuntuMono[wdth,wght].ttf ${pkgdir}/usr/share/fonts/TTF/UbuntuMono-C.ttf
+  ln -s ${pkgdir}/usr/share/fonts/TTF/UbuntuMono[wdth,wght].ttf ${pkgdir}/usr/share/fonts/TTF/UbuntuMono-L.ttf
+  ln -s ${pkgdir}/usr/share/fonts/TTF/UbuntuMono[wdth,wght].ttf ${pkgdir}/usr/share/fonts/TTF/UbuntuMono-M.ttf
+  ln -s ${pkgdir}/usr/share/fonts/TTF/UbuntuMono[wdth,wght].ttf ${pkgdir}/usr/share/fonts/TTF/UbuntuMono-R.ttf
+
   install -Dm0644 LICENCE.txt ${pkgdir}/usr/share/${pkgname}/LICENSE
 }
