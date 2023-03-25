@@ -3,7 +3,7 @@
 pkgname=php7
 _pkgname=php
 pkgver=7.4.33
-pkgrel=3
+pkgrel=4
 arch=('x86_64')
 pkgdesc='An HTML-embedded scripting language'
 license=('PHP')
@@ -12,7 +12,7 @@ depends=('postgresql-libs' 'libldap' 'sqlite' 'unixodbc' 'net-snmp' 'enchant'
          'freetds' 'libmcrypt' 'tidyhtml' 'aspell' 'libtool' 'libpng' 'icu' 'curl' 'libxslt' 'bzip2'
          'freetype2' 'harfbuzz' 'systemd' 'pcre2' 'libxml2' 'libxpm' 'libzip' 'gdbm' 'argon2' 'libsodium'
          'oniguruma' 'libxcrypt') #'libvpx'
-makedepends=('mariadb' 'postfix' 'file' 'libjpeg-turbo' 'openssl' 'gmp')
+makedepends=('mariadb' 'postfix' 'file' 'libjpeg-turbo' 'openssl1.1' 'gmp')
 backup=('etc/php7/php.ini'
         'etc/php7/php-fpm.conf')
 source=("https://www.php.net/distributions/${_pkgname}-${pkgver}.tar.xz"
@@ -47,6 +47,7 @@ build() {
 	#export PEAR_INSTALLDIR
 
 	cd ${_pkgname}-${pkgver}
+	CPPFLAGS+=" -I/usr/include/openssl1.1" LDFLAGS+=" -L/usr/lib/openssl1.1"
 
 	./configure --config-cache \
 		--prefix=/usr \

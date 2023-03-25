@@ -1,6 +1,6 @@
 
 pkgname=libinput
-pkgver=1.22.1
+pkgver=1.23.0
 pkgrel=1
 pkgdesc="Library to handle input devices in Wayland compositors and to provide a generic X.Org input driver"
 arch=('x86_64')
@@ -11,7 +11,7 @@ makedepends=('meson' 'ninja')
 options=('!libtool')
 source=("https://gitlab.freedesktop.org/libinput/libinput/-/archive/${pkgver}/${pkgname}-${pkgver}.tar.bz2"
         "https://gitlab.freedesktop.org/libinput/libinput/commit/7c51c881dc72827ca50ae9eea3d123eef9cb4a66.diff")
-sha256sums=('e13f6f118cfbbdc0b6e0edd5e3504abd96a8d0e33dc67cba31c6942c449f77af'
+sha256sums=('fad7011705a21f500229199f789f3e3e794b4c9826b70073745cdaec23bc1d0b'
             '4d2a810c1c42541303de8ad8b75ee4c89081718be8b1ac7dcf8dfb28ada672e9')
 
 prepare() {
@@ -24,7 +24,7 @@ build() {
     mkdir -p build
     cd build
 
-    meson ../${pkgname}-${pkgver} \
+    meson setup ../${pkgname}-${pkgver} \
         --prefix=/usr \
         --buildtype=release \
         --libexecdir=/usr/lib \

@@ -1,7 +1,7 @@
 
 pkgname=liblrdf
 pkgver=0.6.1
-pkgrel=3
+pkgrel=4
 pkgdesc="A library for the manipulation of RDF file in LADSPA plugins"
 arch=('x86_64')
 url="https://github.com/swh/LRDF"
@@ -17,7 +17,7 @@ build() {
   cd LRDF-${pkgver}
 
   autoreconf -vfi
-  
+
   ./configure --prefix=/usr \
     --disable-static
   make
@@ -25,6 +25,6 @@ build() {
 
 package() {
   cd LRDF-${pkgver}
-  
+
   make DESTDIR=${pkgdir} install
 }

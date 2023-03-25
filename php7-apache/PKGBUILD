@@ -8,7 +8,7 @@ pkgdesc='Apache SAPI for PHP'
 license=('PHP')
 url='https://secure.php.net/'
 depends=("php7>=${pkgver}" 'apache') 
-makedepends=('mariadb' 'postfix' 'libzip' 'file' 'libjpeg-turbo' 'openssl' 'gmp')
+makedepends=('mariadb' 'postfix' 'libzip' 'file' 'libjpeg-turbo' 'openssl1.1' 'gmp')
 backup=('etc/httpd/conf/extra/php7_module.conf')
 source=("http://www.php.net/distributions/${_pkgname}-${pkgver}.tar.xz"
         'apache.conf'
@@ -28,6 +28,7 @@ prepare() {
 
 build() {
 	cd ${_pkgname}-${pkgver}
+	CPPFLAGS+=" -I/usr/include/openssl1.1" LDFLAGS+=" -L/usr/lib/openssl1.1"
 
 	./configure --config-cache \
 		--prefix=/usr \

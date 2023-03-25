@@ -1,7 +1,7 @@
 
 pkgname=encfs
 pkgver=1.9.5
-pkgrel=10
+pkgrel=11
 pkgdesc='Encrypted filesystem in user-space'
 arch=('x86_64')
 url='https://vgough.github.io/encfs/'
@@ -13,20 +13,15 @@ source=("https://github.com/vgough/encfs/releases/download/v${pkgver}/encfs-${pk
 md5sums=('0244c6a6c0399a068c02ea078ce393d1')
 
 build(){
-  mkdir -p build
-  cd build
-  
-  cmake ../${pkgname}-${pkgver} \
+  cmake -B build -S ${pkgname}-${pkgver} \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DBUILD_SHARED_LIBS=ON \
     -DINSTALL_LIBENCFS=ON \
     -DUSE_INTERNAL_TINYXML=OFF
-
-  make
+  cmake --build build
 }
 
 package() {
-  cd build
 
-  make DESTDIR=${pkgdir} install
+  DESTDIR=${pkgdir} cmake --install build
 }
