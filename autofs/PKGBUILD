@@ -1,7 +1,7 @@
 
 pkgname=autofs
 pkgver=5.1.8
-pkgrel=2
+pkgrel=3
 pkgdesc='A kernel-based automounter for Linux.'
 arch=('x86_64')
 url='https://git.kernel.org/pub/scm/linux/storage/autofs/autofs.git'
@@ -27,6 +27,9 @@ build() {
   sed -i -e 's|/etc/auto.misc|/etc/autofs/auto.misc|' \
          -e 's|/etc/auto.master.d|/etc/autofs/auto.master.d|' samples/auto.master
   sed -i -e "/^SUBDIRS/s/$/ samples/g" Makefile.rules
+
+  sed -i -e "/^#include <linux\/fs.h>$/d" modules/parse_amd.c
+  sed -i -e "/^#include <linux\/fs.h>$/d" modules/parse_sun.c
 
   ./configure --prefix=/usr \
         --sysconfdir=/etc/autofs \
