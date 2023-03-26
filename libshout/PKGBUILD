@@ -1,7 +1,7 @@
 
 pkgname=libshout
 pkgver=2.4.6
-pkgrel=1
+pkgrel=2
 pkgdesc="Library for accessing a shoutcast/icecast server"
 arch=('x86_64')
 depends=('libvorbis' 'libtheora' 'speex')
@@ -18,7 +18,7 @@ build() {
   ./configure --prefix=/usr \
     --sysconfdir=/etc \
     --localstatedir=/var
-  
+
   make LDFLAGS+=-lspeex
 }
 

@@ -1,7 +1,7 @@
 
 pkgname=nmap
 pkgver=7.93
-pkgrel=2
+pkgrel=3
 pkgdesc="Network exploration tool and security/port scanner"
 arch=('x86_64')
 url="https://nmap.org"
@@ -15,7 +15,7 @@ md5sums=('9027eac4b8ca57574012cb061ba9ce4d'
 
 build() {
   cd ${pkgname}-${pkgver}
-  patch -p1 -i ${srcdir}/d6bea8dcdee36a3902cece14097993350306f1b6.diff
+  #patch -p1 -i ${srcdir}/d6bea8dcdee36a3902cece14097993350306f1b6.diff
 
   ./configure --prefix=/usr \
     --mandir=/usr/share/man \
