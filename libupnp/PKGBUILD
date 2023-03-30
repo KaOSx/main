@@ -1,7 +1,7 @@
 
 pkgname=libupnp
 _pkgname=pupnp
-pkgver=1.14.15
+pkgver=1.14.16
 pkgrel=1
 pkgdesc="Portable UPnP development kit."
 arch=('x86_64')
@@ -11,7 +11,7 @@ depends=('glibc')
 makedepends=('cmake')
 #source=("https://github.com/pupnp/pupnp/releases/download/release-${pkgver}/${pkgname}-${pkgver}.tar.bz2")
 source=("https://github.com/pupnp/pupnp/archive/refs/tags/release-${pkgver}.tar.gz")
-sha1sums=('b8e936557ef6f57869a22aeeed2d0f2f6098cbbe')
+sha1sums=('d471bb719e7a6207547596ae165a21a1ea448b86')
 
 build() {
   cmake -B build -S ${_pkgname}-release-${pkgver} \
