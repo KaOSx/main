@@ -6,7 +6,7 @@ pkgname=qt6-base
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=3
+pkgrel=1
 pkgdesc="A cross-platform application and UI framework"
 arch=('x86_64')
 url='https://www.qt.io/'
@@ -47,7 +47,6 @@ build() {
         -DINPUT_openssl=linked \
         -DFEATURE_system_freetype=ON \
         -DFEATURE_system_sqlite=ON \
-        -DFEATURE_system_xcb_xinput=ON \
         -DCMAKE_MESSAGE_LOG_LEVEL=STATUS
     cmake --build build
 }

@@ -2,7 +2,7 @@
 # include global config
 source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
 
-pkgname=qtlocation
+pkgname=qt6-location
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
@@ -13,6 +13,7 @@ url='https://github.com/qt/qtlocation'
 license=('GPL3' 'LGPL')
 depends=('qt6-declarative' 'qt6-positioning' 'qt6-shadertools')
 makedepends=('cmake' 'ninja')
+conflicts=('qtlocation')
 groups=('qt6')
 options=('!libtool')
 _pkgfqn="qtlocation-everywhere-src-${subver}"
