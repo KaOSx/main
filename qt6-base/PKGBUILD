@@ -6,12 +6,12 @@ pkgname=qt6-base
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=1
+pkgrel=2
 pkgdesc="A cross-platform application and UI framework"
 arch=('x86_64')
 url='https://www.qt.io/'
 license=('GPL3' 'LGPL' 'FDL' 'custom')
-depends=('sqlite' 'xcb-util-keysyms' 'xcb-util-wm' 'xcb-util-image' 'xcb-util-renderutil'
+depends=('sqlite' 'xcb-util-keysyms' 'xcb-util-wm' 'xcb-util-image' 'xcb-util-renderutil' 'xcb-util-cursor'
         'glib2' 'dbus' 'fontconfig' 'libsm' 'libxrandr' 'libxv' 'libxi' 'unixodbc' 'libjpeg-turbo'
         'alsa-lib' 'xdg-utils' 'hicolor-icon-theme' 'desktop-file-utils' 'mesa' 'systemd'
         'libxcursor' 'libxrender' 'libpng' 'mariadb' 'icu' 'libgl' 'libxfixes' 'libxinerama'
@@ -47,6 +47,7 @@ build() {
         -DINPUT_openssl=linked \
         -DFEATURE_system_freetype=ON \
         -DFEATURE_system_sqlite=ON \
+        -DQT_FEATURE_system_xcb_xinput=ON \
         -DCMAKE_MESSAGE_LOG_LEVEL=STATUS
     cmake --build build
 }
