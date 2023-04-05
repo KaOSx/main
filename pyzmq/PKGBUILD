@@ -1,20 +1,27 @@
  
 pkgname=pyzmq
-pkgver=25.0.0
+pkgver=25.0.2
 pkgrel=1
 pkgdesc="Python bindings for ØMQ, a lightweight and fast messaging implementation."
 arch=('x86_64')
 url="https://www.zeromq.org/bindings:python"
 license=('LGPL')
 depends=('zeromq' 'python3')
-makedepends=('python3-cython' 'python3-setuptools')
+makedepends=('python3-cython' 'python3-build' 'python3-installer' 'python3-setuptools' 'python3-wheel')
 source=("https://files.pythonhosted.org/packages/source/p/pyzmq/${pkgname}-${pkgver}.tar.gz")
-sha256sums=('f330a1a2c7f89fd4b0aa4dcb7bf50243bf1c8da9a2f1efc31daf57a2046b31f2')
+sha256sums=('6b8c1bbb70e868dc88801aa532cae6bd4e3b5233784692b786f17ad2962e5149')
+
+build() {
+    cd ${pkgname}-${pkgver}
+
+    python3 -m build -nw
+}
 
 package() {
-  cd ${pkgname}-${pkgver}
+    cd ${pkgname}-${pkgver}
 
-  python3 setup.py install --root=${pkgdir} --optimize=0
+    python3 -m installer --destdir=${pkgdir} dist/*.whl
+    install -Dm644 LICENSE.LESSER ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
 
 
