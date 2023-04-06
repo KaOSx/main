@@ -1,6 +1,6 @@
 
 pkgname=lldb
-pkgver=15.0.7
+pkgver=16.0.1
 pkgrel=1
 pkgdesc="Next generation, high-performance debugger, built as a set of reusable components in the LLVM Project."
 arch=('x86_64')
@@ -8,8 +8,10 @@ url="https://llvm.org/"
 license=('custom:University of Illinois/NCSA Open Source License')
 depends=("llvm=${pkgver}" 'libedit' 'libxml2' 'ncurses' 'python3-six')
 makedepends=('groff' 'swig' 'cmake' 'clang')
-source=("https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver}/lldb-${pkgver}.src.tar.xz")
-md5sums=('680b5cfa29edd559c044e85928f4c37c')
+source=("https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver}/lldb-${pkgver}.src.tar.xz"
+        "https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver}/cmake-${pkgver}.src.tar.xz")
+md5sums=('0250ec197adcdb1daa4b874b7a6739b0'
+         '7d225951160c463a5aa528015acf3439')
 
 build() {
     cmake -B build -S ${pkgname}-${pkgver}.src \
@@ -17,7 +19,8 @@ build() {
         -DCMAKE_INSTALL_PREFIX:PATH=/usr \
         -DLLVM_LINK_LLVM_DYLIB:BOOL=ON \
         -DLLDB_INCLUDE_TESTS=OFF \
-        -DLLDB_USE_SYSTEM_SIX=1
+        -DLLDB_USE_SYSTEM_SIX=1 \
+        -DLLVM_COMMON_CMAKE_UTILS="${srcdir}/cmake-${pkgver}.src"
     cmake --build build
 }
 
