@@ -8,7 +8,7 @@ pkgrel=27
 pkgdesc="NVIDIA drivers for linux."
 arch=('x86_64')
 url="http://www.nvidia.com/"
-depends=('linux>=6.2' 'linux<6.3.0' "nvidia-470xx-utils=${pkgver}")
+depends=('linux-next>=6.2' 'linux-next<6.3.0' "nvidia-470xx-utils=${pkgver}")
 makedepends=('linux-next-headers')
 conflicts=('nvidia' 'nvidia-390xx')
 backup=('etc/X11/xorg.conf.d/20-nvidia.conf')
