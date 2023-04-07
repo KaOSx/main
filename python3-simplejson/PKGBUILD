@@ -1,19 +1,25 @@
 
 pkgname=python3-simplejson
-pkgver=3.18.4
+pkgver=3.19.1
 pkgrel=1
 pkgdesc='Simple, fast, extensible JSON encoder/decoder for Python'
 license=('MIT')
 arch=('x86_64')
 url='https://github.com/simplejson/simplejson'
 depends=('python3')
-makedepends=('python3-setuptools')
+makedepends=('python3-build' 'python3-installer' 'python3-setuptools' 'python3-wheel')
 source=("https://files.pythonhosted.org/packages/source/s/simplejson/simplejson-${pkgver}.tar.gz")
-sha256sums=('6197cfebe659ac802a686b5408494115a7062b45cdf37679c4d6a9d4f39649b7')
+sha256sums=('6277f60848a7d8319d27d2be767a7546bc965535b28070e310b3a9af90604a4c')
+
+build() {
+    cd simplejson-${pkgver}
+
+    python3 -m build -nw
+}
 
 package() {
     cd simplejson-${pkgver}
-    python3 setup.py install --root=${pkgdir}
 
-    install -Dm644 LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
-} 
+    python3 -m installer --destdir=${pkgdir} dist/*.whl
+    install -Dm644 LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.txt
+}
