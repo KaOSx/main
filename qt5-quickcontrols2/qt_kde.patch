@@ -20,28 +20,10 @@ index e5fe734f7..e36922775 100644
      const QWidgetPlatformMenuItem *widgetItem = qobject_cast<const QWidgetPlatformMenuItem *>(item);
      m_menu->popup(targetPos, widgetItem ? widgetItem->action() : nullptr);
 diff --git a/src/quicktemplates2/qquickabstractbutton.cpp b/src/quicktemplates2/qquickabstractbutton.cpp
-index 950e4e099..b81fbea0b 100644
+index 20cf59c1a..43af47a94 100644
 --- a/src/quicktemplates2/qquickabstractbutton.cpp
 +++ b/src/quicktemplates2/qquickabstractbutton.cpp
-@@ -387,6 +387,17 @@ void QQuickAbstractButtonPrivate::itemImplicitHeightChanged(QQuickItem *item)
-         emit q->implicitIndicatorHeightChanged();
- }
- 
-+void QQuickAbstractButtonPrivate::itemDestroyed(QQuickItem *item)
-+{
-+    Q_Q(QQuickAbstractButton);
-+    QQuickControlPrivate::itemDestroyed(item);
-+    if (item == indicator) {
-+        indicator = nullptr;
-+        emit q->implicitIndicatorWidthChanged();
-+        emit q->implicitIndicatorHeightChanged();
-+    }
-+}
-+
- QQuickAbstractButton *QQuickAbstractButtonPrivate::findCheckedButton() const
- {
-     Q_Q(const QQuickAbstractButton);
-@@ -1176,6 +1187,12 @@ QAccessible::Role QQuickAbstractButton::accessibleRole() const
+@@ -1201,6 +1201,12 @@ QAccessible::Role QQuickAbstractButton::accessibleRole() const
      }
      return QAccessible::Button;
  }
@@ -66,31 +48,6 @@ index 0fa48980e..ab66220d0 100644
  #endif
  
  private:
-diff --git a/src/quicktemplates2/qquickabstractbutton_p_p.h b/src/quicktemplates2/qquickabstractbutton_p_p.h
-index 9291c1a87..b729720f2 100644
---- a/src/quicktemplates2/qquickabstractbutton_p_p.h
-+++ b/src/quicktemplates2/qquickabstractbutton_p_p.h
-@@ -109,6 +109,7 @@ public:
- 
-     void itemImplicitWidthChanged(QQuickItem *item) override;
-     void itemImplicitHeightChanged(QQuickItem *item) override;
-+    void itemDestroyed(QQuickItem *item) override;
- 
-     // copied from qabstractbutton.cpp
-     static const int AUTO_REPEAT_DELAY = 300;
-diff --git a/src/quicktemplates2/qquickaction.cpp b/src/quicktemplates2/qquickaction.cpp
-index 2041e7741..8610cdfae 100644
---- a/src/quicktemplates2/qquickaction.cpp
-+++ b/src/quicktemplates2/qquickaction.cpp
-@@ -145,7 +145,7 @@ int QQuickActionPrivate::ShortcutEntry::shortcutId() const
- 
- void QQuickActionPrivate::ShortcutEntry::grab(const QKeySequence &shortcut, bool enabled)
- {
--    if (shortcut.isEmpty())
-+    if (shortcut.isEmpty() || m_shortcutId)
-         return;
- 
-     Qt::ShortcutContext context = Qt::WindowShortcut; // TODO
 diff --git a/src/quicktemplates2/qquickcontainer.cpp b/src/quicktemplates2/qquickcontainer.cpp
 index f38c2b09c..6eed2a024 100644
 --- a/src/quicktemplates2/qquickcontainer.cpp
@@ -314,38 +271,6 @@ index 0e8b08352..cd4931184 100644
 +        mouseDrag(verticalScrollBar, verticalScrollBar.width / 2, verticalScrollBar.height / 2, 0, 50)
 +        verify(verticalScrollBar.active)
 +        verify(horizontalScrollBar.active)
-+    }
- }
-diff --git a/tests/auto/controls/data/tst_switch.qml b/tests/auto/controls/data/tst_switch.qml
-index b3fab41ca..10b6baa02 100644
---- a/tests/auto/controls/data/tst_switch.qml
-+++ b/tests/auto/controls/data/tst_switch.qml
-@@ -608,4 +608,27 @@ TestCase {
-         mouseClick(control.indicator)
-         verify(control.activeFocus)
-     }
-+
-+    Component {
-+        id: deletionOrder1
-+        Item {
-+            Image { id: innerImage }
-+            Switch { indicator: innerImage }
-+        }
-+    }
-+
-+    Component {
-+        id: deletionOrder2
-+        Item {
-+            Switch { indicator: innerImage }
-+            Image { id: innerImage }
-+        }
-+    }
-+
-+    function test_deletionOrder() {
-+        var control1 = createTemporaryObject(deletionOrder1, testCase)
-+        verify(control1)
-+        var control2 = createTemporaryObject(deletionOrder2, testCase)
-+        verify(control2)
 +    }
  }
 diff --git a/tests/auto/qquickpopup/data/releaseAfterExitTransition.qml b/tests/auto/qquickpopup/data/releaseAfterExitTransition.qml
