@@ -16,6 +16,9 @@ sha256sums=('2ea5917652036a9007d66ba4dc0aa75f381a3a25ccf0fa70fa2d9e9c8c9dacae')
 prepare() {
   cd ${_pkgname}-${_pkgver}
 
+  export CC=/usr/bin/clang
+  export CXX=/usr/bin/clang++
+
   sed -i -e 's|import importlib|import importlib.machinery|' sources/shiboken2/libshiboken/embed/signature_bootstrap.py
   sed -i -e 's|#ifndef Py_LIMITED_API|#if PY_VERSION_HEX < 0x03010000|' sources/shiboken2/libshiboken/pep384impl.cpp
 }
