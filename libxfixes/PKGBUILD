@@ -1,6 +1,6 @@
 
 pkgname=libxfixes
-pkgver=6.0.0
+pkgver=6.0.1
 pkgrel=1
 pkgdesc="X11 miscellaneous 'fixes' extension library"
 arch=('x86_64')
@@ -9,12 +9,12 @@ license=('custom')
 depends=('libx11' 'xorgproto')
 makedepends=('xorg-util-macros')
 options=('!libtool')
-source=("https://xorg.freedesktop.org/releases/individual/lib/libXfixes-${pkgver}.tar.bz2")
-sha256sums=('a7c1a24da53e0b46cac5aea79094b4b2257321c621b258729bc3139149245b4c')
+source=("https://xorg.freedesktop.org/releases/individual/lib/libXfixes-${pkgver}.tar.xz")
+sha256sums=('b695f93cd2499421ab02d22744458e650ccc88c1d4c8130d60200213abc02d58')
 
 build() {
   cd libXfixes-${pkgver}
-  
+
   ./configure --prefix=/usr \
     --sysconfdir=/etc \
     --disable-static
