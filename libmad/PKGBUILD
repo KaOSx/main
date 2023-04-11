@@ -1,7 +1,7 @@
 
 pkgname=libmad
 pkgver=0.16.3
-pkgrel=1
+pkgrel=2
 pkgdesc="A high-quality MPEG audio decoder"
 arch=('x86_64')
 url="https://www.underbit.com/products/mad/"
@@ -9,7 +9,7 @@ license=('GPL')
 depends=('glibc')
 makedepends=('cmake')
 options=('!libtool')
-source=("https://github.com/tenacityteam/libmad/archive/refs/tags/${pkgver}.tar.gz"
+source=("https://codeberg.org/tenacityteam/libmad/archive/${pkgver}.tar.gz"
         'libmad.patch'
         'amd64-64bit.diff' 
         'frame_length.diff' 
