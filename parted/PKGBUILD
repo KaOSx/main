@@ -1,6 +1,6 @@
 
 pkgname=parted
-pkgver=3.5
+pkgver=3.6
 pkgrel=1
 pkgdesc="A program for creating, destroying, resizing, checking and copying partitions"
 arch=('x86_64')
@@ -10,7 +10,7 @@ depends=('device-mapper' 'e2fsprogs')
 makedepends=('pkgconfig')
 options=('!libtool')
 source=("https://ftp.gnu.org/gnu/parted/${pkgname}-${pkgver}.tar.xz")
-md5sums=('336fde60786d5855b3876ee49ef1e6b2')
+sha256sums=('3b43dbe33cca0f9a18601ebab56b7852b128ec1a3df3a9b30ccde5e73359e612')
 
 build() {
   cd ${pkgname}-${pkgver}
