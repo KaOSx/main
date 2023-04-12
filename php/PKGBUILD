@@ -1,8 +1,8 @@
 
 #http://news.php.net/group.php?group=php.announce
 pkgname=php
-pkgver=8.1.17
-pkgrel=2
+pkgver=8.2.5
+pkgrel=1
 arch=('x86_64')
 pkgdesc='An HTML-embedded scripting language'
 license=('PHP')
@@ -54,8 +54,8 @@ source=("https://www.php.net/distributions/${pkgname}-${pkgver}.tar.xz"
         'php-fpm.service'
         'php-fpm.tmpfiles'
         'enchant2.patch')
-sha256sums=('b5c48f95b8e1d8624dd05fc2eab7be13277f9a203ccba97bdca5a1a0fb4a1460'
-            'da049ae27ef99650e803e4bb87482dc3f777078845470c8f133dbfff29114580'
+sha256sums=('800738c359b7f1e67e40c22713d2d90276bc85ba1c21b43d99edd43c254c5f76'
+            '70cba88753160fe5e7fe8429ea5aa7a9f8327d7a069a8c846e3249bb88f854e1'
             '515065b5931cd13bb29aa2508426e4ea43bb61ece191921242573085d9b4ea49'
             '65af4ebac5a1912292c701cca0313c76bd30450ef00d39f449ff5e8cbcfb82ba'
             '640dba0d960bfeaae9ad38d2826d3f6b5d6c175a4d3e16664eefff29141faad5'
@@ -135,7 +135,6 @@ build() {
 		--with-sqlite3=shared,/usr \
 		--with-tidy=shared \
 		--with-unixODBC=shared,/usr \
-		--with-xmlrpc=shared \
 		--with-xpm=shared \
 		--with-xsl=shared \
 		--with-zip=shared \
