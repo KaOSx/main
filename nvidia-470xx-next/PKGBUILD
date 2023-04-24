@@ -3,8 +3,8 @@ _extramodules=extramodules-6.3-next
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=nvidia-470xx-next
-pkgver=470.161.03
-pkgrel=30
+pkgver=470.182.03
+pkgrel=1
 pkgdesc="NVIDIA drivers for linux."
 arch=('x86_64')
 url="http://www.nvidia.com/"
@@ -19,9 +19,9 @@ options=('!strip')
 _pkg="NVIDIA-Linux-x86_64-${pkgver}"
 
 source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
-        'linux-6.2.patch')
-md5sums=('0652fff030ee29664ad728dd86e9f5d6'
-         '334d82cdc82c8172e9c21188c872523e')
+        'linux-6.3.patch')
+md5sums=('33e5a97d5f05fcf3474b69a95a2ade5d'
+         'cc6186c51bb7f7533466949d7b179532')
 
 build() {
     cd ${srcdir}
@@ -29,7 +29,7 @@ build() {
 
     cd ${_pkg}/kernel
     # patch from https://gist.github.com/joanbm?direction=desc&sort=updated
-    patch -p1 -i ${srcdir}/linux-6.2.patch
+    patch -p1 -i ${srcdir}/linux-6.3.patch
 
     cd ${srcdir}/${_pkg}/kernel
     make SYSSRC=/lib/modules/${_kver}/build module
