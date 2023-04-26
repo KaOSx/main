@@ -1,26 +1,26 @@
 
 # only update if transifex can use newer
 pkgname=python3-urllib3
-pkgver=1.26.15
+pkgver=2.0.0
 pkgrel=1
 pkgdesc="Python HTTP library with thread-safe connection pooling, file post support, sanity friendly, and more."
 arch=('x86_64')
 license=('MIT')
 url="https://urllib3.readthedocs.io/en/latest/"
 depends=('python3')
-makedepends=('python3-setuptools')
+makedepends=('python3-build' 'python3-installer' 'python3-setuptools' 'python3-wheel')
 source=("https://files.pythonhosted.org/packages/source/u/urllib3/urllib3-${pkgver}.tar.gz")
-sha256sums=('8a388717b9476f934a21484e8c8e61875ab60644d29b9b39e11e4b9dc1c6b305')
+sha256sums=('da21131828d290d6331d0d93a18f062ead1ec4fe0cfebbcefc95ee5368f7188a')
 
 build() {
     cd urllib3-${pkgver}
 
-    python3 setup.py build
+    python3 -m build -nw
 }
 
 package() {
     cd urllib3-${pkgver}
 
-    python3 setup.py install --prefix=/usr --root=${pkgdir} --optimize=1 --skip-build
+    python3 -m installer --destdir=${pkgdir} dist/*.whl
     install -Dm644 LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.txt
 }

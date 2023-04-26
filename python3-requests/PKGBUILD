@@ -1,26 +1,26 @@
 
 pkgname=python3-requests
-pkgver=2.28.2
+pkgver=2.29.0
 pkgrel=1
 pkgdesc="Requests is an elegant and simple HTTP library for Python, built for human beings."
 arch=('x86_64')
 license=('Apache')
 url="https://requests.readthedocs.io/en/master/"
 depends=('python3-urllib3' 'python3-chardet' 'python3-certifi' 'python3-idna')
-makedepends=('python3-setuptools')
+makedepends=('python3-build' 'python3-installer' 'python3-setuptools' 'python3-wheel')
 source=("https://files.pythonhosted.org/packages/source/r/requests/requests-${pkgver}.tar.gz")
-sha256sums=('98b1b2782e3c6c4904938b84c0eb932721069dfdb9134313beff7c83c2df24bf')
+sha256sums=('f2e34a75f4749019bb0e3effb66683630e4ffeaf75819fb51bebef1bf5aef059')
 
 build() {
     cd requests-${pkgver}
     sed -i 's|charset_normalizer~=2.0.0|chardet>=4.0.0,<5|' setup.py
 
-    python3 setup.py build
+    python3 -m build -nw
 }
 
 package() {
     cd requests-${pkgver}
 
-    python3 setup.py install --prefix=/usr --root=${pkgdir} --optimize=1 --skip-build
-   install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+    python3 -m installer --destdir=${pkgdir} dist/*.whl
+    install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
