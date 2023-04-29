@@ -3,7 +3,7 @@
 pkgname=x265
 pkgver=3.5
 _pkgver=11047
-pkgrel=2
+pkgrel=3
 pkgdesc='H.265/HEVC encoder available anywhere, offering the highest compression efficiency and the highest performance.'
 arch=('x86_64')
 url='https://bitbucket.org/multicoreware/x265_git'
@@ -15,14 +15,13 @@ source=("https://bitbucket.org/multicoreware/x265_git/downloads/${pkgname}_${pkg
 md5sums=('deb5df5cb2ec17bdbae6ac6bbc3b1eef')
 
 build() {
-  cd ${pkgname}_${pkgver}
-  
-  cmake -DCMAKE_INSTALL_PREFIX=/usr -DHIGH_BIT_DEPTH=ON source
-  make
+  cmake -B build -S ${pkgname}_${pkgver}/source \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DHIGH_BIT_DEPTH=ON
+  cmake --build build
 }
 
 package() {
-  cd ${pkgname}_${pkgver}
-  
-  make DESTDIR=${pkgdir} install
+
+  DESTDIR=${pkgdir} cmake --install build
 }
