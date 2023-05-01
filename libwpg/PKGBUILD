@@ -1,15 +1,16 @@
 
 pkgname=libwpg
-pkgver=0.3.3
-pkgrel=5
+pkgver=0.3.4
+pkgrel=1
 pkgdesc="Library for importing and converting Corel WordPerfect(tm) Graphics images."
 arch=('x86_64')
 url="https://libwpg.sourceforge.net/"
 license=('LGPL')
 depends=('libwpd' 'perl' 'librevenge')
+makedepends=('boost')
 options=('!libtool')
 source=("https://downloads.sourceforge.net/libwpg/${pkgname}-${pkgver}.tar.xz")
-md5sums=('c3727b1196506fc77f6f916866884411')
+md5sums=('8f3ef77c8f650b299693c4b79c59483a')
 
 build() {
   cd ${pkgname}-${pkgver}
