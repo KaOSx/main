@@ -1,7 +1,7 @@
 
 pkgname=desktop-file-utils
 pkgver=0.26
-pkgrel=2
+pkgrel=3
 pkgdesc="Command line utilities for working with desktop entries"
 arch=('x86_64')
 url="https://www.freedesktop.org/wiki/Software/desktop-file-utils"
@@ -17,7 +17,7 @@ build() {
   mkdir -p build
   cd build
 
-  meson ../${pkgname}-${pkgver} \
+  meson setup ../${pkgname}-${pkgver} \
     --prefix=/usr \
     --buildtype=release 
   ninja

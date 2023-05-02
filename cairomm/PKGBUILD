@@ -1,7 +1,7 @@
 
 pkgname=cairomm
 pkgver=1.14.4
-pkgrel=2
+pkgrel=3
 pkgdesc="C++ bindings to Cairo vector graphics library"
 arch=('x86_64')
 url="https://www.cairographics.org/cairomm/"
@@ -16,7 +16,7 @@ build() {
   mkdir -p build
   cd build
 
-  meson ../${pkgname}-${pkgver} \
+  meson setup ../${pkgname}-${pkgver} \
     --prefix=/usr \
     --buildtype=release \
     -D build-examples=false \

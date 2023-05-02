@@ -2,7 +2,7 @@
 pkgname=mm-common
 pkgver=1.0.5
 _pkgver=1.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Protocol definitions and daemon for D-Bus at-spi"
 arch=('x86_64')
 url="https://www.gtkmm.org/"
@@ -17,7 +17,7 @@ build() {
   mkdir -p build
   cd build
 
-  meson ../${pkgname}-${pkgver} \
+  meson setup ../${pkgname}-${pkgver} \
     --prefix=/usr \
     --buildtype=release \
     --libdir=usr \

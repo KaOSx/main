@@ -2,7 +2,7 @@
 pkgname=libsoup
 pkgver=2.74.3
 _pkgver=2.74
-pkgrel=2
+pkgrel=3
 pkgdesc="GNOME HTTP Library - base library"
 arch=('x86_64')
 url="https://www.gnome.org"
@@ -17,7 +17,7 @@ build() {
   mkdir -p build
   cd build
 
-  meson ../${pkgname}-${pkgver} \
+  meson setup ../${pkgname}-${pkgver} \
     --prefix=/usr \
     --buildtype=release \
     --libexecdir=/usr/lib/${pkgname} \

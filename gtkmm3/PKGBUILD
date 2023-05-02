@@ -3,7 +3,7 @@ pkgname=gtkmm3
 _pkgname=gtkmm
 pkgver=3.24.7
 _pkgver=3.24
-pkgrel=2
+pkgrel=3
 url="https://www.gtkmm.org/"
 arch=('x86_64')
 pkgdesc="C++ bindings for gtk3"
@@ -18,7 +18,7 @@ build() {
   mkdir -p build
   cd build
 
-  meson ../${_pkgname}-${pkgver} \
+  meson setup ../${_pkgname}-${pkgver} \
     --prefix=/usr \
     --buildtype=release \
     -Dbuild-demos=false \

@@ -2,7 +2,7 @@
 pkgname=gdk-pixbuf2
 pkgver=2.42.10
 _pkgver=2.42
-pkgrel=2
+pkgrel=3
 pkgdesc="An image loading library"
 arch=('x86_64')
 url="https://gitlab.gnome.org/GNOME/gdk-pixbuf"
@@ -20,7 +20,7 @@ build() {
   mkdir -p build
   cd build
 
-  meson ../gdk-pixbuf-${pkgver} \
+  meson setup ../gdk-pixbuf-${pkgver} \
     --prefix=/usr \
     --buildtype=release \
     -D installed_tests=false \
