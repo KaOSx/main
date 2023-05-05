@@ -1,0 +1,31 @@
+
+pkgname=gpgme-qt6
+_pkgname=gpgme
+pkgver=1.20.0
+pkgrel=1
+pkgdesc="A C wrapper library for GnuPG, Qt6 version"
+arch=('x86_64')
+url="https://www.gnupg.org/related_software/gpgme/"
+license=('GPL')
+depends=('gpgme' 'qt6-base')
+options=('!libtool' '!emptydirs')
+source=("https://www.gnupg.org/ftp/gcrypt/gpgme/${_pkgname}-${pkgver}.tar.bz2")
+sha256sums=('25a5785a5da356689001440926b94e967d02e13c49eb7743e35ef0cf22e42750')
+
+build() {
+  cd ${_pkgname}-${pkgver}
+
+  ./configure --prefix=/usr \
+       --disable-static \
+       --disable-gpgsm-test \
+       --disable-fd-passing \
+       --enable-languages=qt6,cpp
+  make
+}
+
+package() {
+  cd ${_pkgname}-${pkgver}/lang/qt
+
+  make DESTDIR=${pkgdir} install
+  rm -r ${pkgdir}/usr/include
+}
