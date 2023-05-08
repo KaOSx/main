@@ -1,0 +1,25 @@
+
+pkgname=libomemo-c
+pkgver=0.5.0
+pkgrel=1
+arch=('x86_64')
+url='https://github.com/dino/libomemo-c'
+pkgdesc="Implementation of Signal's ratcheting forward secrecy protocol that works in synchronous and asynchronous messaging"
+license=('GPL3.0')
+depends=('openssl')
+makedepends=('cmake')
+source=("https://github.com/dino/libomemo-c/archive/refs/tags/v${pkgver}.tar.gz")
+md5sums=('f825bd9d2ea6ddea2a6cfdc22288fa56')
+
+build() {
+  cmake -B build -S ${pkgname}-${pkgver} \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DBUILD_SHARED_LIBS=ON
+  cmake --build build
+}
+
+package() {
+
+  DESTDIR=${pkgdir} cmake --install build
+}
