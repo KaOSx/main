@@ -1,6 +1,6 @@
 
 pkgname=flatbuffers
-pkgver=23.3.3
+pkgver=23.5.9
 pkgrel=1
 pkgdesc="Efficient cross platform serialization library for games and other memory constrained apps."
 arch=('x86_64')
@@ -8,7 +8,7 @@ url='https://google.github.io/flatbuffers/'
 license=('Apache')
 makedepends=('cmake')
 source=("https://github.com/google/flatbuffers/archive/v${pkgver}.tar.gz")
-md5sums=('a379be2558d12c02acdb062ad7c8969c')
+md5sums=('8ac9f1a3000105d8ef2c5e3c508563fd')
 
 prepare() {
   cd ${pkgname}-${pkgver}
@@ -22,7 +22,8 @@ build() {
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_LIBDIR=lib \
     -DFLATBUFFERS_BUILD_SHAREDLIB=ON \
-    -DFLATBUFFERS_BUILD_FLATLIB=OFF
+    -DFLATBUFFERS_BUILD_FLATLIB=OFF \
+    -DFLATBUFFERS_BUILD_TESTS=OFF
   cmake --build build
 }
 
