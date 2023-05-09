@@ -1,6 +1,6 @@
 
 pkgname=exiv2
-pkgver=0.27.6
+pkgver=0.28.0
 pkgrel=1
 pkgdesc="Exif and Iptc metadata manipulation library and tools."
 arch=('x86_64')
@@ -9,11 +9,12 @@ license=('GPL')
 depends=('gcc-libs' 'zlib' 'expat')
 makedepends=('cmake')
 options=('!libtool')
-source=("https://github.com/Exiv2/exiv2/releases/download/v${pkgver}/${pkgname}-${pkgver}-Source.tar.gz")
-sha256sums=('4c192483a1125dc59a3d70b30d30d32edace9e14adf52802d2f853abf72db8a6')
+#source=("https://github.com/Exiv2/exiv2/releases/download/v${pkgver}/${pkgname}-${pkgver}-Source.tar.gz")
+source=("https://github.com/Exiv2/exiv2/archive/refs/tags/v${pkgver}.tar.gz")
+sha256sums=('04c0675caf4338bb96cd09982f1246d588bcbfe8648c0f5a30b56c7c496f1a0b')
 
 build() {
-  cmake -B build -S ${pkgname}-${pkgver}-Source \
+  cmake -B build -S ${pkgname}-${pkgver} \
     -DEXIV2_BUILD_UNIT_TESTS=OFF \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
