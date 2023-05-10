@@ -6,7 +6,7 @@ pkgname=qt5-quickcontrols2
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=2
+pkgrel=3
 pkgdesc="A cross-platform application and UI framework, QtControls"
 arch=('x86_64')
 url='https://www.qt.io/'
@@ -21,7 +21,7 @@ source=("${_qtmirror}/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz"
         "https://github.com/qt/qtquickcontrols2/commit/edb18d6101e8bb9dd265330dbe019722181d7577.diff")
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
-         '68460cc14f4870aaef4c315cf01ebb11'
+         '23c285b8f5bd82939d9f5b256f5acbff'
          '776447c945e6fcf82ecafff6d7cce3be')
 
 build() {
