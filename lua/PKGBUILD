@@ -1,7 +1,7 @@
 
 pkgname=lua
 # adjust lua.pc when moving from 5.2
-pkgver=5.4.5
+pkgver=5.4.6
 pkgrel=1
 pkgdesc="A powerful light-weight programming language designed for extending applications." 
 arch=('x86_64')
@@ -12,9 +12,9 @@ options=('!makeflags' '!emptydirs')
 source=("https://www.lua.org/ftp/${pkgname}-${pkgver}.tar.gz"
         'lua-arch.patch'
         'lua.pc')
-sha256sums=('59df426a3d50ea535a460a452315c4c0d4e1121ba72ff0bdde58c2ef31d6f444'
+sha256sums=('7d5ea1b9cb6aa0b59ca3dde1c6adcb57ef83a1ba8e5432c0ecd06bf439b3ad88'
             'c5615d8a9e2f77f727d3e98c989cf1b313b9fc3a68dacf405dfa22f915e11618'
-            'd90360dcd52f68370bdb2900685ba94881c75af6e5a32aab99ea91d88276fced')
+            'ea5339e07aeee8161c18c465819d111e82b454a9a73a3ffdb5e46c8dbf3fa9b0')
 
 build() { 
   cd ${pkgname}-${pkgver}
