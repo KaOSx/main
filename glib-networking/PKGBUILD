@@ -2,7 +2,7 @@
 pkgname=glib-networking
 pkgver=2.76.0
 _pkgver=2.76
-pkgrel=2
+pkgrel=3
 pkgdesc="Network-related giomodules for glib"
 arch=('x86_64')
 url="https://gitlab.gnome.org/GNOME/glib-networking"
@@ -26,7 +26,7 @@ build() {
 
 check() {
   cd build
-  # 1 fail: 4/5 connection-gnutls-tls1.2        FAIL
+  # 1 fail: 3/5 environment-libproxy            FAIL
   meson test
 }
 
