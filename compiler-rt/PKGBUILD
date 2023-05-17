@@ -1,6 +1,6 @@
 
 pkgname=compiler-rt
-pkgver=16.0.3
+pkgver=16.0.4
 pkgrel=1
 pkgdesc="Compiler runtime libraries for use in Clang and LLVM projects"
 arch=('x86_64')
@@ -10,8 +10,8 @@ depends=("llvm=${pkgver}" 'gcc')
 makedepends=('cmake' 'python3')
 source=("https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver}/${pkgname}-${pkgver}.src.tar.xz"
         "https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver}/cmake-${pkgver}.src.tar.xz")
-md5sums=('616a842e376d9b42e61395b096237783'
-         '6ad459ef49e65d484ccee640a8f9b705')
+md5sums=('3caba78c71ca2ef95a44c55a07590fa0'
+         '9458c8555ec3587fde5d5eb73577ead9')
 
 build() {
     cmake -B build -S ${pkgname}-${pkgver}.src \
