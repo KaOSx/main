@@ -1,7 +1,7 @@
 
 pkgname=facile
 pkgver=1.1.4
-pkgrel=3
+pkgrel=4
 pkgdesc="A Functional Constraint Library"
 arch=('x86_64')
 url="http://www.recherche.enac.fr/opti/facile/"
@@ -13,6 +13,7 @@ md5sums=('f68b81b7eeb0105ffa82f53b5d8ef025')
 
 build() {
   cd ${pkgname}-${pkgver}/lib
+  sed -i -e 's|Pervasives|Stdlib|g' *.ml
 
   #./configure
   make
