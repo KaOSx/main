@@ -12,19 +12,25 @@ depends=('networkmanager' 'openconnect' 'dbus-glib')
 makedepends=('intltool') 
 options=('!libtool')
 install=${pkgname}.install
-source=("https://download.gnome.org/sources/NetworkManager-openconnect/${_pkgver}/${_pkgname}-${pkgver}.tar.xz")
+source=("https://download.gnome.org/sources/NetworkManager-openconnect/${_pkgver}/${_pkgname}-${pkgver}.tar.xz"
+        'webkit.patch')
 #source=("https://gitlab.gnome.org/GNOME/NetworkManager-openconnect/-/archive/${_pkgver}/${_pkgname}-${_pkgver}.tar.bz2")
-sha256sums=('844b6bf64ecadb97b4a68c776db89aa5e6ee7e59bd24b0180228406863136464')
+sha256sums=('844b6bf64ecadb97b4a68c776db89aa5e6ee7e59bd24b0180228406863136464'
+            'b214e53f5644f8faf7c2015889d05aed763e6d3ea54f57a950dd1659ffed3328')
 
 build() {
   cd ${_pkgname}-${pkgver}
+  #https://gitlab.gnome.org/GNOME/NetworkManager-openconnect/-/issues/99
+  patch -p1 -i ${srcdir}/webkit.patch
 
   autoreconf -fvi
   ./configure --prefix=/usr \
     --sysconfdir=/etc \
     --libexecdir=/usr/lib/networkmanager \
     --without-gnome \
-    --disable-static 
+    --disable-static \
+    --without-gtk4 \
+    --without-authdlg
   make 
 }
 
