@@ -9,15 +9,15 @@ license=('LGPL')
 depends=('gcc-libs' 'python3' 'duktape')
 makedepends=('meson' 'ninja' 'networkmanager')
 #optdepends=('networkmanager: NetworkManager configuration module')
-source=("https://github.com/libproxy/libproxy/archive/refs/tags/${pkgname}-${pkgver}.tar.gz")
+source=("https://github.com/libproxy/libproxy/archive/refs/tags/${pkgver}.tar.gz")
 options=('!libtool')
-md5sums=('caa553be321312dd45c39e266618d770')
+md5sums=('7359e1c01b9075b72ee52dc999d50ec6')
 
 build() {
   mkdir -p build
   cd build
 
-  meson setup ../${pkgname}-${pkgname}-${pkgver} \
+  meson setup ../${pkgname}-${pkgver} \
     --prefix=/usr \
     --buildtype=release \
     -Ddocs=false \
