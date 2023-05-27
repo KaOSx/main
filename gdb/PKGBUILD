@@ -1,6 +1,6 @@
 
 pkgname=gdb
-pkgver=13.1
+pkgver=13.2
 pkgrel=1
 pkgdesc="The GNU Debugger"
 arch=('x86_64')
@@ -12,8 +12,8 @@ backup=('etc/gdb/gdbinit')
 options=('!libtool' '!buildflags')
 source=("https://ftp.gnu.org/gnu/gdb/${pkgname}-${pkgver}.tar.xz"
         "https://gitweb.gentoo.org/repo/gentoo.git/plain/sys-devel/gdb/files/gdb-12.1-readline-8.2-build.patch")
-md5sums=('4aaad768ff2585464173c091947287ec'
-         '1592107b83c56f19253cd317e41eb5d9')
+sha256sums=('fd5bebb7be1833abdb6e023c2f498a354498281df9d05523d8915babeb893f0a'
+            '47407140a3384c2669a6486c5800a7548ead0a60ee7216b08d29eba0a59ff999')
 
 build() {
   cd ${pkgname}-${pkgver}
