@@ -1,6 +1,6 @@
 
 pkgname=orc
-pkgver=0.4.33
+pkgver=0.4.34
 pkgrel=1
 pkgdesc="The Optimized Inner Loops Runtime Compiler"
 arch=('x86_64')
@@ -10,7 +10,7 @@ depends=('glibc')
 makedepends=('valgrind' 'meson' 'ninja' 'gtk-doc')
 options=('!libtool')
 source=("https://gstreamer.freedesktop.org/src/orc/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('844e6d7db8086f793f57618d3d4b68d29d99b16034e71430df3c21cfd3c3542a')
+sha256sums=('8f47abb3f097171e44eb807adcdabd860fba2effd37d8d3c4fbd5f341cadd41f')
 
 build () {
   mkdir -p build
@@ -18,7 +18,7 @@ build () {
 
   #export LANG=en_US.UTF-8
 
-  meson ../${pkgname}-${pkgver} \
+  meson setup ../${pkgname}-${pkgver} \
     --prefix=/usr \
     --buildtype=release \
     --libexecdir=/usr/lib \
