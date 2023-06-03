@@ -1,7 +1,7 @@
 
 pkgname=rasqal
 pkgver=0.9.33
-pkgrel=4
+pkgrel=5
 pkgdesc="C library that handles Resource Description Framework query syntaxes, returning results as bindings"
 url="http://librdf.org/rasqal"
 license=('GPL' 'LGPL')
@@ -13,15 +13,15 @@ md5sums=('1f5def51ca0026cd192958ef07228b52')
 
 build() {
   cd ${pkgname}-${pkgver}
-  
+
   ./configure --prefix=/usr \
-	--disable-static \
-	--enable-release
+    --disable-static \
+    --enable-release
   make
 }
 
 package() {
   cd ${pkgname}-${pkgver}
-  
+
   make DESTDIR=${pkgdir} install
 }

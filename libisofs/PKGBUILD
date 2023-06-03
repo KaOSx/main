@@ -1,7 +1,7 @@
 
 pkgname=libisofs
 pkgver=1.5.4
-pkgrel=1
+pkgrel=2
 pkgdesc="Library to create an ISO-9660 filesystem with extensions like RockRidge or Joliet. "
 arch=('x86_64')
 url="https://dev.lovelyhq.com/libburnia/web/wiki"
@@ -12,17 +12,17 @@ md5sums=('c34fbf182e79af8fdaddda5e27d326ba')
 
 build() {
   cd ${pkgname}-${pkgver}
-  
+
   ./configure --prefix=/usr \
-	--enable-libacl \
-	--enable-xattr \
-	--disable-static
+    --enable-libacl \
+    --enable-xattr \
+    --disable-static
   make
 }
 
 package() {
   cd ${pkgname}-${pkgver}
-  
+
   make DESTDIR=${pkgdir} install
 }
 

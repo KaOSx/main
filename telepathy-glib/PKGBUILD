@@ -1,7 +1,7 @@
 
 pkgname=telepathy-glib
 pkgver=0.24.2
-pkgrel=2
+pkgrel=3
 pkgdesc="GLib bindings for the Telepathy D-Bus protocol"
 arch=('x86_64')
 url="https://telepathy.freedesktop.org"
@@ -24,6 +24,6 @@ build() {
 
 package() {
     cd ${pkgname}-${pkgver}
-    
+
     make DESTDIR=${pkgdir} install
 }

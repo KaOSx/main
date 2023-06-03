@@ -2,7 +2,7 @@
 pkgname=libburn
 pkgver=1.5.4
 _pkgver=1.5.4
-pkgrel=1
+pkgrel=2
 pkgdesc="Library by which preformatted data get onto optical media: CD, DVD, BD (Blu-Ray)."
 arch=('x86_64')
 url="https://dev.lovelyhq.com/libburnia/web/wiki"
@@ -14,14 +14,14 @@ md5sums=('454d03ce31addb5b7dca62d213c9660e')
 
 build() {
   cd ${pkgname}-${pkgver}
-  
+
   ./configure --prefix=/usr --disable-static
   make
 }
 
 package() {
   cd ${pkgname}-${pkgver}
-  
+
   make DESTDIR=${pkgdir} install
 }
 
