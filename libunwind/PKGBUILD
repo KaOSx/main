@@ -1,6 +1,7 @@
 
 pkgname=libunwind
-pkgver=1.6.2
+pkgver=1.7.0
+_pkgver=1.70
 pkgrel=1
 pkgdesc='Portable and efficient C programming interface (API) to determine the call-chain of a program'
 arch=('x86_64')
@@ -8,18 +9,19 @@ url='https://www.nongnu.org/libunwind/'
 license=('GPL')
 depends=('glibc' 'xz')
 options=('!libtool')
-source=("https://download.savannah.gnu.org/releases/libunwind/${pkgname}-${pkgver}.tar.gz")
-md5sums=('f625b6a98ac1976116c71708a73dc44a')
+#source=("https://download.savannah.gnu.org/releases/libunwind/${pkgname}-${pkgver}.tar.gz")
+source=("https://github.com/libunwind/libunwind/releases/download/v${pkgver}/${pkgname}-${_pkgver}.tar.gz")
+md5sums=('149e49ae27646e73010df4b76989fbec')
 
 build() {
-  cd ${pkgname}-${pkgver}
+  cd ${pkgname}-${_pkgver}
 
   ./configure --prefix=/usr
   make
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
+  cd ${pkgname}-${_pkgver}
 
   make DESTDIR=${pkgdir}/ install
 }
