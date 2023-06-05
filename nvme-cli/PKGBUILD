@@ -1,7 +1,7 @@
 
 pkgname=nvme-cli
 pkgver=2.4
-pkgrel=1
+pkgrel=2
 pkgdesc="The NVM Express family of specifications define how host software communicates with non-volatile memory across multiple transports like PCI Express, RDMA, TCP and more"
 arch=('x86_64')
 url="https://nvmexpress.org/"
@@ -17,6 +17,7 @@ build() {
 
   meson ../${pkgname}-${pkgver} \
     --prefix=/usr \
+    --sysconfdir /etc \
     --buildtype=release \
     -Dudevrulesdir=/usr/lib/udev/rules.d
   ninja
