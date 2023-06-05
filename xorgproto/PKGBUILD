@@ -1,6 +1,6 @@
 
 pkgname=xorgproto
-pkgver=2022.2
+pkgver=2023.1
 pkgrel=1
 pkgdesc="X.Org combined protocol headers"
 arch=('x86_64')
@@ -90,22 +90,22 @@ conflicts=('bigreqsproto'
           'xproto')
 source=("https://xorg.freedesktop.org/releases/individual/proto/${pkgname}-${pkgver}.tar.xz"
         'meson.patch')
-sha256sums=('5d13dbf2be08f95323985de53352c4f352713860457b95ccaf894a647ac06b9e'
+sha256sums=('6545e41aceba43c13497ac8084dad5db6deef580a5ea7d0bd7872cfd1be72a13'
             'ceb9390a446f8267f15cbf8567d55af7be5cc0aa8bd1e7a916a5bb1e976fcd7f')
 
 prepare() {
   cd ${pkgname}-${pkgver}
-  
+
   #patch -p1 -i ${srcdir}/meson.patch
 }
 
 build() {
   mkdir -p build
   cd build
-  
+
   export LANG=en_US.UTF-8
-  
-  meson ../${pkgname}-${pkgver} \
+
+  meson setup ../${pkgname}-${pkgver} \
     --prefix=/usr \
     --buildtype=release \
     --libexecdir=/usr/lib \
@@ -116,18 +116,18 @@ build() {
 package() {
   cd build
   DESTDIR=${pkgdir} ninja install
-  
+
   cd ../${pkgname}-${pkgver}
-  
+
   install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
   install -m644 COPYING-* ${pkgdir}/usr/share/licenses/${pkgname}/
-  
+
   rm ${pkgdir}/usr/include/X11/extensions/applewm*
   rm ${pkgdir}/usr/share/pkgconfig/applewmproto.pc
-  
+
   rm ${pkgdir}/usr/share/licenses/${pkgname}/COPYING-applewmproto
   rm ${pkgdir}/usr/share/licenses/${pkgname}/COPYING-windowswmproto
-  
+
   # Moved to libxvmc itself, will be fixed in next release
   rm ${pkgdir}/usr/include/X11/extensions/vldXvMC.h
   # Moved to libx11, will be fixed in next release
