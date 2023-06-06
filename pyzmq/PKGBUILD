@@ -1,15 +1,15 @@
  
 pkgname=pyzmq
-pkgver=25.0.2
+pkgver=25.1.0
 pkgrel=1
 pkgdesc="Python bindings for ØMQ, a lightweight and fast messaging implementation."
 arch=('x86_64')
 url="https://www.zeromq.org/bindings:python"
 license=('LGPL')
 depends=('zeromq' 'python3')
-makedepends=('python3-cython' 'python3-build' 'python3-installer' 'python3-setuptools' 'python3-wheel')
+makedepends=('python3-cython' 'python3-build' 'python3-installer' 'python3-setuptools-scm' 'python3-wheel')
 source=("https://files.pythonhosted.org/packages/source/p/pyzmq/${pkgname}-${pkgver}.tar.gz")
-sha256sums=('6b8c1bbb70e868dc88801aa532cae6bd4e3b5233784692b786f17ad2962e5149')
+sha256sums=('80c41023465d36280e801564a69cbfce8ae85ff79b080e1913f6e90481fb8957')
 
 build() {
     cd ${pkgname}-${pkgver}
