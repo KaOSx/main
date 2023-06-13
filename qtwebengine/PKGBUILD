@@ -12,7 +12,7 @@ pkgver=5.15.14
 subver=${subver}
 _pkgver=${_qtver}
 _commit=872003d9ad187a9904e3b2b5ccc89c774839bec6
-pkgrel=1
+pkgrel=2
 pkgdesc="Chromium-based web engine to replace Qt WebKit"
 url="https://www.qt.io/"
 arch=('x86_64')
@@ -33,8 +33,8 @@ source=("git+https://github.com/qt/qtwebengine.git#commit=${_commit}"
         "https://raw.githubusercontent.com/archlinux/svntogit-packages/packages/qt5-webengine/trunk/qt5-webengine-python3.patch"
         "https://raw.githubusercontent.com/archlinux/svntogit-packages/packages/qt5-webengine/trunk/qt5-webengine-pipewire-0.3.patch"
         'drop-catapult.patch'
-        'chromium-drop-catapult.patch'
-        "https://gitweb.gentoo.org/repo/gentoo.git/plain/dev-qt/qtwebengine/files/qtwebengine-5.15.3_p20220406-gcc12-includes.patch")
+        'chromium-drop-catapult.patch')
+        #"https://gitweb.gentoo.org/repo/gentoo.git/plain/dev-qt/qtwebengine/files/qtwebengine-5.15.3_p20220406-gcc12-includes.patch")
 #md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
 md5sums=('SKIP'
          'SKIP'
@@ -45,14 +45,13 @@ md5sums=('SKIP'
          '3ebcc2f174d39c98a817861d33b9ad7d'
          'a21aa28d235877e7dcc35055d67d417d'
          '1e2bf35ced2fa754cf04eb85762bb2e8'
-         'bf595b1346aab831c778e7ae30fbcb79'
-         '79315b72356c59b56083d618a15bd4ac')
+         'bf595b1346aab831c778e7ae30fbcb79')
 
 prepare() {
     mkdir -p build
     cd ${_pkgfqn}
 
-    sed -i 's|MODULE_VERSION = 5.15.14|MODULE_VERSION = 5.15.9|' .qmake.conf
+    sed -i 's|MODULE_VERSION = 5.15.14|MODULE_VERSION = 5.15.10|' .qmake.conf
 
     git submodule init
     git submodule set-url src/3rdparty ${srcdir}/qtwebengine-chromium
@@ -63,7 +62,7 @@ prepare() {
     patch -p1 -i ${srcdir}/qt5-webengine-python3.patch
     patch -p1 -i ${srcdir}/drop-catapult.patch
     patch -p1 -i ${srcdir}/chromium-drop-catapult.patch
-    patch -p1 -i ${srcdir}/qtwebengine-5.15.3_p20220406-gcc12-includes.patch
+    #patch -p1 -i ${srcdir}/qtwebengine-5.15.3_p20220406-gcc12-includes.patch
     cd src/3rdparty
     patch -p1 -i ${srcdir}/qt5-webengine-chromium-python3.patch
     patch -p1 -i ${srcdir}/qt5-webengine-pipewire-0.3.patch
