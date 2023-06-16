@@ -1,22 +1,32 @@
 
 pkgname=glew
 pkgver=2.2.0
-pkgrel=2
+pkgrel=3
 pkgdesc="A cross-platform C/C++ extension loading library"
 arch=('x86_64')
 url="https://glew.sourceforge.net"
 license=('BSD' 'MIT' 'GPL')
 depends=('libxmu' 'libxi' 'mesa' 'glu')
 makedepends=('cmake')
-source=("https://downloads.sourceforge.net/glew/${pkgname}-${pkgver}.tgz")
-md5sums=('3579164bccaef09e36c0af7f4fd5c7c7')
+source=("https://downloads.sourceforge.net/glew/${pkgname}-${pkgver}.tgz"
+        "https://github.com/nigels-com/glew/commit/5f57b09c04757e840451063236e9118c1df5ebae.diff")
+md5sums=('3579164bccaef09e36c0af7f4fd5c7c7'
+         '077090dffbdb5999d81275b41b3786af')
+
+prepare () {
+  cd ${pkgname}-${pkgver}
+
+  patch -p1 -i ${srcdir}/5f57b09c04757e840451063236e9118c1df5ebae.diff
+}
 
 build() {
   cmake -B build -S ${pkgname}-${pkgver}/build/cmake \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_BUILD_TYPE=Release \
     -DBUILD_SHARED_LIBS=ON \
-    -DCMAKE_INSTALL_LIBDIR=lib
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DGLEW_EGL=ON \
+    -DOpenGL_GL_PREFERENCE=GLVND
   cmake --build build
 }
 
