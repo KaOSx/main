@@ -6,7 +6,7 @@ pkgname=qt5-base
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=1
+pkgrel=2
 pkgdesc="A cross-platform application and UI framework"
 arch=('x86_64')
 url='https://www.qt.io/'
@@ -23,17 +23,19 @@ options=('!libtool' 'debug')
 __pkgfqn="qtbase-everywhere-src-${subver}"
 _pkgfqn="qtbase-everywhere-opensource-src-${subver}"
 source=("${_qtmirror}/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz"
-        'qt_kde.patch')
+        'qt_kde.patch'
+        'qtsan.patch')
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
-         '284f427d7dbf5cbe22b749539c8b494a')
+         '284f427d7dbf5cbe22b749539c8b494a'
+         'fca569df07849f4f73bb4a153c09e596')
 
 build() {
     cd ${srcdir}/${__pkgfqn}
     
     # https://community.kde.org/Qt5PatchCollection
-    #patch -p1 -i ${srcdir}/qt_kde.patch
-    
+    patch -p1 -i ${srcdir}/qt_kde.patch
+    patch -p1 -i ${srcdir}/qtsan.patch
     #sed -i 's|libs": "-lmysqlclient_r"|libs": "-lmariadb"|' src/sql/configure.json
         
     unset QTDIR
