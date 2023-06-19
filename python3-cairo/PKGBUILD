@@ -1,26 +1,30 @@
 
 pkgname=python3-cairo
 _pkgname=pycairo
-pkgver=1.23.0
-pkgrel=2
+pkgver=1.24.0
+pkgrel=1
 pkgdesc="Python bindings for the cairo graphics library"
 arch=('x86_64')
 url="https://www.cairographics.org/pycairo"
 license=('LGPL3')
 depends=('python3' 'cairo')
-makedepends=('python3-setuptools')
+makedepends=('meson' 'ninja')
 options=('!libtool')
 source=("https://github.com/pygobject/pycairo/releases/download/v${pkgver}/${_pkgname}-${pkgver}.tar.gz")
-sha256sums=('9b61ac818723adc04367301317eb2e814a83522f07bbd1f409af0dada463c44c')
+sha256sums=('1444d52f1bb4cc79a4a0c0fe2ccec4bd78ff885ab01ebe1c0f637d8392bcafb6')
 
 build() {
-  cd ${_pkgname}-${pkgver}
+  mkdir -p build
+  cd build
 
-  python3 setup.py build
+  meson setup ../${_pkgname}-${pkgver} \
+    --prefix=/usr \
+    --buildtype=release
+  ninja
 }
 
 package() {
-  cd ${_pkgname}-${pkgver}
+  cd build
 
-  python3 setup.py install --prefix=/usr --root=${pkgdir} --optimize=1 --skip-build
+  DESTDIR=${pkgdir} ninja install
 }
