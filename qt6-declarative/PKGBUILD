@@ -6,7 +6,7 @@ pkgname=qt6-declarative
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=1
+pkgrel=2
 pkgdesc="A cross-platform application and UI framework, QtDeclarative files"
 arch=('x86_64')
 url='https://www.qt.io/'
@@ -19,8 +19,16 @@ replaces=('qt6-quickcontrols2')
 conflicts=('qt6-quickcontrols2')
 groups=('qt6')
 _pkgfqn="qtdeclarative-everywhere-src-${subver}"
-source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
-md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`)
+source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz"
+        "https://github.com/qt/qtdeclarative/commit/935c60a93b3196809587d8168525f49b96ae216b.diff")
+md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
+         '822162ef75ac4f306cdc7d9204451c3e')
+
+prepare() {
+  cd ${_pkgfqn}
+
+  patch -p1 -i ${srcdir}/935c60a93b3196809587d8168525f49b96ae216b.diff
+}
 
 build() {
     cmake -B build -S ${_pkgfqn} -G Ninja \

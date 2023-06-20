@@ -1,7 +1,7 @@
 
 # rebuild vlc on any update, move to shared libs might change ABI
 pkgname=live-media
-pkgver=2023.06.14
+pkgver=2023.06.16
 pkgrel=1
 pkgdesc="A set of C++ libraries for multimedia streaming"
 arch=('x86_64')
@@ -10,7 +10,7 @@ url="http://live555.com/liveMedia"
 depends=('gcc-libs')
 source=("http://live555.com/liveMedia/public/live.${pkgver}.tar.gz"
         'config.kaos')
-sha1sums=('8792b9e3f93abea183bdce9d9052ce7911d42638'
+sha1sums=('92e9974e5d7e8bca648d699e9b8d7d311e83ab61'
           'ffeb7b4362e341d7011ec24fbc6b722f3d941b97')
 
 prepare() {
@@ -22,7 +22,7 @@ prepare() {
   #sed -i 's|cd $(TESTPROGS_DIR)|#cd $(TESTPROGS_DIR)|' Makefile.tail
   find . -type f -exec sed -i 's|PREFIX = /usr/local|PREFIX = /usr|'  {} \;
 }
-         
+
 build() {
   cd live
 
@@ -32,7 +32,7 @@ build() {
 
 package() {
   cd live
-  
+
   make DESTDIR=${pkgdir}/ install
 
   #for dir in BasicUsageEnvironment groupsock liveMedia UsageEnvironment; do
