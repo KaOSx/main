@@ -1,6 +1,6 @@
 
 pkgname=gfxboot
-pkgver=4.5.90
+pkgver=4.5.91
 _pkgver=1.1
 pkgrel=1
 arch=('x86_64')
@@ -14,9 +14,9 @@ options=('docs')
 source=("https://download.opensuse.org/source/tumbleweed/repo/oss/src/${pkgname}-${pkgver}-${_pkgver}.src.rpm"
         'gfxboot.html'
         'isolinux.patch')
-md5sums=('d9f0660eedf16ce69bcd44ac75d1267a'
-         'f824c5bc2f716f8029677cae6956c1c7'
-         '224289270f7ea288aaded3272a9c53f4')
+sha256sums=('4137a56039632db25c96b0fc4d618787629cc4f06825a8e56caeb0fc308c9aae'
+            '86a92b822cd19a17f4451adf158d984fa42161c4c0a3b45caf91053c573a9859'
+            '233eb3ecf88a4a9bbeeae133694f4c2bf2b7f5898b382094e03134fe7633bb4c')
 
 build() {
   cd ${srcdir}
