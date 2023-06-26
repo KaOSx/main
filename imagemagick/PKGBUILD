@@ -1,8 +1,8 @@
 
 pkgname=imagemagick
-pkgver=7.1.1.11
-_pkgver=7.1.1-11
-pkgrel=1
+pkgver=7.1.1.12
+_pkgver=7.1.1-12
+pkgrel=2
 pkgdesc="An image viewing/manipulation program"
 arch=('x86_64')
 url="https://www.imagemagick.org/"
@@ -14,7 +14,7 @@ makedepends=('opencl-headers' 'subversion')
 options=('!docs' 'libtool' '!emptydirs')
 source=("https://imagemagick.org/archive/ImageMagick-${_pkgver}.tar.xz"
         'perlmagick.rpath.patch')
-md5sums=('c758a168ab56aa17dd2ee1cd30ad4c89'
+md5sums=('7d04ecc28b035922697630c92cdfbfb8'
          '0faf7158fd3a0904d9a70dd3e3c1fe9c')
 
 build() {
@@ -36,6 +36,7 @@ build() {
         --enable-opencl \
         --with-gslib \
         --with-gs-font-dir=/usr/share/fonts/Type1 \
+        --with-jxl \
         --with-perl \
         --with-perl-options="INSTALLDIRS=vendor" \
         --with-lqr \
