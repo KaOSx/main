@@ -1,14 +1,14 @@
 
-_extramodules=extramodules-6.3-next
+_extramodules=extramodules-6.4-next
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=nvidia-470xx-next
 pkgver=470.182.03
-pkgrel=10
+pkgrel=11
 pkgdesc="NVIDIA drivers for linux."
 arch=('x86_64')
 url="http://www.nvidia.com/"
-depends=('linux-next>=6.3' 'linux-next<6.4.0' "nvidia-470xx-utils=${pkgver}")
+depends=('linux-next>=6.4' 'linux-next<6.5.0' "nvidia-470xx-utils=${pkgver}")
 makedepends=('linux-next-headers')
 conflicts=('nvidia' 'nvidia-390xx')
 backup=('etc/X11/xorg.conf.d/20-nvidia.conf')
@@ -19,17 +19,20 @@ options=('!strip')
 _pkg="NVIDIA-Linux-x86_64-${pkgver}"
 
 source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
-        'linux-6.3.patch')
+        'linux-6.3.patch'
+        'linux-6.4.patch')
 md5sums=('33e5a97d5f05fcf3474b69a95a2ade5d'
-         'cc6186c51bb7f7533466949d7b179532')
+         'cc6186c51bb7f7533466949d7b179532'
+         '097214bddb8620ea7e709fe9b0abf037')
 
 build() {
     cd ${srcdir}
     sh ${_pkg}.run --extract-only
 
     cd ${_pkg}/kernel
-    # patch from https://gist.github.com/joanbm?direction=desc&sort=updated
+    # patches from https://gist.github.com/joanbm?direction=desc&sort=updated
     patch -p1 -i ${srcdir}/linux-6.3.patch
+    patch -p1 -i ${srcdir}/linux-6.4.patch
 
     cd ${srcdir}/${_pkg}/kernel
     make SYSSRC=/lib/modules/${_kver}/build module
