@@ -2,9 +2,9 @@
 pkgbase=nvidia-utils
 pkgname=('nvidia-utils' 'opencl-nvidia' 'nvidia-settings')
 # Edit hardware-detection/hooks/hwdetect_7_graphics and Installer job 11 on version jump from 43x.xx
-pkgver=535.54.03
+pkgver=530.41.03
 pkgrel=1
-epoch=1
+epoch=2
 arch=('x86_64')
 url="https://www.nvidia.com/page/home.html"
 license=('custom')
@@ -16,7 +16,7 @@ source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.ru
 #source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}.run"
         'nvidia-restore-settings.desktop'
         'nvidia-drm-outputclass.conf')
-md5sums=('ae579c6b94300b9d0f9289c9eaa704bb'
+md5sums=('9049dbe01410eac1e05b249de10f6b91'
          '9237516792da7b6df32f8c7e8a98f475'
          'cb27b0f4a78af78aa96c5aacae23256c')
 
@@ -45,7 +45,7 @@ package_opencl-nvidia() {
 
   # OpenCL
   install -D -m644 nvidia.icd ${pkgdir}/etc/OpenCL/vendors/nvidia.icd
-  #install -D -m755 libnvidia-compiler.so.${pkgver} ${pkgdir}/usr/lib/libnvidia-compiler.so.${pkgver}
+  install -D -m755 libnvidia-compiler.so.${pkgver} ${pkgdir}/usr/lib/libnvidia-compiler.so.${pkgver}
   install -D -m755 libnvidia-opencl.so.${pkgver} ${pkgdir}/usr/lib/libnvidia-opencl.so.${pkgver}
 
   create_links
@@ -129,7 +129,7 @@ package_nvidia-utils() {
 
   # OptiX ray tracing
   install -D -m755 libnvoptix.so.${pkgver} ${pkgdir}/usr/lib/libnvoptix.so.${pkgver}
-  install -D -m755 nvoptix.bin ${pkgdir}/usr/share/nvidia/nvoptix.bin
+  #install -D -m755 nvoptix.bin ${pkgdir}/usr/share/nvidia/nvoptix.bin
 
   # Vulkan
   install -D -m755 libnvidia-rtcore.so.${pkgver} ${pkgdir}/usr/lib/libnvidia-rtcore.so.${pkgver}

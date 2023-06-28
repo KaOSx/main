@@ -1,16 +1,16 @@
 
-_extramodules=extramodules-6.4-next
+_extramodules=extramodules-6.3-next
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=nvidia-next
-pkgver=535.54.03
-pkgrel=3
-epoch=1
+pkgver=530.41.03
+pkgrel=1
+epoch=2
 pkgdesc="NVIDIA drivers for linux."
 arch=('x86_64')
 license=('custom')
 url="https://www.nvidia.com/page/home.html"
-depends=('linux-next>=6.4' 'linux-next<6.5.0' "nvidia-utils=1:${pkgver}")
+depends=('linux-next>=6.3' 'linux-next<6.4.0' "nvidia-utils=2:${pkgver}")
 makedepends=('linux-next-headers')
 conflicts=('nvidia-bumblebee-next')
 provides=('nvidia-bumblebee-next')
@@ -21,7 +21,7 @@ options=('!strip')
 _pkg="NVIDIA-Linux-x86_64-${pkgver}"
 source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
         'linux-5.16.patch')
-md5sums=('ae579c6b94300b9d0f9289c9eaa704bb'
+md5sums=('9049dbe01410eac1e05b249de10f6b91'
          '8e9880597260960539998c5c1e59a3fc')
 
 build() {
