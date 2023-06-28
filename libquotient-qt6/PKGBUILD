@@ -1,0 +1,30 @@
+
+pkgname=libquotient-qt6
+pkgver=0.7.2
+_commit=27ad32abbac3a6979f49d44bea57829aefca7eb4
+pkgrel=1
+pkgdesc="Qt5 library to write cross-platform clients for Matrix"
+arch=('x86_64')
+url="https://matrix.org/docs/projects/sdk/quotient"
+license=('LGPL2')
+depends=('qt6-multimedia' 'olm' 'qtkeychain-qt6')
+makedepends=('cmake')
+#source=("https://github.com/quotient-im/libQuotient/archive/${pkgver}.tar.gz")
+source=("https://github.com/quotient-im/libQuotient/archive/${_commit}.zip")
+sha256sums=('b4fbb3e5b52370313c4a86adb4e01e6ab16d5cbb8c91b45f2d4f384381f04e14')
+
+build() {
+    cmake -B build -S libQuotient-${_commit} \
+        -DCMAKE_INSTALL_PREFIX=/usr \
+        -DCMAKE_INSTALL_LIBDIR=lib \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DBUILD_SHARED_LIBS=ON \
+        -DQuotient_ENABLE_E2EE=ON \
+        -DBUILD_WITH_QT6=ON
+    cmake --build build
+}
+
+package() {
+
+    DESTDIR=${pkgdir} cmake --install build
+}
