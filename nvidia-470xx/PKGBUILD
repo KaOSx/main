@@ -4,7 +4,7 @@ _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=('nvidia-470xx' 'khd-nvidia-470xx')
 pkgver=470.182.03
-pkgrel=4
+pkgrel=5
 arch=('x86_64')
 url="https://www.nvidia.com/page/home.html"
 makedepends=('linux-headers' 'linux>=6.3.9' 'linux<6.4' "nvidia-470xx-utils=${pkgver}")
@@ -69,5 +69,5 @@ package_khd-nvidia-470xx() {
 
     install -dm755 "${pkgdir}/opt/kdeos/hwdb"
     sh -e "${srcdir}/nvidia_supported" README.txt kernel/nv-xxx.o \
-        > "${pkgdir}/opt/kdeos/hwdb/hw_nvidia_hwdb"
+        > "${pkgdir}/opt/kdeos/hwdb/hw_nvidia470xx_hwdb"
 }
