@@ -4,7 +4,7 @@ _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=('nvidia' 'khd-nvidia')
 pkgver=530.41.03
-pkgrel=1
+pkgrel=2
 epoch=2
 arch=('x86_64')
 url="https://www.nvidia.com/page/home.html"
@@ -37,7 +37,7 @@ build() {
 
 package_nvidia() {
     pkgdesc="NVIDIA drivers for linux."
-    depends=('linux>=6.3.9' 'linux<6.4' "nvidia-utils=1:${pkgver}")
+    depends=('linux>=6.3.9' 'linux<6.4' "nvidia-utils=2:${pkgver}")
     conflicts=('nvidia-470xx' 'nvidia-390xx' 'nvidia-bumblebee')
     provides=('nvidia-bumblebee')
     replaces=('nvidia-bumblebee')
