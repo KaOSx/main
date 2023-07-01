@@ -7,18 +7,18 @@ timestamp=$( date +%F-%T )
 # arg 2:  the old package version
 
 post_install() {
-    EXTRAMODULES='extramodules-6.4-next'
+    EXTRAMODULES='extramodules-6.3-next'
     depmod $(cat /lib/modules/$EXTRAMODULES/version)
     echo 'In order to use nvidia module, reboot the system.'
 }
 
 post_upgrade() {
-    EXTRAMODULES='extramodules-6.4-next'
+    EXTRAMODULES='extramodules-6.3-next'
     depmod $(cat /lib/modules/$EXTRAMODULES/version)
 }
 
 post_remove() {
-    EXTRAMODULES='extramodules-6.4-next'
+    EXTRAMODULES='extramodules-6.3-next'
     depmod $(cat /lib/modules/$EXTRAMODULES/version)
     
 }
