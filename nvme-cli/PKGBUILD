@@ -1,21 +1,21 @@
 
 pkgname=nvme-cli
-pkgver=2.4
-pkgrel=2
+pkgver=2.5
+pkgrel=1
 pkgdesc="The NVM Express family of specifications define how host software communicates with non-volatile memory across multiple transports like PCI Express, RDMA, TCP and more"
 arch=('x86_64')
 url="https://nvmexpress.org/"
 license=('GPL')
-depends=('util-linux' 'systemd')
+depends=('util-linux' 'systemd' 'libnvme')
 makedepends=('meson' 'ninja')
 source=("https://github.com/linux-nvme/nvme-cli/archive/v${pkgver}.tar.gz")
-md5sums=('553e30f47a947d7a11918e2c7eaa6090')
+md5sums=('07d6ec906ed2110ae47eb5b984c66c4c')
 
 build() {
   mkdir -p build
   cd build
 
-  meson ../${pkgname}-${pkgver} \
+  meson setup ../${pkgname}-${pkgver} \
     --prefix=/usr \
     --sysconfdir /etc \
     --buildtype=release \

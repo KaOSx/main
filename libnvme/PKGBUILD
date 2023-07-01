@@ -1,0 +1,30 @@
+
+pkgname=libnvme
+pkgver=1.5
+pkgrel=1
+pkgdesc="C Library for NVM Express on Linux"
+arch=('x86_64')
+url="https://nvmexpress.org/"
+license=('GPL')
+depends=('json-c' 'openssl')
+makedepends=('meson' 'ninja')
+source=("https://github.com/linux-nvme/libnvme/archive/v${pkgver}.tar.gz")
+md5sums=('8289e988a3244a35cc326aa564a7a727')
+
+build() {
+  mkdir -p build
+  cd build
+
+  meson setup ../${pkgname}-${pkgver} \
+    --prefix=/usr \
+    --sysconfdir /etc \
+    --buildtype=release \
+    -Ddocs-build=false
+  ninja
+}
+
+package() {
+  cd build
+
+  DESTDIR=${pkgdir} ninja install
+}
