@@ -1,20 +1,20 @@
 
 pkgname=sdl_sound
-pkgver=2.0.1
-pkgrel=2
+pkgver=2.0.2
+pkgrel=1
 pkgdesc="A library to decode several popular sound file formats, such as .WAV and .MP3"
 arch=('x86_64')
 url="https://icculus.org/SDL_sound/"
 license=('LGPL')
 depends=('libmodplug' 'sdl2' 'libmikmod' 'libvorbis' 'flac' 'speex' 'smpeg')
 options=('!libtool')
-source=("https://github.com/icculus/SDL_sound/archive/refs/tags/v${pkgver}.tar.gz" 
+source=("https://github.com/icculus/SDL_sound/releases/download/v2.0.2/SDL2_sound-${pkgver}.tar.gz" 
         'flac.patch')
-md5sums=('4917a87b45f7b940a68cd1b60881cabb'
+md5sums=('9af50d9e72c0deb75c3d106d64f7b5d5'
          '302aa9dc94cc71dd3339ca3177d36e1c')
 
 build() {
-  cmake -B build -S SDL_sound-${pkgver} \
+  cmake -B build -S SDL2_sound-${pkgver} \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DSDLSOUND_BUILD_STATIC=FALSE
