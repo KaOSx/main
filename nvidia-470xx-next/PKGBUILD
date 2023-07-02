@@ -1,14 +1,14 @@
 
-_extramodules=extramodules-6.3-next
+_extramodules=extramodules-6.4-next
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=nvidia-470xx-next
 pkgver=470.182.03
-pkgrel=12
+pkgrel=13
 pkgdesc="NVIDIA drivers for linux."
 arch=('x86_64')
 url="http://www.nvidia.com/"
-depends=('linux-next>=6.3' 'linux-next<6.5.0' "nvidia-470xx-utils=${pkgver}")
+depends=('linux-next>=6.4' 'linux-next<6.5.0' "nvidia-470xx-utils=${pkgver}")
 makedepends=('linux-next-headers')
 conflicts=('nvidia' 'nvidia-390xx')
 backup=('etc/X11/xorg.conf.d/20-nvidia.conf')
@@ -32,7 +32,7 @@ build() {
     cd ${_pkg}/kernel
     # patches from https://gist.github.com/joanbm?direction=desc&sort=updated
     patch -p1 -i ${srcdir}/linux-6.3.patch
-    #patch -p1 -i ${srcdir}/linux-6.4.patch
+    patch -p1 -i ${srcdir}/linux-6.4.patch
 
     cd ${srcdir}/${_pkg}/kernel
     make SYSSRC=/lib/modules/${_kver}/build module

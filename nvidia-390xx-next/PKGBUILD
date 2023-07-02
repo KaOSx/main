@@ -1,14 +1,14 @@
 
-_extramodules=extramodules-6.3-next
+_extramodules=extramodules-6.4-next
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=nvidia-390xx-next
 pkgver=390.157
-pkgrel=41
+pkgrel=42
 pkgdesc="NVIDIA drivers for linux-next, 390xx legacy version."
 arch=('x86_64')
 url="https://www.nvidia.com/page/home.html"
-depends=('linux-next>=6.3' 'linux-next<6.5.0' "nvidia-390xx-utils=${pkgver}")
+depends=('linux-next>=6.4' 'linux-next<6.5.0' "nvidia-390xx-utils=${pkgver}")
 makedepends=('linux-next-headers')
 options=('!strip')
 conflicts=('nvidia-next' 'nvidia-470xx-next')
@@ -34,7 +34,7 @@ build() {
      # patches from https://gist.github.com/joanbm?direction=desc&sort=updated
     patch -p1 -i ${srcdir}/linux-6.2.patch
     patch -p1 -i ${srcdir}/linux-6.3.patch
-    #patch -p1 -i ${srcdir}/linux-6.4.patch
+    patch -p1 -i ${srcdir}/linux-6.4.patch
     # linux 4.20 needed
     #sed -i -e 's|ipmi_user_t         p_user;|struct ipmi_user    *p_user;|g' kernel/nvidia/os-interface.c
     
