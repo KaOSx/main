@@ -45,6 +45,7 @@ usage () {
     echo "    --show-powercap        show POWERCAP modules"
     echo "    --show-serial          show SERIAL modules"
     echo "    --show-sound           show SOUND modules"
+    echo "    --show-spi             show SPI modules"
     echo "    --show-staging         show STAGING modules"
     echo "    --show-thermal         show THERMAL modules"
     echo "    --show-tpm             show TPM modules"
@@ -192,16 +193,16 @@ while [ -n "$*"  ]; do
             showlist "BLOCK    " $(listmods ata/pata pata_acpi) $(listmods ata/ata_piix) \
                          $(listmods virtio/virtio_pci) $(listmods scsi/) $(listmods message/fusion/) $(listmods drivers/block/ nbd pktcdvd sx8 floppy) \
                          $(listmods ata/ pata ata_generic) $(listmods drivers/block/sx8) \
-                         $(listmods usb/ usb/input) $(listmods firewire/) $(listmods ieee1394/) $(listmods nvme/)
+                         $(listmods usb/ usb/input) $(listmods firewire/) $(listmods ieee1394/) $(listmods nvme.ko)
             showlist "BLUETOOTH" $(listmods bluetooth/)
             showlist "CDROM    " $(listmods cdrom/)
             showlist "CPUFREQ  " $(listmods cpufreq/)
             showlist "CRYPTO   " $(listmods crypto/)
-                        showlist "DCA      " $(listmods dca/)
+            showlist "DCA      " $(listmods dca/)
             showlist "DMA      " $(listmods dma/)
             showlist "DRM      " $(listmods drm/)
             showlist "EDAC     " $(listmods edac/)
-                        showlist "EVENTS   " $(listmods events/)
+            showlist "EVENTS   " $(listmods events/)
             showlist "HWMON    " $(listmods hwmon/)
             showlist "I2C      " $(listmods i2c/)
             showlist "INPUT    " $(listmods input/ pcspkr) $(listmods hid/) $(listmods mac_hid)
@@ -209,16 +210,17 @@ while [ -n "$*"  ]; do
             showlist "IRDA     " $(listmods irda/)
             showlist "KVM      " $(listmods kvm/)
             showlist "MEDIA    " $(listmods media/)
-                        showlist "MEI      " $(listmods mei/)
+            showlist "MEI      " $(listmods mei/)
             showlist "MFD      " $(listmods mfd/)
             showlist "MTD      " $(listmods mtd/)
             showlist "NET      " $(listmods net/ irda/)
-            showlist "NVME     " $(listmods nvme/)
+            showlist "NVME     " $(listmods nvme.ko)
             showlist "PARPORT  " $(listmods parport/)
-                        showlist "PLATFORM " $(listmods platform/)
+            showlist "PLATFORM " $(listmods platform/)
             showlist "POWERCAP " $(listmods powercap/)
             showlist "SERIAL   " $(listmods serial/)
             showlist "SOUND    " $(listmods pcspkr) $(listmods sound/)
+            showlist "SPI      " $(listmods spi/)
             showlist "STAGING  " $(listmods staging/)
             showlist "THERMAL  " $(listmods thermal/)
             showlist "TPM      " $(listmods tpm/)
@@ -227,7 +229,7 @@ while [ -n "$*"  ]; do
             showlist "WATCHDOG " $(listmods watchdog/)
             showlist "OTHER    " $(listmods modules/ agp/ acpi/ scsi/ message/fusion block/sx8 block/cciss block/cpqarray block/DAC960 block/virtio virtio/virtio_pci ata/ \
                         usb/ ieee1394 bluetooth/ cdrom/ cpufreq/ crypto/ dca/ dma/ edac/ events/ net/ hwmon/ i2c/ input/ ipmi/ irda/ kvm/ mac_hid media/ mei/ \
-                        mfd/ mtd/ nvme/ parport/ platform/ powercap/ sound/ thermal/ tpm/ drm/ firewire/ hid/ serial/ staging/ video/ virt/ watchdog/)
+                        mfd/ mtd/ nvme/ parport/ platform/ powercap/ sound/spi/  thermal/ tpm/ drm/ firewire/ hid/ serial/ staging/ video/ virt/ watchdog/)
             ;;
         --show-modules-order)
             showlist "MODULES ORDER" $(listmods modules/)
@@ -237,7 +239,7 @@ while [ -n "$*"  ]; do
         --show-block)     showlist "BLOCK    " $(listmods ata/pata pata_acpi) $(listmods ata/ata_piix) \
                                $(listmods virtio/virtio_pci) $(listmods scsi/) $(listmods message/fusion/) $(listmods drivers/block/ nbd pktcdvd sx8 floppy) \
                                $(listmods ata/ pata ata_generic) $(listmods drivers/block/sx8) \
-                               $(listmods usb/ usb/input) $(listmods firewire/) $(listmods ieee1394/) $(listmods nvme/) ;;
+                               $(listmods usb/ usb/input) $(listmods firewire/) $(listmods ieee1394/) $(listmods nvme.ko) ;;
         --show-bluetooth) showlist "BLUETOOTH" $(listmods bluetooth/) ;;
         --show-cdrom)     showlist "CDROM    " $(listmods cdrom/) ;;
         --show-cpufreq)   showlist "CPUFREQ  " $(listmods cpufreq/) ;;
@@ -264,6 +266,7 @@ while [ -n "$*"  ]; do
         --show-powercap)  showlist "POWERCAP " $(listmods powercap/) ;;
         --show-serial)    showlist "SERIAL   " $(listmods serial/) ;;
         --show-sound)     showlist "SOUND    " $(listmods pcspkr) $(listmods sound/) ;;
+        --show-spi)       showlist "SPI      " $(listmods spi/) ;;
         --show-staging)   showlist "STAGING  " $(listmods staging/) ;;
         --show-thermal)   showlist "THERMAL  " $(listmods thermal/) ;;
         --show-tpm)       showlist "TPM      " $(listmods tpm/) ;;
@@ -272,7 +275,7 @@ while [ -n "$*"  ]; do
         --show-watchdog)  showlist "WATCHDOG " $(listmods watchdog/) ;;
         --show-other)     showlist "OTHER    " $(listmods .ko agp/ acpi/ scsi/ message/fusion block/sx8 block/cciss block/cpqarray block/DAC960 block/virtio virtio/virtio_pci ata/ \
                         usb/ ieee1394 bluetooth/ cdrom/ cpufreq/ crypto/ dca/ dma/ edac/ events/ net/ hwmon/ i2c/ input/ ipmi/ irda/ kvm/ mac_hid media/ mei/ \
-                        mfd/ mtd/ nvme/ parport/ platform/  powercap/ sound/ thermal/ tpm/ drm/ firewire/ hid/ serial/ staging/ video/ virt/ watchdog/) ;;
+                        mfd/ mtd/ nvme/ parport/ platform/ powercap/ sound/ thermal/ tpm/ drm/ firewire/ hid/ serial/ staging/ video/ virt/ watchdog/) ;;
         --filesystem)   FILESYSTEM="ext2 ext3 ext4 f2fs nilfs2 btrfs reiserfs xfs jfs vfat"
                 for i in $FILESYSTEM; do
                      [ "$(grep $i /tmp/.blkid)" ] && FS="$FS $i"
