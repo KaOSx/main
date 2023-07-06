@@ -1,7 +1,7 @@
 
 pkgname=groff
-pkgver=1.22.4
-pkgrel=19
+pkgver=1.23.0
+pkgrel=1
 pkgdesc="GNU troff text-formatting system"
 arch=('x86_64')
 url="https://www.gnu.org/software/groff/groff.html"
@@ -12,7 +12,7 @@ optdepends=('netpbm: to use together with man -H command interaction in browsers
             'psutils: to use together with man -H command interaction in browsers')
 source=("https://ftp.gnu.org/gnu/groff/${pkgname}-${pkgver}.tar.gz")
 options=('!docs' '!emptydirs')
-md5sums=('08fb04335e2f5e73f23ea4c3adbf0c5f')
+md5sums=('5e4f40315a22bb8a158748e7d5094c7d')
 
 build() {
   cd ${pkgname}-${pkgver}
@@ -25,7 +25,7 @@ build() {
 
 check() {
   cd ${pkgname}-${pkgver}
-  # FAIL: contrib/gdiffmk/tests/gdiffmk_tests.sh
+  # no FAIL
   make check
 }
 
