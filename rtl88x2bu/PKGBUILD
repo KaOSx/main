@@ -6,7 +6,7 @@ pkgname=rtl88x2bu
 _pkgname=RTL88x2BU-Linux-Driver
 pkgver=2023.06.15
 _commit=7f08a790b73fa24df0f0c834cb008e74e9b32458
-pkgrel=2
+pkgrel=3
 pkgdesc="RealTek 88x2bu wifi driver."
 arch=('x86_64')
 url="https://github.com/RinCat/RTL88x2BU-Linux-Driver"
@@ -21,7 +21,7 @@ md5sums=('b69229c65d46f60a615daeeab7e40f17')
 build() {
   cd ${_pkgname}-${_commit}
 
-  sed -i -e 's|$(shell uname -r)|6.3.10-1|' Makefile
+  sed -i -e 's|$(shell uname -r)|6.3.12-1|' Makefile
   #patch -p1 -i ${srcdir}/80a0cb2c1aa10e52bc653e7455a6f1b64fdccd09.diff
 
   make
