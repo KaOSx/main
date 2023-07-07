@@ -31,6 +31,44 @@ index 420a934ba2..a828d0e234 100644
          }
          break;
      }
+diff --git a/src/qml/common/qqmljsmemorypool_p.h b/src/qml/common/qqmljsmemorypool_p.h
+index 0cf7ea84e6..1b81a87a2c 100644
+--- a/src/qml/common/qqmljsmemorypool_p.h
++++ b/src/qml/common/qqmljsmemorypool_p.h
+@@ -87,7 +87,7 @@ public:
+     inline void *allocate(size_t size)
+     {
+         size = (size + 7) & ~size_t(7);
+-        if (Q_LIKELY(_ptr && (_ptr + size < _end))) {
++        if (Q_LIKELY(_ptr && size < size_t(_end - _ptr))) {
+             void *addr = _ptr;
+             _ptr += size;
+             return addr;
+diff --git a/src/qml/jit/qv4baselinejit.cpp b/src/qml/jit/qv4baselinejit.cpp
+index 45150cfffd..5ad53faf95 100644
+--- a/src/qml/jit/qv4baselinejit.cpp
++++ b/src/qml/jit/qv4baselinejit.cpp
+@@ -540,6 +540,8 @@ void BaselineJIT::generate_ThrowException()
+     as->passEngineAsArg(0);
+     BASELINEJIT_GENERATE_RUNTIME_CALL(ThrowException, CallResultDestination::Ignore);
+     as->gotoCatchException();
++
++    // LOAD_ACC(); <- not needed here since it would be unreachable.
+ }
+ 
+ void BaselineJIT::generate_GetException() { as->getException(); }
+@@ -547,9 +549,11 @@ void BaselineJIT::generate_SetException() { as->setException(); }
+ 
+ void BaselineJIT::generate_CreateCallContext()
+ {
++    STORE_ACC();
+     as->prepareCallWithArgCount(1);
+     as->passCppFrameAsArg(0);
+     BASELINEJIT_GENERATE_RUNTIME_CALL(PushCallContext, CallResultDestination::Ignore);
++    LOAD_ACC();
+ }
+ 
+ void BaselineJIT::generate_PushCatchContext(int index, int name) { as->pushCatchContext(index, name); }
 diff --git a/src/qml/jsruntime/qv4function.cpp b/src/qml/jsruntime/qv4function.cpp
 index aeb4835c40..9082628a1a 100644
 --- a/src/qml/jsruntime/qv4function.cpp
@@ -44,6 +82,40 @@ index aeb4835c40..9082628a1a 100644
              parameterNames.append(dup);
              parameterNames[duplicate] =
                      QString(0xfffe) + QString::number(duplicate) + dup;
+diff --git a/src/qml/qml/ftw/qrecyclepool_p.h b/src/qml/qml/ftw/qrecyclepool_p.h
+index 39f4f88512..c963e1878e 100644
+--- a/src/qml/qml/ftw/qrecyclepool_p.h
++++ b/src/qml/qml/ftw/qrecyclepool_p.h
+@@ -130,8 +130,7 @@ template<typename T, int Step>
+ T *QRecyclePool<T, Step>::New()
+ {
+     T *rv = d->allocate();
+-    new (rv) T;
+-    return rv;
++    return new (rv) T;
+ }
+ 
+ template<typename T, int Step>
+@@ -139,8 +138,7 @@ template<typename T1>
+ T *QRecyclePool<T, Step>::New(const T1 &a)
+ {
+     T *rv = d->allocate();
+-    new (rv) T(a);
+-    return rv;
++    return new (rv) T(a);
+ }
+ 
+ template<typename T, int Step>
+@@ -148,8 +146,7 @@ template<typename T1>
+ T *QRecyclePool<T, Step>::New(T1 &a)
+ {
+     T *rv = d->allocate();
+-    new (rv) T(a);
+-    return rv;
++    return new (rv) T(a);
+ }
+ 
+ template<typename T, int Step>
 diff --git a/src/qml/qml/qqmlimport.cpp b/src/qml/qml/qqmlimport.cpp
 index 10c6c41338..39bfcdc999 100644
 --- a/src/qml/qml/qqmlimport.cpp
