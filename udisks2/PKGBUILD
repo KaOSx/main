@@ -1,7 +1,7 @@
 
 pkgname=udisks2
-pkgver=2.9.4
-pkgrel=3
+pkgver=2.10.0
+pkgrel=1
 pkgdesc="Provides a daemon, tools and libraries to access and manipulate disks, storage devices and technologies."
 arch=('x86_64')
 url="https://www.freedesktop.org/wiki/Software/udisks"
@@ -13,7 +13,7 @@ options=('!libtool')
 backup=(etc/udisks2/udisks2.conf)
 source=("https://github.com/storaged-project/udisks/releases/download/udisks-${pkgver}/udisks-${pkgver}.tar.bz2"
         '10-enable-mount.rules')
-md5sums=('576e057d2654894fab58f0393d105b7b'
+md5sums=('5b5da772a4537951bf487ee11a510ccc'
          '5f6c7dcbc2e98b7814a91fbe7630ecfc')
 
 build() {
@@ -26,10 +26,7 @@ build() {
         --with-systemdsystemunitdir=/usr/lib/systemd/system \
         --disable-static \
         --enable-lvm2 \
-        --enable-lvmcache \
-        --enable-btrfs \
-        --enable-zram \
-        --enable-bcache
+        --enable-btrfs
   make
 }
 
