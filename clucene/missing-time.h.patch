@@ -1,0 +1,17 @@
+diff --git a/src/shared/CLucene/clucene-config.h.cmake b/src/shared/CLucene/clucene-config.h.cmake
+index bd8683a5..6fe0f92b 100644
+--- a/src/shared/CLucene/clucene-config.h.cmake
++++ b/src/shared/CLucene/clucene-config.h.cmake
+@@ -100,8 +100,7 @@ ${SYMBOL__T}
+ //#cmakedefine _CL_STAT_MACROS_BROKEN
+ 
+ /* Define to 1 if you can safely include both <sys/time.h> and <time.h>. */
+-//not actually used for anything...
+-//#cmakedefine _CL_TIME_WITH_SYS_TIME  1 
++#cmakedefine _CL_TIME_WITH_SYS_TIME  1 
+ 
+ /* Define that we will be using -fvisibility=hidden, and 
+  * make public classes visible using __attribute__ ((visibility("default")))
+-- 
+2.37.3
+

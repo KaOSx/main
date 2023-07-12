@@ -1,21 +1,25 @@
 
 pkgname=clucene
 pkgver=2.3.3.4
-pkgrel=28
+pkgrel=29
 pkgdesc="CLucene is a C++ port of Lucene: A high-performance, full-featured text search engine."
 arch=('x86_64')
 url="https://clucene.sourceforge.net"
 license=('APACHE' 'LGPL')
-depends=('gcc-libs' 'zlib' 'boost-libs')
+depends=('gcc-libs' 'zlib')
 makedepends=('cmake' 'boost')
 source=("https://downloads.sourceforge.net/clucene/${pkgname}-core-${pkgver}.tar.gz"
         'clucene-core-2.3.3.4-install_contribs_lib.patch'
         'clucene-core-2.3.3.4-pkgconfig.patch'
-        'fix_zlib_detections.diff')
+        'fix_zlib_detections.diff'
+        "https://gitweb.gentoo.org/repo/gentoo.git/plain/dev-cpp/clucene/files/clucene-2.3.3.4-fix-binary-function.patch"
+        'missing-time.h.patch')
 md5sums=('48d647fbd8ef8889e5a7f422c1bfda94'
          '7e8004510b0cdeec29bbecb36307669b'
          '28faf56ff95eb1f5239885ad5060e28f'
-         'f9bce8197704b1d2ebd47c37648f1a17')
+         'f9bce8197704b1d2ebd47c37648f1a17'
+         '8257225c469a044fcd8be57495d2baaa'
+         'a3cdf0f62059fc33fed82ad6ca306be5')
 
 build() {
   cd ${pkgname}-core-${pkgver}
@@ -24,6 +28,9 @@ build() {
   patch -p1 -i ${srcdir}/clucene-core-2.3.3.4-pkgconfig.patch
   # one upstream postrelease commit for proper zlib detection
   patch -p1 -i ${srcdir}/fix_zlib_detections.diff
+  # gcc 12, c++17 needed
+  patch -p1 -i ${srcdir}/clucene-2.3.3.4-fix-binary-function.patch
+  patch -p1 -i ${srcdir}/missing-time.h.patch
 
   mkdir -p build
   pushd build
