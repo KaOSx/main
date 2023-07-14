@@ -1,27 +1,30 @@
 
 pkgname=protobuf-c
 pkgver=1.4.1
-pkgrel=1
+_commit=fa86fddbd000316772d1deb5a8d1201fa7599ef7
+pkgrel=2
 pkgdesc="C implementation of the Google Protocol Buffers data serialization format."
 arch=('x86_64')
 url="https://github.com/protobuf-c/protobuf-c/"
 license=('APACHE')
 depends=('protobuf')
 options=('!libtool')
-source=("https://github.com/protobuf-c/protobuf-c/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.gz"
+#source=("https://github.com/protobuf-c/protobuf-c/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.gz"
+source=("https://github.com/protobuf-c/protobuf-c/archive/${_commit}.zip"
         "https://github.com/protobuf-c/protobuf-c/commit/9412830d0680150d429d2aa170b8d7218ab49397.diff")
-md5sums=('4c17d70317ce9fc4cca9690377284659'
+md5sums=('56e4276c54f633554e1971082538a791'
          '550d2a8ac7d8ffe46ca903a85ce74f5c')
 
 build() {
-  cd ${pkgname}-${pkgver}
+  cd ${pkgname}-${_commit}
   #patch -p1 -i ${srcdir}/9412830d0680150d429d2aa170b8d7218ab49397.diff
 
+  ./autogen.sh
   ./configure --prefix=/usr --disable-static 
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
+  cd ${pkgname}-${_commit}
   make DESTDIR=${pkgdir} install
 
   install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
