@@ -1,19 +1,26 @@
 
 pkgname=python3-cython
-pkgver=0.29.36
+pkgver=3.0.0
 pkgrel=1
 arch=('x86_64')
 url="https://cython.org/"
 license=('APACHE')
 pkgdesc="C-Extensions for Python 3"
 depends=('python3')
-makedepends=('python3-setuptools')
+makedepends=('python3-build' 'python3-installer' 'python3-setuptools' 'python3-wheel')
 #source=("https://github.com/cython/cython/releases/download/${pkgver}/Cython-${pkgver}.tar.gz")
 source=("https://pypi.org/packages/source/C/Cython/Cython-${pkgver}.tar.gz")
-sha256sums=('41c0cfd2d754e383c9eeb95effc9aa4ab847d0c9747077ddd7c0dcb68c3bc01f')
+sha256sums=('350b18f9673e63101dbbfcf774ee2f57c20ac4636d255741d76ca79016b1bd82')
+
+build() {
+    cd Cython-${pkgver}
+
+    python3 -m build -nw
+}
 
 package() {
-  cd Cython-${pkgver}
+    cd Cython-${pkgver}
 
-  python3 setup.py install --root=${pkgdir}
+    python3 -m installer --destdir=${pkgdir} dist/*.whl
+    install -Dm644 LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
