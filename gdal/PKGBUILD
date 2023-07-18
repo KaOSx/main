@@ -3,14 +3,14 @@
 pkgname=gdal
 pkgver=3.7.1
 _pkgver=3.7.1
-pkgrel=1
+pkgrel=2
 pkgdesc="A translator library for raster geospatial data formats"
 arch=('x86_64')
 url="https://www.gdal.org/"
 license=('custom')
 depends=('curl' 'geos' 'giflib' 'libgeotiff' 'libjpeg-turbo' 'libpng' 'libtiff' 'netcdf'
          'poppler' 'python3-numpy' 'sqlite3' 'mariadb' 'postgresql-libs' 'cfitsio' 'unixodbc'
-         'json-c' 'libspatialite' 'proj') # currently not found 'hdf5'
+         'json-c' 'libspatialite' 'proj' 'libarchive') # currently not found 'hdf5'
 makedepends=('perl' 'swig')
 options=('!libtool' '!makeflags')
 provides=('python3-gdal')
