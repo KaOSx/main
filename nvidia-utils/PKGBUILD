@@ -3,7 +3,7 @@ pkgbase=nvidia-utils
 pkgname=('nvidia-utils' 'opencl-nvidia' 'nvidia-settings')
 # Edit hardware-detection/hooks/hwdetect_7_graphics and Installer job 11 on version jump from 43x.xx
 pkgver=535.86.05
-pkgrel=1
+pkgrel=2
 epoch=2
 arch=('x86_64')
 url="https://www.nvidia.com/page/home.html"
@@ -60,6 +60,8 @@ package_nvidia-utils() {
   conflicts=('nvidia-utils-bumblebee')
   provides=('nvidia-utils-bumblebee')
 
+  # see https://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/README/installedcomponents.html
+  # for order and components
   cd ${srcdir}/${_pkg}
   # X driver
   install -D -m755 nvidia_drv.so ${pkgdir}/usr/lib/xorg/modules/drivers/nvidia_drv.so
@@ -70,8 +72,14 @@ package_nvidia-utils() {
   # X doesn't find glx otherwise:
   ln -s libglxserver_nvidia.so.${pkgver} ${pkgdir}/usr/lib/xorg/modules/extensions/libglxserver_nvidia.so 
   ln -s libglxserver_nvidia.so.${pkgver} ${pkgdir}/usr/lib/nvidia/xorg/libglx.so
+  
+  # EGL and OpenGL ES libraries
+  install -D -m755 libEGL_nvidia.so.${pkgver} ${pkgdir}/usr/lib/libEGL_nvidia.so.${pkgver}
+  install -D -m755 libGLESv1_CM_nvidia.so.${pkgver} ${pkgdir}/usr/lib/libGLESv1_CM_nvidia.so.${pkgver}
+  install -D -m755 libGLESv2_nvidia.so.${pkgver} ${pkgdir}/usr/lib/libGLESv2_nvidia.so.${pkgver}
+  install -D -m644 10_nvidia.json ${pkgdir}/usr/share/glvnd/egl_vendor.d/10_nvidia.json
 
-  # Wayland
+  # Wayland and GBM EGL
   install -D -m755 libnvidia-egl-gbm.so.1* -t ${pkgdir}/usr/lib/
   install -D -m644 15_nvidia_gbm.json ${pkgdir}/usr/share/egl/egl_external_platform.d/15_nvidia_gbm.json
   install -D -m755 libnvidia-egl-wayland.so.1* -t ${pkgdir}/usr/lib/
@@ -82,39 +90,86 @@ package_nvidia-utils() {
   # GLVND vendor implementation libraries for GLX
   install -D -m755 libGLX_nvidia.so.${pkgver} ${pkgdir}/usr/lib/libGLX_nvidia.so.${pkgver}
 
-  # OpenGL core library
-  install -D -m755 libnvidia-glcore.so.${pkgver} ${pkgdir}/usr/lib/libnvidia-glcore.so.${pkgver}
+  # Vulkan
+  install -D -m755 libnvidia-vulkan-producer.so.${pkgver} ${pkgdir}/usr/lib/libnvidia-vulkan-producer.so.${pkgver}
+  ln -s libnvidia-vulkan-producer.so.${pkgver} ${pkgdir}/usr/lib/libnvidia-vulkan-producer.so.1
+  ln -s libnvidia-vulkan-producer.so.${pkgver} ${pkgdir}/usr/lib/libnvidia-vulkan-producer.so
+
+  install -D -m644 nvidia_icd.json ${pkgdir}/usr/share/vulkan/icd.d/nvidia_icd.json
+  install -D -m644 nvidia_layers.json ${pkgdir}/usr/share/vulkan/implicit_layer.d/nvidia_layers.json
+
+  # Various libraries that are used internally by other driver components
+  install -D -m755 libnvidia-cfg.so.${pkgver} ${pkgdir}/usr/lib/libnvidia-cfg.so.${pkgver}
   install -D -m755 libnvidia-eglcore.so.${pkgver} ${pkgdir}/usr/lib/libnvidia-eglcore.so.${pkgver}
+  install -D -m755 libnvidia-glcore.so.${pkgver} ${pkgdir}/usr/lib/libnvidia-glcore.so.${pkgver}
   install -D -m755 libnvidia-glsi.so.${pkgver} ${pkgdir}/usr/lib/libnvidia-glsi.so.${pkgver}
-  install -D -m755 libEGL_nvidia.so.${pkgver} ${pkgdir}/usr/lib/libEGL_nvidia.so.${pkgver}
-  install -D -m644 10_nvidia.json ${pkgdir}/usr/share/glvnd/egl_vendor.d/10_nvidia.json
+  install -D -m755 libnvidia-glvkspirv.so.${pkgver} ${pkgdir}/usr/lib/libnvidia-glvkspirv.so.${pkgver}
+  install -D -m755 libnvidia-rtcore.so.${pkgver} ${pkgdir}/usr/lib/libnvidia-rtcore.so.${pkgver}
+  install -D -m755 libnvidia-allocator.so.${pkgver} ${pkgdir}/usr/lib/libnvidia-allocator.so.${pkgver}
 
   # VDPAU
   install -D -m755 libvdpau_nvidia.so.${pkgver} ${pkgdir}/usr/lib/vdpau/libvdpau_nvidia.so.${pkgver}
 
-  # nvidia-tls library
-  install -D -m755 libnvidia-tls.so.${pkgver} ${pkgdir}/usr/lib/libnvidia-tls.so.${pkgver}
-  install -D -m755 libnvidia-cfg.so.${pkgver} ${pkgdir}/usr/lib/libnvidia-cfg.so.${pkgver}
-
-  install -D -m755 libnvidia-ml.so.${pkgver} ${pkgdir}/usr/lib/libnvidia-ml.so.${pkgver}
-  install -D -m755 libnvidia-ngx.so.${pkgver} ${pkgdir}/usr/lib/libnvidia-ngx.so.${pkgver}
-
   # CUDA
   install -D -m755 libcuda.so.${pkgver} ${pkgdir}/usr/lib/libcuda.so.${pkgver}
   install -D -m755 libnvcuvid.so.${pkgver} ${pkgdir}/usr/lib/libnvcuvid.so.${pkgver}
+  install -D -m755 libcudadebugger.so.${pkgver} ${pkgdir}/usr/lib/libcudadebugger.so.${pkgver}
+
+  # Cryptography library wrappers
+  install -D -m755 libnvidia-pkcs11.so.${pkgver} ${pkgdir}/usr/lib/libnvidia-pkcs11.so.${pkgver}
+  install -D -m755 libnvidia-pkcs11-openssl3.so.${pkgver} ${pkgdir}/usr/lib/libnvidia-pkcs11-openssl3.so.${pkgver}
+  
+  # PTX JIT Compiler
+  install -D -m755 libnvidia-ptxjitcompiler.so.${pkgver} ${pkgdir}/usr/lib/libnvidia-ptxjitcompiler.so.${pkgver}
+
+  # Allow MPI processes to run concurrently on a single GPU
+  install -D -m755 nvidia-cuda-mps-server ${pkgdir}/usr/bin/nvidia-cuda-mps-server
+  install -D -m755 nvidia-cuda-mps-control ${pkgdir}/usr/bin/nvidia-cuda-mps-control
+
+  # nvidia-tls & nvidia-ml libraries
+  install -D -m755 libnvidia-tls.so.${pkgver} ${pkgdir}/usr/lib/libnvidia-tls.so.${pkgver}
+  install -D -m755 libnvidia-ml.so.${pkgver} ${pkgdir}/usr/lib/libnvidia-ml.so.${pkgver}
+
+  # Application nvidia-modprobe
+  install -D -m4755 nvidia-modprobe ${pkgdir}/usr/bin/nvidia-modprobe
 
   # nvidia-xconfig
   install -D -m755 nvidia-xconfig ${pkgdir}/usr/bin/nvidia-xconfig
   install -D -m644 nvidia-xconfig.1.gz ${pkgdir}/usr/share/man/man1/nvidia-xconfig.1.gz
 
-  # nvidia-bug-report
-  install -D -m755 nvidia-bug-report.sh ${pkgdir}/usr/bin/nvidia-bug-report.sh
-
   # nvidia-smi
   install -D -m755 nvidia-smi ${pkgdir}/usr/bin/nvidia-smi
   install -D -m644 nvidia-smi.1.gz ${pkgdir}/usr/share/man/man1/nvidia-smi.1.gz
 
-  # firmware, added since 465.24
+  # nvidia-bug-report
+  install -D -m755 nvidia-bug-report.sh ${pkgdir}/usr/bin/nvidia-bug-report.sh
+
+  # nvidia-persistenced
+  install -D -m755 nvidia-persistenced ${pkgdir}/usr/bin/nvidia-persistenced
+  install -D -m644 nvidia-persistenced.1.gz ${pkgdir}/usr/share/man/man1/nvidia-persistenced.1.gz
+  install -D -m644 nvidia-persistenced-init/systemd/nvidia-persistenced.service.template ${pkgdir}/usr/lib/systemd/system/nvidia-persistenced.service
+  sed -i 's/__USER__/nvidia-persistenced/' ${pkgdir}/usr/lib/systemd/system/nvidia-persistenced.service
+  
+  # NvEncodeAPI, NVAPI & NvFBC libraries
+  install -D -m755 libnvidia-encode.so.${pkgver} ${pkgdir}/usr/lib/libnvidia-encode.so.${pkgver}
+  install -D -m755 libnvidia-api.so.1 ${pkgdir}/usr/lib/libnvidia-api.so.1
+  install -D -m755 libnvidia-fbc.so.${pkgver} ${pkgdir}/usr/lib/libnvidia-fbc.so.${pkgver}
+
+  # OptiX
+  install -D -m755 libnvoptix.so.${pkgver} ${pkgdir}/usr/lib/libnvoptix.so.${pkgver}
+  install -D -m755 nvoptix.bin ${pkgdir}/usr/share/nvidia/nvoptix.bin
+
+  # Optical Flow
+  install -D -m755 libnvidia-opticalflow.so.${pkgver} ${pkgdir}/usr/lib/libnvidia-opticalflow.so.${pkgver}
+
+  # NGX
+  install -D -m755 libnvidia-ngx.so.${pkgver} ${pkgdir}/usr/lib/libnvidia-ngx.so.${pkgver}
+
+  # NGX for Proton and Wine
+  install -D -m644 nvngx.dll -t ${pkgdir}/usr/lib/nvidia/wine
+  install -D -m644 _nvngx.dll -t ${pkgdir}/usr/lib/nvidia/wine
+
+  # Firmware
   install -D -m644 firmware/gsp_ga10x.bin ${pkgdir}/lib/firmware/nvidia/${pkgver}/gsp_ga10x.bin
   install -D -m644 firmware/gsp_tu10x.bin ${pkgdir}/lib/firmware/nvidia/${pkgver}/gsp_tu10x.bin
 
@@ -127,20 +182,6 @@ package_nvidia-utils() {
   install -D -m644 NVIDIA_Changelog ${pkgdir}/usr/share/doc/nvidia/NVIDIA_Changelog
   ln -s nvidia ${pkgdir}/usr/share/doc/nvidia-utils
 
-  # OptiX ray tracing
-  install -D -m755 libnvoptix.so.${pkgver} ${pkgdir}/usr/lib/libnvoptix.so.${pkgver}
-  install -D -m755 nvoptix.bin ${pkgdir}/usr/share/nvidia/nvoptix.bin
-
-  # Vulkan
-  install -D -m755 libnvidia-rtcore.so.${pkgver} ${pkgdir}/usr/lib/libnvidia-rtcore.so.${pkgver}
-  install -D -m755 libnvidia-vulkan-producer.so.${pkgver} ${pkgdir}/usr/lib/libnvidia-vulkan-producer.so.${pkgver}
-  ln -s libnvidia-vulkan-producer.so.${pkgver} ${pkgdir}/usr/lib/libnvidia-vulkan-producer.so.1
-  ln -s libnvidia-vulkan-producer.so.${pkgver} ${pkgdir}/usr/lib/libnvidia-vulkan-producer.so
-
-  # DLSS
-  install -D -m644 nvngx.dll -t ${pkgdir}/usr/lib/nvidia/wine
-  install -D -m644 _nvngx.dll -t ${pkgdir}/usr/lib/nvidia/wine
-
   # Systemd suspend/hibernate/resume service files
   # http://us.download.nvidia.com/XFree86/Linux-x86_64/430.40/README/powermanagement.html
   install -D -m644 systemd/system/nvidia-suspend.service ${pkgdir}/usr/lib/systemd/system/nvidia-suspend.service
@@ -149,12 +190,6 @@ package_nvidia-utils() {
   install -D -m755 systemd/system-sleep/nvidia ${pkgdir}/usr/lib/systemd/system-sleep/nvidia
   install -D -m755 systemd/nvidia-sleep.sh ${pkgdir}/usr/bin/nvidia-sleep.sh
   install -D -m644 nvidia-powerd ${pkgdir}/usr/bin/nvidia-powerd
-
-  # nvidia-persistenced
-  install -D -m755 nvidia-persistenced ${pkgdir}/usr/bin/nvidia-persistenced
-  install -D -m644 nvidia-persistenced.1.gz ${pkgdir}/usr/share/man/man1/nvidia-persistenced.1.gz
-  install -D -m644 nvidia-persistenced-init/systemd/nvidia-persistenced.service.template ${pkgdir}/usr/lib/systemd/system/nvidia-persistenced.service
-  sed -i 's/__USER__/nvidia-persistenced/' ${pkgdir}/usr/lib/systemd/system/nvidia-persistenced.service
 
   # conf
   install -D -m644 ${srcdir}/nvidia-drm-outputclass.conf ${pkgdir}/etc/X11/xorg.conf.d/nvidia-drm-outputclass.conf
