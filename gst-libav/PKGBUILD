@@ -1,6 +1,6 @@
 
 pkgname=gst-libav
-pkgver=1.22.4
+pkgver=1.22.5
 pkgrel=1
 pkgdesc="Gstreamer libav Plugin"
 arch=('x86_64')
@@ -10,7 +10,7 @@ depends=('gst-plugins-base' 'bzip2' 'ffmpeg')
 makedepends=('yasm' 'python3' 'meson' 'ninja')
 options=('!emptydirs' '!libtool')
 source=("https://gstreamer.freedesktop.org/src/gst-libav/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('9a751bc740de768e791c37a95f0a924c6a41d12fd7f37f54ce6a4e834be122d3')
+sha256sums=('8583f0c1f4fcb01eed11fa1e3c21126543a8bd739ed4fc1db31f756a5ab01d9a')
 
 build() {
   mkdir -p build
@@ -26,7 +26,7 @@ build() {
 
 check() {
   cd build
-  # no fail
+  # elements_avaudenc                 FAIL
   ninja test
 }
 
