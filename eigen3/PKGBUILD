@@ -1,7 +1,7 @@
 
 pkgname=eigen3
 pkgver=3.4.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Lightweight C++ template library for vector and matrix math, a.k.a. linear algebra."
 arch=('x86_64')
 url='https://eigen.tuxfamily.org'
@@ -15,7 +15,7 @@ md5sums=('132dde48fe2b563211675626d29f1707'
 
 prepare() {
   cd eigen-${pkgver}
-  
+
   #patch -p1 -i ${srcdir}/ef3cc72cb65e2d500459c178c63e349bacfa834f.diff
 }
 
