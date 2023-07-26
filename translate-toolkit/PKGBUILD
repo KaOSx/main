@@ -1,22 +1,27 @@
 
 pkgname=translate-toolkit
 _pkgname=translate
-pkgver=3.9.2
+pkgver=3.10.0
 pkgrel=1
 pkgdesc="Toolkit to convert between various different translation formats, help process and validate localisations"
 arch=('x86_64')
 url="https://toolkit.translatehouse.org/index.html"
 license=('GPL')
 depends=('bash' 'python3-lxml' 'python3-six')
-makedepends=('python3-setuptools')
+makedepends=('python3-build' 'python3-installer' 'python3-setuptools-scm' 'python3-toml' 'python3-wheel')
 #source=("https://github.com/translate/translate/releases/download/${pkgver}/translate-toolkit-${pkgver}.tar.gz")
 source=("https://files.pythonhosted.org/packages/source/t/translate-toolkit/${pkgname}-${pkgver}.tar.gz")
-sha256sums=('cd0430f061b135e46ec5eec9350fa8a7745d337826a90f5b6ac2c3b1b0123476')
+sha256sums=('e3690caeef90dab491e6a8426c1d920aab265ef5f5bc7fe004a04e73560c4a3b')
+
+build() {
+  cd ${pkgname}-${pkgver}
+
+  python3 -m build -nw
+}
 
 package() {
   cd ${pkgname}-${pkgver}
 
-  python3 -s setup.py install --root=${pkgdir} --optimize=1
-
-  #rm -r ${pkgdir}/usr/lib/python3.9/site-packages/translate/docs/_build
+  python3 -m installer --destdir=${pkgdir} dist/*.whl
+  install -Dm644 LICENSES ${pkgdir}/usr/share/licenses/${pkgname}/LICENSES
 }
