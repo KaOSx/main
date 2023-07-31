@@ -1,28 +1,26 @@
 
 pkgname=python3-pyparsing
-pkgver=3.1.0
+pkgver=3.1.1
 pkgrel=1
 pkgdesc='General parsing module for Python'
 arch=('x86_64')
 url='https://pypi.org/project/pyparsing/'
 license=('MIT')
 depends=('python3')
-makedepends=('python3-build' 'python3-flit' 'python3-pip')
+makedepends=('python3-build' 'python3-flit' 'python3-installer')
 source=("https://files.pythonhosted.org/packages/source/p/pyparsing/pyparsing-${pkgver}.tar.gz")
-sha256sums=('edb662d6fe322d6e990b1594b5feaeadf806803359e3d4d42f11e295e588f0ea')
+sha256sums=('ede28a1a32462f5a9705e07aea48001a08f7cf81a021585011deba701581a0db')
 
 build() {
   cd pyparsing-${pkgver}
 
-  flit build --format wheel
+  python3 -m build -nw
 }
 
 package() {
   cd pyparsing-${pkgver}
 
-  #python3 setup.py install --prefix=/usr --root=${pkgdir} --optimize=1
-  #flit install --python=${pgdir}
-  PIP_CONFIG_FILE=/dev/null pip3 install --isolated --root=${pkgdir} --ignore-installed --no-deps dist/*.whl
+  python3 -m installer --destdir=${pkgdir} dist/*.whl
   install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/python3-pyparsing/LICENSE
 }
 
