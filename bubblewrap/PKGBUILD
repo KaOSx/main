@@ -1,7 +1,7 @@
  
 pkgname=bubblewrap
 pkgver=0.8.0
-pkgrel=1
+pkgrel=2
 pkgdesc='Core execution engine for unprivileged containers that works as a setuid binary on kernels without
 user namespaces.'
 url='https://github.com/projectatomic/bubblewrap'
@@ -16,7 +16,7 @@ build() {
   cd ${pkgname}-${pkgver}
 
   ./configure --prefix=/usr \
-    --with-priv-mode=setuid
+    --with-priv-mode=none
   make
 }
 
