@@ -1,7 +1,7 @@
 
 pkgname=speech-dispatcher
-pkgver=0.11.4
-pkgrel=2
+pkgver=0.11.5
+pkgrel=1
 arch=('x86_64')
 url="https://devel.freebsoft.org/speechd"
 pkgdesc="High-level device independent layer for speech synthesis interface"
@@ -28,9 +28,8 @@ install=speech-dispatcher.install
 #source=("https://devel.freebsoft.org/pub/projects/speechd/${pkgname}-${pkgver}.tar.gz"
 source=("https://github.com/brailcom/speechd/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.gz"
         'speech-dispatcherd.service')
-md5sums=('4d812bef4488b35f324db010bf5cac4b'
+md5sums=('edcf93047b1d6df421f1c065580a0455'
          '0f09abe1af4eb79885ba88a1c2bcde8b')
-
 
 build() {
   cd ${pkgname}-${pkgver}
