@@ -1,0 +1,30 @@
+
+pkgname=switcheroo-control
+pkgver=2.6
+pkgrel=1
+pkgdesc="D-Bus service to check the availability of dual-GPU"
+arch=('x86_64')
+url="https://gitlab.freedesktop.org/hadess/switcheroo-control"
+license=('GPL3')
+depends=('dbus' 'libgudev')
+makedepends=('meson' 'ninja')
+source=("https://gitlab.freedesktop.org/hadess/switcheroo-control/-/archive/${pkgver}/${pkgname}-${pkgver}.tar.bz2")
+sha256sums=('9fb8f4566ca84bcd8b6873aee883157e078d772be59bbcfaf3555437c881e467')
+
+build() {
+  mkdir -p build
+  cd build
+
+  meson setup ../${pkgname}-${pkgver} \
+    --prefix=/usr \
+    --buildtype=release \
+    --libexecdir=lib/ \
+    -Dgtk_doc=false
+  ninja
+}
+
+package() {
+  cd build
+
+  DESTDIR=${pkgdir} ninja install
+}
