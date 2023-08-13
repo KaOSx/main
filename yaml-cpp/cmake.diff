@@ -1,17 +1,23 @@
---- yaml-cpp-config.cmake.in.orig	2021-07-10 15:53:22 UTC
-+++ yaml-cpp-config.cmake.in
---- a/yaml-cpp-config.cmake.in
-+++ b/yaml-cpp-config.cmake.in
-@@ -5,10 +5,10 @@
+--- a/CMakeLists.txt	2023-08-10 21:27:56.000000000 +0200
++++ b/CMakeLists.txt	2023-08-11 23:17:25.243170586 +0200
+@@ -139,7 +139,7 @@
  
- # Compute paths
- get_filename_component(YAML_CPP_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
--set(YAML_CPP_INCLUDE_DIR "@CONFIG_INCLUDE_DIRS@")
+ set_target_properties(yaml-cpp PROPERTIES
+   VERSION "${PROJECT_VERSION}"
+-  SOVERSION "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}"
++  SOVERSION "${PROJECT_VERSION_MAJOR}"
+   PROJECT_LABEL "yaml-cpp ${yaml-cpp-label-postfix}"
+   DEBUG_POSTFIX "${CMAKE_DEBUG_POSTFIX}")
  
- # Our library dependencies (contains definitions for IMPORTED targets)
- include("${YAML_CPP_CMAKE_DIR}/yaml-cpp-targets.cmake")
+
+--- a/yaml-cpp-config.cmake.in	2023-08-10 21:27:56.000000000 +0200
++++ b/yaml-cpp-config.cmake.in	2023-08-11 23:27:40.854448013 +0200
+@@ -17,6 +17,7 @@
+ include(@PACKAGE_CONFIG_EXPORT_DIR@/yaml-cpp-targets.cmake)
  
  # These are IMPORTED targets created by yaml-cpp-targets.cmake
 -set(YAML_CPP_LIBRARIES "@EXPORT_TARGETS@")
 +get_target_property(YAML_CPP_INCLUDE_DIR yaml-cpp INTERFACE_INCLUDE_DIRECTORIES)
 +get_target_property(YAML_CPP_LIBRARIES yaml-cpp IMPORTED_LOCATION_RELEASE)
+ 
+ check_required_components(@EXPORT_TARGETS@)
