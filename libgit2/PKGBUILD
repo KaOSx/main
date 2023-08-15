@@ -1,6 +1,6 @@
 
 pkgname=libgit2
-pkgver=1.7.0
+pkgver=1.7.1
 pkgrel=1
 pkgdesc='Cross-platform, linkable library implementation of Git that you can use in your application.'
 arch=('x86_64')
@@ -9,7 +9,7 @@ depends=('openssl' 'pcre2' 'zlib')
 makedepends=('cmake' 'libssh2' 'python3')
 license=('GPL2')
 source=("https://github.com/libgit2/libgit2/archive/refs/tags/v${pkgver}.tar.gz")
-md5sums=('0658bcfc20b0ad2e6a2924fcc769fc9b')
+md5sums=('079b0e23412631e43285e8ad40d2bd47')
 
 build() {
   cmake -B build -S ${pkgname}-${pkgver} \
