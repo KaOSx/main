@@ -2,8 +2,8 @@
 pkgname=xdg-utils
 pkgver=1.1.5
 _pkgver=1.1.5
-_commit=1a58bc28f6844898532daf9ee1bf6da7764955a9
-pkgrel=2
+_commit=301a1a4772f1f934a22e106ff032c62ef705462b
+pkgrel=3
 pkgdesc='Command line tools that assist applications with a variety of desktop integration tasks.'
 arch=('x86_64')
 url='https://www.freedesktop.org/wiki/Software/xdg-utils/'
@@ -13,13 +13,13 @@ license=('MIT')
 source=("https://gitlab.freedesktop.org/xdg/xdg-utils/-/archive/${_commit}/xdg-utils-${_commit}.tar.bz2"
 #source=("https://portland.freedesktop.org/download/xdg-utils-${_pkgver}.tar.gz"
         "https://gitlab.freedesktop.org/scop/xdg-utils/-/commit/da1bcc509de7b43416180f84dc551f9783bc2066.diff")
-md5sums=('8cfc0a9ea5d2c4f2dec85f5b94cf36c4'
+md5sums=('97f6883b197d6f464f87ca1d86755256'
          '01fc04d8c4645b22b3fe8b1fd3edbf28')
 
 build() {
 	cd ${pkgname}-${_commit}
 	# from  https://gitlab.freedesktop.org/xdg/xdg-utils/-/merge_requests/44
-	patch -p1 -i ${srcdir}/da1bcc509de7b43416180f84dc551f9783bc2066.diff
+	#patch -p1 -i ${srcdir}/da1bcc509de7b43416180f84dc551f9783bc2066.diff
 
 	./configure --prefix=/usr --mandir=/usr/share/man
 	make 
