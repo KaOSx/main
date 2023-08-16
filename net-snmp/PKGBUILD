@@ -1,7 +1,7 @@
 
 pkgname=net-snmp
-pkgver=5.9.3
-pkgrel=4
+pkgver=5.9.4
+pkgrel=1
 pkgdesc="A suite of applications used to implement SNMP v1, SNMP v2c and SNMP v3 using both IPv4 and IPv6"
 arch=('x86_64')
 url="http://www.net-snmp.org/"
@@ -13,13 +13,13 @@ options=('!libtool' '!makeflags' '!emptydirs')
 source=("https://downloads.sourceforge.net/sourceforge/net-snmp/${pkgname}-${pkgver}.tar.gz"
         'snmpd.service'
         'perl.patch')
-md5sums=('11dc7dd91e3aadd6a6d953c7dd216574'
+md5sums=('395f7988f1ee4fd9b61eebbbb0961245'
          '7afa48020f37e4de2b3b8cdf4d7b0e42'
          '5e800d442de59f77f1080ff5f52e2041')
 
 build() {
   cd ${pkgname}-${pkgver}
-  patch -p1 -i $srcdir/perl.patch
+  patch -p1 -i ${srcdir}/perl.patch
 
   autoreconf -f -i
 
