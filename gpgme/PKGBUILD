@@ -12,17 +12,14 @@ provides=('gpgmepp')
 replaces=('gpgmepp')
 conflicts=('gpgmepp')
 options=('!libtool' '!emptydirs')
-source=("https://www.gnupg.org/ftp/gcrypt/gpgme/${pkgname}-${pkgver}.tar.bz2"
-        'qpgme.patch')
-sha256sums=('9551e37081ad3bde81018a0d24f245c3f8206990549598fb31a97a68380a7b71'
-            '5630cbd1a7f8d246173c780a60f8eb1963a3578a1c9820d8448413016d4119e0')
+source=("https://www.gnupg.org/ftp/gcrypt/gpgme/${pkgname}-${pkgver}.tar.bz2")
+sha256sums=('9551e37081ad3bde81018a0d24f245c3f8206990549598fb31a97a68380a7b71')
 
 build() {
-  cd ${pkgname}-${pkgver}
-  #sed -i -e 's|libgpgme@libsuffix@;@LIBASSUAN_LIBS@|libgpgme.so;@LIBASSUAN_LIBS@|' lang/cpp/src/GpgmeppConfig.cmake.in.in
-  patch -p1 -R -i ${srcdir}/qpgme.patch
+  mkdir -p build
+  cd build
 
-  ./configure --prefix=/usr \
+  ../${pkgname}-${pkgver}/configure --prefix=/usr \
        --disable-static \
        --disable-gpgsm-test \
        --disable-fd-passing
@@ -30,13 +27,13 @@ build() {
 }
 
 check() {
-  cd ${pkgname}-${pkgver}
-  # FAIL: t-remarks
+  cd build
+  # no FAIL
   make check
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
+  cd build
 
   make DESTDIR=${pkgdir} install
 }
