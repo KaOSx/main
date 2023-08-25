@@ -1,7 +1,7 @@
 
 pkgname=glslang
-pkgver=12.3.1
-pkgrel=2
+pkgver=13.0.0
+pkgrel=1
 pkgdesc='Khronos-reference front end for GLSL/ESSL and partial front end for HLSL'
 arch=('x86_64')
 url='https://github.com/KhronosGroup/glslang'
@@ -9,7 +9,7 @@ license=('BSD')
 depends=('gcc-libs')
 makedepends=('cmake' 'python3' 'googletest')
 source=("https://github.com/KhronosGroup/glslang/archive/${pkgver}.tar.gz")
-md5sums=('0d453bdb40e79948bd05aa3910fdec56')
+md5sums=('89c3090811fa54eebf38cc7176424d82')
 
 build() {
   cmake -B build -S ${pkgname}-${pkgver} \
@@ -24,6 +24,6 @@ package() {
   DESTDIR=${pkgdir} cmake --install build
 
   install -Dm644 ${pkgname}-${pkgver}/LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
-  ln -s ${pkgdir}/usr/bin/glslang ${pkgdir}/usr/bin/glslangValidator
+  #ln -s ${pkgdir}/usr/bin/glslang ${pkgdir}/usr/bin/glslangValidator
 }
 
