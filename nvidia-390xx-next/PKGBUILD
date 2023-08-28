@@ -20,11 +20,13 @@ _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
         'linux-6.2.patch'
         'linux-6.3.patch'
-        'linux-6.4.patch')
+        'linux-6.4.patch'
+        'linux-6.5.patch')
 md5sums=('405c2220d5d3711e9f298c871e8d66ee'
          '334d82cdc82c8172e9c21188c872523e'
          'd54c6a018acf6c147847d2d1511bed8a'
-         'cd698c9fdb8fe9a1b776b1dcdac5064c')
+         'cd698c9fdb8fe9a1b776b1dcdac5064c'
+         '0ea696144a7199536089664225775b47')
 
 build() {
     cd ${srcdir}
@@ -35,6 +37,7 @@ build() {
     patch -p1 -i ${srcdir}/linux-6.2.patch
     patch -p1 -i ${srcdir}/linux-6.3.patch
     patch -p1 -i ${srcdir}/linux-6.4.patch
+    patch -p1 -i ${srcdir}/linux-6.5.patch
     # linux 4.20 needed
     #sed -i -e 's|ipmi_user_t         p_user;|struct ipmi_user    *p_user;|g' kernel/nvidia/os-interface.c
     
