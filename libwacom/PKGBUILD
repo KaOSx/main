@@ -1,6 +1,6 @@
  
 pkgname=libwacom
-pkgver=2.7.0
+pkgver=2.8.0
 pkgrel=1
 pkgdesc="Library that provides applications with a way to get information about any tablets that are currently connected."
 arch=('x86_64')
@@ -9,13 +9,13 @@ license=('GPLv2')
 depends=('glib2' 'libgudev')
 makedepends=('python3' 'meson' 'ninja')
 source=("https://github.com/linuxwacom/libwacom/releases/download/${pkgname}-${pkgver}/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('853929bd73fba2064b12142dbbee4b3bf84509197ff46a4da559eddf62d32cdf')
+sha256sums=('bb04b12c8688d0ff6a108d47a38d2057d572c4d7227d78138abd5fd0ba59f215')
 
 build() {
   mkdir -p build
   cd build
 
-  meson ../${pkgname}-${pkgver} \
+  meson setup ../${pkgname}-${pkgver} \
     --prefix=/usr \
     --buildtype=release \
     -Dtests=disabled
