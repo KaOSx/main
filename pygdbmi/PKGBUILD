@@ -1,0 +1,25 @@
+
+pkgname=pygdbmi
+pkgver=0.11.0.0
+pkgrel=1
+pkgdesc="GDB/MI is a line based machine oriented text interface to GDB."
+arch=('x86_64')
+license=('LGPL')
+url="https://cs01.github.io/pygdbmi/"
+depends=('python3')
+makedepends=('python3-build' 'python3-installer' 'python3-setuptools' 'python3-wheel')
+source=("https://files.pythonhosted.org/packages/source/p/pygdbmi/${pkgname}-${pkgver}.tar.gz")
+sha256sums=('7a286be2fcf25650d9f66e11adc46e972cf078a466864a700cd44739ad261fb0')
+
+build() {
+    cd ${pkgname}-${pkgver}
+
+    python3 -m build -nw
+}
+
+package() {
+    cd ${pkgname}-${pkgver}
+
+    python3 -m installer --destdir=${pkgdir} dist/*.whl
+    install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
