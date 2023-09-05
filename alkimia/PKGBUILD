@@ -1,6 +1,6 @@
 
 pkgname=alkimia
-pkgver=8.1.1
+pkgver=8.1.2
 pkgrel=1
 arch=('x86_64')
 pkgdesc="A library with common classes and functionality used by finance applications for the KDE SC."
@@ -9,7 +9,7 @@ depends=('kconfig' 'kcoreaddons' 'kcompletion' 'ki18n' 'kpackage' 'plasma-framew
 makedepends=('extra-cmake-modules' 'kdoctools' 'doxygen')
 license=('LGPL')
 source=("https://download.kde.org/stable/alkimia/${pkgver}/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('957adc63c0be54dd433e3268a37323be5456e5ab84ece27f73a1616a92db86d5')
+sha256sums=('cf846ee87b9cc630f58e0bdd23334296810ba3bcc1751fe2f4722161897ee33a')
 
 build() {
   cmake -B build -S ${pkgname}-${pkgver} \
