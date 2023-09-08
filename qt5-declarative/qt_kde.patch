@@ -116,6 +116,305 @@ index 39f4f88512..c963e1878e 100644
  }
  
  template<typename T, int Step>
+diff --git a/src/qml/qml/qqmldata_p.h b/src/qml/qml/qqmldata_p.h
+index ee31cb38d9..187339169b 100644
+--- a/src/qml/qml/qqmldata_p.h
++++ b/src/qml/qml/qqmldata_p.h
+@@ -176,24 +176,24 @@ public:
+     };
+ 
+     struct NotifyList {
+-        quint64 connectionMask;
+-
+-        quint16 maximumTodoIndex;
+-        quint16 notifiesSize;
+-
+-        QQmlNotifierEndpoint *todo;
+-        QQmlNotifierEndpoint**notifies;
++        QAtomicInteger<quint64> connectionMask;
++        QQmlNotifierEndpoint *todo = nullptr;
++        QQmlNotifierEndpoint**notifies = nullptr;
++        quint16 maximumTodoIndex = 0;
++        quint16 notifiesSize = 0;
+         void layout();
+     private:
+         void layout(QQmlNotifierEndpoint*);
+     };
+-    NotifyList *notifyList;
++    QAtomicPointer<NotifyList> notifyList;
+ 
+-    inline QQmlNotifierEndpoint *notify(int index);
++    inline QQmlNotifierEndpoint *notify(int index) const;
+     void addNotify(int index, QQmlNotifierEndpoint *);
+     int endpointCount(int index);
+     bool signalHasEndpoint(int index) const;
+-    void disconnectNotifiers();
++
++    enum class DeleteNotifyList { Yes, No };
++    void disconnectNotifiers(DeleteNotifyList doDelete);
+ 
+     // The context that created the C++ object
+     QQmlContextData *context = nullptr;
+@@ -201,12 +201,12 @@ public:
+     QQmlContextData *outerContext = nullptr;
+     QQmlContextDataRef ownContext;
+ 
+-    QQmlAbstractBinding *bindings;
+-    QQmlBoundSignal *signalHandlers;
++    QQmlAbstractBinding *bindings = nullptr;
++    QQmlBoundSignal *signalHandlers = nullptr;
+ 
+     // Linked list for QQmlContext::contextObjects
+-    QQmlData *nextContextObject;
+-    QQmlData**prevContextObject;
++    QQmlData *nextContextObject = nullptr;
++    QQmlData**prevContextObject = nullptr;
+ 
+     inline bool hasBindingBit(int) const;
+     inline void setBindingBit(QObject *obj, int);
+@@ -216,10 +216,10 @@ public:
+     inline void setPendingBindingBit(QObject *obj, int);
+     inline void clearPendingBindingBit(int);
+ 
+-    quint16 lineNumber;
+-    quint16 columnNumber;
++    quint16 lineNumber = 0;
++    quint16 columnNumber = 0;
+ 
+-    quint32 jsEngineId; // id of the engine that created the jsWrapper
++    quint32 jsEngineId = 0; // id of the engine that created the jsWrapper
+ 
+     struct DeferredData {
+         DeferredData();
+@@ -240,7 +240,7 @@ public:
+ 
+     QQmlPropertyCache *propertyCache;
+ 
+-    QQmlGuardImpl *guards;
++    QQmlGuardImpl *guards = nullptr;
+ 
+     static QQmlData *get(const QObject *object, bool create = false) {
+         QObjectPrivate *priv = QObjectPrivate::get(const_cast<QObject *>(object));
+@@ -289,7 +289,7 @@ public:
+ 
+ private:
+     // For attachedProperties
+-    mutable QQmlDataExtended *extendedData;
++    mutable QQmlDataExtended *extendedData = nullptr;
+ 
+     Q_NEVER_INLINE static QQmlData *createQQmlData(QObjectPrivate *priv);
+     Q_NEVER_INLINE static QQmlPropertyCache *createPropertyCache(QJSEngine *engine, QObject *object);
+@@ -342,23 +342,31 @@ bool QQmlData::wasDeleted(const QObject *object)
+     return ddata && ddata->isQueuedForDeletion;
+ }
+ 
+-QQmlNotifierEndpoint *QQmlData::notify(int index)
++inline bool isIndexInConnectionMask(quint64 connectionMask, int index)
++{
++    return connectionMask & (1ULL << quint64(index % 64));
++}
++
++QQmlNotifierEndpoint *QQmlData::notify(int index) const
+ {
++    // Can only happen on "home" thread. We apply relaxed semantics when loading the atomics.
++
+     Q_ASSERT(index <= 0xFFFF);
+ 
+-    if (!notifyList || !(notifyList->connectionMask & (1ULL << quint64(index % 64)))) {
++    NotifyList *list = notifyList.loadRelaxed();
++    if (!list || !isIndexInConnectionMask(list->connectionMask.loadRelaxed(), index))
+         return nullptr;
+-    } else if (index < notifyList->notifiesSize) {
+-        return notifyList->notifies[index];
+-    } else if (index <= notifyList->maximumTodoIndex) {
+-        notifyList->layout();
+-    }
+ 
+-    if (index < notifyList->notifiesSize) {
+-        return notifyList->notifies[index];
+-    } else {
+-        return nullptr;
++    if (index < list->notifiesSize)
++        return list->notifies[index];
++
++    if (index <= list->maximumTodoIndex) {
++        list->layout();
++        if (index < list->notifiesSize)
++            return list->notifies[index];
+     }
++
++    return nullptr;
+ }
+ 
+ /*
+@@ -367,7 +375,19 @@ QQmlNotifierEndpoint *QQmlData::notify(int index)
+ */
+ inline bool QQmlData::signalHasEndpoint(int index) const
+ {
+-    return notifyList && (notifyList->connectionMask & (1ULL << quint64(index % 64)));
++    // This can be called from any thread.
++    // We still use relaxed semantics. If we're on a thread different from the "home" thread
++    // of the QQmlData, two interesting things might happen:
++    //
++    // 1. The list might go away while we hold it. In that case we are dealing with an object whose
++    //    QObject dtor is being executed concurrently. This is UB already without the notify lists.
++    //    Therefore, we don't need to consider it.
++    // 2. The connectionMask may be amended or zeroed while we are looking at it. In that case
++    //    we "misreport" the endpoint. Since ordering of events across threads is inherently
++    //    nondeterministic, either result is correct in that case. We can accept it.
++
++    NotifyList *list = notifyList.loadRelaxed();
++    return list && isIndexInConnectionMask(list->connectionMask.loadRelaxed(), index);
+ }
+ 
+ bool QQmlData::hasBindingBit(int coreIndex) const
+diff --git a/src/qml/qml/qqmlengine.cpp b/src/qml/qml/qqmlengine.cpp
+index 826a1a5ab4..fce8fe987f 100644
+--- a/src/qml/qml/qqmlengine.cpp
++++ b/src/qml/qml/qqmlengine.cpp
+@@ -718,18 +718,15 @@ void QQmlPrivate::qdeclarativeelement_destructor(QObject *o)
+         // Disconnect the notifiers now - during object destruction this would be too late, since
+         // the disconnect call wouldn't be able to call disconnectNotify(), as it isn't possible to
+         // get the metaobject anymore.
+-        d->disconnectNotifiers();
++        d->disconnectNotifiers(QQmlData::DeleteNotifyList::No);
+     }
+ }
+ 
+ QQmlData::QQmlData()
+     : ownedByQml1(false), ownMemory(true), indestructible(true), explicitIndestructibleSet(false),
+       hasTaintedV4Object(false), isQueuedForDeletion(false), rootObjectInCreation(false),
+-      hasInterceptorMetaObject(false), hasVMEMetaObject(false), parentFrozen(false),
+-      bindingBitsArraySize(InlineBindingArraySize), notifyList(nullptr),
+-      bindings(nullptr), signalHandlers(nullptr), nextContextObject(nullptr), prevContextObject(nullptr),
+-      lineNumber(0), columnNumber(0), jsEngineId(0),
+-      propertyCache(nullptr), guards(nullptr), extendedData(nullptr)
++      hasInterceptorMetaObject(false), hasVMEMetaObject(false), parentFrozen(false), dummy(0),
++      bindingBitsArraySize(InlineBindingArraySize), propertyCache(nullptr)
+ {
+     memset(bindingBitsValue, 0, sizeof(bindingBitsValue));
+     init();
+@@ -789,7 +786,10 @@ void QQmlData::signalEmitted(QAbstractDeclarativeData *, QObject *object, int in
+     // QQmlEngine to emit signals from a different thread.  These signals are then automatically
+     // marshalled back onto the QObject's thread and handled by QML from there.  This is tested
+     // by the qqmlecmascript::threadSignal() autotest.
+-    if (!ddata->notifyList)
++
++    // Relaxed semantics here. If we're on a different thread we might schedule a useless event,
++    // but that should be rare.
++    if (!ddata->notifyList.loadRelaxed())
+         return;
+ 
+     auto objectThreadData = QObjectPrivate::get(object)->threadData.loadRelaxed();
+@@ -1835,49 +1835,73 @@ void QQmlData::releaseDeferredData()
+ 
+ void QQmlData::addNotify(int index, QQmlNotifierEndpoint *endpoint)
+ {
+-    if (!notifyList) {
+-        notifyList = (NotifyList *)malloc(sizeof(NotifyList));
+-        notifyList->connectionMask = 0;
+-        notifyList->maximumTodoIndex = 0;
+-        notifyList->notifiesSize = 0;
+-        notifyList->todo = nullptr;
+-        notifyList->notifies = nullptr;
++    // Can only happen on "home" thread. We apply relaxed semantics when loading the atomics.
++
++    NotifyList *list = notifyList.loadRelaxed();
++
++    if (!list) {
++        list = new NotifyList;
++        // We don't really care when this change takes effect on other threads. The notifyList can
++        // only become non-null once in the life time of a QQmlData. It becomes null again when the
++        // underlying QObject is deleted. At that point any interaction with the QQmlData is UB
++        // anyway. So, for all intents and purposese, the list becomes non-null once and then stays
++        // non-null "forever". We can apply relaxed semantics.
++        notifyList.storeRelaxed(list);
+     }
+ 
+     Q_ASSERT(!endpoint->isConnected());
+ 
+     index = qMin(index, 0xFFFF - 1);
+-    notifyList->connectionMask |= (1ULL << quint64(index % 64));
+ 
+-    if (index < notifyList->notifiesSize) {
++    // Likewise, we don't really care _when_ the change in the connectionMask is propagated to other
++    // threads. Cross-thread event ordering is inherently nondeterministic. Therefore, when querying
++    // the conenctionMask in the presence of concurrent modification, any result is correct.
++    list->connectionMask.storeRelaxed(
++            list->connectionMask.loadRelaxed() | (1ULL << quint64(index % 64)));
+ 
+-        endpoint->next = notifyList->notifies[index];
++    if (index < list->notifiesSize) {
++        endpoint->next = list->notifies[index];
+         if (endpoint->next) endpoint->next->prev = &endpoint->next;
+-        endpoint->prev = &notifyList->notifies[index];
+-        notifyList->notifies[index] = endpoint;
+-
++        endpoint->prev = &list->notifies[index];
++        list->notifies[index] = endpoint;
+     } else {
+-        notifyList->maximumTodoIndex = qMax(int(notifyList->maximumTodoIndex), index);
++        list->maximumTodoIndex = qMax(int(list->maximumTodoIndex), index);
+ 
+-        endpoint->next = notifyList->todo;
++        endpoint->next = list->todo;
+         if (endpoint->next) endpoint->next->prev = &endpoint->next;
+-        endpoint->prev = &notifyList->todo;
+-        notifyList->todo = endpoint;
++        endpoint->prev = &list->todo;
++        list->todo = endpoint;
+     }
+ }
+ 
+-void QQmlData::disconnectNotifiers()
++void QQmlData::disconnectNotifiers(QQmlData::DeleteNotifyList doDelete)
+ {
+-    if (notifyList) {
+-        while (notifyList->todo)
+-            notifyList->todo->disconnect();
+-        for (int ii = 0; ii < notifyList->notifiesSize; ++ii) {
+-            while (QQmlNotifierEndpoint *ep = notifyList->notifies[ii])
++    // Can only happen on "home" thread. We apply relaxed semantics when loading  the atomics.
++    if (NotifyList *list = notifyList.loadRelaxed()) {
++        while (QQmlNotifierEndpoint *todo = list->todo)
++            todo->disconnect();
++        for (int ii = 0; ii < list->notifiesSize; ++ii) {
++            while (QQmlNotifierEndpoint *ep = list->notifies[ii])
+                 ep->disconnect();
+         }
+-        free(notifyList->notifies);
+-        free(notifyList);
+-        notifyList = nullptr;
++        free(list->notifies);
++
++        if (doDelete == DeleteNotifyList::Yes) {
++            // We can only get here from QQmlData::destroyed(), and that can only come from the
++            // the QObject dtor. If you're still sending signals at that point you have UB already
++            // without any threads. Therefore, it's enough to apply relaxed semantics.
++            notifyList.storeRelaxed(nullptr);
++            delete list;
++        } else {
++            // We can use relaxed semantics here. The worst thing that can happen is that some
++            // signal is falsely reported as connected. Signal connectedness across threads
++            // is not quite deterministic anyway.
++            list->connectionMask.storeRelaxed(0);
++            list->maximumTodoIndex = 0;
++            list->notifiesSize = 0;
++            list->notifies = nullptr;
++
++        }
+     }
+ }
+ 
+@@ -1961,7 +1985,7 @@ void QQmlData::destroyed(QObject *object)
+         guard->objectDestroyed(object);
+     }
+ 
+-    disconnectNotifiers();
++    disconnectNotifiers(DeleteNotifyList::Yes);
+ 
+     if (extendedData)
+         delete extendedData;
 diff --git a/src/qml/qml/qqmlimport.cpp b/src/qml/qml/qqmlimport.cpp
 index 10c6c41338..39bfcdc999 100644
 --- a/src/qml/qml/qqmlimport.cpp

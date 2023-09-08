@@ -6,7 +6,7 @@ pkgname=qt5-wayland
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=2
+pkgrel=3
 pkgdesc="Cross-platform application and UI framework (QtWayland)"
 arch=('x86_64')
 url="https://www.qt.io/"
@@ -24,7 +24,7 @@ source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz"
         'qt_kde.patch')
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
-         '881a9ddd33c8cf7476a9457862319200')
+         '20ee4740cd4e9ae059c252682f75ed12')
 
 build() {
     cd ${__pkgfqn}

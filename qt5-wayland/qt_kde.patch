@@ -1357,6 +1357,28 @@ index 474fe2ab..46f629ac 100644
  
  private:
      QWaylandDisplay *m_display = nullptr;
+diff --git a/src/client/qwaylandinputcontext.cpp b/src/client/qwaylandinputcontext.cpp
+index 84a34674..920a4222 100644
+--- a/src/client/qwaylandinputcontext.cpp
++++ b/src/client/qwaylandinputcontext.cpp
+@@ -93,9 +93,14 @@ void QWaylandTextInput::reset()
+ void QWaylandTextInput::commit()
+ {
+     if (QObject *o = QGuiApplication::focusObject()) {
+-        QInputMethodEvent event;
+-        event.setCommitString(m_preeditCommit);
+-        QCoreApplication::sendEvent(o, &event);
++        if (!m_preeditCommit.isEmpty()) {
++
++            QInputMethodEvent event;
++            event.setCommitString(m_preeditCommit);
++            m_preeditCommit = QString();
++
++            QCoreApplication::sendEvent(o, &event);
++        }
+     }
+ 
+     reset();
 diff --git a/src/client/qwaylandinputdevice.cpp b/src/client/qwaylandinputdevice.cpp
 index e931d1f5..9a0fe49d 100644
 --- a/src/client/qwaylandinputdevice.cpp
