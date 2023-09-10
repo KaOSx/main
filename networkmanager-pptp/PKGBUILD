@@ -2,8 +2,8 @@
 pkgname=networkmanager-pptp
 pkgver=1.2.12
 _pkgver=1.2
-_pppver=2.4.9
-pkgrel=1
+_pppver=2.5.0
+pkgrel=2
 pkgdesc="NetworkManager VPN plugin for pptp "
 arch=('x86_64')
 license=('GPL')
@@ -16,7 +16,7 @@ sha256sums=('e5fa59fe46117f0ee86e9ca62c6943bc063884b04dd2396ccec38a2d1f414982')
 
 build() {
   cd NetworkManager-pptp-${pkgver}
-  
+
   ./configure --prefix=/usr \
   	--sysconfdir=/etc \
 	--libexecdir=/usr/lib/networkmanager \
@@ -29,6 +29,6 @@ build() {
 
 package() {
   cd NetworkManager-pptp-${pkgver}
-  
+
   make DESTDIR=${pkgdir} install 
 }
