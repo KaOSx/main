@@ -1,7 +1,7 @@
 
 pkgname=libsodium
-pkgver=1.0.18
-pkgrel=2
+pkgver=1.0.19
+pkgrel=1
 pkgdesc="Sodium is a portable, cross-compilable, installable, fork of NaCl with a compatible API."
 arch=('x86_64')
 url="https://github.com/jedisct1/libsodium"
@@ -10,23 +10,23 @@ depends=('glibc')
 options=('!libtool')
 #source=("https://github.com/jedisct1/libsodium/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.gz")
 source=("https://download.libsodium.org/libsodium/releases/${pkgname}-${pkgver}.tar.gz")
-md5sums=('3ca9ebc13b6b4735acae0a6a4c4f9a95')
+md5sums=('32523f39b670ad86f54325670e0b7832')
 
 build() {
-  cd ${pkgname}-${pkgver}
+  cd ${pkgname}-stable
 
   ./configure --prefix=/usr
   make
 }
 
 check() {
-  cd ${pkgname}-${pkgver}
+  cd ${pkgname}-stable
 
   make check
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
+  cd ${pkgname}-stable
   make DESTDIR=${pkgdir} install
 
   install -d -m 755 ${pkgdir}/usr/share/licenses/${pkgname}
