@@ -1,6 +1,6 @@
  
 pkgname=libglvnd
-pkgver=1.6.0
+pkgver=1.7.0
 pkgrel=1
 pkgdesc="The GL Vendor-Neutral Dispatch library"
 arch=('x86_64')
@@ -12,13 +12,13 @@ provides=('libgl')
 conflicts=('libgl')
 replaces=('libgl')
 source=("https://gitlab.freedesktop.org/glvnd/libglvnd/-/archive/v${pkgver}/libglvnd-v${pkgver}.tar.bz2")
-sha256sums=('2b22a72f9f35fe9ba630c2971f6cee6eefc0c8317e0eecc3c76134ed5f00bd8a')
+sha256sums=('d0e1925a3c9aee0143b8c181ac31d5637c8faa081759c277b8e16c7075612c11')
 
 build() {
   mkdir -p build
   cd build
-  
-  meson ../${pkgname}-v${pkgver} \
+
+  meson setup ../${pkgname}-v${pkgver} \
     --prefix=/usr \
     --buildtype=release
 
@@ -27,8 +27,8 @@ build() {
 
 package() {
   cd build
-  
+
   DESTDIR=${pkgdir} ninja install
-  
+
   install -Dm644 ../${pkgname}-v${pkgver}/README.md ${pkgdir}/usr/share/licenses/$pkgname/README.md
 }

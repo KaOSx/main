@@ -1,7 +1,7 @@
 
 pkgname=libpano13
-pkgver=2.9.21
-pkgrel=3
+pkgver=2.9.22
+pkgrel=1
 pkgdesc="Basic library to calculate panoramical pictures - core functions of the panotools"
 arch=('x86_64')
 url="https://panotools.sourceforge.net/"
@@ -10,7 +10,7 @@ depends=('libpng' 'libtiff')
 makedepends=('openjdk')
 options=('!libtool')
 source=("https://downloads.sourceforge.net/sourceforge/panotools/${pkgname}-${pkgver}.tar.gz")
-sha256sums=('79e5a1452199305e2961462720ef5941152779c127c5b96fc340d2492e633590')
+sha256sums=('affc6830cdbe71c28d2731dcbf8dea2acda6d9ffd4609c6dbf3ba0c68440a8e3')
 
 build() {
   cmake -B build -S ${pkgname}-${pkgver} \
