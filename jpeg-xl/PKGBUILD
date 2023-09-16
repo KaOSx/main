@@ -2,14 +2,14 @@
 pkgname=jpeg-xl
 _pkgname=libjxl
 pkgver=0.8.2
-pkgrel=3
+pkgrel=4
 pkgdesc='JPEG XL image format reference implementation, called libjxl'
 arch=('x86_64')
 url='https://jpeg.org/jpegxl/'
 license=('Apache')
 depends=('brotli' 'gdk-pixbuf2' 'giflib' 'libjpeg-turbo' 'libpng' 'libwebp' 'openexr' 'zlib'
          'libglvnd' 'freeglut' 'lcms2')
-makedepends=('cmake' 'clang' 'git' 'googletest' 'python3' 'graphviz')
+makedepends=('cmake' 'git' 'googletest' 'python3' 'graphviz')
 source=("git+https://github.com/libjxl/libjxl.git")
 #source=("git+https://gitlab.com/wg1/jpeg-xl.git")
 sha256sums=('SKIP')
@@ -22,8 +22,8 @@ prepare() {
 }
 
 build() {
-    export CC='clang'
-    export CXX='clang++'
+    #export CC='clang'
+    #export CXX='clang++'
 
     cmake -B build -S ${_pkgname} \
         -DCMAKE_BUILD_TYPE=Release \
