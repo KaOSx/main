@@ -1,0 +1,28 @@
+
+pkgname=libunibreak
+pkgver=5.1
+_pkgver=5_1
+pkgrel=1
+pkgdesc="Implementation of the line breaking algorithm as described in Unicode 5.2.0 Standard Annex 14, Revision 24"
+arch=("x86_64")
+url="https://github.com/adah1972/libunibreak/"
+license=("custom:zlib/libpng")
+depends=('gcc')
+source=("https://github.com/adah1972/libunibreak/releases/download/${pkgname}_${_pkgver}/${pkgname}-${pkgver}.tar.gz")
+sha256sums=('dd1a92d4c5646aa0e457ff41d89812ec5243863be6c20bbcb5ee380f3dd78377')
+
+build() {
+  cd ${pkgname}-${pkgver}
+
+  ./configure --prefix=/usr \
+    --disable-static
+  make
+}
+
+package() {
+  cd ${pkgname}-${pkgver}
+
+  make DESTDIR=${pkgdir} install
+
+  install -Dm644 LICENCE ${pkgdir}/usr/share/licenses/$pkgname/LICENSE
+}

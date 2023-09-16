@@ -1,0 +1,25 @@
+pkgname=xsimd
+pkgver=11.1.0
+pkgrel=1
+pkgdesc="C++ wrappers for SIMD intrinsics and parallelized, optimized mathematical functions"
+url='https://xsimd.readthedocs.io/en/latest/'
+arch=('x86_64')
+license=('BSD-3')
+makedepends=('cmake')
+source=("https://github.com/xtensor-stack/xsimd/archive/refs/tags/${pkgver}.tar.gz")
+sha256sums=('aa54dba8daade472656eba0d27154f072fec06ee3831aefcac69a5f6c7dbbae7')
+ 
+build() {
+  cmake -B build -S ${pkgname}-${pkgver} \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release
+  cmake --build build
+}
+
+package() {
+
+  DESTDIR=${pkgdir} cmake --install build
+
+  install -Dm644 ${pkgname}-${pkgver}/LICENSE ${pkgdir}/usr/share/licenses/$pkgname/LICENSE
+}
+
