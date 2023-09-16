@@ -2,7 +2,7 @@
 pkgname=fftw
 pkgver=3.3.10
 _pkgver=3.3.10
-pkgrel=1
+pkgrel=2
 pkgdesc="A library for computing the discrete Fourier transform (DFT)"
 arch=('x86_64')
 license=('GPL2')
@@ -52,5 +52,9 @@ package() {
   make DESTDIR=${pkgdir} install
 
   cd ${srcdir}/${pkgname}-${pkgver}-single
-  make DESTDIR=${pkgdir} install  
+  make DESTDIR=${pkgdir} install
+  # https://github.com/FFTW/fftw3/issues/332
+  rm ${pkgdir}/usr/lib/cmake/fftw3/FFTW3Config.cmake
+  rm ${pkgdir}/usr/lib/cmake/fftw3/FFTW3fConfig.cmake
+  rm ${pkgdir}/usr/lib/cmake/fftw3/FFTW3lConfig.cmake
 }
