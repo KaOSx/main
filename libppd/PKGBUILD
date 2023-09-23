@@ -1,0 +1,35 @@
+
+pkgname=libppd
+pkgver=2.0.0
+pkgrel=1
+pkgdesc="OpenPrinting CUPS Filters - legacy support library for PPD files."
+arch=('x86_64')
+url="https://github.com/OpenPrinting/libppd"
+license=('GPL')
+depends=('libcups' 'libcupsfilters')
+makedepends=('ghostscript') 
+options=('!libtool')
+source=("https://github.com/OpenPrinting/libppd/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
+md5sums=('ab889cbcdaa23689d9a425769f208da9')
+
+build() {
+  cd ${pkgname}-${pkgver}
+
+  ./configure --prefix=/usr  \
+    --sysconfdir=/etc \
+    --disable-static \
+    --disable-mutool
+  make
+}
+
+check() {
+  cd ${pkgname}-${pkgver}
+
+  make -k check
+}
+
+package() {
+  cd ${pkgname}-${pkgver}
+
+  make DESTDIR=$pkgdir/ install
+}

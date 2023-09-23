@@ -1,0 +1,35 @@
+
+pkgname=libcupsfilters
+pkgver=2.0.0
+pkgrel=1
+pkgdesc="OpenPrinting CUPS Filters - code of the filters of the former cups-filters package as library functions"
+arch=('x86_64')
+url="https://github.com/OpenPrinting/libcupsfilters"
+license=('GPL')
+depends=('lcms2' 'poppler' 'qpdf' 'libcups' 'libexif' 'libjpeg-turbo' 'libpng' 'libtiff')
+makedepends=('ghostscript' 'ttf-dejavu' 'python3') 
+options=('!libtool')
+source=("https://github.com/OpenPrinting/libcupsfilters/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
+md5sums=('267e569145bd20615fa18ae65ea6f870')
+
+build() {
+  cd ${pkgname}-${pkgver}
+
+  ./configure --prefix=/usr  \
+    --sysconfdir=/etc \
+    --disable-static \
+    --disable-mutool
+  make
+}
+
+check() {
+  cd ${pkgname}-${pkgver}
+
+  make -k check
+}
+
+package() {
+  cd ${pkgname}-${pkgver}
+
+  make DESTDIR=$pkgdir/ install
+}

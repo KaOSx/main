@@ -1,0 +1,36 @@
+
+pkgname=cups-browsed
+pkgver=2.0.0
+pkgrel=1
+pkgdesc="OpenPrinting CUPS Filters"
+arch=('x86_64')
+url="https://github.com/OpenPrinting/cups-browsed"
+license=('GPL')
+depends=('avahi' 'libcups' 'libcupsfilters' 'libldap' 'libppd')
+makedepends=('python3') 
+options=('!libtool')
+source=("https://github.com/OpenPrinting/cups-browsed/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
+md5sums=('1f8dc0c5a08d8a410df0713c5adbaee9')
+
+build() {
+  cd ${pkgname}-${pkgver}
+
+  ./configure --prefix=/usr  \
+    --sysconfdir=/etc \
+    --enable-avahi \
+    --with-rcdir=no
+  make
+}
+
+check() {
+  cd ${pkgname}-${pkgver}
+
+  make -k check
+}
+
+package() {
+  cd ${pkgname}-${pkgver}
+  make DESTDIR=$pkgdir/ install
+  # systemd service
+  install -Dm644 daemon/cups-browsed.service ${pkgdir}/usr/lib/systemd/system/cups-browsed.service
+}

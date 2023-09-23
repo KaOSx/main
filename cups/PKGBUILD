@@ -2,14 +2,14 @@
 pkgbase=cups
 pkgname=('libcups' 'cups')
 pkgver=2.4.7
-pkgrel=1
+pkgrel=2
 epoch=1
 arch=('x86_64')
 license=('GPL')
 url="https://openprinting.github.io/cups/"
 makedepends=('libtiff' 'libpng' 'acl' 'pam' 'xdg-utils' 'krb5' 'openssl' 'cups-filters' 'bc'
              'xinetd' 'gzip' 'autoconf' 'libusb' 'dbus' 'avahi'  'hicolor-icon-theme' 'systemd'
-             'colord' 'libpaper' 'gnutls' 'libxcrypt')
+             'colord' 'libpaper' 'gnutls' 'libxcrypt' 'cups-browsed')
 source=("https://github.com/OpenPrinting/cups/releases/download/v${pkgver}/cups-${pkgver}-source.tar.gz"
         'cups-no-export-ssllibs.patch'
         'cups-no-gcrypt.patch'

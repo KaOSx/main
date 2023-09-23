@@ -1,39 +1,28 @@
 
 pkgname=cups-filters
-pkgver=1.28.17
-pkgrel=9
+pkgver=2.0.0
+pkgrel=1
 pkgdesc="OpenPrinting CUPS Filters"
 arch=('x86_64')
 url="https://openprinting.github.io/projects/01-cups-filters/"
 license=('GPL')
-depends=('lcms2' 'poppler' 'qpdf' 'libldap' 'libexif')
-makedepends=('ghostscript' 'ttf-dejavu' 'python3') 
-optdepends=('ghostscript: for non-PostScript printers to print with CUPS to convert PostScript to raster images'
-            'foomatic-db: drivers use Ghostscript to convert PostScript to a printable form directly'
-            'foomatic-db-engine: drivers use Ghostscript to convert PostScript to a printable form directly'
-            'foomatic-db-nonfree: drivers use Ghostscript to convert PostScript to a printable form directly')
-conflicts=('foomatic-filters')
-provides=('foomatic-filters')
-replaces=('foomatic-filters')
-backup=(etc/fonts/conf.d/99pdftoopvp.conf)
+depends=('libcupsfilters' 'libppd')
+makedepends=('ghostscript') 
 options=('!libtool')
-#source=("https://www.openprinting.org/download/cups-filters/${pkgname}-${pkgver}.tar.xz"
 source=("https://github.com/OpenPrinting/cups-filters/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz"
         "https://github.com/OpenPrinting/cups-filters/commit/50d984a621524c2e2857ad84eb4b71933c8821be.diff")
-md5sums=('74741eb5ba32331676f88be468259d1f'
+md5sums=('1d9ac8b601ea5e25a42767856a48c4d7'
          '895186801ce1c988738e5306b09fe2c8')
 
 build() {
   cd ${pkgname}-${pkgver}
   #patch -p1 -i ${srcdir}/50d984a621524c2e2857ad84eb4b71933c8821be.diff
   #sed -e "s|cpp/poppler-version.h|poppler/cpp/poppler-version.h|" -i filter/pdftoopvp/oprs/OPRS.cxx
-  CXXFLAGS="-std=c++17"
+  #CXXFLAGS="-std=c++17"
 
   ./configure --prefix=/usr  \
     --sysconfdir=/etc \
-    --with-rcdir=no \
     --enable-avahi \
-    --with-test-font-path=/usr/share/fonts/TTF/DejaVuSans.ttf \
     --disable-mutool
   make
 }
@@ -46,10 +35,6 @@ check() {
 
 package() {
   cd ${pkgname}-${pkgver}
-  make DESTDIR=$pkgdir/ install
 
-  rm -f ${pkgdir}/usr/lib/*.a
-  # systemd service
-  install -Dm644 utils/cups-browsed.service ${pkgdir}/usr/lib/systemd/system/cups-browsed.service
-  sed -i 's|cups.service|org.cups.cupsd.service|g' ${pkgdir}/usr/lib/systemd/system/cups-browsed.service
+  make DESTDIR=$pkgdir/ install
 }
