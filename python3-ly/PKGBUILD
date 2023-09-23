@@ -1,19 +1,25 @@
 
 pkgname=python3-ly
 _pkgname=python-ly
-pkgver=0.9.7
-pkgrel=3
+pkgver=0.9.8
+pkgrel=1
 pkgdesc="A Python package and commandline tool to manipulate LilyPond files"
 arch=('x86_64')
 url="https://pypi.python.org/pypi/python-ly/"
 license=('LGPL')
 depends=('python3')
-makedepends=('python3')
+makedepends=('python3-build' 'python3-installer' 'python3-setuptools' 'python3-wheel')
 source=("https://github.com/frescobaldi/python-ly/archive/v${pkgver}.tar.gz")
-md5sums=('7b04a4a82874f6a3c2ad16123e97f304')
+md5sums=('fb83fd35e17f91ba15061b29964f767a')
+
+build() {
+    cd ${_pkgname}-${pkgver}
+
+    python3 -m build -nw
+}
 
 package() {
     cd ${_pkgname}-${pkgver}
 
-    python3 setup.py install --root=${pkgdir}
+    python3 -m installer --destdir=${pkgdir} dist/*.whl
 }
