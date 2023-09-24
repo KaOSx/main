@@ -1,7 +1,7 @@
 
 pkgname=mplayer
-pkgver=38359
-pkgrel=6
+pkgver=38435
+pkgrel=1
 pkgdesc="Multimedia player."
 arch=('x86_64')
 depends=('a52dec' 'aalib' 'alsa-lib' 'bzip2' 'enca' 'faad2'
@@ -12,70 +12,47 @@ depends=('a52dec' 'aalib' 'alsa-lib' 'bzip2' 'enca' 'faad2'
          'libxss' 'libxv' 'libxxf86vm' 'live-media' 'opus'
          'lzo2' 'mpg123' 'ncurses' 'openal' 'opencore-amr' 'orc' 'rtmpdump'  # not ready for 2.0 'openjpeg' and 1.29.9 'faac'
          'schroedinger' 'sdl' 'samba' 'speex' 'ttf-dejavu' 'x264' 'xvidcore' 'zlib' 'gnutls')
-makedepends=('mesa' 'unzip' 'yasm')
+makedepends=('mesa' 'unzip' 'yasm' 'subversion')
 license=('GPL2')
 url="http://www.mplayerhq.hu/"
 groups=('multimedia')
 backup=('etc/mplayer/codecs.conf' 'etc/mplayer/input.conf')
-source=("https://sourceforge.net/projects/kaosx/files/sources/${pkgname}/${pkgname}-${pkgver}.tar.xz"
+source=(${pkgname}-${pkgver}::"svn://svn.mplayerhq.hu/mplayer/trunk#revision=${pkgver}"
         'mplayer.desktop'
         'mplayer.png'
         'cdio-includes.patch')
-md5sums=('128dff81ba139b5d2a23b2c62edb467c'
+md5sums=('SKIP'
          '62f44a58f072b2b1a3c3d3e4976d64b3'
          'd00874ccc644b7f43d6ef1c942fcef28'
          '7b5be7191aafbea64218dc4916343bbc')
 
-# create tarball: source PKGBUILD && mksource
-
-mksource() {
-    rm -vRf ${pkgname}
-    echo "checkout mplayer"
-    _pkgver=`svn info svn://svn.mplayerhq.hu/mplayer/trunk | grep Revision: | cut -d' ' -f2`
-    svn co svn://svn.mplayerhq.hu/mplayer/trunk --config-dir ./ ${pkgname} || return 1
-    cd ${pkgname}
-    echo "checkout ffmpeg"
-    #git clone git://git.videolan.org/ffmpeg.git ffmpeg
-    git clone https://github.com/FFmpeg/FFmpeg ffmpeg
-    echo "clean checkout"
-    rm -vRf ffmpeg/.git
-    find . -name ".svn" -exec rm -rf {} \;
-    cd ..
-    pushd ${pkgname}
-    popd
-    echo "pack checkout"
-    tar -cvJf ${pkgname}-${_pkgver}.tar.xz ${pkgname}/*
-    md5sum ${pkgname}-${_pkgver}.tar.xz
-    echo "change pkgver to ${_pkgver}"
-}
-
 build() {
-    cd ${pkgname}
+    cd ${pkgname}-${pkgver}
     #patch -p0 -i ${srcdir}/cdio-includes.patch
-    
+
     ./configure \
       --confdir=/etc/mplayer \
       --enable-runtime-cpudetection \
       --language=all \
       --enable-radio \
       --enable-radio-capture \
-      --prefix=/usr
-
+      --prefix=/usr \
+      --disable-ffmpeg_a
     make
 }
 
 package() {
-  cd ${pkgname}               
+  cd ${pkgname}-${pkgver}
 
   make DESTDIR=${pkgdir} install
 
-  install -Dm644 etc/{codecs.conf,input.conf,example.conf} ${pkgdir}/etc/mplayer/               
+  install -Dm644 etc/{codecs.conf,input.conf,example.conf} ${pkgdir}/etc/mplayer/
 
-  install -dm755 ${pkgdir}/usr/share/mplayer/           
-  ln -s /usr/share/fonts/TTF/DejaVuSans.ttf ${pkgdir}/usr/share/mplayer/subfont.ttf             
-  rm -rf ${pkgdir}/usr/share/mplayer/font               
+  install -dm755 ${pkgdir}/usr/share/mplayer/
+  ln -s /usr/share/fonts/TTF/DejaVuSans.ttf ${pkgdir}/usr/share/mplayer/subfont.ttf
+  rm -rf ${pkgdir}/usr/share/mplayer/font
 
   # Desktop Integration.
-  install -Dm644 ${srcdir}/mplayer.desktop ${pkgdir}/usr/share/applications/mplayer.desktop             
-  install -Dm644 ${srcdir}/mplayer.png ${pkgdir}/usr/share/pixmaps/mplayer.png
+  install -Dm644 ../mplayer.desktop ${pkgdir}/usr/share/applications/mplayer.desktop
+  install -Dm644 ../mplayer.png ${pkgdir}/usr/share/pixmaps/mplayer.png
 }

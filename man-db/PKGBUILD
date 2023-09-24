@@ -11,12 +11,10 @@ optdepends=('gzip')
 backup=('etc/man_db.conf')
 install=${pkgname}.install
 source=("https://download-mirror.savannah.gnu.org/releases/man-db/${pkgname}-${pkgver}.tar.xz"
-        'convert-mans'
         'man-db.service'
         'man-db.timer'
         'root_man.patch')
 md5sums=('67e0052fa200901b314fad7b68c9db27'
-         '2b7662a7d5b33fe91f9f3e034361a2f6'
          '36fb3f616e42a0e23cf7a4d284e640cd'
          'df6d4f432e3e16c255c785fca1447346'
          '86a53b9d348f65aebdba0e65dce8da06')
@@ -49,9 +47,6 @@ package() {
 
   # groff conflict
   rm -f ${pkgdir}/usr/bin/zsoelim
-
-  # http://www.linuxfromscratch.org/lfs/view/6.4/chapter06/man-db.html
-  install -D -m755 ${srcdir}/convert-mans  ${pkgdir}/usr/bin/convert-mans 
 
   # install man-db scheduler
   install -D -m644 ${srcdir}/man-db.timer ${pkgdir}/usr/lib/systemd/system/man-db.timer
