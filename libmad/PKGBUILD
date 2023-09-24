@@ -1,7 +1,8 @@
 
+# check all that depend, all link to minor .so
 pkgname=libmad
-pkgver=0.16.3
-pkgrel=2
+pkgver=0.16.4
+pkgrel=1
 pkgdesc="A high-quality MPEG audio decoder"
 arch=('x86_64')
 url="https://www.underbit.com/products/mad/"
@@ -14,14 +15,14 @@ source=("https://codeberg.org/tenacityteam/libmad/archive/${pkgver}.tar.gz"
         'amd64-64bit.diff' 
         'frame_length.diff' 
         'optimize.diff')
-md5sums=('360456e50e7b77db91e53be792080ea5'
+md5sums=('6f3fc68f4c45a4c2792665f98b917e15'
          'fbcca0267a423bae45389666f4cb04d5'
          '8d8bd64a2842dd59153b3a6642059e23'
          '3329b032118a68e18908197e65b3198d'
          '3e52afe2103f367810a18bef9e82eb9f')
 
 build() {
-  cmake -B build -S ${pkgname}-${pkgver} \
+  cmake -B build -S ${pkgname} \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr
   cmake --build build

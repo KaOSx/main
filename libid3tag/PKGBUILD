@@ -1,8 +1,8 @@
 
 # check all that depend, all link to minor .so
 pkgname=libid3tag
-pkgver=0.16.2
-pkgrel=2
+pkgver=0.16.3
+pkgrel=1
 pkgdesc="library for id3 tagging"
 arch=('x86_64')
 url="https://www.underbit.com/products/mad/"
@@ -11,7 +11,7 @@ depends=('zlib')
 makedepends=('cmake' 'gperf')
 options=(!libtool)
 source=("https://codeberg.org/tenacityteam/libid3tag/archive/${pkgver}.tar.gz")
-md5sums=('d75f823e5882ac53e396999a883d0611')
+md5sums=('77250d3e316e9fcb8eb3560565e59a07')
 
 build() {
   cmake -B build -S ${pkgname} \
