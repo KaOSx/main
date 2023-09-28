@@ -1,7 +1,7 @@
  
 pkgname=xorg-fonttosfnt
-pkgver=1.2.2
-pkgrel=2
+pkgver=1.2.3
+pkgrel=1
 pkgdesc="Wraps a set of bdf or pcf bitmap fonts in a sfnt (TrueType or OpenType) wrapper."
 arch=('x86_64')
 url="https://gitlab.freedesktop.org/xorg/app/fonttosfnt"
@@ -10,8 +10,8 @@ depends=('freetype2' 'libfontenc')
 makedepends=('xorgproto' 'xorg-util-macros')
 # add to groups once it replaces xorg-bdftopcf
 #groups=('xorg' 'xorg-apps')
-source=("https://xorg.freedesktop.org/archive/individual/app/fonttosfnt-${pkgver}.tar.bz2")
-sha256sums=('1a1bb4ef25856dea7de3d491ae7231493225b400bee0f6a1f949017ffd203a64')
+source=("https://xorg.freedesktop.org/archive/individual/app/fonttosfnt-${pkgver}.tar.xz")
+sha256sums=('aa7a93f240cbd0f5cdfe6be7c1b934b4f74d23de6257883a9f1b4bf21d7d61af')
 
 build() {
   cd fonttosfnt-${pkgver}
