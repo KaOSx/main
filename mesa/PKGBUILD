@@ -1,7 +1,7 @@
 
 pkgname=mesa
-pkgver=23.1.8
-_pkgver=23.1.8
+pkgver=23.2.1
+_pkgver=23.2.1
 pkgrel=1
 arch=('x86_64')
 pkgdesc="Mesa 3-D graphics libraries and include files"
@@ -15,7 +15,7 @@ license=('custom')
 source=("https://mesa.freedesktop.org/archive/${pkgname}-${pkgver}.tar.xz"
         "https://gitlab.freedesktop.org/pzanoni/mesa/-/commit/68e89401140d1b3a17052899c54577de3f008b67.diff"
         'LICENSE')
-sha256sums=('45434ff91a709844130a3174d9c0ef39c6b50725b2bb0c13e736f36134db14ad'
+sha256sums=('64de0616fc2d801f929ab1ac2a4f16b3e2783c4309a724c8a259b20df8bbc1cc'
             '52ffabfb10d822a14dd73490209e8917332da431a41fde051d022e3ef4b363e7'
             '7fdc119cf53c8ca65396ea73f6d10af641ba41ea1dd2bd44a824726e01c8b3f2')
 
@@ -45,7 +45,7 @@ build() {
     -Dgallium-xa=enabled \
     -Dgallium-nine=true \
     -Dgallium-opencl=disabled \
-    -Dvulkan-drivers=amd,intel,intel_hasvk,swrast \
+    -Dvulkan-drivers=amd,intel,intel_hasvk,swrast,virtio \
     -Dvulkan-layers=device-select,intel-nullhw,overlay \
     -Dshared-glapi=enabled \
     -Dgles1=enabled \
