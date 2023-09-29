@@ -1,0 +1,25 @@
+
+pkgname=python3-pyelftools
+pkgver=0.30
+pkgrel=1
+pkgdesc="Python library for parsing and analyzing ELF files and DWARF debugging information."
+arch=('x86_64')
+license=('custom:Public Domain')
+url="https://github.com/eliben/pyelftools"
+depends=('python3')
+makedepends=('python3-build' 'python3-installer' 'python3-setuptools' 'python3-wheel')
+source=("https://files.pythonhosted.org/packages/source/p/pyelftools/pyelftools-${pkgver}.tar.gz")
+sha256sums=('2fc92b0d534f8b081f58c7c370967379123d8e00984deb53c209364efd575b40')
+
+build() {
+    cd pyelftools-${pkgver}
+
+    python3 -m build -nw
+}
+
+package() {
+    cd pyelftools-${pkgver}
+
+    python3 -m installer --destdir=${pkgdir} dist/*.whl
+    install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
