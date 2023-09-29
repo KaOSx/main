@@ -19,15 +19,14 @@ groups=('qt6')
 options=('!libtool')
 _pkgfqn="qttools-everywhere-src-${subver}"
 source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz"
-        "https://github.com/qt/qttools/commit/01cae372619369d1a5a04f4d0f87817011029b78.diff")
+        "https://github.com/qt/qttools/commit/96306747f46f6c9f770bbe5b8adf22121063f087.diff")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
-         '91b8b9403c9331cd717edb7ffe31f44a')
+         'a1529d53e16b196b5fa5b82f5dadceb4')
 
 prepare() {
   cd ${_pkgfqn}
 
-  # LLVM 15 needed fix
-  #patch -p1 -i ${srcdir}/01cae372619369d1a5a04f4d0f87817011029b78.diff
+  patch -p1 -i ${srcdir}/96306747f46f6c9f770bbe5b8adf22121063f087.diff
 }
 
 build() {
