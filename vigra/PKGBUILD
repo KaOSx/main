@@ -1,8 +1,8 @@
 
 pkgname=vigra
-pkgver=1.11.1
-_pkgver=1-11-1
-pkgrel=35
+pkgver=1.11.2
+_pkgver=1-11-2
+pkgrel=1
 pkgdesc="Computer vision library"
 arch=('x86_64')
 url="https://ukoethe.github.io/vigra/"
@@ -13,48 +13,29 @@ optdepends=('python3: for python bindings'
             'boost-libs: for python bindings')
 options=('!libtool')
 source=("https://github.com/ukoethe/vigra/archive/Version-${_pkgver}.tar.gz"
-        "https://github.com/ukoethe/vigra/commit/8acd73a5e0408326e2a3c1ed1c2c70ffe2b954d0.diff"
-        "https://github.com/ukoethe/vigra/commit/b2ff44fbffcfa3f9e2862d890f43ad7cf588f565.diff"
-        "https://raw.githubusercontent.com/archlinux/svntogit-community/packages/vigra/trunk/vigra-openexr3.patch")
-md5sums=('46acc077a0cb24e41c5cb8e1f75dc148'
+        "https://github.com/ukoethe/vigra/commit/8acd73a5e0408326e2a3c1ed1c2c70ffe2b954d0.diff")
+md5sums=('5c7daafe668dcb50b094a3208b6e1893'
          '424d3938f1e7579d1893b5dd0585c526'
          '3fcd2568044430844732d00d8d3a6861'
          'f9de2112633e58b6e3bcefb83b7108f1')
 
 prepare() {
   cd ${pkgname}-Version-${_pkgver}
-  # gcc8 needed
-  patch -p1 -i ${srcdir}/b2ff44fbffcfa3f9e2862d890f43ad7cf588f565.diff
-  # python 3.7 needed patch
-  patch -p1 -i ${srcdir}/8acd73a5e0408326e2a3c1ed1c2c70ffe2b954d0.diff
-  # openexr 3.0 needed
-  patch -p1 -i ${srcdir}/vigra-openexr3.patch
+
+  #patch -p1 -i ${srcdir}/b2ff44fbffcfa3f9e2862d890f43ad7cf588f565.diff
 }
 
 build() {
-  mkdir -p build
-  cd build
-
-  cmake ../${pkgname}-Version-${_pkgver} \
+  cmake -B build -S ${pkgname}-Version-${_pkgver} \
       -DCMAKE_INSTALL_PREFIX=/usr \
-      -DPYTHON_EXECUTABLE=/usr/bin/python3 \
       -DWITH_OPENEXR=1 \
       -DWITH_VIGRANUMPY=1 \
-      -DDOCINSTALL=share/doc \
-      -DCMAKE_C_FLAGS="-DH5_USE_110_API" \
-      -DCMAKE_CXX_FLAGS="-DH5_USE_110_API"
-  make
-}
-
-check() {
-  cd build
-
-  #make -k check || /bin/true 
+      -DDOCINSTALL=share/doc
+  cmake --build build
 }
 
 package() {
-  cd build
-  make DESTDIR=${pkgdir} install
+  DESTDIR=${pkgdir} cmake --install build
 
-  install -D -m644 ../${pkgname}-Version-${_pkgver}/LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+  install -D -m644 ${pkgname}-Version-${_pkgver}/LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
