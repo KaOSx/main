@@ -1,7 +1,7 @@
 
 pkgname=mlt6
 _pkgname=mlt
-pkgver=7.18.0
+pkgver=7.20.0
 pkgrel=1
 pkgdesc="An open source multimedia framework, Qt6 version"
 arch=('x86_64')
@@ -11,7 +11,7 @@ depends=('sdl_image' 'libsamplerate' 'libdv' 'sox' 'libxml2' 'ffmpeg' 'python3' 
          'frei0r-plugins' 'libexif' 'opencv' 'rubberband' 'gdk-pixbuf2' 'qt6-5compat')
 makedepends=('cmake' 'swig')
 source=("https://github.com/mltframework/mlt/releases/download/v${pkgver}/mlt-${pkgver}.tar.gz")
-md5sums=('89daf7bbce3f10fa6dfc1db5ae1d314c')
+md5sums=('8a5dac939d7251aa1f99eee3ce29b198')
 
 build() {
   cmake -B build -S ${_pkgname}-${pkgver} \
