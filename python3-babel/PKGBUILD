@@ -1,25 +1,26 @@
 
 pkgname=python3-babel
-pkgver=2.12.1
+pkgver=2.13.0
 pkgrel=1
 pkgdesc="Integrated collection of utilities that assist in internationalizing and localizing Python applications"
 arch=('x86_64')
 license=('Apache')
 url="https://babel.pocoo.org/en/latest/"
 depends=('python3-pytz')
-makedepends=('python3-setuptools')
+makedepends=('python3-build' 'python3-installer' 'python3-setuptools' 'python3-wheel')
 source=("https://pypi.io/packages/source/B/Babel/Babel-${pkgver}.tar.gz")
-sha256sums=('cc2d99999cd01d44420ae725a21c9e3711b3aadc7976d6147f622d8581963455')
+sha256sums=('04c3e2d28d2b7681644508f836be388ae49e0cfe91465095340395b60d00f210')
 
 build() {
     cd Babel-${pkgver}
 
-    python3 setup.py build
+    python3 -m build -nw
 }
 
 package() {
     cd Babel-${pkgver}
 
-    python3 setup.py install --prefix=/usr --root=${pkgdir}
+    python3 -m installer --destdir=${pkgdir} dist/*.whl
+    install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
 
