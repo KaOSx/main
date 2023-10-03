@@ -26,7 +26,7 @@ md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
 prepare() {
   cd ${_pkgfqn}
 
-  #patch -p1 -i ${srcdir}/96306747f46f6c9f770bbe5b8adf22121063f087.diff
+  patch -p1 -i ${srcdir}/96306747f46f6c9f770bbe5b8adf22121063f087.diff
 }
 
 build() {
