@@ -6,7 +6,7 @@ pkgname=qt6-tools
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=1
+pkgrel=2
 pkgdesc="A cross-platform application and UI framework, development tools and help files"
 arch=('x86_64')
 url='https://www.qt.io/'
@@ -26,7 +26,7 @@ md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
 prepare() {
   cd ${_pkgfqn}
 
-  patch -p1 -i ${srcdir}/96306747f46f6c9f770bbe5b8adf22121063f087.diff
+  #patch -p1 -i ${srcdir}/96306747f46f6c9f770bbe5b8adf22121063f087.diff
 }
 
 build() {

@@ -1,6 +1,7 @@
 
 pkgname=compiler-rt
-pkgver=16.0.6
+pkgbase="llvm-project"
+pkgver=17.0.2
 pkgrel=1
 pkgdesc="Compiler runtime libraries for use in Clang and LLVM projects"
 arch=('x86_64')
@@ -8,16 +9,13 @@ url="https://llvm.org/"
 license=('custom:University of Illinois/NCSA Open Source License')
 depends=("llvm=${pkgver}" 'gcc')
 makedepends=('cmake' 'python3')
-source=("https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver}/${pkgname}-${pkgver}.src.tar.xz"
-        "https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver}/cmake-${pkgver}.src.tar.xz")
-md5sums=('79eb1121d4990a6585787e6b68361afe'
-         'b7830bb90e376c90a43c2c190a0a5ffa')
+source=("https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver}/${pkgbase}-${pkgver}.src.tar.xz")
+md5sums=('29048bc7b0bef32283a67094110d635d')
 
 build() {
-    cmake -B build -S ${pkgname}-${pkgver}.src \
+    cmake -B build -S ${pkgbase}-${pkgver}.src/${pkgname} \
         -DCMAKE_BUILD_TYPE:STRING=Release \
         -DCMAKE_INSTALL_PREFIX:PATH=/usr \
-        -DCMAKE_MODULE_PATH="${srcdir}/cmake-${pkgver}.src/Modules" \
         -DCOMPILER_RT_INSTALL_PATH=/usr/lib/clang/${pkgver}
     cmake --build build
 }
@@ -26,5 +24,5 @@ package() {
 
     DESTDIR=${pkgdir} cmake --install build
 
-    install -D -m644 ${pkgname}-${pkgver}.src/LICENSE.TXT ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+    install -D -m644 ${pkgbase}-${pkgver}.src/${pkgname}/LICENSE.TXT ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }

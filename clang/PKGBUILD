@@ -1,6 +1,7 @@
 
 pkgname=clang
-pkgver=16.0.6
+pkgbase="llvm-project"
+pkgver=17.0.2
 pkgrel=1
 pkgdesc="C/C++/Objective-C compiler, which aims to deliver amazingly fast compiles, extremely useful error and warning messages and to provide a platform for building great source level tools."
 arch=('x86_64')
@@ -15,9 +16,9 @@ source=("https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver
         "https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver}/clang-tools-extra-${pkgver}.src.tar.xz"
         "https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver}/cmake-${pkgver}.src.tar.xz"
         "https://src.fedoraproject.org/rpms/clang14/raw/rawhide/f/0003-PATCH-clang-Don-t-install-static-libraries.patch")
-md5sums=('70053a666251fdcabc466ea4a0275972'
-         '775a93a7b168101f544dbfed23ac4aaa'
-         'b7830bb90e376c90a43c2c190a0a5ffa'
+md5sums=('da00c6de5a1946fcc0b6419ee5600a65'
+         '6862a7a0af802291c929d2f104ecf909'
+         'fa05d0b40615544f0e421a28f173d634'
          '2ba9b14ee03279853f1803071e7bb101')
 
 prepare() {
@@ -37,7 +38,8 @@ build() {
         -DCLANG_BUILT_STANDALONE=ON \
         -DCLANG_LINK_CLANG_DYLIB=ON \
         -DENABLE_LINKER_BUILD_ID=ON \
-        -DCLANG_VENDOR=KaOS
+        -DCLANG_VENDOR=KaOS \
+        -DLLVM_INCLUDE_TESTS=OFF
     cmake --build build
 }
 
