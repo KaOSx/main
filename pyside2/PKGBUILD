@@ -22,8 +22,8 @@ prepare() {
   export CC=/usr/bin/clang
   export CXX=/usr/bin/clang++
 
-  sed -i -e 's|import importlib|import importlib.machinery|' sources/shiboken2/libshiboken/embed/signature_bootstrap.py
-  sed -i -e 's|#ifndef Py_LIMITED_API|#if PY_VERSION_HEX < 0x03010000|' sources/shiboken2/libshiboken/pep384impl.cpp
+  #sed -i -e 's|import importlib|import importlib.machinery|' sources/shiboken2/libshiboken/embed/signature_bootstrap.py
+  #sed -i -e 's|#ifndef Py_LIMITED_API|#if PY_VERSION_HEX < 0x03010000|' sources/shiboken2/libshiboken/pep384impl.cpp
 }
 
 build() {

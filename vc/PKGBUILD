@@ -1,13 +1,13 @@
 pkgname=vc
-pkgver=1.4.3
+pkgver=1.4.4
 pkgrel=1
 pkgdesc="A library to ease explicit vectorization of C++ code"
 url='https://github.com/VcDevel/Vc/'
 arch=('x86_64')
 license=('LGPL3')
 makedepends=('cmake')
-source=("https://github.com/VcDevel/Vc/releases/download/${pkgver}/Vc-${pkgver}.tar.gz")
-md5sums=('02d33a9d560a14bb23204be235713f65')
+source=("https://github.com/VcDevel/Vc/archive/refs/tags/${pkgver}.tar.gz")
+md5sums=('a1ff441b822c315e1da8fe2c7d600eae')
  
 build() {
   cmake -B build -S Vc-${pkgver} \
