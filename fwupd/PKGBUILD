@@ -1,6 +1,6 @@
  
 pkgname=fwupd
-pkgver=1.9.5
+pkgver=1.9.6
 pkgrel=1
 pkgdesc="Simple daemon to allow updating firmware on Linux automatic, safe and reliable"
 arch=('x86_64')
@@ -23,7 +23,7 @@ backup=('etc/fwupd/daemon.conf'
         'etc/fwupd/upower.conf')
 #source=("https://people.freedesktop.org/~hughsient/releases/${pkgname}-${pkgver}.tar.xz")
 source=("https://github.com/fwupd/fwupd/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('201ec20538044749c96dbff708e52f7d79038de787b90a2762e76793080aa37c')
+sha256sums=('c5fe96634bf6c5af7641cd08a48c6348aadd32d5f09ff8491e633f3c3a6bc0a1')
 
 build() {
     mkdir -p build
@@ -34,9 +34,8 @@ build() {
         --buildtype=release \
         --libexecdir=lib \
         -Ddocs=disabled \
-        -Dplugin_dell=disabled \
         -Defi_binary=false \
-        -Dplugin_uefi_capsule=disabled \
+        -Dplugin_amdgpu=disabled \
         -Dplugin_modem_manager=disabled
     ninja
 }
