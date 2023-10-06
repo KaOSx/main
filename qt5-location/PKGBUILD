@@ -6,7 +6,7 @@ pkgname=qt5-location
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=2
+pkgrel=1
 pkgdesc="A cross-platform application and UI framework (QtLocation, QtPositioning)."
 arch=('x86_64')
 url='https://www.qt.io/'
@@ -27,8 +27,8 @@ md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
 prepare() {
     cd ${__pkgfqn}
 
-    patch -R -p1 -i ${srcdir}/3eaed3d6fa15d8a29cb8d8d683aaea9b256a36b1.diff
-    patch -p1 -i ${srcdir}/a6dd1869bede5a86419618778939ceeefef1c5ff.diff
+    #patch -R -p1 -i ${srcdir}/3eaed3d6fa15d8a29cb8d8d683aaea9b256a36b1.diff
+    #patch -p1 -i ${srcdir}/a6dd1869bede5a86419618778939ceeefef1c5ff.diff
 }
 
 build() {
