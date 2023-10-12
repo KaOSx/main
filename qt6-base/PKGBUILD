@@ -24,8 +24,16 @@ optdepends=('postgresql-libs: PostgreSQL driver')
 groups=('qt6')
 options=('!libtool' 'debug')
 _pkgfqn="qtbase-everywhere-src-${subver}"
-source=("${_qtmirror}/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz")
-md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`)
+source=("${_qtmirror}/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz"
+        "https://github.com/qt/qtbase/commit/8af35d27e8f02bbb99aef4ac495ed406e50e3cca.diff")
+md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
+         '5455fe3d40253d56316e7708cfe65ea3')
+
+prepare() {
+  cd ${_pkgfqn}
+  # libxkbcommon > 1.6 needed
+  patch -p1 -i ${srcdir}/8af35d27e8f02bbb99aef4ac495ed406e50e3cca.diff
+}
 
 build() {
     cmake -B build -S ${_pkgfqn} -G Ninja \
