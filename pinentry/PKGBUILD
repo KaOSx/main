@@ -1,7 +1,7 @@
 
 pkgname=pinentry
 pkgver=1.2.1
-pkgrel=1
+pkgrel=2
 pkgdesc="Collection of dialog programs that allow GnuPG to read passphrases and PIN numbers in a secure manner. "
 arch=('x86_64')
 license=('GPL')
@@ -14,9 +14,7 @@ sha1sums=('29daaf45f15cb5b8ec9b4a06284343f7a87082fb')
 
 build() {
   cd ${pkgname}-${pkgver}
-  
-  #CXXFLAGS="-std=c++11"
-  
+
   ./configure --prefix=/usr \
 	--enable-pinentry-curses \
 	--disable-pinentry-gtk2 \
@@ -27,7 +25,7 @@ build() {
 
 package() {
   cd ${pkgname}-${pkgver}
-  
+
   make DESTDIR=${pkgdir} install
 }
 
