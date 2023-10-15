@@ -1,8 +1,8 @@
 
 pkgname=sdl_image
-pkgver=1.2.12
-_commit=633dc522f5114f6d473c910dace62e8ca27a1f7d
-pkgrel=8
+pkgver=1.2.13
+_commit=4a2fe2441695e3813b3f998a802f364b4cdbdd17
+pkgrel=1
 pkgdesc="Simple library to load images of various formats as SDL surfaces"
 arch=('x86_64')
 url="https://www.libsdl.org/projects/SDL_image/"
@@ -11,7 +11,7 @@ depends=('sdl' 'libpng' 'libjpeg-turbo' 'libtiff' 'zlib')
 options=('!libtool')
 #source=("https://www.libsdl.org/projects/SDL_image/release/SDL_image-${pkgver}.tar.gz")
 source=("https://github.com/libsdl-org/SDL_image/archive/${_commit}.zip")
-md5sums=('42c03491dd0c953db5f31ebfe86f2a29')
+md5sums=('8224d40f30350f74c95df11bfbac6735')
 
 build() {
   cd SDL_image-${_commit}

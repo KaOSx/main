@@ -1,5 +1,5 @@
 pkgname=zug
-pkgver=0.1.0
+pkgver=0.1.1
 pkgrel=1
 pkgdesc="C++ library providing transducers."
 url='https://sinusoid.es/zug/'
@@ -7,7 +7,7 @@ arch=('x86_64')
 license=('Boost')
 makedepends=('cmake')
 source=("https://github.com/arximboldi/zug/archive/refs/tags/v${pkgver}.tar.gz")
-sha256sums=('7d9d57a55399784392ba8fa67fcf246b9f5aec8f002c69e1fe4b5f66657214b8')
+sha256sums=('1b9c8f962e40baa6f0c6af35f957444850063d550078a3ebd0227727b8ef193c')
  
 build() {
   cmake -B build -S ${pkgname}-${pkgver} \
@@ -23,6 +23,6 @@ package() {
 
   DESTDIR=${pkgdir} cmake --install build
 
-  install -Dm644 ${pkgname}-${pkgver}/LICENSE ${pkgdir}/usr/share/licenses/$pkgname/LICENSE
+  install -Dm644 ${pkgname}-${pkgver}/LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
 
