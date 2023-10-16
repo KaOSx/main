@@ -1,22 +1,27 @@
 
 pkgname=libheif
-pkgver=1.16.2
-pkgrel=2
+pkgver=1.17.0
+pkgrel=1
 pkgdesc="HEIF and AVIF (AV1 Image File Format) file format decoder and encoder."
 arch=('x86_64')
 url="https://github.com/strukturag/libheif"
 license=('GPL3')
-depends=('dav1d' 'libde265' 'x265')
+depends=('dav1d' 'ffmpeg' 'libde265' 'openjpeg' 'x265')
 makedepends=('cmake' 'gdk-pixbuf2')
 options=('!emptydirs')
 source=("https://github.com/strukturag/libheif/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
-sha256sums=('7f97e4205c0bd9f9b8560536c8bd2e841d1c9a6d610401eb3eb87ed9cdfe78ea')
+sha256sums=('c86661e9ef9c43ad8de9d2b38b7b508df5322580b24d22fc25a977e7fdb26f3c')
 
 build() {
   cmake -B build -S ${pkgname}-${pkgver} \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_BUILD_TYPE=Release \
-    -DWITH_EXAMPLES=OFF
+    -DWITH_EXAMPLES=OFF \
+    -DWITH_LIBDE265=ON \
+    -DWITH_X265=ON \
+    -DWITH_DAV1D=ON \
+    -DWITH_FFMPEG_DECODER=ON \
+    -DWITH_OpenJPEG_ENCODER=ON
   cmake --build build
 }
 
