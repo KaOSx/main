@@ -1,10 +1,10 @@
 
 # tagged versions at https://tug.org/svn/texlive/tags/
 pkgname=texlive-bin
-pkgver=2022.62885
+pkgver=2023.66594
 #_pkgver=svn58837
-_commit=f398692b64d6462c35939ec9489694d0828edee5
-pkgrel=3
+_commit=0d0bb3a2401e8825b4987eee51e8ef469eb8c3fc
+pkgrel=1
 pkgdesc="TeX Live binaries"
 url='https://tug.org/texlive/'
 license=('GPL')
@@ -19,7 +19,7 @@ options=('!libtool' '!strip')
 #source=("https://mirrors.kernel.org/archlinux/other/texlive/texlive-bin-source-${pkgver}.tar.xz"
 source=("https://github.com/TeX-Live/texlive-source/archive/${_commit}.tar.gz"
         'poppler0.8x.patch')
-md5sums=('4a9f47f5e1e6dab3b6303ba9475b4f6d'
+md5sums=('9c9e6b3bf5a6d15ae6b4d0941c23c2ea'
          '5fa627950138922977baa71cbc3e2ff3')
 
 prepare() {
@@ -144,12 +144,13 @@ package() {
    _bibtexextra_scripts="
 bbl2bib
 bib2gls
+bibcop
 bibdoiadd
 bibexport
 bibmradd
 biburl2doi
 bibzbladd
-citeproc
+citeproc-lua
 convertgls2bib
 listbib
 ltx2crossrefxml
@@ -177,8 +178,6 @@ cjk-gs-integrate
 cluttex
 cllualatex
 clxelatex
-context
-contextjit
 ctanbib
 ctanify
 ctanupload
@@ -186,6 +185,7 @@ ctan-o-mat
 de-macro
 depythontex
 deweb
+digestif
 dosepsbin
 dtxgen
 dvi2fax
@@ -234,7 +234,6 @@ ltxfileinfo
 ltximg
 luafindfont
 luaotfload-tool
-luatools
 lwarpmk
 make4ht
 match_parens
@@ -248,8 +247,6 @@ mktexmf
 mktexpk
 mktextfm
 mptopdf
-mtxrun
-mtxrunjit
 optexcount
 ot2kpx
 pamphletangler
@@ -276,6 +273,7 @@ spix
 srcredact
 sty2dtx
 tex4ebook
+texaccents
 texconfig
 texconfig-dialog
 texconfig-sys
@@ -285,7 +283,6 @@ texdiff
 texdirflatten
 texdoc
 texdoctk
-texexec
 texfot
 texhash
 texindy
@@ -294,7 +291,6 @@ texliveonfly
 texloganalyser
 texlogfilter
 texlogsieve
-texmfstart
 texosquery
 texosquery-jre5
 texosquery-jre8
@@ -334,11 +330,13 @@ l3build
 makedtx
 makeglossaries
 makeglossaries-lite
+pagelayoutapi
 pdfannotextractor
 perltex
 ps4pdf
 splitindex
 svn-multi
+textestvis
 vpe
 webquiz
 wordcount
@@ -366,5 +364,12 @@ yplan"
        ! readlink -e "$pkgdir"/usr/bin/$s && rm "$pkgdir"/usr/bin/$s
    done
    ###################################################################
+
+   # Install old ConTeXt stubs
+   cd "$srcdir/texlive-source-${_commit}"
+   for stub in context contextjit luatools mtxrun mtxrunjit texexec texmfstart; do
+       install -m755 texk/texlive/linked_scripts/context/stubs/unix/"$stub" "$pkgdir/usr/bin/$stub"
+   done
+
 }
 
