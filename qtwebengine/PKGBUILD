@@ -8,11 +8,11 @@ source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
 pkgbase=qtwebengine
 pkgname=('qtwebengine') # 'qtwebengine-examples')
 #pkgver=${qtver}
-pkgver=5.15.15
+pkgver=5.15.16
 subver=${subver}
 _pkgver=${_qtver}
-_commit=21ddfe15f638a36160cb11d00639c3126c1aed7c
-pkgrel=2
+_commit=33fb26ef7e30f1fe29f2fb77406ab4a65b4f4949
+pkgrel=1
 pkgdesc="Chromium-based web engine to replace Qt WebKit"
 url="https://www.qt.io/"
 arch=('x86_64')
@@ -51,7 +51,7 @@ prepare() {
     mkdir -p build
     cd ${_pkgfqn}
 
-    sed -i 's|MODULE_VERSION = 5.15.15|MODULE_VERSION = 5.15.11|' .qmake.conf
+    sed -i 's|MODULE_VERSION = 5.15.16|MODULE_VERSION = 5.15.11|' .qmake.conf
 
     git submodule init
     git submodule set-url src/3rdparty ${srcdir}/qtwebengine-chromium
