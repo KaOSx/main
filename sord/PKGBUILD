@@ -1,15 +1,15 @@
 
 pkgname=sord
-pkgver=0.16.14
+pkgver=0.16.16
 pkgrel=1
 pkgdesc="A lightweight C library for storing RDF data in memory"
 arch=('x86_64')
 url="https://drobilla.net/software/sord.html"
 license=('custom:ISC')
-depends=('serd' 'pcre2')
+depends=('serd' 'pcre2' 'zix')
 makedepends=('python3' 'meson' 'ninja')
 source=("https://download.drobilla.net/${pkgname}-${pkgver}.tar.xz")
-md5sums=('73ed5c03c43ef3cc62558c6826b15fa4')
+md5sums=('003384f397d832180b0cc1bdf339368d')
 
 build() {
   mkdir -p build

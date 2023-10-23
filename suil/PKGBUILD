@@ -1,6 +1,6 @@
 
 pkgname=suil
-pkgver=0.10.18
+pkgver=0.10.20
 pkgrel=1
 pkgdesc="A lightweight C library for loading and wrapping LV2 plugin UIs"
 arch=('x86_64')
@@ -9,13 +9,13 @@ license=('custom:ISC')
 depends=('lv2' 'qt5-x11extras')
 makedepends=('python3' 'meson' 'ninja')
 source=("https://download.drobilla.net/${pkgname}-${pkgver}.tar.xz")
-md5sums=('4e6b74025721a8117526e6d2ebece352')
+md5sums=('2c4a47fcb71648430e0762d29d8db032')
 
 build() {
   mkdir -p build
   cd build
 
-  meson ../${pkgbase}-${pkgver} \
+  meson setup ../${pkgbase}-${pkgver} \
     --prefix=/usr \
     --buildtype=release \
     -Ddocs=disabled \

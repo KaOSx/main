@@ -1,15 +1,15 @@
 
-pkgname=lilv
-pkgver=0.24.22
+pkgname=zix
+pkgver=0.4.2
 pkgrel=1
-pkgdesc="A library to make the use of LV2 plugins as simple as possible for applications"
+pkgdesc="Lightweight C library of portability wrappers and data structures."
 arch=('x86_64')
-url="https://drobilla.net/software/lilv.html"
+url="https://gitlab.com/drobilla/zix"
 license=('custom:ISC')
-depends=('sratom' 'python3' 'zix')
+depends=('glibc')
 makedepends=('meson' 'ninja')
 source=("https://download.drobilla.net/${pkgname}-${pkgver}.tar.xz")
-md5sums=('0884b62816ee1b44fee01b64f2506494')
+md5sums=('87999e25b0440789d1a8325b00a02ed4')
 
 build() {
   mkdir -p build
@@ -26,6 +26,6 @@ package() {
   cd build
 
   DESTDIR=${pkgdir} ninja install
-  install -Dm644 ../${pkgname}-${pkgver}/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+  install -Dm644 ../${pkgbase}-${pkgver}/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
 
