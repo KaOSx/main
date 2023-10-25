@@ -1,7 +1,7 @@
 
 pkgname=libpgf
 pkgver=7.21.7
-pkgrel=1
+pkgrel=2
 pkgdesc="One of the best image compression algorithms for natural images, best for natural and aerial images with a better compression efficiency than JPEG"
 arch=('x86_64')
 url="https://www.libpgf.org"
@@ -18,9 +18,9 @@ build() {
   sed -i 's/\r$//' configure.ac
   sed -i 's/\r$//' autogen.sh
   touch README
-  
+
   #dos2unix configure.ac
-  
+
   sh autogen.sh
   #autoreconf -i
   ./configure --prefix=/usr
@@ -29,6 +29,6 @@ build() {
 
 package() {
   cd libpgf
-  
+
   make DESTDIR=${pkgdir} install
 }
