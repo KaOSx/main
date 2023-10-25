@@ -1,6 +1,6 @@
 
 pkgname=xorg-server
-pkgver=21.1.8
+pkgver=21.1.9
 # major updates build xorg-server/xf86-input-evdev/xorg-server again
 pkgrel=1
 pkgdesc="X.Org X servers"
@@ -24,7 +24,7 @@ source=("https://xorg.freedesktop.org/releases/individual/xserver/${pkgname}-${p
         'xvfb-run'
         'xvfb-run.1'
         "https://gitlab.freedesktop.org/xorg/xserver/-/commit/05b3c681ea2f478c0cb941c2f8279919cf78de6d.diff")
-sha256sums=('38aadb735650c8024ee25211c190bf8aad844c5f59632761ab1ef4c4d5aeb152'
+sha256sums=('ff697be2011b4c4966b7806929e51b7a08e9d33800d505305d26d9ccde4b533a'
             'ff0156309470fc1d378fd2e104338020a884295e285972cc88e250e031cc35b9'
             '2460adccd3362fefd4cdc5f1c70f332d7b578091fb9167bf88b5f91265bbd776'
             'b2e3e5472842ba88b20b0b86d55ba45b0a923df190f8874da4abbb33e808b38b')
@@ -40,7 +40,7 @@ build() {
   mkdir -p build
   cd build
 
-  meson ../${pkgname}-${pkgver} \
+  meson setup ../${pkgname}-${pkgver} \
     --prefix=/usr \
     --buildtype=release \
     --libexecdir=/usr/lib/xorg-server \
