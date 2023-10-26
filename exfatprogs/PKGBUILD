@@ -1,6 +1,6 @@
  
 pkgname=exfatprogs
-pkgver=1.2.1
+pkgver=1.2.2
 pkgrel=1
 pkgdesc="Userspace Utility for exFAT filesystem on Linux kernel"
 arch=('x86_64')
@@ -10,13 +10,14 @@ depends=('glibc') # 'fuse')
 provides=('exfat-utils')
 conflicts=('exfat-utils')
 replaces=('exfat-utils')
-source=("https://github.com/exfatprogs/exfatprogs/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('a6f3b1fb4bd37835c8f8cb421aac4eb75b880a51342b29850c4063973162227b')
+#source=("https://github.com/exfatprogs/exfatprogs/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
+source=("https://github.com/exfatprogs/exfatprogs/archive/refs/tags/${pkgver}.tar.gz")
+sha256sums=('16b28c9130b4dfab0b571dce6d2959d2ee93fce27aa0f4b2c1bb30700f371393')
 
 build() {
     cd ${pkgname}-${pkgver}
 
-    #autoreconf -vi
+    autoreconf -vi
     ./configure --prefix=/usr \
         --enable-static=no
     make
