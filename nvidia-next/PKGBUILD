@@ -1,16 +1,16 @@
 
-_extramodules=extramodules-6.5-next
+_extramodules=extramodules-6.6-next
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=nvidia-next
 pkgver=535.113.01
-pkgrel=6
+pkgrel=7
 epoch=2
 pkgdesc="NVIDIA drivers for linux."
 arch=('x86_64')
 license=('custom')
 url="https://www.nvidia.com/page/home.html"
-depends=('linux-next>=6.5' 'linux-next<6.6.0' "nvidia-utils=2:${pkgver}")
+depends=('linux-next>=6.6' 'linux-next<6.7.0' "nvidia-utils=2:${pkgver}")
 makedepends=('linux-next-headers')
 conflicts=('nvidia-bumblebee-next')
 provides=('nvidia-bumblebee-next')
