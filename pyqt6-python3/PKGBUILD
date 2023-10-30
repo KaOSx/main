@@ -1,7 +1,7 @@
 
 pkgname=pyqt6-python3
-pkgver=6.5.3
-_pkgver=6.5.3
+pkgver=6.6.0
+_pkgver=6.6.0
 pkgrel=1
 pkgdesc="A set of Python3 bindings for the Qt6 toolkit"
 arch=('x86_64')
@@ -12,12 +12,12 @@ depends=('dbus-python3' 'qt6-svg' 'qt6-declarative' 'qt6-multimedia' 'qt6-quick3
 makedepends=('pyqt-builder' 'qt6-tools' 'python3-setuptools')
 source=("https://pypi.python.org/packages/source/P/PyQt6/PyQt6-${pkgver}.tar.gz")
 #source=("https://www.riverbankcomputing.com/static/Downloads/PyQt6/PyQt6-${_pkgver}.tar.gz")
-sha256sums=('bcbbf9511b038b4924298ca10999aa36eb37a0a38d0638f895f9bba6025c0a77')
+sha256sums=('d41512d66044c2df9c5f515a56a922170d68a37b3406ffddc8b4adc57181b576')
 
 prepare() {
   cd PyQt6-${_pkgver}
 
-  sed -e "s|QList<QVariant> &boundValues()|QVariantList boundValues()|" -i sip/QtSql/qsqlresult.sip
+  #sed -e "s|QList<QVariant> &boundValues()|QVariantList boundValues()|" -i sip/QtSql/qsqlresult.sip
 }
 
 build() {

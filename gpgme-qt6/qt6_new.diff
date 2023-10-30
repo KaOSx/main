@@ -1,0 +1,19 @@
+--- a/m4/qt6.m4	2023-10-05 14:12:12.000000000 +0200
++++ b/m4/qt6_new.m4	2023-10-30 17:08:00.196310055 +0100
+@@ -64,16 +64,6 @@
+ 
+     CPPFLAGS=$GPGME_QT6_CFLAGS
+     LIBS=$GPGME_QT6_LIBS
+-    AC_LANG_PUSH(C++)
+-    AC_MSG_CHECKING([whether a simple Qt program can be built])
+-    AC_LINK_IFELSE([AC_LANG_SOURCE([
+-      #include <QCoreApplication>
+-      int main (int argc, char **argv) {
+-      QCoreApplication app(argc, argv);
+-      app.exec();
+-    }])], [have_qt6_libs='yes'], [have_qt6_libs='no'])
+-    AC_MSG_RESULT([$have_qt6_libs])
+-    AC_LANG_POP()
+ 
+     CPPFLAGS=$OLDCPPFLAGS
+     LIBS=$OLDLIBS

@@ -2,15 +2,24 @@
 pkgname=gpgme-qt6
 _pkgname=gpgme
 pkgver=1.23.1
-pkgrel=1
+pkgrel=2
 pkgdesc="A C wrapper library for GnuPG, Qt6 version"
 arch=('x86_64')
 url="https://www.gnupg.org/related_software/gpgme/"
 license=('GPL')
 depends=('gpgme' 'qt6-base')
 options=('!libtool' '!emptydirs')
-source=("https://www.gnupg.org/ftp/gcrypt/gpgme/${_pkgname}-${pkgver}.tar.bz2")
-sha256sums=('a0c316f7ab7d3bfb01a8753c3370dc906e5b61436021f3b54ff1483b513769bd')
+source=("https://www.gnupg.org/ftp/gcrypt/gpgme/${_pkgname}-${pkgver}.tar.bz2"
+        'qt6_new.diff')
+sha256sums=('a0c316f7ab7d3bfb01a8753c3370dc906e5b61436021f3b54ff1483b513769bd'
+            'd318382bf1f15d49c80eb3bf3f8f609dfbfb5556506d07a0390f49a8b45952fe')
+
+prepare() {
+  cd ${_pkgname}-${pkgver}
+
+  patch -p1 -i ${srcdir}/qt6_new.diff
+  autoreconf -vf
+}
 
 build() {
   mkdir -p build
@@ -18,6 +27,7 @@ build() {
 
   ../${_pkgname}-${pkgver}/configure --prefix=/usr \
        --disable-static \
+       --disable-gpg-test \
        --disable-gpgsm-test \
        --disable-fd-passing \
        --enable-languages=qt6,cpp
