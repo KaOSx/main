@@ -1,6 +1,6 @@
 
 pkgname=vlc
-pkgver=3.0.19
+pkgver=3.0.20
 _pkgver=3.0
 pkgrel=1
 epoch=1
@@ -15,7 +15,7 @@ depends=('a52dec' 'fluidsynth' 'libmtp' 'libdvbpsi' 'libxpm' 'libcdio' 'libdca' 
          'desktop-file-utils' 'xcb-util-keysyms' 'pulseaudio' 'chromaprint' 
          'qt5-x11extras' 'qt5-svg' 'x265' 'lua' 'mpg123' 'protobuf' 'vcdimager'
          'avahi' 'libnotify' 'libbluray' 'flac' 'libtheora' 'alsa-lib' 'dav1d'
-         'libraw1394' 'libdc1394' 'libavc1394' 'libva' 'microdns' 'libidn' 'live-media') # fails with 'fribidi' 1.0.1
+         'libraw1394' 'libdc1394' 'libavc1394' 'libva' 'microdns' 'libidn' 'live-media' 'fribidi')
 makedepends=('pkgconfig' 'jack' 'systemd' 'gnutls' 'libcaca' 'librsvg' 'qt5-tools')
 backup=('usr/share/vlc/http/.hosts'
         'usr/share/vlc/http/dialogs/.hosts'
@@ -27,7 +27,7 @@ install="vlc.install"
 #source=("https://code.videolan.org/videolan/vlc-${_pkgver}/-/archive/${pkgver}/vlc-${_pkgver}-${pkgver}.tar.bz2"
 source=("https://get.videolan.org/vlc/${pkgver}/vlc-${pkgver}.tar.xz"
         '0001-Add-lssl-and-lcrypto-to-liblive555_plugin_la_LIBADD.patch')
-sha256sums=('643e3294bafe922324663ca499515b7564f2794575fd7d2b7992d20896381745'
+sha256sums=('adc7285b4d2721cddf40eb5270cada2aaa10a334cb546fd55a06353447ba29b5'
             '81c1db61be41bfe31cedcdc83fe6ecf8178708d3ab372a0c4811008a3eded1a1')
 
 prepare() {
@@ -60,7 +60,7 @@ build() {
               --enable-kwallet \
               --enable-chromecast \
               --enable-microdns \
-              --disable-fribidi \
+              --enable-fribidi \
               --enable-live555 \
               --enable-vpx \
               RCC=/usr/bin/rcc-qt5
