@@ -2,7 +2,7 @@
 pkgbase=nvidia-utils
 pkgname=('nvidia-utils' 'opencl-nvidia' 'nvidia-settings')
 # Edit hardware-detection/hooks/hwdetect_7_graphics and Installer job 11 on version jump from 43x.xx
-pkgver=535.113.01
+pkgver=545.29.02
 pkgrel=1
 epoch=2
 arch=('x86_64')
@@ -16,7 +16,7 @@ source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.ru
 #source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}.run"
         'nvidia-restore-settings.desktop'
         'nvidia-drm-outputclass.conf')
-md5sums=('935643d801c50ba803e9fb0169413d60'
+md5sums=('fe6d2b1ccec8da0502c1232235c7da4e'
          '9237516792da7b6df32f8c7e8a98f475'
          'cb27b0f4a78af78aa96c5aacae23256c')
 
@@ -91,9 +91,9 @@ package_nvidia-utils() {
   install -D -m755 libGLX_nvidia.so.${pkgver} ${pkgdir}/usr/lib/libGLX_nvidia.so.${pkgver}
 
   # Vulkan
-  install -D -m755 libnvidia-vulkan-producer.so.${pkgver} ${pkgdir}/usr/lib/libnvidia-vulkan-producer.so.${pkgver}
-  ln -s libnvidia-vulkan-producer.so.${pkgver} ${pkgdir}/usr/lib/libnvidia-vulkan-producer.so.1
-  ln -s libnvidia-vulkan-producer.so.${pkgver} ${pkgdir}/usr/lib/libnvidia-vulkan-producer.so
+  #install -D -m755 libnvidia-vulkan-producer.so.${pkgver} ${pkgdir}/usr/lib/libnvidia-vulkan-producer.so.${pkgver}
+  #ln -s libnvidia-vulkan-producer.so.${pkgver} ${pkgdir}/usr/lib/libnvidia-vulkan-producer.so.1
+  #ln -s libnvidia-vulkan-producer.so.${pkgver} ${pkgdir}/usr/lib/libnvidia-vulkan-producer.so
 
   install -D -m644 nvidia_icd.json ${pkgdir}/usr/share/vulkan/icd.d/nvidia_icd.json
   install -D -m644 nvidia_layers.json ${pkgdir}/usr/share/vulkan/implicit_layer.d/nvidia_layers.json
@@ -104,6 +104,7 @@ package_nvidia-utils() {
   install -D -m755 libnvidia-glcore.so.${pkgver} ${pkgdir}/usr/lib/libnvidia-glcore.so.${pkgver}
   install -D -m755 libnvidia-glsi.so.${pkgver} ${pkgdir}/usr/lib/libnvidia-glsi.so.${pkgver}
   install -D -m755 libnvidia-glvkspirv.so.${pkgver} ${pkgdir}/usr/lib/libnvidia-glvkspirv.so.${pkgver}
+  install -D -m755 libnvidia-gpucomp.so.${pkgver} ${pkgdir}/usr/lib/libnvidia-gpucomp.so.${pkgver}
   install -D -m755 libnvidia-rtcore.so.${pkgver} ${pkgdir}/usr/lib/libnvidia-rtcore.so.${pkgver}
   install -D -m755 libnvidia-allocator.so.${pkgver} ${pkgdir}/usr/lib/libnvidia-allocator.so.${pkgver}
 
