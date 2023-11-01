@@ -3,7 +3,7 @@ pkgname=phonon-qt6
 _pkgname=phonon
 _commit=d3174600721d803a53e0433ad87ed6a7f4ba99e7
 pkgver=4.11.1
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 url="https://community.kde.org/Phonon"
 license=('LGPL')
@@ -21,6 +21,7 @@ build() {
     -DKDE_INSTALL_LIBDIR=lib \
     -DBUILD_TESTING=OFF \
     -DBUILD_WITH_QT6=ON \
+    -DPHONON_BUILD_SETTINGS=OFF \
     -DEXCLUDE_DEPRECATED_BEFORE_AND_AT=${_kf5ver} \
     -DQT_MAJOR_VERSION=6
   cmake --build build
@@ -29,4 +30,6 @@ build() {
 package() {
 
   DESTDIR=${pkgdir} cmake --install build
+  # remove phonon-qt5 conlfict
+  rm -r ${pkgdir}/usr/share/locale
 }
