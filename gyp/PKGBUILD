@@ -1,25 +1,26 @@
 
 pkgname=gyp
-pkgver=20220404
-pkgrel=3
-_commit=9ecf45e37677743503342ee4c6a76eaee80e4a7f
+pkgver=20230914
+pkgrel=1
+_commit=a03d7413becefc8d55c8aa3df58b55b9bd0e9052
 pkgdesc='"GYP is a Meta-Build system: a build system that generates other build systems.'
 arch=('x86_64')
 url="https://gyp.gsrc.io/"
 license=('custom:BSD')
 depends=('python3-setuptools' 'python3-six' 'ninja')
+makedepends=('python3-build' 'python3-installer' 'python3-wheel')
 source=("https://chromium.googlesource.com/external/gyp/+archive/${_commit}.tar.gz")
-md5sums=('a3d41a2508a210609adf5e92df783c47')
+md5sums=('5a5883a3a54fb4310eff994fd01681f7')
 
 build() {
   #cd ${pkgname}
 
-  python3 setup.py build
+  python3 -m build -nw
 }
 
 package() {
   #cd ${pkgname}
 
-  python3 setup.py install --root=${pkgdir} --optimize=1 --skip-build
+  python3 -m installer --destdir=${pkgdir} dist/*.whl
   install -D -m644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
