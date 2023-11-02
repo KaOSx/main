@@ -1,6 +1,6 @@
 
 pkgname=postfix
-pkgver=3.8.2
+pkgver=3.8.3
 pkgrel=1
 pkgdesc='Secure, fast, easy to administer alternative to Sendmail'
 url='https://www.postfix.org/'
@@ -11,12 +11,10 @@ backup=('etc/postfix/'{access,aliases,canonical,generic,header_checks,main.cf,ma
 install=${pkgname}.install
 source=("https://mirror.lhsolutions.nl/postfix-release/official/${pkgname}-${pkgver}.tar.gz"
         'aliases.patch'
-        'postfix.service'
-        "https://gitweb.gentoo.org/repo/gentoo.git/plain/mail-mta/postfix/files/linux-6.patch")
-md5sums=('3e9d80bbbb692693f4172d465c08c893'
+        'postfix.service')
+md5sums=('7edfadf15fafe73523266829172d890f'
          '9cc2ee3c72e134c2da5a895abaa56f30'
-         '24af169de13c34dac03d787c3e607ec5'
-         '08967a35249243eb06e46b1868e2dae2')
+         '24af169de13c34dac03d787c3e607ec5')
 
 build() {
   cd ${pkgname}-${pkgver}

@@ -3,7 +3,7 @@
 pkgname=gdal
 pkgver=3.7.2
 _pkgver=3.7.2
-pkgrel=2
+pkgrel=3
 pkgdesc="A translator library for raster geospatial data formats"
 arch=('x86_64')
 url="https://www.gdal.org/"
@@ -20,7 +20,7 @@ source=("https://download.osgeo.org/gdal/${pkgver}/${pkgname}-${pkgver}.tar.xz"
 #source=("https://github.com/OSGeo/gdal/archive/v${_pkgver}.tar.gz"
         "https://github.com/OSGeo/gdal/commit/17e98757e78969a199d1d6318f53d088da192191.diff")
 md5sums=('5c1eca0e695b67f1d9075854cd180285'
-         '2f2ad74c557ab35c5089113592bdbd6b')
+         'f41a77dd0955eaf52bd99d555ad4e076')
 
 prepare() {
   cd ${pkgname}-${_pkgver}
