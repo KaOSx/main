@@ -1,7 +1,7 @@
 
 pkgname=phonon-qt5-backend-vlc
 _pkgname=phonon-backend-vlc
-pkgver=0.11.3
+pkgver=0.12.0
 pkgrel=1
 pkgdesc='Phonon VLC backend'
 arch=('x86_64')
@@ -12,21 +12,19 @@ makedepends=('pkgconfig' 'extra-cmake-modules' 'mesa' 'phonon-qt5' 'qt5-tools')
 groups=('kde-complete' 'kde-uninstall')
 provides=('phonon-backend-qt5')
 source=("https://download.kde.org/stable/phonon/${_pkgname}/${pkgver}/${_pkgname}-$pkgver.tar.xz")
-sha256sums=('5e69fdeccb060c7e6b5924cef2e65bee5a08ace4127005b95344ed3077dc6397')
+sha256sums=('338479dc451e4b94b3ca5b578def741dcf82f5c626a2807d36235be2dce7c9a5')
 
 build() {
-	mkdir -p build
-	cd build
-	
-	cmake ../${_pkgname}-${pkgver} \
-		 -DCMAKE_BUILD_TYPE=Release \
-		 -DCMAKE_INSTALL_PREFIX=/usr \
-		 -DCMAKE_INSTALL_LIBDIR=lib 
-	make
+	cmake -B build -S ${_pkgname}-${pkgver} \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DCMAKE_INSTALL_LIBDIR=lib \
+		-DPHONON_BUILD_QT6=OFF \
+		-DPHONON_BUILD_QT5=ON
+	cmake --build build
 }
 
 package() {
-	cd build
-	
-	make DESTDIR=${pkgdir} install
-} 
+
+	DESTDIR=${pkgdir} cmake --install build
+}
