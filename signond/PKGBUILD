@@ -1,0 +1,30 @@
+
+pkgname=signond
+pkgver=8.61
+pkgrel=1
+arch=('x86_64')
+url="https://gitlab.com/accounts-sso/signond/"
+license=('LGPL')
+pkgdesc="Framework to provide credential storage and authentication service, Qt6 version"
+depends=('qt6-base' 'libproxy')
+makedepends=('doxygen' 'ttf-dejavu' 'qt6-tools')
+conflicts=('signonqt')
+backup=('etc/signond.conf')
+options=('!emptydirs')
+source=("git+https://gitlab.com/nicolasfella/${pkgname}.git#branch=qt6")
+md5sums=('SKIP') 
+
+build() {
+  cd signond
+
+  /usr/lib/qt6/bin/qmake PREFIX=/usr LIBDIR=/usr/lib
+  make
+}
+
+package() { 
+  cd signond
+
+  make INSTALL_ROOT=${pkgdir} install
+  rm -r ${pkgdir}/usr/share/doc
+}
+
