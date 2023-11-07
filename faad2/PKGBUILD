@@ -1,33 +1,33 @@
 
 pkgname=faad2
-pkgver=2.10.1
-_pkgver=2_10_1
+pkgver=2.11.0
+_pkgver=2_11_0
 pkgrel=1
 pkgdesc="ISO AAC audio decoder"
 arch=('x86_64')
 url="https://github.com/knik0/faad2/"
-license=('custom:GPL')
+license=('GPL')
 depends=('glibc')
 options=('!libtool' '!makeflags')
+makedepends=('cmake')
 #source=("https://downloads.sourceforge.net/sourceforge/faac/${pkgname}-${pkgver}.tar.gz"
 source=("https://github.com/knik0/faad2/archive/${pkgver}.tar.gz"
-        'LICENSE'
         'mp4ff.patch')
-md5sums=('62a0427c6ff3a273aa720e27da166758'
-         'ec95f38142e14fb46c849503897a37a0'
+md5sums=('709a93709a8d9fcb9baec3d1ec25d4d3'
          '66c7413cc7e449942a23c1f3db8e89be')
 
 build() {
-  cd ${pkgname}-${pkgver}
-
-  ./bootstrap
-  ./configure --prefix=/usr
-  make # CFLAGS="${CFLAGS} -fPIC"
+  cmake -B build -S ${pkgname}-${pkgver} \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DFAAD_BUNDLED_MODE=OFF \
+    -DBUILD_SHARED_LIBS=ON
+  cmake --build build
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
-  make DESTDIR=${pkgdir} install
 
-  install -D -m644 ${srcdir}/LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+  DESTDIR=${pkgdir} cmake --install build
+
+  install -D -m644 ${pkgname}-${pkgver}/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
 }
