@@ -41299,6 +41299,100 @@ index f9c8ef384c..5b328a7d5e 100644
      bool matchSuffixTree(QMimeGlobMatchResult &result, CacheFile *cacheFile, int numEntries, int firstOffset, const QString &fileName, int charPos, bool caseSensitiveCheck);
      bool matchMagicRule(CacheFile *cacheFile, int numMatchlets, int firstOffset, const QByteArray &data);
      QLatin1String iconForMime(CacheFile *cacheFile, int posListOffset, const QByteArray &inputMime);
+diff --git a/src/corelib/plugin/qlibrary.cpp b/src/corelib/plugin/qlibrary.cpp
+index 5d2f024267..45b5a3fe27 100644
+--- a/src/corelib/plugin/qlibrary.cpp
++++ b/src/corelib/plugin/qlibrary.cpp
+@@ -526,7 +526,7 @@ void QLibraryPrivate::mergeLoadHints(QLibrary::LoadHints lh)
+     if (pHnd.loadRelaxed())
+         return;
+ 
+-    loadHintsInt.storeRelaxed(lh);
++    loadHintsInt.fetchAndOrRelaxed(lh);
+ }
+ 
+ QFunctionPointer QLibraryPrivate::resolve(const char *symbol)
+@@ -538,6 +538,13 @@ QFunctionPointer QLibraryPrivate::resolve(const char *symbol)
+ 
+ void QLibraryPrivate::setLoadHints(QLibrary::LoadHints lh)
+ {
++    // Set the load hints directly for a dummy if this object is not associated
++    // with a file. Such object is not shared between multiple instances.
++    if (fileName.isEmpty()) {
++        loadHintsInt.storeRelaxed(lh);
++        return;
++    }
++
+     // this locks a global mutex
+     QMutexLocker lock(&qt_library_mutex);
+     mergeLoadHints(lh);
+@@ -1166,6 +1173,10 @@ QString QLibrary::errorString() const
+     lazy symbol resolution, and will not export external symbols for resolution
+     in other dynamically-loaded libraries.
+ 
++    \note Hints can only be cleared when this object is not associated with a
++    file. Hints can only be added once the file name is set (\a hints will
++    be or'ed with the old hints).
++
+     \note Setting this property after the library has been loaded has no effect
+     and loadHints() will not reflect those changes.
+ 
+diff --git a/src/corelib/plugin/qpluginloader.cpp b/src/corelib/plugin/qpluginloader.cpp
+index 0a63b93762..02b8c588be 100644
+--- a/src/corelib/plugin/qpluginloader.cpp
++++ b/src/corelib/plugin/qpluginloader.cpp
+@@ -105,6 +105,8 @@ QT_BEGIN_NAMESPACE
+     \sa QLibrary, {Plug & Paint Example}
+ */
+ 
++static constexpr QLibrary::LoadHints defaultLoadHints = QLibrary::PreventUnloadHint;
++
+ /*!
+     \class QStaticPlugin
+     \inmodule QtCore
+@@ -155,7 +157,7 @@ QPluginLoader::QPluginLoader(const QString &fileName, QObject *parent)
+     : QObject(parent), d(nullptr), did_load(false)
+ {
+     setFileName(fileName);
+-    setLoadHints(QLibrary::PreventUnloadHint);
++    setLoadHints(defaultLoadHints);
+ }
+ 
+ /*!
+@@ -357,7 +359,7 @@ static QString locatePlugin(const QString& fileName)
+ void QPluginLoader::setFileName(const QString &fileName)
+ {
+ #if defined(QT_SHARED)
+-    QLibrary::LoadHints lh = QLibrary::PreventUnloadHint;
++    QLibrary::LoadHints lh = defaultLoadHints;
+     if (d) {
+         lh = d->loadHints();
+         d->release();
+@@ -414,15 +416,21 @@ QString QPluginLoader::errorString() const
+ void QPluginLoader::setLoadHints(QLibrary::LoadHints loadHints)
+ {
+     if (!d) {
+-        d = QLibraryPrivate::findOrCreate(QString());   // ugly, but we need a d-ptr
++        d = QLibraryPrivate::findOrCreate({}, {}, loadHints); // ugly, but we need a d-ptr
+         d->errorString.clear();
++    } else {
++        d->setLoadHints(loadHints);
+     }
+-    d->setLoadHints(loadHints);
+ }
+ 
+ QLibrary::LoadHints QPluginLoader::loadHints() const
+ {
+-    return d ? d->loadHints() : QLibrary::LoadHints();
++    // Not having a d-pointer means that the user hasn't called
++    // setLoadHints() / setFileName() yet. In setFileName() we will
++    // then force defaultLoadHints on loading, so we must return them
++    // from here as well.
++
++    return d ? d->loadHints() : defaultLoadHints;
+ }
+ 
+ #endif // QT_CONFIG(library)
 diff --git a/src/corelib/serialization/qcborvalue.cpp b/src/corelib/serialization/qcborvalue.cpp
 index 89a928d348..3a8c2cb9ec 100644
 --- a/src/corelib/serialization/qcborvalue.cpp
@@ -43507,7 +43601,7 @@ index 09d2d916fe..0e6fe5eb84 100644
          if (values) {
              QFontValues fontValues;
 diff --git a/src/platformsupport/input/xkbcommon/qxkbcommon.cpp b/src/platformsupport/input/xkbcommon/qxkbcommon.cpp
-index 9aa8f10c57..ff556a0e60 100644
+index 9aa8f10c57..1c7c15d5d7 100644
 --- a/src/platformsupport/input/xkbcommon/qxkbcommon.cpp
 +++ b/src/platformsupport/input/xkbcommon/qxkbcommon.cpp
 @@ -95,6 +95,7 @@ static constexpr const auto KeyTbl = qMakeArray(
@@ -43518,7 +43612,22 @@ index 9aa8f10c57..ff556a0e60 100644
          Xkb2Qt<0x1005FF60,                      Qt::Key_SysReq>,         // hardcoded Sun SysReq
          Xkb2Qt<0x1007ff00,                      Qt::Key_SysReq>,         // hardcoded X386 SysReq
  
-@@ -471,7 +472,7 @@ QVector<xkb_keysym_t> QXkbCommon::toKeysym(QKeyEvent *event)
+@@ -273,10 +274,14 @@ static constexpr const auto KeyTbl = qMakeArray(
+         Xkb2Qt<XKB_KEY_dead_small_schwa,        Qt::Key_Dead_Small_Schwa>,
+         Xkb2Qt<XKB_KEY_dead_capital_schwa,      Qt::Key_Dead_Capital_Schwa>,
+         Xkb2Qt<XKB_KEY_dead_greek,              Qt::Key_Dead_Greek>,
++/* The following four XKB_KEY_dead keys got removed in libxkbcommon 1.6.0
++   The define check is kind of version check here. */
++#ifdef XKB_KEY_dead_lowline
+         Xkb2Qt<XKB_KEY_dead_lowline,            Qt::Key_Dead_Lowline>,
+         Xkb2Qt<XKB_KEY_dead_aboveverticalline,  Qt::Key_Dead_Aboveverticalline>,
+         Xkb2Qt<XKB_KEY_dead_belowverticalline,  Qt::Key_Dead_Belowverticalline>,
+         Xkb2Qt<XKB_KEY_dead_longsolidusoverlay, Qt::Key_Dead_Longsolidusoverlay>,
++#endif
+ 
+         // Special keys from X.org - This include multimedia keys,
+         // wireless/bluetooth/uwb keys, special launcher keys, etc.
+@@ -471,7 +476,7 @@ QVector<xkb_keysym_t> QXkbCommon::toKeysym(QKeyEvent *event)
      } else if (event->modifiers() & Qt::KeypadModifier) {
          if (qtKey >= Qt::Key_0 && qtKey <= Qt::Key_9)
              keysyms.append(XKB_KEY_KP_0 + (qtKey - Qt::Key_0));
@@ -43527,7 +43636,7 @@ index 9aa8f10c57..ff556a0e60 100644
          keysyms.append(qtKey);
      }
  
-@@ -523,7 +524,7 @@ int QXkbCommon::keysymToQtKey(xkb_keysym_t keysym, Qt::KeyboardModifiers modifie
+@@ -523,7 +528,7 @@ int QXkbCommon::keysymToQtKey(xkb_keysym_t keysym, Qt::KeyboardModifiers modifie
          // With standard shortcuts we should prefer a latin character, this is
          // for checks like "some qkeyevent == QKeySequence::Copy" to work even
          // when using for example 'russian' keyboard layout.
@@ -43536,7 +43645,7 @@ index 9aa8f10c57..ff556a0e60 100644
              xkb_keysym_t latinKeysym = QXkbCommon::lookupLatinKeysym(state, code);
              if (latinKeysym != XKB_KEY_NoSymbol)
                  keysym = latinKeysym;
-@@ -546,7 +547,7 @@ static int keysymToQtKey_internal(xkb_keysym_t keysym, Qt::KeyboardModifiers mod
+@@ -546,7 +551,7 @@ static int keysymToQtKey_internal(xkb_keysym_t keysym, Qt::KeyboardModifiers mod
      } else if (keysym >= XKB_KEY_KP_0 && keysym <= XKB_KEY_KP_9) {
          // numeric keypad keys
          qtKey = Qt::Key_0 + (keysym - XKB_KEY_KP_0);
@@ -43545,7 +43654,7 @@ index 9aa8f10c57..ff556a0e60 100644
          qtKey = QXkbCommon::qxkbcommon_xkb_keysym_to_upper(keysym);
      } else {
          // check if we have a direct mapping
-@@ -678,7 +679,7 @@ QList<int> QXkbCommon::possibleKeys(xkb_state *state, const QKeyEvent *event,
+@@ -678,7 +683,7 @@ QList<int> QXkbCommon::possibleKeys(xkb_state *state, const QKeyEvent *event,
          Qt::KeyboardModifiers neededMods = ModsTbl[i];
          if ((modifiers & neededMods) == neededMods) {
              if (i == 8) {
@@ -43554,7 +43663,7 @@ index 9aa8f10c57..ff556a0e60 100644
                      continue;
                  // add a latin key as a fall back key
                  sym = lookupLatinKeysym(state, keycode);
-@@ -733,7 +734,7 @@ void QXkbCommon::verifyHasLatinLayout(xkb_keymap *keymap)
+@@ -733,7 +738,7 @@ void QXkbCommon::verifyHasLatinLayout(xkb_keymap *keymap)
      for (xkb_layout_index_t layout = 0; layout < layoutCount; ++layout) {
          for (xkb_keycode_t code = minKeycode; code < maxKeycode; ++code) {
              xkb_keymap_key_get_syms_by_level(keymap, code, layout, 0, &keysyms);
@@ -43563,7 +43672,7 @@ index 9aa8f10c57..ff556a0e60 100644
                  nrLatinKeys++;
              if (nrLatinKeys > 10) // arbitrarily chosen threshold
                  return;
-@@ -754,6 +755,8 @@ xkb_keysym_t QXkbCommon::lookupLatinKeysym(xkb_state *state, xkb_keycode_t keyco
+@@ -754,6 +759,8 @@ xkb_keysym_t QXkbCommon::lookupLatinKeysym(xkb_state *state, xkb_keycode_t keyco
  {
      xkb_layout_index_t layout;
      xkb_keysym_t sym = XKB_KEY_NoSymbol;
@@ -43572,7 +43681,7 @@ index 9aa8f10c57..ff556a0e60 100644
      xkb_keymap *keymap = xkb_state_get_keymap(state);
      const xkb_layout_index_t layoutCount = xkb_keymap_num_layouts_for_key(keymap, keycode);
      const xkb_layout_index_t currentLayout = xkb_state_key_get_layout(state, keycode);
-@@ -766,7 +769,7 @@ xkb_keysym_t QXkbCommon::lookupLatinKeysym(xkb_state *state, xkb_keycode_t keyco
+@@ -766,7 +773,7 @@ xkb_keysym_t QXkbCommon::lookupLatinKeysym(xkb_state *state, xkb_keycode_t keyco
          xkb_level_index_t level = xkb_state_key_get_level(state, keycode, layout);
          if (xkb_keymap_key_get_syms_by_level(keymap, keycode, layout, level, &syms) != 1)
              continue;
@@ -43731,6 +43840,22 @@ index 9153fd20bb..26537ff892 100644
          }
          int offset = interface->textInterface()->offsetAtPoint(point);
          sendReply(connection, message, offset);
+diff --git a/src/platformsupport/linuxaccessibility/bridge.cpp b/src/platformsupport/linuxaccessibility/bridge.cpp
+index fdc8cd3198..b17e1749c8 100644
+--- a/src/platformsupport/linuxaccessibility/bridge.cpp
++++ b/src/platformsupport/linuxaccessibility/bridge.cpp
+@@ -229,7 +229,11 @@ static RoleMapping map[] = {
+     //: Role of an accessible object
+     { QAccessible::ButtonDropDown, ATSPI_ROLE_PUSH_BUTTON, QT_TRANSLATE_NOOP("QSpiAccessibleBridge", "button with drop down") },
+     //: Role of an accessible object
++#if ATSPI_ROLE_COUNT > 130
++    { QAccessible::ButtonMenu, ATSPI_ROLE_PUSH_BUTTON_MENU, QT_TRANSLATE_NOOP("QSpiAccessibleBridge", "button menu") },
++#else
+     { QAccessible::ButtonMenu, ATSPI_ROLE_PUSH_BUTTON, QT_TRANSLATE_NOOP("QSpiAccessibleBridge", "button menu") },
++#endif
+     //: Role of an accessible object - a button that expands a grid.
+     { QAccessible::ButtonDropGrid, ATSPI_ROLE_PUSH_BUTTON, QT_TRANSLATE_NOOP("QSpiAccessibleBridge", "button with drop down grid") },
+     //: Role of an accessible object - blank space between other objects.
 diff --git a/src/platformsupport/linuxaccessibility/dbusconnection.cpp b/src/platformsupport/linuxaccessibility/dbusconnection.cpp
 index 45ddc8e496..cc734abc63 100644
 --- a/src/platformsupport/linuxaccessibility/dbusconnection.cpp
@@ -45905,6 +46030,135 @@ index 0ea422ecbc..4eb21b7659 100644
  
      // Test that a double-definition of a mimetype doesn't lead to sniffing ("conflicting globs").
      const QString qmlTestFile = QLatin1String(RESOURCE_PREFIX "test.qml");
+diff --git a/tests/auto/corelib/plugin/qfactoryloader/plugin1/plugin1.h b/tests/auto/corelib/plugin/qfactoryloader/plugin1/plugin1.h
+index ca2ceed7a9..624316dfdb 100644
+--- a/tests/auto/corelib/plugin/qfactoryloader/plugin1/plugin1.h
++++ b/tests/auto/corelib/plugin/qfactoryloader/plugin1/plugin1.h
+@@ -35,7 +35,7 @@
+ class Plugin1 : public QObject, public PluginInterface1
+ {
+     Q_OBJECT
+-    Q_PLUGIN_METADATA(IID "org.qt-project.Qt.autotests.plugininterface1")
++    Q_PLUGIN_METADATA(IID "org.qt-project.Qt.autotests.plugininterface1" FILE "plugin1.json")
+     Q_INTERFACES(PluginInterface1)
+ 
+ public:
+diff --git a/tests/auto/corelib/plugin/qfactoryloader/plugin1/plugin1.json b/tests/auto/corelib/plugin/qfactoryloader/plugin1/plugin1.json
+new file mode 100644
+index 0000000000..ce67846d48
+--- /dev/null
++++ b/tests/auto/corelib/plugin/qfactoryloader/plugin1/plugin1.json
+@@ -0,0 +1,5 @@
++{
++    "Keys": [
++        "plugin1"
++    ]
++}
+diff --git a/tests/auto/corelib/plugin/qfactoryloader/tst_qfactoryloader.cpp b/tests/auto/corelib/plugin/qfactoryloader/tst_qfactoryloader.cpp
+index 9fa61804b3..88ada1b806 100644
+--- a/tests/auto/corelib/plugin/qfactoryloader/tst_qfactoryloader.cpp
++++ b/tests/auto/corelib/plugin/qfactoryloader/tst_qfactoryloader.cpp
+@@ -31,6 +31,7 @@
+ #include <QtCore/qfileinfo.h>
+ #include <QtCore/qplugin.h>
+ #include <private/qfactoryloader_p.h>
++#include <private/qlibrary_p.h>
+ #include "plugin1/plugininterface1.h"
+ #include "plugin2/plugininterface2.h"
+ 
+@@ -52,6 +53,7 @@ public slots:
+ 
+ private slots:
+     void usingTwoFactoriesFromSameDir();
++    void multiplePaths();
+ };
+ 
+ static const char binFolderC[] = "bin";
+@@ -92,5 +94,30 @@ void tst_QFactoryLoader::usingTwoFactoriesFromSameDir()
+     QCOMPARE(plugin2->pluginName(), QLatin1String("Plugin2 ok"));
+ }
+ 
++void tst_QFactoryLoader::multiplePaths()
++{
++#if !QT_CONFIG(library) || !(defined(Q_OS_UNIX) && !defined(Q_OS_DARWIN)) || defined(Q_OS_ANDROID)
++    QSKIP("Test not applicable in this configuration.");
++#else
++    const QString binFolder = QFINDTESTDATA(binFolderC);
++    
++    QTemporaryDir dir;
++    QVERIFY(dir.isValid());
++
++    QString pluginsPath = QFileInfo(binFolder, binFolderC).absolutePath();
++    QString linkPath = dir.filePath(binFolderC);
++    QVERIFY(QFile::link(pluginsPath, linkPath));
++
++    QCoreApplication::setLibraryPaths({ QFileInfo(binFolder).absolutePath(), dir.path() });
++
++    const QString suffix = QLatin1Char('/') + QLatin1String(binFolderC);
++    QFactoryLoader loader1(PluginInterface1_iid, suffix);
++
++    QLibraryPrivate *library1 = loader1.library("plugin1");
++    QVERIFY(library1);
++    QCOMPARE(library1->loadHints(), QLibrary::PreventUnloadHint);
++#endif
++}
++
+ QTEST_MAIN(tst_QFactoryLoader)
+ #include "tst_qfactoryloader.moc"
+diff --git a/tests/auto/corelib/plugin/qpluginloader/tst_qpluginloader.cpp b/tests/auto/corelib/plugin/qpluginloader/tst_qpluginloader.cpp
+index ce8057372c..833f68b1de 100644
+--- a/tests/auto/corelib/plugin/qpluginloader/tst_qpluginloader.cpp
++++ b/tests/auto/corelib/plugin/qpluginloader/tst_qpluginloader.cpp
+@@ -193,7 +193,9 @@ void tst_QPluginLoader::errorString()
+     QVERIFY(!unloaded);
+     }
+ 
+-#if !defined(Q_OS_WIN) && !defined(Q_OS_MAC) && !defined(Q_OS_HPUX)
++// A bug in QNX causes the test to crash on exit after attempting to load
++// a shared library with undefined symbols (tracked as QTBUG-114682).
++#if !defined(Q_OS_WIN) && !defined(Q_OS_MAC) && !defined(Q_OS_HPUX) && !defined(Q_OS_QNX)
+     {
+     QPluginLoader loader( sys_qualifiedLibraryName("almostplugin"));     //a plugin with unresolved symbols
+     loader.setLoadHints(QLibrary::ResolveAllSymbolsHint);
+@@ -243,10 +245,37 @@ void tst_QPluginLoader::loadHints()
+     QSKIP("This test requires Qt to create shared libraries.");
+ #endif
+     QPluginLoader loader;
+-    QCOMPARE(loader.loadHints(), QLibrary::LoadHints{});   //Do not crash
++    QCOMPARE(loader.loadHints(), QLibrary::PreventUnloadHint);   //Do not crash
+     loader.setLoadHints(QLibrary::ResolveAllSymbolsHint);
++    QCOMPARE(loader.loadHints(), QLibrary::ResolveAllSymbolsHint);
++    // We can clear load hints when file name is not set.
++    loader.setLoadHints(QLibrary::LoadHints{});
++    QCOMPARE(loader.loadHints(), QLibrary::LoadHints{});
++    // Set the hints again
++    loader.setLoadHints(QLibrary::ResolveAllSymbolsHint);
++    QCOMPARE(loader.loadHints(), QLibrary::ResolveAllSymbolsHint);
+     loader.setFileName( sys_qualifiedLibraryName("theplugin"));     //a plugin
+     QCOMPARE(loader.loadHints(), QLibrary::ResolveAllSymbolsHint);
++
++    QPluginLoader loader4;
++    QCOMPARE(loader4.loadHints(), QLibrary::PreventUnloadHint);
++    loader4.setLoadHints(QLibrary::LoadHints{});
++    QCOMPARE(loader4.loadHints(), QLibrary::LoadHints{});
++    loader4.setFileName(sys_qualifiedLibraryName("theplugin"));
++    // Hints are merged with hints from the previous loader.
++    QCOMPARE(loader4.loadHints(), QLibrary::ResolveAllSymbolsHint);
++    // We cannot clear load hints after associating the loader with a file.
++    loader.setLoadHints(QLibrary::LoadHints{});
++    QCOMPARE(loader.loadHints(), QLibrary::ResolveAllSymbolsHint);
++
++    QPluginLoader loader2;
++    QCOMPARE(loader2.loadHints(), QLibrary::PreventUnloadHint);
++    loader2.setFileName(sys_qualifiedLibraryName("theplugin"));
++    // Hints are merged with hints from previous loaders.
++    QCOMPARE(loader2.loadHints(), QLibrary::PreventUnloadHint | QLibrary::ResolveAllSymbolsHint);
++
++    QPluginLoader loader3(sys_qualifiedLibraryName("theplugin"));
++    QCOMPARE(loader3.loadHints(), QLibrary::PreventUnloadHint | QLibrary::ResolveAllSymbolsHint);
+ }
+ 
+ void tst_QPluginLoader::deleteinstanceOnUnload()
 diff --git a/tests/auto/corelib/serialization/qcborvalue/tst_qcborvalue.cpp b/tests/auto/corelib/serialization/qcborvalue/tst_qcborvalue.cpp
 index 533fb1c8aa..63ce77d67f 100644
 --- a/tests/auto/corelib/serialization/qcborvalue/tst_qcborvalue.cpp
