@@ -1,6 +1,6 @@
 
 pkgname=lsof
-pkgver=4.98.0
+pkgver=4.99.0
 pkgrel=1
 pkgdesc="Lists open files for running Unix processes"
 arch=('x86_64')
@@ -10,14 +10,14 @@ depends=('glibc')
 #source=("https://github.com/lsof-org/lsof/releases/download/${pkgver}/${pkgname}_${pkgver}.linux.tar.bz2"
 source=("https://github.com/lsof-org/lsof/archive/refs/tags/${pkgver}.tar.gz"
         'license.txt')
-md5sums=('139ffbf7df7cefe3314724cdba282e04'
+md5sums=('813ef5fc2064d9a265bd9b499eb671fe'
          '1b63c76bd10437cabf890508c8e58d36')
 
 build() {
     #cd ${pkgname}_${pkgver}.linux
     cd ${pkgname}-${pkgver}
 
-    sed "s|/\* #define\tHASSECURITY\t1 \*/|#define\tHASSECURITY\t1|" -i dialects/linux/machine.h
+    #sed "s|/\* #define\tHASSECURITY\t1 \*/|#define\tHASSECURITY\t1|" -i dialects/linux/machine.h
     ./Configure -n linux
     make
 }
