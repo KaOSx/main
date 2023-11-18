@@ -1,26 +1,26 @@
 
 pkgname=python3-certifi
 _pkgname=certifi
-pkgver=2023.7.22
+pkgver=2023.11.17
 pkgrel=1
 pkgdesc="Carefully curated collection of Root Certificates for validating the trustworthiness of SSL certificates."
 arch=('x86_64')
 license=('MPL2.0')
 url="https://pypi.org/project/certifi/"
 depends=('python3')
-makedepends=('python3-setuptools')
+makedepends=('python3-build' 'python3-installer' 'python3-setuptools' 'python3-wheel')
 source=("https://pypi.python.org/packages/source/C/Certifi/${_pkgname}-${pkgver}.tar.gz")
-sha256sums=('539cc1d13202e33ca466e88b2807e29f4c13049d6d87031a3c110744495cb082')
+sha256sums=('9b469f3a900bf28dc19b8cfbf8019bf47f7fdd1a65a1d4ffb98fc14166beb4d1')
 
 build() {
     cd ${_pkgname}-${pkgver}
 
-    python3 setup.py build
+    python3 -m build -nw
 }
 
     package() {
     cd ${_pkgname}-${pkgver}
 
-    python3 setup.py install --prefix=/usr --root=${pkgdir} --optimize=1 --skip-build
+    python3 -m installer --destdir=${pkgdir} dist/*.whl
     install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
