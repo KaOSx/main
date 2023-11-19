@@ -1,24 +1,24 @@
 
 pkgname=python3-pygments
-pkgver=2.16.1
+pkgver=2.17.1
 pkgrel=1
 pkgdesc="Python syntax highlighter"
 arch=('x86_64')
 url="https://pygments.org/"
 license=('BSD')
 depends=('python3')
-makedepends=('python3-build' 'python3-installer' 'python3-setuptools' 'python3-wheel')
-source=("https://pypi.org/packages/source/P/Pygments/Pygments-${pkgver}.tar.gz")
-sha256sums=('1daff0494820c69bc8941e407aa20f577374ee88364ee10a98fdbe0aece96e29')
+makedepends=('python3-build' 'python3-installer' 'python3-wheel') # 'python3-hatchling'
+source=("https://pypi.org/packages/source/p/pygments/pygments-${pkgver}.tar.gz")
+sha256sums=('e45a0e74bf9c530f564ca81b8952343be986a29f6afe7f5ad95c5f06b7bdf5e8')
 
 build() {
-  cd Pygments-${pkgver}
+  cd pygments-${pkgver}
 
   python3 -m build -nw
 }
 
 package() {
-  cd Pygments-${pkgver}
+  cd pygments-${pkgver}
 
   python3 -m installer --destdir=${pkgdir} dist/*.whl
 
