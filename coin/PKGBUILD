@@ -1,8 +1,8 @@
 
 pkgname=coin
-pkgver=4.0.0
+pkgver=4.0.1
 _commit=dfb56d294eeef3581e4322ed8881f478fc242dec
-pkgrel=2
+pkgrel=1
 pkgdesc='OpenGL-based, 3D graphics library that has its roots in the Open Inventor 2.1 API.'
 url='https://github.com/coin3d/coin'
 license=('GPL')
@@ -10,11 +10,11 @@ arch=('x86_64')
 depends=('libglvnd' 'expat' 'openal' 'fontconfig' 'zlib' 'freetype2' 'glu')
 makedepends=('cmake' 'boost')
 options=('!libtool')
-source=("https://github.com/coin3d/coin/archive/${_commit}.zip")
-md5sums=('1ef97cb758e0c47a078511bfe5345a36')
+source=("https://github.com/coin3d/coin/releases/download/v${pkgver}/coin-${pkgver}-src.tar.gz")
+md5sums=('99ee9c7a5d510875eef84d6b02d3bf79')
 
 build() {
-  cmake -B build -S ${pkgname}-${_commit} \
+  cmake -B build -S ${pkgname} \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=lib \
