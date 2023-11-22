@@ -1,7 +1,7 @@
 
 pkgname=libwebsockets
-pkgver=4.3.2
-pkgrel=2
+pkgver=4.3.3
+pkgrel=1
 pkgdesc="Pure C library providing client and server for http/1, http/2, websockets"
 arch=('x86_64')
 url="https://libwebsockets.org"
@@ -9,7 +9,7 @@ license=('MIT')
 depends=('libev' 'libuv' 'openssl' 'zlib')
 makedepends=('cmake' 'glib2' 'libcap' 'sqlite')
 source=("https://github.com/warmcat/libwebsockets/archive/v${pkgver}.tar.gz")
-sha256sums=('6a85a1bccf25acc7e8e5383e4934c9b32a102880d1e4c37c70b27ae2a42406e1')
+sha256sums=('6fd33527b410a37ebc91bb64ca51bdabab12b076bc99d153d7c5dd405e4bdf90')
 
 build() {
   cmake -B build -S ${pkgname}-${pkgver} \
