@@ -1,24 +1,20 @@
 
 pkgname=xdg-utils
-pkgver=1.1.5
-_pkgver=1.1.5
-_commit=301a1a4772f1f934a22e106ff032c62ef705462b
-pkgrel=3
+pkgver=1.2.0beta1
+_pkgver=1.2.0-beta1
+pkgrel=1
 pkgdesc='Command line tools that assist applications with a variety of desktop integration tasks.'
 arch=('x86_64')
 url='https://www.freedesktop.org/wiki/Software/xdg-utils/'
 depends=('sh')
 makedepends=('docbook-xsl' 'w3m' 'xmlto')
 license=('MIT')
-source=("https://gitlab.freedesktop.org/xdg/xdg-utils/-/archive/${_commit}/xdg-utils-${_commit}.tar.bz2"
-#source=("https://portland.freedesktop.org/download/xdg-utils-${_pkgver}.tar.gz"
-        "https://gitlab.freedesktop.org/scop/xdg-utils/-/commit/da1bcc509de7b43416180f84dc551f9783bc2066.diff")
-md5sums=('97f6883b197d6f464f87ca1d86755256'
-         '01fc04d8c4645b22b3fe8b1fd3edbf28')
+#source=("https://gitlab.freedesktop.org/xdg/xdg-utils/-/archive/${_commit}/xdg-utils-${_commit}.tar.bz2"
+source=("https://gitlab.freedesktop.org/xdg/xdg-utils/-/archive/v${_pkgver}/${pkgname}-v${_pkgver}.tar.bz2")
+md5sums=('680eedb83bb7461039294aad632b39c5')
 
 build() {
-	cd ${pkgname}-${_commit}
-	# from  https://gitlab.freedesktop.org/xdg/xdg-utils/-/merge_requests/44
+	cd ${pkgname}-v${_pkgver}
 	#patch -p1 -i ${srcdir}/da1bcc509de7b43416180f84dc551f9783bc2066.diff
 
 	./configure --prefix=/usr --mandir=/usr/share/man
@@ -26,7 +22,7 @@ build() {
 }
 
 package() {
-	cd ${pkgname}-${_commit}
+	cd ${pkgname}-v${_pkgver}
 
 	make DESTDIR=${pkgdir} install
 	install -D -m644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
