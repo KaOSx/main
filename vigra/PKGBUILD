@@ -2,7 +2,7 @@
 pkgname=vigra
 pkgver=1.11.2
 _pkgver=1-11-2
-pkgrel=1
+pkgrel=2
 pkgdesc="Computer vision library"
 arch=('x86_64')
 url="https://ukoethe.github.io/vigra/"
@@ -15,9 +15,7 @@ options=('!libtool')
 source=("https://github.com/ukoethe/vigra/archive/Version-${_pkgver}.tar.gz"
         "https://github.com/ukoethe/vigra/commit/8acd73a5e0408326e2a3c1ed1c2c70ffe2b954d0.diff")
 md5sums=('5c7daafe668dcb50b094a3208b6e1893'
-         '424d3938f1e7579d1893b5dd0585c526'
-         '3fcd2568044430844732d00d8d3a6861'
-         'f9de2112633e58b6e3bcefb83b7108f1')
+         '424d3938f1e7579d1893b5dd0585c526')
 
 prepare() {
   cd ${pkgname}-Version-${_pkgver}
