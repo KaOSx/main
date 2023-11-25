@@ -7,7 +7,7 @@ pkgname=qt6-webengine
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=1
+pkgrel=2
 pkgdesc="Provides a web browser engine that makes it easy to embed content from the Web into your Qt application."
 arch=('x86_64')
 url='https://github.com/qt/qtwebengine'
@@ -20,9 +20,20 @@ makedepends=('cmake' 'ninja' 'python3' 'gperf' 'yasm' 'openssh' 'icu' 'qt6-tools
 groups=('qt6')
 options=('!libtool')
 _pkgfqn="qtwebengine-everywhere-src-${subver}"
-source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
+source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz"
+        'icu74.patch'
+        'libxml2.12.patch')
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
-md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`)
+md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
+         '63faeb3ac781a8c0eb107b956e62118a'
+         'f491ca0d283e513a91dea41860306115')
+
+prepare() {
+  cd ${_pkgfqn}/
+
+  patch -p1 -i ${srcdir}/icu74.patch
+  patch -p1 -i ${srcdir}/libxml2.12.patch
+}
 
 build() {
     cmake -B build -S ${_pkgfqn} -G Ninja \
