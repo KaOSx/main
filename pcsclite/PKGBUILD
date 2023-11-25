@@ -1,17 +1,17 @@
 
 pkgname=pcsclite
-pkgver=2.0.0
+pkgver=2.0.1
 _pkgver=4235
 pkgrel=1
 pkgdesc="PC/SC Architecture smartcard middleware library"
 arch=('x86_64')
 url="https://pcsclite.apdu.fr/"
 license=('BSD')
-depends=('python3' 'systemd')
+depends=('python3' 'systemd' 'polkit')
 makedepends=('pkg-config')
 options=('!docs')
 source=("https://pcsclite.apdu.fr/files/pcsc-lite-${pkgver}.tar.bz2")
-md5sums=('45bf7ef136537f68a26976d89f631cbf')
+md5sums=('730d069764c769ba3bac391a96c8a54f')
 
 build() {
   cd pcsc-lite-${pkgver}

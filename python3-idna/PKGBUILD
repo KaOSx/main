@@ -1,25 +1,25 @@
 
 pkgname=python3-idna
-pkgver=3.4
-pkgrel=2
+pkgver=3.6
+pkgrel=1
 pkgdesc="Support for the Internationalised Domain Names in Applications (IDNA) protocol as specified in RFC 5891. "
 arch=('x86_64')
 license=('LGPL')
 url="https://github.com/kjd/idna/"
 depends=('python3')
-makedepends=('python3-setuptools')
-source=("https://github.com/kjd/idna/archive/v${pkgver}.tar.gz")
-md5sums=('d003651d9c278b8d6b6d654ef76a5d6f')
+makedepends=('python3-build' 'python3-installer' 'python3-flit' 'python3-wheel')
+source=("https://files.pythonhosted.org/packages/source/i/idna/idna-${pkgver}.tar.gz")
+sha256sums=('9ecdbbd083b06798ae1e86adcbfe8ab1479cf864e4ee30fe4e46a003d12491ca')
 
 build() {
     cd idna-${pkgver}
 
-    python3 setup.py build
+    python3 -m build -nw
 }
 
 package() {
     cd idna-${pkgver}
 
-    python3 setup.py install --prefix=/usr --root=${pkgdir} --optimize=1 --skip-build
+    python3 -m installer --destdir=${pkgdir} dist/*.whl
     install -Dm644 LICENSE.md ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
