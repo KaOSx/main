@@ -6,7 +6,7 @@ pkgname=qt6-base
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=3
+pkgrel=1
 pkgdesc="A cross-platform application and UI framework"
 arch=('x86_64')
 url='https://www.qt.io/'
@@ -32,7 +32,7 @@ md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
 prepare() {
   cd ${_pkgfqn}
   # libxkbcommon > 1.6 needed
-  patch -p1 -i ${srcdir}/8af35d27e8f02bbb99aef4ac495ed406e50e3cca.diff
+  #patch -p1 -i ${srcdir}/8af35d27e8f02bbb99aef4ac495ed406e50e3cca.diff
 }
 
 build() {

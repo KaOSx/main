@@ -22,7 +22,7 @@ _pkgfqn="qtdeclarative-everywhere-src-${subver}"
 source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz"
         "https://github.com/qt/qtdeclarative/commit/935c60a93b3196809587d8168525f49b96ae216b.diff")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
-         '822162ef75ac4f306cdc7d9204451c3e')
+         '11b0c797988cc4c6af9b71783f6b2669')
 
 prepare() {
   cd ${_pkgfqn}
