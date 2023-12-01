@@ -1,5 +1,5 @@
 pkgname=xsimd
-pkgver=11.2.0
+pkgver=12.0.0
 pkgrel=1
 pkgdesc="C++ wrappers for SIMD intrinsics and parallelized, optimized mathematical functions"
 url='https://xsimd.readthedocs.io/en/latest/'
@@ -7,7 +7,7 @@ arch=('x86_64')
 license=('BSD-3')
 makedepends=('cmake')
 source=("https://github.com/xtensor-stack/xsimd/archive/refs/tags/${pkgver}.tar.gz")
-sha256sums=('509bbfe12e78ee1a0e81711019e7c7a372dabcff566dbf15b95cc94339443242')
+sha256sums=('6f156ec9bcc602d2581ef023ef0e927e3759c30cf1405028210e8c103a4f846d')
  
 build() {
   cmake -B build -S ${pkgname}-${pkgver} \
