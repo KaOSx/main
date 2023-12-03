@@ -1,7 +1,7 @@
 
 pkgname=gdb
-pkgver=13.2
-pkgrel=4
+pkgver=14.1
+pkgrel=1
 pkgdesc="The GNU Debugger"
 arch=('x86_64')
 url="https://www.gnu.org/software/gdb/"
@@ -11,7 +11,7 @@ makedepends=('texinfo')
 backup=('etc/gdb/gdbinit')
 options=('!libtool' '!buildflags')
 source=("https://ftp.gnu.org/gnu/gdb/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('fd5bebb7be1833abdb6e023c2f498a354498281df9d05523d8915babeb893f0a')
+sha256sums=('d66df51276143451fcbff464cc8723d68f1e9df45a6a2d5635a54e71643edb80')
 
 build() {
   cd ${pkgname}-${pkgver}
