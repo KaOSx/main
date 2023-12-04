@@ -1,7 +1,7 @@
 
 pkgname=lcms2
-pkgver=2.15
-_pkgver=2.15
+pkgver=2.16
+_pkgver=2.16
 pkgrel=1
 pkgdesc="Small-footprint color management engine"
 arch=('x86_64')
@@ -10,7 +10,7 @@ license=('MIT')
 depends=('libtiff')
 options=(!libtool)
 source=("https://downloads.sourceforge.net/project/lcms/lcms/${_pkgver}/${pkgname}-${pkgver}.tar.gz")
-md5sums=('d17efda96ec79ebdd5de881a93b67839')
+md5sums=('f219d87c247957c97020a3859d8d6fa8')
 
 build() {
   cd ${pkgname}-${pkgver}
@@ -23,6 +23,6 @@ package() {
   cd ${pkgname}-${pkgver}
 
   make DESTDIR=${pkgdir}/ install
-  install -D -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
+  install -D -m644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
 
