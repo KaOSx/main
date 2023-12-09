@@ -42519,6 +42519,48 @@ index 33f5e491c7..a679f25757 100644
  }
  
  /*!
+diff --git a/src/gui/image/qpixmapcache.cpp b/src/gui/image/qpixmapcache.cpp
+index b6e5e70f55..a4317a4eac 100644
+--- a/src/gui/image/qpixmapcache.cpp
++++ b/src/gui/image/qpixmapcache.cpp
+@@ -466,6 +466,7 @@ void QPMCache::clear()
+         killTimer(theid);
+         theid = 0;
+     }
++    cacheKeys.clear();
+ }
+ 
+ QPixmapCache::KeyData* QPMCache::getKeyData(QPixmapCache::Key *key)
+diff --git a/src/gui/itemmodels/qstandarditemmodel.cpp b/src/gui/itemmodels/qstandarditemmodel.cpp
+index fc9424763e..a3e0853fa8 100644
+--- a/src/gui/itemmodels/qstandarditemmodel.cpp
++++ b/src/gui/itemmodels/qstandarditemmodel.cpp
+@@ -3113,13 +3113,13 @@ QStringList QStandardItemModel::mimeTypes() const
+ */
+ QMimeData *QStandardItemModel::mimeData(const QModelIndexList &indexes) const
+ {
+-    QMimeData *data = QAbstractItemModel::mimeData(indexes);
+-    if(!data)
++    std::unique_ptr<QMimeData> data(QAbstractItemModel::mimeData(indexes));
++    if (!data)
+         return nullptr;
+ 
+     const QString format = qStandardItemModelDataListMimeType();
+     if (!mimeTypes().contains(format))
+-        return data;
++        return data.release();
+     QByteArray encoded;
+     QDataStream stream(&encoded, QIODevice::WriteOnly);
+ 
+@@ -3172,7 +3172,7 @@ QMimeData *QStandardItemModel::mimeData(const QModelIndexList &indexes) const
+     }
+ 
+     data->setData(format, encoded);
+-    return data;
++    return data.release();
+ }
+ 
+ 
 diff --git a/src/gui/kernel/qhighdpiscaling.cpp b/src/gui/kernel/qhighdpiscaling.cpp
 index 85ff58c14c..a433e94c22 100644
 --- a/src/gui/kernel/qhighdpiscaling.cpp
@@ -43883,7 +43925,7 @@ index 45ddc8e496..cc734abc63 100644
      QDBusConnection c = QDBusConnection::sessionBus();
      if (!c.isConnected()) {
 diff --git a/src/platformsupport/services/genericunix/qgenericunixservices.cpp b/src/platformsupport/services/genericunix/qgenericunixservices.cpp
-index f0d1722c95..2abe039126 100644
+index f0d1722c95..47ef7d2b5c 100644
 --- a/src/platformsupport/services/genericunix/qgenericunixservices.cpp
 +++ b/src/platformsupport/services/genericunix/qgenericunixservices.cpp
 @@ -51,6 +51,9 @@
@@ -43905,7 +43947,35 @@ index f0d1722c95..2abe039126 100644
  #include <QtDBus/QDBusConnection>
  #include <QtDBus/QDBusMessage>
  #include <QtDBus/QDBusPendingCall>
-@@ -298,8 +303,135 @@ static inline QDBusMessage xdgDesktopPortalSendEmail(const QUrl &url)
+@@ -205,8 +210,7 @@ static inline QDBusMessage xdgDesktopPortalOpenFile(const QUrl &url)
+     // handle_token (s) -  A string that will be used as the last element of the @handle.
+     // writable (b) - Whether to allow the chosen application to write to the file.
+ 
+-#ifdef O_PATH
+-    const int fd = qt_safe_open(QFile::encodeName(url.toLocalFile()), O_PATH);
++    const int fd = qt_safe_open(QFile::encodeName(url.toLocalFile()), O_RDONLY);
+     if (fd != -1) {
+         QDBusMessage message = QDBusMessage::createMethodCall(QLatin1String("org.freedesktop.portal.Desktop"),
+                                                               QLatin1String("/org/freedesktop/portal/desktop"),
+@@ -216,16 +220,13 @@ static inline QDBusMessage xdgDesktopPortalOpenFile(const QUrl &url)
+         QDBusUnixFileDescriptor descriptor;
+         descriptor.giveFileDescriptor(fd);
+ 
+-        const QVariantMap options = {{QLatin1String("writable"), true}};
++        const QVariantMap options = {};
+ 
+         // FIXME parent_window_id
+         message << QString() << QVariant::fromValue(descriptor) << options;
+ 
+         return QDBusConnection::sessionBus().call(message);
+     }
+-#else
+-    Q_UNUSED(url)
+-#endif
+ 
+     return QDBusMessage::createError(QDBusError::InternalError, qt_error_string());
+ }
+@@ -298,8 +299,135 @@ static inline QDBusMessage xdgDesktopPortalSendEmail(const QUrl &url)
  
      return QDBusConnection::sessionBus().call(message);
  }
@@ -44041,7 +44111,7 @@ index f0d1722c95..2abe039126 100644
  QByteArray QGenericUnixServices::desktopEnvironment() const
  {
      static const QByteArray result = detectDesktopEnvironment();
-@@ -354,6 +486,8 @@ bool QGenericUnixServices::openDocument(const QUrl &url)
+@@ -354,6 +482,8 @@ bool QGenericUnixServices::openDocument(const QUrl &url)
  }
  
  #else
@@ -44050,7 +44120,7 @@ index f0d1722c95..2abe039126 100644
  QByteArray QGenericUnixServices::desktopEnvironment() const
  {
      return QByteArrayLiteral("UNKNOWN");
-@@ -373,6 +507,30 @@ bool QGenericUnixServices::openDocument(const QUrl &url)
+@@ -373,6 +503,30 @@ bool QGenericUnixServices::openDocument(const QUrl &url)
      return false;
  }
  
@@ -44561,7 +44631,7 @@ index 76869ced60..02d2eebb56 100644
          qWarning("QXcbIntegration: Cannot create platform OpenGL context, neither GLX nor EGL are enabled");
          return nullptr;
 diff --git a/src/plugins/platforms/xcb/qxcbwindow.cpp b/src/plugins/platforms/xcb/qxcbwindow.cpp
-index bffad0fac5..c67ffa9dd7 100644
+index bffad0fac5..c76c2d97c1 100644
 --- a/src/plugins/platforms/xcb/qxcbwindow.cpp
 +++ b/src/plugins/platforms/xcb/qxcbwindow.cpp
 @@ -299,11 +299,6 @@ void QXcbWindow::create()
@@ -44602,6 +44672,16 @@ index bffad0fac5..c67ffa9dd7 100644
              return;
          }
          xcb_change_property(xcb_connection(),
+@@ -1418,7 +1419,8 @@ void QXcbWindow::propagateSizeHints()
+                                           qMin(XCOORD_MAX, maximumSize.height()));
+ 
+     if (sizeIncrement.width() > 0 || sizeIncrement.height() > 0) {
+-        xcb_icccm_size_hints_set_base_size(&hints, baseSize.width(), baseSize.height());
++        if (!baseSize.isNull() && baseSize.isValid())
++            xcb_icccm_size_hints_set_base_size(&hints, baseSize.width(), baseSize.height());
+         xcb_icccm_size_hints_set_resize_inc(&hints, sizeIncrement.width(), sizeIncrement.height());
+     }
+ 
 diff --git a/src/plugins/platformthemes/xdgdesktopportal/qxdgdesktopportalfiledialog.cpp b/src/plugins/platformthemes/xdgdesktopportal/qxdgdesktopportalfiledialog.cpp
 index 2c72538387..8987e3efd0 100644
 --- a/src/plugins/platformthemes/xdgdesktopportal/qxdgdesktopportalfiledialog.cpp
@@ -44844,9 +44924,22 @@ index 2fc3167fd5..b809503122 100644
          return new QXdgDesktopPortalFileDialog;
      }
 diff --git a/src/plugins/sqldrivers/mysql/qsql_mysql.cpp b/src/plugins/sqldrivers/mysql/qsql_mysql.cpp
-index 4427efb770..781dad8d0b 100644
+index 4427efb770..0f85495bf4 100644
 --- a/src/plugins/sqldrivers/mysql/qsql_mysql.cpp
 +++ b/src/plugins/sqldrivers/mysql/qsql_mysql.cpp
+@@ -916,9 +916,9 @@ bool QMYSQLResult::prepare(const QString& query)
+         return false;
+     }
+ 
+-    if (mysql_stmt_param_count(d->stmt) > 0) {// allocate memory for outvalues
+-        d->outBinds = new MYSQL_BIND[mysql_stmt_param_count(d->stmt)];
+-    }
++    const auto paramCount = mysql_stmt_param_count(d->stmt);
++    if (paramCount > 0) // allocate memory for outvalues
++        d->outBinds = new MYSQL_BIND[paramCount]();
+ 
+     setSelect(d->bindInValues());
+     d->preparedQuery = true;
 @@ -1363,20 +1363,20 @@ bool QMYSQLDriver::open(const QString& db,
      }
  
@@ -45636,6 +45729,19 @@ index 55d95c7fb2..8e9d2abbaa 100644
              }
  
              if (rule.hasNativeBorder()) {
+diff --git a/src/widgets/util/qsystemtrayicon.cpp b/src/widgets/util/qsystemtrayicon.cpp
+index dccea98a39..0a24fb539f 100644
+--- a/src/widgets/util/qsystemtrayicon.cpp
++++ b/src/widgets/util/qsystemtrayicon.cpp
+@@ -206,7 +206,7 @@ void QSystemTrayIcon::setContextMenu(QMenu *menu)
+     if (oldMenu != menu && d->qpa_sys) {
+         // Show the QMenu-based menu for QPA plugins that do not provide native menus
+         if (oldMenu && !oldMenu->platformMenu())
+-            QObject::disconnect(d->qpa_sys, &QPlatformSystemTrayIcon::contextMenuRequested, menu, nullptr);
++            QObject::disconnect(d->qpa_sys, &QPlatformSystemTrayIcon::contextMenuRequested, oldMenu, nullptr);
+         if (menu && !menu->platformMenu()) {
+             QObject::connect(d->qpa_sys, &QPlatformSystemTrayIcon::contextMenuRequested,
+                              menu,
 diff --git a/src/widgets/widgets/qabstractbutton.cpp b/src/widgets/widgets/qabstractbutton.cpp
 index a128b23950..dc40bf62fb 100644
 --- a/src/widgets/widgets/qabstractbutton.cpp
@@ -45773,6 +45879,19 @@ index d36b6f8f9a..e0df5b5158 100644
  ** Contact: https://www.qt.io/licensing/
  **
  ** This file is part of the QtWidgets module of the Qt Toolkit.
+diff --git a/src/widgets/widgets/qdial.cpp b/src/widgets/widgets/qdial.cpp
+index 8f774a3cc7..ec5cec0d82 100644
+--- a/src/widgets/widgets/qdial.cpp
++++ b/src/widgets/widgets/qdial.cpp
+@@ -94,6 +94,8 @@ int QDialPrivate::bound(int val) const
+     if (wrapping) {
+         if ((val >= minimum) && (val <= maximum))
+             return val;
++        if (minimum == maximum)
++            return minimum;
+         val = minimum + ((val - minimum) % (maximum - minimum));
+         if (val < minimum)
+             val += maximum - minimum;
 diff --git a/src/widgets/widgets/qgroupbox.cpp b/src/widgets/widgets/qgroupbox.cpp
 index 02a0bed325..3f3eccc370 100644
 --- a/src/widgets/widgets/qgroupbox.cpp
@@ -45810,6 +45929,20 @@ index 02a0bed325..3f3eccc370 100644
              bool toggle = (d->pressedControl == QStyle::SC_GroupBoxLabel
                             || d->pressedControl == QStyle::SC_GroupBoxCheckBox);
              d->pressedControl = QStyle::SC_None;
+diff --git a/src/widgets/widgets/qtabbar.cpp b/src/widgets/widgets/qtabbar.cpp
+index 9a382e96dd..7f80fcc250 100644
+--- a/src/widgets/widgets/qtabbar.cpp
++++ b/src/widgets/widgets/qtabbar.cpp
+@@ -2190,7 +2190,8 @@ void QTabBar::mouseMoveEvent(QMouseEvent *event)
+                 }
+             }
+             // Buttons needs to follow the dragged tab
+-            d->layoutTab(d->pressedIndex);
++            if (d->pressedIndex != -1)
++                d->layoutTab(d->pressedIndex);
+ 
+             update();
+         }
 diff --git a/src/widgets/widgets/qtoolbutton.cpp b/src/widgets/widgets/qtoolbutton.cpp
 index e380cb647b..9953db73af 100644
 --- a/src/widgets/widgets/qtoolbutton.cpp
@@ -45843,6 +45976,22 @@ index 52bd2d5f7a..82b5d7924f 100644
      void nextCheckState() override;
      void initStyleOption(QStyleOptionToolButton *option) const;
  
+diff --git a/src/widgets/widgets/qwidgettextcontrol.cpp b/src/widgets/widgets/qwidgettextcontrol.cpp
+index ba9b6e0587..9493f090ec 100644
+--- a/src/widgets/widgets/qwidgettextcontrol.cpp
++++ b/src/widgets/widgets/qwidgettextcontrol.cpp
+@@ -2057,6 +2057,11 @@ void QWidgetTextControlPrivate::inputMethodEvent(QInputMethodEvent *e)
+             || e->preeditString() != cursor.block().layout()->preeditAreaText()
+             || e->replacementLength() > 0;
+ 
++    if (!isGettingInput && e->attributes().isEmpty()) {
++        e->ignore();
++        return;
++    }
++
+     int oldCursorPos = cursor.position();
+ 
+     cursor.beginEditBlock();
 diff --git a/src/xml/sax/qxml.cpp b/src/xml/sax/qxml.cpp
 index 7a444713c1..9076dcfd84 100644
 --- a/src/xml/sax/qxml.cpp
@@ -46928,6 +47077,33 @@ index 0044d33c66..4cf06296e4 100644
      QTest::keyPress( testWidget,Qt::Key_Enter );
      QCOMPARE( press_count, (uint)1 );
      QCOMPARE( release_count, (uint)1 );
+diff --git a/tests/auto/widgets/widgets/qdial/tst_qdial.cpp b/tests/auto/widgets/widgets/qdial/tst_qdial.cpp
+index 356f773ae9..a014df3b15 100644
+--- a/tests/auto/widgets/widgets/qdial/tst_qdial.cpp
++++ b/tests/auto/widgets/widgets/qdial/tst_qdial.cpp
+@@ -42,6 +42,7 @@ private slots:
+     void valueChanged();
+     void sliderMoved();
+     void wrappingCheck();
++    void minEqualMaxValueOutsideRange();
+ };
+ 
+ // Testing get/set functions
+@@ -194,5 +195,14 @@ void tst_QDial::wrappingCheck()
+     }
+ }
+ 
++// QTBUG-104641
++void tst_QDial::minEqualMaxValueOutsideRange()
++{
++    QDial dial;
++    dial.setRange(30, 30);
++    dial.setWrapping(true);
++    dial.setValue(45);
++}
++
+ QTEST_MAIN(tst_QDial)
+ #include "tst_qdial.moc"
 diff --git a/tests/auto/widgets/widgets/qgroupbox/qgroupbox.pro b/tests/auto/widgets/widgets/qgroupbox/qgroupbox.pro
 index 4a5e76ff65..a235fa1fac 100644
 --- a/tests/auto/widgets/widgets/qgroupbox/qgroupbox.pro
