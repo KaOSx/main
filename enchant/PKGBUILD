@@ -1,6 +1,6 @@
 
 pkgname=enchant
-pkgver=2.6.3
+pkgver=2.6.4
 pkgrel=1
 epoch=2
 pkgdesc="A wrapper library for generic spell checking"
@@ -12,7 +12,7 @@ makedepends=('groff')
 options=('!libtool')
 #source=("http://www.abisource.com/downloads/enchant/${pkgver}/${pkgname}-${pkgver}.tar.gz")
 source=("https://github.com/AbiWord/enchant/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
-md5sums=('a1708582ff7723faaca2940a37befe41')
+md5sums=('46c82b4faad9ceb2be2e4cc0766b5c0b')
 
 build() {
   cd ${pkgname}-${pkgver}
@@ -28,9 +28,4 @@ package() {
   cd ${pkgname}-${pkgver}
 
   make DESTDIR=${pkgdir} install
-
-  ln -sfv enchant-2 ${pkgdir}/usr/include/enchant
-  ln -sfv enchant-2 ${pkgdir}/usr/bin/enchant
-  ln -sfv libenchant-2.so ${pkgdir}/usr/lib/libenchant.so
-  ln -sfv enchant-2.pc ${pkgdir}/usr/lib/pkgconfig/enchant.pc
 }
