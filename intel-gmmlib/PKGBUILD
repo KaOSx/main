@@ -1,6 +1,6 @@
 
 pkgname=intel-gmmlib
-pkgver=22.3.14
+pkgver=22.3.15
 pkgrel=1
 pkgdesc="Intel Graphics Memory Management Library provides management for the Intel Media Driver for VAAPI."
 arch=('x86_64')
@@ -10,7 +10,7 @@ depends=('gcc-libs')
 makedepends=('cmake')
 options=('!libtool')
 source=("https://github.com/intel/gmmlib/archive/${pkgname}-${pkgver}.tar.gz")
-sha1sums=('a8fe582e3f12e99491772e80d54a950f55f25cc7')
+sha1sums=('6351c2972594c641e50f4ed989b6d9fa1e3e45ff')
 
 build() {
   cmake -B build -S gmmlib-${pkgname}-${pkgver} \
