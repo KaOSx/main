@@ -1,26 +1,26 @@
 
 pkgname=python3-lazy-object-proxy
-pkgver=1.9.0
+pkgver=1.10.0
 pkgrel=1
 pkgdesc="A fast and thorough lazy object proxy."
 arch=('x86_64')
 url="https://github.com/ionelmc/python-lazy-object-proxy"
 license=('BSD')
 depends=('python3')
-makedepends=('python3-setuptools' 'python3-pip')
+makedepends=('python3-build' 'python3-installer' 'python3-setuptools-scm' 'python3-wheel')
 source=("https://files.pythonhosted.org/packages/source/l/lazy-object-proxy/lazy-object-proxy-${pkgver}.tar.gz")
-sha256sums=('659fb5809fa4629b8a1ac5106f669cfc7bef26fbb389dda53b3e010d1ac4ebae')
+sha256sums=('78247b6d45f43a52ef35c25b5581459e85117225408a4128a3daf8bf9648ac69')
 
 
 build() {
   cd lazy-object-proxy-${pkgver}
 
-  python3 setup.py build
+  python3 -m build -nw
 }
 
 package() {
   cd lazy-object-proxy-${pkgver}
 
-  python3 setup.py install --optimize=1 --skip-build --prefix=/usr --root=${pkgdir}
+  python3 -m installer --destdir=${pkgdir} dist/*.whl
   install -Dm644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
