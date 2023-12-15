@@ -2,7 +2,7 @@
 pkgname=gpgme-qt6
 _pkgname=gpgme
 pkgver=1.23.2
-pkgrel=1
+pkgrel=2
 pkgdesc="A C wrapper library for GnuPG, Qt6 version"
 arch=('x86_64')
 url="https://www.gnupg.org/related_software/gpgme/"
@@ -17,7 +17,7 @@ sha256sums=('9499e8b1f33cccb6815527a1bc16049d35a6198a6c5fae0185f2bd561bce5224'
 prepare() {
   cd ${_pkgname}-${pkgver}
 
-  patch -p1 -i ${srcdir}/qt6_new.diff
+  #patch -p1 -i ${srcdir}/qt6_new.diff
   autoreconf -vf
 }
 
