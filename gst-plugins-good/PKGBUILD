@@ -28,12 +28,12 @@ build() {
   ninja
 }
 
-#check() {
-#  cd build
+check() {
+  cd build
   # 113/115 elements_mpegaudioparse            FAIL
   # 115/115 elements_flvmux                    FAIL
-  #ninja test
-#}
+  ninja test
+}
 
 package() {
   cd build
