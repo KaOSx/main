@@ -1,7 +1,7 @@
 
 # check branch for version
 pkgname=sof-firmware
-pkgver=2023.09.2
+pkgver=2023.12
 _pkgver=2.2
 pkgrel=1
 pkgdesc="Sound Open Firmware is an audio DSP firmware and SDK that provides audio firmware infrastructure"
@@ -13,7 +13,7 @@ options=('!strip')
 source=("https://github.com/thesofproject/sof-bin/releases/download/v${pkgver}/sof-bin-${pkgver}.tar.gz")
 # go back to the bin release once sof-tlpg-v2.2.1 is part of the bin again
 #source=("https://github.com/thesofproject/sof-bin/archive/refs/tags/v${pkgver}.tar.gz")
-md5sums=('1cebe4c174bb4ced0ee988c9838084c7')
+md5sums=('b1d4df3c824652dfc48603c3dd7072da')
 
 package() {
   cd sof-bin-${pkgver}
