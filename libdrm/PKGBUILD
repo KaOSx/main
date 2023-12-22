@@ -1,6 +1,6 @@
 
 pkgname=libdrm
-pkgver=2.4.118
+pkgver=2.4.119
 pkgrel=1
 pkgdesc="Userspace interface to kernel DRM services"
 arch=('x86_64')
@@ -11,14 +11,14 @@ makedepends=('cairo' 'xorg-util-macros' 'pkg-config' 'meson' 'ninja')
 options=('!libtool')
 source=("https://dri.freedesktop.org/libdrm/${pkgname}-${pkgver}.tar.xz"
         'COPYING')
-sha256sums=('a777bd85f2b5fc9c57f886c82058300578317cafdbc77d0a769d7e9a9567ab88'
+sha256sums=('0a49f12f09b5b6e68eaaaff3f02ca7cff9aa926939b212d343161d3e8ac56291'
             '9631d4f694952e3e6ae5a05534c2e93e994e47d3413677a3a00e45c8cef6db93')
 
 build() {
   mkdir -p build
   cd build
 
-  meson ../${pkgname}-${pkgver} \
+  meson setup ../${pkgname}-${pkgver} \
     --prefix=/usr \
     --sysconfdir=/etc \
     --buildtype=release \
