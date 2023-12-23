@@ -1,13 +1,13 @@
  
 pkgname=libsass
-pkgver=3.6.5
+pkgver=3.6.6
 pkgrel=1
 pkgdesc="C/C++ implementation of a Sass compiler"
 arch=('x86_64')
 url="https://github.com/sass/libsass/"
 license=('MIT')
 source=("https://github.com/sass/libsass/archive/${pkgver}.tar.gz")
-md5sums=("c49765b9b3824dcd4a7423225ca28bad")
+md5sums=("afda97284d75a030cabadf5b9f998a3b")
 
 
 build() {
@@ -21,7 +21,7 @@ build() {
 package() {
     cd ${pkgname}-${pkgver}
 
-    make DESTDIR=${pkgdir}/ install
+    make DESTDIR=${pkgdir} install
     
     install -D -m644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }

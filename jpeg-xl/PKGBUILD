@@ -1,8 +1,8 @@
 
 pkgname=jpeg-xl
 _pkgname=libjxl
-pkgver=0.8.2
-pkgrel=4
+pkgver=0.9.0
+pkgrel=1
 pkgdesc='JPEG XL image format reference implementation, called libjxl'
 arch=('x86_64')
 url='https://jpeg.org/jpegxl/'
@@ -38,7 +38,6 @@ build() {
         -DJPEGXL_FORCE_SYSTEM_GTEST=ON \
         -DJPEGXL_FORCE_SYSTEM_HWY=OFF \
         -DJPEGXL_FORCE_SYSTEM_LCMS2=ON \
-        -DJPEGXL_BUNDLE_GFLAGS=ON \
         -DJPEGXL_WARNINGS_AS_ERRORS=OFF
     cmake --build build
 }
