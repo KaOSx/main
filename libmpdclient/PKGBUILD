@@ -1,6 +1,6 @@
 
 pkgname=libmpdclient
-pkgver=2.21
+pkgver=2.22
 pkgrel=1
 pkgdesc='Asynchronous API library for interfacing MPD in the C, C++ & Objective C languages'
 url='https://www.musicpd.org/libs/libmpdclient/'
@@ -8,7 +8,7 @@ license=('custom:BSD')
 arch=('x86_64')
 makedepends=('meson' 'ninja')
 source=("https://www.musicpd.org/download/${pkgname}/2/${pkgname}-${pkgver}.tar.xz")
-md5sums=('a90ab978bed2248d7c3fc35165e7275a')
+md5sums=('3c9ddd62e1c97f5530733acf6b7bde9f')
 
 build() {
     mkdir -p build
@@ -27,5 +27,6 @@ package() {
     cd build
     DESTDIR=${pkgdir} ninja install
 
-    install -D -m 644 ../${pkgname}-${pkgver}/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+    install -D -m 644 ../${pkgname}-${pkgver}/LICENSES/BSD-3-Clause.txt \
+        ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }

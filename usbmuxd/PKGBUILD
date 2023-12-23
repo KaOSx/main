@@ -2,7 +2,7 @@
 pkgname=usbmuxd
 pkgver=1.1.1
 _commit=9af2b12552693a47601347e1eafc1e94132d727e
-pkgrel=7
+pkgrel=8
 pkgdesc="A USB multiplexing daemon."
 url="https://libimobiledevice.org/"
 arch=('x86_64')
@@ -12,14 +12,17 @@ install='usbmuxd.install'
 #source=("https://github.com/libimobiledevice/usbmuxd/archive/${_commit}.zip"
 source=("https://github.com/libimobiledevice/usbmuxd/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.bz2"
         'usbmuxd.service'
-        '39-usbmuxd.rules')
+        '39-usbmuxd.rules'
+        'libplist-2.3.0.patch')
 md5sums=('7450ab28776dcd10b593c9a4243e6755'
          'c846093c80108262d2fa442ee47433bf'
-         'dc4b2893651149eccbf7b2c8467cd288')
+         'dc4b2893651149eccbf7b2c8467cd288'
+         'f4213450a4cdad53ddd1c46953ec7c43')
 
 build() {
     cd ${pkgname}-${pkgver}
     sed -i -e 's|udevrulesdir = /lib/udev/rules.d|udevrulesdir = /usr/lib/udev/rules.d|' Makefile.am
+    patch -p1 -i ${srcdir}/libplist-2.3.0.patch
 
     #NOCONFIGURE=1 ./autogen.sh
     autoreconf -vi
