@@ -1,17 +1,17 @@
 
 pkgname=doxygen
-pkgver=1.9.8
-pkgrel=2
+pkgver=1.10.0
+pkgrel=1
 pkgdesc="A documentation system for C++, C, Java, IDL and PHP"
 license=('GPL')
 arch=('x86_64')
 url="https://www.doxygen.org/"
-depends=('gcc-libs' 'qt5-base' 'clang')
+depends=('gcc-libs' 'qt6-base' 'clang')
 makedepends=('flex' 'texlive-core' 'ghostscript' 'texlive-latexextra' 'python3' 'cmake') # 'clang-tools-extra')
 source=("https://doxygen.nl/files/${pkgname}-${pkgver}.src.tar.gz"
         "https://github.com/doxygen/doxygen/commit/850f0ce7eaf0a689a8e8ef7f3ca05b7a152ab0ad.diff")
-md5sums=('5e608271e39108728b2e408a14f2991a'
-         'e502de93b8ac36f15bf3b34b01cff223')
+md5sums=('c7455e9961c3491479929935c5087bf6'
+         'ba4cbfbf71afda115a728d484c5daf29')
 
 prepare() {
   cd ${pkgname}-${pkgver}
@@ -25,7 +25,8 @@ build() {
     -DCMAKE_INSTALL_PREFIX=/usr \
     -Dbuild_wizard=YES \
     -Dbuild_doc=OFF \
-    -Duse_libclang=OFF
+    -Duse_libclang=OFF \
+    -Dforce_qt=Qt6
   cmake --build build
 }
 
