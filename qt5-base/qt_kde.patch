@@ -264,7 +264,7 @@ index deab11f729..486b63fa3f 100644
      QT_Q_ENUM(HighDpiScaleFactorRoundingPolicy)
      QT_Q_ENUM(TabFocusBehavior)
 diff --git a/src/corelib/io/qfilesystemengine_win.cpp b/src/corelib/io/qfilesystemengine_win.cpp
-index 81d3a71986..c86ed1f9b0 100644
+index 002f720926..e6f118a5c4 100644
 --- a/src/corelib/io/qfilesystemengine_win.cpp
 +++ b/src/corelib/io/qfilesystemengine_win.cpp
 @@ -664,14 +664,14 @@ QFileSystemEntry QFileSystemEngine::absoluteName(const QFileSystemEntry &entry)
@@ -41182,10 +41182,20 @@ index d384ffb2d5..e73929c9bb 100644
 +  </mime-type>
  </mime-info>
 diff --git a/src/corelib/mimetypes/qmimedatabase.cpp b/src/corelib/mimetypes/qmimedatabase.cpp
-index 9de22cef33..ff868a3268 100644
+index 9de22cef33..34591fc667 100644
 --- a/src/corelib/mimetypes/qmimedatabase.cpp
 +++ b/src/corelib/mimetypes/qmimedatabase.cpp
-@@ -389,20 +389,23 @@ QMimeType QMimeDatabasePrivate::mimeTypeForFileNameAndData(const QString &fileNa
+@@ -46,6 +46,9 @@
+ #include "qmimeprovider_p.h"
+ #include "qmimetype_p.h"
+ 
++#include <private/qduplicatetracker_p.h>
++#include <private/qfilesystementry_p.h>
++
+ #include <QtCore/QFile>
+ #include <QtCore/QFileInfo>
+ #include <QtCore/QSet>
+@@ -389,20 +392,23 @@ QMimeType QMimeDatabasePrivate::mimeTypeForFileNameAndData(const QString &fileNa
          // Disambiguate conflicting extensions (if magic matching found something)
          if (candidateByData.isValid() && magicAccuracy > 0) {
              const QString sniffedMime = candidateByData.name();
@@ -41213,6 +41223,28 @@ index 9de22cef33..ff868a3268 100644
          }
      }
  
+@@ -428,6 +434,7 @@ QList<QMimeType> QMimeDatabasePrivate::allMimeTypes()
+ bool QMimeDatabasePrivate::inherits(const QString &mime, const QString &parent)
+ {
+     const QString resolvedParent = resolveAlias(parent);
++    QDuplicateTracker<QString> seen;
+     std::stack<QString, QStringList> toCheck;
+     toCheck.push(mime);
+     while (!toCheck.empty()) {
+@@ -436,8 +443,11 @@ bool QMimeDatabasePrivate::inherits(const QString &mime, const QString &parent)
+         const QString mimeName = toCheck.top();
+         toCheck.pop();
+         const auto parentList = parents(mimeName);
+-        for (const QString &par : parentList)
+-            toCheck.push(resolveAlias(par));
++        for (const QString &par : parentList) {
++            const QString resolvedPar = resolveAlias(par);
++            if (!seen.hasSeen(resolvedPar))
++                toCheck.push(resolvedPar);
++        }
+     }
+     return false;
+ }
 diff --git a/src/corelib/mimetypes/qmimeglobpattern.cpp b/src/corelib/mimetypes/qmimeglobpattern.cpp
 index b1de8907b2..fa8f4c545d 100644
 --- a/src/corelib/mimetypes/qmimeglobpattern.cpp
@@ -41299,6 +41331,30 @@ index f9c8ef384c..5b328a7d5e 100644
      bool matchSuffixTree(QMimeGlobMatchResult &result, CacheFile *cacheFile, int numEntries, int firstOffset, const QString &fileName, int charPos, bool caseSensitiveCheck);
      bool matchMagicRule(CacheFile *cacheFile, int numMatchlets, int firstOffset, const QByteArray &data);
      QLatin1String iconForMime(CacheFile *cacheFile, int posListOffset, const QByteArray &inputMime);
+diff --git a/src/corelib/mimetypes/qmimetype.cpp b/src/corelib/mimetypes/qmimetype.cpp
+index 0c0de63961..d6a351262b 100644
+--- a/src/corelib/mimetypes/qmimetype.cpp
++++ b/src/corelib/mimetypes/qmimetype.cpp
+@@ -376,14 +376,17 @@ QStringList QMimeType::parentMimeTypes() const
+ static void collectParentMimeTypes(const QString &mime, QStringList &allParents)
+ {
+     const QStringList parents = QMimeDatabasePrivate::instance()->mimeParents(mime);
++    QStringList newParents;
+     for (const QString &parent : parents) {
+         // I would use QSet, but since order matters I better not
+-        if (!allParents.contains(parent))
++        if (!allParents.contains(parent)) {
+             allParents.append(parent);
++            newParents.append(parent);
++        }
+     }
+     // We want a breadth-first search, so that the least-specific parent (octet-stream) is last
+     // This means iterating twice, unfortunately.
+-    for (const QString &parent : parents)
++    for (const QString &parent : newParents)
+         collectParentMimeTypes(parent, allParents);
+ }
+ 
 diff --git a/src/corelib/plugin/qlibrary.cpp b/src/corelib/plugin/qlibrary.cpp
 index 5d2f024267..45b5a3fe27 100644
 --- a/src/corelib/plugin/qlibrary.cpp
@@ -42414,37 +42470,6 @@ index 96f1e8cb1d..0e73bbbdb0 100644
                  b += nbits/8;
              }
          }
-diff --git a/src/gui/image/qimage.cpp b/src/gui/image/qimage.cpp
-index 53bb3beb10..04e1a00429 100644
---- a/src/gui/image/qimage.cpp
-+++ b/src/gui/image/qimage.cpp
-@@ -4694,6 +4694,8 @@ QImage QImage::smoothScaled(int w, int h) const {
- static QImage rotated90(const QImage &image)
- {
-     QImage out(image.height(), image.width(), image.format());
-+    if (out.isNull())
-+        return out;
-     copyMetadata(&out, image);
-     if (image.colorCount() > 0)
-         out.setColorTable(image.colorTable());
-@@ -4722,6 +4724,8 @@ static QImage rotated180(const QImage &image)
-         return image.mirrored(true, true);
- 
-     QImage out(image.width(), image.height(), image.format());
-+    if (out.isNull())
-+        return out;
-     copyMetadata(&out, image);
-     if (image.colorCount() > 0)
-         out.setColorTable(image.colorTable());
-@@ -4734,6 +4738,8 @@ static QImage rotated180(const QImage &image)
- static QImage rotated270(const QImage &image)
- {
-     QImage out(image.height(), image.width(), image.format());
-+    if (out.isNull())
-+        return out;
-     copyMetadata(&out, image);
-     if (image.colorCount() > 0)
-         out.setColorTable(image.colorTable());
 diff --git a/src/gui/image/qimage_neon.cpp b/src/gui/image/qimage_neon.cpp
 index 9dbcb11db5..c17f76f2b0 100644
 --- a/src/gui/image/qimage_neon.cpp
@@ -43055,28 +43080,6 @@ index 0cef0ad3dc..be7ef7ff58 100644
              header = h.second;
              // RFC6797, 8.1:
              //
-diff --git a/src/network/access/qnetworkreply.cpp b/src/network/access/qnetworkreply.cpp
-index 30e4e290ea..dadea58080 100644
---- a/src/network/access/qnetworkreply.cpp
-+++ b/src/network/access/qnetworkreply.cpp
-@@ -76,7 +76,7 @@ QNetworkReplyPrivate::QNetworkReplyPrivate()
-     itself.
- 
-     QNetworkReply is a sequential-access QIODevice, which means that
--    once data is read from the object, it no longer kept by the
-+    once data is read from the object, it is no longer kept by the
-     device. It is therefore the application's responsibility to keep
-     this data if it needs to. Whenever more data is received from the
-     network and processed, the readyRead() signal is emitted.
-@@ -344,7 +344,7 @@ QNetworkReplyPrivate::QNetworkReplyPrivate()
-     processing. After this signal is emitted, there will be no more
-     updates to the reply's data or metadata.
- 
--    Unless close() or abort() have been called, the reply will be still be opened
-+    Unless close() or abort() have been called, the reply will still be opened
-     for reading, so the data can be retrieved by calls to read() or
-     readAll(). In particular, if no calls to read() were made as a
-     result of readyRead(), a call to readAll() will retrieve the full
 diff --git a/src/network/access/qnetworkreplyfileimpl_p.h b/src/network/access/qnetworkreplyfileimpl_p.h
 index 48d82abd3f..4bfbc3f7d1 100644
 --- a/src/network/access/qnetworkreplyfileimpl_p.h
@@ -43424,7 +43427,7 @@ index 77e847e972..e38a5e75de 100644
          }
      }
 diff --git a/src/network/ssl/qsslsocket_openssl_symbols.cpp b/src/network/ssl/qsslsocket_openssl_symbols.cpp
-index d16c40ceb5..459ccd0b19 100644
+index 0ace951c77..6a9a3ef3b3 100644
 --- a/src/network/ssl/qsslsocket_openssl_symbols.cpp
 +++ b/src/network/ssl/qsslsocket_openssl_symbols.cpp
 @@ -499,9 +499,7 @@ DEFINEFUNC(DH *, DH_new, DUMMYARG, DUMMYARG, return nullptr, return)
@@ -43643,7 +43646,7 @@ index 09d2d916fe..0e6fe5eb84 100644
          if (values) {
              QFontValues fontValues;
 diff --git a/src/platformsupport/input/xkbcommon/qxkbcommon.cpp b/src/platformsupport/input/xkbcommon/qxkbcommon.cpp
-index 9aa8f10c57..1c7c15d5d7 100644
+index 7bfacf4abe..1c7c15d5d7 100644
 --- a/src/platformsupport/input/xkbcommon/qxkbcommon.cpp
 +++ b/src/platformsupport/input/xkbcommon/qxkbcommon.cpp
 @@ -95,6 +95,7 @@ static constexpr const auto KeyTbl = qMakeArray(
@@ -43669,51 +43672,6 @@ index 9aa8f10c57..1c7c15d5d7 100644
  
          // Special keys from X.org - This include multimedia keys,
          // wireless/bluetooth/uwb keys, special launcher keys, etc.
-@@ -471,7 +476,7 @@ QVector<xkb_keysym_t> QXkbCommon::toKeysym(QKeyEvent *event)
-     } else if (event->modifiers() & Qt::KeypadModifier) {
-         if (qtKey >= Qt::Key_0 && qtKey <= Qt::Key_9)
-             keysyms.append(XKB_KEY_KP_0 + (qtKey - Qt::Key_0));
--    } else if (isLatin(qtKey) && event->text().isUpper()) {
-+    } else if (isLatin1(qtKey) && event->text().isUpper()) {
-         keysyms.append(qtKey);
-     }
- 
-@@ -523,7 +528,7 @@ int QXkbCommon::keysymToQtKey(xkb_keysym_t keysym, Qt::KeyboardModifiers modifie
-         // With standard shortcuts we should prefer a latin character, this is
-         // for checks like "some qkeyevent == QKeySequence::Copy" to work even
-         // when using for example 'russian' keyboard layout.
--        if (!QXkbCommon::isLatin(keysym)) {
-+        if (!QXkbCommon::isLatin1(keysym)) {
-             xkb_keysym_t latinKeysym = QXkbCommon::lookupLatinKeysym(state, code);
-             if (latinKeysym != XKB_KEY_NoSymbol)
-                 keysym = latinKeysym;
-@@ -546,7 +551,7 @@ static int keysymToQtKey_internal(xkb_keysym_t keysym, Qt::KeyboardModifiers mod
-     } else if (keysym >= XKB_KEY_KP_0 && keysym <= XKB_KEY_KP_9) {
-         // numeric keypad keys
-         qtKey = Qt::Key_0 + (keysym - XKB_KEY_KP_0);
--    } else if (QXkbCommon::isLatin(keysym)) {
-+    } else if (QXkbCommon::isLatin1(keysym)) {
-         qtKey = QXkbCommon::qxkbcommon_xkb_keysym_to_upper(keysym);
-     } else {
-         // check if we have a direct mapping
-@@ -678,7 +683,7 @@ QList<int> QXkbCommon::possibleKeys(xkb_state *state, const QKeyEvent *event,
-         Qt::KeyboardModifiers neededMods = ModsTbl[i];
-         if ((modifiers & neededMods) == neededMods) {
-             if (i == 8) {
--                if (isLatin(baseQtKey))
-+                if (isLatin1(baseQtKey))
-                     continue;
-                 // add a latin key as a fall back key
-                 sym = lookupLatinKeysym(state, keycode);
-@@ -733,7 +738,7 @@ void QXkbCommon::verifyHasLatinLayout(xkb_keymap *keymap)
-     for (xkb_layout_index_t layout = 0; layout < layoutCount; ++layout) {
-         for (xkb_keycode_t code = minKeycode; code < maxKeycode; ++code) {
-             xkb_keymap_key_get_syms_by_level(keymap, code, layout, 0, &keysyms);
--            if (keysyms && isLatin(keysyms[0]))
-+            if (keysyms && isLatin1(keysyms[0]))
-                 nrLatinKeys++;
-             if (nrLatinKeys > 10) // arbitrarily chosen threshold
-                 return;
 @@ -754,6 +759,8 @@ xkb_keysym_t QXkbCommon::lookupLatinKeysym(xkb_state *state, xkb_keycode_t keyco
  {
      xkb_layout_index_t layout;
@@ -43723,30 +43681,6 @@ index 9aa8f10c57..1c7c15d5d7 100644
      xkb_keymap *keymap = xkb_state_get_keymap(state);
      const xkb_layout_index_t layoutCount = xkb_keymap_num_layouts_for_key(keymap, keycode);
      const xkb_layout_index_t currentLayout = xkb_state_key_get_layout(state, keycode);
-@@ -766,7 +773,7 @@ xkb_keysym_t QXkbCommon::lookupLatinKeysym(xkb_state *state, xkb_keycode_t keyco
-         xkb_level_index_t level = xkb_state_key_get_level(state, keycode, layout);
-         if (xkb_keymap_key_get_syms_by_level(keymap, keycode, layout, level, &syms) != 1)
-             continue;
--        if (isLatin(syms[0])) {
-+        if (isLatin1(syms[0])) {
-             sym = syms[0];
-             break;
-         }
-diff --git a/src/platformsupport/input/xkbcommon/qxkbcommon_p.h b/src/platformsupport/input/xkbcommon/qxkbcommon_p.h
-index 561eae03db..8389bd8f5a 100644
---- a/src/platformsupport/input/xkbcommon/qxkbcommon_p.h
-+++ b/src/platformsupport/input/xkbcommon/qxkbcommon_p.h
-@@ -94,8 +94,8 @@ public:
-     static void verifyHasLatinLayout(xkb_keymap *keymap);
-     static xkb_keysym_t lookupLatinKeysym(xkb_state *state, xkb_keycode_t keycode);
- 
--    static bool isLatin(xkb_keysym_t sym) {
--        return ((sym >= 'a' && sym <= 'z') || (sym >= 'A' && sym <= 'Z'));
-+    static bool isLatin1(xkb_keysym_t sym) {
-+        return sym <= 0xff;
-     }
-     static bool isKeypad(xkb_keysym_t sym) {
-         return sym >= XKB_KEY_KP_Space && sym <= XKB_KEY_KP_9;
 diff --git a/src/platformsupport/linuxaccessibility/atspiadaptor.cpp b/src/platformsupport/linuxaccessibility/atspiadaptor.cpp
 index 9153fd20bb..26537ff892 100644
 --- a/src/platformsupport/linuxaccessibility/atspiadaptor.cpp
@@ -44515,10 +44449,10 @@ index 9cf93ec314..1ce6cca573 100644
  
          DTWM_IS_RUNNING,
 diff --git a/src/plugins/platforms/xcb/qxcbconnection.cpp b/src/plugins/platforms/xcb/qxcbconnection.cpp
-index 6457bc0551..152ab2c52d 100644
+index 730b2efbb9..631ade2ec7 100644
 --- a/src/plugins/platforms/xcb/qxcbconnection.cpp
 +++ b/src/plugins/platforms/xcb/qxcbconnection.cpp
-@@ -702,6 +702,8 @@ void QXcbConnection::handleXcbEvent(xcb_generic_event_t *event)
+@@ -706,6 +706,8 @@ void QXcbConnection::handleXcbEvent(xcb_generic_event_t *event)
              QXcbVirtualDesktop *virtualDesktop = virtualDesktopForRootWindow(propertyNotify->window);
              if (virtualDesktop)
                  virtualDesktop->updateWorkArea();
@@ -44527,7 +44461,7 @@ index 6457bc0551..152ab2c52d 100644
          } else {
              HANDLE_PLATFORM_WINDOW_EVENT(xcb_property_notify_event_t, window, handlePropertyNotifyEvent);
          }
-@@ -798,8 +800,8 @@ xcb_timestamp_t QXcbConnection::getTimestamp()
+@@ -802,8 +804,8 @@ xcb_timestamp_t QXcbConnection::getTimestamp()
  {
      // send a dummy event to myself to get the timestamp from X server.
      xcb_window_t window = rootWindow();
@@ -44538,7 +44472,7 @@ index 6457bc0551..152ab2c52d 100644
                          XCB_ATOM_INTEGER, 32, 0, nullptr);
  
      connection()->flush();
-@@ -831,8 +833,6 @@ xcb_timestamp_t QXcbConnection::getTimestamp()
+@@ -835,8 +837,6 @@ xcb_timestamp_t QXcbConnection::getTimestamp()
      xcb_timestamp_t timestamp = pn->time;
      free(event);
  
@@ -44924,10 +44858,10 @@ index 2fc3167fd5..b809503122 100644
          return new QXdgDesktopPortalFileDialog;
      }
 diff --git a/src/plugins/sqldrivers/mysql/qsql_mysql.cpp b/src/plugins/sqldrivers/mysql/qsql_mysql.cpp
-index 4427efb770..0f85495bf4 100644
+index 6c522838df..353ea099d5 100644
 --- a/src/plugins/sqldrivers/mysql/qsql_mysql.cpp
 +++ b/src/plugins/sqldrivers/mysql/qsql_mysql.cpp
-@@ -916,9 +916,9 @@ bool QMYSQLResult::prepare(const QString& query)
+@@ -918,9 +918,9 @@ bool QMYSQLResult::prepare(const QString& query)
          return false;
      }
  
@@ -44940,7 +44874,7 @@ index 4427efb770..0f85495bf4 100644
  
      setSelect(d->bindInValues());
      d->preparedQuery = true;
-@@ -1363,20 +1363,20 @@ bool QMYSQLDriver::open(const QString& db,
+@@ -1365,20 +1365,20 @@ bool QMYSQLDriver::open(const QString& db,
      }
  
  #if MYSQL_VERSION_ID >= 50007
@@ -45703,37 +45637,11 @@ index a225d4b563..35e2769ac4 100644
      case CE_MenuBarEmptyArea:
          painter->save();
      {
-diff --git a/src/widgets/styles/qstylesheetstyle.cpp b/src/widgets/styles/qstylesheetstyle.cpp
-index 55d95c7fb2..8e9d2abbaa 100644
---- a/src/widgets/styles/qstylesheetstyle.cpp
-+++ b/src/widgets/styles/qstylesheetstyle.cpp
-@@ -4453,12 +4453,15 @@ void QStyleSheetStyle::drawPrimitive(PrimitiveElement pe, const QStyleOption *op
- 
-     case PE_PanelLineEdit:
-         if (const QStyleOptionFrame *frm = qstyleoption_cast<const QStyleOptionFrame *>(opt)) {
--            QWidget *container = containerWidget(w);
--            if (container != w) {
--                QRenderRule containerRule = renderRule(container, opt);
--                if (!containerRule.hasNativeBorder() || !containerRule.baseStyleCanDraw())
--                    return;
--                rule = containerRule;
-+            // Fall back to container widget's render rule
-+            if (w) {
-+                QWidget *container = containerWidget(w);
-+                if (container != w) {
-+                    QRenderRule containerRule = renderRule(container, opt);
-+                    if (!containerRule.hasNativeBorder() || !containerRule.baseStyleCanDraw())
-+                        return;
-+                    rule = containerRule;
-+                }
-             }
- 
-             if (rule.hasNativeBorder()) {
 diff --git a/src/widgets/util/qsystemtrayicon.cpp b/src/widgets/util/qsystemtrayicon.cpp
-index dccea98a39..0a24fb539f 100644
+index 203fcbc443..e9b2724903 100644
 --- a/src/widgets/util/qsystemtrayicon.cpp
 +++ b/src/widgets/util/qsystemtrayicon.cpp
-@@ -206,7 +206,7 @@ void QSystemTrayIcon::setContextMenu(QMenu *menu)
+@@ -208,7 +208,7 @@ void QSystemTrayIcon::setContextMenu(QMenu *menu)
      if (oldMenu != menu && d->qpa_sys) {
          // Show the QMenu-based menu for QPA plugins that do not provide native menus
          if (oldMenu && !oldMenu->platformMenu())
@@ -46072,11 +45980,30 @@ index e1ea7a4552..90972caa57 100644
  QTEST_GUILESS_MAIN(tst_QConcatenateTablesProxyModel)
  
  #include "tst_qconcatenatetablesproxymodel.moc"
+diff --git a/tests/auto/corelib/mimetypes/qmimedatabase/circular-inheritance.xml b/tests/auto/corelib/mimetypes/qmimedatabase/circular-inheritance.xml
+new file mode 100644
+index 0000000000..466f039803
+--- /dev/null
++++ b/tests/auto/corelib/mimetypes/qmimedatabase/circular-inheritance.xml
+@@ -0,0 +1,13 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
++  <mime-type type="application/ecmascript">
++    <comment>It's more accurate to say that ECMAScript is a subset of JavaScript</comment>
++    <sub-class-of type="text/javascript"/>
++    <glob pattern="*.js"/>
++  </mime-type>
++  <mime-type type="text/javascript">
++    <comment>than to say that JavaScript is a subset of ECMAScript</comment>
++    <sub-class-of type="application/ecmascript"/>
++    <glob pattern="*.js"/>
++  </mime-type>
++</mime-info>
 diff --git a/tests/auto/corelib/mimetypes/qmimedatabase/testdata.qrc b/tests/auto/corelib/mimetypes/qmimedatabase/testdata.qrc
-index 1002d0195d..d5774a0213 100644
+index 1002d0195d..49dbb0a8ba 100644
 --- a/tests/auto/corelib/mimetypes/qmimedatabase/testdata.qrc
 +++ b/tests/auto/corelib/mimetypes/qmimedatabase/testdata.qrc
-@@ -3,6 +3,7 @@
+@@ -3,10 +3,12 @@
          <file alias="yast2-metapackage-handler-mimetypes.xml">yast2-metapackage-handler-mimetypes.xml</file>
          <file alias="qml-again.xml">qml-again.xml</file>
          <file alias="text-x-objcsrc.xml">text-x-objcsrc.xml</file>
@@ -46084,6 +46011,11 @@ index 1002d0195d..d5774a0213 100644
          <file alias="test.qml">test.qml</file>
          <file>invalid-magic1.xml</file>
          <file>invalid-magic2.xml</file>
+         <file>invalid-magic3.xml</file>
++        <file>circular-inheritance.xml</file>
+         <file>magic-and-hierarchy.xml</file>
+         <file>magic-and-hierarchy.foo</file>
+         <file>magic-and-hierarchy2.foo</file>
 diff --git a/tests/auto/corelib/mimetypes/qmimedatabase/text-plain-subclass.xml b/tests/auto/corelib/mimetypes/qmimedatabase/text-plain-subclass.xml
 new file mode 100644
 index 0000000000..7b5cb7506d
@@ -46106,10 +46038,10 @@ index 0000000000..7b5cb7506d
 +    </mime-type>
 +</mime-info>
 diff --git a/tests/auto/corelib/mimetypes/qmimedatabase/tst_qmimedatabase.cpp b/tests/auto/corelib/mimetypes/qmimedatabase/tst_qmimedatabase.cpp
-index 0ea422ecbc..4eb21b7659 100644
+index 0ea422ecbc..d2dd8d340b 100644
 --- a/tests/auto/corelib/mimetypes/qmimedatabase/tst_qmimedatabase.cpp
 +++ b/tests/auto/corelib/mimetypes/qmimedatabase/tst_qmimedatabase.cpp
-@@ -49,6 +49,7 @@ static const char *const additionalMimeFiles[] = {
+@@ -49,10 +49,12 @@ static const char *const additionalMimeFiles[] = {
      "yast2-metapackage-handler-mimetypes.xml",
      "qml-again.xml",
      "text-x-objcsrc.xml",
@@ -46117,7 +46049,12 @@ index 0ea422ecbc..4eb21b7659 100644
      "invalid-magic1.xml",
      "invalid-magic2.xml",
      "invalid-magic3.xml",
-@@ -70,15 +71,15 @@ static inline QString testSuiteWarning()
+     "magic-and-hierarchy.xml",
++    "circular-inheritance.xml",
+     0
+ };
+ 
+@@ -70,15 +72,15 @@ static inline QString testSuiteWarning()
  
      QString result;
      QTextStream str(&result);
@@ -46138,7 +46075,7 @@ index 0ea422ecbc..4eb21b7659 100644
  #endif
      return result;
  }
-@@ -154,7 +155,7 @@ void tst_QMimeDatabase::initTestCase()
+@@ -154,7 +156,7 @@ void tst_QMimeDatabase::initTestCase()
      QVERIFY2(copyResourceFile(xmlFileName, xmlTargetFileName, &errorMessage), qPrintable(errorMessage));
  #endif
  
@@ -46147,7 +46084,21 @@ index 0ea422ecbc..4eb21b7659 100644
      if (m_testSuite.isEmpty())
          qWarning("%s", qPrintable(testSuiteWarning()));
  
-@@ -611,7 +612,7 @@ void tst_QMimeDatabase::allMimeTypes()
+@@ -390,6 +392,13 @@ void tst_QMimeDatabase::inheritance()
+     const QMimeType mswordTemplate = db.mimeTypeForName(QString::fromLatin1("application/msword-template"));
+     QVERIFY(mswordTemplate.isValid());
+     QVERIFY(mswordTemplate.inherits(QLatin1String("application/msword")));
++
++    // Check that buggy type definitions that have circular inheritance don't cause an infinite
++    // loop, especially when resolving a conflict between the file's name and its contents
++    const QMimeType ecmascript = db.mimeTypeForName(QString::fromLatin1("application/ecmascript"));
++    QVERIFY(ecmascript.allAncestors().contains("text/plain"));
++    const QMimeType javascript = db.mimeTypeForFileNameAndData("xml.js", "<?xml?>");
++    QVERIFY(javascript.inherits(QString::fromLatin1("text/javascript")));
+ }
+ 
+ void tst_QMimeDatabase::aliases()
+@@ -611,7 +620,7 @@ void tst_QMimeDatabase::allMimeTypes()
      QVERIFY(!lst.isEmpty());
  
      // Hardcoding this is the only way to check both providers find the same number of mimetypes.
@@ -46156,7 +46107,7 @@ index 0ea422ecbc..4eb21b7659 100644
  
      foreach (const QMimeType &mime, lst) {
          const QString name = mime.name();
-@@ -631,10 +632,9 @@ void tst_QMimeDatabase::suffixes_data()
+@@ -631,10 +640,9 @@ void tst_QMimeDatabase::suffixes_data()
  
      QTest::newRow("mimetype with a single pattern") << "application/pdf" << "*.pdf" << "pdf";
      QTest::newRow("mimetype with multiple patterns") << "application/x-kpresenter" << "*.kpr;*.kpt" << "kpr";
@@ -46170,7 +46121,7 @@ index 0ea422ecbc..4eb21b7659 100644
      QTest::newRow("oasis text mimetype") << "application/vnd.oasis.opendocument.text" << "*.odt" << "odt";
      QTest::newRow("oasis presentation mimetype") << "application/vnd.oasis.opendocument.presentation" << "*.odp" << "odp";
      QTest::newRow("mimetype with multiple patterns") << "text/plain" << "*.asc;*.txt;*,v" << "txt";
-@@ -1070,6 +1070,8 @@ void tst_QMimeDatabase::installNewLocalMimeType()
+@@ -1070,6 +1078,8 @@ void tst_QMimeDatabase::installNewLocalMimeType()
          QVERIFY(objcsrc.isValid());
          QCOMPARE(objcsrc.globPatterns(), QStringList());
      }
