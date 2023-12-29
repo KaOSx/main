@@ -1,7 +1,7 @@
 
 pkgname=signond
 pkgver=8.61
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 url="https://gitlab.com/accounts-sso/signond/"
 license=('LGPL')
@@ -9,6 +9,8 @@ pkgdesc="Framework to provide credential storage and authentication service, Qt6
 depends=('qt6-base' 'libproxy')
 makedepends=('doxygen' 'ttf-dejavu' 'qt6-tools')
 conflicts=('signonqt')
+provides=('signonqt')
+replaces=('signonqt')
 backup=('etc/signond.conf')
 options=('!emptydirs')
 source=("git+https://gitlab.com/nicolasfella/${pkgname}.git#branch=qt6")
