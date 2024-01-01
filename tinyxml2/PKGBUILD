@@ -1,14 +1,14 @@
 
 pkgname=tinyxml2
-pkgver=9.0.0
-pkgrel=2
+pkgver=10.0.0
+pkgrel=1
 pkgdesc='Simple, small, C++ XML parser that can be easily integrated into other programs, follow up for tinyxml'
 url="https://leethomason.github.io/tinyxml2/"
 arch=('x86_64')
 license=('zlib')
 depends=('gcc-libs')
 source=("https://github.com/leethomason/tinyxml2/archive/${pkgver}.tar.gz")
-md5sums=('afecd941107a8e74d3d1b4363cf52bd7')
+md5sums=('04de2fa311b2fa3b6875886122dc2333')
 
 build() {  
   cmake -B build -S ${pkgname}-${pkgver} \
