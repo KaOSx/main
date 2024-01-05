@@ -1,6 +1,6 @@
 
 pkgname=fmt
-pkgver=10.2.0
+pkgver=10.2.1
 pkgrel=1
 pkgdesc='Open-source formatting library providing an alternative to C stdio and C++ iostreams.'
 arch=('x86_64')
@@ -9,7 +9,7 @@ license=('MIT')
 depends=('gcc-libs')
 makedepends=('cmake' 'python3-pip')
 source=("https://github.com/fmtlib/fmt/releases/download/${pkgver}/${pkgname}-${pkgver}.zip")
-md5sums=('947394bc2a86d39556158f84572e0851')
+md5sums=('04e266ad52659480d593486a17eed804')
 
 build() {
   cmake -B build -S ${pkgname}-${pkgver} \
