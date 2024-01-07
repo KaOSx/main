@@ -1,7 +1,7 @@
 
 pkgname=vcdimager
 pkgver=2.0.1
-pkgrel=3
+pkgrel=4
 pkgdesc="full-featured mastering suite for authoring disassembling and analyzing Video CD's and Super Video CD's"
 arch=('x86_64')
 license=('GPL')
@@ -14,13 +14,13 @@ md5sums=('3890d73da62d0607c87962c41cd33a29')
 build() {
   cd ${pkgname}-${pkgver}
   #patch -p1 -i ${srcdir}/libcdio.patch
-  
+
   ./configure --prefix=/usr
   make
 }
 
 package() {
   cd ${pkgname}-${pkgver}
-  
+
   make DESTDIR=${pkgdir} install
 }

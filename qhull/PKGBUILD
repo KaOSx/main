@@ -2,7 +2,7 @@
 pkgname=qhull
 pkgver=2020.2
 _pkgver=2020-src-8.0.2
-pkgrel=1
+pkgrel=2
 pkgdesc="A general dimension code for computing convex hulls and related structures"
 arch=('x86_64')
 url="http://www.qhull.org/"
@@ -14,20 +14,17 @@ source=("http://www.qhull.org/download/${pkgname}-${_pkgver}.tgz")
 md5sums=('295f7332269a38279478f555cc185296')
 
 build() {
-  mkdir -p build
-  cd build
-  
-  cmake ../${pkgname}-${pkgver} \
+  cmake -B build -S ${pkgname}-${pkgver} \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_BUILD_TYPE=Release \
     -DLINK_APPS_SHARED=ON
-  make
+  cmake --build build
 }
 
-package() { 
-  cd build
-  make DESTDIR=${pkgdir} install
+package() {
 
-  install -Dm644 ../${pkgname}-${pkgver}/COPYING.txt ${pkgdir}/usr/share/licenses/${pkgname}/license.txt
+  DESTDIR=${pkgdir} cmake --install build
+
+  install -Dm644 ${pkgname}-${pkgver}/COPYING.txt ${pkgdir}/usr/share/licenses/${pkgname}/license.txt
 }
 
