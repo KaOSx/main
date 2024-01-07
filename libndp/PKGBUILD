@@ -1,7 +1,7 @@
 
 pkgname=libndp
 pkgver=1.8
-pkgrel=1
+pkgrel=2
 pkgdesc="Library providing a wrapper Neighbor Discovery Protocol plus ndptool for sending and receiving NDP messages."
 arch=('x86_64')
 url="http://libndp.org/"
@@ -12,23 +12,23 @@ md5sums=('c7e775fd5a9d676e8cba9c3732c4df93')
 
 build() {
   cd ${pkgname}-${pkgver}
-  
+
   ./configure --prefix=/usr \
-        --sysconfdir=/etc \
-        --localstatedir=/var \
-        --disable-static \
-        --libexecdir=/usr/lib
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --disable-static \
+    --libexecdir=/usr/lib
   make
 }
 
 check() {
   cd ${pkgname}-${pkgver}
-  
+
   make check
 }
 
 package() {
   cd ${pkgname}-${pkgver}
-  
+
   make DESTDIR=${pkgdir} install
 }

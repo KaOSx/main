@@ -1,7 +1,7 @@
  
 pkgname=sassc
 pkgver=3.6.2
-pkgrel=1
+pkgrel=2
 pkgdesc="Libsass command line driver"
 arch=("x86_64")
 url="https://github.com/sass/sassc/"
@@ -23,6 +23,6 @@ package() {
     cd ${pkgname}-${pkgver}
 
     make DESTDIR=${pkgdir}/ install
-    
+
     install -D -m644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }

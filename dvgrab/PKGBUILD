@@ -1,8 +1,8 @@
 
 pkgname=dvgrab
 pkgver=3.5
-_commit=57e642b5a8ccafba702ea0d1ab0cf109a19b1d12
-pkgrel=7
+_commit=8a368f4904cb83df6555db04b3bdf7ddf8ac9f91
+pkgrel=8
 pkgdesc="Saves audio and video data from an IEEE (FireWire) digital source"
 arch=('x86_64')
 url="https://github.com/ddennedy/dvgrab"
@@ -10,11 +10,11 @@ license=('GPL')
 depends=('libdv' 'libavc1394' 'libjpeg-turbo' 'libiec61883' 'gcc-libs')
 makedepends=('pkgconfig')
 source=("https://github.com/ddennedy/dvgrab/archive/${_commit}.zip")
-md5sums=('dc5dab812d8bf6c89e1eb69c4ed222c1')
+md5sums=('b4fa24fd5a127cc8071621ab26167fc3')
 
 build() {
   cd ${pkgname}-${_commit}
-  
+
   ./bootstrap
   ./configure --prefix=/usr
   make
@@ -22,6 +22,6 @@ build() {
 
 package() {
   cd ${pkgname}-${_commit}
-  
+
   make DESTDIR=${pkgdir} install
 }
