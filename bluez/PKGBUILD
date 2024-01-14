@@ -1,17 +1,17 @@
 
 pkgname=bluez
 pkgver=5.72
-pkgrel=1
+pkgrel=2
 pkgdesc="Libraries and tools for the Bluetooth protocol stack"
 url="http://www.bluez.org/"
 arch=('x86_64')
 license=('GPL2')
-depends=('libical' 'dbus' 'glib2' 'systemd' 'json-c')
+depends=('libical' 'dbus' 'glib2' 'systemd' 'json-c' 'alsa-lib')
 makedepends=('libusb' 'python3-docutils' 'python3-pygments')
 optdepends=("cups: CUPS backend")
 options=('!libtool')
-backup=('etc/dbus-1/system.d/bluetooth.conf'
-        'etc/bluetooth/main.conf')
+backup=('etc/bluetooth/main.conf'
+        'etc/bluetooth/input.conf')
 install=bluez.install
 source=("https://www.kernel.org/pub/linux/bluetooth/${pkgname}-${pkgver}.tar.xz"
         'bluetooth.modprobe')
@@ -21,7 +21,7 @@ sha256sums=('499d7fa345a996c1bb650f5c6749e1d929111fa6ece0be0e98687fee6124536e'
 build() {
   cd ${pkgname}-${pkgver}
 
-  autoreconf -vfi
+  #autoreconf -vfi
   ./configure --prefix=/usr \
     --mandir=/usr/share/man \
     --sysconfdir=/etc \
@@ -31,7 +31,8 @@ build() {
     --enable-library \
     --enable-deprecated \
     --enable-mesh \
-    --enable-hid2hci
+    --enable-hid2hci \
+    --enable-midi
   make
 }
 
@@ -41,6 +42,7 @@ package() {
 
   install -dm755 ${pkgdir}/etc/bluetooth
   install -Dm644 src/main.conf ${pkgdir}/etc/bluetooth/main.conf
+  install -Dm644 profiles/input/input.conf ${pkgdir}/etc/bluetooth/input.conf
 
   install -dm755 ${pkgdir}/usr/share/doc/${pkgname}/dbus-apis
   cp -a doc/*.txt ${pkgdir}/usr/share/doc/${pkgname}/dbus-apis/
