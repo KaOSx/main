@@ -1,7 +1,7 @@
 
 pkgname=libunwind
-pkgver=1.7.2
-_pkgver=1.7.2
+pkgver=1.8.0
+_pkgver=1.8.0
 pkgrel=1
 pkgdesc='Portable and efficient C programming interface (API) to determine the call-chain of a program'
 arch=('x86_64')
@@ -11,7 +11,7 @@ depends=('glibc' 'xz')
 options=('!libtool')
 #source=("https://download.savannah.gnu.org/releases/libunwind/${pkgname}-${pkgver}.tar.gz")
 source=("https://github.com/libunwind/libunwind/releases/download/v${pkgver}/${pkgname}-${_pkgver}.tar.gz")
-md5sums=('35799cd8e475d3e157230ad2590c10f1')
+md5sums=('c66dabc3d032eee8f4053595af7c31cb')
 
 build() {
   cd ${pkgname}-${_pkgver}
