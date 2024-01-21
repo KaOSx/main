@@ -1,32 +1,34 @@
 
 pkgname=fakechroot
 pkgver=2.20.1
-pkgrel=2
+_commit=1617833d4bfa415cbe2fc1e961cb751e47697c24
+pkgrel=3
 pkgdesc="Gives a fake chroot environment"
 arch=('x86_64')
 url="https://github.com/dex4er/fakechroot"
 license=('LGPL')
 options=('!libtool')
 install=fakechroot.install
-source=("https://github.com/dex4er/fakechroot/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.gz")
-md5sums=('bf67c9b3a5f282f310ba8beda2fc6057')
+#source=("https://github.com/dex4er/fakechroot/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+source=("https://github.com/josch/fakechroot/archive/${_commit}.zip")
+md5sums=('e906f6005698d9318bdb21f529edbe7a')
 
 build() {
-  cd ${pkgname}-${pkgver}
-  
+  cd ${pkgname}-${_commit}
+
+  ./autogen.sh
   ./configure --prefix=/usr --libdir=/usr/lib/libfakeroot --sysconfdir=/etc
   make 
 }
 
 check() {
-  cd ${pkgname}-${pkgver}
-  # FAIL: t/escape-nested-chroot.t, known upstream 
-  # https://github.com/dex4er/fakechroot/commit/b42d1fb9538f680af2f31e864c555414ccba842a
+  cd ${pkgname}-${_commit}
+  # all pass
   make check
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
+  cd ${pkgname}-${_commit}
   make DESTDIR=${pkgdir} install
   
   install -dm755 ${pkgdir}/etc/ld.so.conf.d/

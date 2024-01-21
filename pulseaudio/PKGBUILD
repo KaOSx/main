@@ -1,28 +1,25 @@
 
 pkgname=pulseaudio
 pkgdesc="A featureful, general-purpose sound server"
-pkgver=16.1
+pkgver=17.0
 _commit=613c2994af42ff08fe0a9d0e4bfce42ef781e8f6
-pkgrel=2
+pkgrel=1
 arch=('x86_64')
 url="https://www.freedesktop.org/wiki/Software/PulseAudio/"
 license=('GPL' 'LGPL')
 depends=('dbus' 'xcb-util' 'libasyncns' 'libcap' 'libxtst' 'libsm' 'libsndfile' 
-         'rtkit' 'speex' 'tdb' 'fftw' 'orc' 'webrtc-audio-processing' 'systemd'
-         'sbc' 'libsoxr' 'openssl' 'bluez' 'gst-plugins-base')
+         'rtkit' 'speex' 'tdb' 'fftw' 'orc' 'systemd'
+         'sbc' 'libsoxr' 'openssl' 'bluez' 'gst-plugins-base') # 'webrtc-audio-processing'
 makedepends=('attr' 'libltdl' 'avahi' 'intltool' 'jack2' 'pkgconfig' 'sh' 'meson'
              'ninja' 'check')
 optdepends=('avahi: zeroconf support'
             'jack2: jack support')
-provides=('pulseaudio-alsa')
-conflicts=('pulseaudio-alsa')
-replaces=('pulseaudio-alsa')
 backup=('etc/pulse/{daemon.conf,default.pa,system.pa}' 'etc/asound.conf')
 options=('!emptydirs' '!libtool' '!makeflags')
 source=("https://freedesktop.org/software/pulseaudio/releases/${pkgname}-${pkgver}.tar.xz"
         'asound.conf')
 #source=("https://github.com/pulseaudio/pulseaudio/archive/${_commit}.zip")
-sha256sums=('8eef32ce91d47979f95fd9a935e738cd7eb7463430dabc72863251751e504ae4'
+sha256sums=('053794d6671a3e397d849e478a80b82a63cb9d8ca296bd35b73317bb5ceb87b5'
             '65166739e5b799da225ad8ae057f5958637afb9dbec15d28be7a5ea54fb8db25')
 
 build() {
@@ -48,7 +45,6 @@ package() {
   sed -e 's|/usr/bin/pactl load-module module-x11-cork-request|#&|' \
     -i ${pkgdir}/usr/bin/start-pulseaudio-x11
 
-  rm ${pkgdir}/etc/dbus-1/system.d/pulseaudio-system.conf
   #rm ${pkgdir}/etc/xdg/autostart/pulseaudio.desktop
 
   # fix no sound after logout https://github.com/KaOSx/apps/issues/112

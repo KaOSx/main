@@ -1,7 +1,7 @@
 
 pkgname=libcdio
 pkgver=2.1.0
-pkgrel=2
+pkgrel=3
 pkgdesc="GNU Compact Disc Input and Control Library"
 arch=('x86_64')
 license=('GPL3')
@@ -13,21 +13,19 @@ md5sums=('aa7629e8f73662a762f64c444b901055')
 
 build() {
   cd ${pkgname}-${pkgver}
-  
-  #patch -p1 -i ${srcdir}/libcdio-0.83-linking.patch
+
   autoreconf -fi
-  
   ./configure --prefix=/usr \
-              --disable-vcd-info \
-              --enable-cpp-progs \
-              --disable-static              
+    --disable-vcd-info \
+    --enable-cpp-progs \
+    --disable-static
   make
 }
 
 package() {
   cd ${pkgname}-${pkgver}
   make -j1 DESTDIR=${pkgdir} install
-  
+
   sed -i "/LIBCDIO_SOURCE_PATH/s|.*|/* #undef LIBCDIO_SOURCE_PATH */|" \
     ${pkgdir}/usr/include/cdio/cdio_config.h
 }

@@ -1,7 +1,7 @@
 
 pkgname=libblockdev
-pkgver=3.0.4
-_pkgver=3.0.4-1
+pkgver=3.1.0
+_pkgver=3.1.0-1
 pkgrel=1
 pkgdesc="C library supporting GObject introspection for manipulation of block devices."
 arch=('x86_64')
@@ -12,8 +12,8 @@ depends=('btrfs-progs' 'cryptsetup' 'kmod' 'libbytesize' 'lvm2' 'nss' 'parted'
 makedepends=('gobject-introspection' 'python3-six')
 source=("https://github.com/storaged-project/libblockdev/releases/download/${_pkgver}/${pkgname}-${pkgver}.tar.gz"
         "https://github.com/rhinstaller/libblockdev/commit/50dec146ddd6c77f5989aa359a545ab676437169.diff")
-md5sums=('74eed189c000cb3b0194c73c425c418c'
-         '29730cf7f7fba8555ae8b0e3ab6b0e6d')
+md5sums=('033f2098a13f9dae6105d0337470efd3'
+         'a246498fdec0ae9f8d19df009806dd01')
 
 prepare() {
     cd ${pkgname}-${pkgver}

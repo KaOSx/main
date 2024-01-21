@@ -1,6 +1,7 @@
 
 pkgname=suitesparse
-pkgver=7.3.1
+_pkgname=SuiteSparse
+pkgver=7.5.1
 pkgrel=1
 epoch=1
 pkgdesc="A collection of sparse matrix libraries"
@@ -11,24 +12,18 @@ makedepends=('cmake')
 license=('GPL')
 source=("https://github.com/DrTimothyAldenDavis/SuiteSparse/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz"
         "https://github.com/DrTimothyAldenDavis/SuiteSparse/commit/769870a0d3304d93097d346dc466e8015bf4bab9.diff")
-md5sums=('735b8856ce333bf5d8773ba20685c8b8'
+md5sums=('58942756690dfc048a176bbb7dedecf6'
          'ae696279e22905afc10261a7e0deae0b')
 
 build() {
-  cd SuiteSparse-${pkgver}
-  # octave rebuild on 6.0.0 fails without
-  #patch -p1 -i ${srcdir}/769870a0d3304d93097d346dc466e8015bf4bab9.diff
-
-  CMAKE_OPTIONS="-DNSTATIC=OFF \
-    -DBLA_VENDOR=Generic \
+  cmake -B build -S ${_pkgname}-${pkgver} \
+    -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_INSTALL_PREFIX=/usr" \
-  make
+    -DBLA_VENDOR=Generic
+  cmake --build build
 }
 
-
 package() {
-  cd SuiteSparse-${pkgver}
 
-  DESTDIR=${pkgdir} make install
+  DESTDIR=${pkgdir} cmake --install build
 }

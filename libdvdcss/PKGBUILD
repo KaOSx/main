@@ -1,7 +1,7 @@
 
 pkgname=libdvdcss
 pkgver=1.4.3
-pkgrel=1
+pkgrel=2
 pkgdesc="Cross-platform library for transparent DVD device access with on-the-fly CSS decryption."
 arch=('x86_64')
 url="https://code.videolan.org/videolan/libdvdcss"
@@ -21,13 +21,13 @@ prepare() {
 
 build() {
   cd ${pkgname}-${pkgver}
-  
+
   ./configure --prefix=/usr
   make
 }
 
 package() {
   cd ${pkgname}-${pkgver}
-  
+
   make DESTDIR=${pkgdir} install
 }

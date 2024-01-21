@@ -1,6 +1,6 @@
 
 pkgname=soqt
-pkgver=1.6.1
+pkgver=1.6.2
 pkgrel=1
 pkgdesc='A library which provides the glue between Coin and Qt'
 arch=('x86_64')
@@ -10,7 +10,7 @@ depends=('coin' 'qt5-base')
 makedepends=('cmake')
 options=('!libtool')
 source=("https://github.com/coin3d/soqt/releases/download/v${pkgver}/${pkgname}-${pkgver}-src.tar.gz")
-md5sums=('0aee99870e9e146b2bb8d7e5fced13ac')
+md5sums=('70ef0990e009d806c59941d819a62c98')
 
 build() {
   cmake -B build -S ${pkgname} \

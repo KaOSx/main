@@ -1,32 +1,32 @@
 
 pkgname=webrtc-audio-processing
-pkgver=1.0
+pkgver=1.3
 _commit=8ac052ad6ffd5ba1328c44160ec6571dfd9b930d
 pkgrel=1
 pkgdesc="AudioProcessing library based on Google's implementation of WebRTC"
 arch=('x86_64')
 url="https://freedesktop.org/software/pulseaudio/webrtc-audio-processing"
 license=('custom')
-depends=('gcc-libs' 'neon')
-makedepends=('meson' 'ninja' 'abseil-cpp')
+depends=( 'abseil-cpp' 'gcc-libs' 'neon')
+makedepends=('meson' 'ninja')
 options=('!libtool')
-#source=("https://freedesktop.org/software/pulseaudio/webrtc-audio-processing/${pkgname}-${pkgver}.tar.gz")
-source=("https://gitlab.freedesktop.org/pulseaudio/${pkgname}/-/archive/${_commit}/${pkgname}-${_commit}.tar.bz2")
-sha256sums=('70d56051f73e8e4ac95fb392ce15de6c633b2c3ae492359aecc72fc663c9bdda')
+source=("https://freedesktop.org/software/pulseaudio/webrtc-audio-processing/${pkgname}-${pkgver}.tar.gz")
+#source=("https://gitlab.freedesktop.org/pulseaudio/${pkgname}/-/archive/${_commit}/${pkgname}-${_commit}.tar.bz2")
+sha256sums=('95552fc17faa0202133707bbb3727e8c2cf64d4266fe31bfdb2298d769c1db75')
 
 prepare() {
-  cd ${pkgname}-${_commit}
+  cd ${pkgname}-${pkgver}
   
   #patch -p1 -i ${srcdir}/meson.diff
   #sed -i 's|absl_flags_registry|absl_flags_reflection|g' meson.build
-  sed -i '/vector/a #include <memory>' webrtc/modules/audio_processing/aec3/reverb_model_estimator.h
+  #sed -i '/vector/a #include <memory>' webrtc/modules/audio_processing/aec3/reverb_model_estimator.h
 }
 
 build() {
   mkdir -p build
   cd build
   
-  meson ../${pkgname}-${_commit} \
+  meson setup ../${pkgname}-${pkgver} \
     --prefix=/usr \
     --buildtype=release \
     --libdir=lib \
@@ -39,5 +39,5 @@ package() {
   cd build
   
   DESTDIR=${pkgdir} ninja install
-  install -Dm644 ../${pkgname}-${_commit}/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
+  install -Dm644 ../${pkgname}-${pkgver}/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
 }

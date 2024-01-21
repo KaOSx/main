@@ -1,6 +1,6 @@
 
 pkgname=gnuplot 
-pkgver=5.4.10
+pkgver=6.0.0
 pkgrel=1
 pkgdesc="Plotting package which outputs to X11, PostScript, PNG, GIF, and others" 
 arch=('x86_64') 
@@ -10,20 +10,10 @@ depends=('readline' 'gd' 'pango' 'libjpeg-turbo' 'qt5-svg' 'gnutls')
 makedepends=('texinfo' 'texlive-core' 'texlive-latexextra' 'qt5-tools') 
 install=gnuplot.install 
 source=("https://downloads.sourceforge.net/sourceforge/gnuplot/${pkgname}-${pkgver}.tar.gz")
-md5sums=('334851e63450362bdb95e67fa8a23665')
+md5sums=('10246eb96bbf3a151d6eb9bbcc223e4e')
 
 build() {
   cd ${pkgname}-${pkgver}
-
-  # adjust default source location 
-  sed -i 's|/usr/X11R6/lib/X11/fonts/truetype|/usr/share/fonts/TTF|' src/variable.c
-  sed -i -e 's|/usr/X11R6/lib/X11/fonts/Type1|/usr/share/fonts/Type1|' \
-  -e 's|$(X11ROOT)/X11R6/lib/X11/fonts/Type1|$(X11ROOT)/usr/share/fonts/Type1|' \
-  src/variable.c
-  # glib 2.23 adjustment
-  #sed -i 's|isnan|std::isnan|' src/qtterminal/qt_conversion.cpp
-
-  #CXXFLAGS="-std=c++11"
 
   ./configure --prefix=/usr \
               --libexecdir=/usr/bin \

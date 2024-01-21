@@ -1,29 +1,23 @@
 
 pkgname=yajl
 pkgver=2.1.0
-pkgrel=4
+pkgrel=5
 pkgdesc='YAJL is a small event-driven (SAX-style) JSON parser written in ANSI C.'
 arch=('x86_64')
 url='https://github.com/lloyd/yajl'
 license=('ISC')
 makedepends=('cmake')
-source=("https://github.com/lloyd/yajl/archive/${pkgver}.tar.gz")
+source=("https://github.com/lloyd/yajl/archive/refs/tags/${pkgver}.tar.gz")
 md5sums=('6887e0ed7479d2549761a4d284d3ecb0')
 
 build() {
-  mkdir -p build
-  cd build
-
-  cmake ../${pkgname}-${pkgver} \
+  cmake -B build -S ${pkgname}-${pkgver} \
     -DCMAKE_INSTALL_PREFIX=/usr
-
-  make
+  cmake --build build
 }
 
 package() {
-  cd build
 
-  make DESTDIR=${pkgdir} install
-
-  install -Dm644 ../${pkgname}-${pkgver}/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+  DESTDIR=${pkgdir} cmake --install build
+  install -Dm644 ${pkgname}-${pkgver}/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }

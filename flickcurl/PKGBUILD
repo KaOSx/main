@@ -1,7 +1,7 @@
 
 pkgname=flickcurl
 pkgver=1.26
-pkgrel=3
+pkgrel=4
 pkgdesc="C library for the Flickr, handling creating the requests, signing, token management and calling the API"
 arch=('x86_64')
 url="https://librdf.org/flickcurl/"
@@ -12,13 +12,13 @@ md5sums=('7013a36656400dac398748a374c9104f')
 
 build() {
   cd ${pkgname}-${pkgver}
-  
+
   ./configure --prefix=/usr
   make
 }
 
 package() {
   cd ${pkgname}-${pkgver}
-  
+
   make DESTDIR=${pkgdir}/ install
 }
