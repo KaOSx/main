@@ -1,6 +1,6 @@
 
 pkgname=colord
-pkgver=1.4.6
+pkgver=1.4.7
 pkgrel=1
 pkgdesc="System service easily manage, install and generate color profiles to manage input and output devices"
 arch=('x86_64')
@@ -11,7 +11,7 @@ makedepends=('intltool' 'gobject-introspection' 'vala' 'docbook-xsl' 'sane' 'bas
 options=('!libtool')
 install=colord.install
 source=("https://www.freedesktop.org/software/colord/releases/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('7407631a27bfe5d1b672e7ae42777001c105d860b7b7392283c8c6300de88e6f')
+sha256sums=('de02d9910634ae159547585cec414e450f711c27235453b4f9b38a9f2361a653')
 
 build() {
   mkdir -p build
@@ -19,7 +19,7 @@ build() {
 
   #export LANG=en_US.UTF-8
 
-  meson ../${pkgname}-${pkgver} \
+  meson setup ../${pkgname}-${pkgver} \
     --prefix=/usr \
     --buildtype=release \
     --libexecdir=/usr/lib/colord \
