@@ -1,0 +1,26 @@
+
+pkgname=utf8cpp
+_pkgname=utfcpp
+pkgver=4.0.5
+pkgrel=1
+pkgdesc="UTF-8 with C++ in a Portable Way"
+arch=('x86_64')
+url="https://github.com/nemtrif/utfcpp"
+license=('BSL')
+makedepends=('cmake')
+source=("https://github.com/nemtrif/utfcpp/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
+sha256sums=('ffc668a310e77607d393f3c18b32715f223da1eac4c4d6e0579a11df8e6b59cf')
+
+build() {
+  cmake -B build -S ${_pkgname}-${pkgver} \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr
+  cmake --build build
+}
+
+package() {
+
+  DESTDIR=${pkgdir} cmake --install build
+
+  install -Dm644 ${_pkgname}-${pkgver}/LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}

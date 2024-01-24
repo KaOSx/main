@@ -1,35 +1,36 @@
 
 pkgname=glm
-pkgver=0.9.9.8
+pkgver=1.0.0
 _commit=761a842a595f58acfc01cc5c7760ff351feaaece
-pkgrel=2
+pkgrel=1
 pkgdesc="Header only C++ mathematics library for graphics software based on the OpenGL Shading Language (GLSL) specifications"
 arch=('x86_64')
 license=('MIT')
-url="http://glm.g-truc.net"
+url="https://github.com/g-truc/glm"
 makedepends=('cmake') # 'clang')
-#source=("https://github.com/g-truc/glm/releases/download/${pkgver}/glm-${pkgver}.zip"
-source=("https://github.com/g-truc/glm/archive/${_commit}.zip"
+source=("https://github.com/g-truc/glm/archive/refs/tags/${pkgver}.tar.gz"
+#source=("https://github.com/g-truc/glm/archive/${_commit}.zip"
         "https://github.com/g-truc/glm/commit/9203edd741d855fc0c360c5c171156d17bf9a25b.diff"
         'glm.pc.in')
-md5sums=('2b3757965e24620f285c4416dcd2ad94'
+md5sums=('61f6cd584a7489a0d4c8152191d5d2fa'
          'a0b6afdc09aec580c3f24202c077438a'
          'd84722ea70dd168cc6b36d51aadd6abf')
 
 prepare() {
-  cd ${pkgname}-${_commit}
-  
+  cd ${pkgname}-${pkgver}
+
   #patch -p1 -i ${srcdir}/9203edd741d855fc0c360c5c171156d17bf9a25b.diff
 }
 
 build() {
   #export CC=/usr/bin/clang
   #export CXX=/usr/bin/clang++
-  
-  cmake -B build -S ${pkgname}-${_commit} \
+
+  cmake -B build -S ${pkgname}-${pkgver} \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=lib \
+    -DBUILD_SHARED_LIBS=ON \
     -DCMAKE_INSTALL_DOCDIR=/usr/share/doc/glm
   cmake --build build
 }
@@ -37,10 +38,10 @@ build() {
 package() {
 
   DESTDIR=${pkgdir} cmake --install build 
-  
+
   mkdir -p ${pkgdir}/usr/lib/pkgconfig/
   sed "s|@GLM_VERSION@|${pkgver}|" ../glm.pc.in > ${pkgdir}/usr/lib/pkgconfig/glm.pc
-  
-  install -Dm644 ${pkgname}-${_commit}/copying.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+
+  install -Dm644 ${pkgname}-${pkgver}/copying.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
 
