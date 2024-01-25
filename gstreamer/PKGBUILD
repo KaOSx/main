@@ -1,6 +1,6 @@
 
 pkgname=gstreamer
-pkgver=1.22.8
+pkgver=1.22.9
 pkgrel=1
 pkgdesc="GStreamer Multimedia Framework"
 arch=('x86_64')
@@ -10,7 +10,7 @@ depends=('libxml2' 'glib2' 'libunwind' 'bash-completion')
 makedepends=('meson' 'ninja' 'gobject-introspection' 'python3' 'gsl')
 options=('!libtool')
 source=("https://gstreamer.freedesktop.org/src/gstreamer/gstreamer-${pkgver}.tar.xz")
-sha256sums=('ad4e3db1771139b1db17b1afa7c05db083ae0100bd4da244b71f162dcce41bfc')
+sha256sums=('1e7124d347e8cdc80f08ec1d370c201be513002af1102bb20e83c5279cb48ebd')
 
 build() {
   mkdir -p build
@@ -29,7 +29,7 @@ build() {
 
 check() {
   cd build
-  # 1 fail 108/108 libs_baseparse       FAIL
+  # no FAIL
   meson test
 }
 
