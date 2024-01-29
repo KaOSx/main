@@ -2,12 +2,12 @@
 pkgname=protobuf-c
 pkgver=1.5.0
 _commit=fa86fddbd000316772d1deb5a8d1201fa7599ef7
-pkgrel=2
+pkgrel=3
 pkgdesc="C implementation of the Google Protocol Buffers data serialization format."
 arch=('x86_64')
 url="https://github.com/protobuf-c/protobuf-c/"
 license=('APACHE')
-depends=('protobuf')
+depends=('protobuf' 'abseil-cpp')
 options=('!libtool')
 source=("https://github.com/protobuf-c/protobuf-c/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.gz"
 #source=("https://github.com/protobuf-c/protobuf-c/archive/${_commit}.zip"
