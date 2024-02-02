@@ -20,19 +20,19 @@ _pkg="NVIDIA-Linux-x86_64-${pkgver}"
 
 source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
         'linux-6.5.patch'
-        'linux-6.7.patch')
+        "https://gitweb.gentoo.org/repo/gentoo.git/plain/x11-drivers/nvidia-drivers/files/nvidia-drivers-470.223.02-gpl-pfn_valid.patch")
 md5sums=('b6b2b79cd6d8288e42546b785e6c1d0a'
          '0ea696144a7199536089664225775b47'
-         '391dde2b4bb1572623c763da70b7d697')
+         'a2579e8be54ed3efdcd6d0e9f1531a83')
 
 build() {
     cd ${srcdir}
     sh ${_pkg}.run --extract-only
 
-    cd ${_pkg}/kernel
+    cd ${_pkg}
     # patches from https://gist.github.com/joanbm?direction=desc&sort=updated
     #patch -p1 -i ${srcdir}/linux-6.5.patch
-    patch -p1 -i ${srcdir}/linux-6.7.patch
+    patch -p1 -i ${srcdir}/nvidia-drivers-470.223.02-gpl-pfn_valid.patch
 
     cd ${srcdir}/${_pkg}/kernel
     make SYSSRC=/lib/modules/${_kver}/build module
