@@ -1,28 +1,32 @@
 #
 pkgname=libpciaccess
-pkgver=0.17
+pkgver=0.18
 pkgrel=1
 pkgdesc="X11 PCI access library"
 arch=('x86_64')
 license=('custom')
 url="https://xorg.freedesktop.org/"
 depends=('glibc')
-makedepends=('pkgconfig' 'xorg-util-macros')
+makedepends=('meson' 'ninja' 'xorg-util-macros')
 options=('!libtool')
 source=("https://xorg.freedesktop.org//releases/individual/lib/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('74283ba3c974913029e7a547496a29145b07ec51732bbb5b5c58d5025ad95b73')
+sha256sums=('5461b0257d495254346f52a9c329b44b346262663675d3fecdb204a7e7c262a9')
 
 build() {
-  cd ${pkgname}-${pkgver}
+  mkdir -p build
+  cd build
 
-  ./configure --prefix=/usr --sysconfdir=/etc
-  make
+  meson setup ../${pkgname}-${pkgver} \
+    --prefix=/usr \
+    --buildtype=release
+  ninja
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
-  make DESTDIR=${pkgdir} install
+  cd build
+
+  DESTDIR=${pkgdir} ninja install
 
   install -m755 -d ${pkgdir}/usr/share/licenses/${pkgname}
-  install -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
+  install -m644 ../${pkgname}-${pkgver}/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/
 }
