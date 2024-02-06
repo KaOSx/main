@@ -1,4 +1,5 @@
 #! /bin/bash
+# # SPDX-License-Identifier: GPL-3.0-or-later
 # Autodetection script for scanning /sys for hardware
 # By Tobias Powalowski <tpowa@archlinux.org>
 
@@ -276,11 +277,13 @@ while [ -n "$*"  ]; do
         --show-other)     showlist "OTHER    " $(listmods .ko agp/ acpi/ scsi/ message/fusion block/sx8 block/cciss block/cpqarray block/DAC960 block/virtio virtio/virtio_pci ata/ \
                         usb/ ieee1394 bluetooth/ cdrom/ cpufreq/ crypto/ dca/ dma/ edac/ events/ net/ hwmon/ i2c/ input/ ipmi/ irda/ kvm/ mac_hid media/ mei/ \
                         mfd/ mtd/ nvme/ parport/ platform/ powercap/ sound/ thermal/ tpm/ drm/ firewire/ hid/ serial/ staging/ video/ virt/ watchdog/) ;;
-        --filesystem)   FILESYSTEM="ext2 ext3 ext4 f2fs nilfs2 btrfs reiserfs xfs jfs vfat"
+        --filesystem)   FILESYSTEM="ext2 ext3 ext4 f2fs nilfs2 bcachefs btrfs reiserfs xfs jfs vfat"
                 for i in $FILESYSTEM; do
                      [ "$(grep $i /tmp/.blkid)" ] && FS="$FS $i"
                 done
-                [ "$(echo $FS | grep btrfs)" ] && FS="$FS crc32c"
+                if [ "$(echo $FS | grep btrfs)" ] || [ "$(echo $FS | grep bcachefs)" ]; then
+                    FS="$FS crc32c"
+                fi
                 MODULES_INITRAMFS="$MODULES_INITRAMFS $FS"
                 _SHOW_MODULES="1"
                 ;;
