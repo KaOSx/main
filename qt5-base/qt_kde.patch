@@ -42303,6 +42303,34 @@ index 0309e43e52..3d451696a1 100644
          int utcOffset;
          QString name;
          QString abbreviation;
+diff --git a/src/corelib/tools/qbitarray.h b/src/corelib/tools/qbitarray.h
+index eaed17413d..7934b55164 100644
+--- a/src/corelib/tools/qbitarray.h
++++ b/src/corelib/tools/qbitarray.h
+@@ -84,9 +84,9 @@ public:
+     bool toggleBit(int i);
+ 
+     bool at(int i) const;
+-    QBitRef operator[](int i);
++    inline QBitRef operator[](int i);
+     bool operator[](int i) const;
+-    QBitRef operator[](uint i);
++    inline QBitRef operator[](uint i);
+     bool operator[](uint i) const;
+ 
+     QBitArray& operator&=(const QBitArray &);
+@@ -156,9 +156,9 @@ public:
+     QBitRef& operator=(bool val) { a.setBit(i, val); return *this; }
+ };
+ 
+-inline QBitRef QBitArray::operator[](int i)
++QBitRef QBitArray::operator[](int i)
+ { Q_ASSERT(i >= 0); return QBitRef(*this, i); }
+-inline QBitRef QBitArray::operator[](uint i)
++QBitRef QBitArray::operator[](uint i)
+ { return QBitRef(*this, i); }
+ 
+ 
 diff --git a/src/dbus/qdbusintegrator.cpp b/src/dbus/qdbusintegrator.cpp
 index a4cbfecc98..9ccbbbb37d 100644
 --- a/src/dbus/qdbusintegrator.cpp
@@ -43065,6 +43093,31 @@ index efd607ba60..9399d6efcc 100644
  QT_END_NAMESPACE
 +
 +#include "moc_qshaderlanguage_p.cpp"
+diff --git a/src/network/access/http2/hpacktable.cpp b/src/network/access/http2/hpacktable.cpp
+index fddb5feca5..315f3e2344 100644
+--- a/src/network/access/http2/hpacktable.cpp
++++ b/src/network/access/http2/hpacktable.cpp
+@@ -40,6 +40,7 @@
+ #include "hpacktable_p.h"
+ 
+ #include <QtCore/qdebug.h>
++#include <QtCore/private/qnumeric_p.h>
+ 
+ #include <algorithm>
+ #include <cstddef>
+@@ -62,8 +63,10 @@ HeaderSize entry_size(const QByteArray &name, const QByteArray &value)
+     // for counting the number of references to the name and value would have
+     // 32 octets of overhead."
+ 
+-    const unsigned sum = unsigned(name.size() + value.size());
+-    if (std::numeric_limits<unsigned>::max() - 32 < sum)
++    size_t sum;
++    if (add_overflow(size_t(name.size()), size_t(value.size()), &sum))
++        return HeaderSize();
++    if (sum > (std::numeric_limits<unsigned>::max() - 32))
+         return HeaderSize();
+     return HeaderSize(true, quint32(sum + 32));
+ }
 diff --git a/src/network/access/qhsts.cpp b/src/network/access/qhsts.cpp
 index 0cef0ad3dc..be7ef7ff58 100644
 --- a/src/network/access/qhsts.cpp
@@ -43080,6 +43133,36 @@ index 0cef0ad3dc..be7ef7ff58 100644
              header = h.second;
              // RFC6797, 8.1:
              //
+diff --git a/src/network/access/qhttp2protocolhandler.cpp b/src/network/access/qhttp2protocolhandler.cpp
+index 39dd460881..ead88d781a 100644
+--- a/src/network/access/qhttp2protocolhandler.cpp
++++ b/src/network/access/qhttp2protocolhandler.cpp
+@@ -46,10 +46,12 @@
+ #include <private/qnoncontiguousbytedevice_p.h>
+ 
+ #include <QtNetwork/qabstractsocket.h>
++
+ #include <QtCore/qloggingcategory.h>
+ #include <QtCore/qendian.h>
+ #include <QtCore/qdebug.h>
+ #include <QtCore/qlist.h>
++#include <QtCore/private/qnumeric_p.h>
+ #include <QtCore/qurl.h>
+ 
+ #include <qhttp2configuration.h>
+@@ -124,8 +126,10 @@ std::vector<uchar> assemble_hpack_block(const std::vector<Http2::Frame> &frames)
+     std::vector<uchar> hpackBlock;
+ 
+     quint32 total = 0;
+-    for (const auto &frame : frames)
+-        total += frame.hpackBlockSize();
++    for (const auto &frame : frames) {
++        if (add_overflow(total, frame.hpackBlockSize(), &total))
++            return hpackBlock;
++    }
+ 
+     if (!total)
+         return hpackBlock;
 diff --git a/src/network/access/qnetworkreplyfileimpl_p.h b/src/network/access/qnetworkreplyfileimpl_p.h
 index 48d82abd3f..4bfbc3f7d1 100644
 --- a/src/network/access/qnetworkreplyfileimpl_p.h
@@ -44565,7 +44648,7 @@ index 76869ced60..02d2eebb56 100644
          qWarning("QXcbIntegration: Cannot create platform OpenGL context, neither GLX nor EGL are enabled");
          return nullptr;
 diff --git a/src/plugins/platforms/xcb/qxcbwindow.cpp b/src/plugins/platforms/xcb/qxcbwindow.cpp
-index bffad0fac5..c76c2d97c1 100644
+index bffad0fac5..c67ffa9dd7 100644
 --- a/src/plugins/platforms/xcb/qxcbwindow.cpp
 +++ b/src/plugins/platforms/xcb/qxcbwindow.cpp
 @@ -299,11 +299,6 @@ void QXcbWindow::create()
@@ -44606,16 +44689,6 @@ index bffad0fac5..c76c2d97c1 100644
              return;
          }
          xcb_change_property(xcb_connection(),
-@@ -1418,7 +1419,8 @@ void QXcbWindow::propagateSizeHints()
-                                           qMin(XCOORD_MAX, maximumSize.height()));
- 
-     if (sizeIncrement.width() > 0 || sizeIncrement.height() > 0) {
--        xcb_icccm_size_hints_set_base_size(&hints, baseSize.width(), baseSize.height());
-+        if (!baseSize.isNull() && baseSize.isValid())
-+            xcb_icccm_size_hints_set_base_size(&hints, baseSize.width(), baseSize.height());
-         xcb_icccm_size_hints_set_resize_inc(&hints, sizeIncrement.width(), sizeIncrement.height());
-     }
- 
 diff --git a/src/plugins/platformthemes/xdgdesktopportal/qxdgdesktopportalfiledialog.cpp b/src/plugins/platformthemes/xdgdesktopportal/qxdgdesktopportalfiledialog.cpp
 index 2c72538387..8987e3efd0 100644
 --- a/src/plugins/platformthemes/xdgdesktopportal/qxdgdesktopportalfiledialog.cpp
@@ -45837,6 +45910,19 @@ index 02a0bed325..3f3eccc370 100644
              bool toggle = (d->pressedControl == QStyle::SC_GroupBoxLabel
                             || d->pressedControl == QStyle::SC_GroupBoxCheckBox);
              d->pressedControl = QStyle::SC_None;
+diff --git a/src/widgets/widgets/qlineedit_p.cpp b/src/widgets/widgets/qlineedit_p.cpp
+index 80c9258da4..3fa0f29d28 100644
+--- a/src/widgets/widgets/qlineedit_p.cpp
++++ b/src/widgets/widgets/qlineedit_p.cpp
+@@ -434,7 +434,7 @@ void QLineEditIconButton::animateShow(bool visible)
+ 
+ void QLineEditIconButton::startOpacityAnimation(qreal endValue)
+ {
+-    QPropertyAnimation *animation = new QPropertyAnimation(this, QByteArrayLiteral("opacity"));
++    QPropertyAnimation *animation = new QPropertyAnimation(this, QByteArrayLiteral("opacity"), this);
+     connect(animation, &QPropertyAnimation::finished, this, &QLineEditIconButton::onAnimationFinished);
+ 
+     animation->setDuration(160);
 diff --git a/src/widgets/widgets/qtabbar.cpp b/src/widgets/widgets/qtabbar.cpp
 index 9a382e96dd..7f80fcc250 100644
 --- a/src/widgets/widgets/qtabbar.cpp
