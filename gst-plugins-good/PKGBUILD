@@ -1,6 +1,6 @@
 
 pkgname=gst-plugins-good
-pkgver=1.22.9
+pkgver=1.22.10
 pkgrel=1
 pkgdesc="GStreamer Multimedia Framework Good Plugins"
 arch=('x86_64')
@@ -13,7 +13,7 @@ makedepends=('gstreamer' 'speex' 'libraw1394' 'python3' 'meson' 'ninja' 'qt5-too
 options=('!libtool' '!emptydirs')
 source=("https://gstreamer.freedesktop.org/src/gst-plugins-good/${pkgname}-${pkgver}.tar.xz"
         "https://gitlab.freedesktop.org/gstreamer/gst-plugins-good/commit/c481cb5f2209087ffc0094490bacab46eda2d06b.diff")
-sha256sums=('26959fcfebfff637d4ea08ef40316baf31b61bb7729820b0684e800c3a1478b6'
+sha256sums=('f748feae922cad62f20102a84ade8f42b78e1e44a34866aa3ea766f9172e1c7f'
             'b499e9f62c127e7bea2c08bd683e4ac0513552a951e76e2c3219a766de23e61a')
 
 build() {
@@ -30,7 +30,7 @@ build() {
 
 check() {
   cd build
-  # no FAIL
+  # 115/115 elements_flvmux                    FAIL
   ninja test
 }
 
