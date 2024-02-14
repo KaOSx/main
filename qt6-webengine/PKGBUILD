@@ -31,8 +31,8 @@ md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
 prepare() {
   cd ${_pkgfqn}/
 
-  patch -p1 -i ${srcdir}/icu74.patch
-  patch -p1 -i ${srcdir}/libxml2.12.patch
+  #patch -p1 -i ${srcdir}/icu74.patch
+  #patch -p1 -i ${srcdir}/libxml2.12.patch
 }
 
 build() {
