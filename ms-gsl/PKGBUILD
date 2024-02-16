@@ -1,0 +1,25 @@
+
+pkgname=ms-gsl
+pkgver=4.0.0
+pkgrel=1
+pkgdesc="Guideline Support Library implementation by Microsoft."
+arch=('x86_64')
+url="https://github.com/Microsoft/GSL"
+license=('MIT')
+makedepends=('cmake')
+source=("https://github.com/microsoft/GSL/archive/refs/tags/v${pkgver}.tar.gz")
+sha256sums=('f0e32cb10654fea91ad56bde89170d78cfbf4363ee0b01d8f097de2ba49f6ce9')
+
+build() {
+  cmake -B build -S GSL-${pkgver} \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DGSL_TEST=OFF
+  cmake --build build
+}
+
+package() {
+  DESTDIR=${pkgdir} cmake --install build
+
+  install -Dm644 GSL-${pkgver}/LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
