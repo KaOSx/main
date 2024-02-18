@@ -1,30 +1,26 @@
 
 pkgname=python3-pycurl
 _pkgname=pycurl
-pkgver=7.45.2
-pkgrel=2
+pkgver=7.45.3
+pkgrel=1
 pkgdesc="A Python interface to libcurl."
 arch=('x86_64')
 url="http://pycurl.io/"
 license=('GPL3')
 depends=('python3' 'curl')
-makedepends=('python3-setuptools')
-replaces=('python2-pycurl')
-provides=('python2-pycurl')
-conflicts=('python2-pycurl')
+makedepends=('python3-build' 'python3-installer' 'python3-setuptools' 'python3-wheel')
 source=("https://files.pythonhosted.org/packages/source/p/pycurl/pycurl-${pkgver}.tar.gz")
-sha256sums=('5730590be0271364a5bddd9e245c9cc0fb710c4cbacbdd95264a3122d23224ca')
+sha256sums=('8c2471af9079ad798e1645ec0b0d3d4223db687379d17dd36a70637449f81d6b')
 
 build() {
   cd ${_pkgname}-${pkgver}
 
-  make
-  python3 setup.py build --with-openssl
+  python3 -m build -nw
 }
 
 package() {
   cd ${_pkgname}-${pkgver}
 
-  python3 setup.py install -O1 --root=${pkgdir}
+  python3 -m installer --destdir=${pkgdir} dist/*.whl
   install -D -m644 COPYING-MIT ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
