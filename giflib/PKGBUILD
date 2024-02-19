@@ -1,16 +1,16 @@
 
 pkgname=giflib
-pkgver=5.2.1
-pkgrel=2
+pkgver=5.2.2
+pkgrel=1
 pkgdesc="A library for reading and writing gif images"
 url="https://sourceforge.net/projects/giflib/"
 arch=('x86_64')
 license=('MIT')
 depends=('libx11' 'libsm')
-makedepends=('xmlto' 'docbook-xml' 'docbook-xsl')
+makedepends=('xmlto' 'docbook-xml' 'docbook-xsl' 'imagemagick')
 options=('!libtool')
 source=("https://downloads.sourceforge.net/sourceforge/giflib/${pkgname}-${pkgver}.tar.gz")
-md5sums=('6f03aee4ebe54ac2cc1ab3e4b0a049e5')
+md5sums=('913dd251492134e235ee3c9a91987a4d')
 
 build() {
   cd ${pkgname}-${pkgver}
