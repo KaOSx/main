@@ -2,7 +2,7 @@
 pkgname=libpng
 pkgver=1.6.43
 _apngver=1.6.40
-pkgrel=1
+pkgrel=2
 pkgdesc="A collection of routines used to create PNG format graphics files"
 arch=('x86_64')
 url="http://www.libpng.org/pub/png/libpng.html"
@@ -11,13 +11,14 @@ depends=('zlib' 'sh')
 options=('!libtool')
 source=("https://downloads.sourceforge.net/sourceforge/libpng/${pkgname}-${pkgver}.tar.xz"
         #"https://sourceforge.net/projects/apng/files/libpng/libpng16/libpng-${_apngver}-apng.patch.gz"
-        "https://downloads.sourceforge.net/sourceforge/libpng-apng/libpng-${_apngver}-apng.patch.gz")
+        #"https://downloads.sourceforge.net/sourceforge/libpng-apng/libpng-${_apngver}-apng.patch.gz")
+        'libpng-1.6.40-apng.patch')
 sha256sums=('6a5ca0652392a2d7c9db2ae5b40210843c0bbc081cbd410825ab00cc59f14a6c'
-            '0a3ca46482938d8d6c722662bed2c7ee0c65a1b5624444b3ced21ad8d356db2f')
+            '1967729cf47797a1fd41bc62b4aaa04118bf5dd4eb2ddbf231dca7ab6a66971d')
 
 build() {
   cd ${pkgname}-${pkgver}
-  #patch -p1 -i ${srcdir}/libpng-${_apngver}-apng.patch
+  patch -p1 -i ${srcdir}/libpng-${_apngver}-apng.patch
 
   ./configure --prefix=/usr --disable-static
   make
