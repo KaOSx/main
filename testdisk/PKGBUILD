@@ -1,34 +1,20 @@
 
 pkgname=testdisk
 pkgver=7.2
-pkgrel=4
+pkgrel=5
 pkgdesc="Checks and undeletes partitions + PhotoRec, signature based recovery tool"
 arch=('x86_64')
 url="http://www.cgsecurity.org/index.html?testdisk.html"
 license=('GPL')
 depends=('libjpeg' 'openssl' 'progsreiserfs' 'ntfs-3g' 'qt5-base')
 makedepends=('pkgconfig' 'qt5-tools')
-provides=('qphotorec')
-replaces=('qphotorec')
-conflicts=('qphotorec')
 source=("http://www.cgsecurity.org/${pkgname}-${pkgver}-WIP.tar.bz2")
-md5sums=('4cc6f1d884d254fed2a9177768b2aba0')
+md5sums=('765434bf87a43b6b465def443e9af528')
 
 build() {
   cd ${pkgbase}-${pkgver}-WIP
   sed -i 's|Exec=/usr/bin/qphotorec %F|Exec=kdesu /usr/bin/qphotorec %F|g' linux/qphotorec.desktop
 
-  # Qt5 changes
-  sed -i '/<QWidget>/d' src/*.h
-  sed -i '/<QWidget>/d' src/*.cpp
-  sed -i 's/Qt::escape\(.*\)text())/QString\1text()).toHtmlEscaped()/g' src/qphotorec.cpp
-
-  sed -i 's|qt4|qt5|g' configure
-
-  CXXFLAGS="-std=c++11"
-
-  export QTGUI_LIBS="$(pkg-config Qt5Widgets --libs)"
-  export QTGUI_CFLAGS="-fPIC $(pkg-config Qt5Widgets --cflags)"
   ./configure --prefix=/usr \
               --without-ewf \
               --enable-sudo
