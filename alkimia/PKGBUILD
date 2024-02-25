@@ -1,11 +1,11 @@
 
 pkgname=alkimia
 pkgver=8.1.2
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 pkgdesc="A library with common classes and functionality used by finance applications for the KDE SC."
 url="https://community.kde.org/Alkimia/libalkimia"
-depends=('kconfig' 'kcoreaddons' 'kcompletion' 'ki18n' 'kpackage' 'plasma-framework' 'knewstuff' 'kio' 'kiconthemes' 'ktextwidgets' 'kxmlgui' 'qtwebengine')
+depends=('kconfig' 'kcoreaddons' 'kcompletion' 'ki18n' 'knewstuff' 'kio' 'kiconthemes' 'ktextwidgets' 'kxmlgui' 'qtwebengine')
 makedepends=('extra-cmake-modules' 'kdoctools' 'doxygen')
 license=('LGPL')
 source=("https://download.kde.org/stable/alkimia/${pkgver}/${pkgname}-${pkgver}.tar.xz")
@@ -23,7 +23,8 @@ build() {
     -DBUILD_WITH_WEBKIT=OFF \
     -DBUILD_WITH_WEBENGINE=ON \
     -DAPPDATA_INSTALL_DIR=/usr/share \
-    -DBUILD_TOOLS=ON
+    -DBUILD_TOOLS=ON \
+    -DBUILD_APPLETS=OFF
   cmake --build build
 }
 
