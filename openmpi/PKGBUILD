@@ -1,37 +1,40 @@
 
 pkgname=openmpi
-pkgver=4.1.6
-_pkgver=4.1
+pkgver=5.0.2
+_pkgver=5.0
 pkgrel=1
 pkgdesc="High performance message passing library (MPI)"
 arch=('x86_64')
 url="https://www.open-mpi.org"
 license=('custom')
-depends=('gcc' 'openssh' 'valgrind' 'libtool' 'hwloc')
-makedepends=('inetutils')
+depends=('gcc' 'openssh' 'valgrind' 'libtool' 'hwloc' 'libevent')
+makedepends=('inetutils' 'python3')
 options=('!libtool')
 source=("https://www.open-mpi.org/software/ompi/v${_pkgver}/downloads/${pkgname}-${pkgver}.tar.bz2")
-sha256sums=('f740994485516deb63b5311af122c265179f5328a0d857a567b85db00b11e415')
+sha256sums=('ee46ad8eeee2c3ff70772160bff877cbf38c330a0bc3b3ddc811648b3396698f')
 
 build() {
    cd ${pkgname}-${pkgver}
+   # https://github.com/open-mpi/ompi/issues/12257
+   sed -i 's|WRAPPER__FCFLAGS|WRAPPER_FCFLAGS|g' configure
+   sed -i 's|WRAPPER_EXTRA_FCFLAGS|WRAPPER_FCFLAGS|g' configure
+   sed -i 's|"-I/usr/include",||' opal/tools/wrappers/opal_wrapper.c
+
 
    ./configure --prefix=/usr \
-        --sysconfdir=/etc/${pkgname} \
-        --mandir=/usr/share/man \
-        --enable-mpi-fortran=all \
-        --libdir=/usr/lib/${pkgname} \
-        --enable-mpi-cxx \
-        --enable-builtin-atomics \
-        --with-valgrind \
-        --enable-memchecker \
-        --enable-debug \
-        --enable-pretty-print-stacktrace \
-        --without-slurm \
-        --with-hwloc=/usr \
-        --with-libltdl=/usr \
-        FC=/usr/bin/gfortran \
-        LDFLAGS="$LDFLAGS -Wl,-z,noexecstack"
+         --sysconfdir=/etc/${pkgname} \
+         --mandir=/usr/share/man \
+         --enable-mpi-fortran=all \
+         --libdir=/usr/lib/${pkgname} \
+         --enable-builtin-atomics \
+         --with-valgrind \
+         --enable-memchecker \
+         --enable-debug \
+         --enable-pretty-print-stacktrace \
+         --without-slurm \
+         --with-hwloc=/usr \
+         FC=/usr/bin/gfortran \
+         LDFLAGS="$LDFLAGS -Wl,-z,noexecstack"
 
    make
 }
