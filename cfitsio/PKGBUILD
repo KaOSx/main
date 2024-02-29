@@ -1,17 +1,17 @@
 
 pkgname=cfitsio
-pkgver=4.3.1
-_pkgver=4.3.1
+pkgver=4.4.0
+_pkgver=4.4.0
 pkgrel=1
 pkgdesc="Library for reading and writing data files in FITS (Flexible Image Transport System) data format."
 arch=('x86_64')
 url="https://heasarc.gsfc.nasa.gov/docs/software/fitsio/fitsio.html"
-license=('GPL2')
+license=('custom')
 depends=('glibc')
 makedepends=('pkgconfig')
 options=('!libtool')
 source=("https://heasarc.gsfc.nasa.gov/FTP/software/fitsio/c/${pkgname}-${_pkgver}.tar.gz")
-md5sums=('3f63226f70477b62975102bc68c94338')
+md5sums=('de5393e0bd939d56e029ea0857de3e76')
 
 build() {
   cd ${pkgname}-${_pkgver}
@@ -24,5 +24,6 @@ package() {
   cd ${pkgname}-${_pkgver}
   make DESTDIR=${pkgdir} install
 
-  install -D -m644 License.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+  install -D -m644 licenses/NASA_Open_Source_Agreement_1.3.txt \
+     ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
