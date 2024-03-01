@@ -1,14 +1,14 @@
 
-_extramodules=extramodules-6.6
+_extramodules=extramodules-6.7
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=('nvidia' 'khd-nvidia')
 pkgver=550.54.14
-pkgrel=1
+pkgrel=2
 epoch=2
 arch=('x86_64')
 url="https://www.nvidia.com/page/home.html"
-makedepends=('linux-headers' 'linux>=6.6.11' 'linux<6.7' "nvidia-utils=2:${pkgver}")
+makedepends=('linux-headers' 'linux>=6.7.7' 'linux<6.8' "nvidia-utils=2:${pkgver}")
 options=('!strip')
 license=('custom')
 
@@ -29,7 +29,7 @@ build() {
     cd "${_pkg}"
     #patch -p1 -i ${srcdir}/linux-4.10.patch
     
-    export IGNORE_CC_MISMATCH=yes
+    #export IGNORE_CC_MISMATCH=yes
 
     cd "${srcdir}/${_pkg}/kernel"  
     make SYSSRC=/lib/modules/"${_kver}/build" module
@@ -37,7 +37,7 @@ build() {
 
 package_nvidia() {
     pkgdesc="NVIDIA drivers for linux."
-    depends=('linux>=6.6.11' 'linux<6.7' "nvidia-utils=2:${pkgver}")
+    depends=('linux>=6.7.7' 'linux<6.8' "nvidia-utils=2:${pkgver}")
     conflicts=('nvidia-470xx' 'nvidia-390xx' 'nvidia-bumblebee')
     provides=('nvidia-bumblebee')
     replaces=('nvidia-bumblebee')
