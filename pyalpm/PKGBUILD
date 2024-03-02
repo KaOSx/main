@@ -1,24 +1,24 @@
 
 pkgname=pyalpm
-pkgver=0.10.6
-pkgrel=3
+pkgver=0.10.7
+pkgrel=1
 pkgdesc="C extension for Python 3 that give access to the libalpm API for package management"
 arch=('x86_64')
 url="https://gitlab.archlinux.org/archlinux/pyalpm"
 license=('GPL')
 depends=('python3' 'pacman')
-makedepends=('python3-setuptools')
+makedepends=('python3-build' 'python3-installer' 'python3-setuptools' 'python3-wheel')
 source=("https://gitlab.archlinux.org/archlinux/pyalpm/-/archive/${pkgver}/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('0b3d6847ac2d77f951a5b9f12d33f07e')
+md5sums=('0bf81202652ba1eb4adf1fa07c920048')
 
 build() {
   cd ${pkgname}-${pkgver}
 
-  python3 setup.py build
+  python3 -m build -nw
 }
 
 package() {
   cd ${pkgname}-${pkgver}
 
-  python3 setup.py install --root=${pkgdir}
+  python3 -m installer --destdir=${pkgdir} dist/*.whl
 }
