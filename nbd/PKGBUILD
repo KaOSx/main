@@ -1,6 +1,6 @@
 
 pkgname=nbd
-pkgver=3.25
+pkgver=3.26.1
 pkgrel=1
 pkgdesc="Tools for network block devices, allowing you to use remote block devices over TCP/IP."
 arch=('x86_64')
@@ -10,7 +10,7 @@ source=("https://github.com/NetworkBlockDevice/nbd/releases/download/nbd-${pkgve
         'config'
         'nbd.service')
 depends=('glib2')
-sha1sums=('503e50975b92ff75099f26c98f776d697e7f1a97'
+sha1sums=('c6dd0fa6fdc1f1e38f6c80404642a5e97bec83a3'
           '7bda22e6fe40e6d7ec81783f23445868d1e31495'
           'd8bebeab7c43067026accc63f7cf443b91142f21')
 
@@ -19,7 +19,8 @@ build(){
 
   ./configure --prefix=/usr \
         --sysconfdir=/etc \
-        --enable-syslog
+        --enable-syslog \
+        --disable-manpages
   make
 }
 
