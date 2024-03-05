@@ -42,6 +42,7 @@ usage () {
     echo "    --show-net             show NETWORK modules"
     echo "    --show-nvme            show NVME modules"
     echo "    --show-parport         show PARPORT modules"
+    echo "    --show-pinctrl         show PINCTRL modules"
     echo "    --show-platform        show PLATFORM modules"
     echo "    --show-powercap        show POWERCAP modules"
     echo "    --show-serial          show SERIAL modules"
@@ -68,7 +69,6 @@ usage () {
     echo "    --advanced             show autodetected advanced HOOKS"
     echo "    --hooks                show HOOKS="
     echo "    --keymap               add keymap to HOOKS="
-    echo "    --nfs                  add net to HOOKS="
     exit 1
 }
 
@@ -127,9 +127,6 @@ fi
 
 # keymap switch
 [ "$(echo $* | grep '\-keymap')" ] && KEYMAP=1
-
-# nfs switch
-[ "$(echo $* | grep '\-nfs')" ] && NFS=1
 
 # hooks switch
 [ "$(echo $* | grep '\-hooks')" ] && HOOKS=1
@@ -217,6 +214,7 @@ while [ -n "$*"  ]; do
             showlist "NET      " $(listmods net/ irda/)
             showlist "NVME     " $(listmods nvme.ko)
             showlist "PARPORT  " $(listmods parport/)
+            showlist "PINCTRL  " $(listmods pinctrl/)
             showlist "PLATFORM " $(listmods platform/)
             showlist "POWERCAP " $(listmods powercap/)
             showlist "SERIAL   " $(listmods serial/)
@@ -230,7 +228,7 @@ while [ -n "$*"  ]; do
             showlist "WATCHDOG " $(listmods watchdog/)
             showlist "OTHER    " $(listmods modules/ agp/ acpi/ scsi/ message/fusion block/sx8 block/cciss block/cpqarray block/DAC960 block/virtio virtio/virtio_pci ata/ \
                         usb/ ieee1394 bluetooth/ cdrom/ cpufreq/ crypto/ dca/ dma/ edac/ events/ net/ hwmon/ i2c/ input/ ipmi/ irda/ kvm/ mac_hid media/ mei/ \
-                        mfd/ mtd/ nvme/ parport/ platform/ powercap/ sound/spi/  thermal/ tpm/ drm/ firewire/ hid/ serial/ staging/ video/ virt/ watchdog/)
+                        mfd/ mtd/ nvme/ parport/ pinctrl/ platform/ powercap/ sound/spi/  thermal/ tpm/ drm/ firewire/ hid/ serial/ staging/ video/ virt/ watchdog/)
             ;;
         --show-modules-order)
             showlist "MODULES ORDER" $(listmods modules/)
@@ -320,9 +318,6 @@ while [ -n "$*"  ]; do
             done
             if ! [ "$KEYMAP" = "1" ]; then
                 START_HOOKS=$(echo $START_HOOKS | sed -e "s/keymap//g")
-            fi
-            if ! [ "$NFS" = "1" ]; then
-                START_HOOKS=$(echo $START_HOOKS | sed -e "s/net//g")
             fi
             _SHOW_HOOKS="1"
         ;;
