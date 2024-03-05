@@ -1,30 +1,42 @@
 
 pkgname=opus
 pkgver=1.5.1
-pkgrel=1
+pkgrel=2
 pkgdesc="Codec designed for interactive speech and audio transmission over the Internet"
 arch=('x86_64')
 url="https://www.opus-codec.org/"
 license=('custom')
 depends=('glibc')
+makedepends=('cmake')
 options=('!libtool')
 source=("https://downloads.xiph.org/releases/opus/${pkgname}-${pkgver}.tar.gz")
 sha256sums=('b84610959b8d417b611aa12a22565e0a3732097c6389d19098d844543e340f85')
 
 build() {
-  cd ${pkgname}-${pkgver}
+  cmake -B build -S ${pkgname}-${pkgver} \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DOPUS_BUILD_SHARED_LIBRARY=ON \
+    -DOPUS_CUSTOM_MODES=ON \
+    -DOPUS_DISABLE_INTRINSICS=OFF \
+    -DOPUS_CHECK_ASM=OFF \
+    -DOPUS_DRED=ON \
+    -DOPUS_OSCE=ON
+    #-DENABLE_DEEP_PLC=ON \
+    #-DOPUS_HAVE_RTCD=ON
+  cmake --build build
 
-  ./configure --prefix=/usr \
-    --enable-custom-modes \
-    --enable-intrinsics \
-    --enable-rtcd
-  make
+    #--enable-custom-modes \
+    #--enable-intrinsics \
+    #--enable-rtcd
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
-  make DESTDIR=${pkgdir} install
+
+  DESTDIR=${pkgdir} cmake --install build
 
   install -m755 -d ${pkgdir}/usr/share/licenses/opus
-  install -m644 COPYING ${pkgdir}/usr/share/licenses/opus/
+  install -m644 ${pkgname}-${pkgver}/COPYING ${pkgdir}/usr/share/licenses/opus/
+  install -m755 -d ${pkgdir}/usr/share/aclocal
+  install -m644 ${pkgname}-${pkgver}/opus.m4 ${pkgdir}/usr/share/aclocal/
 }

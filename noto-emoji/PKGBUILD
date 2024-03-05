@@ -1,0 +1,20 @@
+
+pkgname=noto-emoji
+pkgver=2.042
+pkgrel=1
+arch=('x86_64')
+pkgdesc="Open source emoji library that provides standard Unicode emoji support."
+license=('SIL Open Font License (OFL)')
+url="https://github.com/googlefonts/noto-emoji"
+makedepends=('python3-fonttools')
+source=("https://github.com/googlefonts/noto-emoji/archive/refs/tags/v${pkgver}.tar.gz")
+sha256sums=('b56bd2fa4029d0f057b66b742ac59af243dbc91067fed3eb4929dac762440fc9')
+
+package() {
+  cd ${pkgname}-${pkgver}
+
+  install -d ${pkgdir}/usr/share/fonts/noto
+  install -m0644 fonts/NotoColorEmoji.ttf ${pkgdir}/usr/share/fonts/noto/
+
+  install -Dm644 LICENSE $pkgdir/usr/share/licenses/${pkgname}/LICENSE
+}
