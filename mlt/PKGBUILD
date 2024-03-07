@@ -1,12 +1,12 @@
 
 pkgname=mlt
 pkgver=7.22.0
-pkgrel=3
+pkgrel=4
 pkgdesc="An open source multimedia framework"
 arch=('x86_64')
 url="https://www.mltframework.org"
 license=('GPL')
-depends=('sdl_image' 'libsamplerate' 'libdv' 'sox' 'libxml2' 'ffmpeg' 'python3' 'jack2' 'ladspa' 'qt5-svg'
+depends=('sdl_image' 'libsamplerate' 'libdv' 'sox' 'libxml2' 'ffmpeg' 'python3' 'jack2' 'ladspa'
          'frei0r-plugins' 'libexif' 'opencv' 'rubberband' 'gdk-pixbuf2' 'qt6-5compat' 'qt6-svg' 'libebur128')
 makedepends=('cmake' 'swig')
 conflicts=('mlt6')
@@ -27,7 +27,8 @@ build() {
     -DMOD_GLAXNIMATE=ON \
     -DMOD_OPENCV=ON \
     -DSWIG_PYTHON=ON \
-    -DMOD_QT6=ON
+    -DMOD_QT6=ON \
+    -DMOD_QT=OFF
   cmake --build build
 }
 

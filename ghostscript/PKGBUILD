@@ -1,9 +1,9 @@
 
 ## rebuild groff on every update, needs /usr/share/ghostscript/${pkgver}/
 pkgname=ghostscript
-pkgver=10.02.1
-_pkgver=10021
-pkgrel=2
+pkgver=10.03.0
+_pkgver=10030
+pkgrel=1
 epoch=1
 pkgdesc="An interpreter for the PostScript language"
 arch=('x86_64')
@@ -16,7 +16,7 @@ optdepends=('texlive-core:      needed for dvipdf')
 options=('!libtool' '!makeflags')
 #source=("https://downloads.ghostscript.com/public/ghostscript-${pkgver}.tar.bz2")
 source=("https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs${_pkgver}/ghostscript-${pkgver}.tar.xz")
-sha512sums=('ee0f754c1bd8a18428ad14eaa3ead80ff8b96275af5012e7a8384f1f10490da056eec9ae3cc791a7a13a24e16e54df5bccdd109c7d53a14534bbd7360a300b11')
+sha512sums=('74d7da586eefbf3fb3c085bb4d2b73ee667fd0ae9cff73ece613c77c443148b847086f91802124baf91ac35cdc83be07199799378def92c8fbd96ced7d0ee9a8')
 
 build() {
   cd ghostscript-${pkgver}
