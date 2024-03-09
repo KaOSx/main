@@ -29,7 +29,7 @@ build() {
   # https://forum.kaosx.us/d/2775-scanner/11
   #patch -p1 -i ${srcdir}/580c278dcafe4159213406b4307ee8598fe08fe7.diff
 
-  #autoreconf -vfi
+  ./autogen.sh
   ./configure --prefix=/usr \
     --sysconfdir=/etc \
     --localstatedir=/var \
@@ -42,7 +42,7 @@ build() {
 }
 
 package () {
-  cd ${pkgname}-backends-${pkgver}
+  cd backends-${pkgver}
   make DESTDIR=${pkgdir} install
 
   echo "#hpaio" >> ${pkgdir}/etc/sane.d/dll.conf

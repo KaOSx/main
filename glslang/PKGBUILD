@@ -1,6 +1,6 @@
 
 pkgname=glslang
-pkgver=14.0.0
+pkgver=14.1.0
 pkgrel=1
 pkgdesc='Khronos-reference front end for GLSL/ESSL and partial front end for HLSL'
 arch=('x86_64')
@@ -9,7 +9,7 @@ license=('BSD')
 depends=('gcc-libs')
 makedepends=('cmake' 'python3' 'googletest')
 source=("https://github.com/KhronosGroup/glslang/archive/${pkgver}.tar.gz")
-md5sums=('bfbf7fb0d18d00306ef229f289a8d593')
+md5sums=('b2d0ae963b44e23533409eb63ea06a56')
 
 build() {
   cmake -B build -S ${pkgname}-${pkgver} \
