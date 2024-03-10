@@ -1,30 +1,30 @@
 
 pkgname=yt-dlp
-pkgver=2023.12.30
+pkgver=2024.03.10
 pkgrel=1
 pkgdesc='Command-line program to download videos from YouTube.com and other video sites'
 arch=('x86_64')
 url="https://github.com/yt-dlp/yt-dlp"
 license=('custom')
 depends=('python3' 'mutagen')
-makedepends=('zip' 'python3-setuptools')
+makedepends=('python3-build' 'python3-installer' 'python3-setuptools' 'python3-wheel' 'zip') # hatchling
 conflicts=('youtube-dl')
 provides=('youtube-dl')
 replaces=('youtube-dl')
 source=("https://github.com/yt-dlp/yt-dlp/archive/refs/tags/${pkgver}.tar.gz")
-sha256sums=('2878501990f3ab6aa8eabb7346c16d4b4cbc01984372a1f0b3a6be8d260c7aff')
+sha256sums=('079dbf54586e8120c7d76e0dd1b7a60e6c13f4d23f9681fc919577f2fe17d8cd')
 
 build() {
     cd ${pkgname}-${pkgver}
     #sed -i 's|python|python3|g' Makefile
 
     make PREFIX=${pkgdir}/usr yt-dlp completion-bash completion-zsh completion-fish
-    python3 setup.py build
+    python3 -m build -nw
 }
 
 package() {
     cd ${pkgname}-${pkgver}
-    python3 setup.py install --root=${pkgdir}/ --optimize=1 --skip-build
+    python3 -m installer --destdir=${pkgdir} dist/*.whl
 
     install -D -m644 LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
 }
