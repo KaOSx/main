@@ -1,16 +1,18 @@
 
-pkgname=shiboken6
+pkgname=pyside6
 _pkgname=pyside-setup-everywhere-src
 pkgver=6.6.2
 _pkgver=6.6.2
 pkgrel=1
-pkgdesc="Python binding generator that Qt for Python uses to create the PySide module."
+pkgdesc="Plugin (front-end) for Generator Runner. It generates bindings for C++ libraries using CPython source code"
 arch=('x86_64')
 license=('LGPL')
-url="https://wiki.qt.io/Qt_for_Python/Shiboken"
-depends=('python3' 'qt6-base' 'libxslt' 'clang')
-makedepends=('cmake' 'python3-sphinx')
-conflicts=('shiboken2')
+url="https://wiki.qt.io/Qt_for_Python"
+depends=('phonon-qt6' 'qt6-3d' 'qt6-connectivity' 'qt6-datavis3d' 'qt6-declarative' 'qt6-location'
+         'qt6-quick3d' 'qt6-svg' 'qt6-tools' 'qt6-websockets' 'qt6-multimedia' 'qt6-scxml' 'qt6-sensors'
+         'qt6-serialport' 'qt6-speech' 'qt6-webengine' 'shiboken6') # 'qt6-remoteobjects' 'qt6-charts'
+makedepends=('cmake' 'python3-sphinx' 'python3-setuptools' 'clang')
+#source=("git://code.qt.io/pyside/pyside-setup.git")
 source=("https://download.qt.io/official_releases/QtForPython/${pkgname}/PySide6-${pkgver}-src/${_pkgname}-${pkgver}.tar.xz")
 sha256sums=('14620b694d7af4c978443016292d3d2108ba5dc105f4170e3b71eadcaf04c9f0')
 
@@ -25,11 +27,11 @@ prepare() {
 }
 
 build() {
-  cmake -B build -S ${_pkgname}-${_pkgver}/sources/shiboken6 \
+  cmake -B build -S ${_pkgname}-${_pkgver}/sources/pyside6 \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DBUILD_TESTS=OFF \
-    -DUSE_PYTHON_VERSION=3
+    -DPYTHON_EXECUTABLE=/usr/bin/python3
   cmake --build build
 }
 
