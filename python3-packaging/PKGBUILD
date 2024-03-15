@@ -1,13 +1,13 @@
 
 pkgname=python3-packaging
 pkgver=24.0
-pkgrel=1
+pkgrel=3
 pkgdesc="Core utilities for Python3 packages"
 arch=('x86_64')
 license=('Apache')
 url="https://github.com/pypa/packaging"
 depends=('python3-pyparsing')
-makedepends=('python3-build' 'python3-installer' 'python3-flit' 'python3-wheel')
+makedepends=('python3-build' 'python3-installer' 'python3-flit-core' 'python3-wheel')
 # https://pypi.org/project/packaging/#files
 source=("https://pypi.io/packages/source/p/packaging/packaging-${pkgver}.tar.gz"
         'setuptools_return.diff')
@@ -18,7 +18,7 @@ build() {
     cd packaging-${pkgver}
     #patch -p1 -i ${srcdir}/setuptools_return.diff
 
-    flit build --format wheel
+    python3 -m build -nw
 }
 
 package() {
