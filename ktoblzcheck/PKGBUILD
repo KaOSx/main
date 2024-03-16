@@ -1,12 +1,13 @@
 
+# use pip install openpyxl, not adding to repo
 pkgname=ktoblzcheck
 pkgver=1.57
-pkgrel=1
+pkgrel=2
 pkgdesc="Tool for verification of account numbers and bank codes"
 arch=('x86_64')
 license=('LGPL')
 url="https://ktoblzcheck.sourceforge.net/"
-depends=('python3' 'gcc-libs')
+depends=('python3' 'gcc-libs' 'sqlite')
 makedepends=('cmake')
 source=("https://downloads.sourceforge.net/project/ktoblzcheck/${pkgname}-${pkgver}.tar.gz")
 md5sums=('9210153fb269388ab483abd8e485b80d')
