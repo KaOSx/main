@@ -2,7 +2,7 @@
 pkgname=fontforge
 pkgver=20230101
 _pkgver=20230101
-pkgrel=2
+pkgrel=3
 pkgdesc="An outline and bitmap font editor"
 arch=('x86_64')
 url="https://fontforge.github.io/"
@@ -12,9 +12,17 @@ depends=('libxi' 'libxml2' 'pango' 'giflib' 'libpng' 'libtiff' 'libjpeg-turbo' '
 makedepends=('cmake')
 options=('!libtool' '!makeflags')
 source=("https://github.com/fontforge/fontforge/releases/download/${_pkgver}/fontforge-${_pkgver}.tar.xz"
-        'https://fontforge.github.io/cidmaps.tgz')
+        'https://fontforge.github.io/cidmaps.tgz'
+        "https://gitweb.gentoo.org/repo/gentoo.git/plain/media-gfx/fontforge/files/fontforge-20230101-workaround-broken-translations.patch")
 md5sums=('7043f25368ed25bcd75d168564919fb7'
-         '063691163e592515b31514515bb3ce8c')
+         '063691163e592515b31514515bb3ce8c'
+         '7a6483328181ba99eb3b88d20c0be939')
+
+prepare() {
+  cd ${pkgname}-${pkgver}
+
+  patch -p1 -i ${srcdir}/fontforge-20230101-workaround-broken-translations.patch
+}
 
 build() {
   cmake -B build -S ${pkgname}-${pkgver} \
