@@ -1,7 +1,7 @@
 
 pkgname=volume_key
 pkgver=0.3.12
-pkgrel=7
+pkgrel=8
 pkgdesc="Library for manipulating storage volume encryption keys and storing them separately from volumes"
 arch=('x86_64')
 url="https://pagure.io/volume_key"
@@ -17,6 +17,7 @@ build() {
     # needed with cryptsetup 2.0.0
     #patch -p1 -i ${srcdir}/ecef526a51c5a276681472fd6df239570c9ce518.patch
 
+    autoreconf -fiv
     ./configure --prefix=/usr \
         --with-python3 \
         --without-python
