@@ -2,13 +2,13 @@
 pkgname=python3-poppler-qt
 _pkgname=python-poppler-qt5
 pkgver=21.3.0
-pkgrel=2
+pkgrel=3
 pkgdesc="A Python 3 binding to poppler-qt, early Qt 5 port"
 arch=('x86_64')
 url="https://github.com/frescobaldi/python-poppler-qt5"
 license=('LGPL')
 depends=('pyqt5-python3' 'poppler-qt5' 'python3')
-makedepends=('pkg-config')
+makedepends=('pyqt-builder' 'python3-setuptools' 'sip')
 source=("https://github.com/frescobaldi/python-poppler-qt5/archive/v${pkgver}.tar.gz"
         "https://github.com/frescobaldi/python-poppler-qt5/commit/92e5962ec3751ab051d0b655fd61afc7a1cf709e.diff")
 #source=("https://github.com/zehome/python-poppler-qt5/archive/v${pkgver}.tar.gz")
@@ -19,11 +19,16 @@ build() {
     cd ${_pkgname}-${pkgver}
     #patch -p1 -i ${srcdir}/92e5962ec3751ab051d0b655fd61afc7a1cf709e.diff
 
-    python3 setup.py build_ext --qmake-bin='/usr/lib/qt5/bin/qmake' --pyqt-sip-dir='/usr/share/sip/PyQt5'
+    sip-build \
+    --api-dir /usr/share/qt5/qsci/api/python/ \
+    --qmake /usr/lib/qt5/bin/qmake \
+    --no-make
+  cd build
+  make
 }
  
 package() {
-    cd ${_pkgname}-${pkgver}
+    cd ${_pkgname}-${pkgver}/build
 
-    python3 setup.py install --root=${pkgdir} build_ext --qmake-bin='/usr/lib/qt5/bin/qmake'
+    make DESTDIR=${pkgdir} INSTALL_ROOT=${pkgdir} install
 }

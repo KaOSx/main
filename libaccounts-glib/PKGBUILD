@@ -2,7 +2,7 @@
 pkgname=libaccounts-glib
 pkgver=1.26
 #_pkgver=VERSION_1.21-00254a604a7c7bd38c41794a80ad8930e90f21aa
-pkgrel=2
+pkgrel=3
 pkgdesc="Glib-based client library for accessing the online accounts database"
 arch=('x86_64')
 url="https://gitlab.com/groups/accounts-sso"
@@ -24,7 +24,7 @@ build() {
   mkdir -p build
   cd build
 
-  meson ../${pkgname}-${pkgver} \
+  meson setup ../${pkgname}-${pkgver} \
     --prefix=/usr \
     --buildtype=release
   ninja

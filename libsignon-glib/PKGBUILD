@@ -1,7 +1,7 @@
 
 pkgname=libsignon-glib
 pkgver=2.1
-pkgrel=6
+pkgrel=7
 pkgdesc='Single signon authentication library for GLib applications'
 arch=('x86_64')
 url='https://gitlab.com/accounts-sso/libsignon-glib'
@@ -23,7 +23,7 @@ build() {
   mkdir -p build
   cd build
 
-  meson ../${pkgname} \
+  meson setup ../${pkgname} \
     --prefix=/usr \
     --buildtype=release \
     --libexecdir=/usr/lib/${pkgname} \
