@@ -6,6 +6,7 @@ pkgname=qt5-location
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
+_commit=4c88f2c0e61daa89f584a8a9a3eba210221c6920
 pkgrel=1
 pkgdesc="A cross-platform application and UI framework (QtLocation, QtPositioning)."
 arch=('x86_64')
@@ -18,17 +19,21 @@ _pkgfqn="qtlocation-everywhere-opensource-src-${subver}"
 __pkgfqn="qtlocation-everywhere-src-${subver}"
 source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz"
         "https://github.com/qt/qtlocation/commit/3eaed3d6fa15d8a29cb8d8d683aaea9b256a36b1.diff"
-        "https://invent.kde.org/qt/qt/qtlocation/-/commit/e96f8cd48d23a217cc942c682dad0182ebbe5cb5.diff")
+        "https://invent.kde.org/qt/qt/qtlocation-mapboxgl/-/archive/${_commit}/qtlocation-mapboxgl-${_commit}.tar.bz2"
+        'qt_kde.patch')
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
          '17f69eb6b8c2185d7e358280e962f6ec'
-         '857203943bcf6fcc9c6879cd6a89e008')
+         '4f355580c9ed62561c263a2e7ca54472'
+         '66a2adb2130df8b0c28c756389fb2bad')
 
 prepare() {
     cd ${__pkgfqn}
+    rm -rf src/3rdparty/mapbox-gl-native/*
+    mv ${srcdir}/qtlocation-mapboxgl-${_commit}/* src/3rdparty/mapbox-gl-native
 
     #patch -R -p1 -i ${srcdir}/3eaed3d6fa15d8a29cb8d8d683aaea9b256a36b1.diff
-    patch -p1 -i ${srcdir}/e96f8cd48d23a217cc942c682dad0182ebbe5cb5.diff
+    patch -p1 -i ${srcdir}/qt_kde.patch
 }
 
 build() {

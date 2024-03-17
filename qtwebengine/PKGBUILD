@@ -12,7 +12,7 @@ pkgver=5.15.17
 subver=${subver}
 _pkgver=${_qtver}
 _commit=3a11b38575e6aa929d1e7d5d11d0acf61eae6420
-pkgrel=1
+pkgrel=2
 pkgdesc="Chromium-based web engine to replace Qt WebKit"
 url="https://www.qt.io/"
 arch=('x86_64')
@@ -29,11 +29,12 @@ source=("git+https://github.com/qt/qtwebengine.git#commit=${_commit}"
         'demobrowser.desktop'
         'quicknanobrowser.desktop'
         'markdowneditor.desktop'
-        "https://raw.githubusercontent.com/archlinux/svntogit-packages/packages/qt5-webengine/trunk/qt5-webengine-chromium-python3.patch"
-        "https://raw.githubusercontent.com/archlinux/svntogit-packages/packages/qt5-webengine/trunk/qt5-webengine-python3.patch"
+        "https://gitlab.archlinux.org/archlinux/packaging/packages/qt5-webengine/-/raw/main/qt5-webengine-chromium-python3.patch"
+        "https://gitlab.archlinux.org/archlinux/packaging/packages/qt5-webengine/-/raw/main/qt5-webengine-python3.patch"
         "https://raw.githubusercontent.com/archlinux/svntogit-packages/packages/qt5-webengine/trunk/qt5-webengine-pipewire-0.3.patch"
         'drop-catapult.patch'
-        'chromium-drop-catapult.patch')
+        'chromium-drop-catapult.patch'
+        '017-ffmpeg-binutils-2.41.patch')
         #"https://gitweb.gentoo.org/repo/gentoo.git/plain/dev-qt/qtwebengine/files/qtwebengine-5.15.3_p20220406-gcc12-includes.patch")
 #md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
 md5sums=('SKIP'
@@ -41,17 +42,18 @@ md5sums=('SKIP'
          'f11d24801322ef41f8a44eedc5e104c2'
          '6d62ba455c7d70870fb28c9362c9c591'
          '5ea5aa48c198a8de1398fc9e7a4abd14'
-         '7fc674703ddd8277f43ae7e3a5eac29c'
-         '3ebcc2f174d39c98a817861d33b9ad7d'
+         'f4e619ef652ec9a858fb784cd9bacfea'
+         '073c696a8cdbfb99acec97754f00b5cf'
          'a21aa28d235877e7dcc35055d67d417d'
          '1e2bf35ced2fa754cf04eb85762bb2e8'
-         'bf595b1346aab831c778e7ae30fbcb79')
+         'bf595b1346aab831c778e7ae30fbcb79'
+         'd007fb4360b9d4605396f40ae97b6a12')
 
 prepare() {
     mkdir -p build
     cd ${_pkgfqn}
 
-    sed -i 's|MODULE_VERSION = 5.15.17|MODULE_VERSION = 5.15.12|' .qmake.conf
+    sed -i 's|MODULE_VERSION = 5.15.17|MODULE_VERSION = 5.15.13|' .qmake.conf
 
     git submodule init
     git submodule set-url src/3rdparty ${srcdir}/qtwebengine-chromium
@@ -60,9 +62,9 @@ prepare() {
 
     # move to python3, freebsd patch https://github.com/freebsd/freebsd-ports-kde/blob/webengine-python3/www/qt5-webengine/python-patches.diff, moved to patches from ArchLinux & Gentoo
     patch -p1 -i ${srcdir}/qt5-webengine-python3.patch
-    patch -p1 -i ${srcdir}/drop-catapult.patch
-    patch -p1 -i ${srcdir}/chromium-drop-catapult.patch
-    #patch -p1 -i ${srcdir}/qtwebengine-5.15.3_p20220406-gcc12-includes.patch
+    #patch -p1 -i ${srcdir}/drop-catapult.patch
+    #patch -p1 -i ${srcdir}/chromium-drop-catapult.patch
+    patch -p1 -i ${srcdir}/017-ffmpeg-binutils-2.41.patch
     cd src/3rdparty
     patch -p1 -i ${srcdir}/qt5-webengine-chromium-python3.patch
     patch -p1 -i ${srcdir}/qt5-webengine-pipewire-0.3.patch
