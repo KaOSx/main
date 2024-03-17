@@ -1,3 +1,32 @@
+diff --git a/src/3rdparty/masm/wtf/OSAllocatorPosix.cpp b/src/3rdparty/masm/wtf/OSAllocatorPosix.cpp
+index b5c5f6a2b0..1a3d3cdf97 100644
+--- a/src/3rdparty/masm/wtf/OSAllocatorPosix.cpp
++++ b/src/3rdparty/masm/wtf/OSAllocatorPosix.cpp
+@@ -112,10 +112,7 @@ void* OSAllocator::reserveUncommitted(size_t bytes, Usage usage, bool writable,
+     if (result == MAP_FAILED)
+         CRASH();
+ 
+-    while (madvise(result, bytes, MADV_DONTNEED)) {
+-        if (errno != EAGAIN)
+-            CRASH();
+-    }
++    while (madvise(result, bytes, MADV_DONTNEED) == -1 && errno == EAGAIN) { }
+ 
+     if (fd != -1)
+         close(fd);
+@@ -248,8 +245,10 @@ void OSAllocator::decommit(void* address, size_t bytes)
+     mmap(address, bytes, PROT_NONE, MAP_FIXED | MAP_LAZY | MAP_PRIVATE | MAP_ANON, -1, 0);
+ #elif OS(LINUX)
+     while (madvise(address, bytes, MADV_DONTNEED)) {
+-        if (errno != EAGAIN)
+-            CRASH();
++        if (errno != EAGAIN) {
++            memset(address, 0, bytes); // We rely on madvise to zero-out the memory
++            break;
++        }
+     }
+     if (mprotect(address, bytes, PROT_NONE))
+         CRASH();
 diff --git a/src/qml/animations/qcontinuinganimationgroupjob.cpp b/src/qml/animations/qcontinuinganimationgroupjob.cpp
 index 88c0e9e60e..61a9dc36f8 100644
 --- a/src/qml/animations/qcontinuinganimationgroupjob.cpp
@@ -466,23 +495,6 @@ index e7263d1850..289f11d006 100644
  }
  
  /*!
-diff --git a/src/qml/qml/qqmltypewrapper.cpp b/src/qml/qml/qqmltypewrapper.cpp
-index 175de8b936..a6ba4b8cb3 100644
---- a/src/qml/qml/qqmltypewrapper.cpp
-+++ b/src/qml/qml/qqmltypewrapper.cpp
-@@ -419,8 +419,10 @@ ReturnedValue QQmlTypeWrapper::virtualInstanceOf(const Object *typeObject, const
-             return Encode(false);
- 
-         QQmlRefPointer<QQmlTypeData> td = qenginepriv->typeLoader.getType(typeWrapper->d()->type().sourceUrl());
--        ExecutableCompilationUnit *cu = td->compilationUnit();
--        myQmlType = qenginepriv->metaObjectForType(cu->metaTypeId);
-+        if (ExecutableCompilationUnit *cu = td->compilationUnit())
-+            myQmlType = qenginepriv->metaObjectForType(cu->metaTypeId);
-+        else
-+            return Encode(false); // It seems myQmlType has some errors, so we could not compile it.
-     } else {
-         myQmlType = qenginepriv->metaObjectForType(myTypeId);
-     }
 diff --git a/src/qml/qml/qqmlvmemetaobject.cpp b/src/qml/qml/qqmlvmemetaobject.cpp
 index 1e0e4e419f..a0532d1794 100644
 --- a/src/qml/qml/qqmlvmemetaobject.cpp
@@ -496,19 +508,6 @@ index 1e0e4e419f..a0532d1794 100644
                  connect(target, pd->notifyIndex(), ctxt->engine);
          }
  
-diff --git a/src/qml/types/qqmlconnections.cpp b/src/qml/types/qqmlconnections.cpp
-index 4a4e6ce12c..a5889b7396 100644
---- a/src/qml/types/qqmlconnections.cpp
-+++ b/src/qml/types/qqmlconnections.cpp
-@@ -341,7 +341,7 @@ void QQmlConnections::connectSignalsToMethods()
-                    && propName.at(2).isUpper()) {
-             qmlWarning(this) << tr("Detected function \"%1\" in Connections element. "
-                                    "This is probably intended to be a signal handler but no "
--                                   "signal of the target matches the name.").arg(propName);
-+                                   "signal of the \"%2\" target matches the name.").arg(propName).arg(target->metaObject()->className());
-         }
-     }
- }
 diff --git a/src/qmlmodels/qqmldelegatemodel.cpp b/src/qmlmodels/qqmldelegatemodel.cpp
 index 4fcff70de6..5b7e767ae2 100644
 --- a/src/qmlmodels/qqmldelegatemodel.cpp
@@ -769,48 +768,6 @@ index 8321fcfeed..383078b3b9 100644
  
      drag->setMimeData(mimeData);
      if (pixmapLoader.isReady()) {
-diff --git a/src/quick/items/qquickflickable.cpp b/src/quick/items/qquickflickable.cpp
-index ea357d819d..2634b68248 100644
---- a/src/quick/items/qquickflickable.cpp
-+++ b/src/quick/items/qquickflickable.cpp
-@@ -2120,11 +2120,9 @@ void QQuickFlickable::setContentWidth(qreal w)
-         d->contentItem->setWidth(w);
-     d->hData.markExtentsDirty();
-     // Make sure that we're entirely in view.
--    if ((!d->pressed && !d->hData.moving && !d->vData.moving) || d->hData.dragging) {
--        d->hData.contentPositionChangedExternallyDuringDrag = d->hData.dragging;
-+    if (!d->pressed && !d->hData.moving && !d->vData.moving) {
-         d->fixupMode = QQuickFlickablePrivate::Immediate;
-         d->fixupX();
--        d->hData.contentPositionChangedExternallyDuringDrag = false;
-     } else if (!d->pressed && d->hData.fixingUp) {
-         d->fixupMode = QQuickFlickablePrivate::ExtentChanged;
-         d->fixupX();
-@@ -2151,11 +2149,9 @@ void QQuickFlickable::setContentHeight(qreal h)
-         d->contentItem->setHeight(h);
-     d->vData.markExtentsDirty();
-     // Make sure that we're entirely in view.
--    if ((!d->pressed && !d->hData.moving && !d->vData.moving) || d->vData.dragging) {
--        d->vData.contentPositionChangedExternallyDuringDrag = d->vData.dragging;
-+    if (!d->pressed && !d->hData.moving && !d->vData.moving) {
-         d->fixupMode = QQuickFlickablePrivate::Immediate;
-         d->fixupY();
--        d->vData.contentPositionChangedExternallyDuringDrag = false;
-     } else if (!d->pressed && d->vData.fixingUp) {
-         d->fixupMode = QQuickFlickablePrivate::ExtentChanged;
-         d->fixupY();
-diff --git a/src/quick/items/qquickflickable_p_p.h b/src/quick/items/qquickflickable_p_p.h
-index d5d838eaea..aef15e150a 100644
---- a/src/quick/items/qquickflickable_p_p.h
-+++ b/src/quick/items/qquickflickable_p_p.h
-@@ -120,6 +120,7 @@ public:
-             dragStartOffset = 0;
-             fixingUp = false;
-             inOvershoot = false;
-+            contentPositionChangedExternallyDuringDrag = false;
-         }
- 
-         void markExtentsDirty() {
 diff --git a/src/quick/items/qquickitem.cpp b/src/quick/items/qquickitem.cpp
 index 33da9762d3..9e8b289376 100644
 --- a/src/quick/items/qquickitem.cpp
@@ -1683,89 +1640,6 @@ index 9c865b3f73..1f788f7a7f 100644
  }
  
  Q_DECLARE_METATYPE(QQmlImports::ImportVersion)
-diff --git a/tests/auto/qml/qqmllanguage/data/Broken.qml b/tests/auto/qml/qqmllanguage/data/Broken.qml
-new file mode 100644
-index 0000000000..e24d9112a8
---- /dev/null
-+++ b/tests/auto/qml/qqmllanguage/data/Broken.qml
-@@ -0,0 +1,5 @@
-+import QtQml 2.15
-+
-+QtObject {
-+    notThere: 5
-+}
-diff --git a/tests/auto/qml/qqmllanguage/data/asBroken.qml b/tests/auto/qml/qqmllanguage/data/asBroken.qml
-new file mode 100644
-index 0000000000..bd88d14c76
---- /dev/null
-+++ b/tests/auto/qml/qqmllanguage/data/asBroken.qml
-@@ -0,0 +1,6 @@
-+import QtQml 2.15
-+
-+QtObject {
-+    id: self
-+    property var selfAsBroken: self as Broken
-+}
-diff --git a/tests/auto/qml/qqmllanguage/tst_qqmllanguage.cpp b/tests/auto/qml/qqmllanguage/tst_qqmllanguage.cpp
-index ac6634290a..d16d117d65 100644
---- a/tests/auto/qml/qqmllanguage/tst_qqmllanguage.cpp
-+++ b/tests/auto/qml/qqmllanguage/tst_qqmllanguage.cpp
-@@ -337,6 +337,7 @@ private slots:
-     void bareInlineComponent();
- 
-     void hangOnWarning();
-+    void objectAsBroken();
- 
-     void ambiguousContainingType();
-     void staticConstexprMembers();
-@@ -5951,6 +5952,21 @@ void tst_qqmllanguage::badGroupedProperty()
-              .arg(url.toString()));
- }
- 
-+void tst_qqmllanguage::objectAsBroken()
-+{
-+    QQmlEngine engine;
-+    QQmlComponent c(&engine, testFileUrl("asBroken.qml"));
-+    QVERIFY2(c.isReady(), qPrintable(c.errorString()));
-+    QScopedPointer<QObject> o(c.create());
-+    QVERIFY(!o.isNull());
-+    QVariant selfAsBroken = o->property("selfAsBroken");
-+    QVERIFY(selfAsBroken.isValid());
-+    // QCOMPARE(selfAsBroken.metaType(), QMetaType::fromType<std::nullptr_t>());
-+
-+    QQmlComponent b(&engine, testFileUrl("Broken.qml"));
-+    QVERIFY(b.isError());
-+}
-+
- QTEST_MAIN(tst_qqmllanguage)
- 
- #include "tst_qqmllanguage.moc"
-diff --git a/tests/auto/quick/qquickflickable/tst_qquickflickable.cpp b/tests/auto/quick/qquickflickable/tst_qquickflickable.cpp
-index d092cd0170..62f7c67dd4 100644
---- a/tests/auto/quick/qquickflickable/tst_qquickflickable.cpp
-+++ b/tests/auto/quick/qquickflickable/tst_qquickflickable.cpp
-@@ -2642,7 +2642,12 @@ void tst_qquickflickable::setContentPositionWhileDragging() // QTBUG-104966
-     } else if (newExtent >= 0) {
-         // ...or reduce the content size be be less than current (contentX, contentY) position
-         // This forces the content item to move.
--        expectedContentPos = moveDelta;
-+        // contentY: 150
-+        // 320 - 150 = 170 pixels down to bottom
-+        // Now reduce contentHeight to 200
-+        // since we are at the bottom, and the flickable is 100 pixels tall, contentY must land
-+        // at newExtent - 100.
-+
-         if (isHorizontal) {
-             flickable->setContentWidth(newExtent);
-         } else {
-@@ -2652,6 +2657,7 @@ void tst_qquickflickable::setContentPositionWhileDragging() // QTBUG-104966
-         // We therefore cannot scroll/flick it further down. Drag it up towards the top instead
-         // (by moving mouse down).
-         pos += moveDelta;
-+        expectedContentPos = unitDelta * (newExtent - (isHorizontal ? flickable->width() : flickable->height()));
-     }
- 
-     QTest::mouseMove(window.data(), pos);
 diff --git a/tests/auto/quick/qquickgridview/data/qtbug86255.qml b/tests/auto/quick/qquickgridview/data/qtbug86255.qml
 new file mode 100644
 index 0000000000..20688b1967

@@ -6,7 +6,7 @@ pkgname=qt5-base
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=2
+pkgrel=1
 pkgdesc="A cross-platform application and UI framework"
 arch=('x86_64')
 url='https://www.qt.io/'
@@ -28,7 +28,7 @@ source=("${_qtmirror}/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz"
         'work-around-pyside2-brokenness.patch')
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
-         'e0c68ccddfe57913de8d4a19d12b1054'
+         '21d7f4d18a48db8f451b0d82b17bf078'
          'fca569df07849f4f73bb4a153c09e596'
          'fecd8c8f46ab23b9e752b7116a174d52')
 
