@@ -1,16 +1,16 @@
 
 pkgname=pinentry
-pkgver=1.2.1
-pkgrel=2
+pkgver=1.3.0
+pkgrel=1
 pkgdesc="Collection of dialog programs that allow GnuPG to read passphrases and PIN numbers in a secure manner. "
 arch=('x86_64')
 license=('GPL')
 url="https://www.gnupg.org/related_software/pinentry/"
 depends=('ncurses' 'libcap')
-makedepends=('qt5-base')
-optdepends=('qt5-base: for qt backend')  
+makedepends=('qt6-base' 'kguiaddons6')
+optdepends=('qt6-base: for qt backend')  
 source=("https://www.gnupg.org/ftp/gcrypt/pinentry/${pkgname}-${pkgver}.tar.bz2")
-sha1sums=('29daaf45f15cb5b8ec9b4a06284343f7a87082fb')
+sha256sums=('9b3cd5226e7597f2fded399a3bc659923351536559e9db0826981bca316494de')
 
 build() {
   cd ${pkgname}-${pkgver}
@@ -19,7 +19,9 @@ build() {
 	--enable-pinentry-curses \
 	--disable-pinentry-gtk2 \
 	--enable-fallback-curses \
-	--disable-ncurses
+	--disable-ncurses \
+	--disable-pinentry-qt5 \
+	--enable-pinentry-qt
   make
 }
 
