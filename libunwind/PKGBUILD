@@ -2,7 +2,7 @@
 pkgname=libunwind
 pkgver=1.8.1
 _pkgver=1.8.1
-pkgrel=1
+pkgrel=2
 pkgdesc='Portable and efficient C programming interface (API) to determine the call-chain of a program'
 arch=('x86_64')
 url='https://www.nongnu.org/libunwind/'
@@ -16,7 +16,9 @@ md5sums=('10c96118ff30b88c9eeb6eac8e75599d')
 build() {
   cd ${pkgname}-${_pkgver}
 
-  ./configure --prefix=/usr
+  ./configure --prefix=/usr \
+    --sysconfdir=/etc \
+    --libexecdir=/usr/lib
   make
 }
 
