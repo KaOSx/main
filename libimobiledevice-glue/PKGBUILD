@@ -1,0 +1,24 @@
+
+pkgname=libimobiledevice-glue
+pkgver=1.2.0
+pkgrel=1
+pkgdesc="Library with common code used by the libraries and tools around the libimobiledevice project."
+url="https://github.com/libimobiledevice/libimobiledevice-glue"
+arch=('x86_64')
+license=('GPL2' 'LGPL2.1')
+depends=('libplist')
+source=("https://github.com/libimobiledevice/${pkgname}/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.bz2")
+sha256sums=('ff9cbc240c9780edfa43914a057b86362054053721b65fb04f54a25023b92b62')
+
+build() {
+  cd ${pkgname}-${pkgver}
+
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd ${pkgname}-${pkgver}
+
+  make DESTDIR=${pkgdir} install
+}

@@ -1,27 +1,31 @@
  
 pkgname=bubblewrap
-pkgver=0.8.0
-pkgrel=2
+pkgver=0.9.0
+pkgrel=1
 pkgdesc='Core execution engine for unprivileged containers that works as a setuid binary on kernels without
 user namespaces.'
 url='https://github.com/projectatomic/bubblewrap'
 arch=('x86_64')
 license=('LGPLv2')
 depends=('libcap')
-makedepends=('libxslt')
+makedepends=('libxslt' 'meson' 'ninja')
 source=("https://github.com/projectatomic/bubblewrap/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('957ad1149db9033db88e988b12bcebe349a445e1efc8a9b59ad2939a113d333a')
+sha256sums=('c6347eaced49ac0141996f46bba3b089e5e6ea4408bc1c43bab9f2d05dd094e1')
 
 build() {
-  cd ${pkgname}-${pkgver}
+  mkdir -p build
+  cd build
 
-  ./configure --prefix=/usr \
-    --with-priv-mode=none
-  make
+  meson setup ../${pkgname}-${pkgver} \
+    --prefix=/usr \
+    --buildtype=release \
+    -Dtests=false \
+    -Dselinux=disabled
+  ninja
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
+  cd build
 
-  make DESTDIR=${pkgdir} install
+  DESTDIR=${pkgdir} ninja install
 }
