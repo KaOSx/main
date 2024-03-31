@@ -1,6 +1,6 @@
 
 pkgname=soundtouch
-pkgver=2.3.2
+pkgver=2.3.3
 pkgrel=1
 pkgdesc="SoundTouch is an open-source audio processing library for changing the Tempo, Pitch and Playback Rates of audio streams or audio files."
 arch=('x86_64')
@@ -10,7 +10,7 @@ depends=('gcc-libs')
 makedepends=('cmake')
 options=('!libtool')
 source=("https://www.surina.net/soundtouch/${pkgname}-${pkgver}.tar.gz")
-md5sums=('058db201df6151e3cbd07dc8929885c4')
+md5sums=('489c1050315965f69a9c0ad949744d73')
 
 build() {
   cmake -B build -S ${pkgname} \
