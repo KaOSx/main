@@ -6,7 +6,7 @@ pkgname=qt6-location
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=2
+pkgrel=3
 pkgdesc="A cross-platform application and UI framework (QtLocation)."
 arch=('x86_64')
 url='https://github.com/qt/qtlocation'
@@ -26,7 +26,8 @@ md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
 prepare() {
   cd ${_pkgfqn}
 
-  patch -p1 -i ${srcdir}/fe4580824b92d69349eb8bba5de3d48dd8d9a71c.diff
+  #patch -p1 -i ${srcdir}/map_key.diff
+  sed -i -e 's|http://maps-redirect.qt.io/osm/5.8/|https://kaosx.us/osm_repository/|' src/plugins/geoservices/osm/qgeotiledmappingmanagerengineosm.cpp
 }
 
 build() {
