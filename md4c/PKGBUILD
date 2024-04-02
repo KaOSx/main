@@ -1,0 +1,24 @@
+
+pkgname=md4c
+pkgver=0.5.2
+pkgrel=1
+pkgdesc='C Markdown parser. Fast. SAX-like interface. Compliant to CommonMark specification.'
+arch=('x86_64')
+url='https://github.com/mity/md4c'
+license=('MIT')
+makedepends=('cmake')
+source=("https://github.com/mity/md4c/archive/release-${pkgver}.tar.gz")
+sha256sums=('55d0111d48fb11883aaee91465e642b8b640775a4d6993c2d0e7a8092758ef21')
+
+build() {
+  cmake -B build -S ${pkgname}-release-${pkgver} \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DBUILD_MD2HTML_EXECUTABLE=ON
+  cmake --build build
+}
+
+package() {
+
+  DESTDIR=${pkgdir} cmake --install build
+}
