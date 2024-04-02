@@ -3,7 +3,7 @@ pkgname=pyside6
 _pkgname=pyside-setup-everywhere-src
 pkgver=6.6.2
 _pkgver=6.6.2
-pkgrel=3
+pkgrel=4
 pkgdesc="Plugin (front-end) for Generator Runner. It generates bindings for C++ libraries using CPython source code"
 arch=('x86_64')
 license=('LGPL')
@@ -13,8 +13,10 @@ depends=('phonon-qt6' 'qt6-3d' 'qt6-connectivity' 'qt6-datavis3d' 'qt6-declarati
          'qt6-serialport' 'qt6-speech' 'qt6-webengine' 'shiboken6') # 'qt6-remoteobjects' 'qt6-charts'
 makedepends=('cmake' 'python3-sphinx' 'python3-setuptools' 'clang')
 #source=("git://code.qt.io/pyside/pyside-setup.git")
-source=("https://download.qt.io/official_releases/QtForPython/${pkgname}/PySide6-${pkgver}-src/${_pkgname}-${pkgver}.tar.xz")
-sha256sums=('14620b694d7af4c978443016292d3d2108ba5dc105f4170e3b71eadcaf04c9f0')
+source=("https://download.qt.io/official_releases/QtForPython/${pkgname}/PySide6-${pkgver}-src/${_pkgname}-${pkgver}.tar.xz"
+        'qt6.7.patch')
+sha256sums=('14620b694d7af4c978443016292d3d2108ba5dc105f4170e3b71eadcaf04c9f0'
+            'fb0b1a4b7f96747d77e5f1c5a02ec070dd2fabd082406dde471f01bf60ccc39e')
 
 prepare() {
   cd ${_pkgname}-${_pkgver}
@@ -24,6 +26,7 @@ prepare() {
 
   #sed -i -e 's|import importlib|import importlib.machinery|' sources/shiboken2/libshiboken/embed/signature_bootstrap.py
   #sed -i -e 's|#ifndef Py_LIMITED_API|#if PY_VERSION_HEX < 0x03010000|' sources/shiboken2/libshiboken/pep384impl.cpp
+  patch -p1 -i ${srcdir}/qt6.7.patch
 }
 
 build() {
