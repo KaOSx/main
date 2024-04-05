@@ -1,6 +1,6 @@
  
 pkgname=fwupd
-pkgver=1.9.15
+pkgver=1.9.16
 pkgrel=1
 pkgdesc="Simple daemon to allow updating firmware on Linux automatic, safe and reliable"
 arch=('x86_64')
@@ -12,18 +12,13 @@ depends=('efivar' 'gcab' 'gpgme' 'json-glib' 'libarchive' 'libgudev' 'libgusb' '
 makedepends=('bash-completion' 'help2man' 'gnu-efi-libs' 'gobject-introspection' 
              'linux-headers' 'meson' 'noto-fonts' 'ninja' 'python3-cairo' 'python3-gobject3'
              'python3-pillow' 'vala' 'python3-jinja')
-backup=('etc/fwupd/daemon.conf'
-        'etc/fwupd/redfish.conf'
-        'etc/fwupd/remotes.d/fwupd-tests.conf'
+backup=('etc/fwupd/fwupd.conf'
         'etc/fwupd/remotes.d/lvfs-testing.conf'
         'etc/fwupd/remotes.d/lvfs.conf'
-        'etc/fwupd/remotes.d/vendor-directory.conf'
-        'etc/fwupd/remotes.d/vendor.conf'
-        'etc/fwupd/thunderbolt.conf'
-        'etc/fwupd/upower.conf')
+        'etc/fwupd/remotes.d/vendor-directory.conf')
 #source=("https://people.freedesktop.org/~hughsient/releases/${pkgname}-${pkgver}.tar.xz")
 source=("https://github.com/fwupd/fwupd/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('6a69667d999eb4591293796351f163074dddb1dae8a5b6ae00cdc6098a856da2')
+sha256sums=('adcafc8697bbf6ccc742fa3ce62457d3ed76b5807c068d5ea688f1ab698927f7')
 
 build() {
     mkdir -p build
