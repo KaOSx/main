@@ -1,31 +1,31 @@
 
 pkgname=python3-docutils
 _pkgname=docutils
-pkgver=0.20.1
-pkgrel=2
+pkgver=0.21
+pkgrel=1
 pkgdesc="Set of tools for processing plaintext docs into formats such as HTML, XML, or LaTeX"
 arch=('x86_64')
 url="https://docutils.sourceforge.io/"
 license=('custom')
 depends=('python3')
-makedepends=('python3-setuptools')
-source=("https://files.pythonhosted.org/packages/source/D/Docutils/${_pkgname}-${pkgver}.tar.gz")
-sha256sums=('f08a4e276c3a1583a86dce3e34aba3fe04d02bba2dd51ed16106244e8a923e3b')
+makedepends=('python3-build' 'python3-flit-core' 'python3-installer' 'python3-wheel')
+source=("https://files.pythonhosted.org/packages/source/d/docutils/${_pkgname}-${pkgver}.post1.tar.gz")
+sha256sums=('518e29081124e7d8159550958e6de240622562aa824f945f501ec3d3c5b67d19')
 
 build() {
   cd ${_pkgname}-${pkgver}
 
-  python3 setup.py build
+  python3 -m build -nw
 }
 
 package() {
   cd ${_pkgname}-${pkgver}
-  python3 setup.py install --root=${pkgdir} --optimize=1
+  python3 -m installer --destdir=${pkgdir} dist/*.whl
 
-  for _f in ${pkgdir}/usr/bin/*.py; do
-      ln -s $(basename $_f) ${pkgdir}/usr/bin/$(basename $_f .py)
-  done
+  #for _f in ${pkgdir}/usr/bin/*.py; do
+  #    ln -s $(basename $_f) ${pkgdir}/usr/bin/$(basename $_f .py)
+  #done
 
   install -D -m644 COPYING.txt ${pkgdir}/usr/share/licenses/${pkgname}/COPYING.txt
-  install -D -m644 licenses/python* ${pkgdir}/usr/share/licenses/${pkgname}/
+  #install -D -m644 licenses/python* ${pkgdir}/usr/share/licenses/${pkgname}/
 }
