@@ -1,7 +1,7 @@
 
 pkgname=python3-docutils
 _pkgname=docutils
-pkgver=0.21
+pkgver=0.21.1
 pkgrel=1
 pkgdesc="Set of tools for processing plaintext docs into formats such as HTML, XML, or LaTeX"
 arch=('x86_64')
@@ -9,8 +9,8 @@ url="https://docutils.sourceforge.io/"
 license=('custom')
 depends=('python3')
 makedepends=('python3-build' 'python3-flit-core' 'python3-installer' 'python3-wheel')
-source=("https://files.pythonhosted.org/packages/source/d/docutils/${_pkgname}-${pkgver}.post1.tar.gz")
-sha256sums=('518e29081124e7d8159550958e6de240622562aa824f945f501ec3d3c5b67d19')
+source=("https://files.pythonhosted.org/packages/source/d/docutils/${_pkgname}-${pkgver}.tar.gz")
+sha256sums=('65249d8a5345bc95e0f40f280ba63c98eb24de35c6c8f5b662e3e8948adea83f')
 
 build() {
   cd ${_pkgname}-${pkgver}

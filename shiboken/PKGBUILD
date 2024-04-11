@@ -1,17 +1,18 @@
 
-pkgname=shiboken2
-_pkgname=pyside-setup-opensource-src
-pkgver=5.15.13
-_pkgver=5.15.13
-pkgrel=1
+pkgname=shiboken6
+_pkgname=pyside-setup-everywhere-src
+pkgver=6.6.2
+_pkgver=6.6.2
+pkgrel=4
 pkgdesc="Python binding generator that Qt for Python uses to create the PySide module."
 arch=('x86_64')
 license=('LGPL')
 url="https://wiki.qt.io/Qt_for_Python/Shiboken"
-depends=('python3' 'qt5-xmlpatterns' 'libxslt' 'clang')
+depends=('python3' 'qt6-base' 'libxslt' 'clang')
 makedepends=('cmake' 'python3-sphinx')
-source=("https://download.qt.io/official_releases/QtForPython/${pkgname}/PySide2-${pkgver}-src/${_pkgname}-${pkgver}.tar.xz")
-sha256sums=('7a57797b20268d6ebcb39deba48c754a69abf9221aee03e1f3dca6f6565b7da9')
+conflicts=('shiboken2')
+source=("https://download.qt.io/official_releases/QtForPython/${pkgname}/PySide6-${pkgver}-src/${_pkgname}-${pkgver}.tar.xz")
+sha256sums=('14620b694d7af4c978443016292d3d2108ba5dc105f4170e3b71eadcaf04c9f0')
 
 prepare() {
   cd ${_pkgname}-${_pkgver}
@@ -24,7 +25,7 @@ prepare() {
 }
 
 build() {
-  cmake -B build -S ${_pkgname}-${_pkgver}/sources/shiboken2 \
+  cmake -B build -S ${_pkgname}-${_pkgver}/sources/shiboken6 \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DBUILD_TESTS=OFF \
