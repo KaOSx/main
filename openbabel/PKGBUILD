@@ -2,23 +2,27 @@
 pkgname=openbabel
 pkgver=3.1.1
 _pkgver=3-1-1
-pkgrel=1
+pkgrel=2
 pkgdesc="Open, collaborative project allowing anyone to search, convert,
          analyze, or store data from molecular modeling, chemistry, solid-state materials,
          biochemistry, or related areas"
 arch=('x86_64')
-url="https://openbabel.org/wiki/Main_Page"
+url="https://openbabel.org"
 license=('GPL')
 depends=('gcc-libs' 'libxml2' 'eigen3' 'cairo')
 makedepends=('cmake')
 options=('!libtool')
-source=("https://github.com/openbabel/openbabel/releases/download/${pkgname}-${_pkgver}/${pkgname}-${pkgver}-source.tar.bz2")
-md5sums=('581c78e6c89368b9f0c17cfb5cec8190')
+source=("https://github.com/openbabel/openbabel/releases/download/${pkgname}-${_pkgver}/${pkgname}-${pkgver}-source.tar.bz2"
+        "https://github.com/openbabel/openbabel/commit/c0570bfeb2d7e0a6a6de1f257cf28e7f3cac8739.diff")
+md5sums=('581c78e6c89368b9f0c17cfb5cec8190'
+         'bf939395441531516b707b7b9ce87a8e')
 
 prepare() {
   cd ${pkgname}-${pkgver}
 
   #sed -i -e 's|if __GNUC__ == 4  //&&|if __GNUC__ >= 4  //&&|' include/openbabel/shared_ptr.h
+  # gcc 12 needed
+  patch -p1 -i ${srcdir}/c0570bfeb2d7e0a6a6de1f257cf28e7f3cac8739.diff
 }
 
 build() {
