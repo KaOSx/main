@@ -1,7 +1,7 @@
 
 pkgname=spatialindex
 pkgver=1.9.3
-pkgrel=2
+pkgrel=3
 pkgdesc="Extensible framework that will support robust spatial indexing methods."
 arch=('x86_64')
 url="https://libspatialindex.org/"
@@ -22,6 +22,6 @@ package() {
 
   DESTDIR=${pkgdir} cmake --install build
 
-  install -D -m644 ../${pkgname}-src-${pkgver}/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
+  install -D -m644 ${pkgname}-src-${pkgver}/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
 }
 
