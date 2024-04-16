@@ -1,6 +1,6 @@
 
 pkgname=postfix
-pkgver=3.8.6
+pkgver=3.9.0
 pkgrel=1
 pkgdesc='Secure, fast, easy to administer alternative to Sendmail'
 url='https://www.postfix.org/'
@@ -12,7 +12,7 @@ install=${pkgname}.install
 source=("https://mirror.lhsolutions.nl/postfix-release/official/${pkgname}-${pkgver}.tar.gz"
         'aliases.patch'
         'postfix.service')
-md5sums=('6a04fb70afead55f6ca106dc87a3a9db'
+md5sums=('3eda9b945ed6cdf11ef58a731c574a04'
          '9cc2ee3c72e134c2da5a895abaa56f30'
          '24af169de13c34dac03d787c3e607ec5')
 
@@ -23,13 +23,14 @@ build() {
   #patch -p1 -i ${srcdir}/linux-6.patch
 
 	make makefiles DEBUG='' CCARGS=' \
-		-DUSE_SASL_AUTH -DUSE_CYRUS_SASL -I/usr/include/sasl \
+		-DUSE_SASL_AUTH \
+		-DUSE_CYRUS_SASL -I/usr/include/sasl \
 		-DHAS_LDAP \
 		-DUSE_TLS \
 		-DHAS_MYSQL -I/usr/include/mysql \
 		-DHAS_PGSQL -I/usr/include/postgresql \
 		-DHAS_SQLITE \
-	' AUXLIBS=' \
+		' AUXLIBS=' \
 		-lsasl2 \
 		-lldap -llber \
 		-lssl -lcrypto \
