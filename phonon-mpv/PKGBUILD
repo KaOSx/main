@@ -1,0 +1,31 @@
+
+pkgname=phonon-mpv
+pkgver=0.1.0
+pkgrel=1
+pkgdesc='Phonon Backend using MPV Player(libmpv)'
+arch=('x86_64')
+url='https://github.com/OpenProgger/phonon-mpv'
+license=('LGPL')
+depends=('mpv' 'qt6-base')
+makedepends=('extra-cmake-modules' 'phonon-qt6' 'qt6-tools')
+groups=('kde-complete' 'kde-uninstall')
+provides=('phonon-backend-qt6')
+source=("https://github.com/OpenProgger/phonon-mpv/archive/refs/tags/v$pkgver.tar.gz")
+sha256sums=('8cba7d803c23267bf7431bf79c4a65a03c767c01026a0cced18985bfa418a076')
+
+build() {
+  cmake -B build -S ${pkgname}-${pkgver} \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DKDE_INSTALL_LIBDIR=lib \
+    -DBUILD_TESTING=OFF \
+    -DPHONON_BUILD_QT5=OFF \
+    -DPHONON_BUILD_QT6=ON \
+    -DQT_MAJOR_VERSION=6
+  cmake --build build
+}
+
+package() {
+
+  DESTDIR=${pkgdir} cmake --install build
+}
