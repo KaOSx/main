@@ -1,157 +1,109 @@
 
 pkgname=('openjdk' 'openjdk-src')
 pkgbase='openjdk'
-_icedtea_release="3.21.0"
-_icedtea_jdkver="8"
-# ${srcdir}/build/ChangeLog for versions
-_openjdk_build="b07"
-_pkgver="8u312"
-pkgver="${_pkgver}_${_openjdk_build}_${_icedtea_release}"
-pkgrel=2
+_pkgver=17.0
+_openjdk_build=11
+_openjdk_update=9
+pkgver="${_pkgver}.${_openjdk_build}.u${_openjdk_update}"
+pkgrel=1
 pkgdesc="An open-source implementation of the seventh edition of the Java SE Platform."
 arch=('x86_64')
-url="https://icedtea.classpath.org/"
+url="https://openjdk.org/"
 license=('GPL2 with Classpath exception')
-makedepends=('java-environment=8' 'apache-ant' 'zip' 'unzip'
+makedepends=('apache-ant' 'zip' 'unzip'
              'fastjar' 'cpio' 'cups' 'coreutils'
              'wget' 'gzip' 'alsa-lib' 'pulseaudio' 'zlib' 'libjpeg-turbo'
              'libpng' 'lcms2' 'freetype2' 'rhino' 'nss' 'libxt' 'pkg-config'
-             'libxtst' 'libxp' 'libxrender' 'libxinerama' 'libxcomposite' 'pcsclite') #'giflib'
+             'libxtst' 'libxp' 'libxrender' 'libxinerama' 'libxcomposite' 'pcsclite' 'giflib')
 
-_hg_url="https://icedtea.classpath.org/download/drops/icedtea8/${_icedtea_release}"
-_jvmdir="/usr/lib/jvm/java-8-openjdk"
+_jvmdir=/usr/lib/jvm/java-17-openjdk
 
-source=("https://icedtea.classpath.org/download/source/icedtea-${_icedtea_release}.tar.xz"
-        ${_hg_url}/corba.tar.xz 
-        ${_hg_url}/jaxp.tar.xz 
-        ${_hg_url}/jaxws.tar.xz 
-        ${_hg_url}/jdk.tar.xz 
-        ${_hg_url}/langtools.tar.xz 
-        ${_hg_url}/openjdk.tar.xz 
-        ${_hg_url}/nashorn.tar.xz 
-        ${_hg_url}/hotspot.tar.xz 
-        'fontconfig-paths.diff'
-        'corba_path.diff'
-        'command_path.diff'
+source=("https://github.com/openjdk/jdk17u/archive/refs/tags/jdk-${_pkgver}.${_openjdk_build}+${_openjdk_update}.tar.gz"
         'openjdk.profile.sh'
         'openjdk.profile.csh')
-sha256sums=('f83ee85d39f39a304dbd6c79aaeb4fa04257fc2e61031d0a28587a1953ba2459'
-            'ab0bff4445822c5e5741088da0e83a9bc20d059b8a95fcffd5885c03969bbeeb'
-            'c5bb8b86a8d24ca7abde8f6cf15dec18c6e9a5201e4942a7ef117b28c960f54f'
-            '6a1244d4b8c0f78d34e44edb92a96cb127ec4b43847a6d5a176c37f392499993'
-            'eab27c3ad455b68b29fec2f59730d48c97f53699000da21a5e1640b825840385'
-            '499c749aa8dbe120bde899d0712d47e3cebc7d4a0a4b4c9b6afb2b0bdda98b82'
-            'ea3fe2097a0ce02e6781e8a0cc1b923ab52803a527cc34ef686779c04a3e1c21'
-            '495276d1e1e6b3a5a0d257c21b2e6349b000ac083be209a47a01b45894a65d59'
-            '4231a4b534b1c44aaf5e0b51833f0e40f0654dcaa41c6259cf65037eccd427ae'
-            '9ad943ceb3dbcdf45d72974fc3667886a7ed65c69ab9abc17be5412827551a7f'
-            'b23a0e6b6bd11e8db3c3a7040887bca955a9821fc11bf351e11d97b3e5fde05b'
-            '0ad6a9c361176a63537d14faf23c1a8100558f33f4aa222c29d7034a055a384c'
+sha256sums=('84e2e143dcab2160dcde3fe6d6b12d7d030533a5bce1aec0ac20d09c023deae0'
             '5b13278d7a63712dbdc4cb4fb44ad9c00b6cfc65c63425fd84f3c7b7a98e81d1'
             '08428358c22b5017623931dac6345f8cce7eb1293e50bc28e2ab9271a69a5fda')
-noextract=("openjdk.tar.xz"
-           "corba.tar.xz"
-           "jaxp.tar.xz"
-           "jaxws.tar.xz"
-           "jdk.tar.xz"
-           "nashorn.tar.xz"
-           "langtools.tar.xz"
-           "hotspot.tar.xz")
-           
-prepare() {
-  cd icedtea-${_icedtea_release}
-  
-  #patch -p1 -i ${srcdir}/makefile.diff
-  # sed line needed to make it look for automake-1.16
-  #sed -i 's|1.15|1.16|' configure
-}
 
 build() {
-  cd "${srcdir}"
+  cd jdk17u-jdk-${_pkgver}.${_openjdk_build}-${_openjdk_update}
 
-  # Prepare the patches
-  #cp *.diff "${srcdir}/icedtea-${_icedtea_release}/patches"
-  #export DISTRIBUTION_PATCHES="patches/fontconfig-paths.diff \
-  #                             patches/corba_path.diff \
-  #                             patches/command_path.diff"
-  #                             patches/openjdk7_nonreparenting-wm.diff
+  unset CFLAGS
+  unset CXXFLAGS
+  unset LDFLAGS
 
-  rm -rf build
-  cp -r "icedtea-${_icedtea_release}" \
-        "${srcdir}/build"
-
-  cd "${srcdir}/build"
   CFLAGS="-O3"
+  export MAKEFLAGS=""
 
-  . /etc/profile.d/apache-ant.sh
-
-  # Start the configuration and build step
+  chmod +x configure
   ./configure --prefix=/usr \
-              --with-parallel-jobs="${MAKEFLAGS/-j}" \
-              --with-jdk-home="${JAVA_HOME}" \
-              --with-openjdk-src-zip="${srcdir}/openjdk.tar.xz" \
-              --with-hotspot-src-zip="${srcdir}/hotspot.tar.xz" \
-              --with-corba-src-zip="${srcdir}/corba.tar.xz" \
-              --with-jaxp-src-zip="${srcdir}/jaxp.tar.xz" \
-              --with-jaxws-src-zip="${srcdir}/jaxws.tar.xz" \
-              --with-jdk-src-zip="${srcdir}/jdk.tar.xz" \
-              --with-nashorn-src-zip="${srcdir}/nashorn.tar.xz" \
-              --with-langtools-src-zip="${srcdir}/langtools.tar.xz" \
-              --with-pkgversion="Linux build ${pkgver}-${pkgrel}-x86_64" \
-              --disable-tests \
-              --disable-downloading \
-              --disable-Werror \
-              --disable-bootstrap \
-              --enable-nss \
-              --disable-system-sctp
-  make
+              --with-freetype=system \
+              --with-giflib=system \
+              --with-harfbuzz=system \
+              --with-lcms=system \
+              --with-libjpeg=system \
+              --with-libpng=system \
+              --with-native-debug-symbols=none \
+              --with-vendor-name="KaOS" \
+              --with-vendor-url="https://kaosx.us" \
+              --with-vendor-bug-url="https://kaosx.us/bugs" \
+              --with-vendor-vm-bug-url="https://bugs.openjdk.java.net" \
+              --with-vendor-version-string="${_pkgver}.${_openjdk_build}" \
+              --with-version-pre="" \
+              --with-version-build="${_openjdk_update}" \
+              --with-extra-cflags="${CFLAGS}" \
+              --with-stdc++lib=dynamic \
+              --with-jvm-features="zgc,shenandoahgc" \
+              --disable-warnings-as-errors \
+              --enable-full-docs=no \
+              --enable-unlimited-crypto \
+              --with-num-cores=8
+  make images legacy-jre-image
 }
 
 package_openjdk() {
 pkgdesc="An open-source implementation of the Java SE Platform."
-conflicts=('openjdk6' 'openjdk7')
-provides=("java-environment=${_icedtea_jdkver}" "java-runtime=${_icedtea_jdkver}")
-replaces=('openjdk6' 'openjdk7')
+provides=('java-environment' 'java-runtime')
 depends=('alsa-lib' 'pulseaudio' 'giflib' 'libjpeg-turbo' 'libpng' 'freetype2')
-#optdepends=('icedtea-web: web browser plugin and Java Web Start support')
 
-  cd "${srcdir}/build"
+  cd jdk17u-jdk-${_pkgver}.${_openjdk_build}-${_openjdk_update}/build/linux-x86_64-server-release/images/jdk
 
   # Copy the built OpenJDK image to the target directory
-  install -d -m755 "${pkgdir}/${_jvmdir%/*}"
-  cp -r "openjdk.build/images/j2sdk-image" \
-        "${pkgdir}/${_jvmdir#/}"
+  install -d -m755 ${pkgdir}/${_jvmdir}
+  cp -a bin include lib man release \
+        ${pkgdir}/${_jvmdir#/}
   # permissions are not preserved
-  find "${pkgdir}/${_jvmdir#/}" \! -type l \( -perm /111 -exec chmod 755 {} \; -o -exec chmod 644 {} \; \)
+  #find ${pkgdir}/${_jvmdir#/} \! -type l \( -perm /111 -exec chmod 755 {} \; -o -exec chmod 644 {} \; \)
   
   # Remove the .zip file which is going to be inside openjdk-src
-  rm "${pkgdir}/${_jvmdir#/}/src.zip"
+  rm ${pkgdir}/${_jvmdir#/}/lib/src.zip
 
   # Symlink the binaries into /usr/bin
-  install -d -m755 "${pkgdir}/usr/bin"
-  pushd "${pkgdir}/${_jvmdir#/}/bin" >/dev/null
+  install -d -m755 ${pkgdir}/usr/bin
+  pushd ${pkgdir}/${_jvmdir#/}/bin >/dev/null
     for executable in *; do
-      ln -s "${_jvmdir}/bin/${executable}" \
-            "${pkgdir}/usr/bin"
+      ln -s ${_jvmdir}/bin/${executable} ${pkgdir}/usr/bin
     done
   popd >/dev/null
 
   # Move the manual pages in the right place
-  install -d -m755 "${pkgdir}"/usr/share/man/{,ja/}man2/
-  mv "${pkgdir}"/${_jvmdir#/}/man/man1/* \
-     "${pkgdir}"/usr/share/man/man2/
-  mv "${pkgdir}"/${_jvmdir#/}/man/ja_JP.UTF-8/* \
-     "${pkgdir}"/usr/share/man/ja
+  install -d -m755 ${pkgdir}/usr/share/man/man2/
+  mv ${pkgdir}/${_jvmdir#/}/man/man1/* ${pkgdir}/usr/share/man/man2/
 
   # Setup the shell profile dropin configuration
-  install -D -m755 "${srcdir}/openjdk.profile.sh" \
-                   "${pkgdir}/etc/profile.d/openjdk.sh"
-  install -D -m755 "${srcdir}/openjdk.profile.csh" \
-                   "${pkgdir}/etc/profile.d/openjdk.csh"
+  install -D -m755 ${srcdir}/openjdk.profile.sh ${pkgdir}/etc/profile.d/openjdk.sh
+  install -D -m755 ${srcdir}/openjdk.profile.csh ${pkgdir}/etc/profile.d/openjdk.csh
 
-  # Install the license file
-  install -D -m644 "openjdk/LICENSE" \
-                   "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+  # Install the license files
+  #install -D -m644 ../../../../LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+  install -dm 755 ${pkgdir}/usr/share/licenses
+  cp -r legal ${pkgdir}/usr/share/licenses/${pkgbase}
+  ln -s ${pkgbase} ${pkgdir}/usr/share/licenses/${pkgname}
+  ln -s /usr/share/licenses/${pkgbase} ${pkgdir}/${_jvmdir}/legal
+
+  rm -f ${pkgdir}${_jvmdir}/lib/security/cacerts
+  ln -sf /etc/ssl/certs/java/cacerts ${pkgdir}${_jvmdir}/lib/security/cacerts
+
 }
 
 package_openjdk-src() {
@@ -159,10 +111,9 @@ pkgdesc="An open-source implementation of the Java SE Platform. (Source package)
 arch=('x86_64')
 depends=("openjdk=${pkgver}")
 
-  cd "${srcdir}/build"
+  cd jdk17u-jdk-${_pkgver}.${_openjdk_build}-${_openjdk_update}/build/linux-x86_64-server-release/images
 
   # Install the source package
-  install -D -m644 "openjdk.build/images/j2sdk-image/src.zip" \
-                   "${pkgdir}/${_jvmdir#/}/src.zip"
+  install -D -m644 jdk/lib/src.zip ${pkgdir}/${_jvmdir#/}/src.zip
 }
 
