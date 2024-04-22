@@ -1,16 +1,16 @@
 
 pkgname=gpgme
 pkgver=1.23.2
-pkgrel=1
+pkgrel=2
 pkgdesc="A C wrapper library for GnuPG"
 arch=('x86_64')
 url="https://www.gnupg.org/related_software/gpgme/"
 license=('GPL')
 depends=('libgpg-error' 'gnupg')
-makedepends=('qt5-base')
-provides=('gpgmepp')
-replaces=('gpgmepp')
-conflicts=('gpgmepp')
+makedepends=('qt6-base')
+provides=('gpgme-qt6')
+replaces=('gpgme-qt6')
+conflicts=('gpgme-qt6')
 options=('!libtool' '!emptydirs')
 source=("https://www.gnupg.org/ftp/gcrypt/gpgme/${pkgname}-${pkgver}.tar.bz2")
 sha256sums=('9499e8b1f33cccb6815527a1bc16049d35a6198a6c5fae0185f2bd561bce5224')
