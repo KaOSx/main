@@ -1,16 +1,16 @@
 
 pkgname=nmap
-pkgver=7.94
-pkgrel=2
+pkgver=7.95
+pkgrel=1
 pkgdesc="Network exploration tool and security/port scanner"
 arch=('x86_64')
 url="https://nmap.org"
 license=('Nmap Public Source License')
-depends=('pcre2' 'openssl' 'libpcap') # 'lua')
-makedepends=('python3')
+depends=('pcre2' 'openssl' 'libpcap' 'lua')
+makedepends=('python3-build' 'python3-setuptools')
 source=("https://nmap.org/dist/${pkgname}-${pkgver}.tar.bz2"
         "https://github.com/nmap/nmap/commit/d6bea8dcdee36a3902cece14097993350306f1b6.diff")
-md5sums=('4f65e08148d1eaac6b1a1482e7185e1d'
+md5sums=('b481d293e53b20278d5370458da9a950'
          '4f0e99876c6b23831005b3fb07a50ea8')
 
 build() {
@@ -21,7 +21,8 @@ build() {
     --mandir=/usr/share/man \
     --libexecdir=/usr/lib \
     --without-gui \
-    --with-liblua=included  # once moved to lua 5.3 /usr/include
+    --without-zenmap \
+    --with-liblua=/usr/include
   make
 }
 
