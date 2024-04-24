@@ -1,7 +1,7 @@
 
 pkgname=colord
 pkgver=1.4.7
-pkgrel=1
+pkgrel=2
 pkgdesc="System service easily manage, install and generate color profiles to manage input and output devices"
 arch=('x86_64')
 url="https://www.freedesktop.org/software/colord"
@@ -10,8 +10,16 @@ depends=('lcms2' 'polkit' 'sqlite3' 'systemd' 'libgusb' 'dbus' 'libgudev' 'sane'
 makedepends=('intltool' 'gobject-introspection' 'vala' 'docbook-xsl' 'sane' 'bash-completion' 'meson')
 options=('!libtool')
 install=colord.install
-source=("https://www.freedesktop.org/software/colord/releases/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('de02d9910634ae159547585cec414e450f711c27235453b4f9b38a9f2361a653')
+source=("https://www.freedesktop.org/software/colord/releases/${pkgname}-${pkgver}.tar.xz"
+        "https://github.com/hughsie/colord/pull/167/commits/7374136d7f4aca784849227910a796a0d352408c.diff")
+sha256sums=('de02d9910634ae159547585cec414e450f711c27235453b4f9b38a9f2361a653'
+            '9de34c19adce1f2cbdc38336088e51e6c4d729e84589671be2e244edd235e505')
+
+prepare () {
+  cd ${pkgname}-${pkgver}
+
+  patch -p1 -i ${srcdir}/7374136d7f4aca784849227910a796a0d352408c.diff
+}
 
 build() {
   mkdir -p build
