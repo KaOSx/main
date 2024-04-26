@@ -1,8 +1,8 @@
 
 pkgname=pyqt6-python3
-pkgver=6.6.1
-_pkgver=6.6.1
-pkgrel=5
+pkgver=6.7.0
+_pkgver=6.7.0
+pkgrel=1
 pkgdesc="A set of Python3 bindings for the Qt6 toolkit"
 arch=('x86_64')
 url="https://www.riverbankcomputing.com/software/pyqt/intro"
@@ -13,14 +13,14 @@ makedepends=('pyqt-builder' 'qt6-tools' 'python3-setuptools')
 source=("https://pypi.python.org/packages/source/P/PyQt6/PyQt6-${pkgver}.tar.gz"
         "https://gitweb.gentoo.org/repo/gentoo.git/plain/dev-python/PyQt6/files/PyQt6-6.6.1-qt670.patch")
 #source=("https://www.riverbankcomputing.com/static/Downloads/PyQt6/PyQt6-${_pkgver}.tar.gz")
-sha256sums=('9f158aa29d205142c56f0f35d07784b8df0be28378d20a97bcda8bd64ffd0379'
+sha256sums=('3d31b2c59dc378ee26e16586d9469842483588142fc377280aad22aaf2fa6235'
             'b7f00387b77d1ee507b82172eeb2dafdce908807c68628d99c49781307ec2558')
 
 prepare() {
   cd PyQt6-${_pkgver}
 
   #sed -e "s|QList<QVariant> &boundValues()|QVariantList boundValues()|" -i sip/QtSql/qsqlresult.sip
-  patch -p1 -i ${srcdir}/PyQt6-6.6.1-qt670.patch
+  #patch -p1 -i ${srcdir}/PyQt6-6.6.1-qt670.patch
 }
 
 build() {
