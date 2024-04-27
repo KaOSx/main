@@ -1,6 +1,6 @@
 
 pkgname=tpm2-tools
-pkgver=5.6
+pkgver=5.7
 pkgrel=1
 pkgdesc='The source repository for the Trusted Platform Module (TPM2.0) tools based on tpm2-tss'
 arch=('x86_64')
@@ -9,7 +9,7 @@ license=('BSD')
 depends=('curl' 'openssl' 'tpm2-tss' 'util-linux')
 makedepends=('iproute2' 'pyyaml')
 source=("https://github.com/tpm2-software/tpm2-tools/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.gz")
-sha256sums=('52c8bcbaadca082abfe5eb7ee4967d2d632d84b1677675f2f071b6d2ec22cec3')
+sha256sums=('3810d36b5079256f4f2f7ce552e22213d43b1031c131538df8a2dbc3c570983a')
 
 build() {
     cd ${pkgname}-${pkgver}

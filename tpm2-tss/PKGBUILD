@@ -1,14 +1,14 @@
  
 pkgname=tpm2-tss
-pkgver=4.0.1
-pkgrel=2
+pkgver=4.1.0
+pkgrel=1
 pkgdesc="OSS implementation of the TCG Trusted Platform Module 2.0 Software Stack (TSS2)"
 arch=('x86_64')
 url="https://tpm2-software.github.io/"
 license=('BSD')
 depends=('openssl' 'json-c')
 source=("https://github.com/tpm2-software/tpm2-tss/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.gz")
-md5sums=('fff676c669519097906bd8ce28fc4238')
+md5sums=('97e91ce0c77d361409502badb1023e80')
 
 build() {
     cd ${pkgname}-${pkgver}
