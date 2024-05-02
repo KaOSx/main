@@ -1,23 +1,27 @@
 
 pkgname=mobile-broadband-provider-info
-pkgver=20230416
+pkgver=20240407
 pkgrel=1
 pkgdesc="Mobile broadband settings for various service providers"
 arch=('x86_64')
 url="https://gitlab.gnome.org/GNOME/mobile-broadband-provider-info/"
 license=('CC-PD')
+makedepends=('meson' 'ninja')
 source=("https://download.gnome.org/sources/mobile-broadband-provider-info/${pkgver}/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('e3e140aa2db769b299d1df86a890e948ab99d4d38831302c452d1fb7f8568aec')
+sha256sums=('89bfeff215f4bff8e9c3ff2ec25250fdb080d11e9bfa59c6fc71982ac01c814a')
 
 build() {
-  cd ${pkgname}-${pkgver}
+  mkdir -p build
+  cd build
 
-  ./configure --prefix=/usr
-  make
+  meson setup ../${pkgname}-${pkgver} \
+    --prefix=/usr \
+    --buildtype=release
+  ninja
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
-  
-  make DESTDIR=${pkgdir} install
+  cd build
+
+  DESTDIR=${pkgdir} ninja install
 }
