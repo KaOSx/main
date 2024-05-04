@@ -1,6 +1,6 @@
 
 pkgname=pcsclite
-pkgver=2.1.0
+pkgver=2.2.0
 _pkgver=4235
 pkgrel=1
 pkgdesc="PC/SC Architecture smartcard middleware library"
@@ -8,28 +8,36 @@ arch=('x86_64')
 url="https://pcsclite.apdu.fr/"
 license=('BSD')
 depends=('python3' 'systemd' 'polkit')
-makedepends=('pkg-config')
+makedepends=('meson' 'ninja')
 options=('!docs')
-source=("https://pcsclite.apdu.fr/files/pcsc-lite-${pkgver}.tar.bz2")
-md5sums=('132f3cfb8642ee7600233c7742e92bc4')
+source=("https://pcsclite.apdu.fr/files/pcsc-lite-${pkgver}.tar.xz")
+md5sums=('9e4006e1f3210ffa7dd0fadbc9083dc2')
 
-build() {
+prepare() {
   cd pcsc-lite-${pkgver}
 
-  ./configure --prefix=/usr \
-    --enable-libudev \
-    --sysconfdir=/etc \
-    --enable-ipcdir=/run/pcscd \
-    --enable-usbdropdir=/usr/lib/pcsc/drivers \
-    --with-systemdsystemunitdir=/usr/lib/systemd/system
+  sed -i "s|'/' / get_option('sbindir')|get_option('sbindir')|" meson.build
+}
 
-  make
+build() {
+  mkdir -p build
+  cd build
+
+  meson setup ../pcsc-lite-${pkgver} \
+    --prefix=/usr \
+    --buildtype=release \
+    --sbindir=/usr/sbin \
+    -Dlibudev=true \
+    -Dipcdir=/run/pcsd \
+    -Dusbdropdir=/usr/lib/pcsc/drivers \
+    -Dsystemdunit=system
+  ninja
 }
 
 package() {
-  cd pcsc-lite-${pkgver}
+  cd build
 
-  make DESTDIR=${pkgdir} install
+  DESTDIR=${pkgdir} ninja install
 
   install -D -m644 ${srcdir}/pcsc-lite-${pkgver}/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
   install -d ${pkgdir}/usr/lib/pcsc/drivers
