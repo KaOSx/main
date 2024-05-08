@@ -1,7 +1,7 @@
 
 pkgname=qwt
-pkgver=6.2.0
-pkgrel=5
+pkgver=6.3.0
+pkgrel=1
 pkgdesc="Qt Widgets for Technical Applications"
 arch=('x86_64')
 url="https://qwt.sourceforge.io/"
@@ -11,8 +11,8 @@ options=('!makeflags')
 license=("custom:$pkgname")
 source=("https://downloads.sourceforge.net/sourceforge/qwt/${pkgname}-${pkgver}.tar.bz2" 
         "qwtconfig.pri")
-md5sums=('00c94f0af8b29d4785cec47351127c00'
-         '93dad0b9a37e082bbe392f5b62a97e37')
+md5sums=('06a8f8eb1bc07bedfb1df601804439cb'
+         'da2cc7103b95b29c58a83a160e07d6e6')
 
 build() {
   cd ${pkgname}-${pkgver}
@@ -30,7 +30,7 @@ package() {
   cd ${pkgname}-${pkgver}
   make INSTALL_ROOT=${pkgdir} QTDIR=/usr install
 
-  mv -f ${pkgdir}/usr/share/doc/qwt/man/ ${pkgdir}/usr/share/
+  #mv -f ${pkgdir}/usr/share/doc/qwt/man/ ${pkgdir}/usr/share/
 
   install -Dm644 ${srcdir}/${pkgname}-${pkgver}/COPYING ${pkgdir}/usr/share/licenses/${pkgname}/license.txt
 }
