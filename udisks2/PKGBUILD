@@ -1,14 +1,14 @@
 
 pkgname=udisks2
 pkgver=2.10.1
-pkgrel=1
+pkgrel=2
 pkgdesc="Provides a daemon, tools and libraries to access and manipulate disks, storage devices and technologies."
 arch=('x86_64')
 url="https://www.freedesktop.org/wiki/Software/udisks"
 license=('GPL')
 depends=('systemd' 'libgudev' 'sg3_utils' 'glib2' 'dbus-glib' 'polkit' 'parted' 'device-mapper'
          'libatasmart' 'lsof' 'lvm2' 'util-linux' 'libblockdev' 'gptfdisk')
-makedepends=('docbook-xsl' 'python3')
+makedepends=('docbook-xsl' 'python3-packaging')
 options=('!libtool')
 backup=(etc/udisks2/udisks2.conf)
 source=("https://github.com/storaged-project/udisks/releases/download/udisks-${pkgver}/udisks-${pkgver}.tar.bz2"

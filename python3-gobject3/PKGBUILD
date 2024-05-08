@@ -1,18 +1,18 @@
 
 pkgname=python3-gobject3 
 pkgbase=pygobject
-pkgver=3.46.0
-_pkgver=3.46
-pkgrel=3
+pkgver=3.48.2
+_pkgver=3.48
+pkgrel=1
 pkgdesc="Python3 bindings for GObject"
 arch=('x86_64')
-url="https://pygobject.readthedocs.io/en/latest/"
+url="https://pygobject.gnome.org/"
 license=('LGPL')
 depends=('python3' 'python3-cairo' 'gobject-introspection')
 makedepends=('meson' 'ninja')
 source=("https://ftp.gnome.org/pub/gnome/sources/pygobject/${_pkgver}/${pkgbase}-${pkgver}.tar.xz")
 options=('!libtool')
-sha256sums=('426008b2dad548c9af1c7b03b59df0440fde5c33f38fb5406b103a43d653cafc')
+sha256sums=('0794aeb4a9be31a092ac20621b5f54ec280f9185943d328b105cdae6298ad1a7')
 
 build() {
   mkdir -p build
