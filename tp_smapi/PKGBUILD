@@ -1,13 +1,13 @@
 
 pkgname=tp_smapi
 pkgver=0.44
-pkgrel=16
-_extramodules=/lib/modules/extramodules-6.7
+pkgrel=17
+_extramodules=/lib/modules/extramodules-6.8
 pkgdesc="Modules for ThinkPad's SMAPI functionality"
 arch=('x86_64')
 url='https://github.com/evgeni/tp_smapi'
 license=('GPL')
-depends=('linux>=6.7.7' 'linux<6.8')
+depends=('linux>=6.8.9' 'linux<6.9')
 makedepends=('linux-headers' 'elfutils')
 install="${pkgname}.install"
 source=("https://github.com/evgeni/tp_smapi/releases/download/tp-smapi%2F${pkgver}/${pkgname}-${pkgver}.tgz"
@@ -21,7 +21,7 @@ build() {
 
  _kernver=$(< "${_extramodules}/version")
 
-  sed -i -e 's|$(shell uname -r)|6.7.9-1|' Makefile
+  sed -i -e 's|$(shell uname -r)|6.8.9-1|' Makefile
 
   make HDAPS=1
 }

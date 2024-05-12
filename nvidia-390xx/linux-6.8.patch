@@ -1,0 +1,37 @@
+From a23d8d2c592028bc49570a6d3dcf75ee4aa0dde0 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Joan=20Bruguera=20Mic=C3=B3?= <joanbrugueram@gmail.com>
+Date: Fri, 2 Feb 2024 19:19:04 +0000
+Subject: [PATCH] Tentative fix for NVIDIA 470.223.02 driver for Linux 6.8-rc3
+
+---
+ nvidia-drm/nvidia-drm-drv.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/nvidia-drm/nvidia-drm-drv.c b/nvidia-drm/nvidia-drm-drv.c
+index 5ef557c..d271551 100644
+--- a/nvidia-drm/nvidia-drm-drv.c
++++ b/nvidia-drm/nvidia-drm-drv.c
+@@ -60,6 +60,7 @@
+ #include <drm/drm_ioctl.h>
+ #endif
+ 
++#include <linux/version.h>
+ #include <linux/pci.h>
+ 
+ /*
+@@ -741,6 +742,13 @@ static const struct file_operations nv_drm_fops = {
+     .llseek         = noop_llseek,
+ };
+ 
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 8, 0)
++// Rel. commit. "drm: Remove locking for legacy ioctls and DRM_UNLOCKED" (Thomas Zimmermann, 22 Nov 2023)
++// Mock this flag, which was already useless on any recent kernel, since it
++// only did something if the driver set DRIVER_LEGACY in driver_features.
++static const enum drm_ioctl_flags DRM_UNLOCKED = 0;
++#endif
++
+ static const struct drm_ioctl_desc nv_drm_ioctls[] = {
+ #if defined(NV_DRM_ATOMIC_MODESET_AVAILABLE)
+     DRM_IOCTL_DEF_DRV(NVIDIA_GEM_IMPORT_NVKMS_MEMORY,
+-- 
+2.43.0
