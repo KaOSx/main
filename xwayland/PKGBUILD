@@ -1,6 +1,6 @@
 
 pkgname=xwayland
-pkgver=23.2.6
+pkgver=24.1.0
 pkgrel=1
 pkgdesc="X.Org X servers for Wayland"
 arch=('x86_64')
@@ -12,7 +12,7 @@ options=('!libtool')
 groups=('xorg')
 # https://gitlab.freedesktop.org/xorg/xserver/-/tree/xwayland-21.1
 source=("https://xorg.freedesktop.org/archive/individual/xserver/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('1c9a366b4e7ccadba0f9bd313c59eae12d23bd72543b22a26eaf8b20835cfc6d')
+sha256sums=('bef21c4f18807a4ed571c4e2df60ab63b5466bbd502ecceb2485b892ab76dcc2')
 
 build() {
   mkdir -p build
@@ -22,7 +22,6 @@ build() {
     --prefix=/usr \
     --buildtype=release \
     -Dglamor=true \
-    -Dxwayland_eglstream=false \
     -Dxvfb=false \
     -Dipv6=true \
     -Dxdmcp=false \
