@@ -32,7 +32,7 @@ md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
 prepare() {
   cd ${_pkgfqn}
   # werror fixes, digikam
-  patch -p1 -i ${srcdir}/6810220218cbbf2854ecdedb291f7e4a84b31e54.diff
+  #patch -p1 -i ${srcdir}/6810220218cbbf2854ecdedb291f7e4a84b31e54.diff
 }
 
 build() {
