@@ -1,23 +1,27 @@
 
 pkgname=hicolor-icon-theme
-pkgver=0.17
-pkgrel=3
+pkgver=0.18
+pkgrel=1
 pkgdesc="Freedesktop.org Hicolor icon theme"
 arch=('x86_64')
-url="https://cgit.freedesktop.org/xdg/default-icon-theme/"
+url="https://gitlab.freedesktop.org/xdg/default-icon-theme"
 license=('GPL2')
+makedepends=('meson' 'ninja')
 source=("https://icon-theme.freedesktop.org/releases/${pkgname}-${pkgver}.tar.xz")
-md5sums=('84eec8d6f810240a069c731f1870b474')
+md5sums=('ef14f3af03bcde9ed134aad626bdbaad')
 
 build() {
-  cd ${pkgname}-${pkgver}
+  mkdir -p build
+  cd build
 
-  ./configure --prefix=/usr
-  make
+  meson setup ../${pkgname}-${pkgver} \
+    --prefix=/usr \
+    --buildtype=release
+  ninja
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
+  cd build
 
-  make DESTDIR=${pkgdir} install
+  DESTDIR=${pkgdir} ninja install
 }
