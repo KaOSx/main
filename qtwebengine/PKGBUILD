@@ -11,8 +11,8 @@ pkgname=('qtwebengine') # 'qtwebengine-examples')
 pkgver=5.15.17
 subver=${subver}
 _pkgver=${_qtver}
-_commit=3a11b38575e6aa929d1e7d5d11d0acf61eae6420
-pkgrel=2
+_commit=17fd3176988586168bee8654008a097a5f23ec1d
+pkgrel=3
 pkgdesc="Chromium-based web engine to replace Qt WebKit"
 url="https://www.qt.io/"
 arch=('x86_64')
@@ -20,7 +20,7 @@ license=('GPL3')
 makedepends=('qt5-declarative' 'python3' 'mesa' 'systemd' 'pango' 'nss' 'speex' 'libevent' 'libcups'
          'libxslt' 'libpng' 'libjpeg-turbo' 'libwebp' 'zlib' 'pciutils' 'jsoncpp' 'pipewire' 'libxcomposite'
          'qt5-location' 'qt5-webchannel' 'libxss' 'protobuf' 'opus' 'libvpx'
-         'gperf' 'yasm' 'openssh' 'icu' 'qt5-tools' 'nodejs' 'python3') # 'ffmpeg'
+         'gperf' 'yasm' 'openssh' 'icu' 'qt5-tools' 'nodejs' 'python3-html5lib') # 'ffmpeg'
 #_pkgfqn="qtwebengine-everywhere-src-${subver}"
 _pkgfqn="qtwebengine"
 #source=("${_qtmirror}/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz"
@@ -53,7 +53,7 @@ prepare() {
     mkdir -p build
     cd ${_pkgfqn}
 
-    sed -i 's|MODULE_VERSION = 5.15.17|MODULE_VERSION = 5.15.13|' .qmake.conf
+    sed -i 's|MODULE_VERSION = 5.15.17|MODULE_VERSION = 5.15.14|' .qmake.conf
 
     git submodule init
     git submodule set-url src/3rdparty ${srcdir}/qtwebengine-chromium
@@ -61,12 +61,12 @@ prepare() {
     git submodule update
 
     # move to python3, freebsd patch https://github.com/freebsd/freebsd-ports-kde/blob/webengine-python3/www/qt5-webengine/python-patches.diff, moved to patches from ArchLinux & Gentoo
-    patch -p1 -i ${srcdir}/qt5-webengine-python3.patch
+    #patch -p1 -i ${srcdir}/qt5-webengine-python3.patch
     #patch -p1 -i ${srcdir}/drop-catapult.patch
     #patch -p1 -i ${srcdir}/chromium-drop-catapult.patch
-    patch -p1 -i ${srcdir}/017-ffmpeg-binutils-2.41.patch
+    #patch -p1 -i ${srcdir}/017-ffmpeg-binutils-2.41.patch
     cd src/3rdparty
-    patch -p1 -i ${srcdir}/qt5-webengine-chromium-python3.patch
+    #patch -p1 -i ${srcdir}/qt5-webengine-chromium-python3.patch
     patch -p1 -i ${srcdir}/qt5-webengine-pipewire-0.3.patch
 }
 
@@ -80,7 +80,8 @@ build() {
     -webengine-opus \
     -webengine-spellchecker \
     -webengine-webp \
-    -webengine-webrtc-pipewire
+    -webengine-webrtc-pipewire \
+    -webengine-python-version python3
     make 
 
     #/usr/lib/qt5/bin/qmake ../examples/webenginewidgets/demobrowser/demobrowser.pro
