@@ -123,6 +123,40 @@ index c3c184258f..32af3f8f29 100644
  
  #include "common/debug.h"
  
+diff --git a/src/corelib/global/qcompilerdetection.h b/src/corelib/global/qcompilerdetection.h
+index 64c96023b0..c98f22982e 100644
+--- a/src/corelib/global/qcompilerdetection.h
++++ b/src/corelib/global/qcompilerdetection.h
+@@ -1055,16 +1055,22 @@
+ #   endif // !_HAS_CONSTEXPR
+ #  endif // !__GLIBCXX__ && !_LIBCPP_VERSION
+ # endif // Q_OS_QNX
+-# if (defined(Q_CC_CLANG) || defined(Q_CC_INTEL)) && defined(Q_OS_MAC) && defined(__GNUC_LIBSTD__) \
+-    && ((__GNUC_LIBSTD__-0) * 100 + __GNUC_LIBSTD_MINOR__-0 <= 402)
++# if (defined(Q_CC_CLANG) || defined(Q_CC_INTEL)) && defined(Q_OS_DARWIN)
++#  if defined(__GNUC_LIBSTD__) && ((__GNUC_LIBSTD__-0) * 100 + __GNUC_LIBSTD_MINOR__-0 <= 402)
+ // Apple has not updated libstdc++ since 2007, which means it does not have
+ // <initializer_list> or std::move. Let's disable these features
+-#  undef Q_COMPILER_INITIALIZER_LISTS
+-#  undef Q_COMPILER_RVALUE_REFS
+-#  undef Q_COMPILER_REF_QUALIFIERS
++#   undef Q_COMPILER_INITIALIZER_LISTS
++#   undef Q_COMPILER_RVALUE_REFS
++#   undef Q_COMPILER_REF_QUALIFIERS
+ // Also disable <atomic>, since it's clearly not there
+-#  undef Q_COMPILER_ATOMICS
+-# endif
++#   undef Q_COMPILER_ATOMICS
++#  endif
++#  if defined(__cpp_lib_memory_resource)
++    && (defined(__MAC_OS_X_VERSION_MIN_REQUIRED)  && __MAC_OS_X_VERSION_MIN_REQUIRED  < 140000
++     || defined(__IPHONE_OS_VERSION_MIN_REQUIRED) && __IPHONE_OS_VERSION_MIN_REQUIRED < 170000)
++#   undef __cpp_lib_memory_resource // Only supported on macOS 14 and iOS 17
++#  endif
++# endif // defined(Q_CC_CLANG) && defined(Q_OS_DARWIN)
+ # if defined(Q_CC_CLANG) && defined(Q_CC_INTEL) && Q_CC_INTEL >= 1500
+ // ICC 15.x and 16.0 have their own implementation of std::atomic, which is activated when in Clang mode
+ // (probably because libc++'s <atomic> on OS X failed to compile), but they're missing some
 diff --git a/src/corelib/global/qglobal.cpp b/src/corelib/global/qglobal.cpp
 index 5ad82c259d..ecf7b1efaa 100644
 --- a/src/corelib/global/qglobal.cpp
@@ -194,10 +228,10 @@ index 450c1e586a..ff7167d9cc 100644
  
  #ifndef QT_DEPRECATED_WARNINGS_SINCE
 diff --git a/src/corelib/global/qlogging.cpp b/src/corelib/global/qlogging.cpp
-index 292116cc47..0f253d4a27 100644
+index e53dcdcfb0..93c4731cc5 100644
 --- a/src/corelib/global/qlogging.cpp
 +++ b/src/corelib/global/qlogging.cpp
-@@ -189,6 +189,17 @@ static int checked_var_value(const char *varname)
+@@ -191,6 +191,17 @@ static int checked_var_value(const char *varname)
      return ok ? value : 1;
  }
  
@@ -215,7 +249,7 @@ index 292116cc47..0f253d4a27 100644
  static bool isFatal(QtMsgType msgType)
  {
      if (msgType == QtFatalMsg)
-@@ -196,18 +207,12 @@ static bool isFatal(QtMsgType msgType)
+@@ -198,18 +209,12 @@ static bool isFatal(QtMsgType msgType)
  
      if (msgType == QtCriticalMsg) {
          static QAtomicInt fatalCriticals = checked_var_value("QT_FATAL_CRITICALS");
@@ -285,32 +319,6 @@ index 94d9d06bcb..27e0b13b0b 100644
      QVarLengthArray<char, 4096> buffer(buffSize);
      buffSize = read(inotifyFd, buffer.data(), buffSize);
      char *at = buffer.data();
-diff --git a/src/corelib/io/qfsfileengine.cpp b/src/corelib/io/qfsfileengine.cpp
-index 3042eac2f0..a862ce9166 100644
---- a/src/corelib/io/qfsfileengine.cpp
-+++ b/src/corelib/io/qfsfileengine.cpp
-@@ -361,7 +361,7 @@ bool QFSFileEnginePrivate::openFd(QIODevice::OpenMode openMode, int fd)
- 
-     // Seek to the end when in Append mode.
-     if (openMode & QFile::Append) {
--        int ret;
-+        QT_OFF_T ret;
-         do {
-             ret = QT_LSEEK(fd, 0, SEEK_END);
-         } while (ret == -1 && errno == EINTR);
-diff --git a/src/corelib/io/qfsfileengine_unix.cpp b/src/corelib/io/qfsfileengine_unix.cpp
-index 4610e9306c..65e921c15a 100644
---- a/src/corelib/io/qfsfileengine_unix.cpp
-+++ b/src/corelib/io/qfsfileengine_unix.cpp
-@@ -141,7 +141,7 @@ bool QFSFileEnginePrivate::nativeOpen(QIODevice::OpenMode openMode)
- 
-         // Seek to the end when in Append mode.
-         if (flags & QFile::Append) {
--            int ret;
-+            QT_OFF_T ret;
-             do {
-                 ret = QT_LSEEK(fd, 0, SEEK_END);
-             } while (ret == -1 && errno == EINTR);
 diff --git a/src/corelib/itemmodels/qabstractitemmodel.cpp b/src/corelib/itemmodels/qabstractitemmodel.cpp
 index 997a634e76..1c1ca7394d 100644
 --- a/src/corelib/itemmodels/qabstractitemmodel.cpp
@@ -373,6 +381,19 @@ index 3d7fe43cd3..f2871a2da7 100644
      QString key = d->model->data(source_index, d->filter_role).toString();
      return d->filter_data.hasMatch(key);
  }
+diff --git a/src/corelib/kernel/qobject_p.h b/src/corelib/kernel/qobject_p.h
+index 13ffb88999..325a974f30 100644
+--- a/src/corelib/kernel/qobject_p.h
++++ b/src/corelib/kernel/qobject_p.h
+@@ -220,7 +220,7 @@ public:
+                 s = s->previous;
+             }
+         }
+-        Sender *previous;
++        Sender *previous = nullptr;
+         QObject *receiver;
+         QObject *sender;
+         int signal;
 diff --git a/src/corelib/kernel/qtranslator.cpp b/src/corelib/kernel/qtranslator.cpp
 index bdcd016630..e4375e7e40 100644
 --- a/src/corelib/kernel/qtranslator.cpp
@@ -42260,6 +42281,19 @@ index eaed17413d..7934b55164 100644
  { return QBitRef(*this, i); }
  
  
+diff --git a/src/corelib/tools/qduplicatetracker_p.h b/src/corelib/tools/qduplicatetracker_p.h
+index 68284fb916..8977250d85 100644
+--- a/src/corelib/tools/qduplicatetracker_p.h
++++ b/src/corelib/tools/qduplicatetracker_p.h
+@@ -52,7 +52,7 @@
+ 
+ #include <qglobal.h>
+ 
+-#if QT_HAS_INCLUDE(<memory_resource>) && __cplusplus > 201402L
++#if defined(__cpp_lib_memory_resource) && __cplusplus > 201402L
+ #  include <unordered_set>
+ #  include <memory_resource>
+ #else
 diff --git a/src/dbus/qdbusintegrator.cpp b/src/dbus/qdbusintegrator.cpp
 index a4cbfecc98..9ccbbbb37d 100644
 --- a/src/dbus/qdbusintegrator.cpp
@@ -42589,7 +42623,7 @@ index 5de96cfa7d..a8b2a4ce71 100644
  
  QT_END_NAMESPACE
 diff --git a/src/gui/kernel/qplatformtheme.cpp b/src/gui/kernel/qplatformtheme.cpp
-index 71521c0339..2325873245 100644
+index a11388fdb6..aed480e875 100644
 --- a/src/gui/kernel/qplatformtheme.cpp
 +++ b/src/gui/kernel/qplatformtheme.cpp
 @@ -163,6 +163,8 @@ QT_BEGIN_NAMESPACE
@@ -42751,6 +42785,44 @@ index 846592881c..57d750a4b3 100644
  #ifndef QT_NO_DEBUG_STREAM
  inline QDebug &operator<<(QDebug &dbg, const QFixed &f)
  { return dbg << f.toReal(); }
+diff --git a/src/gui/painting/qpaintengine_raster.cpp b/src/gui/painting/qpaintengine_raster.cpp
+index 38bad9a6b0..a04160791b 100644
+--- a/src/gui/painting/qpaintengine_raster.cpp
++++ b/src/gui/painting/qpaintengine_raster.cpp
+@@ -3462,16 +3462,18 @@ void QRasterPaintEngine::drawBitmap(const QPointF &pos, const QImage &image, QSp
+     // Boundaries
+     int w = image.width();
+     int h = image.height();
+-    int ymax = qMin(qRound(pos.y() + h), d->rasterBuffer->height());
+-    int ymin = qMax(qRound(pos.y()), 0);
+-    int xmax = qMin(qRound(pos.x() + w), d->rasterBuffer->width());
+-    int xmin = qMax(qRound(pos.x()), 0);
++    int px = qRound(pos.x());
++    int py = qRound(pos.y());
++    int ymax = qMin(py + h, d->rasterBuffer->height());
++    int ymin = qMax(py, 0);
++    int xmax = qMin(px + w, d->rasterBuffer->width());
++    int xmin = qMax(px, 0);
+ 
+-    int x_offset = xmin - qRound(pos.x());
++    int x_offset = xmin - px;
+ 
+     QImage::Format format = image.format();
+     for (int y = ymin; y < ymax; ++y) {
+-        const uchar *src = image.scanLine(y - qRound(pos.y()));
++        const uchar *src = image.scanLine(y - py);
+         if (format == QImage::Format_MonoLSB) {
+             for (int x = 0; x < xmax - xmin; ++x) {
+                 int src_x = x + x_offset;
+@@ -3860,7 +3862,7 @@ void QClipData::initialize()
+         return;
+ 
+     if (!m_clipLines)
+-        m_clipLines = (ClipLine *)calloc(sizeof(ClipLine), clipSpanHeight);
++        m_clipLines = (ClipLine *)calloc(clipSpanHeight, sizeof(ClipLine));
+ 
+     Q_CHECK_PTR(m_clipLines);
+     QT_TRY {
 diff --git a/src/gui/painting/qpainterpath.cpp b/src/gui/painting/qpainterpath.cpp
 index f9544a3241..d80fafeaf1 100644
 --- a/src/gui/painting/qpainterpath.cpp
@@ -42857,7 +42929,7 @@ index 6336fadf74..a6c66e5d2d 100644
  **
  ** This file is part of the QtGui module of the Qt Toolkit.
 diff --git a/src/gui/text/qtextlayout.cpp b/src/gui/text/qtextlayout.cpp
-index 30f07ba69b..f60597a076 100644
+index 7e1fb822fc..a0c847459c 100644
 --- a/src/gui/text/qtextlayout.cpp
 +++ b/src/gui/text/qtextlayout.cpp
 @@ -1336,13 +1336,16 @@ void QTextLayout::drawCursor(QPainter *p, const QPointF &pos, int cursorPosition
@@ -43145,21 +43217,6 @@ index fddb5feca5..315f3e2344 100644
          return HeaderSize();
      return HeaderSize(true, quint32(sum + 32));
  }
-diff --git a/src/network/access/qhsts.cpp b/src/network/access/qhsts.cpp
-index 0cef0ad3dc..be7ef7ff58 100644
---- a/src/network/access/qhsts.cpp
-+++ b/src/network/access/qhsts.cpp
-@@ -364,8 +364,8 @@ quoted-pair    = "\" CHAR
- bool QHstsHeaderParser::parse(const QList<QPair<QByteArray, QByteArray>> &headers)
- {
-     for (const auto &h : headers) {
--        // We use '==' since header name was already 'trimmed' for us:
--        if (h.first == "Strict-Transport-Security") {
-+        // We compare directly because header name was already 'trimmed' for us:
-+        if (h.first.compare("Strict-Transport-Security", Qt::CaseInsensitive) == 0) {
-             header = h.second;
-             // RFC6797, 8.1:
-             //
 diff --git a/src/network/access/qhttp2protocolhandler.cpp b/src/network/access/qhttp2protocolhandler.cpp
 index 39dd460881..ead88d781a 100644
 --- a/src/network/access/qhttp2protocolhandler.cpp
@@ -43224,76 +43281,6 @@ index 271ff164ac..ffba2d1eea 100644
              ]
          },
          "openssl_headers": {
-diff --git a/src/network/kernel/qdnslookup_unix.cpp b/src/network/kernel/qdnslookup_unix.cpp
-index 12b40fc35d..99e999d436 100644
---- a/src/network/kernel/qdnslookup_unix.cpp
-+++ b/src/network/kernel/qdnslookup_unix.cpp
-@@ -227,7 +227,6 @@ void QDnsLookupRunnable::query(const int requestType, const QByteArray &requestN
-     // responseLength in case of error, we still can extract the
-     // exact error code from the response.
-     HEADER *header = (HEADER*)response;
--    const int answerCount = ntohs(header->ancount);
-     switch (header->rcode) {
-     case NOERROR:
-         break;
-@@ -260,18 +259,31 @@ void QDnsLookupRunnable::query(const int requestType, const QByteArray &requestN
-         return;
-     }
- 
--    // Skip the query host, type (2 bytes) and class (2 bytes).
-     char host[PACKETSZ], answer[PACKETSZ];
-     unsigned char *p = response + sizeof(HEADER);
--    int status = local_dn_expand(response, response + responseLength, p, host, sizeof(host));
--    if (status < 0) {
-+    int status;
-+
-+    if (ntohs(header->qdcount) == 1) {
-+        // Skip the query host, type (2 bytes) and class (2 bytes).
-+        status = local_dn_expand(response, response + responseLength, p, host, sizeof(host));
-+        if (status < 0) {
-+            reply->error = QDnsLookup::InvalidReplyError;
-+            reply->errorString = tr("Could not expand domain name");
-+            return;
-+        }
-+        if ((p - response) + status + 4 >= responseLength)
-+            header->qdcount = 0xffff;   // invalid reply below
-+        else
-+            p += status + 4;
-+    }
-+    if (ntohs(header->qdcount) > 1) {
-         reply->error = QDnsLookup::InvalidReplyError;
--        reply->errorString = tr("Could not expand domain name");
-+        reply->errorString = tr("Invalid reply received");
-         return;
-     }
--    p += status + 4;
- 
-     // Extract results.
-+    const int answerCount = ntohs(header->ancount);
-     int answerIndex = 0;
-     while ((p < response + responseLength) && (answerIndex < answerCount)) {
-         status = local_dn_expand(response, response + responseLength, p, host, sizeof(host));
-@@ -283,6 +295,11 @@ void QDnsLookupRunnable::query(const int requestType, const QByteArray &requestN
-         const QString name = QUrl::fromAce(host);
- 
-         p += status;
-+
-+        if ((p - response) + 10 > responseLength) {
-+            // probably just a truncated reply, return what we have
-+            return;
-+        }
-         const quint16 type = (p[0] << 8) | p[1];
-         p += 2; // RR type
-         p += 2; // RR class
-@@ -290,6 +307,8 @@ void QDnsLookupRunnable::query(const int requestType, const QByteArray &requestN
-         p += 4;
-         const quint16 size = (p[0] << 8) | p[1];
-         p += 2;
-+        if ((p - response) + size > responseLength)
-+            return;             // truncated
- 
-         if (type == QDnsLookup::A) {
-             if (size != 4) {
 diff --git a/src/network/kernel/qhostinfo.cpp b/src/network/kernel/qhostinfo.cpp
 index 33fb629899..015963686c 100644
 --- a/src/network/kernel/qhostinfo.cpp
@@ -43791,6 +43778,58 @@ index 7bfacf4abe..1c7c15d5d7 100644
      xkb_keymap *keymap = xkb_state_get_keymap(state);
      const xkb_layout_index_t layoutCount = xkb_keymap_num_layouts_for_key(keymap, keycode);
      const xkb_layout_index_t currentLayout = xkb_state_key_get_layout(state, keycode);
+diff --git a/src/platformsupport/input/xkbcommon/qxkbcommon_p.h b/src/platformsupport/input/xkbcommon/qxkbcommon_p.h
+index 8389bd8f5a..55c46de8cd 100644
+--- a/src/platformsupport/input/xkbcommon/qxkbcommon_p.h
++++ b/src/platformsupport/input/xkbcommon/qxkbcommon_p.h
+@@ -98,7 +98,46 @@ public:
+         return sym <= 0xff;
+     }
+     static bool isKeypad(xkb_keysym_t sym) {
+-        return sym >= XKB_KEY_KP_Space && sym <= XKB_KEY_KP_9;
++        switch (sym) {
++        case XKB_KEY_KP_Space:
++        case XKB_KEY_KP_Tab:
++        case XKB_KEY_KP_Enter:
++        case XKB_KEY_KP_F1:
++        case XKB_KEY_KP_F2:
++        case XKB_KEY_KP_F3:
++        case XKB_KEY_KP_F4:
++        case XKB_KEY_KP_Home:
++        case XKB_KEY_KP_Left:
++        case XKB_KEY_KP_Up:
++        case XKB_KEY_KP_Right:
++        case XKB_KEY_KP_Down:
++        case XKB_KEY_KP_Prior:
++        case XKB_KEY_KP_Next:
++        case XKB_KEY_KP_End:
++        case XKB_KEY_KP_Begin:
++        case XKB_KEY_KP_Insert:
++        case XKB_KEY_KP_Delete:
++        case XKB_KEY_KP_Equal:
++        case XKB_KEY_KP_Multiply:
++        case XKB_KEY_KP_Add:
++        case XKB_KEY_KP_Separator:
++        case XKB_KEY_KP_Subtract:
++        case XKB_KEY_KP_Decimal:
++        case XKB_KEY_KP_Divide:
++        case XKB_KEY_KP_0:
++        case XKB_KEY_KP_1:
++        case XKB_KEY_KP_2:
++        case XKB_KEY_KP_3:
++        case XKB_KEY_KP_4:
++        case XKB_KEY_KP_5:
++        case XKB_KEY_KP_6:
++        case XKB_KEY_KP_7:
++        case XKB_KEY_KP_8:
++        case XKB_KEY_KP_9:
++            return true;
++        default:
++            return false;
++        }
+     }
+ 
+     static void setXkbContext(QPlatformInputContext *inputContext, struct xkb_context *context);
 diff --git a/src/platformsupport/linuxaccessibility/atspiadaptor.cpp b/src/platformsupport/linuxaccessibility/atspiadaptor.cpp
 index 9153fd20bb..26537ff892 100644
 --- a/src/platformsupport/linuxaccessibility/atspiadaptor.cpp
@@ -44534,7 +44573,7 @@ index 1ced02f31d..5c8298a49d 100644
              break;
          case QXcbAtom::AbsPressure:
 diff --git a/src/plugins/platforms/xcb/qxcbcursor.cpp b/src/plugins/platforms/xcb/qxcbcursor.cpp
-index 4210bf428e..0670b6ebce 100644
+index 4210bf428e..4635c199d0 100644
 --- a/src/plugins/platforms/xcb/qxcbcursor.cpp
 +++ b/src/plugins/platforms/xcb/qxcbcursor.cpp
 @@ -300,7 +300,7 @@ QXcbCursorCacheKey::QXcbCursorCacheKey(const QCursor &c)
@@ -44560,7 +44599,7 @@ index 4210bf428e..0670b6ebce 100644
  
  #if QT_CONFIG(xcb_xlib) && QT_CONFIG(library)
 -    if (m_screen->xSettings()->initialized())
-+    if (m_screen->xSettings()->initialized()) {
++    if (!m_callbackForPropertyRegistered && m_screen->xSettings()->initialized()) {
          m_screen->xSettings()->registerCallbackForProperty("Gtk/CursorThemeName",cursorThemePropertyChanged,this);
 +        m_callbackForPropertyRegistered = true;
 +    }
@@ -44594,10 +44633,19 @@ index 76869ced60..02d2eebb56 100644
          qWarning("QXcbIntegration: Cannot create platform OpenGL context, neither GLX nor EGL are enabled");
          return nullptr;
 diff --git a/src/plugins/platforms/xcb/qxcbwindow.cpp b/src/plugins/platforms/xcb/qxcbwindow.cpp
-index 45bac8ee85..c67ffa9dd7 100644
+index 45bac8ee85..e2e345e2a8 100644
 --- a/src/plugins/platforms/xcb/qxcbwindow.cpp
 +++ b/src/plugins/platforms/xcb/qxcbwindow.cpp
-@@ -1345,9 +1345,10 @@ void QXcbWindow::setWindowIcon(const QIcon &icon)
+@@ -539,6 +539,8 @@ void QXcbWindow::destroy()
+         doFocusOut();
+     if (connection()->mouseGrabber() == this)
+         connection()->setMouseGrabber(nullptr);
++    if (connection()->mousePressWindow() == this)
++        connection()->setMousePressWindow(nullptr);
+ 
+     if (m_syncCounter && connection()->hasXSync())
+         xcb_sync_destroy_counter(xcb_connection(), m_syncCounter);
+@@ -1345,9 +1347,10 @@ void QXcbWindow::setWindowIcon(const QIcon &icon)
  
      if (!icon_data.isEmpty()) {
          // Ignore icon exceeding maximum xcb request length
@@ -44853,22 +44901,9 @@ index 2fc3167fd5..b809503122 100644
          return new QXdgDesktopPortalFileDialog;
      }
 diff --git a/src/plugins/sqldrivers/mysql/qsql_mysql.cpp b/src/plugins/sqldrivers/mysql/qsql_mysql.cpp
-index 6c522838df..353ea099d5 100644
+index 11ca522c10..353ea099d5 100644
 --- a/src/plugins/sqldrivers/mysql/qsql_mysql.cpp
 +++ b/src/plugins/sqldrivers/mysql/qsql_mysql.cpp
-@@ -918,9 +918,9 @@ bool QMYSQLResult::prepare(const QString& query)
-         return false;
-     }
- 
--    if (mysql_stmt_param_count(d->stmt) > 0) {// allocate memory for outvalues
--        d->outBinds = new MYSQL_BIND[mysql_stmt_param_count(d->stmt)];
--    }
-+    const auto paramCount = mysql_stmt_param_count(d->stmt);
-+    if (paramCount > 0) // allocate memory for outvalues
-+        d->outBinds = new MYSQL_BIND[paramCount]();
- 
-     setSelect(d->bindInValues());
-     d->preparedQuery = true;
 @@ -1365,20 +1365,20 @@ bool QMYSQLDriver::open(const QString& db,
      }
  
@@ -44900,6 +44935,29 @@ index 6c522838df..353ea099d5 100644
  #endif  // MYSQL_VERSION_ID >= 50007
  
      d->preparedQuerysEnabled = checkPreparedQueries(d->mysql);
+diff --git a/src/plugins/sqldrivers/odbc/qsql_odbc.cpp b/src/plugins/sqldrivers/odbc/qsql_odbc.cpp
+index 8e2e883652..d147774055 100644
+--- a/src/plugins/sqldrivers/odbc/qsql_odbc.cpp
++++ b/src/plugins/sqldrivers/odbc/qsql_odbc.cpp
+@@ -745,10 +745,15 @@ static QSqlField qMakeFieldInfo(const SQLHANDLE hStmt, int i, QString *errorMess
+     f.setAutoValue(isAutoValue(hStmt, i));
+     QVarLengthArray<SQLTCHAR> tableName(TABLENAMESIZE);
+     SQLSMALLINT tableNameLen;
+-    r = SQLColAttribute(hStmt, i + 1, SQL_DESC_BASE_TABLE_NAME, tableName.data(),
+-                        TABLENAMESIZE, &tableNameLen, 0);
++    r = SQLColAttribute(hStmt,
++                        i + 1,
++                        SQL_DESC_BASE_TABLE_NAME,
++                        tableName.data(),
++                        SQLSMALLINT(tableName.size() * sizeof(SQLTCHAR)), // SQLColAttribute needs/returns size in bytes
++                        &tableNameLen,
++                        0);
+     if (r == SQL_SUCCESS)
+-        f.setTableName(fromSQLTCHAR(tableName, tableNameLen));
++        f.setTableName(fromSQLTCHAR(tableName, tableNameLen / sizeof(SQLTCHAR)));
+     return f;
+ }
+ 
 diff --git a/src/printsupport/dialogs/images/print-24.png b/src/printsupport/dialogs/images/printer-24.png
 similarity index 100%
 rename from src/printsupport/dialogs/images/print-24.png
@@ -45154,10 +45212,10 @@ index e120817edc..8ea36b5427 100644
          break;
          }
 diff --git a/src/widgets/itemviews/qlistview.cpp b/src/widgets/itemviews/qlistview.cpp
-index 5a88f1b1ef..63f760269c 100644
+index fab44923de..79254e052f 100644
 --- a/src/widgets/itemviews/qlistview.cpp
 +++ b/src/widgets/itemviews/qlistview.cpp
-@@ -3388,6 +3388,7 @@ void QIconModeViewBase::updateContentsSize()
+@@ -3389,6 +3389,7 @@ void QIconModeViewBase::updateContentsSize()
  */
  void QListView::currentChanged(const QModelIndex &current, const QModelIndex &previous)
  {
@@ -45165,7 +45223,7 @@ index 5a88f1b1ef..63f760269c 100644
  #ifndef QT_NO_ACCESSIBILITY
      if (QAccessible::isActive()) {
          if (current.isValid()) {
-@@ -3398,7 +3399,6 @@ void QListView::currentChanged(const QModelIndex &current, const QModelIndex &pr
+@@ -3399,7 +3400,6 @@ void QListView::currentChanged(const QModelIndex &current, const QModelIndex &pr
          }
      }
  #endif
@@ -45350,10 +45408,10 @@ index a128b23950..dc40bf62fb 100644
  
  /*!\reimp
 diff --git a/src/widgets/widgets/qcombobox.cpp b/src/widgets/widgets/qcombobox.cpp
-index 7a496c27e0..0a3d96647b 100644
+index 422082da6c..5692c6e82b 100644
 --- a/src/widgets/widgets/qcombobox.cpp
 +++ b/src/widgets/widgets/qcombobox.cpp
-@@ -3352,7 +3352,23 @@ void QComboBox::keyPressEvent(QKeyEvent *e)
+@@ -3354,7 +3354,23 @@ void QComboBox::keyPressEvent(QKeyEvent *e)
  
      Move move = NoMove;
      int newIndex = currentIndex();
@@ -45378,7 +45436,7 @@ index 7a496c27e0..0a3d96647b 100644
      case Qt::Key_Up:
          if (e->modifiers() & Qt::ControlModifier)
              break; // pass to line edit for auto completion
-@@ -3394,26 +3410,11 @@ void QComboBox::keyPressEvent(QKeyEvent *e)
+@@ -3396,26 +3412,11 @@ void QComboBox::keyPressEvent(QKeyEvent *e)
              return;
          }
          break;
@@ -45480,20 +45538,6 @@ index 80c9258da4..3fa0f29d28 100644
      connect(animation, &QPropertyAnimation::finished, this, &QLineEditIconButton::onAnimationFinished);
  
      animation->setDuration(160);
-diff --git a/src/widgets/widgets/qtabbar.cpp b/src/widgets/widgets/qtabbar.cpp
-index 9a382e96dd..7f80fcc250 100644
---- a/src/widgets/widgets/qtabbar.cpp
-+++ b/src/widgets/widgets/qtabbar.cpp
-@@ -2190,7 +2190,8 @@ void QTabBar::mouseMoveEvent(QMouseEvent *event)
-                 }
-             }
-             // Buttons needs to follow the dragged tab
--            d->layoutTab(d->pressedIndex);
-+            if (d->pressedIndex != -1)
-+                d->layoutTab(d->pressedIndex);
- 
-             update();
-         }
 diff --git a/src/widgets/widgets/qtoolbutton.cpp b/src/widgets/widgets/qtoolbutton.cpp
 index e380cb647b..9953db73af 100644
 --- a/src/widgets/widgets/qtoolbutton.cpp
@@ -45527,22 +45571,6 @@ index 52bd2d5f7a..82b5d7924f 100644
      void nextCheckState() override;
      void initStyleOption(QStyleOptionToolButton *option) const;
  
-diff --git a/src/widgets/widgets/qwidgettextcontrol.cpp b/src/widgets/widgets/qwidgettextcontrol.cpp
-index ba9b6e0587..9493f090ec 100644
---- a/src/widgets/widgets/qwidgettextcontrol.cpp
-+++ b/src/widgets/widgets/qwidgettextcontrol.cpp
-@@ -2057,6 +2057,11 @@ void QWidgetTextControlPrivate::inputMethodEvent(QInputMethodEvent *e)
-             || e->preeditString() != cursor.block().layout()->preeditAreaText()
-             || e->replacementLength() > 0;
- 
-+    if (!isGettingInput && e->attributes().isEmpty()) {
-+        e->ignore();
-+        return;
-+    }
-+
-     int oldCursorPos = cursor.position();
- 
-     cursor.beginEditBlock();
 diff --git a/src/xml/sax/qxml.cpp b/src/xml/sax/qxml.cpp
 index 7a444713c1..9076dcfd84 100644
 --- a/src/xml/sax/qxml.cpp
@@ -46093,6 +46121,35 @@ index 874468c954..04ceb4ab65 100644
  }
  
  void tst_QKeySequence::toStringFromKeycode()
+diff --git a/tests/auto/gui/painting/qpainter/tst_qpainter.cpp b/tests/auto/gui/painting/qpainter/tst_qpainter.cpp
+index d7c3f95f1d..bfc77b0831 100644
+--- a/tests/auto/gui/painting/qpainter/tst_qpainter.cpp
++++ b/tests/auto/gui/painting/qpainter/tst_qpainter.cpp
+@@ -84,6 +84,7 @@ private slots:
+ #endif
+     void drawPixmapFragments();
+     void drawPixmapNegativeScale();
++    void drawPixmapRounding();
+ 
+     void drawLine_data();
+     void drawLine();
+@@ -799,6 +800,16 @@ void tst_QPainter::drawPixmapNegativeScale()
+     QVERIFY(resultImage.pixel(12, 8) == qRgba(0, 0, 0, 255)); // and right strip is now black
+ }
+ 
++void tst_QPainter::drawPixmapRounding()
++{
++    // Just test that we don't assert
++    QBitmap bm(8, 8);
++    QImage out(64, 64, QImage::Format_RGB32);
++    QPainter p(&out);
++    qreal y = 26.499999999999996;
++    p.drawPixmap(QPointF(0, y), bm);
++}
++
+ void tst_QPainter::drawLine_data()
+ {
+     QTest::addColumn<QLine>("line");
 diff --git a/tests/auto/gui/text/qfontdatabase/tst_qfontdatabase.cpp b/tests/auto/gui/text/qfontdatabase/tst_qfontdatabase.cpp
 index 15e0ecadaa..b4eca74283 100644
 --- a/tests/auto/gui/text/qfontdatabase/tst_qfontdatabase.cpp

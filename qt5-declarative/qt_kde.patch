@@ -73,31 +73,6 @@ index 0cf7ea84e6..1b81a87a2c 100644
              void *addr = _ptr;
              _ptr += size;
              return addr;
-diff --git a/src/qml/jit/qv4baselinejit.cpp b/src/qml/jit/qv4baselinejit.cpp
-index 45150cfffd..5ad53faf95 100644
---- a/src/qml/jit/qv4baselinejit.cpp
-+++ b/src/qml/jit/qv4baselinejit.cpp
-@@ -540,6 +540,8 @@ void BaselineJIT::generate_ThrowException()
-     as->passEngineAsArg(0);
-     BASELINEJIT_GENERATE_RUNTIME_CALL(ThrowException, CallResultDestination::Ignore);
-     as->gotoCatchException();
-+
-+    // LOAD_ACC(); <- not needed here since it would be unreachable.
- }
- 
- void BaselineJIT::generate_GetException() { as->getException(); }
-@@ -547,9 +549,11 @@ void BaselineJIT::generate_SetException() { as->setException(); }
- 
- void BaselineJIT::generate_CreateCallContext()
- {
-+    STORE_ACC();
-     as->prepareCallWithArgCount(1);
-     as->passCppFrameAsArg(0);
-     BASELINEJIT_GENERATE_RUNTIME_CALL(PushCallContext, CallResultDestination::Ignore);
-+    LOAD_ACC();
- }
- 
- void BaselineJIT::generate_PushCatchContext(int index, int name) { as->pushCatchContext(index, name); }
 diff --git a/src/qml/jsruntime/qv4function.cpp b/src/qml/jsruntime/qv4function.cpp
 index cf8a53cf9f..223e64271e 100644
 --- a/src/qml/jsruntime/qv4function.cpp
@@ -509,7 +484,7 @@ index 1e0e4e419f..a0532d1794 100644
          }
  
 diff --git a/src/qmlmodels/qqmldelegatemodel.cpp b/src/qmlmodels/qqmldelegatemodel.cpp
-index 4fcff70de6..5b7e767ae2 100644
+index 3b57edfc5d..5b7e767ae2 100644
 --- a/src/qmlmodels/qqmldelegatemodel.cpp
 +++ b/src/qmlmodels/qqmldelegatemodel.cpp
 @@ -389,6 +389,12 @@ void QQmlDelegateModelPrivate::connectToAbstractItemModel()
@@ -538,27 +513,7 @@ index 4fcff70de6..5b7e767ae2 100644
      QObject::disconnect(aim, SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)),
                          q, SLOT(_q_dataChanged(QModelIndex,QModelIndex,QVector<int>)));
      QObject::disconnect(aim, SIGNAL(rowsMoved(QModelIndex,int,int,QModelIndex,int)),
-@@ -1871,10 +1883,15 @@ void QQmlDelegateModelPrivate::emitChanges()
-     for (int i = 1; i < m_groupCount; ++i)
-         QQmlDelegateModelGroupPrivate::get(m_groups[i])->emitModelUpdated(reset);
- 
--    auto cacheCopy = m_cache; // deliberate; emitChanges may alter m_cache
--    for (QQmlDelegateModelItem *cacheItem : qAsConst(cacheCopy)) {
--        if (cacheItem->attached)
--            cacheItem->attached->emitChanges();
-+    // emitChanges may alter m_cache and delete items
-+    QVarLengthArray<QPointer<QQmlDelegateModelAttached>> attachedObjects;
-+    attachedObjects.reserve(m_cache.length());
-+    for (const QQmlDelegateModelItem *cacheItem : qAsConst(m_cache))
-+        attachedObjects.append(cacheItem->attached);
-+
-+    for (const QPointer<QQmlDelegateModelAttached> &attached : qAsConst(attachedObjects)) {
-+        if (attached && attached->m_cacheItem)
-+            attached->emitChanges();
-     }
- }
- 
-@@ -1974,6 +1991,38 @@ void QQmlDelegateModel::_q_rowsMoved(
+@@ -1979,6 +1991,38 @@ void QQmlDelegateModel::_q_rowsMoved(
      }
  }
  
@@ -597,34 +552,6 @@ index 4fcff70de6..5b7e767ae2 100644
  void QQmlDelegateModel::_q_dataChanged(const QModelIndex &begin, const QModelIndex &end, const QVector<int> &roles)
  {
      Q_D(QQmlDelegateModel);
-@@ -2663,20 +2712,24 @@ void QQmlDelegateModelAttached::emitChanges()
-     m_previousGroups = m_cacheItem->groups;
- 
-     int indexChanges = 0;
--    for (int i = 1; i < m_cacheItem->metaType->groupCount; ++i) {
-+    const int groupCount = m_cacheItem->metaType->groupCount;
-+    for (int i = 1; i < groupCount; ++i) {
-         if (m_previousIndex[i] != m_currentIndex[i]) {
-             m_previousIndex[i] = m_currentIndex[i];
-             indexChanges |= (1 << i);
-         }
-     }
- 
-+    // Don't access m_cacheItem anymore once we've started sending signals.
-+    // We don't own it and someone might delete it.
-+
-     int notifierId = 0;
-     const QMetaObject *meta = metaObject();
--    for (int i = 1; i < m_cacheItem->metaType->groupCount; ++i, ++notifierId) {
-+    for (int i = 1; i < groupCount; ++i, ++notifierId) {
-         if (groupChanges & (1 << i))
-             QMetaObject::activate(this, meta, notifierId, nullptr);
-     }
--    for (int i = 1; i < m_cacheItem->metaType->groupCount; ++i, ++notifierId) {
-+    for (int i = 1; i < groupCount; ++i, ++notifierId) {
-         if (indexChanges & (1 << i))
-             QMetaObject::activate(this, meta, notifierId, nullptr);
-     }
 diff --git a/src/qmlmodels/qqmldelegatemodel_p.h b/src/qmlmodels/qqmldelegatemodel_p.h
 index 8aab4badca..d140bfbaaf 100644
 --- a/src/qmlmodels/qqmldelegatemodel_p.h
@@ -769,18 +696,10 @@ index 8321fcfeed..383078b3b9 100644
      drag->setMimeData(mimeData);
      if (pixmapLoader.isReady()) {
 diff --git a/src/quick/items/qquickitem.cpp b/src/quick/items/qquickitem.cpp
-index 33da9762d3..9e8b289376 100644
+index ec55fb2998..9e8b289376 100644
 --- a/src/quick/items/qquickitem.cpp
 +++ b/src/quick/items/qquickitem.cpp
-@@ -59,6 +59,7 @@
- #include <QtCore/private/qnumeric_p.h>
- #include <QtGui/qpa/qplatformtheme.h>
- #include <QtCore/qloggingcategory.h>
-+#include <QtCore/private/qduplicatetracker_p.h>
- 
- #include <private/qqmlglobal_p.h>
- #include <private/qqmlengine_p.h>
-@@ -2326,6 +2327,7 @@ QQuickItem::QQuickItem(QQuickItemPrivate &dd, QQuickItem *parent)
+@@ -2327,6 +2327,7 @@ QQuickItem::QQuickItem(QQuickItemPrivate &dd, QQuickItem *parent)
  QQuickItem::~QQuickItem()
  {
      Q_D(QQuickItem);
@@ -788,7 +707,7 @@ index 33da9762d3..9e8b289376 100644
  
      if (d->windowRefCount > 1)
          d->windowRefCount = 1; // Make sure window is set to null in next call to derefWindow().
-@@ -2398,7 +2400,7 @@ bool QQuickItemPrivate::canAcceptTabFocus(QQuickItem *item)
+@@ -2399,7 +2400,7 @@ bool QQuickItemPrivate::canAcceptTabFocus(QQuickItem *item)
          return true;
  
  #if QT_CONFIG(accessibility)
@@ -797,27 +716,7 @@ index 33da9762d3..9e8b289376 100644
      if (role == QAccessible::EditableText || role == QAccessible::Table || role == QAccessible::List) {
          return true;
      } else if (role == QAccessible::ComboBox || role == QAccessible::SpinBox) {
-@@ -2526,6 +2528,7 @@ QQuickItem* QQuickItemPrivate::nextPrevItemInTabFocusChain(QQuickItem *item, boo
-     QQuickItem *current = item;
-     qCDebug(DBG_FOCUS) << "QQuickItemPrivate::nextPrevItemInTabFocusChain: startItem:" << startItem;
-     qCDebug(DBG_FOCUS) << "QQuickItemPrivate::nextPrevItemInTabFocusChain: firstFromItem:" << firstFromItem;
-+    QDuplicateTracker<QQuickItem *> cycleDetector;
-     do {
-         qCDebug(DBG_FOCUS) << "QQuickItemPrivate::nextPrevItemInTabFocusChain: current:" << current;
-         qCDebug(DBG_FOCUS) << "QQuickItemPrivate::nextPrevItemInTabFocusChain: from:" << from;
-@@ -2592,7 +2595,10 @@ QQuickItem* QQuickItemPrivate::nextPrevItemInTabFocusChain(QQuickItem *item, boo
-         // traversed all of the chain (by compare the [current] item with [startItem])
-         // Since the [startItem] might be promoted to its parent if it is invisible,
-         // we still have to check [current] item with original start item
--        if ((current == startItem || current == originalStartItem) && from == firstFromItem) {
-+        // We might also run into a cycle before we reach firstFromItem again
-+        // but note that we have to ignore current if we are meant to skip it
-+        if (((current == startItem || current == originalStartItem) && from == firstFromItem) ||
-+                (!skip && cycleDetector.hasSeen(current))) {
-             // wrapped around, avoid endless loops
-             if (item == contentItem) {
-                 qCDebug(DBG_FOCUS) << "QQuickItemPrivate::nextPrevItemInTabFocusChain: looped, return contentItem";
-@@ -2689,9 +2695,8 @@ void QQuickItem::setParentItem(QQuickItem *parentItem)
+@@ -2694,9 +2695,8 @@ void QQuickItem::setParentItem(QQuickItem *parentItem)
  
          const bool wasVisible = isVisible();
          op->removeChild(this);
@@ -828,7 +727,7 @@ index 33da9762d3..9e8b289376 100644
      } else if (d->window) {
          QQuickWindowPrivate::get(d->window)->parentlessItems.remove(this);
      }
-@@ -2768,8 +2773,9 @@ void QQuickItem::setParentItem(QQuickItem *parentItem)
+@@ -2773,8 +2773,9 @@ void QQuickItem::setParentItem(QQuickItem *parentItem)
  
      d->itemChange(ItemParentHasChanged, d->parentItem);
  
@@ -840,7 +739,7 @@ index 33da9762d3..9e8b289376 100644
          emit d->parentItem->visibleChildrenChanged();
  }
  
-@@ -2965,7 +2971,8 @@ void QQuickItemPrivate::removeChild(QQuickItem *child)
+@@ -2970,7 +2971,8 @@ void QQuickItemPrivate::removeChild(QQuickItem *child)
  
      itemChange(QQuickItem::ItemChildRemovedChange, child);
  
@@ -850,7 +749,7 @@ index 33da9762d3..9e8b289376 100644
  }
  
  void QQuickItemPrivate::refWindow(QQuickWindow *c)
-@@ -3194,6 +3201,7 @@ QQuickItemPrivate::QQuickItemPrivate()
+@@ -3199,6 +3201,7 @@ QQuickItemPrivate::QQuickItemPrivate()
      , touchEnabled(false)
  #endif
      , hasCursorHandler(false)
@@ -858,7 +757,7 @@ index 33da9762d3..9e8b289376 100644
      , dirtyAttributes(0)
      , nextDirtyItem(nullptr)
      , prevDirtyItem(nullptr)
-@@ -5120,6 +5128,13 @@ void QQuickItem::componentComplete()
+@@ -5125,6 +5128,13 @@ void QQuickItem::componentComplete()
          d->addToDirtyList();
          QQuickWindowPrivate::get(d->window)->dirtyItem(this);
      }
@@ -872,7 +771,7 @@ index 33da9762d3..9e8b289376 100644
  }
  
  QQuickStateGroup *QQuickItemPrivate::_states()
-@@ -6106,9 +6121,11 @@ bool QQuickItemPrivate::setEffectiveVisibleRecur(bool newEffectiveVisible)
+@@ -6111,9 +6121,11 @@ bool QQuickItemPrivate::setEffectiveVisibleRecur(bool newEffectiveVisible)
          QAccessible::updateAccessibility(&ev);
      }
  #endif
@@ -887,7 +786,7 @@ index 33da9762d3..9e8b289376 100644
  
      return true;    // effective visibility DID change
  }
-@@ -6157,6 +6174,15 @@ void QQuickItemPrivate::setEffectiveEnableRecur(QQuickItem *scope, bool newEffec
+@@ -6162,6 +6174,15 @@ void QQuickItemPrivate::setEffectiveEnableRecur(QQuickItem *scope, bool newEffec
      }
  
      itemChange(QQuickItem::ItemEnabledHasChanged, effectiveEnable);
@@ -903,7 +802,7 @@ index 33da9762d3..9e8b289376 100644
      emit q->enabledChanged();
  }
  
-@@ -8974,13 +9000,20 @@ QQuickItemPrivate::ExtraData::ExtraData()
+@@ -8979,13 +9000,20 @@ QQuickItemPrivate::ExtraData::ExtraData()
  
  
  #if QT_CONFIG(accessibility)
@@ -1487,62 +1386,6 @@ index 2438e577ae..85d156b8a3 100644
 +    qaccessiblequickwidgetfactory.cpp
  
  load(qt_module)
-diff --git a/tests/auto/qml/qqmldelegatemodel/data/deleteRace.qml b/tests/auto/qml/qqmldelegatemodel/data/deleteRace.qml
-new file mode 100644
-index 0000000000..23874970e7
---- /dev/null
-+++ b/tests/auto/qml/qqmldelegatemodel/data/deleteRace.qml
-@@ -0,0 +1,50 @@
-+import QtQuick 2.15
-+import QtQml.Models 2.15
-+
-+Item {
-+    DelegateModel {
-+        id: delegateModel
-+        model: ListModel {
-+            id: sourceModel
-+
-+            ListElement { title: "foo" }
-+            ListElement { title: "bar" }
-+
-+            function clear() {
-+                if (count > 0)
-+                    remove(0, count);
-+            }
-+        }
-+
-+        groups: [
-+            DelegateModelGroup { name: "selectedItems" }
-+        ]
-+
-+        delegate: Text {
-+            height: DelegateModel.inSelectedItems ? implicitHeight * 2 : implicitHeight
-+            Component.onCompleted: {
-+                if (index === 0)
-+                    DelegateModel.inSelectedItems = true;
-+            }
-+        }
-+
-+        Component.onCompleted: {
-+            items.create(0)
-+            items.create(1)
-+        }
-+    }
-+
-+    ListView {
-+        anchors.fill: parent
-+        model: delegateModel
-+    }
-+
-+    Timer {
-+        running: true
-+        interval: 10
-+        onTriggered: sourceModel.clear()
-+    }
-+
-+    property int count: delegateModel.items.count
-+}
-+
 diff --git a/tests/auto/qml/qqmldelegatemodel/data/redrawUponColumnChange.qml b/tests/auto/qml/qqmldelegatemodel/data/redrawUponColumnChange.qml
 new file mode 100644
 index 0000000000..206133bb39
@@ -1561,7 +1404,7 @@ index 0000000000..206133bb39
 +    }
 +}
 diff --git a/tests/auto/qml/qqmldelegatemodel/tst_qqmldelegatemodel.cpp b/tests/auto/qml/qqmldelegatemodel/tst_qqmldelegatemodel.cpp
-index 35f1e2c94d..f473cff75f 100644
+index f0afdb16ca..e5daf2d28b 100644
 --- a/tests/auto/qml/qqmldelegatemodel/tst_qqmldelegatemodel.cpp
 +++ b/tests/auto/qml/qqmldelegatemodel/tst_qqmldelegatemodel.cpp
 @@ -27,6 +27,8 @@
@@ -1573,17 +1416,17 @@ index 35f1e2c94d..f473cff75f 100644
  #include <QtQml/qqmlcomponent.h>
  #include <QtQmlModels/private/qqmldelegatemodel_p.h>
  #include <QtQuick/qquickview.h>
-@@ -47,6 +49,8 @@ private slots:
-     void filterOnGroup_removeWhenCompleted();
+@@ -48,6 +50,8 @@ private slots:
      void qtbug_86017();
      void contextAccessedByHandler();
+     void deleteRace();
 +    void redrawUponColumnChange();
 +    void deleteRace();
  };
  
  class AbstractItemModel : public QAbstractItemModel
-@@ -186,6 +190,41 @@ void tst_QQmlDelegateModel::contextAccessedByHandler()
-     QVERIFY(root->property("works").toBool());
+@@ -187,6 +191,41 @@ void tst_QQmlDelegateModel::deleteRace()
+     QTRY_COMPARE(o->property("count").toInt(), 0);
  }
  
 +void tst_QQmlDelegateModel::redrawUponColumnChange()
@@ -1732,55 +1575,6 @@ index 94ec4f44d5..7d0d9fa7a7 100644
  void tst_QQuickGridView::releaseItems()
  {
      QScopedPointer<QQuickView> view(createView());
-diff --git a/tests/auto/quick/qquickitem2/data/activeFocusOnTab_infiniteLoop3.qml b/tests/auto/quick/qquickitem2/data/activeFocusOnTab_infiniteLoop3.qml
-new file mode 100644
-index 0000000000..889e480f3b
---- /dev/null
-+++ b/tests/auto/quick/qquickitem2/data/activeFocusOnTab_infiniteLoop3.qml
-@@ -0,0 +1,13 @@
-+import QtQuick 2.6
-+
-+Item {
-+    visible: true
-+    Item {
-+        visible: false
-+        Item {
-+            objectName: "hiddenChild"
-+            activeFocusOnTab: true
-+            focus: true
-+        }
-+    }
-+}
-diff --git a/tests/auto/quick/qquickitem2/tst_qquickitem.cpp b/tests/auto/quick/qquickitem2/tst_qquickitem.cpp
-index c8f251dbe1..c8ef36ee68 100644
---- a/tests/auto/quick/qquickitem2/tst_qquickitem.cpp
-+++ b/tests/auto/quick/qquickitem2/tst_qquickitem.cpp
-@@ -67,6 +67,7 @@ private slots:
-     void activeFocusOnTab10();
-     void activeFocusOnTab_infiniteLoop_data();
-     void activeFocusOnTab_infiniteLoop();
-+    void activeFocusOnTab_infiniteLoopControls();
- 
-     void nextItemInFocusChain();
-     void nextItemInFocusChain2();
-@@ -1057,6 +1058,17 @@ void tst_QQuickItem::activeFocusOnTab_infiniteLoop()
-     QCOMPARE(item, window->rootObject());
- }
- 
-+
-+void tst_QQuickItem::activeFocusOnTab_infiniteLoopControls()
-+{
-+    auto source = testFileUrl("activeFocusOnTab_infiniteLoop3.qml");
-+    QScopedPointer<QQuickView>window(new QQuickView());
-+    window->setSource(source);
-+    window->show();
-+    QVERIFY(window->errors().isEmpty());
-+    QTest::keyClick(window.get(), Qt::Key_Tab); // should not hang
-+}
-+
- void tst_QQuickItem::nextItemInFocusChain()
- {
-     if (!qt_tab_all_widgets())
 diff --git a/tests/auto/quick/qquickstates/data/jsValueWhen.qml b/tests/auto/quick/qquickstates/data/jsValueWhen.qml
 new file mode 100644
 index 0000000000..6d5eb1600c

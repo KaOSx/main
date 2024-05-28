@@ -1,18 +1,8 @@
 diff --git a/src/client/configure.json b/src/client/configure.json
-index 2f424580..29222357 100644
+index 73f23362..6247f85e 100644
 --- a/src/client/configure.json
 +++ b/src/client/configure.json
-@@ -149,8 +149,7 @@
-                     "#endif"
-                 ]
-             },
--            "libs": "-ldrm",
--            "use": "egl"
-+            "use": "drm egl"
-         },
-         "vulkan-server-buffer": {
-             "label": "Vulkan Buffer Sharing",
-@@ -168,7 +167,8 @@
+@@ -167,7 +167,8 @@
                      "exportAllocInfo.handleTypes = VK_EXTERNAL_MEMORY_HANDLE_TYPE_OPAQUE_FD_BIT_KHR;",
                      "return 0;"
                  ]
@@ -22,7 +12,7 @@ index 2f424580..29222357 100644
          },
          "egl_1_5-wayland": {
              "label": "EGL 1.5 with Wayland Platform",
-@@ -183,7 +183,7 @@
+@@ -182,7 +183,7 @@
                      "eglGetPlatformDisplay(EGL_PLATFORM_WAYLAND_EXT, (struct wl_display *)(nullptr), nullptr);"
                  ]
              },
@@ -1366,7 +1356,7 @@ index 474fe2ab..46f629ac 100644
  private:
      QWaylandDisplay *m_display = nullptr;
 diff --git a/src/client/qwaylandinputdevice.cpp b/src/client/qwaylandinputdevice.cpp
-index b0e9692b..ab978d3f 100644
+index 346c438c..ab978d3f 100644
 --- a/src/client/qwaylandinputdevice.cpp
 +++ b/src/client/qwaylandinputdevice.cpp
 @@ -310,8 +310,7 @@ void QWaylandInputDevice::Pointer::updateCursor()
@@ -1379,15 +1369,6 @@ index b0e9692b..ab978d3f 100644
          return;
      }
  
-@@ -846,7 +845,7 @@ void QWaylandInputDevice::Pointer::releaseButtons()
-     mButtons = Qt::NoButton;
- 
-     if (auto *window = focusWindow()) {
--        MotionEvent e(focusWindow(), mParent->mTime, mSurfacePos, mGlobalPos, mButtons, mParent->modifiers());
-+        ReleaseEvent e(focusWindow(), mParent->mTime, mSurfacePos, mGlobalPos, mButtons, Qt::NoButton, mParent->modifiers());
-         window->handleMouse(mParent, e);
-     }
- }
 @@ -1304,14 +1303,6 @@ void QWaylandInputDevice::Keyboard::handleFocusDestroyed()
  void QWaylandInputDevice::Keyboard::handleFocusLost()
  {
@@ -1476,19 +1457,6 @@ index ff70ae25..73b80658 100644
      QList<int> possibleKeys(const QKeyEvent *event) const override;
  
      QStringList themeNames() const override;
-diff --git a/src/client/qwaylandnativeinterface.cpp b/src/client/qwaylandnativeinterface.cpp
-index bf54a1a0..9763c312 100644
---- a/src/client/qwaylandnativeinterface.cpp
-+++ b/src/client/qwaylandnativeinterface.cpp
-@@ -139,7 +139,7 @@ void *QWaylandNativeInterface::nativeResourceForScreen(const QByteArray &resourc
- {
-     QByteArray lowerCaseResource = resourceString.toLower();
- 
--    if (lowerCaseResource == "output")
-+    if (lowerCaseResource == "output" && !screen->handle()->isPlaceholder())
-         return ((QWaylandScreen *) screen->handle())->output();
- 
-     return nullptr;
 diff --git a/src/client/qwaylandprimaryselectionv1.cpp b/src/client/qwaylandprimaryselectionv1.cpp
 index 7805dd73..dac532b2 100644
 --- a/src/client/qwaylandprimaryselectionv1.cpp
@@ -2303,7 +2271,7 @@ index ccad0048..4cc9b3b8 100644
      virtual void *nativeResourceForWindow(const QByteArray &resource, QWindow *window) {
          Q_UNUSED(resource);
 diff --git a/src/compositor/configure.json b/src/compositor/configure.json
-index bcfd5215..da95d07b 100644
+index c5b0f03e..031e4cc3 100644
 --- a/src/compositor/configure.json
 +++ b/src/compositor/configure.json
 @@ -7,6 +7,31 @@
@@ -2338,27 +2306,7 @@ index bcfd5215..da95d07b 100644
          "wayland-server": {
              "label": "wayland-server",
              "headers": "wayland-version.h",
-@@ -151,8 +176,7 @@
-                     "#endif"
-                 ]
-             },
--            "libs": "-ldrm",
--            "use": "egl"
-+            "use": "drm egl"
-         },
-         "dmabuf-client-buffer": {
-             "label": "Linux Client dma-buf Buffer Sharing",
-@@ -176,8 +200,7 @@
-                     "return 0;"
-                 ]
-             },
--            "libs": "-ldrm",
--            "use": "egl"
-+            "use": "drm egl"
-         },
-         "vulkan-server-buffer": {
-             "label": "Vulkan Buffer Sharing",
-@@ -195,7 +218,8 @@
+@@ -193,7 +218,8 @@
                      "exportAllocInfo.handleTypes = VK_EXTERNAL_MEMORY_HANDLE_TYPE_OPAQUE_FD_BIT_KHR;",
                      "return 0;"
                  ]
@@ -2583,7 +2531,7 @@ index 261f8cbb..c1bcd5c6 100644
  private:
      QScopedPointer<QWaylandXdgShellV6> m_xdgShell;
 diff --git a/src/plugins/shellintegration/xdg-shell/qwaylandxdgshell.cpp b/src/plugins/shellintegration/xdg-shell/qwaylandxdgshell.cpp
-index 94ea573e..9c6cbb81 100644
+index 49e9d953..9c6cbb81 100644
 --- a/src/plugins/shellintegration/xdg-shell/qwaylandxdgshell.cpp
 +++ b/src/plugins/shellintegration/xdg-shell/qwaylandxdgshell.cpp
 @@ -44,6 +44,7 @@
@@ -2727,22 +2675,18 @@ index 94ea573e..9c6cbb81 100644
      auto positioner = new QtWayland::xdg_positioner(m_shell->create_positioner());
      // set_popup expects a position relative to the parent
      QPoint transientPos = m_window->geometry().topLeft(); // this is absolute
-@@ -425,11 +425,10 @@ void QWaylandXdgSurface::setPopup(QWaylandWindow *parent)
-     positioner->set_gravity(QtWayland::xdg_positioner::gravity_bottom_right);
+@@ -426,8 +426,9 @@ void QWaylandXdgSurface::setPopup(QWaylandWindow *parent)
      positioner->set_size(m_window->geometry().width(), m_window->geometry().height());
      positioner->set_constraint_adjustment(QtWayland::xdg_positioner::constraint_adjustment_slide_x
--        | QtWayland::xdg_positioner::constraint_adjustment_slide_y
--        | QtWayland::xdg_positioner::constraint_adjustment_flip_x
--        | QtWayland::xdg_positioner::constraint_adjustment_flip_y);
+         | QtWayland::xdg_positioner::constraint_adjustment_slide_y);
 -    m_popup = new Popup(this, parentXdgSurface, positioner);
-+        | QtWayland::xdg_positioner::constraint_adjustment_slide_y);
 +    m_popup = new Popup(this, parent, positioner);
      positioner->destroy();
 +
      delete positioner;
  }
  
-@@ -466,8 +465,10 @@ void QWaylandXdgSurface::setGrabPopup(QWaylandWindow *parent, QWaylandInputDevic
+@@ -464,8 +465,10 @@ void QWaylandXdgSurface::setGrabPopup(QWaylandWindow *parent, QWaylandInputDevic
      if (m_popup && m_popup->m_xdgSurface && m_popup->m_xdgSurface->window())
          enter = m_popup->m_xdgSurface->window()->window();
  
