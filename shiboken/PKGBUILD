@@ -1,18 +1,17 @@
 
-pkgname=shiboken6
-_pkgname=pyside-setup-everywhere-src
-pkgver=6.7.1
-_pkgver=6.7.1
-pkgrel=1
+pkgname=shiboken2
+_pkgname=pyside-setup-opensource-src
+pkgver=5.15.14
+_pkgver=5.15.14
+pkgrel=2
 pkgdesc="Python binding generator that Qt for Python uses to create the PySide module."
 arch=('x86_64')
 license=('LGPL')
 url="https://wiki.qt.io/Qt_for_Python/Shiboken"
-depends=('python3' 'qt6-base' 'libxslt' 'clang')
+depends=('python3' 'qt5-xmlpatterns' 'libxslt' 'clang')
 makedepends=('cmake' 'python3-sphinx')
-conflicts=('shiboken2')
-source=("https://download.qt.io/official_releases/QtForPython/${pkgname}/PySide6-${pkgver}-src/${_pkgname}-${pkgver}.tar.xz")
-sha256sums=('6f33de37f4121e547064023edb344b95e2ab454234fa8fce27ea73df96f933cd')
+source=("https://download.qt.io/official_releases/QtForPython/${pkgname}/PySide2-${pkgver}-src/${_pkgname}-${pkgver}.tar.xz")
+sha256sums=('32651194f6a6b7bce42f04e68b1401ad2087e4789a4c8f3fb8649e86189c6372')
 
 prepare() {
   cd ${_pkgname}-${_pkgver}
@@ -21,11 +20,11 @@ prepare() {
   export CXX=/usr/bin/clang++
 
   #sed -i -e 's|import importlib|import importlib.machinery|' sources/shiboken2/libshiboken/embed/signature_bootstrap.py
-  sed -i '10i #include "sbkconverter_p.h"' sources/shiboken6/libshiboken/sbkmodule.cpp
+  #sed -i -e 's|#ifndef Py_LIMITED_API|#if PY_VERSION_HEX < 0x03010000|' sources/shiboken2/libshiboken/pep384impl.cpp
 }
 
 build() {
-  cmake -B build -S ${_pkgname}-${_pkgver}/sources/shiboken6 \
+  cmake -B build -S ${_pkgname}-${_pkgver}/sources/shiboken2 \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DBUILD_TESTS=OFF \
