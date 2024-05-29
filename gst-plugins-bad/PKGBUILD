@@ -1,6 +1,6 @@
 
 pkgname=gst-plugins-bad
-pkgver=1.24.3
+pkgver=1.24.4
 pkgrel=1
 pkgdesc="GStreamer Multimedia Framework Bad Plugins"
 arch=('x86_64')
@@ -13,10 +13,10 @@ depends=('mjpegtools' 'gst-plugins-base' 'curl' 'chromaprint' 'libmms' 'faad2'
          'x265' 'libass' 'schroedinger' 'nettle' 'libdvdread'
          'vulkan-validationlayers' 'microdns' 'libnice' 'flac' 'libde265' 'webrtc-audio-processing')
 makedepends=('libexif' 'libvdpau' 'libmpeg2' 'python3' 'meson' 'ninja'
-             'gobject-introspection' 'bluez' 'ladspa' 'openal')
+             'gobject-introspection' 'bluez' 'ladspa' 'openal' 'python3-packaging')
 options=('!libtool' '!emptydirs')
 source=("https://gstreamer.freedesktop.org/src/gst-plugins-bad/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('e90f26c7dc9c76f4aa599b758cfd6d8c10d6a0b9cb265ba2c3c9bdf3888558f8')
+sha256sums=('260bd0a463b4faff9a42f41e5e028f787f10a92b779af8959aec64586f546bd3')
 
 prepare() {
   cd ${pkgname}-${pkgver}
