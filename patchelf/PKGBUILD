@@ -1,0 +1,32 @@
+
+pkgname=patchelf
+pkgver=0.18.0
+pkgrel=1
+pkgdesc='Simple utility for modifying existing ELF executables and libraries.'
+url='https://nixos.org/patchelf.html'
+arch=('x86_64')
+license=('GPL-3.0')
+depends=('gcc-libs')
+source=("https://github.com/NixOS/patchelf/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.bz2")
+sha256sums=('1952b2a782ba576279c211ee942e341748fdb44997f704dd53def46cd055470b')
+
+build() {
+  cd ${pkgname}-${pkgver}
+
+  ./configure --prefix=/usr
+  make
+}
+
+check() {
+  cd ${pkgname}-${pkgver}
+
+  make -C tests -j1 check
+}
+
+package() {
+  cd ${pkgname}-${pkgver}
+
+  make DESTDIR=${pkgdir} install
+}
+
+
