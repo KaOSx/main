@@ -1,8 +1,8 @@
 
 pkgname=networkmanager
 _pkgname=NetworkManager
-pkgver=1.46.0
-_pkgver=1.46
+pkgver=1.48.0
+_pkgver=1.48
 pkgrel=1
 pkgdesc="Network Management daemon"
 arch=('x86_64')
@@ -10,7 +10,8 @@ license=('GPL')
 url="https://wiki.gnome.org/Projects/NetworkManager"
 depends=('dbus-glib' 'iproute2' 'libnl' 'nss' 'polkit' 'systemd' 'ppp' 'dhcpcd'
          'modemmanager' 'libndp' 'libteam' 'curl' 'iptables' 'bluez' 'iwd' 'mobile-broadband-provider-info') # 'libgudev' no longer needed for 1.8)'wpa_supplicant' 
-makedepends=('intltool' 'dhclient' 'gobject-introspection' 'netctl' 'python3-gobject3')
+makedepends=('intltool' 'dhclient' 'gobject-introspection' 'netctl' 'python3-gobject3'
+             'meson' 'ninja' 'python3-packaging')
 optdepends=('dhclient: alternative DHCP/DHCPv6 client'
             'dnsmasq: Connection sharing')
 options=('!libtool')
@@ -19,49 +20,51 @@ install=networkmanager.install
 source=("https://download.gnome.org/sources/NetworkManager/${_pkgver}/${_pkgname}-${pkgver}.tar.xz"
         'NetworkManager.conf'
         'nmdevice.patch')
-sha256sums=('722649e25362693b334371473802a729b0ec9ee283375096905f868808e74068'
+sha256sums=('fc80b942de38e329468e6fc1dfb40aad6a78d02ddf6b8ec31f9acc6460b8723f'
             '57a0d0fc875a0c6b1729eac7e50907cc60a6d6aa834adc56b8c851edacf5fbd4'
             'f70cf461ec944f8234d47a69d1aa8505382c6161009c7dc5c1f66c86a505fe09')
 
 build() {
-  cd ${_pkgname}-${pkgver}
+  mkdir -p build
+  cd build
 
-  #patch -p1 -i ${srcdir}/nmdevice.patch
-
-  ./configure \
+  meson setup ../${_pkgname}-${pkgver} \
     --prefix=/usr \
-    --sysconfdir=/etc \
-    --localstatedir=/var \
+    --buildtype=release \
     --libexecdir=/usr/lib/networkmanager \
-    --with-crypto=nss \
-    --with-dhclient=/usr/sbin/dhclient \
-    --with-dhcpcd=/usr/sbin/dhcpcd \
-    --with-pppd=/usr/sbin/pppd \
-    --with-iptables=/usr/sbin/iptables \
-    --with-dnsmasq=/usr/bin/dnsmasq \
-    --with-systemdsystemunitdir=/usr/lib/systemd/system \
-    --with-kernel-firmware-dir=/lib/firmware \
-    --with-udev-dir=/usr/lib/udev \
-    --with-resolvconf=/usr/sbin/resolvconf \
-    --with-session-tracking=systemd \
-    --with-modem-manager-1 \
-    --with-libpsl \
-    --with-iwd \
-    --disable-static \
-    --enable-more-warnings=no \
-    --enable-modify-system \
-    --with-pppd-plugin-dir=/usr/lib/pppd/2.5.0 \
-    --with-config-wifi-backend-default=iwd
-
-  make
+    -Dsystemdsystemunitdir=/usr/lib/systemd/system \
+    -Dudev_dir=/usr/lib/udev \
+    -Ddbus_conf_dir=/usr/share/dbus-1/session.d \
+    -Dkernel_firmware_dir=/lib/firmware \
+    -Diptables=/usr/sbin/iptables \
+    -Ddnsmasq=/usr/bin/dnsmasq \
+    -Ddist_version=${pkgver}-${pkgrel} \
+    -Dsession_tracking_consolekit=false \
+    -Dsession_tracking=systemd \
+    -Dsuspend_resume=systemd \
+    -Dmodify_system=true \
+    -Dselinux=false \
+    -Dconfig_wifi_backend_default=iwd \
+    -Dlibaudit=no \
+    -Diwd=true \
+    -Dpppd=/usr/sbin/pppd \
+    -Dpppd_plugin_dir=/usr/lib/pppd/2.5.0 \
+    -Dmodem_manager=true \
+    -Dnmtui=false \
+    -Difupdown=false \
+    -Dresolvconf=/usr/sbin/resolvconf \
+    -Ddhcpcd=true \
+    -Dlibpsl=true \
+    -Dcrypto=nss \
+    -Dqt=false
+  ninja
 }
 
 package() {
-  cd ${_pkgname}-${pkgver}
-  make DESTDIR=${pkgdir} install
+  cd build
+
+  DESTDIR=${pkgdir} ninja install
 
   install -m644 ../NetworkManager.conf ${pkgdir}/etc/NetworkManager/
   install -m755 -d ${pkgdir}/etc/NetworkManager/dnsmasq.d
-
-  #rm -r ${pkgdir}/var/run
 }
