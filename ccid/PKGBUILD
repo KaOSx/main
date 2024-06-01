@@ -1,34 +1,36 @@
 
 pkgname=ccid
-pkgver=1.5.5
+pkgver=1.6.0
 pkgrel=1
 pkgdesc="Generic USB Chip/Smart Card Interface Devices driver"
 arch=('x86_64')
 url="https://ccid.apdu.fr"
 license=('LGPL' 'GPL')
 depends=('pcsclite' 'libusbx' 'flex')
-makedepends=('pkg-config')
+makedepends=('meson' 'ninja')
 backup=(etc/reader.conf.d/libccidtwin)
-source=("https://ccid.apdu.fr/files/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('da78a5fa37e326988d85f3a0291c784e')
+source=("https://ccid.apdu.fr/files/${pkgname}-${pkgver}.tar.xz")
+md5sums=('bcb4219c9ed5b1b93859c67ecdcc9ab2')
 
 build() {
-  cd ${pkgname}-${pkgver}
+  mkdir -p build
+  cd build
 
-  ./configure --prefix=/usr \
+  meson setup ../${pkgname}-${pkgver} \
+    --prefix=/usr \
+    --buildtype=release \
     --sysconfdir=/etc \
-    --enable-twinserial \
-    --enable-serialconfdir=/etc/reader.conf.d
-  make
+    -Dserial=true
+  ninja
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
+  cd build
 
-  make DESTDIR=${pkgdir} install
+  DESTDIR=${pkgdir} ninja install
 
-  mv ${pkgdir}/usr/lib/pcsc/drivers/ifd-ccid.bundle/Contents/Info.plist ${pkgdir}/etc/libccid_Info.plist
-  ln -s /etc/libccid_Info.plist ${pkgdir}/usr/lib/pcsc/drivers/ifd-ccid.bundle/Contents/Info.plist
+  #mv ${pkgdir}/usr/lib/pcsc/drivers/ifd-ccid.bundle/Contents/Info.plist ${pkgdir}/etc/libccid_Info.plist
+  #ln -s /etc/libccid_Info.plist ${pkgdir}/usr/lib/pcsc/drivers/ifd-ccid.bundle/Contents/Info.plist
 
-  install -D src/92_pcscd_ccid.rules ${pkgdir}/etc/udev/rules.d/92_pcscd_ccid.rules
+  install -D ../${pkgname}-${pkgver}/src/92_pcscd_ccid.rules ${pkgdir}/etc/udev/rules.d/92_pcscd_ccid.rules
 }
