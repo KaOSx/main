@@ -1,7 +1,7 @@
 
 pkgname=compiler-rt
 pkgbase="llvm-project"
-pkgver=18.1.6
+pkgver=18.1.7
 _pkgver=18
 pkgrel=1
 pkgdesc="Compiler runtime libraries for use in Clang and LLVM projects"
@@ -11,7 +11,7 @@ license=('custom:University of Illinois/NCSA Open Source License')
 depends=("llvm=${pkgver}" 'gcc')
 makedepends=('cmake' 'python3')
 source=("https://github.com/llvm/llvm-project/releases/download/llvmorg-${pkgver}/${pkgbase}-${pkgver}.src.tar.xz")
-md5sums=('7e3121bb07ceb6770af156fa34f8fe4a')
+md5sums=('1815f0ba2b389fe45f7b06689d8aa5b9')
 
 build() {
     cmake -B build -S ${pkgbase}-${pkgver}.src/${pkgname} \
