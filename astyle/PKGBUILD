@@ -1,7 +1,7 @@
 
 pkgname=astyle
-pkgver=3.4.16
-_pkgver=3.4
+pkgver=3.5
+_pkgver=3.5
 pkgrel=1
 pkgdesc="Artistic Style is a source code indenter, formatter, and beautifier for the C, C++, C# and Java programming languages."
 arch=('x86_64')
@@ -9,7 +9,7 @@ url="https://astyle.sourceforge.net/"
 makedepends=('cmake')
 license=('LGPL')
 source=("https://sourceforge.net/projects/astyle/files/astyle/astyle%20${_pkgver}/${pkgname}-${pkgver}.tar.bz2")
-md5sums=('21f490097f9222f2594d8b73fcd20fdb')
+md5sums=('6e27adcc9c5673a8c0c1af8af6b59a89')
 
 build() {
   cmake -B build -S ${pkgname}-${pkgver} \
