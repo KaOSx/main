@@ -9,7 +9,8 @@ depends=('libx11' 'libxt' 'gcc-libs' 'libvdpau' 'xorgproto' 'wayland' 'elfutils'
          'libdrm' 'libxxf86vm' 'libxdamage' 'expat' 'libxshmfence' 'llvm'
          'lm_sensors' 'libunwind' 'libxvmc' 'libxrandr' 'libglvnd' 'zstd') 
 makedepends=('libva' 'llvm' 'libxml2' 'imake' 'clang' 'python3-mako' 'glslang'
-             'wayland-protocols' 'meson' 'ninja' 'valgrind' 'vulkan-loader') # 'libclc')
+             'wayland-protocols' 'meson' 'ninja' 'valgrind' 'vulkan-loader'
+             'python3-ply' 'libclc' 'spirv-llvm-translator')
 url="https://www.mesa3d.org/"
 license=('custom')
 source=("https://mesa.freedesktop.org/archive/${pkgname}-${pkgver}.tar.xz"
@@ -44,8 +45,8 @@ build() {
     -Dgallium-va=enabled \
     -Dgallium-xa=enabled \
     -Dgallium-nine=true \
-    -Dgallium-opencl=disabled \
-    -Dvulkan-drivers=amd,intel,intel_hasvk,swrast,virtio,nouveau \
+    -Dgallium-opencl=icd \
+    -Dvulkan-drivers=amd,intel,intel_hasvk,swrast,virtio \
     -Dvulkan-layers=device-select,intel-nullhw,overlay \
     -Dshared-glapi=enabled \
     -Dgles1=enabled \
@@ -61,7 +62,9 @@ build() {
     -Dlmsensors=enabled \
     -Dbuild-tests=false \
     -Dosmesa=true \
-    -Dvideo-codecs=all
+    -Dvideo-codecs=all \
+    -Dintel-clc=enabled \
+    -Dmicrosoft-clc=disabled
     ninja
 }
 
