@@ -1,7 +1,7 @@
 
 pkgname=libvdpau
 pkgver=1.5
-pkgrel=1
+pkgrel=2
 pkgdesc="Nvidia VDPAU library"
 arch=('x86_64')
 url="https://gitlab.freedesktop.org/vdpau/libvdpau"
@@ -16,7 +16,7 @@ build() {
   mkdir -p build
   cd build
 
-  meson ../${pkgname}-${pkgver} \
+  meson setup ../${pkgname}-${pkgver} \
     --prefix=/usr \
     --sysconfdir=/etc \
     --buildtype=release 

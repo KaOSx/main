@@ -1,8 +1,8 @@
 
 pkgname=mesa
-pkgver=24.1.1
-_pkgver=24.1.1
-pkgrel=2
+pkgver=24.1.2
+_pkgver=24.1.2
+pkgrel=1
 arch=('x86_64')
 pkgdesc="Mesa 3-D graphics libraries and include files"
 depends=('libx11' 'libxt' 'gcc-libs' 'libvdpau' 'xorgproto' 'wayland' 'elfutils'
@@ -16,7 +16,7 @@ license=('custom')
 source=("https://mesa.freedesktop.org/archive/${pkgname}-${pkgver}.tar.xz"
         "https://gitlab.freedesktop.org/pzanoni/mesa/-/commit/68e89401140d1b3a17052899c54577de3f008b67.diff"
         'LICENSE')
-sha256sums=('0038826c6f7e88d90b4ce6f719192fa58ca7dedf4edcaa1174cf7bd920ef89ea'
+sha256sums=('a2c584c8d57d3bd8ba11790a6e9ae3713f8821df96c059b78afb29dd975c9f45'
             '52ffabfb10d822a14dd73490209e8917332da431a41fde051d022e3ef4b363e7'
             '7fdc119cf53c8ca65396ea73f6d10af641ba41ea1dd2bd44a824726e01c8b3f2')
 
@@ -45,7 +45,7 @@ build() {
     -Dgallium-va=enabled \
     -Dgallium-xa=enabled \
     -Dgallium-nine=true \
-    -Dgallium-opencl=icd \
+    -Dgallium-opencl=disabled \
     -Dvulkan-drivers=amd,intel,intel_hasvk,swrast,virtio \
     -Dvulkan-layers=device-select,intel-nullhw,overlay \
     -Dshared-glapi=enabled \
