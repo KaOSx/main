@@ -1,14 +1,15 @@
 
-pkgname=mesa
+pkgbase=mesa
+pkgname=('mesa' 'opencl-clover')
 pkgver=24.1.2
 _pkgver=24.1.2
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 pkgdesc="Mesa 3-D graphics libraries and include files"
-depends=('libx11' 'libxt' 'gcc-libs' 'libvdpau' 'xorgproto' 'wayland' 'elfutils'
-         'libdrm' 'libxxf86vm' 'libxdamage' 'expat' 'libxshmfence' 'llvm'
-         'lm_sensors' 'libunwind' 'libxvmc' 'libxrandr' 'libglvnd' 'zstd') 
-makedepends=('libva' 'llvm' 'libxml2' 'imake' 'clang' 'python3-mako' 'glslang'
+makedepends=('libx11' 'libxt' 'gcc-libs' 'libvdpau' 'xorgproto' 'wayland' 'elfutils'
+             'libdrm' 'libxxf86vm' 'libxdamage' 'expat' 'libxshmfence' 'llvm'
+             'lm_sensors' 'libunwind' 'libxvmc' 'libxrandr' 'libglvnd' 'zstd'
+             'libva' 'llvm' 'libxml2' 'imake' 'clang' 'python3-mako' 'glslang'
              'wayland-protocols' 'meson' 'ninja' 'valgrind' 'vulkan-loader'
              'python3-ply' 'libclc' 'spirv-llvm-translator')
 url="https://www.mesa3d.org/"
@@ -45,7 +46,7 @@ build() {
     -Dgallium-va=enabled \
     -Dgallium-xa=enabled \
     -Dgallium-nine=true \
-    -Dgallium-opencl=disabled \
+    -Dgallium-opencl=icd \
     -Dvulkan-drivers=amd,intel,intel_hasvk,swrast,virtio \
     -Dvulkan-layers=device-select,intel-nullhw,overlay \
     -Dshared-glapi=enabled \
@@ -69,10 +70,43 @@ build() {
     ninja
 }
 
-package() {
-  cd build  
+package_mesa() {
+  pkgdesc="Mesa 3-D graphics libraries and include files"
+  depends=('libx11' 'libxt' 'gcc-libs' 'libvdpau' 'xorgproto' 'wayland' 'elfutils'
+           'libdrm' 'libxxf86vm' 'libxdamage' 'expat' 'libxshmfence' 'llvm'
+           'lm_sensors' 'libunwind' 'libxvmc' 'libxrandr' 'libglvnd' 'zstd')
+
+  cd build
   DESTDIR=${pkgdir} ninja install
 
-  install -m755 -d ${pkgdir}/usr/share/licenses/mesa
+  # package in opencl-mesa
+  rm -r ${pkgdir}/etc
+  rm -r ${pkgdir}/usr/lib/libMesaOpenCL.so*
+  rm -r ${pkgdir}/usr/lib/gallium-pipe
+
+  install -dm755 ${pkgdir}/usr/share/licenses/mesa
   install -m644 ${srcdir}/LICENSE ${pkgdir}/usr/share/licenses/mesa/
+}
+
+package_opencl-clover() {
+  pkgdesc="Mesa OpenCL implementation for AMD GPUs"
+  depends=('clang' 'mesa' 'libclc' 'spirv-llvm-translator')
+
+  cd build/src/gallium/targets/opencl
+
+  install -dm755 ${pkgdir}/etc/OpenCL/vendors
+  install -m644 mesa.icd ${pkgdir}/etc/OpenCL/vendors/mesa.icd
+
+  install -dm755 ${pkgdir}/usr/lib
+  # exclude directory
+  rm -r libMesaOpenCL.so.1.0.0.p
+  cp -a libMesaOpenCL.so* ${pkgdir}/usr/lib/
+
+  cd ../pipe-loader
+
+  install -dm755 ${pkgdir}/usr/lib/gallium-pipe
+  install -m644 pipe*.so ${pkgdir}/usr/lib/gallium-pipe/
+
+  install -dm755 ${pkgdir}/usr/share/licenses/opencl-mesa
+  install -m644 ${srcdir}/LICENSE ${pkgdir}/usr/share/licenses/opencl-mesa/
 }
