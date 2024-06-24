@@ -1,8 +1,8 @@
 
 pkgname=qca-qt6
 _pkgname=qca
-pkgver=2.3.8
-pkgrel=3
+pkgver=2.3.9
+pkgrel=1
 pkgdesc="Qt Cryptographic Architecture - Qt6 version"
 arch=('x86_64')
 url="https://userbase.kde.org/QCA"
@@ -11,7 +11,7 @@ depends=('qt6-base' 'qt6-5compat' 'ca-certificates' 'nss' 'botan')
 makedepends=('cmake' 'doxygen')
 source=("https://download.kde.org/stable/qca/${pkgver}/${_pkgname}-${pkgver}.tar.xz")
 #source=("https://github.com/KDE/qca/archive/${_commit}.zip")
-sha256sums=('48759ca86a0202461d908ba66134380cc3bb7d20fed3c031b9fc0289796a8264')
+sha256sums=('c555d5298cdd7b6bafe2b1f96106f30cfa543a23d459d50c8a91eac33c476e4e')
 
 prepare() {
   cd ${_pkgname}-${pkgver}
