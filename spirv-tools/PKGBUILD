@@ -1,7 +1,7 @@
 
 pkgname=spirv-tools
 _pkgname=SPIRV-Tools
-pkgver=2024.3
+pkgver=2024.2
 pkgrel=1
 pkgdesc='The SPIR-V Tools project provides an API and commands for processing SPIR-V modules.'
 arch=('x86_64')
@@ -10,7 +10,7 @@ license=('Apache-2.0')
 depends=('gcc-libs')
 makedepends=('cmake' 'python3' 'spirv-headers')
 source=("https://github.com/KhronosGroup/SPIRV-Tools/archive/v${pkgver}.tar.gz")
-md5sums=('ae29eff28446e6619439b94ad9d89247')
+md5sums=('bde778ea43ee00f81ced9e441d69a0c9')
 
 build() {
   cmake -B build -S ${_pkgname}-${pkgver} \
