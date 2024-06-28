@@ -3,8 +3,8 @@ _extramodules=extramodules-6.9-next
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=nvidia-470xx-next
-pkgver=470.239.06
-pkgrel=21
+pkgver=470.256.02
+pkgrel=1
 pkgdesc="NVIDIA drivers for linux."
 arch=('x86_64')
 url="http://www.nvidia.com/"
@@ -21,7 +21,7 @@ _pkg="NVIDIA-Linux-x86_64-${pkgver}"
 source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
         'linux-6.5.patch'
         "https://gitweb.gentoo.org/repo/gentoo.git/plain/x11-drivers/nvidia-drivers/files/nvidia-drivers-470.223.02-gpl-pfn_valid.patch")
-md5sums=('4d007f78ef892929399aaf02152f4c38'
+md5sums=('57f54d5f6ddef5417215645aabbf9b9c'
          '0ea696144a7199536089664225775b47'
          'a2579e8be54ed3efdcd6d0e9f1531a83')
 

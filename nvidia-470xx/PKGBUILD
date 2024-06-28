@@ -3,8 +3,8 @@ _extramodules=extramodules-6.8
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=('nvidia-470xx' 'khd-nvidia-470xx')
-pkgver=470.239.06
-pkgrel=6
+pkgver=470.256.02
+pkgrel=1
 arch=('x86_64')
 url="https://www.nvidia.com/page/home.html"
 makedepends=('linux-headers' 'linux>=6.8.9' 'linux<6.9' "nvidia-470xx-utils=${pkgver}")
@@ -17,7 +17,7 @@ _pkg="NVIDIA-Linux-x86_64-${pkgver}"
 source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
         'nvidia_supported'
         'linux-6.5.patch')
-md5sums=('4d007f78ef892929399aaf02152f4c38'
+md5sums=('57f54d5f6ddef5417215645aabbf9b9c'
          '282f73f1a7326339a7b0e0716eee4f76'
          '0ea696144a7199536089664225775b47')
 
