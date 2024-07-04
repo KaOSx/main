@@ -1,14 +1,25 @@
 pkgname=xsimd
 pkgver=13.0.0
-pkgrel=1
+pkgrel=2
 pkgdesc="C++ wrappers for SIMD intrinsics and parallelized, optimized mathematical functions"
 url='https://xsimd.readthedocs.io/en/latest/'
 arch=('x86_64')
 license=('BSD-3')
 makedepends=('cmake')
-source=("https://github.com/xtensor-stack/xsimd/archive/refs/tags/${pkgver}.tar.gz")
-sha256sums=('8bdbbad0c3e7afa38d88d0d484d70a1671a1d8aefff03f4223ab2eb6a41110a3')
- 
+source=("https://github.com/xtensor-stack/xsimd/archive/refs/tags/${pkgver}.tar.gz"
+        "https://github.com/xtensor-stack/xsimd/commit/96edf0340492fa9c080f5182b38358ca85baef5e.diff"
+        "https://github.com/xtensor-stack/xsimd/commit/80a59235e3ffa51659aaa06f002bfd088b77023c.diff")
+sha256sums=('8bdbbad0c3e7afa38d88d0d484d70a1671a1d8aefff03f4223ab2eb6a41110a3'
+            'badcd987572e341bdd6d8b3673a93f4297d1d4b2567777c82adf8233da64adfa'
+            '492c36f89df62965db3dde53ea77fcdfb521e5b87e9bc9f0193bdb4f5a89c26b')
+
+prepare() {
+  cd ${pkgname}-${pkgver}
+
+  patch -p1 -i ${srcdir}/96edf0340492fa9c080f5182b38358ca85baef5e.diff
+  patch -p1 -i ${srcdir}/80a59235e3ffa51659aaa06f002bfd088b77023c.diff
+}
+
 build() {
   cmake -B build -S ${pkgname}-${pkgver} \
     -DCMAKE_INSTALL_PREFIX=/usr \
