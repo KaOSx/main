@@ -1,13 +1,13 @@
 
-_extramodules=extramodules-6.8
+_extramodules=extramodules-6.9
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=('nvidia-470xx' 'khd-nvidia-470xx')
 pkgver=470.256.02
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 url="https://www.nvidia.com/page/home.html"
-makedepends=('linux-headers' 'linux>=6.8.9' 'linux<6.9' "nvidia-470xx-utils=${pkgver}")
+makedepends=('linux-headers' 'linux>=6.9.8' 'linux<6.10' "nvidia-470xx-utils=${pkgver}")
 options=('!strip')
 license=('custom')
 
@@ -36,7 +36,7 @@ build() {
 
 package_nvidia-470xx() {
     pkgdesc="NVIDIA drivers for linux."
-    depends=('linux>=6.8.9' 'linux<6.9' "nvidia-470xx-utils=${pkgver}")
+    depends=('linux>=6.9.8' 'linux<6.10' "nvidia-470xx-utils=${pkgver}")
     conflicts=('nvidia' 'nvidia-390xx')
     install=nvidia.install
 
