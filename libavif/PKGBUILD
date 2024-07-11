@@ -1,6 +1,6 @@
 
 pkgname=libavif
-pkgver=1.0.4
+pkgver=1.1.0
 pkgrel=1
 pkgdesc="Library that aims to be a friendly, portable C implementation of the AV1 Image File Format"
 arch=('x86_64')
@@ -10,7 +10,7 @@ depends=('dav1d' 'libjpeg' 'libpng' 'zlib')
 makedepends=('cmake' 'gdk-pixbuf2' 'nasm' 'pkg-config')
 source=("https://github.com/AOMediaCodec/libavif/archive/refs/tags/v${pkgver}.tar.gz"
         "https://github.com/AOMediaCodec/libavif/commit/26224fe476ec660e44c816ca5b95d6ed08d1ad06.diff")
-sha256sums=('dc56708c83a4b934a8af2b78f67f866ba2fb568605c7cf94312acf51ee57d146'
+sha256sums=('edb31951005d7a143be1724f24825809599a4832073add50eaf987733defb5c8'
             'ce679ee6629aa0adec04f01373c17d51256853c7ef6795c12773824ad1f10704')
 
 prepare() {
@@ -24,8 +24,9 @@ build() {
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=lib \
     -DAVIF_BUILD_APPS=ON \
-    -DAVIF_CODEC_DAV1D=ON \
-    -DAVIF_BUILD_GDK_PIXBUF=ON
+    -DAVIF_CODEC_DAV1D=SYSTEM \
+    -DAVIF_BUILD_GDK_PIXBUF=ON \
+    -DAVIF_LIBYUV=OFF
   cmake --build build
 }
 
