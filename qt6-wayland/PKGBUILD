@@ -6,7 +6,7 @@ pkgname=qt6-wayland
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=1
+pkgrel=2
 pkgdesc="Cross-platform application and UI framework (QtWayland)"
 arch=('x86_64')
 url="https://www.qt.io/"
@@ -16,8 +16,16 @@ makedepends=('cmake' 'ninja')
 groups=('qt6')
 #options=('debug')
 _pkgfqn="qtwayland-everywhere-src-${subver}"
-source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
-md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`)
+source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz"
+        "https://invent.kde.org/qt/qt/qtwayland/-/commit/92bcb8f6b7a852c7a5d662fc34de561692a7a454.diff")
+md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
+         'd34dc4251d805567a5f3614626387916')
+
+prepare() {
+  cd ${_pkgfqn}
+
+  patch -p1 -i ${srcdir}/92bcb8f6b7a852c7a5d662fc34de561692a7a454.diff
+}
 
 build() {
     cmake -B build -S ${_pkgfqn} -G Ninja \
