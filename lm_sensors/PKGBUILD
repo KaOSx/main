@@ -1,9 +1,9 @@
 
 pkgname=lm_sensors
-pkgver=3.6.0
-_pkgver=3-6-0
+pkgver=3.6.2
+_pkgver=3-6-2
 _commit=42f240d2a457834bcbdf4dc8b57237f97b5f5854
-pkgrel=6
+pkgrel=1
 pkgdesc="Collection of user space tools for general SMBus access and hardware monitoring"
 arch=('x86_64')
 url="https://github.com/groeck/lm-sensors"
@@ -12,20 +12,20 @@ depends=('perl' 'sysfsutils')
 makedepends=('rrdtool')
 backup=('etc/sensors3.conf' 'etc/conf.d/healthd' 'etc/conf.d/sensord')
 options=('!emptydirs')
-#source=("https://github.com/lm-sensors/lm-sensors/archive/V${_pkgver}.tar.gz"
-source=("https://github.com/lm-sensors/lm-sensors/archive/${_commit}.zip"
+source=("https://github.com/hramrach/lm-sensors/archive/V${_pkgver}.tar.gz"
+#source=("https://github.com/lm-sensors/lm-sensors/archive/${_commit}.zip"
         'healthd' 
         'healthd.conf' 
         'sensord.conf' 
         'healthd.service')
-md5sums=('71f14e841d00b06a7e320d935f81bba9'
+md5sums=('44c733f509cd4a31494fd3e355152b0a'
          'b68bdb73bb4d28ebdb36e2d92278582d'
          'f3ed015c38bdbe9b4e17d38833fde9cc'
          'd398a55842fb5f2365a011512df6fc3c'
          'daf19e142d59f015040814172742502b')
 
 build() {
-  cd lm-sensors-${_commit}
+  cd lm-sensors-${_pkgver}
   sed -i 's|/etc/sysconfig|/etc/conf.d|' prog/{detect/sensors-detect,init/lm_sensors.service}
   sed -i 's|EnvironmentFile=|EnvironmentFile=-|' prog/init/lm_sensors.service
 
@@ -33,7 +33,7 @@ build() {
 }
 
 package() {
-  cd lm-sensors-${_commit}
+  cd lm-sensors-${_pkgver}
   make BUILD_STATIC_LIB=0 \
     PREFIX=/usr MANDIR=/usr/share/man DESTDIR=${pkgdir} install
 
