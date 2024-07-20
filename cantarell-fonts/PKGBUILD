@@ -2,10 +2,10 @@
 pkgname=cantarell-fonts
 pkgver=0.303.1
 _pkgver=0.303
-pkgrel=1
+pkgrel=2
 pkgdesc="The Cantarell typeface family is a contemporary Humanist sans serif"
 arch=('x86_64')
-url="https://git.gnome.org/browse/cantarell-fonts/"
+url="https://gitlab.gnome.org/GNOME/cantarell-fonts"
 license=('GPL2')
 depends=('fontconfig' 'python3')
 makedepends=('meson' 'ninja')
@@ -19,7 +19,7 @@ build() {
   mkdir -p build
   cd build
 
-  meson ../${pkgname}-${pkgver} \
+  meson setup ../${pkgname}-${pkgver} \
     --prefix=/usr \
     --buildtype=release \
     -Dbuildappstream=false \
