@@ -32,7 +32,7 @@ md5sums=('405c2220d5d3711e9f298c871e8d66ee'
          '0ea696144a7199536089664225775b47'
          '542666e201625eb18cb26c830373ed2e'
          '23be586e1177bf0fb3aa8236ad42f008'
-         '6a3ec7a2ed377259e9f7b45b9ba2a7a5')
+         '8da97da4a024e23c3b0e8f6bd2c09579')
 
 build() {
     cd ${srcdir}
@@ -46,7 +46,7 @@ build() {
     patch -p1 -i ${srcdir}/linux-6.5.patch
     patch -p1 -i ${srcdir}/linux-6.6.patch
     patch -p1 -i ${srcdir}/linux-6.8.patch
-    #patch -p1 -i ${srcdir}/linux-6.10.patch
+    patch -p1 -i ${srcdir}/linux-6.10.patch
     # linux 4.20 needed
     #sed -i -e 's|ipmi_user_t         p_user;|struct ipmi_user    *p_user;|g' kernel/nvidia/os-interface.c
     
