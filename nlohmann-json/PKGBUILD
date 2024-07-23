@@ -1,0 +1,27 @@
+
+pkgname=nlohmann-json
+_pkgname=json
+pkgver=3.11.3
+pkgrel=1
+pkgdesc="JSON for Modern C++"
+arch=('x86_64')
+url="https://github.com/nlohmann/json"
+license=('MIT')
+makedepends=('cmake')
+source=("https://github.com/nlohmann/json/releases/download/v${pkgver}/json.tar.xz")
+sha256sums=('d6c65aca6b1ed68e7a182f4757257b107ae403032760ed6ef121c9d55e81757d')
+
+build() {
+  cmake -B build -S ${_pkgname} \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_LIBDIR=/usr/lib \
+    -DJSON_BuildTests=OFF
+  cmake --build build
+}
+
+package() {
+
+  DESTDIR=${pkgdir} cmake --install build
+  install -vDm644 ${_pkgname}/LICENSE.MIT -t ${pkgdir}/usr/share/licenses/${pkgname}/
+}
