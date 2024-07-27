@@ -3,12 +3,12 @@
 pkgname=opencv
 pkgver=4.10.0
 _pkgver=4.10.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Open Source Computer Vision Library"
 arch=('x86_64')
 license=('Apache2')
 url="https://opencv.org/"
-depends=('gst-plugins-base' 'openexr' 'libdc1394' 'v4l-utils' 'ffmpeg' 'qt5-base'
+depends=('gst-plugins-base' 'openexr' 'libdc1394' 'v4l-utils' 'ffmpeg' 'qt6-base' 'qt6-5compat'
          'libgphoto2' 'libwebp') # 'protobuf')
 makedepends=('pkgconfig' 'cmake' 'python3-numpy' 'python3-setuptools' 'eigen3' 'python3-sphinx' 'mesa' 'glew')
 optdepends=('python3-numpy: Python 3.x interface' 'eigen3')
@@ -23,7 +23,7 @@ md5sums=('adaf23e87339e6df6d50d68001138ccc'
 prepare () {
   cd opencv_contrib-${_pkgver}
   # https://github.com/opencv/opencv_contrib/issues/3063
-  #sed -e 's|HAVE_QT5|HAVE_QT|' -i modules/cvv/CMakeLists.txt
+  sed -e 's|"${OPENGL_LIBRARIES}"|"${OPENGL_LIBRARIES}" GL|' -i modules/rgbd/CMakeLists.txt
   #patch -p1 -i ${srcdir}/c4419e4e65a8d9e0b5a15e9a5242453f261bee46.diff
 }
          
@@ -40,14 +40,17 @@ build() {
         -DBUILD_opencv_python3=ON \
         -DWITH_XINE=OFF \
         -DWITH_QT=ON \
+        -DCMAKE_DISABLE_FIND_PACKAGE_Qt5=yes \
         -DWITH_OPENGL=ON \
+        -DOpenGL_GL_PREFERENCE=GLVND \
         -DWITH_TBB=OFF \
         -DWITH_CUDA=OFF \
         -DWITH_GTK=OFF \
         -DENABLE_FAST_MATH=ON \
         -DOPENCV_EXTRA_MODULES_PATH=${srcdir}/opencv_contrib-${_pkgver}/modules \
         -DOPENCV_GENERATE_PKGCONFIG=ON \
-        -DOPENCV_ENABLE_NONFREE=ON
+        -DOPENCV_ENABLE_NONFREE=ON \
+        -DCMAKE_CXX_STANDARD=17
   cmake --build build
 }
 
