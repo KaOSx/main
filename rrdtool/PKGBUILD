@@ -1,7 +1,7 @@
 
 pkgname=rrdtool
-pkgver=1.8.0
-pkgrel=5
+pkgver=1.9.0
+pkgrel=1
 pkgdesc="Data logging and graphing application"
 arch=('x86_64')
 url="https://www.rrdtool.org"
@@ -10,7 +10,7 @@ depends=('libpng' 'libxml2' 'pango' 'ttf-dejavu' 'ruby' 'tcl' 'lua' 'perl')
 makedepends=('intltool' 'groff')
 options=('!libtool' '!emptydirs' '!makeflags')
 source=("https://github.com/oetiker/rrdtool-1.x/releases/download/v${pkgver}/rrdtool-${pkgver}.tar.gz")
-md5sums=('852754364cbd0703a099b5eb32932851')
+md5sums=('bcbdb069e74fc866fb92deb6697c5392')
 
 build() {
   cd ${pkgname}-${pkgver}
@@ -26,7 +26,6 @@ build() {
     --enable-ruby-site-install \
     --disable-python \
     --enable-lua \
-    --enable-lua-site-install \
     --enable-tcl \
     --disable-libwrap
   make
