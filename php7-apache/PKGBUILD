@@ -2,7 +2,7 @@
 pkgname=php7-apache
 _pkgname=php
 pkgver=7.4.33
-pkgrel=6
+pkgrel=7
 arch=('x86_64')
 pkgdesc='Apache SAPI for PHP'
 license=('PHP')
@@ -29,6 +29,8 @@ prepare() {
 build() {
 	cd ${_pkgname}-${pkgver}
 	CPPFLAGS+=" -I/usr/include/openssl1.1" LDFLAGS+=" -L/usr/lib/openssl1.1"
+	export CFLAGS="${CFLAGS} -fPIC -Wno-error=incompatible-pointer-types"
+    export CXXFLAGS="${CXXFLAGS} -fPIC -Wno-error=incompatible-pointer-types -std=c++17"
 
 	./configure --config-cache \
 		--prefix=/usr \
@@ -58,7 +60,6 @@ build() {
 		--enable-sysvshm=shared \
 		--with-bz2=shared \
 		--with-curl=shared \
-		--with-enchant=shared \
 		--with-external-pcre \
 		--with-fpm-systemd \
 		--with-freetype \

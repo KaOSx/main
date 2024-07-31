@@ -3,12 +3,12 @@
 pkgname=php7
 _pkgname=php
 pkgver=7.4.33
-pkgrel=8
+pkgrel=9
 arch=('x86_64')
 pkgdesc='An HTML-embedded scripting language'
 license=('PHP')
 url='https://secure.php.net/'
-depends=('postgresql-libs' 'libldap' 'sqlite' 'unixodbc' 'net-snmp' 'enchant' 
+depends=('postgresql-libs' 'libldap' 'sqlite' 'unixodbc' 'net-snmp' # 'enchant' 
          'freetds' 'libmcrypt' 'tidyhtml' 'aspell' 'libtool' 'libpng' 'icu' 'curl' 'libxslt' 'bzip2'
          'freetype2' 'harfbuzz' 'systemd' 'pcre2' 'libxml2' 'libxpm' 'libzip' 'gdbm' 'argon2' 'libsodium'
          'oniguruma' 'libxcrypt' 'openssl1.1') #'libvpx'
@@ -35,7 +35,7 @@ prepare() {
 
 	patch -p0 -i ${srcdir}/php.ini.patch
 	patch -p0 -i ${srcdir}/php-fpm.conf.in.patch
-	patch -p0 -i ${srcdir}/enchant2.patch
+	#patch -p0 -i ${srcdir}/enchant2.patch
 
 	sed -i -e 's|#include "buffio.h"|#include "tidybuffio.h"|' ext/tidy/tidy.c
 }
@@ -43,6 +43,8 @@ prepare() {
 build() {
     EXTENSION_DIR=/usr/lib/php7/modules
 	export EXTENSION_DIR
+	export CFLAGS="${CFLAGS} -fPIC -Wno-error=incompatible-pointer-types"
+    export CXXFLAGS="${CXXFLAGS} -fPIC -Wno-error=incompatible-pointer-types -std=c++17"
 	#PEAR_INSTALLDIR=/usr/share/pear
 	#export PEAR_INSTALLDIR
 
@@ -82,7 +84,6 @@ build() {
 		--with-password-argon2 \
 		--with-bz2=shared \
 		--with-curl=shared \
-		--with-enchant=shared \
 		--with-external-pcre \
 		--with-fpm-systemd \
 		--with-freetype \
