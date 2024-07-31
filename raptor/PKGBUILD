@@ -1,18 +1,21 @@
 
 pkgname=raptor
 pkgver=2.0.16
-pkgrel=3
+pkgrel=4
 pkgdesc="A C library that parses RDF/XML/N-Triples into RDF triples"
 arch=('x86_64')
 url="http://librdf.org/raptor"
 depends=('libxml2' 'curl' 'zlib' 'libxslt' 'icu')
 license=('LGPL')
 options=('!libtool')
-source=("http://librdf.org/dist/source/raptor2-$pkgver.tar.gz")
-md5sums=('0a71f13b6eaa0a04bf411083d89d7bc2')
+source=("http://librdf.org/dist/source/raptor2-$pkgver.tar.gz"
+        "https://gitweb.gentoo.org/repo/gentoo.git/plain/media-libs/raptor/files/raptor-2.0.16-libxml2-2.11-compatibility.patch")
+md5sums=('0a71f13b6eaa0a04bf411083d89d7bc2'
+         '4032f55b7437b5bda5778704880dc104')
 
 build() {
   cd raptor2-${pkgver}
+  patch -p1 -i ${srcdir}/raptor-2.0.16-libxml2-2.11-compatibility.patch
 
   ./configure --prefix=/usr \
     --disable-static \
