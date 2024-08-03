@@ -1,7 +1,7 @@
 
 # rebuild mpv on any update
 pkgname=ffmpeg
-pkgver=6.1.1
+pkgver=6.1.2
 pkgrel=1
 pkgdesc="Complete and free Internet live audio and video broadcasting solution for Linux/Unix"
 arch=('x86_64')
@@ -14,13 +14,13 @@ depends=('bzip2' 'lame' 'sdl2' 'libvorbis' 'xvidcore' 'zlib' 'x264' 'libtheora' 
 makedepends=('yasm' 'vulkan-headers')
 source=("https://ffmpeg.org/releases/${pkgname}-${pkgver}.tar.xz"
         "https://github.com/FFmpeg/FFmpeg/commit/fef22c87ada4517441701e6e61e062c9f4399c8e.diff")
-md5sums=('341d719415b7f95bb59f5016f2864ac6'
+md5sums=('42f9bb3aacdd5c5907d1af1811738c00'
          'd66cadd88d67cac189d52e63462ef04e')
 
 build() {
   cd ${pkgname}-${pkgver}
   # renamed vulkan headers
-  patch -p1 -i ${srcdir}/fef22c87ada4517441701e6e61e062c9f4399c8e.diff
+  #patch -p1 -i ${srcdir}/fef22c87ada4517441701e6e61e062c9f4399c8e.diff
 
   ./configure --prefix=/usr \
               --enable-avisynth \
