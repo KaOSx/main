@@ -1,20 +1,20 @@
  
 pkgname=pyyaml
 _pkgname=PyYAML
-pkgver=6.0.1
-pkgrel=2
+pkgver=6.0.2
+pkgrel=1
 pkgdesc="The next generation YAML parser and emitter for Python."
 arch=('x86_64')
 url="https://github.com/yaml/pyyaml"
 license=('MIT')
 depends=('python3' 'libyaml')
 makedepends=('python3-setuptools')
-source=("https://pypi.io/packages/source/P/PyYAML/${_pkgname}-${pkgver}.tar.gz")
+source=("https://pypi.io/packages/source/p/pyyaml/${pkgname}-${pkgver}.tar.gz")
 #source=("https://github.com/yaml/pyyaml/archive/refs/tags/${pkgver}.tar.gz")
-sha256sums=('bfdf460b1736c775f2ba9f6a92bca30bc2095067b8a9d77876d1fad6cc3b4a43')
+sha256sums=('d584d9ec91ad65861cc08d42e834324ef890a082e591037abe114850ff7bbc3e')
 
 package() {
-  cd ${_pkgname}-${pkgver}
+  cd ${pkgname}-${pkgver}
 
   python3 setup.py install --prefix=/usr --root=${pkgdir}
   install -m644 -D LICENSE ${pkgdir}/usr/share/licenses/$pkgname/LICENSE
