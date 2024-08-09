@@ -1,6 +1,6 @@
 
 pkgname=zziplib
-pkgver=0.13.77
+pkgver=0.13.78
 pkgrel=1
 pkgdesc="Library that provides read access on ZIP-archives and unpacked data."
 arch=('x86_64')
@@ -10,7 +10,7 @@ depends=('zlib')
 makedepends=('python3' 'cmake' 'xmlto') 
 options=('!libtool')
 source=("https://github.com/gdraheim/zziplib/archive/v${pkgver}.tar.gz")
-md5sums=('242a8b4188a180b1d08632f95af16729')
+md5sums=('6b18c6ea2f84751a7d3a4af40b4d0763')
 
 build() {
     cmake -B build -S ${pkgname}-${pkgver} \
