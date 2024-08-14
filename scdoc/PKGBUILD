@@ -1,0 +1,23 @@
+
+pkgname=scdoc
+pkgver=1.11.3
+pkgrel=1
+license=('MIT')
+pkgdesc='Simple man page generator for POSIX systems written in C99.'
+arch=('x86_64')
+url='https://git.sr.ht/~sircmpwn/scdoc/'
+source=("https://git.sr.ht/~sircmpwn/scdoc/archive/${pkgver}.tar.gz")
+sha256sums=('4c5c6136540384e5455b250f768e7ca11b03fdba1a8efc2341ee0f1111e57612')
+
+build() {
+  cd ${pkgname}-${pkgver}
+
+  make PREFIX=/usr
+}
+
+package() {
+  cd ${pkgname}-${pkgver}
+
+  make PREFIX=/usr DESTDIR=${pkgdir} install
+  install -D -m644 COPYING ${pkgdir}/usr/share/licenses/${pkgname}/COPYING
+}
