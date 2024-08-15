@@ -1,16 +1,16 @@
 
 pkgname=cups-browsed
-pkgver=2.0.0
+pkgver=2.0.1
 pkgrel=1
 pkgdesc="OpenPrinting CUPS Filters"
 arch=('x86_64')
 url="https://github.com/OpenPrinting/cups-browsed"
 license=('GPL')
 depends=('avahi' 'libcups' 'libcupsfilters' 'libldap' 'libppd')
-makedepends=('python3') 
+makedepends=('python3' 'python3-packaging') 
 options=('!libtool')
 source=("https://github.com/OpenPrinting/cups-browsed/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
-md5sums=('1f8dc0c5a08d8a410df0713c5adbaee9')
+md5sums=('b6b5bad9b3bb52afb687702e0b3f6d02')
 
 build() {
   cd ${pkgname}-${pkgver}
