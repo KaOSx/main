@@ -1,16 +1,16 @@
 
 pkgname=python3-markdown
-_pkgname=Markdown
-pkgver=3.6
-pkgrel=2
+_pkgname=markdown
+pkgver=3.7
+pkgrel=1
 pkgdesc="Python implementation of John Gruber’s Markdown with Extension support."
 arch=('x86_64')
 url='https://python-markdown.github.io/'
 license=('BSD')
 depends=('python3-importlib-metadata')
 makedepends=('python3-build' 'python3-installer' 'python3-setuptools' 'python3-wheel')
-source=("https://files.pythonhosted.org/packages/source/M/Markdown/${_pkgname}-${pkgver}.tar.gz")
-sha256sums=('ed4f41f6daecbeeb96e576ce414c41d2d876daa9a16cb35fa8ed8c2ddfad0224')
+source=("https://files.pythonhosted.org/packages/source/m/markdown/${_pkgname}-${pkgver}.tar.gz")
+sha256sums=('2ae2471477cfd02dbbf038d5d9bc226d40def84b4fe2986e49b59b6b472bbed2')
 
 build() {
   cd ${_pkgname}-${pkgver}
