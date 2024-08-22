@@ -1,6 +1,6 @@
 
 pkgname=gst-plugins-bad
-pkgver=1.24.6
+pkgver=1.24.7
 pkgrel=1
 pkgdesc="GStreamer Multimedia Framework Bad Plugins"
 arch=('x86_64')
@@ -16,7 +16,7 @@ makedepends=('libexif' 'libvdpau' 'libmpeg2' 'python3' 'meson' 'ninja'
              'gobject-introspection' 'bluez' 'ladspa' 'openal' 'python3-packaging')
 options=('!libtool' '!emptydirs')
 source=("https://gstreamer.freedesktop.org/src/gst-plugins-bad/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('8f4d965513e7827c1f547c1e749e4ef2812b371974fe64857fe5029a19c5b64c')
+sha256sums=('75d513fc0ba635fb1f39786d890b73fbac5f4bc88ff39f2a9ff62f4b8f428f22')
 
 prepare() {
   cd ${pkgname}-${pkgver}
@@ -42,7 +42,7 @@ build() {
 
 check() {
   cd build
-  # 8 fail
+  # 9 fail
   meson test
 }
 
