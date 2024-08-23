@@ -2,7 +2,7 @@
 pkgbase=nvidia-utils
 pkgname=('nvidia-utils' 'opencl-nvidia' 'nvidia-settings')
 # Edit hardware-detection/hooks/hwdetect_7_graphics and Installer job 11 on version jump from 43x.xx
-pkgver=555.58.02
+pkgver=560.35.03
 pkgrel=1
 epoch=2
 arch=('x86_64')
@@ -16,7 +16,7 @@ source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.ru
 #source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}.run"
         'nvidia-restore-settings.desktop'
         'nvidia-drm-outputclass.conf')
-md5sums=('f6efa3d40fccc97fbac9b55fc81e30d7'
+md5sums=('d4f54004bb80da17b3e2fb21ac17c018'
          '9237516792da7b6df32f8c7e8a98f475'
          'cb27b0f4a78af78aa96c5aacae23256c')
 
@@ -86,6 +86,10 @@ package_nvidia-utils() {
   install -D -m644 10_nvidia_wayland.json ${pkgdir}/usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json
   mkdir -p ${pkgdir}/usr/lib/gbm
   ln -sr ${pkgdir}/usr/lib/libnvidia-allocator.so.${pkgver} ${pkgdir}/usr/lib/gbm/nvidia-drm_gbm.so
+  
+  # XWayland
+  install -D -m755 libnvidia-egl-xcb.so.1 ${pkgdir}/usr/lib/libnvidia-egl-xcb.so.1
+  install -D -m644 20_nvidia_xcb.json ${pkgdir}/usr/share/egl/egl_external_platform.d/20_nvidia_xcb.json
 
   # GLVND vendor implementation libraries for GLX
   install -D -m755 libGLX_nvidia.so.${pkgver} ${pkgdir}/usr/lib/libGLX_nvidia.so.${pkgver}
@@ -173,6 +177,11 @@ package_nvidia-utils() {
   # Firmware
   install -D -m644 firmware/gsp_ga10x.bin ${pkgdir}/lib/firmware/nvidia/${pkgver}/gsp_ga10x.bin
   install -D -m644 firmware/gsp_tu10x.bin ${pkgdir}/lib/firmware/nvidia/${pkgver}/gsp_tu10x.bin
+
+  # VulkanSC ICD
+  install -D -m755 libnvidia-vksc-core.so.${pkgver} ${pkgdir}/usr/lib/libnvidia-vksc-core.so.${pkgver}
+  install -D -m755 nvidia-pcc ${pkgdir}/usr/bin/nvidia-pcc
+  install -D -m644 nvidia_icd_vksc.json ${pkgdir}/etc/vulkansc/icd.d/nvidia_icd_vksc.json
 
   # license
   install -D -m644 LICENSE ${pkgdir}/usr/share/licenses/nvidia/LICENSE
