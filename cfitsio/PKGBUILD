@@ -1,7 +1,7 @@
 
 pkgname=cfitsio
-pkgver=4.4.1
-_pkgver=4.4.1
+pkgver=4.5.0
+_pkgver=4.5.0
 pkgrel=1
 pkgdesc="Library for reading and writing data files in FITS (Flexible Image Transport System) data format."
 arch=('x86_64')
@@ -11,13 +11,13 @@ depends=('glibc')
 makedepends=('pkgconfig')
 options=('!libtool')
 source=("https://heasarc.gsfc.nasa.gov/FTP/software/fitsio/c/${pkgname}-${_pkgver}.tar.gz")
-md5sums=('e6676f6b2a077fa970540ebe1f86ddd7')
+md5sums=('c8be725bf1f2edabb5765a53ec9cd1b8')
 
 build() {
   cd ${pkgname}-${_pkgver}
 
   ./configure --prefix=/usr
-  make shared
+  make
 }
 
 package() {
