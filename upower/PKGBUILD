@@ -1,19 +1,19 @@
 
 pkgname=upower
-pkgver=1.90.4
+pkgver=1.90.5
 pkgrel=1
 pkgdesc="Abstraction for enumerating power devices, listening to device events and querying history and statistics"
 arch=('x86_64')
 url="https://upower.freedesktop.org"
 license=('GPL')
 depends=('systemd' 'libgudev' 'polkit' 'dbus-glib' 'libimobiledevice')
-makedepends=('meson' 'ninja' 'pkg-config' 'intltool' 'docbook-xsl' 'gtk-doc')
+makedepends=('meson' 'ninja' 'pkg-config' 'intltool' 'docbook-xsl' 'gtk-doc' 'python3-packaging')
 options=('!libtool')
 install=upower.install
 source=("https://gitlab.freedesktop.org/upower/upower/-/archive/v${pkgver}/upower-v${pkgver}.tar.bz2"
 #source=("https://gitlab.freedesktop.org/upower/upower/uploads/177df5b9f9b76f25a2ad9da41aa0c1fa/${pkgname}-${pkgver}.tar.xz"
         "https://gitlab.freedesktop.org/upower/upower/commit/7192ff481bc46a257f44fb5625cbe97361cac140.diff")
-sha1sums=('82b69c2c59c49d75f2e3c81a3d086d5d1ebda1f2'
+sha1sums=('b7a12aa07ad1286bfe86f852d34633ba7f49429f'
           '54fd2692b0ec4af7e320a3b07c7d6e4a8b06fad0')
 
 prepare() {
