@@ -1,5 +1,5 @@
 pkgname=os-prober
-pkgver=1.82
+pkgver=1.83
 pkgrel=1
 pkgdesc="Utility to detect other operating systems on a set of drives."
 url="https://packages.debian.org/unstable/utils/os-prober"
@@ -9,10 +9,11 @@ depends=('sh')
 makedepends=('gcc' 'sed')
 source=("http://ftp.de.debian.org/debian/pool/main/o/os-prober/${pkgname}_${pkgver}.tar.xz")
 #source=("http://ftp.free.org/pub/frugalware/frugalware-current/source/base/${pkgname}/${pkgname}_${pkgver}.tar.gz")
-md5sums=('f970156e641123bfe6065f17e945b087')
+md5sums=('8d686604c565acedf4093f62770e1f15')
 
 build() {
-  cd ${pkgname}-${pkgver}
+  #cd ${pkgname}-${pkgver}
+  cd work
 
   # adjust lib dir to allow detection of 64-bit distros
   sed -e "s:/lib/ld\*\.so\*:/lib*/ld*.so*:g" -i os-probes/mounted/common/90linux-distro 
@@ -22,7 +23,8 @@ build() {
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
+  #cd ${pkgname}-${pkgver}
+  cd work
   install -D -m755 linux-boot-prober ${pkgdir}/usr/bin/linux-boot-prober
   install -D -m755 os-prober ${pkgdir}/usr/bin/os-prober
   install -D -m755 newns ${pkgdir}/usr/lib/os-prober/newns
