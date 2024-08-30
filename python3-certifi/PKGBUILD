@@ -1,7 +1,7 @@
 
 pkgname=python3-certifi
 _pkgname=certifi
-pkgver=2024.7.4
+pkgver=2024.8.30
 pkgrel=1
 pkgdesc="Carefully curated collection of Root Certificates for validating the trustworthiness of SSL certificates."
 arch=('x86_64')
@@ -10,7 +10,7 @@ url="https://pypi.org/project/certifi/"
 depends=('python3')
 makedepends=('python3-build' 'python3-installer' 'python3-setuptools' 'python3-wheel')
 source=("https://pypi.python.org/packages/source/C/Certifi/${_pkgname}-${pkgver}.tar.gz")
-sha256sums=('5a1e7645bc0ec61a09e26c36f6106dd4cf40c6db3a1fb6352b0244e7fb057c7b')
+sha256sums=('bec941d2aa8195e248a60b31ff9f0558284cf01a52591ceda73ea9afffd69fd9')
 
 build() {
     cd ${_pkgname}-${pkgver}
@@ -18,7 +18,7 @@ build() {
     python3 -m build -nw
 }
 
-    package() {
+package() {
     cd ${_pkgname}-${pkgver}
 
     python3 -m installer --destdir=${pkgdir} dist/*.whl
