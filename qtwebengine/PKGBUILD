@@ -8,11 +8,11 @@ source ../_buildscripts/${current_repo}-${_arch}-cfg.conf
 pkgbase=qtwebengine
 pkgname=('qtwebengine') # 'qtwebengine-examples')
 #pkgver=${qtver}
-pkgver=5.15.17
+pkgver=5.15.18
 subver=${subver}
 _pkgver=${_qtver}
-_commit=17fd3176988586168bee8654008a097a5f23ec1d
-pkgrel=3
+_commit=d45daa1d1fe3311c6c588b8a0be846679d30278b
+pkgrel=1
 pkgdesc="Chromium-based web engine to replace Qt WebKit"
 url="https://www.qt.io/"
 arch=('x86_64')
@@ -29,8 +29,6 @@ source=("git+https://github.com/qt/qtwebengine.git#commit=${_commit}"
         'demobrowser.desktop'
         'quicknanobrowser.desktop'
         'markdowneditor.desktop'
-        "https://gitlab.archlinux.org/archlinux/packaging/packages/qt5-webengine/-/raw/main/qt5-webengine-chromium-python3.patch"
-        "https://gitlab.archlinux.org/archlinux/packaging/packages/qt5-webengine/-/raw/main/qt5-webengine-python3.patch"
         "https://raw.githubusercontent.com/archlinux/svntogit-packages/packages/qt5-webengine/trunk/qt5-webengine-pipewire-0.3.patch"
         'drop-catapult.patch'
         'chromium-drop-catapult.patch'
@@ -42,8 +40,6 @@ md5sums=('SKIP'
          'f11d24801322ef41f8a44eedc5e104c2'
          '6d62ba455c7d70870fb28c9362c9c591'
          '5ea5aa48c198a8de1398fc9e7a4abd14'
-         'f4e619ef652ec9a858fb784cd9bacfea'
-         '073c696a8cdbfb99acec97754f00b5cf'
          'a21aa28d235877e7dcc35055d67d417d'
          '1e2bf35ced2fa754cf04eb85762bb2e8'
          'bf595b1346aab831c778e7ae30fbcb79'
@@ -53,7 +49,7 @@ prepare() {
     mkdir -p build
     cd ${_pkgfqn}
 
-    sed -i 's|MODULE_VERSION = 5.15.17|MODULE_VERSION = 5.15.14|' .qmake.conf
+    sed -i 's|MODULE_VERSION = 5.15.18|MODULE_VERSION = 5.15.15|' .qmake.conf
 
     git submodule init
     git submodule set-url src/3rdparty ${srcdir}/qtwebengine-chromium
