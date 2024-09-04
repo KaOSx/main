@@ -1,5 +1,5 @@
 diff --git a/mkspecs/common/android/qplatformdefs.h b/mkspecs/common/android/qplatformdefs.h
-index f75bc4093b..2bd59410d4 100644
+index f75bc4093b6..2bd59410d4e 100644
 --- a/mkspecs/common/android/qplatformdefs.h
 +++ b/mkspecs/common/android/qplatformdefs.h
 @@ -144,11 +144,7 @@
@@ -15,7 +15,7 @@ index f75bc4093b..2bd59410d4 100644
  #if defined(_XOPEN_SOURCE) && (_XOPEN_SOURCE >= 500)
  #define QT_SNPRINTF             ::snprintf
 diff --git a/mkspecs/linux-clang/qplatformdefs.h b/mkspecs/linux-clang/qplatformdefs.h
-index a818d973f0..c1ab72fbc6 100644
+index a818d973f08..c1ab72fbc69 100644
 --- a/mkspecs/linux-clang/qplatformdefs.h
 +++ b/mkspecs/linux-clang/qplatformdefs.h
 @@ -79,14 +79,6 @@
@@ -34,7 +34,7 @@ index a818d973f0..c1ab72fbc6 100644
  #define QT_SNPRINTF             ::snprintf
  #define QT_VSNPRINTF            ::vsnprintf
 diff --git a/mkspecs/linux-g++/qplatformdefs.h b/mkspecs/linux-g++/qplatformdefs.h
-index 13523f0702..4d2750d9ec 100644
+index 13523f07023..4d2750d9ec1 100644
 --- a/mkspecs/linux-g++/qplatformdefs.h
 +++ b/mkspecs/linux-g++/qplatformdefs.h
 @@ -79,14 +79,6 @@
@@ -53,7 +53,7 @@ index 13523f0702..4d2750d9ec 100644
  #define QT_SNPRINTF             ::snprintf
  #define QT_VSNPRINTF            ::vsnprintf
 diff --git a/mkspecs/linux-llvm/qplatformdefs.h b/mkspecs/linux-llvm/qplatformdefs.h
-index dc750ab1ef..d3cc39b47f 100644
+index dc750ab1ef3..d3cc39b47f6 100644
 --- a/mkspecs/linux-llvm/qplatformdefs.h
 +++ b/mkspecs/linux-llvm/qplatformdefs.h
 @@ -80,14 +80,6 @@
@@ -72,7 +72,7 @@ index dc750ab1ef..d3cc39b47f 100644
  #define QT_SNPRINTF             ::snprintf
  #define QT_VSNPRINTF            ::vsnprintf
 diff --git a/mkspecs/linux-lsb-g++/qplatformdefs.h b/mkspecs/linux-lsb-g++/qplatformdefs.h
-index 4c4e53da2a..83baffb3e3 100644
+index 4c4e53da2ac..83baffb3e3d 100644
 --- a/mkspecs/linux-lsb-g++/qplatformdefs.h
 +++ b/mkspecs/linux-lsb-g++/qplatformdefs.h
 @@ -85,16 +85,9 @@
@@ -93,7 +93,7 @@ index 4c4e53da2a..83baffb3e3 100644
  #  define SIOCGIFBRDADDR 0x8919
  #endif
 diff --git a/mkspecs/lynxos-g++/qplatformdefs.h b/mkspecs/lynxos-g++/qplatformdefs.h
-index 4339ea2b23..6007af0055 100644
+index 4339ea2b23f..6007af00552 100644
 --- a/mkspecs/lynxos-g++/qplatformdefs.h
 +++ b/mkspecs/lynxos-g++/qplatformdefs.h
 @@ -72,14 +72,6 @@
@@ -112,7 +112,7 @@ index 4339ea2b23..6007af0055 100644
  #define QT_SNPRINTF             ::snprintf
  #define QT_VSNPRINTF            ::vsnprintf
 diff --git a/src/3rdparty/angle/src/libANGLE/HandleAllocator.cpp b/src/3rdparty/angle/src/libANGLE/HandleAllocator.cpp
-index c3c184258f..32af3f8f29 100644
+index c3c184258fd..32af3f8f298 100644
 --- a/src/3rdparty/angle/src/libANGLE/HandleAllocator.cpp
 +++ b/src/3rdparty/angle/src/libANGLE/HandleAllocator.cpp
 @@ -10,6 +10,7 @@
@@ -124,7 +124,7 @@ index c3c184258f..32af3f8f29 100644
  #include "common/debug.h"
  
 diff --git a/src/corelib/global/qcompilerdetection.h b/src/corelib/global/qcompilerdetection.h
-index 64c96023b0..c98f22982e 100644
+index 64c96023b05..b6bc259ebbc 100644
 --- a/src/corelib/global/qcompilerdetection.h
 +++ b/src/corelib/global/qcompilerdetection.h
 @@ -1055,16 +1055,22 @@
@@ -148,9 +148,9 @@ index 64c96023b0..c98f22982e 100644
 -# endif
 +#   undef Q_COMPILER_ATOMICS
 +#  endif
-+#  if defined(__cpp_lib_memory_resource)
-+    && (defined(__MAC_OS_X_VERSION_MIN_REQUIRED)  && __MAC_OS_X_VERSION_MIN_REQUIRED  < 140000
-+     || defined(__IPHONE_OS_VERSION_MIN_REQUIRED) && __IPHONE_OS_VERSION_MIN_REQUIRED < 170000)
++#  if defined(__cpp_lib_memory_resource) \
++    && ((defined(__MAC_OS_X_VERSION_MIN_REQUIRED)  && __MAC_OS_X_VERSION_MIN_REQUIRED  < 140000) \
++     || (defined(__IPHONE_OS_VERSION_MIN_REQUIRED) && __IPHONE_OS_VERSION_MIN_REQUIRED < 170000))
 +#   undef __cpp_lib_memory_resource // Only supported on macOS 14 and iOS 17
 +#  endif
 +# endif // defined(Q_CC_CLANG) && defined(Q_OS_DARWIN)
@@ -158,7 +158,7 @@ index 64c96023b0..c98f22982e 100644
  // ICC 15.x and 16.0 have their own implementation of std::atomic, which is activated when in Clang mode
  // (probably because libc++'s <atomic> on OS X failed to compile), but they're missing some
 diff --git a/src/corelib/global/qglobal.cpp b/src/corelib/global/qglobal.cpp
-index 5ad82c259d..ecf7b1efaa 100644
+index 5ad82c259de..ecf7b1efaa6 100644
 --- a/src/corelib/global/qglobal.cpp
 +++ b/src/corelib/global/qglobal.cpp
 @@ -97,6 +97,10 @@
@@ -215,7 +215,7 @@ index 5ad82c259d..ecf7b1efaa 100644
  
  #endif
 diff --git a/src/corelib/global/qglobal.h b/src/corelib/global/qglobal.h
-index 450c1e586a..ff7167d9cc 100644
+index 450c1e586a9..ff7167d9cc9 100644
 --- a/src/corelib/global/qglobal.h
 +++ b/src/corelib/global/qglobal.h
 @@ -307,6 +307,8 @@ typedef double qreal;
@@ -227,51 +227,8 @@ index 450c1e586a..ff7167d9cc 100644
  #endif
  
  #ifndef QT_DEPRECATED_WARNINGS_SINCE
-diff --git a/src/corelib/global/qlogging.cpp b/src/corelib/global/qlogging.cpp
-index e53dcdcfb0..93c4731cc5 100644
---- a/src/corelib/global/qlogging.cpp
-+++ b/src/corelib/global/qlogging.cpp
-@@ -191,6 +191,17 @@ static int checked_var_value(const char *varname)
-     return ok ? value : 1;
- }
- 
-+static bool is_fatal_count_down(QAtomicInt &n)
-+{
-+    // it's fatal if the current value is exactly 1,
-+    // otherwise decrement if it's non-zero
-+
-+    int v = n.loadRelaxed();
-+    while (v != 0 && !n.testAndSetRelaxed(v, v - 1, v))
-+        ;
-+    return v == 1; // we exited the loop, so either v == 0 or CAS succeeded to set n from v to v-1
-+}
-+
- static bool isFatal(QtMsgType msgType)
- {
-     if (msgType == QtFatalMsg)
-@@ -198,18 +209,12 @@ static bool isFatal(QtMsgType msgType)
- 
-     if (msgType == QtCriticalMsg) {
-         static QAtomicInt fatalCriticals = checked_var_value("QT_FATAL_CRITICALS");
--
--        // it's fatal if the current value is exactly 1,
--        // otherwise decrement if it's non-zero
--        return fatalCriticals.loadRelaxed() && fatalCriticals.fetchAndAddRelaxed(-1) == 1;
-+        return is_fatal_count_down(fatalCriticals);
-     }
- 
-     if (msgType == QtWarningMsg || msgType == QtCriticalMsg) {
-         static QAtomicInt fatalWarnings = checked_var_value("QT_FATAL_WARNINGS");
--
--        // it's fatal if the current value is exactly 1,
--        // otherwise decrement if it's non-zero
--        return fatalWarnings.loadRelaxed() && fatalWarnings.fetchAndAddRelaxed(-1) == 1;
-+        return is_fatal_count_down(fatalWarnings);
-     }
- 
-     return false;
 diff --git a/src/corelib/global/qnamespace.h b/src/corelib/global/qnamespace.h
-index deab11f729..486b63fa3f 100644
+index deab11f7297..486b63fa3f9 100644
 --- a/src/corelib/global/qnamespace.h
 +++ b/src/corelib/global/qnamespace.h
 @@ -1867,7 +1867,7 @@ public:
@@ -284,7 +241,7 @@ index deab11f729..486b63fa3f 100644
      QT_Q_ENUM(HighDpiScaleFactorRoundingPolicy)
      QT_Q_ENUM(TabFocusBehavior)
 diff --git a/src/corelib/io/qfilesystemengine_win.cpp b/src/corelib/io/qfilesystemengine_win.cpp
-index 002f720926..e6f118a5c4 100644
+index 002f720926a..e6f118a5c44 100644
 --- a/src/corelib/io/qfilesystemengine_win.cpp
 +++ b/src/corelib/io/qfilesystemengine_win.cpp
 @@ -664,14 +664,14 @@ QFileSystemEntry QFileSystemEngine::absoluteName(const QFileSystemEntry &entry)
@@ -305,7 +262,7 @@ index 002f720926..e6f118a5c4 100644
  // File ID for Windows up to version 7 and FAT32 drives
  static inline QByteArray fileId(HANDLE handle)
 diff --git a/src/corelib/io/qfilesystemwatcher_inotify.cpp b/src/corelib/io/qfilesystemwatcher_inotify.cpp
-index 94d9d06bcb..27e0b13b0b 100644
+index 94d9d06bcb9..27e0b13b0bf 100644
 --- a/src/corelib/io/qfilesystemwatcher_inotify.cpp
 +++ b/src/corelib/io/qfilesystemwatcher_inotify.cpp
 @@ -366,7 +366,9 @@ void QInotifyFileSystemWatcherEngine::readFromInotify()
@@ -320,7 +277,7 @@ index 94d9d06bcb..27e0b13b0b 100644
      buffSize = read(inotifyFd, buffer.data(), buffSize);
      char *at = buffer.data();
 diff --git a/src/corelib/itemmodels/qabstractitemmodel.cpp b/src/corelib/itemmodels/qabstractitemmodel.cpp
-index 997a634e76..1c1ca7394d 100644
+index 997a634e767..1c1ca7394db 100644
 --- a/src/corelib/itemmodels/qabstractitemmodel.cpp
 +++ b/src/corelib/itemmodels/qabstractitemmodel.cpp
 @@ -52,6 +52,8 @@
@@ -342,7 +299,7 @@ index 997a634e76..1c1ca7394d 100644
  
  /*!
 diff --git a/src/corelib/itemmodels/qsortfilterproxymodel.cpp b/src/corelib/itemmodels/qsortfilterproxymodel.cpp
-index 3d7fe43cd3..f2871a2da7 100644
+index 3d7fe43cd3f..f2871a2da78 100644
 --- a/src/corelib/itemmodels/qsortfilterproxymodel.cpp
 +++ b/src/corelib/itemmodels/qsortfilterproxymodel.cpp
 @@ -939,8 +939,9 @@ void QSortFilterProxyModelPrivate::insert_source_items(
@@ -382,7 +339,7 @@ index 3d7fe43cd3..f2871a2da7 100644
      return d->filter_data.hasMatch(key);
  }
 diff --git a/src/corelib/kernel/qobject_p.h b/src/corelib/kernel/qobject_p.h
-index 13ffb88999..325a974f30 100644
+index 13ffb88999d..325a974f308 100644
 --- a/src/corelib/kernel/qobject_p.h
 +++ b/src/corelib/kernel/qobject_p.h
 @@ -220,7 +220,7 @@ public:
@@ -395,7 +352,7 @@ index 13ffb88999..325a974f30 100644
          QObject *sender;
          int signal;
 diff --git a/src/corelib/kernel/qtranslator.cpp b/src/corelib/kernel/qtranslator.cpp
-index bdcd016630..e4375e7e40 100644
+index bdcd0166309..e4375e7e408 100644
 --- a/src/corelib/kernel/qtranslator.cpp
 +++ b/src/corelib/kernel/qtranslator.cpp
 @@ -907,7 +907,7 @@ static QString getMessage(const uchar *m, const uchar *end, const char *context,
@@ -408,7 +365,7 @@ index bdcd016630..e4375e7e40 100644
              m += 4;
              if (!numerus--) {
 diff --git a/src/corelib/mimetypes/mime/packages/freedesktop.org.xml b/src/corelib/mimetypes/mime/packages/freedesktop.org.xml
-index d384ffb2d5..e73929c9bb 100644
+index d384ffb2d57..e73929c9bbf 100644
 --- a/src/corelib/mimetypes/mime/packages/freedesktop.org.xml
 +++ b/src/corelib/mimetypes/mime/packages/freedesktop.org.xml
 @@ -1,183 +1,177 @@
@@ -41189,7 +41146,7 @@ index d384ffb2d5..e73929c9bb 100644
 +  </mime-type>
  </mime-info>
 diff --git a/src/corelib/mimetypes/qmimedatabase.cpp b/src/corelib/mimetypes/qmimedatabase.cpp
-index 9de22cef33..34591fc667 100644
+index 9de22cef339..34591fc667b 100644
 --- a/src/corelib/mimetypes/qmimedatabase.cpp
 +++ b/src/corelib/mimetypes/qmimedatabase.cpp
 @@ -46,6 +46,9 @@
@@ -41253,7 +41210,7 @@ index 9de22cef33..34591fc667 100644
      return false;
  }
 diff --git a/src/corelib/mimetypes/qmimeglobpattern.cpp b/src/corelib/mimetypes/qmimeglobpattern.cpp
-index b1de8907b2..fa8f4c545d 100644
+index b1de8907b2d..fa8f4c545d9 100644
 --- a/src/corelib/mimetypes/qmimeglobpattern.cpp
 +++ b/src/corelib/mimetypes/qmimeglobpattern.cpp
 @@ -83,7 +83,10 @@ void QMimeGlobMatchResult::addMatch(const QString &mimeType, int weight, const Q
@@ -41269,7 +41226,7 @@ index b1de8907b2..fa8f4c545d 100644
      }
  }
 diff --git a/src/corelib/mimetypes/qmimeprovider.cpp b/src/corelib/mimetypes/qmimeprovider.cpp
-index 258dddf8cb..5125704cf1 100644
+index 258dddf8cb0..5125704cf1d 100644
 --- a/src/corelib/mimetypes/qmimeprovider.cpp
 +++ b/src/corelib/mimetypes/qmimeprovider.cpp
 @@ -242,21 +242,28 @@ void QMimeBinaryProvider::addFileNameMatches(const QString &fileName, QMimeGlobM
@@ -41326,7 +41283,7 @@ index 258dddf8cb..5125704cf1 100644
  
  bool QMimeBinaryProvider::matchSuffixTree(QMimeGlobMatchResult &result, QMimeBinaryProvider::CacheFile *cacheFile, int numEntries, int firstOffset, const QString &fileName, int charPos, bool caseSensitiveCheck)
 diff --git a/src/corelib/mimetypes/qmimeprovider_p.h b/src/corelib/mimetypes/qmimeprovider_p.h
-index f9c8ef384c..5b328a7d5e 100644
+index f9c8ef384c1..5b328a7d5e9 100644
 --- a/src/corelib/mimetypes/qmimeprovider_p.h
 +++ b/src/corelib/mimetypes/qmimeprovider_p.h
 @@ -115,7 +115,7 @@ public:
@@ -41339,7 +41296,7 @@ index f9c8ef384c..5b328a7d5e 100644
      bool matchMagicRule(CacheFile *cacheFile, int numMatchlets, int firstOffset, const QByteArray &data);
      QLatin1String iconForMime(CacheFile *cacheFile, int posListOffset, const QByteArray &inputMime);
 diff --git a/src/corelib/mimetypes/qmimetype.cpp b/src/corelib/mimetypes/qmimetype.cpp
-index 0c0de63961..d6a351262b 100644
+index 0c0de63961a..d6a351262b1 100644
 --- a/src/corelib/mimetypes/qmimetype.cpp
 +++ b/src/corelib/mimetypes/qmimetype.cpp
 @@ -376,14 +376,17 @@ QStringList QMimeType::parentMimeTypes() const
@@ -41363,7 +41320,7 @@ index 0c0de63961..d6a351262b 100644
  }
  
 diff --git a/src/corelib/plugin/qlibrary.cpp b/src/corelib/plugin/qlibrary.cpp
-index 5d2f024267..45b5a3fe27 100644
+index 5d2f0242674..45b5a3fe27f 100644
 --- a/src/corelib/plugin/qlibrary.cpp
 +++ b/src/corelib/plugin/qlibrary.cpp
 @@ -526,7 +526,7 @@ void QLibraryPrivate::mergeLoadHints(QLibrary::LoadHints lh)
@@ -41401,7 +41358,7 @@ index 5d2f024267..45b5a3fe27 100644
      and loadHints() will not reflect those changes.
  
 diff --git a/src/corelib/plugin/qpluginloader.cpp b/src/corelib/plugin/qpluginloader.cpp
-index 0a63b93762..02b8c588be 100644
+index 0a63b93762c..02b8c588be7 100644
 --- a/src/corelib/plugin/qpluginloader.cpp
 +++ b/src/corelib/plugin/qpluginloader.cpp
 @@ -105,6 +105,8 @@ QT_BEGIN_NAMESPACE
@@ -41457,7 +41414,7 @@ index 0a63b93762..02b8c588be 100644
  
  #endif // QT_CONFIG(library)
 diff --git a/src/corelib/serialization/qcborvalue.cpp b/src/corelib/serialization/qcborvalue.cpp
-index 89a928d348..3a8c2cb9ec 100644
+index 89a928d3480..3a8c2cb9ec3 100644
 --- a/src/corelib/serialization/qcborvalue.cpp
 +++ b/src/corelib/serialization/qcborvalue.cpp
 @@ -2123,7 +2123,8 @@ QCborArray QCborValue::toArray(const QCborArray &defaultValue) const
@@ -41480,422 +41437,8 @@ index 89a928d348..3a8c2cb9ec 100644
  }
  
  /*!
-diff --git a/src/corelib/serialization/qxmlstream.cpp b/src/corelib/serialization/qxmlstream.cpp
-index 0ac5548178..0d49cbac19 100644
---- a/src/corelib/serialization/qxmlstream.cpp
-+++ b/src/corelib/serialization/qxmlstream.cpp
-@@ -160,7 +160,7 @@ enum { StreamEOF = ~0U };
-     addData() or by waiting for it to arrive on the device().
- 
-     \value UnexpectedElementError The parser encountered an element
--    that was different to those it expected.
-+    or token that was different to those it expected.
- 
- */
- 
-@@ -295,13 +295,34 @@ QXmlStreamEntityResolver *QXmlStreamReader::entityResolver() const
- 
-   QXmlStreamReader is a well-formed XML 1.0 parser that does \e not
-   include external parsed entities. As long as no error occurs, the
--  application code can thus be assured that the data provided by the
--  stream reader satisfies the W3C's criteria for well-formed XML. For
--  example, you can be certain that all tags are indeed nested and
--  closed properly, that references to internal entities have been
--  replaced with the correct replacement text, and that attributes have
--  been normalized or added according to the internal subset of the
--  DTD.
-+  application code can thus be assured, that
-+  \list
-+  \li the data provided by the stream reader satisfies the W3C's
-+      criteria for well-formed XML,
-+  \li tokens are provided in a valid order.
-+  \endlist
-+
-+  Unless QXmlStreamReader raises an error, it guarantees the following:
-+  \list
-+  \li All tags are nested and closed properly.
-+  \li References to internal entities have been replaced with the
-+      correct replacement text.
-+  \li Attributes have been normalized or added according to the
-+      internal subset of the \l DTD.
-+  \li Tokens of type \l StartDocument happen before all others,
-+      aside from comments and processing instructions.
-+  \li At most one DOCTYPE element (a token of type \l DTD) is present.
-+  \li If present, the DOCTYPE appears before all other elements,
-+      aside from StartDocument, comments and processing instructions.
-+  \endlist
-+
-+  In particular, once any token of type \l StartElement, \l EndElement,
-+  \l Characters, \l EntityReference or \l EndDocument is seen, no
-+  tokens of type StartDocument or DTD will be seen. If one is present in
-+  the input stream, out of order, an error is raised.
-+
-+  \note The token types \l Comment and \l ProcessingInstruction may appear
-+  anywhere in the stream.
- 
-   If an error occurs while parsing, atEnd() and hasError() return
-   true, and error() returns the error that occurred. The functions
-@@ -620,6 +641,7 @@ QXmlStreamReader::TokenType QXmlStreamReader::readNext()
-         d->token = -1;
-         return readNext();
-     }
-+    d->checkToken();
-     return d->type;
- }
- 
-@@ -740,6 +762,14 @@ static const short QXmlStreamReader_tokenTypeString_indices[] = {
- };
- 
- 
-+static const char QXmlStreamReader_XmlContextString[] =
-+    "Prolog\0"
-+    "Body\0";
-+
-+static const short QXmlStreamReader_XmlContextString_indices[] = {
-+    0, 7
-+};
-+
- /*!
-     \property  QXmlStreamReader::namespaceProcessing
-     The namespace-processing flag of the stream reader
-@@ -775,6 +805,16 @@ QString QXmlStreamReader::tokenString() const
-                          QXmlStreamReader_tokenTypeString_indices[d->type]);
- }
- 
-+/*!
-+   \internal
-+   \return \param ctxt (Prolog/Body) as a string.
-+ */
-+QString contextString(QXmlStreamReaderPrivate::XmlContext ctxt)
-+{
-+    return QLatin1String(QXmlStreamReader_XmlContextString +
-+                         QXmlStreamReader_XmlContextString_indices[static_cast<int>(ctxt)]);
-+}
-+
- #endif // QT_NO_XMLSTREAMREADER
- 
- QXmlStreamPrivateTagStack::QXmlStreamPrivateTagStack()
-@@ -866,6 +906,8 @@ void QXmlStreamReaderPrivate::init()
- 
-     type = QXmlStreamReader::NoToken;
-     error = QXmlStreamReader::NoError;
-+    currentContext = XmlContext::Prolog;
-+    foundDTD = false;
- }
- 
- /*
-@@ -1302,15 +1344,18 @@ inline int QXmlStreamReaderPrivate::fastScanContentCharList()
-     return n;
- }
- 
--inline int QXmlStreamReaderPrivate::fastScanName(int *prefix)
-+// Fast scan an XML attribute name (e.g. "xml:lang").
-+inline QXmlStreamReaderPrivate::FastScanNameResult
-+QXmlStreamReaderPrivate::fastScanName(Value *val)
- {
-     int n = 0;
-     uint c;
-     while ((c = getChar()) != StreamEOF) {
-         if (n >= 4096) {
-             // This is too long to be a sensible name, and
--            // can exhaust memory
--            return 0;
-+            // can exhaust memory, or the range of decltype(*prefix)
-+            raiseNamePrefixTooLongError();
-+            return {};
-         }
-         switch (c) {
-         case '\n':
-@@ -1339,23 +1384,23 @@ inline int QXmlStreamReaderPrivate::fastScanName(int *prefix)
-         case '+':
-         case '*':
-             putChar(c);
--            if (prefix && *prefix == n+1) {
--                *prefix = 0;
-+            if (val && val->prefix == n + 1) {
-+                val->prefix = 0;
-                 putChar(':');
-                 --n;
-             }
--            return n;
-+            return FastScanNameResult(n);
-         case ':':
--            if (prefix) {
--                if (*prefix == 0) {
--                    *prefix = n+2;
-+            if (val) {
-+                if (val->prefix == 0) {
-+                    val->prefix = n + 2;
-                 } else { // only one colon allowed according to the namespace spec.
-                     putChar(c);
--                    return n;
-+                    return FastScanNameResult(n);
-                 }
-             } else {
-                 putChar(c);
--                return n;
-+                return FastScanNameResult(n);
-             }
-             Q_FALLTHROUGH();
-         default:
-@@ -1364,12 +1409,12 @@ inline int QXmlStreamReaderPrivate::fastScanName(int *prefix)
-         }
-     }
- 
--    if (prefix)
--        *prefix = 0;
-+    if (val)
-+        val->prefix = 0;
-     int pos = textBuffer.size() - n;
-     putString(textBuffer, pos);
-     textBuffer.resize(pos);
--    return 0;
-+    return FastScanNameResult(0);
- }
- 
- enum NameChar { NameBeginning, NameNotBeginning, NotName };
-@@ -1878,6 +1923,14 @@ void QXmlStreamReaderPrivate::raiseWellFormedError(const QString &message)
-     raiseError(QXmlStreamReader::NotWellFormedError, message);
- }
- 
-+void QXmlStreamReaderPrivate::raiseNamePrefixTooLongError()
-+{
-+    // TODO: add a ImplementationLimitsExceededError and use it instead
-+    raiseError(QXmlStreamReader::NotWellFormedError,
-+               QXmlStream::tr("Length of XML attribute name exceeds implementation limits (4KiB "
-+                              "characters)."));
-+}
-+
- void QXmlStreamReaderPrivate::parseError()
- {
- 
-@@ -4050,6 +4103,92 @@ void QXmlStreamWriter::writeCurrentToken(const QXmlStreamReader &reader)
-     }
- }
- 
-+static bool isTokenAllowedInContext(QXmlStreamReader::TokenType type,
-+                                               QXmlStreamReaderPrivate::XmlContext loc)
-+{
-+    switch (type) {
-+    case QXmlStreamReader::StartDocument:
-+    case QXmlStreamReader::DTD:
-+        return loc == QXmlStreamReaderPrivate::XmlContext::Prolog;
-+
-+    case QXmlStreamReader::StartElement:
-+    case QXmlStreamReader::EndElement:
-+    case QXmlStreamReader::Characters:
-+    case QXmlStreamReader::EntityReference:
-+    case QXmlStreamReader::EndDocument:
-+        return loc == QXmlStreamReaderPrivate::XmlContext::Body;
-+
-+    case QXmlStreamReader::Comment:
-+    case QXmlStreamReader::ProcessingInstruction:
-+        return true;
-+
-+    case QXmlStreamReader::NoToken:
-+    case QXmlStreamReader::Invalid:
-+        return false;
-+    default:
-+        return false;
-+    }
-+}
-+
-+/*!
-+   \internal
-+   \brief QXmlStreamReader::isValidToken
-+   \return \c true if \param type is a valid token type.
-+   \return \c false if \param type is an unexpected token,
-+   which indicates a non-well-formed or invalid XML stream.
-+ */
-+bool QXmlStreamReaderPrivate::isValidToken(QXmlStreamReader::TokenType type)
-+{
-+    // Don't change currentContext, if Invalid or NoToken occur in the prolog
-+    if (type == QXmlStreamReader::Invalid || type == QXmlStreamReader::NoToken)
-+        return false;
-+
-+    // If a token type gets rejected in the body, there is no recovery
-+    const bool result = isTokenAllowedInContext(type, currentContext);
-+    if (result || currentContext == XmlContext::Body)
-+        return result;
-+
-+    // First non-Prolog token observed => switch context to body and check again.
-+    currentContext = XmlContext::Body;
-+    return isTokenAllowedInContext(type, currentContext);
-+}
-+
-+/*!
-+   \internal
-+   Checks token type and raises an error, if it is invalid
-+   in the current context (prolog/body).
-+ */
-+void QXmlStreamReaderPrivate::checkToken()
-+{
-+    Q_Q(QXmlStreamReader);
-+
-+    // The token type must be consumed, to keep track if the body has been reached.
-+    const XmlContext context = currentContext;
-+    const bool ok = isValidToken(type);
-+
-+    // Do nothing if an error has been raised already (going along with an unexpected token)
-+    if (error != QXmlStreamReader::Error::NoError)
-+        return;
-+
-+    if (!ok) {
-+        raiseError(QXmlStreamReader::UnexpectedElementError,
-+                   QLatin1String("Unexpected token type %1 in %2.")
-+                   .arg(q->tokenString(), contextString(context)));
-+        return;
-+    }
-+
-+    if (type != QXmlStreamReader::DTD)
-+        return;
-+
-+    // Raise error on multiple DTD tokens
-+    if (foundDTD) {
-+        raiseError(QXmlStreamReader::UnexpectedElementError,
-+                   QLatin1String("Found second DTD token in %1.").arg(contextString(context)));
-+    } else {
-+        foundDTD = true;
-+    }
-+}
-+
- /*!
-  \fn bool QXmlStreamAttributes::hasAttribute(const QString &qualifiedName) const
-  \since 4.5
-diff --git a/src/corelib/serialization/qxmlstream.g b/src/corelib/serialization/qxmlstream.g
-index 4321fed68a..8c6a1a5887 100644
---- a/src/corelib/serialization/qxmlstream.g
-+++ b/src/corelib/serialization/qxmlstream.g
-@@ -516,7 +516,16 @@ public:
-     int fastScanLiteralContent();
-     int fastScanSpace();
-     int fastScanContentCharList();
--    int fastScanName(int *prefix = nullptr);
-+
-+    struct FastScanNameResult {
-+        FastScanNameResult() : ok(false) {}
-+        explicit FastScanNameResult(int len) : addToLen(len), ok(true) { }
-+        operator bool() { return ok; }
-+        int operator*() { Q_ASSERT(ok); return addToLen; }
-+        int addToLen;
-+        bool ok;
-+    };
-+    FastScanNameResult fastScanName(Value *val = nullptr);
-     inline int fastScanNMTOKEN();
- 
- 
-@@ -525,6 +534,7 @@ public:
- 
-     void raiseError(QXmlStreamReader::Error error, const QString& message = QString());
-     void raiseWellFormedError(const QString &message);
-+    void raiseNamePrefixTooLongError();
- 
-     QXmlStreamEntityResolver *entityResolver;
- 
-@@ -1811,7 +1821,12 @@ space_opt ::= space;
- qname ::= LETTER;
- /.
-         case $rule_number: {
--            sym(1).len += fastScanName(&sym(1).prefix);
-+            Value &val = sym(1);
-+            if (auto res = fastScanName(&val))
-+                val.len += *res;
-+            else
-+                return false;
-+
-             if (atEnd) {
-                 resume($rule_number);
-                 return false;
-@@ -1822,7 +1837,11 @@ qname ::= LETTER;
- name ::= LETTER;
- /.
-         case $rule_number:
--            sym(1).len += fastScanName();
-+            if (auto res = fastScanName())
-+                sym(1).len += *res;
-+            else
-+                return false;
-+
-             if (atEnd) {
-                 resume($rule_number);
-                 return false;
-diff --git a/src/corelib/serialization/qxmlstream_p.h b/src/corelib/serialization/qxmlstream_p.h
-index e5bde7b98e..be7b1fe665 100644
---- a/src/corelib/serialization/qxmlstream_p.h
-+++ b/src/corelib/serialization/qxmlstream_p.h
-@@ -804,6 +804,17 @@ public:
- #endif
-     bool atEnd;
- 
-+    enum class XmlContext
-+    {
-+        Prolog,
-+        Body,
-+    };
-+
-+    XmlContext currentContext = XmlContext::Prolog;
-+    bool foundDTD = false;
-+    bool isValidToken(QXmlStreamReader::TokenType type);
-+    void checkToken();
-+
-     /*!
-       \sa setType()
-      */
-@@ -1005,7 +1016,16 @@ public:
-     int fastScanLiteralContent();
-     int fastScanSpace();
-     int fastScanContentCharList();
--    int fastScanName(int *prefix = nullptr);
-+
-+    struct FastScanNameResult {
-+        FastScanNameResult() : ok(false) {}
-+        explicit FastScanNameResult(int len) : addToLen(len), ok(true) { }
-+        operator bool() { return ok; }
-+        int operator*() { Q_ASSERT(ok); return addToLen; }
-+        int addToLen;
-+        bool ok;
-+    };
-+    FastScanNameResult fastScanName(Value *val = nullptr);
-     inline int fastScanNMTOKEN();
- 
- 
-@@ -1014,6 +1034,7 @@ public:
- 
-     void raiseError(QXmlStreamReader::Error error, const QString& message = QString());
-     void raiseWellFormedError(const QString &message);
-+    void raiseNamePrefixTooLongError();
- 
-     QXmlStreamEntityResolver *entityResolver;
- 
-@@ -1939,7 +1960,12 @@ bool QXmlStreamReaderPrivate::parse()
-         break;
- 
-         case 262: {
--            sym(1).len += fastScanName(&sym(1).prefix);
-+            Value &val = sym(1);
-+            if (auto res = fastScanName(&val))
-+                val.len += *res;
-+            else
-+                return false;
-+
-             if (atEnd) {
-                 resume(262);
-                 return false;
-@@ -1947,7 +1973,11 @@ bool QXmlStreamReaderPrivate::parse()
-         } break;
- 
-         case 263:
--            sym(1).len += fastScanName();
-+            if (auto res = fastScanName())
-+                sym(1).len += *res;
-+            else
-+                return false;
-+
-             if (atEnd) {
-                 resume(263);
-                 return false;
 diff --git a/src/corelib/text/qlocale_data_p.h b/src/corelib/text/qlocale_data_p.h
-index c5e6a0d461..c613e4e537 100644
+index c5e6a0d461c..c613e4e537a 100644
 --- a/src/corelib/text/qlocale_data_p.h
 +++ b/src/corelib/text/qlocale_data_p.h
 @@ -1340,7 +1340,7 @@ static const QLocaleData locale_data[] = {
@@ -41908,7 +41451,7 @@ index c5e6a0d461..c613e4e537 100644
      {     28,     7,    57,    44,   160,    59,    37,    48,    45,    43,   101,    8222,    8220,    8218,    8216,       0,6 ,       0,6 ,     181,7 ,     181,7 ,     156,8 ,    478,17 ,      55,4 ,      59,9 ,   2157,21 ,   2178,49 ,   2227,14 ,   2157,21 ,   2178,49 ,   2227,14 ,      60,4 ,      57,4 ,  293,5 ,   5,17 ,  22,23 , {67,90,75},      146,2 ,   3345,68 ,      19,5 ,       4,0 ,     648,7 ,     655,5 ,     2,     0,     1,     6,     7 }, // Czech/Latin/Czech Republic
      {     29,     7,    58,    44,    46,    59,    37,    48,    45,    43,   101,    8220,    8221,    8216,    8217,       0,6 ,       0,6 ,     188,8 ,     188,8 ,    495,10 ,    505,23 ,     239,5 ,    244,10 ,   2241,28 ,   2269,51 ,   2320,14 ,   2334,35 ,   2269,51 ,   2320,14 ,       0,2 ,       0,2 ,    0,5 ,   5,17 ,  22,23 , {68,75,75},      148,3 ,   3413,42 ,      19,5 ,       4,0 ,     660,5 ,     665,7 ,     2,     0,     1,     6,     7 }, // Danish/Latin/Denmark
 diff --git a/src/corelib/text/qstringiterator_p.h b/src/corelib/text/qstringiterator_p.h
-index b31c7673c2..731a241407 100644
+index b31c7673c2d..731a241407a 100644
 --- a/src/corelib/text/qstringiterator_p.h
 +++ b/src/corelib/text/qstringiterator_p.h
 @@ -123,16 +123,20 @@ public:
@@ -41982,7 +41525,7 @@ index b31c7673c2..731a241407 100644
      }
  
 diff --git a/src/corelib/thread/qfutex_p.h b/src/corelib/thread/qfutex_p.h
-index f287b752d7..e294537787 100644
+index f287b752d75..e294537787e 100644
 --- a/src/corelib/thread/qfutex_p.h
 +++ b/src/corelib/thread/qfutex_p.h
 @@ -52,6 +52,7 @@
@@ -42013,7 +41556,7 @@ index f287b752d7..e294537787 100644
          return result;
      }
 diff --git a/src/corelib/thread/qmutex.cpp b/src/corelib/thread/qmutex.cpp
-index 310d1cb14f..7097122d8e 100644
+index 310d1cb14f7..7097122d8e0 100644
 --- a/src/corelib/thread/qmutex.cpp
 +++ b/src/corelib/thread/qmutex.cpp
 @@ -152,6 +152,7 @@ public:
@@ -42042,7 +41585,7 @@ index 310d1cb14f..7097122d8e 100644
      } else if (d) {
  #ifndef QT_LINUX_FUTEX
 diff --git a/src/corelib/thread/qmutex.h b/src/corelib/thread/qmutex.h
-index 73c9e00663..1bae573a03 100644
+index 73c9e006630..1bae573a037 100644
 --- a/src/corelib/thread/qmutex.h
 +++ b/src/corelib/thread/qmutex.h
 @@ -42,6 +42,7 @@
@@ -42121,7 +41664,7 @@ index 73c9e00663..1bae573a03 100644
      friend class QMutexLocker;
 diff --git a/src/corelib/thread/qtsan_impl.h b/src/corelib/thread/qtsan_impl.h
 new file mode 100644
-index 0000000000..580a738b91
+index 00000000000..580a738b914
 --- /dev/null
 +++ b/src/corelib/thread/qtsan_impl.h
 @@ -0,0 +1,115 @@
@@ -42241,7 +41784,7 @@ index 0000000000..580a738b91
 +
 +#endif // QTSAN_IMPL_H
 diff --git a/src/corelib/thread/qwaitcondition_unix.cpp b/src/corelib/thread/qwaitcondition_unix.cpp
-index 88b058f410..0f1da4dc9b 100644
+index 88b058f4101..0f1da4dc9b3 100644
 --- a/src/corelib/thread/qwaitcondition_unix.cpp
 +++ b/src/corelib/thread/qwaitcondition_unix.cpp
 @@ -213,7 +213,7 @@ bool QWaitCondition::wait(QMutex *mutex, QDeadlineTimer deadline)
@@ -42254,7 +41797,7 @@ index 88b058f410..0f1da4dc9b 100644
          return false;
      }
 diff --git a/src/corelib/tools/qbitarray.h b/src/corelib/tools/qbitarray.h
-index eaed17413d..7934b55164 100644
+index eaed17413d8..7934b55164d 100644
 --- a/src/corelib/tools/qbitarray.h
 +++ b/src/corelib/tools/qbitarray.h
 @@ -84,9 +84,9 @@ public:
@@ -42282,7 +41825,7 @@ index eaed17413d..7934b55164 100644
  
  
 diff --git a/src/corelib/tools/qduplicatetracker_p.h b/src/corelib/tools/qduplicatetracker_p.h
-index 68284fb916..8977250d85 100644
+index 68284fb9164..8977250d85e 100644
 --- a/src/corelib/tools/qduplicatetracker_p.h
 +++ b/src/corelib/tools/qduplicatetracker_p.h
 @@ -52,7 +52,7 @@
@@ -42295,7 +41838,7 @@ index 68284fb916..8977250d85 100644
  #  include <memory_resource>
  #else
 diff --git a/src/dbus/qdbusintegrator.cpp b/src/dbus/qdbusintegrator.cpp
-index a4cbfecc98..9ccbbbb37d 100644
+index a4cbfecc98b..9ccbbbb37d3 100644
 --- a/src/dbus/qdbusintegrator.cpp
 +++ b/src/dbus/qdbusintegrator.cpp
 @@ -1135,7 +1135,13 @@ void QDBusConnectionPrivate::closeConnection()
@@ -42314,7 +41857,7 @@ index a4cbfecc98..9ccbbbb37d 100644
      // Disconnect all signals from signal hooks and from the object tree to
      // avoid QObject::destroyed being sent to dbus daemon thread which has
 diff --git a/src/gui/configure.json b/src/gui/configure.json
-index 7b80162faa..95e8955b51 100644
+index ed6e419f490..1f0e0534a50 100644
 --- a/src/gui/configure.json
 +++ b/src/gui/configure.json
 @@ -834,7 +834,8 @@
@@ -42328,7 +41871,7 @@ index 7b80162faa..95e8955b51 100644
                  "include": [ "EGL/egl.h", "X11/Xlib.h" ],
                  "main": [
 diff --git a/src/gui/image/qbmphandler.cpp b/src/gui/image/qbmphandler.cpp
-index 96f1e8cb1d..0e73bbbdb0 100644
+index 96f1e8cb1d9..0e73bbbdb05 100644
 --- a/src/gui/image/qbmphandler.cpp
 +++ b/src/gui/image/qbmphandler.cpp
 @@ -150,16 +150,42 @@ static QDataStream &operator<<(QDataStream &s, const BMP_INFOHDR &bi)
@@ -42461,20 +42004,8 @@ index 96f1e8cb1d..0e73bbbdb0 100644
                  b += nbits/8;
              }
          }
-diff --git a/src/gui/image/qpixmapcache.cpp b/src/gui/image/qpixmapcache.cpp
-index b6e5e70f55..a4317a4eac 100644
---- a/src/gui/image/qpixmapcache.cpp
-+++ b/src/gui/image/qpixmapcache.cpp
-@@ -466,6 +466,7 @@ void QPMCache::clear()
-         killTimer(theid);
-         theid = 0;
-     }
-+    cacheKeys.clear();
- }
- 
- QPixmapCache::KeyData* QPMCache::getKeyData(QPixmapCache::Key *key)
 diff --git a/src/gui/itemmodels/qstandarditemmodel.cpp b/src/gui/itemmodels/qstandarditemmodel.cpp
-index fc9424763e..a3e0853fa8 100644
+index fc9424763ef..a3e0853fa8b 100644
 --- a/src/gui/itemmodels/qstandarditemmodel.cpp
 +++ b/src/gui/itemmodels/qstandarditemmodel.cpp
 @@ -3113,13 +3113,13 @@ QStringList QStandardItemModel::mimeTypes() const
@@ -42504,7 +42035,7 @@ index fc9424763e..a3e0853fa8 100644
  
  
 diff --git a/src/gui/kernel/qhighdpiscaling.cpp b/src/gui/kernel/qhighdpiscaling.cpp
-index 85ff58c14c..a433e94c22 100644
+index 85ff58c14cb..a433e94c228 100644
 --- a/src/gui/kernel/qhighdpiscaling.cpp
 +++ b/src/gui/kernel/qhighdpiscaling.cpp
 @@ -580,9 +580,8 @@ void QHighDpiScaling::setScreenFactor(QScreen *screen, qreal factor)
@@ -42519,7 +42050,7 @@ index 85ff58c14c..a433e94c22 100644
  
  QPoint QHighDpiScaling::mapPositionToNative(const QPoint &pos, const QPlatformScreen *platformScreen)
 diff --git a/src/gui/kernel/qkeysequence.cpp b/src/gui/kernel/qkeysequence.cpp
-index 56cd2d02bc..d448429f6c 100644
+index 56cd2d02bcb..d448429f6cd 100644
 --- a/src/gui/kernel/qkeysequence.cpp
 +++ b/src/gui/kernel/qkeysequence.cpp
 @@ -701,6 +701,10 @@ static const struct {
@@ -42534,7 +42065,7 @@ index 56cd2d02bc..d448429f6c 100644
  };
  static Q_CONSTEXPR int numKeyNames = sizeof keyname / sizeof *keyname;
 diff --git a/src/gui/kernel/qplatformservices.cpp b/src/gui/kernel/qplatformservices.cpp
-index fdc6a6c4aa..ac47f98c5d 100644
+index fdc6a6c4aab..ac47f98c5de 100644
 --- a/src/gui/kernel/qplatformservices.cpp
 +++ b/src/gui/kernel/qplatformservices.cpp
 @@ -55,6 +55,19 @@ QT_BEGIN_NAMESPACE
@@ -42575,7 +42106,7 @@ index fdc6a6c4aa..ac47f98c5d 100644
  
  QT_END_NAMESPACE
 diff --git a/src/gui/kernel/qplatformservices.h b/src/gui/kernel/qplatformservices.h
-index 5de96cfa7d..a8b2a4ce71 100644
+index 5de96cfa7d1..a8b2a4ce716 100644
 --- a/src/gui/kernel/qplatformservices.h
 +++ b/src/gui/kernel/qplatformservices.h
 @@ -50,16 +50,32 @@
@@ -42623,7 +42154,7 @@ index 5de96cfa7d..a8b2a4ce71 100644
  
  QT_END_NAMESPACE
 diff --git a/src/gui/kernel/qplatformtheme.cpp b/src/gui/kernel/qplatformtheme.cpp
-index a11388fdb6..aed480e875 100644
+index a11388fdb6f..aed480e8750 100644
 --- a/src/gui/kernel/qplatformtheme.cpp
 +++ b/src/gui/kernel/qplatformtheme.cpp
 @@ -163,6 +163,8 @@ QT_BEGIN_NAMESPACE
@@ -42645,7 +42176,7 @@ index a11388fdb6..aed480e875 100644
      return QVariant();
  }
 diff --git a/src/gui/kernel/qplatformtheme.h b/src/gui/kernel/qplatformtheme.h
-index 3185fc4541..7e6c9d5740 100644
+index 3185fc45413..7e6c9d57403 100644
 --- a/src/gui/kernel/qplatformtheme.h
 +++ b/src/gui/kernel/qplatformtheme.h
 @@ -120,7 +120,8 @@ public:
@@ -42659,7 +42190,7 @@ index 3185fc4541..7e6c9d5740 100644
  
      enum DialogType {
 diff --git a/src/gui/kernel/qscreen.cpp b/src/gui/kernel/qscreen.cpp
-index 990272b0c2..d371dd60ab 100644
+index 990272b0c25..d371dd60ab0 100644
 --- a/src/gui/kernel/qscreen.cpp
 +++ b/src/gui/kernel/qscreen.cpp
 @@ -77,6 +77,12 @@ QScreen::QScreen(QPlatformScreen *screen)
@@ -42676,7 +42207,7 @@ index 990272b0c2..d371dd60ab 100644
  {
      const QRect oldGeometry = geometry;
 diff --git a/src/gui/kernel/qscreen_p.h b/src/gui/kernel/qscreen_p.h
-index 7da542c25e..e50fc3190b 100644
+index 7da542c25eb..e50fc3190b8 100644
 --- a/src/gui/kernel/qscreen_p.h
 +++ b/src/gui/kernel/qscreen_p.h
 @@ -70,6 +70,7 @@ public:
@@ -42688,7 +42219,7 @@ index 7da542c25e..e50fc3190b 100644
      void updatePrimaryOrientation();
      void updateGeometriesWithSignals();
 diff --git a/src/gui/kernel/qshapedpixmapdndwindow.cpp b/src/gui/kernel/qshapedpixmapdndwindow.cpp
-index bb0d8e4ee7..b98fcc61e7 100644
+index bb0d8e4ee70..b98fcc61e77 100644
 --- a/src/gui/kernel/qshapedpixmapdndwindow.cpp
 +++ b/src/gui/kernel/qshapedpixmapdndwindow.cpp
 @@ -56,7 +56,7 @@ QShapedPixmapWindow::QShapedPixmapWindow(QScreen *screen)
@@ -42701,7 +42232,7 @@ index bb0d8e4ee7..b98fcc61e7 100644
  }
  
 diff --git a/src/gui/kernel/qwindow.cpp b/src/gui/kernel/qwindow.cpp
-index 639817257e..c2f7dc6776 100644
+index 639817257ea..c2f7dc67764 100644
 --- a/src/gui/kernel/qwindow.cpp
 +++ b/src/gui/kernel/qwindow.cpp
 @@ -644,7 +644,7 @@ bool QWindow::isVisible() const
@@ -42734,7 +42265,7 @@ index 639817257e..c2f7dc6776 100644
  }
  
 diff --git a/src/gui/opengl/qopengltexture.cpp b/src/gui/opengl/qopengltexture.cpp
-index 5490ad8025..afd3d8dbe6 100644
+index 5490ad80255..afd3d8dbe65 100644
 --- a/src/gui/opengl/qopengltexture.cpp
 +++ b/src/gui/opengl/qopengltexture.cpp
 @@ -3725,6 +3725,12 @@ void QOpenGLTexture::setData(const QImage& image, MipMapGeneration genMipMaps)
@@ -42758,35 +42289,8 @@ index 5490ad8025..afd3d8dbe6 100644
      QOpenGLPixelTransferOptions uploadOptions;
      uploadOptions.setAlignment(1);
      setData(0, QOpenGLTexture::RGBA, QOpenGLTexture::UInt8, glImage.constBits(), &uploadOptions);
-diff --git a/src/gui/painting/qfixed_p.h b/src/gui/painting/qfixed_p.h
-index 846592881c..57d750a4b3 100644
---- a/src/gui/painting/qfixed_p.h
-+++ b/src/gui/painting/qfixed_p.h
-@@ -54,6 +54,7 @@
- #include <QtGui/private/qtguiglobal_p.h>
- #include "QtCore/qdebug.h"
- #include "QtCore/qpoint.h"
-+#include <QtCore/private/qnumeric_p.h>
- #include "QtCore/qsize.h"
- 
- QT_BEGIN_NAMESPACE
-@@ -182,6 +183,14 @@ Q_DECL_CONSTEXPR inline bool operator<(int i, const QFixed &f) { return i * 64 <
- Q_DECL_CONSTEXPR inline bool operator>(const QFixed &f, int i) { return f.value() > i * 64; }
- Q_DECL_CONSTEXPR inline bool operator>(int i, const QFixed &f) { return i * 64 > f.value(); }
- 
-+inline bool qAddOverflow(QFixed v1, QFixed v2, QFixed *r)
-+{
-+    int val;
-+    bool result = add_overflow(v1.value(), v2.value(), &val);
-+    r->setValue(val);
-+    return result;
-+}
-+
- #ifndef QT_NO_DEBUG_STREAM
- inline QDebug &operator<<(QDebug &dbg, const QFixed &f)
- { return dbg << f.toReal(); }
 diff --git a/src/gui/painting/qpaintengine_raster.cpp b/src/gui/painting/qpaintengine_raster.cpp
-index 38bad9a6b0..a04160791b 100644
+index 38bad9a6b0d..a04160791b4 100644
 --- a/src/gui/painting/qpaintengine_raster.cpp
 +++ b/src/gui/painting/qpaintengine_raster.cpp
 @@ -3462,16 +3462,18 @@ void QRasterPaintEngine::drawBitmap(const QPointF &pos, const QImage &image, QSp
@@ -42824,7 +42328,7 @@ index 38bad9a6b0..a04160791b 100644
      Q_CHECK_PTR(m_clipLines);
      QT_TRY {
 diff --git a/src/gui/painting/qpainterpath.cpp b/src/gui/painting/qpainterpath.cpp
-index f9544a3241..d80fafeaf1 100644
+index f9544a32419..d80fafeaf16 100644
 --- a/src/gui/painting/qpainterpath.cpp
 +++ b/src/gui/painting/qpainterpath.cpp
 @@ -1253,7 +1253,7 @@ void QPainterPath::addText(const QPointF &point, const QFont &f, const QString &
@@ -42837,7 +42341,7 @@ index f9544a3241..d80fafeaf1 100644
              fe->addOutlineToPath(x, y, glyphs, this,
                                   si.analysis.bidiLevel % 2
 diff --git a/src/gui/painting/qpdf.cpp b/src/gui/painting/qpdf.cpp
-index 3066744f1b..2c8d3c3b53 100644
+index 3066744f1be..2c8d3c3b53a 100644
 --- a/src/gui/painting/qpdf.cpp
 +++ b/src/gui/painting/qpdf.cpp
 @@ -2760,6 +2760,8 @@ int QPdfEnginePrivate::addBrushPattern(const QTransform &m, bool *specifyColor,
@@ -42850,7 +42354,7 @@ index 3066744f1b..2c8d3c3b53 100644
          *gStateObject = addConstantAlphaObject(qRound(brush.color().alpha() * opacity),
                                                 qRound(pen.color().alpha() * opacity));
 diff --git a/src/gui/rhi/qshader_p_p.h b/src/gui/rhi/qshader_p_p.h
-index ec9d25971f..4a5a7a6d51 100644
+index ec9d25971fd..4a5a7a6d512 100644
 --- a/src/gui/rhi/qshader_p_p.h
 +++ b/src/gui/rhi/qshader_p_p.h
 @@ -68,13 +68,13 @@ struct Q_GUI_EXPORT QShaderPrivate
@@ -42874,7 +42378,7 @@ index ec9d25971f..4a5a7a6d51 100644
      }
  
 diff --git a/src/gui/rhi/qshaderdescription_p_p.h b/src/gui/rhi/qshaderdescription_p_p.h
-index ec2b0b6b4c..3da33a8a2b 100644
+index ec2b0b6b4ce..3da33a8a2b1 100644
 --- a/src/gui/rhi/qshaderdescription_p_p.h
 +++ b/src/gui/rhi/qshaderdescription_p_p.h
 @@ -63,16 +63,16 @@ struct Q_GUI_EXPORT QShaderDescriptionPrivate
@@ -42904,7 +42408,7 @@ index ec2b0b6b4c..3da33a8a2b 100644
      }
  
 diff --git a/src/gui/text/qfontdatabase.cpp b/src/gui/text/qfontdatabase.cpp
-index 2011f935a9..7aa6228948 100644
+index 2011f935a9c..7aa62289483 100644
 --- a/src/gui/text/qfontdatabase.cpp
 +++ b/src/gui/text/qfontdatabase.cpp
 @@ -983,7 +983,7 @@ QFontEngine *loadSingleEngine(int script,
@@ -42917,7 +42421,7 @@ index 2011f935a9..7aa6228948 100644
          }
  
 diff --git a/src/gui/text/qtextengine.cpp b/src/gui/text/qtextengine.cpp
-index 6336fadf74..a6c66e5d2d 100644
+index 6336fadf749..a6c66e5d2dc 100644
 --- a/src/gui/text/qtextengine.cpp
 +++ b/src/gui/text/qtextengine.cpp
 @@ -1,6 +1,6 @@
@@ -42929,7 +42433,7 @@ index 6336fadf74..a6c66e5d2d 100644
  **
  ** This file is part of the QtGui module of the Qt Toolkit.
 diff --git a/src/gui/text/qtextlayout.cpp b/src/gui/text/qtextlayout.cpp
-index 7e1fb822fc..a0c847459c 100644
+index 70f6ab285b3..a0c847459ce 100644
 --- a/src/gui/text/qtextlayout.cpp
 +++ b/src/gui/text/qtextlayout.cpp
 @@ -1336,13 +1336,16 @@ void QTextLayout::drawCursor(QPainter *p, const QPointF &pos, int cursorPosition
@@ -42954,26 +42458,8 @@ index 7e1fb822fc..a0c847459c 100644
      bool toggleAntialiasing = !(p->renderHints() & QPainter::Antialiasing)
                                && (p->transform().type() > QTransform::TxTranslate);
      if (toggleAntialiasing)
-@@ -2163,11 +2166,14 @@ found:
-         eng->maxWidth = qMax(eng->maxWidth, line.textWidth);
-     } else {
-         eng->minWidth = qMax(eng->minWidth, lbh.minw);
--        eng->maxWidth += line.textWidth;
-+        if (qAddOverflow(eng->maxWidth, line.textWidth, &eng->maxWidth))
-+            eng->maxWidth = QFIXED_MAX;
-     }
- 
--    if (line.textWidth > 0 && item < eng->layoutData->items.size())
--        eng->maxWidth += lbh.spaceData.textWidth;
-+    if (line.textWidth > 0 && item < eng->layoutData->items.size()) {
-+        if (qAddOverflow(eng->maxWidth, lbh.spaceData.textWidth, &eng->maxWidth))
-+            eng->maxWidth = QFIXED_MAX;
-+    }
- 
-     line.textWidth += trailingSpace;
-     if (lbh.spaceData.length) {
 diff --git a/src/gui/util/qktxhandler.cpp b/src/gui/util/qktxhandler.cpp
-index 7eda4c46fb..2853e46c3d 100644
+index 7eda4c46fb2..2853e46c3d0 100644
 --- a/src/gui/util/qktxhandler.cpp
 +++ b/src/gui/util/qktxhandler.cpp
 @@ -73,7 +73,7 @@ struct KTXHeader {
@@ -43157,7 +42643,7 @@ index 7eda4c46fb..2853e46c3d 100644
      return inverseEndian ? qbswap<quint32>(val) : val;
  }
 diff --git a/src/gui/util/qktxhandler_p.h b/src/gui/util/qktxhandler_p.h
-index 19f7b0e79a..8da990aaac 100644
+index 19f7b0e79a4..8da990aaac9 100644
 --- a/src/gui/util/qktxhandler_p.h
 +++ b/src/gui/util/qktxhandler_p.h
 @@ -68,7 +68,7 @@ public:
@@ -43170,7 +42656,7 @@ index 19f7b0e79a..8da990aaac 100644
      bool inverseEndian = false;
  };
 diff --git a/src/gui/util/qshadergenerator.cpp b/src/gui/util/qshadergenerator.cpp
-index 1ec25ccd7b..20ed6abc3a 100644
+index 1ec25ccd7b2..20ed6abc3ab 100644
 --- a/src/gui/util/qshadergenerator.cpp
 +++ b/src/gui/util/qshadergenerator.cpp
 @@ -492,7 +492,7 @@ QByteArray QShaderGenerator::createShaderCode(const QStringList &enabledLayers)
@@ -43183,7 +42669,7 @@ index 1ec25ccd7b..20ed6abc3a 100644
                  endChar = line.at(end);
              }
 diff --git a/src/gui/util/qshaderlanguage.cpp b/src/gui/util/qshaderlanguage.cpp
-index efd607ba60..9399d6efcc 100644
+index efd607ba604..9399d6efcc9 100644
 --- a/src/gui/util/qshaderlanguage.cpp
 +++ b/src/gui/util/qshaderlanguage.cpp
 @@ -52,3 +52,5 @@ void qt_register_ShaderLanguage_enums()
@@ -43193,7 +42679,7 @@ index efd607ba60..9399d6efcc 100644
 +
 +#include "moc_qshaderlanguage_p.cpp"
 diff --git a/src/network/access/http2/hpacktable.cpp b/src/network/access/http2/hpacktable.cpp
-index fddb5feca5..315f3e2344 100644
+index fddb5feca56..315f3e23440 100644
 --- a/src/network/access/http2/hpacktable.cpp
 +++ b/src/network/access/http2/hpacktable.cpp
 @@ -40,6 +40,7 @@
@@ -43218,7 +42704,7 @@ index fddb5feca5..315f3e2344 100644
      return HeaderSize(true, quint32(sum + 32));
  }
 diff --git a/src/network/access/qhttp2protocolhandler.cpp b/src/network/access/qhttp2protocolhandler.cpp
-index 39dd460881..ead88d781a 100644
+index 39dd460881a..926f3134a0e 100644
 --- a/src/network/access/qhttp2protocolhandler.cpp
 +++ b/src/network/access/qhttp2protocolhandler.cpp
 @@ -46,10 +46,12 @@
@@ -43247,29 +42733,140 @@ index 39dd460881..ead88d781a 100644
  
      if (!total)
          return hpackBlock;
-diff --git a/src/network/access/qnetworkreplyfileimpl_p.h b/src/network/access/qnetworkreplyfileimpl_p.h
-index 48d82abd3f..4bfbc3f7d1 100644
---- a/src/network/access/qnetworkreplyfileimpl_p.h
-+++ b/src/network/access/qnetworkreplyfileimpl_p.h
-@@ -37,8 +37,8 @@
- **
- ****************************************************************************/
+@@ -371,12 +375,12 @@ bool QHttp2ProtocolHandler::sendRequest()
+         }
+     }
  
--#ifndef QNETWORKREPLYFILEIMPL_H
--#define QNETWORKREPLYFILEIMPL_H
-+#ifndef QNETWORKREPLYFILEIMPL_P_H
-+#define QNETWORKREPLYFILEIMPL_P_H
+-    if (!prefaceSent && !sendClientPreface())
+-        return false;
+-
+     if (!requests.size())
+         return true;
  
- //
- //  W A R N I N G
-@@ -99,4 +99,4 @@ QT_END_NAMESPACE
++    if (!prefaceSent && !sendClientPreface())
++        return false;
++
+     m_channel->state = QHttpNetworkConnectionChannel::WritingState;
+     // Check what was promised/pushed, maybe we do not have to send a request
+     // and have a response already?
+diff --git a/src/network/access/qhttpnetworkconnectionchannel.cpp b/src/network/access/qhttpnetworkconnectionchannel.cpp
+index 7620ca16470..13f9630c658 100644
+--- a/src/network/access/qhttpnetworkconnectionchannel.cpp
++++ b/src/network/access/qhttpnetworkconnectionchannel.cpp
+@@ -255,6 +255,10 @@ void QHttpNetworkConnectionChannel::abort()
+ bool QHttpNetworkConnectionChannel::sendRequest()
+ {
+     Q_ASSERT(!protocolHandler.isNull());
++    if (waitingForPotentialAbort) {
++        needInvokeSendRequest = true;
++        return false; // this return value is unused
++    }
+     return protocolHandler->sendRequest();
+ }
  
- Q_DECLARE_METATYPE(QNetworkRequest::KnownHeaders)
+@@ -267,21 +271,28 @@ bool QHttpNetworkConnectionChannel::sendRequest()
+ void QHttpNetworkConnectionChannel::sendRequestDelayed()
+ {
+     QMetaObject::invokeMethod(this, [this] {
+-        Q_ASSERT(!protocolHandler.isNull());
+         if (reply)
+-            protocolHandler->sendRequest();
++            sendRequest();
+     }, Qt::ConnectionType::QueuedConnection);
+ }
  
--#endif // QNETWORKREPLYFILEIMPL_H
-+#endif // QNETWORKREPLYFILEIMPL_P_H
+ void QHttpNetworkConnectionChannel::_q_receiveReply()
+ {
+     Q_ASSERT(!protocolHandler.isNull());
++    if (waitingForPotentialAbort) {
++        needInvokeReceiveReply = true;
++        return;
++    }
+     protocolHandler->_q_receiveReply();
+ }
+ 
+ void QHttpNetworkConnectionChannel::_q_readyRead()
+ {
+     Q_ASSERT(!protocolHandler.isNull());
++    if (waitingForPotentialAbort) {
++        needInvokeReadyRead = true;
++        return;
++    }
+     protocolHandler->_q_readyRead();
+ }
+ 
+@@ -1289,7 +1300,18 @@ void QHttpNetworkConnectionChannel::_q_encrypted()
+             // Similar to HTTP/1.1 counterpart below:
+             const auto &pairs = spdyRequestsToSend.values(); // (request, reply)
+             const auto &pair = pairs.first();
++            waitingForPotentialAbort = true;
+             emit pair.second->encrypted();
++
++            // We don't send or handle any received data until any effects from
++            // emitting encrypted() have been processed. This is necessary
++            // because the user may have called abort(). We may also abort the
++            // whole connection if the request has been aborted and there is
++            // no more requests to send.
++            QMetaObject::invokeMethod(this,
++                                      &QHttpNetworkConnectionChannel::checkAndResumeCommunication,
++                                      Qt::QueuedConnection);
++
+             // In case our peer has sent us its settings (window size, max concurrent streams etc.)
+             // let's give _q_receiveReply a chance to read them first ('invokeMethod', QueuedConnection).
+             QMetaObject::invokeMethod(connection, "_q_startNextRequest", Qt::QueuedConnection);
+@@ -1307,6 +1329,26 @@ void QHttpNetworkConnectionChannel::_q_encrypted()
+     }
+ }
+ 
++void QHttpNetworkConnectionChannel::checkAndResumeCommunication()
++{
++    Q_ASSERT(connection->connectionType() > QHttpNetworkConnection::ConnectionTypeHTTP);
++
++    // Because HTTP/2 requires that we send a SETTINGS frame as the first thing we do, and respond
++    // to a SETTINGS frame with an ACK, we need to delay any handling until we can ensure that any
++    // effects from emitting encrypted() have been processed.
++    // This function is called after encrypted() was emitted, so check for changes.
++
++    if (!reply && spdyRequestsToSend.isEmpty())
++        abort();
++    waitingForPotentialAbort = false;
++    if (needInvokeReadyRead)
++        _q_readyRead();
++    if (needInvokeReceiveReply)
++        _q_receiveReply();
++    if (needInvokeSendRequest)
++        sendRequest();
++}
++
+ void QHttpNetworkConnectionChannel::requeueSpdyRequests()
+ {
+     QList<HttpMessagePair> spdyPairs = spdyRequestsToSend.values();
+diff --git a/src/network/access/qhttpnetworkconnectionchannel_p.h b/src/network/access/qhttpnetworkconnectionchannel_p.h
+index d8ac3979d19..eac44464926 100644
+--- a/src/network/access/qhttpnetworkconnectionchannel_p.h
++++ b/src/network/access/qhttpnetworkconnectionchannel_p.h
+@@ -107,6 +107,10 @@ public:
+     QAbstractSocket *socket;
+     bool ssl;
+     bool isInitialized;
++    bool waitingForPotentialAbort = false;
++    bool needInvokeReceiveReply = false;
++    bool needInvokeReadyRead = false;
++    bool needInvokeSendRequest = false;
+     ChannelState state;
+     QHttpNetworkRequest request; // current request, only used for HTTP
+     QHttpNetworkReply *reply; // current reply for this request, only used for HTTP
+@@ -187,6 +191,8 @@ public:
+     void closeAndResendCurrentRequest();
+     void resendCurrentRequest();
+ 
++    void checkAndResumeCommunication();
++
+     bool isSocketBusy() const;
+     bool isSocketWriting() const;
+     bool isSocketWaiting() const;
 diff --git a/src/network/configure.json b/src/network/configure.json
-index 271ff164ac..ffba2d1eea 100644
+index 271ff164acc..ffba2d1eeab 100644
 --- a/src/network/configure.json
 +++ b/src/network/configure.json
 @@ -53,7 +53,7 @@
@@ -43281,94 +42878,8 @@ index 271ff164ac..ffba2d1eea 100644
              ]
          },
          "openssl_headers": {
-diff --git a/src/network/kernel/qhostinfo.cpp b/src/network/kernel/qhostinfo.cpp
-index 33fb629899..015963686c 100644
---- a/src/network/kernel/qhostinfo.cpp
-+++ b/src/network/kernel/qhostinfo.cpp
-@@ -181,7 +181,6 @@ bool QHostInfoResult::event(QEvent *event)
-         // we didn't have a context object, or it's still alive
-         if (!withContextObject || receiver)
-             slotObj->call(const_cast<QObject*>(receiver.data()), args);
--        slotObj->destroyIfLastRef();
- 
-         deleteLater();
-         return true;
-@@ -801,6 +800,8 @@ int QHostInfoPrivate::lookupHostImpl(const QString &name,
- 
-     if (!QAbstractEventDispatcher::instance(QThread::currentThread())) {
-         qWarning("QHostInfo::lookupHost() called with no event dispatcher");
-+        if (slotObj)
-+            slotObj->destroyIfLastRef();
-         return -1;
-     }
- 
-@@ -847,6 +848,8 @@ int QHostInfoPrivate::lookupHostImpl(const QString &name,
-             QObject::connect(&runnable->resultEmitter, SIGNAL(resultsReady(QHostInfo)),
-                                 receiver, member, Qt::QueuedConnection);
-         manager->scheduleLookup(runnable);
-+    } else if (slotObj) {
-+        slotObj->destroyIfLastRef();
-     }
-     return id;
- }
-diff --git a/src/network/kernel/qhostinfo_p.h b/src/network/kernel/qhostinfo_p.h
-index d7875a0673..452c095b6a 100644
---- a/src/network/kernel/qhostinfo_p.h
-+++ b/src/network/kernel/qhostinfo_p.h
-@@ -90,6 +90,12 @@ public:
-             moveToThread(receiver->thread());
-     }
- 
-+    ~QHostInfoResult()
-+    {
-+        if (slotObj)
-+            slotObj->destroyIfLastRef();
-+    }
-+
-     void postResultsReady(const QHostInfo &info);
- 
- Q_SIGNALS:
-@@ -103,6 +109,8 @@ private:
-         : receiver(other->receiver), slotObj(other->slotObj),
-           withContextObject(other->withContextObject)
-     {
-+        if (slotObj)
-+            slotObj->ref();
-         // cleanup if the application terminates before results are delivered
-         connect(QCoreApplication::instance(), &QCoreApplication::aboutToQuit,
-                 this, &QObject::deleteLater);
-diff --git a/src/network/ssl/qsslconfiguration.cpp b/src/network/ssl/qsslconfiguration.cpp
-index f5ce02807f..84a9187334 100644
---- a/src/network/ssl/qsslconfiguration.cpp
-+++ b/src/network/ssl/qsslconfiguration.cpp
-@@ -929,7 +929,11 @@ void QSslConfiguration::setPreSharedKeyIdentityHint(const QByteArray &hint)
-     Retrieves the current set of Diffie-Hellman parameters.
- 
-     If no Diffie-Hellman parameters have been set, the QSslConfiguration object
--    defaults to using the 1024-bit MODP group from RFC 2409.
-+    defaults to using the 2048-bit MODP group from RFC 3526.
-+
-+    \note The default parameters may change in future Qt versions.
-+    Please check the documentation of the \e{exact Qt version} that you
-+    are using in order to know what defaults that version uses.
-  */
- QSslDiffieHellmanParameters QSslConfiguration::diffieHellmanParameters() const
- {
-@@ -943,7 +947,11 @@ QSslDiffieHellmanParameters QSslConfiguration::diffieHellmanParameters() const
-     a server to \a dhparams.
- 
-     If no Diffie-Hellman parameters have been set, the QSslConfiguration object
--    defaults to using the 1024-bit MODP group from RFC 2409.
-+    defaults to using the 2048-bit MODP group from RFC 3526.
-+
-+    \note The default parameters may change in future Qt versions.
-+    Please check the documentation of the \e{exact Qt version} that you
-+    are using in order to know what defaults that version uses.
-  */
- void QSslConfiguration::setDiffieHellmanParameters(const QSslDiffieHellmanParameters &dhparams)
- {
 diff --git a/src/network/ssl/qsslcontext_openssl.cpp b/src/network/ssl/qsslcontext_openssl.cpp
-index c30192a4eb..e4bb61ecb5 100644
+index c30192a4eb3..e4bb61ecb57 100644
 --- a/src/network/ssl/qsslcontext_openssl.cpp
 +++ b/src/network/ssl/qsslcontext_openssl.cpp
 @@ -409,7 +409,7 @@ init_context:
@@ -43389,37 +42900,8 @@ index c30192a4eb..e4bb61ecb5 100644
          break;
      case QSsl::TlsV1_3OrLater:
  #ifdef TLS1_3_VERSION
-diff --git a/src/network/ssl/qssldiffiehellmanparameters.cpp b/src/network/ssl/qssldiffiehellmanparameters.cpp
-index 7807afaa30..7c2505a0be 100644
---- a/src/network/ssl/qssldiffiehellmanparameters.cpp
-+++ b/src/network/ssl/qssldiffiehellmanparameters.cpp
-@@ -68,17 +68,18 @@
- 
- QT_BEGIN_NAMESPACE
- 
--// The 1024-bit MODP group from RFC 2459 (Second Oakley Group)
-+// The 2048-bit MODP group from RFC 3526
- Q_AUTOTEST_EXPORT const char *qssl_dhparams_default_base64 =
--    "MIGHAoGBAP//////////yQ/aoiFowjTExmKLgNwc0SkCTgiKZ8x0Agu+pjsTmyJR"
--    "Sgh5jjQE3e+VGbPNOkMbMCsKbfJfFDdP4TVtbVHCReSFtXZiXn7G9ExC6aY37WsL"
--    "/1y29Aa37e44a/taiZ+lrp8kEXxLH+ZJKGZR7OZTgf//////////AgEC";
-+    "MIIBCAKCAQEA///////////JD9qiIWjCNMTGYouA3BzRKQJOCIpnzHQCC76mOxObIlFKCHmO"
-+    "NATd75UZs806QxswKwpt8l8UN0/hNW1tUcJF5IW1dmJefsb0TELppjftawv/XLb0Brft7jhr"
-+    "+1qJn6WunyQRfEsf5kkoZlHs5Fs9wgB8uKFjvwWY2kg2HFXTmmkWP6j9JM9fg2VdI9yjrZYc"
-+    "YvNWIIVSu57VKQdwlpZtZww1Tkq8mATxdGwIyhghfDKQXkYuNs474553LBgOhgObJ4Oi7Aei"
-+    "j7XFXfBvTFLJ3ivL9pVYFxg5lUl86pVq5RXSJhiY+gUQFXKOWoqsqmj//////////wIBAg==";
- 
- /*!
-     Returns the default QSslDiffieHellmanParameters used by QSslSocket.
- 
--    This is currently the 1024-bit MODP group from RFC 2459, also
--    known as the Second Oakley Group.
-+    This is currently the 2048-bit MODP group from RFC 3526.
- */
- QSslDiffieHellmanParameters QSslDiffieHellmanParameters::defaultParameters()
- {
 diff --git a/src/network/ssl/qssldiffiehellmanparameters_openssl.cpp b/src/network/ssl/qssldiffiehellmanparameters_openssl.cpp
-index aaf8741130..93ad7fa728 100644
+index 333b09e9c1b..0f7343c9d9f 100644
 --- a/src/network/ssl/qssldiffiehellmanparameters_openssl.cpp
 +++ b/src/network/ssl/qssldiffiehellmanparameters_openssl.cpp
 @@ -59,57 +59,6 @@
@@ -43480,39 +42962,8 @@ index aaf8741130..93ad7fa728 100644
  static bool isSafeDH(DH *dh)
  {
      int status = 0;
-@@ -206,6 +155,7 @@ void QSslDiffieHellmanParametersPrivate::decodePem(const QByteArray &pem)
-         if (isSafeDH(dh)) {
-             char *buf = nullptr;
-             int len = q_i2d_DHparams(dh, reinterpret_cast<unsigned char **>(&buf));
-+            auto freeBuf = qScopeGuard([&] { q_OPENSSL_free(buf); });
-             if (len > 0)
-                 derData = QByteArray(buf, len);
-             else
-diff --git a/src/network/ssl/qsslsocket.cpp b/src/network/ssl/qsslsocket.cpp
-index 5bb6e7ee4a..2a0b3a4f1d 100644
---- a/src/network/ssl/qsslsocket.cpp
-+++ b/src/network/ssl/qsslsocket.cpp
-@@ -2221,6 +2221,10 @@ QSslSocketPrivate::QSslSocketPrivate()
-     , flushTriggered(false)
- {
-     QSslConfigurationPrivate::deepCopyDefaultConfiguration(&configuration);
-+    // If the global configuration doesn't allow root certificates to be loaded
-+    // on demand then we have to disable it for this socket as well.
-+    if (!configuration.allowRootCertOnDemandLoading)
-+        allowRootCertOnDemandLoading = false;
- }
- 
- /*!
-@@ -2470,6 +2474,7 @@ void QSslConfigurationPrivate::deepCopyDefaultConfiguration(QSslConfigurationPri
-     ptr->sessionProtocol = global->sessionProtocol;
-     ptr->ciphers = global->ciphers;
-     ptr->caCertificates = global->caCertificates;
-+    ptr->allowRootCertOnDemandLoading = global->allowRootCertOnDemandLoading;
-     ptr->protocol = global->protocol;
-     ptr->peerVerifyMode = global->peerVerifyMode;
-     ptr->peerVerifyDepth = global->peerVerifyDepth;
 diff --git a/src/network/ssl/qsslsocket_mac.cpp b/src/network/ssl/qsslsocket_mac.cpp
-index 77e847e972..e38a5e75de 100644
+index 77e847e9722..e38a5e75de4 100644
 --- a/src/network/ssl/qsslsocket_mac.cpp
 +++ b/src/network/ssl/qsslsocket_mac.cpp
 @@ -468,6 +468,7 @@ void QSslSocketBackendPrivate::disconnectFromHost()
@@ -43524,7 +42975,7 @@ index 77e847e972..e38a5e75de 100644
          }
      }
 diff --git a/src/network/ssl/qsslsocket_openssl_symbols.cpp b/src/network/ssl/qsslsocket_openssl_symbols.cpp
-index 0ace951c77..6a9a3ef3b3 100644
+index 0ace951c77c..6a9a3ef3b3f 100644
 --- a/src/network/ssl/qsslsocket_openssl_symbols.cpp
 +++ b/src/network/ssl/qsslsocket_openssl_symbols.cpp
 @@ -499,9 +499,7 @@ DEFINEFUNC(DH *, DH_new, DUMMYARG, DUMMYARG, return nullptr, return)
@@ -43548,7 +42999,7 @@ index 0ace951c77..6a9a3ef3b3 100644
  
  #ifndef OPENSSL_NO_EC
 diff --git a/src/network/ssl/qsslsocket_openssl_symbols_p.h b/src/network/ssl/qsslsocket_openssl_symbols_p.h
-index 5e9faae291..bf165f67ad 100644
+index 5e9faae2912..bf165f67ad0 100644
 --- a/src/network/ssl/qsslsocket_openssl_symbols_p.h
 +++ b/src/network/ssl/qsslsocket_openssl_symbols_p.h
 @@ -598,10 +598,7 @@ DH *q_DH_new();
@@ -43562,41 +43013,8 @@ index 5e9faae291..bf165f67ad 100644
  
  BIGNUM *q_BN_bin2bn(const unsigned char *s, int len, BIGNUM *ret);
  #define q_SSL_CTX_set_tmp_dh(ctx, dh) q_SSL_CTX_ctrl((ctx), SSL_CTRL_SET_TMP_DH, 0, (char *)dh)
-diff --git a/src/network/ssl/qsslsocket_schannel.cpp b/src/network/ssl/qsslsocket_schannel.cpp
-index c956ce3c2b..d1b23af29b 100644
---- a/src/network/ssl/qsslsocket_schannel.cpp
-+++ b/src/network/ssl/qsslsocket_schannel.cpp
-@@ -1880,6 +1880,28 @@ bool QSslSocketBackendPrivate::verifyCertContext(CERT_CONTEXT *certContext)
-     if (configuration.peerVerifyDepth > 0 && DWORD(configuration.peerVerifyDepth) < verifyDepth)
-         verifyDepth = DWORD(configuration.peerVerifyDepth);
- 
-+    const auto &caCertificates = q->sslConfiguration().caCertificates();
-+
-+    if (!rootCertOnDemandLoadingAllowed()
-+            && !(chain->TrustStatus.dwErrorStatus & CERT_TRUST_IS_PARTIAL_CHAIN)
-+            && (q->peerVerifyMode() == QSslSocket::VerifyPeer
-+                    || (isClient && q->peerVerifyMode() == QSslSocket::AutoVerifyPeer))) {
-+        // When verifying a peer Windows "helpfully" builds a chain that
-+        // may include roots from the system store. But we don't want that if
-+        // the user has set their own CA certificates.
-+        // Since Windows claims this is not a partial chain the root is included
-+        // and we have to check that it is one of our configured CAs.
-+        CERT_CHAIN_ELEMENT *element = chain->rgpElement[chain->cElement - 1];
-+        QSslCertificate certificate = getCertificateFromChainElement(element);
-+        if (!caCertificates.contains(certificate)) {
-+            auto error = QSslError(QSslError::CertificateUntrusted, certificate);
-+            sslErrors += error;
-+            emit q->peerVerifyError(error);
-+            if (q->state() != QAbstractSocket::ConnectedState)
-+                return false;
-+        }
-+    }
-+
-     for (DWORD i = 0; i < verifyDepth; i++) {
-         CERT_CHAIN_ELEMENT *element = chain->rgpElement[i];
-         QSslCertificate certificate = getCertificateFromChainElement(element);
 diff --git a/src/platformsupport/eglconvenience/qt_egl_p.h b/src/platformsupport/eglconvenience/qt_egl_p.h
-index bf37d07fd8..dbd42fb799 100644
+index bf37d07fd80..dbd42fb7991 100644
 --- a/src/platformsupport/eglconvenience/qt_egl_p.h
 +++ b/src/platformsupport/eglconvenience/qt_egl_p.h
 @@ -61,7 +61,11 @@
@@ -43613,7 +43031,7 @@ index bf37d07fd8..dbd42fb799 100644
  #ifdef QT_EGL_WAYLAND
  # define WAYLAND // NV
 diff --git a/src/platformsupport/fontdatabases/fontconfig/qfontconfigdatabase.cpp b/src/platformsupport/fontdatabases/fontconfig/qfontconfigdatabase.cpp
-index 159b490ce0..00aa80cd58 100644
+index 159b490ce0a..00aa80cd589 100644
 --- a/src/platformsupport/fontdatabases/fontconfig/qfontconfigdatabase.cpp
 +++ b/src/platformsupport/fontdatabases/fontconfig/qfontconfigdatabase.cpp
 @@ -567,6 +567,8 @@ void QFontconfigDatabase::populateFontDatabase()
@@ -43626,7 +43044,7 @@ index 159b490ce0..00aa80cd58 100644
  
      for (int i = 0; i < fonts->nfont; i++)
 diff --git a/src/platformsupport/fontdatabases/windows/qwindowsfontdatabase.cpp b/src/platformsupport/fontdatabases/windows/qwindowsfontdatabase.cpp
-index 09d2d916fe..0e6fe5eb84 100644
+index 09d2d916fe4..0e6fe5eb847 100644
 --- a/src/platformsupport/fontdatabases/windows/qwindowsfontdatabase.cpp
 +++ b/src/platformsupport/fontdatabases/windows/qwindowsfontdatabase.cpp
 @@ -1471,36 +1471,70 @@ QT_WARNING_POP
@@ -43743,7 +43161,7 @@ index 09d2d916fe..0e6fe5eb84 100644
          if (values) {
              QFontValues fontValues;
 diff --git a/src/platformsupport/input/xkbcommon/qxkbcommon.cpp b/src/platformsupport/input/xkbcommon/qxkbcommon.cpp
-index 7bfacf4abe..1c7c15d5d7 100644
+index 7bfacf4abe1..1c7c15d5d77 100644
 --- a/src/platformsupport/input/xkbcommon/qxkbcommon.cpp
 +++ b/src/platformsupport/input/xkbcommon/qxkbcommon.cpp
 @@ -95,6 +95,7 @@ static constexpr const auto KeyTbl = qMakeArray(
@@ -43779,7 +43197,7 @@ index 7bfacf4abe..1c7c15d5d7 100644
      const xkb_layout_index_t layoutCount = xkb_keymap_num_layouts_for_key(keymap, keycode);
      const xkb_layout_index_t currentLayout = xkb_state_key_get_layout(state, keycode);
 diff --git a/src/platformsupport/input/xkbcommon/qxkbcommon_p.h b/src/platformsupport/input/xkbcommon/qxkbcommon_p.h
-index 8389bd8f5a..55c46de8cd 100644
+index 8389bd8f5a1..55c46de8cdf 100644
 --- a/src/platformsupport/input/xkbcommon/qxkbcommon_p.h
 +++ b/src/platformsupport/input/xkbcommon/qxkbcommon_p.h
 @@ -98,7 +98,46 @@ public:
@@ -43831,7 +43249,7 @@ index 8389bd8f5a..55c46de8cd 100644
  
      static void setXkbContext(QPlatformInputContext *inputContext, struct xkb_context *context);
 diff --git a/src/platformsupport/linuxaccessibility/atspiadaptor.cpp b/src/platformsupport/linuxaccessibility/atspiadaptor.cpp
-index 9153fd20bb..26537ff892 100644
+index 9153fd20bbe..d30ed5b6dcb 100644
 --- a/src/platformsupport/linuxaccessibility/atspiadaptor.cpp
 +++ b/src/platformsupport/linuxaccessibility/atspiadaptor.cpp
 @@ -194,6 +194,9 @@ QString AtSpiAdaptor::introspect(const QString &path) const
@@ -43965,8 +43383,70 @@ index 9153fd20bb..26537ff892 100644
          }
          int offset = interface->textInterface()->offsetAtPoint(point);
          sendReply(connection, message, offset);
+@@ -2393,13 +2440,14 @@ bool AtSpiAdaptor::tableInterface(QAccessibleInterface *interface, const QString
+         if (cols > 0) {
+             row = index / cols;
+             col = index % cols;
+-            QAccessibleTableCellInterface *cell = interface->tableInterface()->cellAt(row, col)->tableCellInterface();
+-            if (cell) {
+-                row = cell->rowIndex();
+-                col = cell->columnIndex();
+-                rowExtents = cell->rowExtent();
+-                colExtents = cell->columnExtent();
+-                isSelected = cell->isSelected();
++            QAccessibleInterface *cell = interface->tableInterface()->cellAt(row, col);
++            QAccessibleTableCellInterface *cellIface = cell ? cell->tableCellInterface() : nullptr;
++            if (cellIface) {
++                row = cellIface->rowIndex();
++                col = cellIface->columnIndex();
++                rowExtents = cellIface->rowExtent();
++                colExtents = cellIface->columnExtent();
++                isSelected = cellIface->isSelected();
+                 success = true;
+             }
+         }
+@@ -2410,12 +2458,22 @@ bool AtSpiAdaptor::tableInterface(QAccessibleInterface *interface, const QString
+     } else if (function == QLatin1String("GetColumnExtentAt")) {
+         int row = message.arguments().at(0).toInt();
+         int column = message.arguments().at(1).toInt();
+-        connection.send(message.createReply(interface->tableInterface()->cellAt(row, column)->tableCellInterface()->columnExtent()));
++        int columnExtent = 0;
++        QAccessibleInterface *cell = interface->tableInterface()->cellAt(row, column);
++        QAccessibleTableCellInterface *cellIface = cell ? cell->tableCellInterface() : nullptr;
++        if (cellIface)
++            columnExtent = cellIface->columnExtent();
++        connection.send(message.createReply(columnExtent));
+ 
+     } else if (function == QLatin1String("GetRowExtentAt")) {
+         int row = message.arguments().at(0).toInt();
+         int column = message.arguments().at(1).toInt();
+-        connection.send(message.createReply(interface->tableInterface()->cellAt(row, column)->tableCellInterface()->rowExtent()));
++        int rowExtent = 0;
++        QAccessibleInterface *cell = interface->tableInterface()->cellAt(row, column);
++        QAccessibleTableCellInterface *cellIface = cell ? cell->tableCellInterface() : nullptr;
++        if (cellIface)
++            rowExtent = cellIface->rowExtent();
++        connection.send(message.createReply(rowExtent));
+ 
+     } else if (function == QLatin1String("GetColumnHeader")) {
+         int column = message.arguments().at(0).toInt();
+@@ -2455,8 +2513,12 @@ bool AtSpiAdaptor::tableInterface(QAccessibleInterface *interface, const QString
+     } else if (function == QLatin1String("IsSelected")) {
+         int row = message.arguments().at(0).toInt();
+         int column = message.arguments().at(1).toInt();
+-        QAccessibleTableCellInterface* cell = interface->tableInterface()->cellAt(row, column)->tableCellInterface();
+-        connection.send(message.createReply(cell->isSelected()));
++        bool isSelected = false;
++        QAccessibleInterface *cell = interface->tableInterface()->cellAt(row, column);
++        QAccessibleTableCellInterface *cellIface = cell ? cell->tableCellInterface() : nullptr;
++        if (cellIface)
++            isSelected = cellIface->isSelected();
++        connection.send(message.createReply(isSelected));
+     } else if (function == QLatin1String("AddColumnSelection")) {
+         int column = message.arguments().at(0).toInt();
+         connection.send(message.createReply(interface->tableInterface()->selectColumn(column)));
 diff --git a/src/platformsupport/linuxaccessibility/bridge.cpp b/src/platformsupport/linuxaccessibility/bridge.cpp
-index fdc8cd3198..b17e1749c8 100644
+index fdc8cd31982..b17e1749c8d 100644
 --- a/src/platformsupport/linuxaccessibility/bridge.cpp
 +++ b/src/platformsupport/linuxaccessibility/bridge.cpp
 @@ -229,7 +229,11 @@ static RoleMapping map[] = {
@@ -43982,7 +43462,7 @@ index fdc8cd3198..b17e1749c8 100644
      { QAccessible::ButtonDropGrid, ATSPI_ROLE_PUSH_BUTTON, QT_TRANSLATE_NOOP("QSpiAccessibleBridge", "button with drop down grid") },
      //: Role of an accessible object - blank space between other objects.
 diff --git a/src/platformsupport/linuxaccessibility/dbusconnection.cpp b/src/platformsupport/linuxaccessibility/dbusconnection.cpp
-index 45ddc8e496..cc734abc63 100644
+index 45ddc8e4963..cc734abc639 100644
 --- a/src/platformsupport/linuxaccessibility/dbusconnection.cpp
 +++ b/src/platformsupport/linuxaccessibility/dbusconnection.cpp
 @@ -69,6 +69,21 @@ QT_BEGIN_NAMESPACE
@@ -44008,7 +43488,7 @@ index 45ddc8e496..cc734abc63 100644
      QDBusConnection c = QDBusConnection::sessionBus();
      if (!c.isConnected()) {
 diff --git a/src/platformsupport/services/genericunix/qgenericunixservices.cpp b/src/platformsupport/services/genericunix/qgenericunixservices.cpp
-index f0d1722c95..47ef7d2b5c 100644
+index f0d1722c95a..47ef7d2b5cf 100644
 --- a/src/platformsupport/services/genericunix/qgenericunixservices.cpp
 +++ b/src/platformsupport/services/genericunix/qgenericunixservices.cpp
 @@ -51,6 +51,9 @@
@@ -44235,7 +43715,7 @@ index f0d1722c95..47ef7d2b5c 100644
 +
 +#include "qgenericunixservices.moc"
 diff --git a/src/platformsupport/services/genericunix/qgenericunixservices_p.h b/src/platformsupport/services/genericunix/qgenericunixservices_p.h
-index 8ac3de6f03..30924e64bd 100644
+index 8ac3de6f03c..30924e64bd5 100644
 --- a/src/platformsupport/services/genericunix/qgenericunixservices_p.h
 +++ b/src/platformsupport/services/genericunix/qgenericunixservices_p.h
 @@ -59,16 +59,21 @@ QT_BEGIN_NAMESPACE
@@ -44262,7 +43742,7 @@ index 8ac3de6f03..30924e64bd 100644
  
  QT_END_NAMESPACE
 diff --git a/src/platformsupport/themes/genericunix/dbusmenu/qdbusmenuconnection.cpp b/src/platformsupport/themes/genericunix/dbusmenu/qdbusmenuconnection.cpp
-index 09470bccc6..cc7c7d4d8a 100644
+index 09470bccc6c..cc7c7d4d8a8 100644
 --- a/src/platformsupport/themes/genericunix/dbusmenu/qdbusmenuconnection.cpp
 +++ b/src/platformsupport/themes/genericunix/dbusmenu/qdbusmenuconnection.cpp
 @@ -69,6 +69,7 @@ const QString MenuBarPath = QLatin1String("/MenuBar");
@@ -44327,7 +43807,7 @@ index 09470bccc6..cc7c7d4d8a 100644
  #endif // QT_NO_SYSTEMTRAYICON
  
 diff --git a/src/platformsupport/themes/genericunix/dbusmenu/qdbusmenuconnection_p.h b/src/platformsupport/themes/genericunix/dbusmenu/qdbusmenuconnection_p.h
-index f484795fbb..97bdfabb85 100644
+index f484795fbb7..97bdfabb855 100644
 --- a/src/platformsupport/themes/genericunix/dbusmenu/qdbusmenuconnection_p.h
 +++ b/src/platformsupport/themes/genericunix/dbusmenu/qdbusmenuconnection_p.h
 @@ -70,6 +70,7 @@ class QDBusMenuConnection : public QObject
@@ -44356,7 +43836,7 @@ index f484795fbb..97bdfabb85 100644
      QDBusServiceWatcher *m_dbusWatcher;
      bool m_statusNotifierHostRegistered;
 diff --git a/src/platformsupport/themes/genericunix/qgenericunixthemes.cpp b/src/platformsupport/themes/genericunix/qgenericunixthemes.cpp
-index cb1b39db64..6e01af052c 100644
+index cb1b39db646..6e01af052c1 100644
 --- a/src/platformsupport/themes/genericunix/qgenericunixthemes.cpp
 +++ b/src/platformsupport/themes/genericunix/qgenericunixthemes.cpp
 @@ -755,6 +755,9 @@ QVariant QGnomeTheme::themeHint(QPlatformTheme::ThemeHint hint) const
@@ -44370,7 +43850,7 @@ index cb1b39db64..6e01af052c 100644
          break;
      }
 diff --git a/src/platformsupport/windowsuiautomation/qwindowsuiawrapper.cpp b/src/platformsupport/windowsuiautomation/qwindowsuiawrapper.cpp
-index 8038e1a3c3..79541fe636 100644
+index 8038e1a3c3b..79541fe636c 100644
 --- a/src/platformsupport/windowsuiautomation/qwindowsuiawrapper.cpp
 +++ b/src/platformsupport/windowsuiautomation/qwindowsuiawrapper.cpp
 @@ -53,7 +53,6 @@ QWindowsUiaWrapper::QWindowsUiaWrapper()
@@ -44404,7 +43884,7 @@ index 8038e1a3c3..79541fe636 100644
  QT_END_NAMESPACE
  
 diff --git a/src/platformsupport/windowsuiautomation/qwindowsuiawrapper_p.h b/src/platformsupport/windowsuiautomation/qwindowsuiawrapper_p.h
-index 9208acbc31..3ebc3008d3 100644
+index 9208acbc31e..3ebc3008d30 100644
 --- a/src/platformsupport/windowsuiautomation/qwindowsuiawrapper_p.h
 +++ b/src/platformsupport/windowsuiautomation/qwindowsuiawrapper_p.h
 @@ -80,20 +80,17 @@ public:
@@ -44429,7 +43909,7 @@ index 9208acbc31..3ebc3008d3 100644
  };
  
 diff --git a/src/platformsupport/windowsuiautomation/uiatypes_p.h b/src/platformsupport/windowsuiautomation/uiatypes_p.h
-index 0d2e1161e4..afbc957094 100644
+index 0d2e1161e44..afbc9570941 100644
 --- a/src/platformsupport/windowsuiautomation/uiatypes_p.h
 +++ b/src/platformsupport/windowsuiautomation/uiatypes_p.h
 @@ -162,22 +162,6 @@ enum ExpandCollapseState {
@@ -44456,7 +43936,7 @@ index 0d2e1161e4..afbc957094 100644
      double left;
      double top;
 diff --git a/src/plugins/platforms/eglfs/deviceintegration/eglfs_kms_support/qeglfskmseventreader.cpp b/src/plugins/platforms/eglfs/deviceintegration/eglfs_kms_support/qeglfskmseventreader.cpp
-index 645a0ae2e9..3e0e406f1a 100644
+index 645a0ae2e92..3e0e406f1ab 100644
 --- a/src/plugins/platforms/eglfs/deviceintegration/eglfs_kms_support/qeglfskmseventreader.cpp
 +++ b/src/plugins/platforms/eglfs/deviceintegration/eglfs_kms_support/qeglfskmseventreader.cpp
 @@ -179,7 +179,7 @@ void QEglFSKmsEventReader::create(QEglFSKmsDevice *device)
@@ -44469,7 +43949,7 @@ index 645a0ae2e9..3e0e406f1a 100644
  
      m_thread = new QEglFSKmsEventReaderThread(m_device->fd());
 diff --git a/src/plugins/platforms/offscreen/qoffscreenintegration.cpp b/src/plugins/platforms/offscreen/qoffscreenintegration.cpp
-index 141fb68a23..d4294d425a 100644
+index 141fb68a23f..d4294d425a4 100644
 --- a/src/plugins/platforms/offscreen/qoffscreenintegration.cpp
 +++ b/src/plugins/platforms/offscreen/qoffscreenintegration.cpp
 @@ -122,11 +122,13 @@ QOffscreenIntegration::QOffscreenIntegration()
@@ -44488,7 +43968,7 @@ index 141fb68a23..d4294d425a 100644
  
  void QOffscreenIntegration::initialize()
 diff --git a/src/plugins/platforms/offscreen/qoffscreenintegration.h b/src/plugins/platforms/offscreen/qoffscreenintegration.h
-index 0ea90f6c2f..fe00fde07c 100644
+index 0ea90f6c2fa..fe00fde07cd 100644
 --- a/src/plugins/platforms/offscreen/qoffscreenintegration.h
 +++ b/src/plugins/platforms/offscreen/qoffscreenintegration.h
 @@ -84,6 +84,7 @@ protected:
@@ -44500,7 +43980,7 @@ index 0ea90f6c2f..fe00fde07c 100644
  };
  
 diff --git a/src/plugins/platforms/windows/uiautomation/qwindowsuiamainprovider.cpp b/src/plugins/platforms/windows/uiautomation/qwindowsuiamainprovider.cpp
-index a01104a8e3..6a4a7feb8a 100644
+index a01104a8e3d..6a4a7feb8af 100644
 --- a/src/plugins/platforms/windows/uiautomation/qwindowsuiamainprovider.cpp
 +++ b/src/plugins/platforms/windows/uiautomation/qwindowsuiamainprovider.cpp
 @@ -172,27 +172,11 @@ void QWindowsUiaMainProvider::notifyValueChange(QAccessibleValueChangeEvent *eve
@@ -44537,7 +44017,7 @@ index a01104a8e3..6a4a7feb8a 100644
          } else if (QAccessibleValueInterface *valueInterface = accessible->valueInterface()) {
              if (QWindowsUiaMainProvider *provider = providerForAccessible(accessible)) {
 diff --git a/src/plugins/platforms/xcb/qxcbconnection.cpp b/src/plugins/platforms/xcb/qxcbconnection.cpp
-index 013ca7369f..631ade2ec7 100644
+index 013ca7369f3..631ade2ec71 100644
 --- a/src/plugins/platforms/xcb/qxcbconnection.cpp
 +++ b/src/plugins/platforms/xcb/qxcbconnection.cpp
 @@ -706,6 +706,8 @@ void QXcbConnection::handleXcbEvent(xcb_generic_event_t *event)
@@ -44550,7 +44030,7 @@ index 013ca7369f..631ade2ec7 100644
              HANDLE_PLATFORM_WINDOW_EVENT(xcb_property_notify_event_t, window, handlePropertyNotifyEvent);
          }
 diff --git a/src/plugins/platforms/xcb/qxcbconnection_xi2.cpp b/src/plugins/platforms/xcb/qxcbconnection_xi2.cpp
-index 1ced02f31d..5c8298a49d 100644
+index 1ced02f31da..5c8298a49d6 100644
 --- a/src/plugins/platforms/xcb/qxcbconnection_xi2.cpp
 +++ b/src/plugins/platforms/xcb/qxcbconnection_xi2.cpp
 @@ -1255,16 +1255,14 @@ void QXcbConnection::xi2ReportTabletEvent(const void *event, TabletData *tabletD
@@ -44573,7 +44053,7 @@ index 1ced02f31d..5c8298a49d 100644
              break;
          case QXcbAtom::AbsPressure:
 diff --git a/src/plugins/platforms/xcb/qxcbcursor.cpp b/src/plugins/platforms/xcb/qxcbcursor.cpp
-index 4210bf428e..4635c199d0 100644
+index 4210bf428e8..4635c199d0d 100644
 --- a/src/plugins/platforms/xcb/qxcbcursor.cpp
 +++ b/src/plugins/platforms/xcb/qxcbcursor.cpp
 @@ -300,7 +300,7 @@ QXcbCursorCacheKey::QXcbCursorCacheKey(const QCursor &c)
@@ -44607,7 +44087,7 @@ index 4210bf428e..4635c199d0 100644
      // Try Xcursor first
      if (cshape >= 0 && cshape <= Qt::LastCursor) {
 diff --git a/src/plugins/platforms/xcb/qxcbcursor.h b/src/plugins/platforms/xcb/qxcbcursor.h
-index 0b238823f0..82fb47e55d 100644
+index 0b238823f02..82fb47e55da 100644
 --- a/src/plugins/platforms/xcb/qxcbcursor.h
 +++ b/src/plugins/platforms/xcb/qxcbcursor.h
 @@ -122,6 +122,7 @@ private:
@@ -44619,7 +44099,7 @@ index 0b238823f0..82fb47e55d 100644
  
  QT_END_NAMESPACE
 diff --git a/src/plugins/platforms/xcb/qxcbintegration.cpp b/src/plugins/platforms/xcb/qxcbintegration.cpp
-index 76869ced60..02d2eebb56 100644
+index 76869ced60e..02d2eebb56c 100644
 --- a/src/plugins/platforms/xcb/qxcbintegration.cpp
 +++ b/src/plugins/platforms/xcb/qxcbintegration.cpp
 @@ -274,8 +274,7 @@ QPlatformWindow *QXcbIntegration::createForeignWindow(QWindow *window, WId nativ
@@ -44633,7 +44113,7 @@ index 76869ced60..02d2eebb56 100644
          qWarning("QXcbIntegration: Cannot create platform OpenGL context, neither GLX nor EGL are enabled");
          return nullptr;
 diff --git a/src/plugins/platforms/xcb/qxcbwindow.cpp b/src/plugins/platforms/xcb/qxcbwindow.cpp
-index 45bac8ee85..e2e345e2a8 100644
+index 45bac8ee852..e2e345e2a88 100644
 --- a/src/plugins/platforms/xcb/qxcbwindow.cpp
 +++ b/src/plugins/platforms/xcb/qxcbwindow.cpp
 @@ -539,6 +539,8 @@ void QXcbWindow::destroy()
@@ -44660,7 +44140,7 @@ index 45bac8ee85..e2e345e2a8 100644
          }
          xcb_change_property(xcb_connection(),
 diff --git a/src/plugins/platformthemes/xdgdesktopportal/qxdgdesktopportalfiledialog.cpp b/src/plugins/platformthemes/xdgdesktopportal/qxdgdesktopportalfiledialog.cpp
-index 2c72538387..8987e3efd0 100644
+index 2c72538387f..8987e3efd0d 100644
 --- a/src/plugins/platformthemes/xdgdesktopportal/qxdgdesktopportalfiledialog.cpp
 +++ b/src/plugins/platformthemes/xdgdesktopportal/qxdgdesktopportalfiledialog.cpp
 @@ -102,15 +102,12 @@ const QDBusArgument &operator >>(const QDBusArgument &arg, QXdgDesktopPortalFile
@@ -44846,7 +44326,7 @@ index 2c72538387..8987e3efd0 100644
  
  #include "moc_qxdgdesktopportalfiledialog_p.cpp"
 diff --git a/src/plugins/platformthemes/xdgdesktopportal/qxdgdesktopportalfiledialog_p.h b/src/plugins/platformthemes/xdgdesktopportal/qxdgdesktopportalfiledialog_p.h
-index 4f4de96ecf..65e22a5cf2 100644
+index 4f4de96ecf2..65e22a5cf2a 100644
 --- a/src/plugins/platformthemes/xdgdesktopportal/qxdgdesktopportalfiledialog_p.h
 +++ b/src/plugins/platformthemes/xdgdesktopportal/qxdgdesktopportalfiledialog_p.h
 @@ -51,6 +51,11 @@ class QXdgDesktopPortalFileDialog : public QPlatformFileDialogHelper
@@ -44881,7 +44361,7 @@ index 4f4de96ecf..65e22a5cf2 100644
      QScopedPointer<QXdgDesktopPortalFileDialogPrivate> d_ptr;
  };
 diff --git a/src/plugins/platformthemes/xdgdesktopportal/qxdgdesktopportaltheme.cpp b/src/plugins/platformthemes/xdgdesktopportal/qxdgdesktopportaltheme.cpp
-index 2fc3167fd5..b809503122 100644
+index 2fc3167fd58..b809503122f 100644
 --- a/src/plugins/platformthemes/xdgdesktopportal/qxdgdesktopportaltheme.cpp
 +++ b/src/plugins/platformthemes/xdgdesktopportal/qxdgdesktopportaltheme.cpp
 @@ -153,11 +153,12 @@ QPlatformDialogHelper* QXdgDesktopPortalTheme::createPlatformDialogHelper(Dialog
@@ -44901,10 +44381,10 @@ index 2fc3167fd5..b809503122 100644
          return new QXdgDesktopPortalFileDialog;
      }
 diff --git a/src/plugins/sqldrivers/mysql/qsql_mysql.cpp b/src/plugins/sqldrivers/mysql/qsql_mysql.cpp
-index 11ca522c10..353ea099d5 100644
+index e0c72fa240d..309bbdad57b 100644
 --- a/src/plugins/sqldrivers/mysql/qsql_mysql.cpp
 +++ b/src/plugins/sqldrivers/mysql/qsql_mysql.cpp
-@@ -1365,20 +1365,20 @@ bool QMYSQLDriver::open(const QString& db,
+@@ -1370,20 +1370,20 @@ bool QMYSQLDriver::open(const QString& db,
      }
  
  #if MYSQL_VERSION_ID >= 50007
@@ -44936,7 +44416,7 @@ index 11ca522c10..353ea099d5 100644
  
      d->preparedQuerysEnabled = checkPreparedQueries(d->mysql);
 diff --git a/src/plugins/sqldrivers/odbc/qsql_odbc.cpp b/src/plugins/sqldrivers/odbc/qsql_odbc.cpp
-index 8e2e883652..d147774055 100644
+index 8e2e8836525..d1477740555 100644
 --- a/src/plugins/sqldrivers/odbc/qsql_odbc.cpp
 +++ b/src/plugins/sqldrivers/odbc/qsql_odbc.cpp
 @@ -745,10 +745,15 @@ static QSqlField qMakeFieldInfo(const SQLHANDLE hStmt, int i, QString *errorMess
@@ -45007,7 +44487,7 @@ similarity index 100%
 rename from src/printsupport/dialogs/images/fit-width-32.png
 rename to src/printsupport/dialogs/images/zoom-fit-width-32.png
 diff --git a/src/printsupport/dialogs/qprintdialog.qrc b/src/printsupport/dialogs/qprintdialog.qrc
-index 5a579baa55..10b8e1d341 100644
+index 5a579baa558..10b8e1d3417 100644
 --- a/src/printsupport/dialogs/qprintdialog.qrc
 +++ b/src/printsupport/dialogs/qprintdialog.qrc
 @@ -1,9 +1,9 @@
@@ -45048,7 +44528,7 @@ index 5a579baa55..10b8e1d341 100644
  <file>images/zoom-in-32.png</file>
  <file>images/zoom-out-24.png</file>
 diff --git a/src/printsupport/dialogs/qprintpreviewdialog.cpp b/src/printsupport/dialogs/qprintpreviewdialog.cpp
-index 39575d5f57..23b7e89538 100644
+index 39575d5f579..23b7e895383 100644
 --- a/src/printsupport/dialogs/qprintpreviewdialog.cpp
 +++ b/src/printsupport/dialogs/qprintpreviewdialog.cpp
 @@ -352,7 +352,7 @@ void QPrintPreviewDialogPrivate::init(QPrinter *_printer)
@@ -45094,7 +44574,7 @@ index 39575d5f57..23b7e89538 100644
      QObject::connect(printAction, SIGNAL(triggered(bool)), q, SLOT(_q_print()));
      QObject::connect(pageSetupAction, SIGNAL(triggered(bool)), q, SLOT(_q_pageSetup()));
 diff --git a/src/testlib/qabstractitemmodeltester.cpp b/src/testlib/qabstractitemmodeltester.cpp
-index 1cd18b98bb..41219a7e23 100644
+index 1cd18b98bbc..41219a7e233 100644
 --- a/src/testlib/qabstractitemmodeltester.cpp
 +++ b/src/testlib/qabstractitemmodeltester.cpp
 @@ -454,7 +454,7 @@ void QAbstractItemModelTesterPrivate::parent()
@@ -45107,7 +44587,7 @@ index 1cd18b98bb..41219a7e23 100644
          MODELTESTER_VERIFY(childIndex.isValid());
          MODELTESTER_COMPARE(model->parent(childIndex), topIndex);
 diff --git a/src/testlib/qasciikey.cpp b/src/testlib/qasciikey.cpp
-index 9a308da2bc..93498b256f 100644
+index 9a308da2bc0..93498b256fb 100644
 --- a/src/testlib/qasciikey.cpp
 +++ b/src/testlib/qasciikey.cpp
 @@ -498,6 +498,11 @@ char QTest::keyToAscii(Qt::Key key)
@@ -45123,7 +44603,7 @@ index 9a308da2bc..93498b256f 100644
      }
  }
 diff --git a/src/widgets/accessible/qaccessiblewidgets.cpp b/src/widgets/accessible/qaccessiblewidgets.cpp
-index 574be1f5ea..b499d5d620 100644
+index 574be1f5ea2..b499d5d6201 100644
 --- a/src/widgets/accessible/qaccessiblewidgets.cpp
 +++ b/src/widgets/accessible/qaccessiblewidgets.cpp
 @@ -900,7 +900,7 @@ QString QAccessibleTextWidget::attributes(int offset, int *startOffset, int *end
@@ -45136,7 +44616,7 @@ index 574be1f5ea..b499d5d620 100644
      }
      if (!underlineStyleValue.isNull()) {
 diff --git a/src/widgets/dialogs/qcolordialog.cpp b/src/widgets/dialogs/qcolordialog.cpp
-index 4247731275..30445fa069 100644
+index 4247731275c..30445fa069e 100644
 --- a/src/widgets/dialogs/qcolordialog.cpp
 +++ b/src/widgets/dialogs/qcolordialog.cpp
 @@ -78,7 +78,10 @@
@@ -45194,7 +44674,7 @@ index 4247731275..30445fa069 100644
          colorPickingEventFilter = new QColorPickingEventFilter(this, q);
      q->installEventFilter(colorPickingEventFilter);
 diff --git a/src/widgets/itemviews/qabstractitemdelegate.cpp b/src/widgets/itemviews/qabstractitemdelegate.cpp
-index e120817edc..8ea36b5427 100644
+index e120817edc6..8ea36b54278 100644
 --- a/src/widgets/itemviews/qabstractitemdelegate.cpp
 +++ b/src/widgets/itemviews/qabstractitemdelegate.cpp
 @@ -400,12 +400,7 @@ bool QAbstractItemDelegate::helpEvent(QHelpEvent *event,
@@ -45212,7 +44692,7 @@ index e120817edc..8ea36b5427 100644
          break;
          }
 diff --git a/src/widgets/itemviews/qlistview.cpp b/src/widgets/itemviews/qlistview.cpp
-index fab44923de..79254e052f 100644
+index fab44923dec..79254e052f5 100644
 --- a/src/widgets/itemviews/qlistview.cpp
 +++ b/src/widgets/itemviews/qlistview.cpp
 @@ -3389,6 +3389,7 @@ void QIconModeViewBase::updateContentsSize()
@@ -45232,7 +44712,7 @@ index fab44923de..79254e052f 100644
  
  /*!
 diff --git a/src/widgets/itemviews/qtableview.cpp b/src/widgets/itemviews/qtableview.cpp
-index d120c41dc9..09d34005a7 100644
+index d120c41dc9a..09d34005a7a 100644
 --- a/src/widgets/itemviews/qtableview.cpp
 +++ b/src/widgets/itemviews/qtableview.cpp
 @@ -1013,6 +1013,7 @@ void QTableViewPrivate::drawCell(QPainter *painter, const QStyleOptionViewItem &
@@ -45274,7 +44754,7 @@ index d120c41dc9..09d34005a7 100644
          if (showGrid)
              option.rect.setWidth(option.rect.width() - 1);
 diff --git a/src/widgets/kernel/qaction.h b/src/widgets/kernel/qaction.h
-index 258a1ea0a0..737c1e8285 100644
+index 258a1ea0a04..737c1e82850 100644
 --- a/src/widgets/kernel/qaction.h
 +++ b/src/widgets/kernel/qaction.h
 @@ -81,7 +81,7 @@ class Q_WIDGETS_EXPORT QAction : public QObject
@@ -45287,7 +44767,7 @@ index 258a1ea0a0..737c1e8285 100644
  public:
      // note this is copied into qplatformmenu.h, which must stay in sync
 diff --git a/src/widgets/kernel/qwidget.cpp b/src/widgets/kernel/qwidget.cpp
-index e94520021e..d661114fc7 100644
+index e94520021e7..d661114fc74 100644
 --- a/src/widgets/kernel/qwidget.cpp
 +++ b/src/widgets/kernel/qwidget.cpp
 @@ -1272,7 +1272,6 @@ void QWidgetPrivate::create()
@@ -45307,7 +44787,7 @@ index e94520021e..d661114fc7 100644
      // Check children and create windows for them if necessary
      q_createNativeChildrenAndSetParent(q);
 diff --git a/src/widgets/styles/qfusionstyle.cpp b/src/widgets/styles/qfusionstyle.cpp
-index a225d4b563..35e2769ac4 100644
+index a225d4b5631..35e2769ac46 100644
 --- a/src/widgets/styles/qfusionstyle.cpp
 +++ b/src/widgets/styles/qfusionstyle.cpp
 @@ -1772,14 +1772,6 @@ void QFusionStyle::drawControl(ControlElement element, const QStyleOption *optio
@@ -45326,7 +44806,7 @@ index a225d4b563..35e2769ac4 100644
          painter->save();
      {
 diff --git a/src/widgets/util/qsystemtrayicon.cpp b/src/widgets/util/qsystemtrayicon.cpp
-index 203fcbc443..e9b2724903 100644
+index 203fcbc443c..e9b2724903b 100644
 --- a/src/widgets/util/qsystemtrayicon.cpp
 +++ b/src/widgets/util/qsystemtrayicon.cpp
 @@ -208,7 +208,7 @@ void QSystemTrayIcon::setContextMenu(QMenu *menu)
@@ -45339,7 +44819,7 @@ index 203fcbc443..e9b2724903 100644
              QObject::connect(d->qpa_sys, &QPlatformSystemTrayIcon::contextMenuRequested,
                               menu,
 diff --git a/src/widgets/widgets/qabstractbutton.cpp b/src/widgets/widgets/qabstractbutton.cpp
-index a128b23950..dc40bf62fb 100644
+index a128b239506..dc40bf62fbe 100644
 --- a/src/widgets/widgets/qabstractbutton.cpp
 +++ b/src/widgets/widgets/qabstractbutton.cpp
 @@ -56,6 +56,7 @@
@@ -45408,7 +44888,7 @@ index a128b23950..dc40bf62fb 100644
  
  /*!\reimp
 diff --git a/src/widgets/widgets/qcombobox.cpp b/src/widgets/widgets/qcombobox.cpp
-index 422082da6c..5692c6e82b 100644
+index 422082da6ce..5692c6e82ba 100644
 --- a/src/widgets/widgets/qcombobox.cpp
 +++ b/src/widgets/widgets/qcombobox.cpp
 @@ -3354,7 +3354,23 @@ void QComboBox::keyPressEvent(QKeyEvent *e)
@@ -45464,7 +44944,7 @@ index 422082da6c..5692c6e82b 100644
      case Qt::Key_Right:
          if (QApplicationPrivate::keypadNavigationEnabled() && !hasEditFocus())
 diff --git a/src/widgets/widgets/qdatetimeedit_p.h b/src/widgets/widgets/qdatetimeedit_p.h
-index d36b6f8f9a..e0df5b5158 100644
+index d36b6f8f9a9..e0df5b51582 100644
 --- a/src/widgets/widgets/qdatetimeedit_p.h
 +++ b/src/widgets/widgets/qdatetimeedit_p.h
 @@ -1,6 +1,6 @@
@@ -45476,7 +44956,7 @@ index d36b6f8f9a..e0df5b5158 100644
  **
  ** This file is part of the QtWidgets module of the Qt Toolkit.
 diff --git a/src/widgets/widgets/qdial.cpp b/src/widgets/widgets/qdial.cpp
-index 8f774a3cc7..ec5cec0d82 100644
+index 8f774a3cc72..ec5cec0d823 100644
 --- a/src/widgets/widgets/qdial.cpp
 +++ b/src/widgets/widgets/qdial.cpp
 @@ -94,6 +94,8 @@ int QDialPrivate::bound(int val) const
@@ -45489,7 +44969,7 @@ index 8f774a3cc7..ec5cec0d82 100644
          if (val < minimum)
              val += maximum - minimum;
 diff --git a/src/widgets/widgets/qgroupbox.cpp b/src/widgets/widgets/qgroupbox.cpp
-index 02a0bed325..3f3eccc370 100644
+index 02a0bed3256..3f3eccc3709 100644
 --- a/src/widgets/widgets/qgroupbox.cpp
 +++ b/src/widgets/widgets/qgroupbox.cpp
 @@ -54,6 +54,8 @@
@@ -45526,7 +45006,7 @@ index 02a0bed325..3f3eccc370 100644
                             || d->pressedControl == QStyle::SC_GroupBoxCheckBox);
              d->pressedControl = QStyle::SC_None;
 diff --git a/src/widgets/widgets/qlineedit_p.cpp b/src/widgets/widgets/qlineedit_p.cpp
-index 80c9258da4..3fa0f29d28 100644
+index 80c9258da47..3fa0f29d280 100644
 --- a/src/widgets/widgets/qlineedit_p.cpp
 +++ b/src/widgets/widgets/qlineedit_p.cpp
 @@ -434,7 +434,7 @@ void QLineEditIconButton::animateShow(bool visible)
@@ -45539,7 +45019,7 @@ index 80c9258da4..3fa0f29d28 100644
  
      animation->setDuration(160);
 diff --git a/src/widgets/widgets/qtoolbutton.cpp b/src/widgets/widgets/qtoolbutton.cpp
-index e380cb647b..9953db73af 100644
+index e380cb647ba..9953db73af3 100644
 --- a/src/widgets/widgets/qtoolbutton.cpp
 +++ b/src/widgets/widgets/qtoolbutton.cpp
 @@ -982,7 +982,15 @@ QAction *QToolButton::defaultAction() const
@@ -45560,7 +45040,7 @@ index e380cb647b..9953db73af 100644
  /*!
    \reimp
 diff --git a/src/widgets/widgets/qtoolbutton.h b/src/widgets/widgets/qtoolbutton.h
-index 52bd2d5f7a..82b5d7924f 100644
+index 52bd2d5f7a3..82b5d7924fe 100644
 --- a/src/widgets/widgets/qtoolbutton.h
 +++ b/src/widgets/widgets/qtoolbutton.h
 @@ -118,6 +118,7 @@ protected:
@@ -45572,7 +45052,7 @@ index 52bd2d5f7a..82b5d7924f 100644
      void initStyleOption(QStyleOptionToolButton *option) const;
  
 diff --git a/src/xml/sax/qxml.cpp b/src/xml/sax/qxml.cpp
-index 7a444713c1..9076dcfd84 100644
+index 7a444713c16..9076dcfd840 100644
 --- a/src/xml/sax/qxml.cpp
 +++ b/src/xml/sax/qxml.cpp
 @@ -7464,7 +7464,12 @@ bool QXmlSimpleReaderPrivate::parseReference()
@@ -45604,7 +45084,7 @@ index 7a444713c1..9076dcfd84 100644
                      reportParseError(QLatin1String(XMLERR_ERRORPARSINGREFERENCE));
                      return false;
 diff --git a/sync.profile b/sync.profile
-index 0292bf0dc2..7dd0177b90 100644
+index 0292bf0dc2f..7dd0177b908 100644
 --- a/sync.profile
 +++ b/sync.profile
 @@ -77,7 +77,7 @@
@@ -45617,7 +45097,7 @@ index 0292bf0dc2..7dd0177b90 100644
      "QtTest" => {
          "qtest_global.h" => "QtTest/qttestglobal.h"
 diff --git a/tests/auto/corelib/itemmodels/qconcatenatetablesproxymodel/tst_qconcatenatetablesproxymodel.cpp b/tests/auto/corelib/itemmodels/qconcatenatetablesproxymodel/tst_qconcatenatetablesproxymodel.cpp
-index e1ea7a4552..90972caa57 100644
+index e1ea7a45525..90972caa575 100644
 --- a/tests/auto/corelib/itemmodels/qconcatenatetablesproxymodel/tst_qconcatenatetablesproxymodel.cpp
 +++ b/tests/auto/corelib/itemmodels/qconcatenatetablesproxymodel/tst_qconcatenatetablesproxymodel.cpp
 @@ -117,6 +117,7 @@ private Q_SLOTS:
@@ -45653,7 +45133,7 @@ index e1ea7a4552..90972caa57 100644
  #include "tst_qconcatenatetablesproxymodel.moc"
 diff --git a/tests/auto/corelib/mimetypes/qmimedatabase/circular-inheritance.xml b/tests/auto/corelib/mimetypes/qmimedatabase/circular-inheritance.xml
 new file mode 100644
-index 0000000000..466f039803
+index 00000000000..466f039803d
 --- /dev/null
 +++ b/tests/auto/corelib/mimetypes/qmimedatabase/circular-inheritance.xml
 @@ -0,0 +1,13 @@
@@ -45671,7 +45151,7 @@ index 0000000000..466f039803
 +  </mime-type>
 +</mime-info>
 diff --git a/tests/auto/corelib/mimetypes/qmimedatabase/testdata.qrc b/tests/auto/corelib/mimetypes/qmimedatabase/testdata.qrc
-index 1002d0195d..49dbb0a8ba 100644
+index 1002d0195d1..49dbb0a8baf 100644
 --- a/tests/auto/corelib/mimetypes/qmimedatabase/testdata.qrc
 +++ b/tests/auto/corelib/mimetypes/qmimedatabase/testdata.qrc
 @@ -3,10 +3,12 @@
@@ -45689,7 +45169,7 @@ index 1002d0195d..49dbb0a8ba 100644
          <file>magic-and-hierarchy2.foo</file>
 diff --git a/tests/auto/corelib/mimetypes/qmimedatabase/text-plain-subclass.xml b/tests/auto/corelib/mimetypes/qmimedatabase/text-plain-subclass.xml
 new file mode 100644
-index 0000000000..7b5cb7506d
+index 00000000000..7b5cb7506d3
 --- /dev/null
 +++ b/tests/auto/corelib/mimetypes/qmimedatabase/text-plain-subclass.xml
 @@ -0,0 +1,15 @@
@@ -45709,7 +45189,7 @@ index 0000000000..7b5cb7506d
 +    </mime-type>
 +</mime-info>
 diff --git a/tests/auto/corelib/mimetypes/qmimedatabase/tst_qmimedatabase.cpp b/tests/auto/corelib/mimetypes/qmimedatabase/tst_qmimedatabase.cpp
-index 0ea422ecbc..d2dd8d340b 100644
+index 0ea422ecbc9..d2dd8d340bc 100644
 --- a/tests/auto/corelib/mimetypes/qmimedatabase/tst_qmimedatabase.cpp
 +++ b/tests/auto/corelib/mimetypes/qmimedatabase/tst_qmimedatabase.cpp
 @@ -49,10 +49,12 @@ static const char *const additionalMimeFiles[] = {
@@ -45802,7 +45282,7 @@ index 0ea422ecbc..d2dd8d340b 100644
      // Test that a double-definition of a mimetype doesn't lead to sniffing ("conflicting globs").
      const QString qmlTestFile = QLatin1String(RESOURCE_PREFIX "test.qml");
 diff --git a/tests/auto/corelib/plugin/qfactoryloader/plugin1/plugin1.h b/tests/auto/corelib/plugin/qfactoryloader/plugin1/plugin1.h
-index ca2ceed7a9..624316dfdb 100644
+index ca2ceed7a91..624316dfdbf 100644
 --- a/tests/auto/corelib/plugin/qfactoryloader/plugin1/plugin1.h
 +++ b/tests/auto/corelib/plugin/qfactoryloader/plugin1/plugin1.h
 @@ -35,7 +35,7 @@
@@ -45816,7 +45296,7 @@ index ca2ceed7a9..624316dfdb 100644
  public:
 diff --git a/tests/auto/corelib/plugin/qfactoryloader/plugin1/plugin1.json b/tests/auto/corelib/plugin/qfactoryloader/plugin1/plugin1.json
 new file mode 100644
-index 0000000000..ce67846d48
+index 00000000000..ce67846d485
 --- /dev/null
 +++ b/tests/auto/corelib/plugin/qfactoryloader/plugin1/plugin1.json
 @@ -0,0 +1,5 @@
@@ -45826,7 +45306,7 @@ index 0000000000..ce67846d48
 +    ]
 +}
 diff --git a/tests/auto/corelib/plugin/qfactoryloader/tst_qfactoryloader.cpp b/tests/auto/corelib/plugin/qfactoryloader/tst_qfactoryloader.cpp
-index 9fa61804b3..88ada1b806 100644
+index 9fa61804b38..88ada1b806d 100644
 --- a/tests/auto/corelib/plugin/qfactoryloader/tst_qfactoryloader.cpp
 +++ b/tests/auto/corelib/plugin/qfactoryloader/tst_qfactoryloader.cpp
 @@ -31,6 +31,7 @@
@@ -45877,7 +45357,7 @@ index 9fa61804b3..88ada1b806 100644
  QTEST_MAIN(tst_QFactoryLoader)
  #include "tst_qfactoryloader.moc"
 diff --git a/tests/auto/corelib/plugin/qpluginloader/tst_qpluginloader.cpp b/tests/auto/corelib/plugin/qpluginloader/tst_qpluginloader.cpp
-index ce8057372c..833f68b1de 100644
+index ce8057372cf..833f68b1def 100644
 --- a/tests/auto/corelib/plugin/qpluginloader/tst_qpluginloader.cpp
 +++ b/tests/auto/corelib/plugin/qpluginloader/tst_qpluginloader.cpp
 @@ -193,7 +193,9 @@ void tst_QPluginLoader::errorString()
@@ -45931,7 +45411,7 @@ index ce8057372c..833f68b1de 100644
  
  void tst_QPluginLoader::deleteinstanceOnUnload()
 diff --git a/tests/auto/corelib/serialization/qcborvalue/tst_qcborvalue.cpp b/tests/auto/corelib/serialization/qcborvalue/tst_qcborvalue.cpp
-index 533fb1c8aa..63ce77d67f 100644
+index 533fb1c8aa7..63ce77d67fa 100644
 --- a/tests/auto/corelib/serialization/qcborvalue/tst_qcborvalue.cpp
 +++ b/tests/auto/corelib/serialization/qcborvalue/tst_qcborvalue.cpp
 @@ -75,6 +75,7 @@ private slots:
@@ -46042,72 +45522,8 @@ index 533fb1c8aa..63ce77d67f 100644
  void tst_QCborValue::sorting()
  {
      QCborValue vundef, vnull(nullptr);
-diff --git a/tests/auto/corelib/serialization/qxmlstream/tst_qxmlstream.cpp b/tests/auto/corelib/serialization/qxmlstream/tst_qxmlstream.cpp
-index a2349a5846..9150abe65b 100644
---- a/tests/auto/corelib/serialization/qxmlstream/tst_qxmlstream.cpp
-+++ b/tests/auto/corelib/serialization/qxmlstream/tst_qxmlstream.cpp
-@@ -42,6 +42,7 @@
- 
- #include "qc14n.h"
- 
-+Q_DECLARE_METATYPE(QXmlStreamReader::Error)
- Q_DECLARE_METATYPE(QXmlStreamReader::ReadElementTextBehaviour)
- 
- static const char *const catalogFile = "XML-Test-Suite/xmlconf/finalCatalog.xml";
-@@ -587,6 +588,8 @@ private slots:
-     void readBack() const;
-     void roundTrip() const;
-     void roundTrip_data() const;
-+    void test_fastScanName_data() const;
-+    void test_fastScanName() const;
- 
-     void entityExpansionLimit() const;
- 
-@@ -1843,5 +1846,42 @@ void tst_QXmlStream::roundTrip() const
-     QCOMPARE(out, in);
- }
- 
-+void tst_QXmlStream::test_fastScanName_data() const
-+{
-+    QTest::addColumn<QByteArray>("data");
-+    QTest::addColumn<QXmlStreamReader::Error>("errorType");
-+
-+    // 4096 is the limit in QXmlStreamReaderPrivate::fastScanName()
-+
-+    QByteArray arr = "<a:" + QByteArray("b").repeated(4096 - 1);
-+    QTest::newRow("data1") << arr << QXmlStreamReader::PrematureEndOfDocumentError;
-+
-+    arr = "<a:" + QByteArray("b").repeated(4096);
-+    QTest::newRow("data2") << arr << QXmlStreamReader::NotWellFormedError;
-+
-+    arr = "<" + QByteArray("a").repeated(4000) + ":" + QByteArray("b").repeated(96);
-+    QTest::newRow("data3") << arr << QXmlStreamReader::PrematureEndOfDocumentError;
-+
-+    arr = "<" + QByteArray("a").repeated(4000) + ":" + QByteArray("b").repeated(96 + 1);
-+    QTest::newRow("data4") << arr << QXmlStreamReader::NotWellFormedError;
-+
-+    arr = "<" + QByteArray("a").repeated(4000 + 1) + ":" + QByteArray("b").repeated(96);
-+    QTest::newRow("data5") << arr << QXmlStreamReader::NotWellFormedError;
-+}
-+
-+void tst_QXmlStream::test_fastScanName() const
-+{
-+    QFETCH(QByteArray, data);
-+    QFETCH(QXmlStreamReader::Error, errorType);
-+
-+    QXmlStreamReader reader(data);
-+    QXmlStreamReader::TokenType tokenType;
-+    while (!reader.atEnd())
-+        tokenType = reader.readNext();
-+
-+    QCOMPARE(tokenType, QXmlStreamReader::Invalid);
-+    QCOMPARE(reader.error(), errorType);
-+}
-+
- #include "tst_qxmlstream.moc"
- // vim: et:ts=4:sw=4:sts=4
 diff --git a/tests/auto/gui/kernel/qkeysequence/tst_qkeysequence.cpp b/tests/auto/gui/kernel/qkeysequence/tst_qkeysequence.cpp
-index 874468c954..04ceb4ab65 100644
+index 874468c9546..04ceb4ab659 100644
 --- a/tests/auto/gui/kernel/qkeysequence/tst_qkeysequence.cpp
 +++ b/tests/auto/gui/kernel/qkeysequence/tst_qkeysequence.cpp
 @@ -507,6 +507,10 @@ void tst_QKeySequence::toStringFromKeycode_data()
@@ -46122,7 +45538,7 @@ index 874468c954..04ceb4ab65 100644
  
  void tst_QKeySequence::toStringFromKeycode()
 diff --git a/tests/auto/gui/painting/qpainter/tst_qpainter.cpp b/tests/auto/gui/painting/qpainter/tst_qpainter.cpp
-index d7c3f95f1d..bfc77b0831 100644
+index d7c3f95f1de..bfc77b0831e 100644
 --- a/tests/auto/gui/painting/qpainter/tst_qpainter.cpp
 +++ b/tests/auto/gui/painting/qpainter/tst_qpainter.cpp
 @@ -84,6 +84,7 @@ private slots:
@@ -46151,7 +45567,7 @@ index d7c3f95f1d..bfc77b0831 100644
  {
      QTest::addColumn<QLine>("line");
 diff --git a/tests/auto/gui/text/qfontdatabase/tst_qfontdatabase.cpp b/tests/auto/gui/text/qfontdatabase/tst_qfontdatabase.cpp
-index 15e0ecadaa..b4eca74283 100644
+index 15e0ecadaa0..b4eca742838 100644
 --- a/tests/auto/gui/text/qfontdatabase/tst_qfontdatabase.cpp
 +++ b/tests/auto/gui/text/qfontdatabase/tst_qfontdatabase.cpp
 @@ -81,6 +81,8 @@ private slots:
@@ -46193,7 +45609,7 @@ index 15e0ecadaa..b4eca74283 100644
  {
      int regularFontId = QFontDatabase::addApplicationFont(m_testFont);
 diff --git a/tests/auto/other/qaccessibilitylinux/tst_qaccessibilitylinux.cpp b/tests/auto/other/qaccessibilitylinux/tst_qaccessibilitylinux.cpp
-index 7ba3715e13..752aa122f6 100644
+index 7ba3715e130..752aa122f64 100644
 --- a/tests/auto/other/qaccessibilitylinux/tst_qaccessibilitylinux.cpp
 +++ b/tests/auto/other/qaccessibilitylinux/tst_qaccessibilitylinux.cpp
 @@ -179,6 +179,7 @@ void tst_QAccessibilityLinux::initTestCase()
@@ -46239,10 +45655,10 @@ index 7ba3715e13..752aa122f6 100644
  }
  
 diff --git a/tests/auto/testlib/qabstractitemmodeltester/tst_qabstractitemmodeltester.cpp b/tests/auto/testlib/qabstractitemmodeltester/tst_qabstractitemmodeltester.cpp
-index 4aa3f8d60b..d2050a61aa 100644
+index f6ad97a96be..61452dceaed 100644
 --- a/tests/auto/testlib/qabstractitemmodeltester/tst_qabstractitemmodeltester.cpp
 +++ b/tests/auto/testlib/qabstractitemmodeltester/tst_qabstractitemmodeltester.cpp
-@@ -115,6 +115,10 @@ void tst_QAbstractItemModelTester::standardItemModelZeroColumns()
+@@ -116,6 +116,10 @@ void tst_QAbstractItemModelTester::standardItemModelZeroColumns()
      // QTBUG-92886
      model.insertRows(0, 5);
      model.removeRows(1, 2);
@@ -46254,7 +45670,7 @@ index 4aa3f8d60b..d2050a61aa 100644
  
  void tst_QAbstractItemModelTester::testInsertThroughProxy()
 diff --git a/tests/auto/tools/moc/allmocs_baseline_in.json b/tests/auto/tools/moc/allmocs_baseline_in.json
-index 18282505e4..ce518e78fb 100644
+index 18282505e48..ce518e78fb4 100644
 --- a/tests/auto/tools/moc/allmocs_baseline_in.json
 +++ b/tests/auto/tools/moc/allmocs_baseline_in.json
 @@ -668,40 +668,6 @@
@@ -46299,7 +45715,7 @@ index 18282505e4..ce518e78fb 100644
          "classes": [
              {
 diff --git a/tests/auto/tools/moc/moc.pro b/tests/auto/tools/moc/moc.pro
-index c324b3a8cd..4aceb78dc0 100644
+index c324b3a8cd0..4aceb78dc0f 100644
 --- a/tests/auto/tools/moc/moc.pro
 +++ b/tests/auto/tools/moc/moc.pro
 @@ -15,7 +15,7 @@ cross_compile: DEFINES += MOC_CROSS_COMPILED
@@ -46313,7 +45729,7 @@ index c324b3a8cd..4aceb78dc0 100644
             cxx11-explicit-override-control.h \
 diff --git a/tests/auto/tools/moc/task189996.h b/tests/auto/tools/moc/task189996.h
 deleted file mode 100644
-index ba9450c271..0000000000
+index ba9450c2718..00000000000
 --- a/tests/auto/tools/moc/task189996.h
 +++ /dev/null
 @@ -1,45 +0,0 @@
@@ -46363,7 +45779,7 @@ index ba9450c271..0000000000
 -
 -#endif
 diff --git a/tests/auto/tools/moc/tst_moc.cpp b/tests/auto/tools/moc/tst_moc.cpp
-index cc465a213a..a9ab6ec4f3 100644
+index cc465a213ae..a9ab6ec4f33 100644
 --- a/tests/auto/tools/moc/tst_moc.cpp
 +++ b/tests/auto/tools/moc/tst_moc.cpp
 @@ -671,7 +671,6 @@ private slots:
@@ -46431,7 +45847,7 @@ index cc465a213a..a9ab6ec4f3 100644
      QVERIFY(proc.waitForStarted());
      proc.write(mocOut);
 diff --git a/tests/auto/widgets/itemviews/qtableview/tst_qtableview.cpp b/tests/auto/widgets/itemviews/qtableview/tst_qtableview.cpp
-index 761357b252..06bb706074 100644
+index 761357b2525..06bb706074b 100644
 --- a/tests/auto/widgets/itemviews/qtableview/tst_qtableview.cpp
 +++ b/tests/auto/widgets/itemviews/qtableview/tst_qtableview.cpp
 @@ -397,6 +397,7 @@ private slots:
@@ -46514,7 +45930,7 @@ index 761357b252..06bb706074 100644
  extern bool Q_WIDGETS_EXPORT qt_tab_all_widgets(); // qapplication.cpp
  QT_END_NAMESPACE
 diff --git a/tests/auto/widgets/widgets/qabstractbutton/tst_qabstractbutton.cpp b/tests/auto/widgets/widgets/qabstractbutton/tst_qabstractbutton.cpp
-index eb108a40de..dca5528c1b 100644
+index eb108a40de7..dca5528c1bf 100644
 --- a/tests/auto/widgets/widgets/qabstractbutton/tst_qabstractbutton.cpp
 +++ b/tests/auto/widgets/widgets/qabstractbutton/tst_qabstractbutton.cpp
 @@ -41,6 +41,7 @@
@@ -46591,7 +46007,7 @@ index eb108a40de..dca5528c1b 100644
  QTEST_MAIN(tst_QAbstractButton)
  #include "tst_qabstractbutton.moc"
 diff --git a/tests/auto/widgets/widgets/qcombobox/tst_qcombobox.cpp b/tests/auto/widgets/widgets/qcombobox/tst_qcombobox.cpp
-index 7af60ed757..46b5af6d63 100644
+index 7af60ed7578..46b5af6d63b 100644
 --- a/tests/auto/widgets/widgets/qcombobox/tst_qcombobox.cpp
 +++ b/tests/auto/widgets/widgets/qcombobox/tst_qcombobox.cpp
 @@ -168,6 +168,7 @@ private slots:
@@ -46628,7 +46044,7 @@ index 7af60ed757..46b5af6d63 100644
  QTEST_MAIN(tst_QComboBox)
  #include "tst_qcombobox.moc"
 diff --git a/tests/auto/widgets/widgets/qcommandlinkbutton/qcommandlinkbutton.pro b/tests/auto/widgets/widgets/qcommandlinkbutton/qcommandlinkbutton.pro
-index be3cfcd104..c228fdfcca 100644
+index be3cfcd1047..c228fdfcca9 100644
 --- a/tests/auto/widgets/widgets/qcommandlinkbutton/qcommandlinkbutton.pro
 +++ b/tests/auto/widgets/widgets/qcommandlinkbutton/qcommandlinkbutton.pro
 @@ -1,6 +1,6 @@
@@ -46640,7 +46056,7 @@ index be3cfcd104..c228fdfcca 100644
  
  
 diff --git a/tests/auto/widgets/widgets/qcommandlinkbutton/tst_qcommandlinkbutton.cpp b/tests/auto/widgets/widgets/qcommandlinkbutton/tst_qcommandlinkbutton.cpp
-index 0044d33c66..4cf06296e4 100644
+index 0044d33c665..4cf06296e4e 100644
 --- a/tests/auto/widgets/widgets/qcommandlinkbutton/tst_qcommandlinkbutton.cpp
 +++ b/tests/auto/widgets/widgets/qcommandlinkbutton/tst_qcommandlinkbutton.cpp
 @@ -40,6 +40,9 @@
@@ -46683,7 +46099,7 @@ index 0044d33c66..4cf06296e4 100644
      QCOMPARE( press_count, (uint)1 );
      QCOMPARE( release_count, (uint)1 );
 diff --git a/tests/auto/widgets/widgets/qdial/tst_qdial.cpp b/tests/auto/widgets/widgets/qdial/tst_qdial.cpp
-index 356f773ae9..a014df3b15 100644
+index 356f773ae9f..a014df3b15f 100644
 --- a/tests/auto/widgets/widgets/qdial/tst_qdial.cpp
 +++ b/tests/auto/widgets/widgets/qdial/tst_qdial.cpp
 @@ -42,6 +42,7 @@ private slots:
@@ -46710,7 +46126,7 @@ index 356f773ae9..a014df3b15 100644
  QTEST_MAIN(tst_QDial)
  #include "tst_qdial.moc"
 diff --git a/tests/auto/widgets/widgets/qgroupbox/qgroupbox.pro b/tests/auto/widgets/widgets/qgroupbox/qgroupbox.pro
-index 4a5e76ff65..a235fa1fac 100644
+index 4a5e76ff656..a235fa1face 100644
 --- a/tests/auto/widgets/widgets/qgroupbox/qgroupbox.pro
 +++ b/tests/auto/widgets/widgets/qgroupbox/qgroupbox.pro
 @@ -1,6 +1,6 @@
@@ -46722,7 +46138,7 @@ index 4a5e76ff65..a235fa1fac 100644
  
  
 diff --git a/tests/auto/widgets/widgets/qgroupbox/tst_qgroupbox.cpp b/tests/auto/widgets/widgets/qgroupbox/tst_qgroupbox.cpp
-index 4fb5d262ca..d8d7562b73 100644
+index 4fb5d262ca4..d8d7562b73e 100644
 --- a/tests/auto/widgets/widgets/qgroupbox/tst_qgroupbox.cpp
 +++ b/tests/auto/widgets/widgets/qgroupbox/tst_qgroupbox.cpp
 @@ -35,6 +35,9 @@
@@ -46765,7 +46181,7 @@ index 4fb5d262ca..d8d7562b73 100644
  {
      // Send a MouseMove event without actually moving the pointer
 diff --git a/tests/auto/widgets/widgets/qpushbutton/qpushbutton.pro b/tests/auto/widgets/widgets/qpushbutton/qpushbutton.pro
-index 353ad06ca2..e55f6148f2 100644
+index 353ad06ca21..e55f6148f20 100644
 --- a/tests/auto/widgets/widgets/qpushbutton/qpushbutton.pro
 +++ b/tests/auto/widgets/widgets/qpushbutton/qpushbutton.pro
 @@ -1,6 +1,6 @@
@@ -46777,7 +46193,7 @@ index 353ad06ca2..e55f6148f2 100644
  
  
 diff --git a/tests/auto/widgets/widgets/qpushbutton/tst_qpushbutton.cpp b/tests/auto/widgets/widgets/qpushbutton/tst_qpushbutton.cpp
-index e818514a79..4043e9326a 100644
+index e818514a79d..4043e9326a2 100644
 --- a/tests/auto/widgets/widgets/qpushbutton/tst_qpushbutton.cpp
 +++ b/tests/auto/widgets/widgets/qpushbutton/tst_qpushbutton.cpp
 @@ -41,6 +41,9 @@
@@ -46820,7 +46236,7 @@ index e818514a79..4043e9326a 100644
      QCOMPARE( press_count, (uint)1 );
      QCOMPARE( release_count, (uint)1 );
 diff --git a/tests/auto/xml/sax/qxmlsimplereader/parser/main.cpp b/tests/auto/xml/sax/qxmlsimplereader/parser/main.cpp
-index b5d9fea315..c5597c6f8e 100644
+index b5d9fea315c..c5597c6f8eb 100644
 --- a/tests/auto/xml/sax/qxmlsimplereader/parser/main.cpp
 +++ b/tests/auto/xml/sax/qxmlsimplereader/parser/main.cpp
 @@ -37,7 +37,6 @@
@@ -46867,7 +46283,7 @@ index b5d9fea315..c5597c6f8e 100644
      return 0;
  }
 diff --git a/tests/auto/xml/sax/qxmlsimplereader/parser/parser.cpp b/tests/auto/xml/sax/qxmlsimplereader/parser/parser.cpp
-index 44f8101955..24aa9376da 100644
+index 44f81019555..24aa9376da8 100644
 --- a/tests/auto/xml/sax/qxmlsimplereader/parser/parser.cpp
 +++ b/tests/auto/xml/sax/qxmlsimplereader/parser/parser.cpp
 @@ -142,11 +142,12 @@ bool ContentHandler::startElement(const QString &namespaceURI,
@@ -46889,7 +46305,7 @@ index 44f8101955..24aa9376da 100644
  }
  
 diff --git a/tests/auto/xml/sax/qxmlsimplereader/tst_qxmlsimplereader.cpp b/tests/auto/xml/sax/qxmlsimplereader/tst_qxmlsimplereader.cpp
-index cea4e3c8b8..df158cae0f 100644
+index cea4e3c8b81..df158cae0ff 100644
 --- a/tests/auto/xml/sax/qxmlsimplereader/tst_qxmlsimplereader.cpp
 +++ b/tests/auto/xml/sax/qxmlsimplereader/tst_qxmlsimplereader.cpp
 @@ -311,14 +311,12 @@ void tst_QXmlSimpleReader::testGoodXmlFile()
@@ -46932,13 +46348,13 @@ index cea4e3c8b8..df158cae0f 100644
      QCOMPARE(parser.result(), ref_file_contents);
  }
 diff --git a/tests/auto/xml/sax/qxmlsimplereader/xmldocs/not-wf/sa/142.xml.ref b/tests/auto/xml/sax/qxmlsimplereader/xmldocs/not-wf/sa/142.xml.ref
-index 7ce4da6a06..0684cfa943 100644
+index 7ce4da6a06a..0684cfa9434 100644
 Binary files a/tests/auto/xml/sax/qxmlsimplereader/xmldocs/not-wf/sa/142.xml.ref and b/tests/auto/xml/sax/qxmlsimplereader/xmldocs/not-wf/sa/142.xml.ref differ
 diff --git a/tests/auto/xml/sax/qxmlsimplereader/xmldocs/valid/sa/064.xml.ref b/tests/auto/xml/sax/qxmlsimplereader/xmldocs/valid/sa/064.xml.ref
-index 579aeb52f6..0b806c96a8 100644
+index 579aeb52f64..0b806c96a84 100644
 Binary files a/tests/auto/xml/sax/qxmlsimplereader/xmldocs/valid/sa/064.xml.ref and b/tests/auto/xml/sax/qxmlsimplereader/xmldocs/valid/sa/064.xml.ref differ
 diff --git a/tests/auto/xml/sax/qxmlsimplereader/xmldocs/valid/sa/089.xml.ref b/tests/auto/xml/sax/qxmlsimplereader/xmldocs/valid/sa/089.xml.ref
-index 7c68c32286..f09bc2bd09 100644
+index 7c68c322866..f09bc2bd093 100644
 Binary files a/tests/auto/xml/sax/qxmlsimplereader/xmldocs/valid/sa/089.xml.ref and b/tests/auto/xml/sax/qxmlsimplereader/xmldocs/valid/sa/089.xml.ref differ
 diff --git a/tests/manual/rhi/cubemap_render/buildshader.bat b/tests/manual/rhi/cubemap_render/buildshader.bat
 old mode 100755

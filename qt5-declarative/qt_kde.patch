@@ -60,19 +60,6 @@ index 420a934ba2..a828d0e234 100644
          }
          break;
      }
-diff --git a/src/qml/common/qqmljsmemorypool_p.h b/src/qml/common/qqmljsmemorypool_p.h
-index 0cf7ea84e6..1b81a87a2c 100644
---- a/src/qml/common/qqmljsmemorypool_p.h
-+++ b/src/qml/common/qqmljsmemorypool_p.h
-@@ -87,7 +87,7 @@ public:
-     inline void *allocate(size_t size)
-     {
-         size = (size + 7) & ~size_t(7);
--        if (Q_LIKELY(_ptr && (_ptr + size < _end))) {
-+        if (Q_LIKELY(_ptr && size < size_t(_end - _ptr))) {
-             void *addr = _ptr;
-             _ptr += size;
-             return addr;
 diff --git a/src/qml/jsruntime/qv4function.cpp b/src/qml/jsruntime/qv4function.cpp
 index cf8a53cf9f..223e64271e 100644
 --- a/src/qml/jsruntime/qv4function.cpp
@@ -86,40 +73,6 @@ index cf8a53cf9f..223e64271e 100644
              parameterNames.append(dup);
              parameterNames[duplicate] =
                      QString(0xfffe) + QString::number(duplicate) + dup;
-diff --git a/src/qml/qml/ftw/qrecyclepool_p.h b/src/qml/qml/ftw/qrecyclepool_p.h
-index 39f4f88512..c963e1878e 100644
---- a/src/qml/qml/ftw/qrecyclepool_p.h
-+++ b/src/qml/qml/ftw/qrecyclepool_p.h
-@@ -130,8 +130,7 @@ template<typename T, int Step>
- T *QRecyclePool<T, Step>::New()
- {
-     T *rv = d->allocate();
--    new (rv) T;
--    return rv;
-+    return new (rv) T;
- }
- 
- template<typename T, int Step>
-@@ -139,8 +138,7 @@ template<typename T1>
- T *QRecyclePool<T, Step>::New(const T1 &a)
- {
-     T *rv = d->allocate();
--    new (rv) T(a);
--    return rv;
-+    return new (rv) T(a);
- }
- 
- template<typename T, int Step>
-@@ -148,8 +146,7 @@ template<typename T1>
- T *QRecyclePool<T, Step>::New(T1 &a)
- {
-     T *rv = d->allocate();
--    new (rv) T(a);
--    return rv;
-+    return new (rv) T(a);
- }
- 
- template<typename T, int Step>
 diff --git a/src/qml/qml/qqmldata_p.h b/src/qml/qml/qqmldata_p.h
 index ee31cb38d9..187339169b 100644
 --- a/src/qml/qml/qqmldata_p.h
@@ -696,10 +649,10 @@ index 8321fcfeed..383078b3b9 100644
      drag->setMimeData(mimeData);
      if (pixmapLoader.isReady()) {
 diff --git a/src/quick/items/qquickitem.cpp b/src/quick/items/qquickitem.cpp
-index ec55fb2998..9e8b289376 100644
+index 540d12c84a..8b139cb539 100644
 --- a/src/quick/items/qquickitem.cpp
 +++ b/src/quick/items/qquickitem.cpp
-@@ -2327,6 +2327,7 @@ QQuickItem::QQuickItem(QQuickItemPrivate &dd, QQuickItem *parent)
+@@ -2328,6 +2328,7 @@ QQuickItem::QQuickItem(QQuickItemPrivate &dd, QQuickItem *parent)
  QQuickItem::~QQuickItem()
  {
      Q_D(QQuickItem);
@@ -707,7 +660,7 @@ index ec55fb2998..9e8b289376 100644
  
      if (d->windowRefCount > 1)
          d->windowRefCount = 1; // Make sure window is set to null in next call to derefWindow().
-@@ -2399,7 +2400,7 @@ bool QQuickItemPrivate::canAcceptTabFocus(QQuickItem *item)
+@@ -2400,7 +2401,7 @@ bool QQuickItemPrivate::canAcceptTabFocus(QQuickItem *item)
          return true;
  
  #if QT_CONFIG(accessibility)
@@ -716,7 +669,7 @@ index ec55fb2998..9e8b289376 100644
      if (role == QAccessible::EditableText || role == QAccessible::Table || role == QAccessible::List) {
          return true;
      } else if (role == QAccessible::ComboBox || role == QAccessible::SpinBox) {
-@@ -2694,9 +2695,8 @@ void QQuickItem::setParentItem(QQuickItem *parentItem)
+@@ -2695,9 +2696,8 @@ void QQuickItem::setParentItem(QQuickItem *parentItem)
  
          const bool wasVisible = isVisible();
          op->removeChild(this);
@@ -727,7 +680,7 @@ index ec55fb2998..9e8b289376 100644
      } else if (d->window) {
          QQuickWindowPrivate::get(d->window)->parentlessItems.remove(this);
      }
-@@ -2773,8 +2773,9 @@ void QQuickItem::setParentItem(QQuickItem *parentItem)
+@@ -2774,8 +2774,9 @@ void QQuickItem::setParentItem(QQuickItem *parentItem)
  
      d->itemChange(ItemParentHasChanged, d->parentItem);
  
@@ -739,7 +692,7 @@ index ec55fb2998..9e8b289376 100644
          emit d->parentItem->visibleChildrenChanged();
  }
  
-@@ -2970,7 +2971,8 @@ void QQuickItemPrivate::removeChild(QQuickItem *child)
+@@ -2971,7 +2972,8 @@ void QQuickItemPrivate::removeChild(QQuickItem *child)
  
      itemChange(QQuickItem::ItemChildRemovedChange, child);
  
@@ -749,7 +702,7 @@ index ec55fb2998..9e8b289376 100644
  }
  
  void QQuickItemPrivate::refWindow(QQuickWindow *c)
-@@ -3199,6 +3201,7 @@ QQuickItemPrivate::QQuickItemPrivate()
+@@ -3200,6 +3202,7 @@ QQuickItemPrivate::QQuickItemPrivate()
      , touchEnabled(false)
  #endif
      , hasCursorHandler(false)
@@ -757,7 +710,7 @@ index ec55fb2998..9e8b289376 100644
      , dirtyAttributes(0)
      , nextDirtyItem(nullptr)
      , prevDirtyItem(nullptr)
-@@ -5125,6 +5128,13 @@ void QQuickItem::componentComplete()
+@@ -5126,6 +5129,13 @@ void QQuickItem::componentComplete()
          d->addToDirtyList();
          QQuickWindowPrivate::get(d->window)->dirtyItem(this);
      }
@@ -771,7 +724,7 @@ index ec55fb2998..9e8b289376 100644
  }
  
  QQuickStateGroup *QQuickItemPrivate::_states()
-@@ -6111,9 +6121,11 @@ bool QQuickItemPrivate::setEffectiveVisibleRecur(bool newEffectiveVisible)
+@@ -6112,9 +6122,11 @@ bool QQuickItemPrivate::setEffectiveVisibleRecur(bool newEffectiveVisible)
          QAccessible::updateAccessibility(&ev);
      }
  #endif
@@ -786,7 +739,7 @@ index ec55fb2998..9e8b289376 100644
  
      return true;    // effective visibility DID change
  }
-@@ -6162,6 +6174,15 @@ void QQuickItemPrivate::setEffectiveEnableRecur(QQuickItem *scope, bool newEffec
+@@ -6163,6 +6175,15 @@ void QQuickItemPrivate::setEffectiveEnableRecur(QQuickItem *scope, bool newEffec
      }
  
      itemChange(QQuickItem::ItemEnabledHasChanged, effectiveEnable);
@@ -802,7 +755,7 @@ index ec55fb2998..9e8b289376 100644
      emit q->enabledChanged();
  }
  
-@@ -8979,13 +9000,20 @@ QQuickItemPrivate::ExtraData::ExtraData()
+@@ -8989,13 +9010,20 @@ QQuickItemPrivate::ExtraData::ExtraData()
  
  
  #if QT_CONFIG(accessibility)
@@ -1708,34 +1661,3 @@ index 0000000000..38dfde41c3
 +        }
 +    }
 +}
-diff --git a/tools/qml/main.cpp b/tools/qml/main.cpp
-index beeec88f07..2cb7653d65 100644
---- a/tools/qml/main.cpp
-+++ b/tools/qml/main.cpp
-@@ -446,8 +446,8 @@ int main(int argc, char *argv[])
-     QCommandLineParser parser;
-     parser.setSingleDashWordOptionMode(QCommandLineParser::ParseAsLongOptions);
-     parser.setOptionsAfterPositionalArgumentsMode(QCommandLineParser::ParseAsPositionalArguments);
--    const QCommandLineOption helpOption = parser.addHelpOption();
--    const QCommandLineOption versionOption = parser.addVersionOption();
-+    parser.addHelpOption();
-+    parser.addVersionOption();
- #ifdef QT_GUI_LIB
-     QCommandLineOption apptypeOption(QStringList() << QStringLiteral("a") << QStringLiteral("apptype"),
-         QCoreApplication::translate("main", "Select which application class to use. Default is gui."),
-@@ -522,14 +522,7 @@ int main(int argc, char *argv[])
-     parser.addPositionalArgument("args",
-         QCoreApplication::translate("main", "Arguments after '--' are ignored, but passed through to the application.arguments variable in QML."), "[-- args...]");
- 
--    if (!parser.parse(QCoreApplication::arguments())) {
--        qWarning() << parser.errorText();
--        exit(1);
--    }
--    if (parser.isSet(versionOption))
--        parser.showVersion();
--    if (parser.isSet(helpOption))
--        parser.showHelp();
-+    parser.process(*app);
-     if (parser.isSet(listConfOption))
-         listConfFiles();
-     if (applicationType == QmlApplicationTypeUnknown) {
