@@ -1,6 +1,6 @@
 
 pkgname=taglib
-pkgver=2.0
+pkgver=2.0.2
 pkgrel=1
 pkgdesc="A Library for reading and editing the meta-data of several popular audio formats"
 arch=('x86_64')
@@ -10,7 +10,7 @@ depends=('sh' 'zlib' 'gcc-libs')
 makedepends=('cmake' 'pkg-config' 'boost' 'utf8cpp' 'cppunit')
 source=("https://taglib.org/releases/${pkgname}-${pkgver}.tar.gz")
 options=('!libtool')
-md5sums=('1826bf7e8486246a23fd98579f666413')
+md5sums=('95edea13107ac4cc07b7ad4bd1cb5cd1')
 
 build() {
   cmake -B build -S ${pkgname}-${pkgver} \
