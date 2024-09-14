@@ -1,7 +1,7 @@
 
 pkgname=gst-plugins-bad
 pkgver=1.24.7
-pkgrel=1
+pkgrel=2
 pkgdesc="GStreamer Multimedia Framework Bad Plugins"
 arch=('x86_64')
 license=('LGPL')
@@ -42,7 +42,7 @@ build() {
 
 check() {
   cd build
-  # 9 fail
+  # 8 fail
   meson test
 }
 
