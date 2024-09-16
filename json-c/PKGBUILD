@@ -1,6 +1,6 @@
 
 pkgname=json-c
-pkgver=0.17
+pkgver=0.18
 _pkgver=0.14-20200419
 pkgrel=1
 pkgdesc="JSON-C implements a reference counting object model that allows you to easily construct JSON objects in C, output them as JSON formatted strings and parse JSON formatted strings back into the C representation of JSON objects."
@@ -11,7 +11,7 @@ options=('!libtool' '!makeflags')
 makedepends=('cmake')
 source=("https://s3.amazonaws.com/json-c_releases/releases/${pkgname}-${pkgver}.tar.gz")
 #source=("https://github.com/json-c/json-c/archive/json-c-${_pkgver}.tar.gz")
-sha256sums=('7550914d58fb63b2c3546f3ccfbe11f1c094147bd31a69dcd23714d7956159e6')
+sha256sums=('876ab046479166b869afc6896d288183bbc0e5843f141200c677b3e8dfb11724')
 
 build() {
   cmake -B build -S ${pkgname}-${pkgver} \
