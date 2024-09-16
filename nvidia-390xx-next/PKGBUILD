@@ -1,14 +1,14 @@
 
-_extramodules=extramodules-6.10-next
+_extramodules=extramodules-6.11-next
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=nvidia-390xx-next
 pkgver=390.157
-pkgrel=114
+pkgrel=115
 pkgdesc="NVIDIA drivers for linux-next, 390xx legacy version."
 arch=('x86_64')
 url="https://www.nvidia.com/page/home.html"
-depends=('linux-next>=6.10' 'linux-next<6.11.0' "nvidia-390xx-utils=${pkgver}")
+depends=('linux-next>=6.11' 'linux-next<6.12.0' "nvidia-390xx-utils=${pkgver}")
 makedepends=('linux-next-headers')
 options=('!strip')
 conflicts=('nvidia-next' 'nvidia-470xx-next')
