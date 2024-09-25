@@ -2,7 +2,7 @@
 pkgname=mpd
 pkgver=0.23.15
 _pkgver=0.23
-pkgrel=2
+pkgrel=3
 pkgdesc="Music daemon that plays MP3, FLAC, and Ogg Vorbis files"
 arch=('x86_64')
 license=('GPL')
@@ -17,10 +17,18 @@ install=${pkgname}.install
 backup=('etc/mpd.conf')
 source=("https://www.musicpd.org/download/mpd/${_pkgver}/mpd-${pkgver}.tar.xz"
         'tmpfiles.d'
-        'conf')
+        'conf'
+        "https://github.com/MusicPlayerDaemon/MPD/commit/1402869715e3efca87942d79c3173a6b21a6925d.diff")
 md5sums=('c32b7441b6bb67159decc2b567e06aa1'
          'e5cdccd201610a41e957d684ebc38985'
-         'ca16fc9ce20ca382b620cd366c95647e')
+         'ca16fc9ce20ca382b620cd366c95647e'
+         '1dc1a3be9428f0195d204b5099761e3e')
+
+prepare() {
+    cd ${pkgname}-${pkgver}
+
+    patch -p1 -i ${srcdir}/1402869715e3efca87942d79c3173a6b21a6925d.diff
+}
 
 build() {
     mkdir -p build
