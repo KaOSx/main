@@ -6,7 +6,7 @@ pkgname=qt6-wayland
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=2
+pkgrel=1
 pkgdesc="Cross-platform application and UI framework (QtWayland)"
 arch=('x86_64')
 url="https://www.qt.io/"
@@ -24,7 +24,7 @@ md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
 prepare() {
   cd ${_pkgfqn}
 
-  patch -p1 -i ${srcdir}/92bcb8f6b7a852c7a5d662fc34de561692a7a454.diff
+  #patch -p1 -i ${srcdir}/92bcb8f6b7a852c7a5d662fc34de561692a7a454.diff
 }
 
 build() {
