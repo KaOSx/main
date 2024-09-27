@@ -1,20 +1,21 @@
 
 pkgname=python3-pivy
 _pkgname=pivy
-pkgver=0.6.9.a0
-pkgrel=4
+pkgver=0.6.9
+epoch=1
+pkgrel=1
 pkgdesc='Python bindings to coin3d'
 arch=('x86_64')
 url='https://github.com/coin3d/pivy/'
 license=('GPL')
-depends=('python3' 'soqt' 'pyside2')
+depends=('python3' 'soqt' 'pyside6')
 makedepends=('cmake' 'swig' 'python3-setuptools')
 provides=('pivy')
 conflicts=('pivy')
 replaces=('pivy')
 options=('!libtool')
 source=("https://github.com/coin3d/pivy/archive/refs/tags/${pkgver}.tar.gz")
-md5sums=('75af9e2b5fffcb4988855c7a76c09cc0')
+md5sums=('16a62b2f89226e06895501e3a62412ba')
 
 prepare() {
   cd ${_pkgname}-${pkgver}
