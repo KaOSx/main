@@ -6,7 +6,7 @@ pkgname=qt6-tools
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=1
+pkgrel=2
 pkgdesc="A cross-platform application and UI framework, development tools and help files"
 arch=('x86_64')
 url='https://www.qt.io/'
@@ -33,8 +33,7 @@ build() {
     cmake -B build -S ${_pkgfqn} -G Ninja \
         -DCMAKE_BUILD_TYPE=Release \
         -DCMAKE_INSTALL_PREFIX=/usr \
-        -DCMAKE_MESSAGE_LOG_LEVEL=STATUS \
-        -DQT_FEATURE_printsupport=OFF
+        -DCMAKE_MESSAGE_LOG_LEVEL=STATUS
     cmake --build build
 }
 
