@@ -24,7 +24,8 @@ source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.ru
         'linux-6.5.patch'
         'linux-6.6.patch'
         'linux-6.8.patch'
-        'linux-6.10.patch')
+        'linux-6.10.patch'
+        'gcc14.patch')
 md5sums=('405c2220d5d3711e9f298c871e8d66ee'
          '334d82cdc82c8172e9c21188c872523e'
          'd54c6a018acf6c147847d2d1511bed8a'
@@ -32,7 +33,8 @@ md5sums=('405c2220d5d3711e9f298c871e8d66ee'
          '0ea696144a7199536089664225775b47'
          '542666e201625eb18cb26c830373ed2e'
          '23be586e1177bf0fb3aa8236ad42f008'
-         '8da97da4a024e23c3b0e8f6bd2c09579')
+         '8da97da4a024e23c3b0e8f6bd2c09579'
+         'ef4f76758ebd4559d3c6c7e50797d0fd')
 
 build() {
     cd ${srcdir}
@@ -47,6 +49,7 @@ build() {
     patch -p1 -i ${srcdir}/linux-6.6.patch
     patch -p1 -i ${srcdir}/linux-6.8.patch
     patch -p1 -i ${srcdir}/linux-6.10.patch
+    patch -p1 -i ${srcdir}/gcc14.patch
     # linux 4.20 needed
     #sed -i -e 's|ipmi_user_t         p_user;|struct ipmi_user    *p_user;|g' kernel/nvidia/os-interface.c
     
