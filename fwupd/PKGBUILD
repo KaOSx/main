@@ -1,12 +1,12 @@
  
 pkgname=fwupd
-pkgver=1.9.25
+pkgver=2.0.0
 pkgrel=1
 pkgdesc="Simple daemon to allow updating firmware on Linux automatic, safe and reliable"
 arch=('x86_64')
 url="https://fwupd.org/"
 license=('LGPL2.1')
-depends=('efivar' 'gcab' 'gpgme' 'json-glib' 'libarchive' 'libgudev' 'libgusb' 'libsoup'
+depends=('efivar' 'gcab' 'gpgme' 'json-glib' 'libarchive' 'libgudev' 'libusb'
          'libxmlb' 'modemmanager' 'polkit' 'python3' 'shared-mime-info' 'udisks2' 'tpm2-tss'
          'protobuf-c' 'libftdi')
 makedepends=('bash-completion' 'help2man' 'gnu-efi-libs' 'gobject-introspection' 
@@ -18,7 +18,7 @@ backup=('etc/fwupd/fwupd.conf'
         'etc/fwupd/remotes.d/vendor-directory.conf')
 #source=("https://people.freedesktop.org/~hughsient/releases/${pkgname}-${pkgver}.tar.xz")
 source=("https://github.com/fwupd/fwupd/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('a1d484778ae87c69b38f417659b33fe3d689373ce0831d1f95617b8aa76e8c37')
+sha256sums=('60a62b850e2c3a818f3178cb1de0f632b1e04c6ab07c02483af398940713548a')
 
 build() {
     mkdir -p build
@@ -31,7 +31,9 @@ build() {
         -Ddocs=disabled \
         -Defi_binary=false \
         -Dplugin_amdgpu=disabled \
-        -Dplugin_modem_manager=disabled
+        -Dplugin_modem_manager=disabled \
+        -Dplugin_flashrom=disabled \
+        -Dpassim=disabled
     ninja
 }
 
