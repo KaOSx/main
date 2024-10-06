@@ -1,7 +1,7 @@
 
 pkgname=spirv-llvm-translator
 _pkgname=SPIRV-LLVM-Translator
-pkgver=18.1.4
+pkgver=18.1.5
 pkgrel=1
 pkgdesc='Tool and a library for bi-directional translation between SPIR-V and LLVM.'
 arch=('x86_64')
@@ -10,7 +10,7 @@ license=('UoI-NCSA')
 depends=('llvm' 'spirv-tools')
 makedepends=('cmake' 'python3' 'spirv-headers')
 source=("https://github.com/KhronosGroup/SPIRV-LLVM-Translator/archive/refs/tags/v${pkgver}.tar.gz")
-md5sums=('b5cbda38b297d02133c5a0e5d6f2cadb')
+md5sums=('d158b12c263608058cabaaae9d4e8989')
 
 build() {
   cmake -B build -S ${_pkgname}-${pkgver} \
