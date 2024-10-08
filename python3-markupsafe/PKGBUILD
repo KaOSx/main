@@ -1,25 +1,25 @@
 
 pkgname=python3-markupsafe
-pkgver=2.1.5
-pkgrel=2
+pkgver=3.0.0
+pkgrel=1
 pkgdesc="Implements a XML/HTML/XHTML Markup safe string for Python"
 arch=('x86_64')
 url="https://pypi.python.org/pypi/MarkupSafe"
 license=('custom')
 depends=('python3')
 makedepends=('python3-build' 'python3-installer' 'python3-setuptools' 'python3-wheel')
-source=("https://pypi.io/packages/source/M/MarkupSafe/MarkupSafe-${pkgver}.tar.gz")
-sha256sums=('d283d37a890ba4c1ae73ffadf8046435c76e7bc2247bbb63c00bd1a709c6544b')
+source=("https://pypi.io/packages/source/m/markupsafe/markupsafe-${pkgver}.tar.gz")
+sha256sums=('03ff62dea2fef3eadf2f1853bc6332bcb0458d9608b11dfb1cd5aeda1c178ea6')
 
 build() {
-  cd MarkupSafe-${pkgver}
+  cd markupsafe-${pkgver}
 
   python3 -m build -nw
 }
 
 package() {
-  cd MarkupSafe-${pkgver}
+  cd markupsafe-${pkgver}
   python3 -m installer --destdir=${pkgdir} dist/*.whl
 
-  install -D -m644 LICENSE.rst ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.rst
+  install -D -m644 LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.txt
 }
