@@ -6,7 +6,7 @@ pkgname=qt6-base
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=1
+pkgrel=2
 pkgdesc="A cross-platform application and UI framework"
 arch=('x86_64')
 url='https://www.qt.io/'
@@ -26,14 +26,14 @@ groups=('qt6')
 options=('!libtool' 'debug')
 _pkgfqn="qtbase-everywhere-src-${subver}"
 source=("${_qtmirror}/${_pkgver}/${subver}/submodules/${_pkgfqn}.tar.xz"
-        "https://github.com/qt/qtbase/commit/6810220218cbbf2854ecdedb291f7e4a84b31e54.diff")
+        "https://github.com/qt/qtbase/commit/2ea3abed0125d81ca4f3bacb9650db7314657332.diff")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
-         'a8e70b18c2cd57722deb4314d617df29')
+         'f4f43ea52d6e1410921583faaf103b62')
 
 prepare() {
   cd ${_pkgfqn}
-  # werror fixes, digikam
-  #patch -p1 -i ${srcdir}/6810220218cbbf2854ecdedb291f7e4a84b31e54.diff
+
+  patch -p1 -i ${srcdir}/2ea3abed0125d81ca4f3bacb9650db7314657332.diff
 }
 
 build() {
