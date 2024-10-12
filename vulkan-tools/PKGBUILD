@@ -1,6 +1,6 @@
 
 pkgname=vulkan-tools
-pkgver=1.3.297
+pkgver=1.3.298
 pkgrel=1
 pkgdesc="Project provides the Khronos official Vulkan Tools and Utilities "
 arch=('x86_64')
@@ -9,7 +9,7 @@ license=('APACHE')
 depends=('vulkan-loader' 'mesa' 'wayland' 'libx11' 'libxkbcommon' 'libxrandr')
 makedepends=('cmake' 'vulkan-headers' 'vulkan-validationlayers' 'python3-lxml' 'glslang' 'ninja')
 source=("https://github.com/KhronosGroup/Vulkan-Tools/archive/v${pkgver}.tar.gz")
-md5sums=('685974a4161a6f50551ba7c7dc989aff')
+md5sums=('136f1133d15ac3e0913d207bffea963b')
 
 build() {
   cmake -G Ninja -B build -S Vulkan-Tools-${pkgver} \
