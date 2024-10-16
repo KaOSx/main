@@ -1,6 +1,6 @@
 
 pkgname=c-ares
-pkgver=1.34.1
+pkgver=1.34.2
 pkgrel=1
 pkgdesc='C library that performs DNS requests and name resolves asynchronously'
 arch=('x86_64')
@@ -9,7 +9,7 @@ license=('MIT')
 depends=('glibc')
 makedepends=('cmake')
 source=("https://github.com/c-ares/c-ares/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
-md5sums=('9aa8d5d0b3ca6adb41e2cc86dce12c6f')
+md5sums=('ec8bf334616de82f740e01cfb7176c23')
 
 build() {
   cmake -B build -S ${pkgname}-${pkgver} \

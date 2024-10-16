@@ -1,8 +1,8 @@
 
 pkgname=pyside6
 _pkgname=pyside-setup-everywhere-src
-pkgver=6.8
-_pkgver=6.8.0
+pkgver=6.8.0
+_pkgver=6.8.0.1
 pkgrel=1
 pkgdesc="Plugin (front-end) for Generator Runner. It generates bindings for C++ libraries using CPython source code"
 arch=('x86_64')
@@ -14,7 +14,7 @@ depends=('phonon-qt6' 'qt6-3d' 'qt6-connectivity' 'qt6-datavis3d' 'qt6-declarati
 makedepends=('cmake' 'python3-sphinx' 'python3-setuptools' 'clang')
 #source=("git://code.qt.io/pyside/pyside-setup.git")
 source=("https://download.qt.io/official_releases/QtForPython/${pkgname}/PySide6-${_pkgver}-src/${_pkgname}-${pkgver}.tar.xz")
-sha256sums=('5c05ad3ae7e7279d6db9dc94a46eb0a05fd093537309f7439c38671bd7255190')
+sha256sums=('7ae346f2d85f04c8828f2344c96cc211f342983d3ee81cc02923897a6b5c4940')
 
 prepare() {
   cd ${_pkgname}-${pkgver}
