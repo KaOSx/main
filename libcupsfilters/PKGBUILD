@@ -1,7 +1,7 @@
 
 pkgname=libcupsfilters
-pkgver=2.0.0
-pkgrel=16
+pkgver=2.1.0
+pkgrel=1
 pkgdesc="OpenPrinting CUPS Filters - code of the filters of the former cups-filters package as library functions"
 arch=('x86_64')
 url="https://github.com/OpenPrinting/libcupsfilters"
@@ -10,7 +10,7 @@ depends=('lcms2' 'poppler' 'qpdf' 'libcups' 'libexif' 'libjpeg-turbo' 'libpng' '
 makedepends=('ghostscript' 'ttf-dejavu' 'python3') 
 options=('!libtool')
 source=("https://github.com/OpenPrinting/libcupsfilters/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.xz")
-md5sums=('267e569145bd20615fa18ae65ea6f870')
+md5sums=('8eb0fb0273f35c4daf39a117c51691c6')
 
 build() {
   cd ${pkgname}-${pkgver}
