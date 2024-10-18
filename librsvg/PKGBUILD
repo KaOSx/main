@@ -1,32 +1,37 @@
 
 pkgname=librsvg
-pkgver=2.58.5
-_pkgver=2.58
+pkgver=2.59.1
+_pkgver=2.59
 pkgrel=1
 pkgdesc="SAX-based renderer for SVG files into a GdkPixbuf"
 arch=('x86_64')
 url="https://live.gnome.org/LibRsvg"
 license=('LGPL')
-depends=('gdk-pixbuf2' 'pango' 'libcroco')
-makedepends=('intltool' 'gobject-introspection' 'rust' 'python3-docutils')
+depends=('dav1d' 'gdk-pixbuf2' 'pango' 'libcroco')
+makedepends=('gobject-introspection' 'cargo-c' 'python3-docutils' 'meson' 'ninja')
 options=('!libtool')
 source=("https://ftp.gnome.org/pub/gnome/sources/librsvg/${_pkgver}/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('224233a0e347d38c415f15a49f0e0885313e3ecc18f3192055f9304dd2f3a27a')
+sha256sums=('6116267c7ddabfd4daaf1c341326da0a773139a7223e885ae40ee09bd6986ef6')
+
+prepare() {
+  cd ${pkgname}-${pkgver}
+
+  cargo fetch --locked --target "$(rustc -vV | sed -n 's/host: //p')"
+}
 
 build() {
-  cd ${pkgname}-${pkgver}
-  # issue with current cargo https://github.com/rust-lang/cargo/issues/3340#issuecomment-263699137
-  #export SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
+  mkdir -p build
+  cd build
 
-  ./configure --prefix=/usr \
-    --libexecdir=/usr/lib/${pkgname} \
-    --disable-static \
-    --disable-gtk-doc
-  make 
+  meson setup ../${pkgname}-${pkgver} \
+    --prefix=/usr \
+    --buildtype=release \
+    --libexecdir=/usr/lib \
+    -Ddocs=disabled
+  ninja
 }
 
 package() {
-  cd ${pkgname}-${pkgver}
-
-  make DESTDIR=${pkgdir} install
+  cd build
+  DESTDIR=${pkgdir} ninja install
 }

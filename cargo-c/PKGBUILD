@@ -1,0 +1,37 @@
+
+pkgname=cargo-c
+pkgver=0.10.5
+pkgrel=1
+pkgdesc='Cargo applet to build and install C-ABI compatibile dynamic and static libraries'
+arch=('x86_64')
+url='https://github.com/lu-zero/cargo-c/'
+license=('MIT')
+depends=('curl' 'openssl' 'rust' 'zlib')
+source=("https://github.com/lu-zero/cargo-c/archive/v${pkgver}/${pkgname}-${pkgver}.tar.gz"
+        "https://github.com/lu-zero/cargo-c/releases/download/v${pkgver}/Cargo.lock")
+sha256sums=('3f131a6a647851a617a87daaaf777a9e50817957be0af29806615613e98efc8a'
+            '2b5660aabd70f6a12390a19bcdeacc585c418d24aaa6855bd396a1c3a5684320')
+
+prepare() {
+  cd ${pkgname}-${pkgver}
+
+  cp ../Cargo.lock Cargo.lock
+  cargo fetch --locked --target "$(rustc -vV | sed -n 's/host: //p')"
+  export RUSTUP_TOOLCHAIN='stable'
+}
+
+build() {
+  cd ${pkgname}-${pkgver}
+  cargo build --release --frozen
+}
+
+package() {
+  cd ${pkgname}-${pkgver}
+
+  install -Dm0755 target/release/cargo-capi ${pkgdir}/usr/bin/cargo-capi
+  install -Dm0755 target/release/cargo-cbuild ${pkgdir}/usr/bin/cargo-cbuild
+  install -Dm0755 target/release/cargo-cinstall ${pkgdir}/usr/bin/cargo-cinstall
+  install -Dm0755 target/release/cargo-ctest ${pkgdir}/usr/bin/cargo-ctest
+  
+  install -D -m644 LICENSE -t ${pkgdir}/usr/share/licenses/${pkgname}
+}
