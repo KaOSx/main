@@ -1,15 +1,16 @@
 
 pkgname=meson
-pkgver=1.5.2
+pkgver=1.6.0
 pkgrel=1
 pkgdesc="Open source build system meant to be both extremely fast, and as user friendly as possible."
 arch=('x86_64')
 url="https://mesonbuild.com"
 license=('GPL')
 depends=('ninja' 'python3')
-makedepends=('googletest' 'sdl2' 'itstool' 'python3-build' 'python3-installer' 'python3-setuptools' 'python3-wheel')
+makedepends=('googletest' 'sdl2' 'itstool' 'python3-build' 'python3-installer' 'python3-setuptools'
+             'python3-wheel' 'wayland-protocols')
 source=("https://github.com/mesonbuild/meson/releases/download/${pkgver}/${pkgname}-${pkgver}.tar.gz")
-md5sums=('682f75ef96c2e7542b0148e70068ea09')
+md5sums=('0031ea392f8ef97eeadfe1906c5cc5b4')
 
 build() {
   cd ${pkgname}-${pkgver}
