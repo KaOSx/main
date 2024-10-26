@@ -1,6 +1,6 @@
 
 pkgname=libquotient
-pkgver=0.8.2
+pkgver=0.9.0
 _commit=27ad32abbac3a6979f49d44bea57829aefca7eb4
 pkgrel=1
 pkgdesc="Qt6 library to write cross-platform clients for Matrix"
@@ -14,16 +14,14 @@ replaces=('libquotient-qt6')
 provides=('libquotient-qt6')
 source=("https://github.com/quotient-im/libQuotient/archive/${pkgver}.tar.gz")
 #source=("https://github.com/quotient-im/libQuotient/archive/${_commit}.zip")
-sha256sums=('12ff2fa8b80a934b9dd88fa3416a4b88e94bc0e18a8df0dcebfc90614dd2f5c9')
+sha256sums=('5e607eb978a5daa82e2186cd92f0d964cb820c72cfad95ed2adda4525ed923b5')
 
 build() {
     cmake -B build -S libQuotient-${pkgver} \
         -DCMAKE_INSTALL_PREFIX=/usr \
         -DCMAKE_INSTALL_LIBDIR=lib \
         -DCMAKE_BUILD_TYPE=Release \
-        -DBUILD_SHARED_LIBS=ON \
-        -DQuotient_ENABLE_E2EE=ON \
-        -DBUILD_WITH_QT6=ON
+        -DBUILD_SHARED_LIBS=ON
     cmake --build build
 }
 
