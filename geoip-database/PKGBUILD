@@ -1,10 +1,10 @@
 
 pkgname=geoip-database
-pkgver=20241016
+pkgver=20241026
 pkgrel=1
 pkgdesc="GeoLite country geolocation database compiled by MaxMind"
 arch=('x86_64')
-url="https://www.maxmind.com/app/ip-location"
+url="https://www.maxmind.com/en/geoip-databases"
 license=('custom:OPEN DATA LICENSE')
 # version: curl -sI https://geolite.maxmind.com/download/geoip/database/GeoIPv6.dat.gz | grep ^Last-Modified: | cut -d' ' -f2- | tr -d '\r'
 # https://mailfud.org/geoip-legacy/
@@ -13,8 +13,8 @@ source=("GeoIP-${pkgver}.dat.gz::https://mailfud.org/geoip-legacy/GeoIP.dat.gz"
         "https://github.com/mschmitt/GeoLite2xtables/blob/master/LICENSE.txt")
 noextract=("GeoIP-${pkgver}.dat.gz"
            "GeoIPv6-${pkgver}.dat.gz")
-md5sums=('c8911c3ec5299fa3b663bcca8c30cf47'
-         'db96415b754937e622d2b373c661b965'
+md5sums=('a766a6de67e6280b433c29a41bac922f'
+         '709a3166affc9c774a7ffadaf74b18ac'
          '8fd4bb5a1e35bdb7ba8dee32d34f1ce9')
 
 build() {
