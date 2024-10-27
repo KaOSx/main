@@ -6,7 +6,7 @@ pkgname=qt6-declarative
 pkgver=${qtver}
 subver=${subver}
 _pkgver=${_qtver}
-pkgrel=2
+pkgrel=3
 pkgdesc="A cross-platform application and UI framework, QtDeclarative files"
 arch=('x86_64')
 url='https://www.qt.io/'
@@ -20,15 +20,17 @@ conflicts=('qt6-quickcontrols2')
 groups=('qt6')
 _pkgfqn="qtdeclarative-everywhere-src-${subver}"
 source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz"
-        "https://github.com/qt/qtdeclarative/commit/e6e3da4de8fac7f52eb2591cb95a04ab413f8ace.diff")
+        "https://github.com/qt/qtdeclarative/commit/e6e3da4de8fac7f52eb2591cb95a04ab413f8ace.diff"
+        "https://github.com/qt/qtdeclarative/commit/0ae3697cf40bcd3ae1de20621abad17cf6c5f52d.diff")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
-         '5c157aa38689151a69ec32d34b624ef6'
-         '62f75b93442c014ff03cec767e6c40fa')
+         '62f75b93442c014ff03cec767e6c40fa'
+         'a6372c487feeb15bf7bf437ac604ab44')
 
 prepare() {
   cd ${_pkgfqn}
 
   patch -p1 -i ${srcdir}/e6e3da4de8fac7f52eb2591cb95a04ab413f8ace.diff
+  patch -p1 -i ${srcdir}/0ae3697cf40bcd3ae1de20621abad17cf6c5f52d.diff
 }
 
 build() {
