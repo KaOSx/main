@@ -1,6 +1,6 @@
 
 pkgname=gst-plugins-bad
-pkgver=1.24.8
+pkgver=1.24.9
 pkgrel=1
 pkgdesc="GStreamer Multimedia Framework Bad Plugins"
 arch=('x86_64')
@@ -15,14 +15,15 @@ depends=('mjpegtools' 'gst-plugins-base' 'curl' 'chromaprint' 'libmms' 'faad2'
 makedepends=('libexif' 'libvdpau' 'libmpeg2' 'python3' 'meson' 'ninja'
              'gobject-introspection' 'bluez' 'ladspa' 'openal' 'python3-packaging')
 options=('!libtool' '!emptydirs')
-source=("https://gstreamer.freedesktop.org/src/gst-plugins-bad/${pkgname}-${pkgver}.tar.xz")
-sha256sums=('35ad70de3d7cbca3089f33bb77c45750daad2ae93d79827fdbb469fa8aba84eb')
+source=("https://gstreamer.freedesktop.org/src/gst-plugins-bad/${pkgname}-${pkgver}.tar.xz"
+        "https://gitlab.freedesktop.org/tgurr/gstreamer/-/commit/63c4b1950e9613613ad22e88f0196d620e2dfed4.diff")
+sha256sums=('36fcf7a9af0a753b43bb03b9835246f74d72f7124369e66a1e2dc7b04f5a5cab'
+            'dcb07a137d54e87a634c419ace709810e7f3a8eabf2f41ba0a8be0c1b0b4226c')
 
 prepare() {
   cd ${pkgname}-${pkgver}
-  # needed for neon 0.31 
-  # https://gitlab.freedesktop.org/gstreamer/gst-plugins-bad/-/commit/f10b424418e448211e3427a76fcd046e157ef0b7
-  #sed -e "s|<= 0.30.99|<= 0.31.99|" -i ext/neon/meson.build
+  # needed for neon x265 4.0
+  patch -p1 -i ${srcdir}/63c4b1950e9613613ad22e88f0196d620e2dfed4.diff
 }
 
 build() {
