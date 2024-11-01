@@ -1,7 +1,7 @@
 
 pkgname=libheif
-pkgver=1.18.2
-pkgrel=2
+pkgver=1.19.0
+pkgrel=1
 pkgdesc="HEIF and AVIF (AV1 Image File Format) file format decoder and encoder."
 arch=('x86_64')
 url="https://github.com/strukturag/libheif"
@@ -10,7 +10,7 @@ depends=('dav1d' 'ffmpeg' 'libde265' 'openjpeg' 'x265' 'libvpx')
 makedepends=('cmake' 'gdk-pixbuf2')
 options=('!emptydirs')
 source=("https://github.com/strukturag/libheif/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.gz")
-sha256sums=('c4002a622bec9f519f29d84bfdc6024e33fd67953a5fb4dc2c2f11f67d5e45bf')
+sha256sums=('c0323638557994791c7bf939ee9752e8a0f3f5ce4f07328daefa0159e3530eb4')
 
 build() {
   cmake -B build -S ${pkgname}-${pkgver} \
