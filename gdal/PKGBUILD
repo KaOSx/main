@@ -3,7 +3,7 @@
 pkgname=gdal
 pkgver=3.9.3
 _pkgver=3.9.3
-pkgrel=2
+pkgrel=3
 pkgdesc="A translator library for raster geospatial data formats"
 arch=('x86_64')
 url="https://www.gdal.org/"
@@ -45,36 +45,3 @@ package() {
 
   DESTDIR=${pkgdir} cmake --install build
 }
-
-<<comment
-build() {
-  cd ${pkgname}-${_pkgver}
-
-  ./configure --prefix=/usr \
-    --sysconfdir=/etc \
-    --mandir=/usr/share/man \
-    --with-netcdf \
-    --with-libtiff \
-    --with-sqlite3 \
-    --with-geotiff \
-    --with-mysql \
-    --with-python=/usr/bin/python3 \
-    --with-curl \
-    --with-hdf5 \
-    --with-perl \
-    --with-geos \
-    --with-png \
-    --with-poppler \
-    --with-spatialite
-
-  make
-}
-
-package () {
-  cd ${pkgname}-${_pkgver}
-  make DESTDIR=${pkgdir} install
-
-  install -D -m644 LICENSE.TXT ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
-  rm -f ${pkgdir}/usr/bin/*.dox
-}
-comment
