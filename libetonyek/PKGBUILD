@@ -1,7 +1,7 @@
 
 pkgname=libetonyek
-pkgver=0.1.10
-pkgrel=10
+pkgver=0.1.11
+pkgrel=1
 pkgdesc="Library and a set of tools for reading and converting Apple Keynote presentations."
 arch=('x86_64')
 url="https://wiki.documentfoundation.org/DLP/Libraries/libetonyek"
@@ -10,7 +10,7 @@ options=('!libtool')
 depends=('libwpd' 'libxml2' 'gperf' 'zlib' 'librevenge' 'liblangtag')
 makedepends=('boost' 'glm' 'cppunit' 'mdds' 'clang')
 source=("https://dev-www.libreoffice.org/src/libetonyek/${pkgname}-${pkgver}.tar.xz")
-md5sums=('c29792ef7d4cb98463e3c3ec3e56ace6')
+md5sums=('23eeb71873002db8e0e878a5a546a4ff')
 
 build() {
   cd ${pkgname}-${pkgver}
