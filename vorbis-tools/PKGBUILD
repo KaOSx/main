@@ -1,19 +1,20 @@
 
 pkgname=vorbis-tools
 pkgver=1.4.2
-pkgrel=2
+pkgrel=3
 pkgdesc="Extra tools for Ogg-Vorbis"
 arch=('x86_64')
 url='https://www.xiph.org/vorbis/'
 license=('GPL2')
 depends=('libao' 'libvorbis' 'curl' 'flac')
-makedepends=('subversion')
-source=("https://ftp.osuosl.org/pub/xiph/releases/vorbis/${pkgname}-${pkgver}.tar.gz")
-#source=('svn+https://svn.xiph.org/trunk/vorbis-tools/')
-md5sums=('998fca293bd4e4bdc2b96fb70f952f4e')
+source=("https://ftp.osuosl.org/pub/xiph/releases/vorbis/${pkgname}-${pkgver}.tar.gz"
+        "https://gitlab.xiph.org/fweimer/vorbis-tools/-/commit/ec3a1a1de87168f575b93bc9cedcfaeb82c048a4.diff")
+md5sums=('998fca293bd4e4bdc2b96fb70f952f4e'
+         '5917cf26be273c9dd69d9b1dae7109d3')
 
 build() {
   cd ${pkgname}-${pkgver}
+  patch -p1 -i ${srcdir}/ec3a1a1de87168f575b93bc9cedcfaeb82c048a4.diff
 
   ./configure --prefix=/usr \
     --without-speex \
