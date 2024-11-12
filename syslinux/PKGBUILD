@@ -22,13 +22,15 @@ source=("https://www.kernel.org/pub/linux/utils/boot/syslinux/Testing/6.04/${pkg
         'syslinux-install_update'
         "https://gitweb.gentoo.org/repo/gentoo.git/plain/sys-boot/syslinux/files/syslinux-6.03-sysmacros.patch"
         "https://gitweb.gentoo.org/repo/gentoo.git/plain/sys-boot/syslinux/files/syslinux-6.04_pre1-fcommon.patch"
-        "https://gitweb.gentoo.org/repo/gentoo.git/plain/sys-boot/syslinux/files/syslinux-6.04_pre1-singleloadsegment.patch")
+        "https://gitweb.gentoo.org/repo/gentoo.git/plain/sys-boot/syslinux/files/syslinux-6.04_pre1-singleloadsegment.patch"
+        "https://gitweb.gentoo.org/repo/gentoo.git/plain/sys-boot/syslinux/files/6.04_pre1/0005-Fix-build-with-GCC-14.patch")
 md5sums=('f9c956fde0de29be297402ecbc8ff4d0'
          '049abfd5b26432f89e8fe3a370fd35fc'
          '3fcba3efe6beda6fc4935c1914393377'
          '3f1370d9ad233b9c717f14d5ae9859c1'
          '2a3cfebc46eabc6c519c87933621d96f'
-         '545162d3be583900777eab858a4d90ba')
+         '545162d3be583900777eab858a4d90ba'
+         'c891c8167d9f4510b9c044f424ccdf20')
 
 prepare() {
     cd ${pkgname}-${_pkgver}
@@ -37,13 +39,14 @@ prepare() {
     patch -p1 -i ${srcdir}/syslinux-6.03-sysmacros.patch
     patch -p1 -i ${srcdir}/syslinux-6.04_pre1-fcommon.patch
     patch -p1 -i ${srcdir}/syslinux-6.04_pre1-singleloadsegment.patch
+    patch -p1 -i ${srcdir}/0005-Fix-build-with-GCC-14.patch
 }
 
 _build_syslinux_bios() {
     export LDFLAGS+=--no-dynamic-linker
     export EXTRA_CFLAGS=-fno-PIE
 
-    rm -rf ${srcdir}/${pkgname}-${_pkgver}-bios/ 
+    rm -rf ${srcdir}/${pkgname}-${_pkgver}-bios/
     cp -r ${srcdir}/${pkgname}-${_pkgver} ${srcdir}/${pkgname}-${_pkgver}-bios
     cd ${srcdir}/${pkgname}-${_pkgver}-bios/
     

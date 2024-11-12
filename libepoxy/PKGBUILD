@@ -2,7 +2,7 @@
 pkgname=libepoxy
 pkgver=1.5.10
 _pkgver=1.5
-pkgrel=1
+pkgrel=2
 pkgdesc="Library for handling OpenGL function pointer management for you"
 url="https://github.com/anholt/libepoxy"
 arch=('x86_64')
@@ -13,7 +13,7 @@ options=('!libtool')
 source=("https://download.gnome.org/sources/libepoxy/${_pkgver}/${pkgname}-${pkgver}.tar.xz"
         "https://github.com/anholt/libepoxy/commit/e5372a25baa9034b6223b32a0cab838c42779a39.diff")
 sha256sums=('072cda4b59dd098bba8c2363a6247299db1fa89411dc221c8b81b8ee8192e623'
-            '0b7d352ec3c7e60df0555cb1c2c05b8f8502838649815bb71be3d5c92ffb83e3')
+            '6a54c13f976f3853b6e7816c5adce9f7f7cd545b3fe8957bd92ff7323cfef639')
 
 prepare() {
     cd ${pkgname}-${pkgver}
