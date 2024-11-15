@@ -2,7 +2,7 @@
 # update postgresql-check-db-dir on major new version
 pkgbase=postgresql
 pkgname=('postgresql-libs' 'postgresql-docs' 'postgresql')
-pkgver=16.4
+pkgver=16.5
 pkgrel=1
 epoch=1
 arch=('x86_64')
@@ -16,7 +16,7 @@ source=("https://ftp.postgresql.org/pub/source/v${pkgver}/postgresql-${pkgver}.t
         'postgresql.service' 
         'postgresql.tmpfiles.conf' 
         'postgresql-check-db-dir')
-sha256sums=('971766d645aa73e93b9ef4e3be44201b4f45b5477095b049125403f9f3386d6f'
+sha256sums=('a6cbbb7037f98cb8afa7d3970b7c48040cf02b115e39253a0c037a8bb8e778f0'
             '32ff197098c800345c6a5dafb04ba22c8762a237e5f866ae623e9b00e76f1de9'
             '57dfd072fd7ef0018c6b0a798367aac1abb5979060ff3f9df22d1048bb71c0d5'
             '6abb842764bbed74ea4a269d24f1e73d1c0b1d8ecd6e2e6fb5fb10590298605e'
@@ -104,7 +104,7 @@ package_postgresql-docs() {
 package_postgresql() {
   pkgdesc="A sophisticated object-relational DBMS"
   backup=('etc/pam.d/postgresql' 'etc/logrotate.d/postgresql')
-  depends=("postgresql-libs>=${pkgver}" 'krb5' 'libxml2' 'readline>=6.0' 'openssl>=1.0.0' 'python3')
+  depends=("postgresql-libs>=${pkgver}" 'krb5' 'libxml2' 'readline' 'openssl' 'python3')
   optdepends=('perl: for PL/Perl support'
               'tcl: for PL/Tcl support')
   install=postgresql.install
