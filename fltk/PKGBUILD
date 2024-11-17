@@ -1,6 +1,6 @@
 
 pkgname=fltk
-pkgver=1.3.9
+pkgver=1.3.10
 pkgrel=1
 pkgdesc="Graphical user interface toolkit for X."
 arch=('x86_64')
@@ -12,7 +12,7 @@ makedepends=('mesa' 'alsa-lib' 'cmake')
 options=('!docs')
 groups=('system')
 source=("https://fltk.org/pub/fltk/${pkgver}/${pkgname}-${pkgver}-source.tar.bz2")
-md5sums=('0b233e1b406f3cb4001799fc7f3b6f7f')
+md5sums=('ec8075e5ba09f85b531e332b535fbf29')
 
 build() {
   cmake -B build -S ${pkgname}-${pkgver} \
