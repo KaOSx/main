@@ -1,16 +1,16 @@
 
-_extramodules=extramodules-6.11-next
+_extramodules=extramodules-6.12-next
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=nvidia-next
 pkgver=560.35.03
-pkgrel=15
+pkgrel=16
 epoch=2
 pkgdesc="NVIDIA drivers for linux."
 arch=('x86_64')
 license=('custom')
 url="https://www.nvidia.com/page/home.html"
-depends=('linux-next>=6.11' 'linux-next<6.12.0' "nvidia-utils=2:${pkgver}")
+depends=('linux-next>=6.12' 'linux-next<6.13.0' "nvidia-utils=2:${pkgver}")
 makedepends=('linux-next-headers')
 conflicts=('nvidia-bumblebee-next')
 provides=('nvidia-bumblebee-next')
@@ -20,16 +20,16 @@ options=('!strip')
 #_pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 _pkg="NVIDIA-Linux-x86_64-${pkgver}"
 source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
-        'linux-6.7.patch')
+        'linux-6.12.patch')
 md5sums=('d4f54004bb80da17b3e2fb21ac17c018'
-         'af24a74b0f57c9c47ec61d100fddb13b')
+         '96b666ed713940189dbdb99a69d63066')
 
 build() {
   cd ${srcdir}
   sh ${_pkg}.run --extract-only
 
-  cd ${_pkg}
-  #patch -p1 -i ${srcdir}/linux-6.7.patch
+  cd ${_pkg}/kernel
+  patch -p1 -i ${srcdir}/linux-6.12.patch
 
   cd ${srcdir}/${_pkg}/kernel
   make SYSSRC=/lib/modules/${_kver}/build module

@@ -1,14 +1,14 @@
 
-_extramodules=extramodules-6.11-next
+_extramodules=extramodules-6.12-next
 _kver=$(cat /lib/modules/${_extramodules}/version)
 
 pkgname=nvidia-390xx-next
 pkgver=390.157
-pkgrel=124
+pkgrel=125
 pkgdesc="NVIDIA drivers for linux-next, 390xx legacy version."
 arch=('x86_64')
 url="https://www.nvidia.com/page/home.html"
-depends=('linux-next>=6.11' 'linux-next<6.12.0' "nvidia-390xx-utils=${pkgver}")
+depends=('linux-next>=6.12' 'linux-next<6.13.0' "nvidia-390xx-utils=${pkgver}")
 makedepends=('linux-next-headers')
 options=('!strip')
 conflicts=('nvidia-next' 'nvidia-470xx-next')
@@ -25,6 +25,7 @@ source=("http://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.ru
         'linux-6.6.patch'
         'linux-6.8.patch'
         'linux-6.10.patch'
+        'linux-6.12.patch'
         'gcc14.patch')
 md5sums=('405c2220d5d3711e9f298c871e8d66ee'
          '334d82cdc82c8172e9c21188c872523e'
@@ -34,6 +35,7 @@ md5sums=('405c2220d5d3711e9f298c871e8d66ee'
          '542666e201625eb18cb26c830373ed2e'
          '23be586e1177bf0fb3aa8236ad42f008'
          '8da97da4a024e23c3b0e8f6bd2c09579'
+         '96b666ed713940189dbdb99a69d63066'
          'ef4f76758ebd4559d3c6c7e50797d0fd')
 
 build() {
@@ -49,6 +51,7 @@ build() {
     patch -p1 -i ${srcdir}/linux-6.6.patch
     patch -p1 -i ${srcdir}/linux-6.8.patch
     patch -p1 -i ${srcdir}/linux-6.10.patch
+    patch -p1 -i ${srcdir}/linux-6.12.patch
     patch -p1 -i ${srcdir}/gcc14.patch
     # linux 4.20 needed
     #sed -i -e 's|ipmi_user_t         p_user;|struct ipmi_user    *p_user;|g' kernel/nvidia/os-interface.c
