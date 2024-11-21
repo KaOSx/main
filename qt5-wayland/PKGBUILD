@@ -14,9 +14,6 @@ license=('GPL3' 'LGPL')
 depends=('libxcomposite' 'qt5-declarative' 'wayland')
 makedepends=('vulkan-headers')
 groups=('qt5')
-provides=('qtwayland')
-conflicts=('qtwayland')
-replaces=('qtwayland')
 options=('debug')
 _pkgfqn="qtwayland-everywhere-opensource-src-${subver}"
 __pkgfqn="qtwayland-everywhere-src-${subver}"
@@ -24,7 +21,7 @@ source=("${_qtmirror}/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz"
         'qt_kde.patch')
 #source=("https://download.qt-project.org/development_releases/qt/${_pkgver}/${subver}/submodules/$_pkgfqn.tar.xz")
 md5sums=(`grep ${_pkgfqn}.tar.xz ../qt.md5 | cut -d" " -f1`
-         '0069a9ab69c5947826288a4c323f4e49')
+         '3974513c12c53c94b8add90d56030697')
 
 build() {
     cd ${__pkgfqn}

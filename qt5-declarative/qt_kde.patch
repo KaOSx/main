@@ -27,39 +27,6 @@ index b5c5f6a2b0..1a3d3cdf97 100644
      }
      if (mprotect(address, bytes, PROT_NONE))
          CRASH();
-diff --git a/src/qml/animations/qcontinuinganimationgroupjob.cpp b/src/qml/animations/qcontinuinganimationgroupjob.cpp
-index 88c0e9e60e..61a9dc36f8 100644
---- a/src/qml/animations/qcontinuinganimationgroupjob.cpp
-+++ b/src/qml/animations/qcontinuinganimationgroupjob.cpp
-@@ -82,9 +82,9 @@ void QContinuingAnimationGroupJob::updateState(QAbstractAnimationJob::State newS
-             return;
-         }
-         for (QAbstractAnimationJob *animation = firstChild(); animation; animation = animation->nextSibling()) {
--            resetUncontrolledAnimationFinishTime(animation);
-+            RETURN_IF_DELETED(resetUncontrolledAnimationFinishTime(animation));
-             animation->setDirection(m_direction);
--            animation->start();
-+            RETURN_IF_DELETED(animation->start());
-         }
-         break;
-     }
-diff --git a/src/qml/animations/qparallelanimationgroupjob.cpp b/src/qml/animations/qparallelanimationgroupjob.cpp
-index 420a934ba2..a828d0e234 100644
---- a/src/qml/animations/qparallelanimationgroupjob.cpp
-+++ b/src/qml/animations/qparallelanimationgroupjob.cpp
-@@ -144,10 +144,10 @@ void QParallelAnimationGroupJob::updateState(QAbstractAnimationJob::State newSta
-                 animation->stop();
-                 m_previousLoop = m_direction == Forward ? 0 : m_loopCount - 1;
-             }
--            resetUncontrolledAnimationFinishTime(animation);
-+            RETURN_IF_DELETED(resetUncontrolledAnimationFinishTime(animation));
-             animation->setDirection(m_direction);
-             if (shouldAnimationStart(animation, oldState == Stopped))
--                animation->start();
-+                RETURN_IF_DELETED(animation->start());
-         }
-         break;
-     }
 diff --git a/src/qml/jsruntime/qv4function.cpp b/src/qml/jsruntime/qv4function.cpp
 index cf8a53cf9f..223e64271e 100644
 --- a/src/qml/jsruntime/qv4function.cpp
@@ -74,44 +41,18 @@ index cf8a53cf9f..223e64271e 100644
              parameterNames[duplicate] =
                      QString(0xfffe) + QString::number(duplicate) + dup;
 diff --git a/src/qml/qml/qqmldata_p.h b/src/qml/qml/qqmldata_p.h
-index ee31cb38d9..187339169b 100644
+index c44fb8608e..69dac27c9a 100644
 --- a/src/qml/qml/qqmldata_p.h
 +++ b/src/qml/qml/qqmldata_p.h
-@@ -176,24 +176,24 @@ public:
-     };
- 
-     struct NotifyList {
--        quint64 connectionMask;
--
--        quint16 maximumTodoIndex;
--        quint16 notifiesSize;
--
--        QQmlNotifierEndpoint *todo;
--        QQmlNotifierEndpoint**notifies;
-+        QAtomicInteger<quint64> connectionMask;
-+        QQmlNotifierEndpoint *todo = nullptr;
-+        QQmlNotifierEndpoint**notifies = nullptr;
-+        quint16 maximumTodoIndex = 0;
-+        quint16 notifiesSize = 0;
-         void layout();
+@@ -185,7 +185,7 @@ public:
      private:
          void layout(QQmlNotifierEndpoint*);
      };
--    NotifyList *notifyList;
-+    QAtomicPointer<NotifyList> notifyList;
+-    QAtomicPointer<NotifyList> notifyList;
++    QAtomicPointer<NotifyList> notifyList = nullptr;
  
--    inline QQmlNotifierEndpoint *notify(int index);
-+    inline QQmlNotifierEndpoint *notify(int index) const;
+     inline QQmlNotifierEndpoint *notify(int index) const;
      void addNotify(int index, QQmlNotifierEndpoint *);
-     int endpointCount(int index);
-     bool signalHasEndpoint(int index) const;
--    void disconnectNotifiers();
-+
-+    enum class DeleteNotifyList { Yes, No };
-+    void disconnectNotifiers(DeleteNotifyList doDelete);
- 
-     // The context that created the C++ object
-     QQmlContextData *context = nullptr;
 @@ -201,12 +201,12 @@ public:
      QQmlContextData *outerContext = nullptr;
      QQmlContextDataRef ownContext;
@@ -148,7 +89,7 @@ index ee31cb38d9..187339169b 100644
      QQmlPropertyCache *propertyCache;
  
 -    QQmlGuardImpl *guards;
-+    QQmlGuardImpl *guards = nullptr;
++    QQmlGuardImpl *guards = 0;
  
      static QQmlData *get(const QObject *object, bool create = false) {
          QObjectPrivate *priv = QObjectPrivate::get(const_cast<QObject *>(object));
@@ -161,83 +102,11 @@ index ee31cb38d9..187339169b 100644
  
      Q_NEVER_INLINE static QQmlData *createQQmlData(QObjectPrivate *priv);
      Q_NEVER_INLINE static QQmlPropertyCache *createPropertyCache(QJSEngine *engine, QObject *object);
-@@ -342,23 +342,31 @@ bool QQmlData::wasDeleted(const QObject *object)
-     return ddata && ddata->isQueuedForDeletion;
- }
- 
--QQmlNotifierEndpoint *QQmlData::notify(int index)
-+inline bool isIndexInConnectionMask(quint64 connectionMask, int index)
-+{
-+    return connectionMask & (1ULL << quint64(index % 64));
-+}
-+
-+QQmlNotifierEndpoint *QQmlData::notify(int index) const
- {
-+    // Can only happen on "home" thread. We apply relaxed semantics when loading the atomics.
-+
-     Q_ASSERT(index <= 0xFFFF);
- 
--    if (!notifyList || !(notifyList->connectionMask & (1ULL << quint64(index % 64)))) {
-+    NotifyList *list = notifyList.loadRelaxed();
-+    if (!list || !isIndexInConnectionMask(list->connectionMask.loadRelaxed(), index))
-         return nullptr;
--    } else if (index < notifyList->notifiesSize) {
--        return notifyList->notifies[index];
--    } else if (index <= notifyList->maximumTodoIndex) {
--        notifyList->layout();
--    }
- 
--    if (index < notifyList->notifiesSize) {
--        return notifyList->notifies[index];
--    } else {
--        return nullptr;
-+    if (index < list->notifiesSize)
-+        return list->notifies[index];
-+
-+    if (index <= list->maximumTodoIndex) {
-+        list->layout();
-+        if (index < list->notifiesSize)
-+            return list->notifies[index];
-     }
-+
-+    return nullptr;
- }
- 
- /*
-@@ -367,7 +375,19 @@ QQmlNotifierEndpoint *QQmlData::notify(int index)
- */
- inline bool QQmlData::signalHasEndpoint(int index) const
- {
--    return notifyList && (notifyList->connectionMask & (1ULL << quint64(index % 64)));
-+    // This can be called from any thread.
-+    // We still use relaxed semantics. If we're on a thread different from the "home" thread
-+    // of the QQmlData, two interesting things might happen:
-+    //
-+    // 1. The list might go away while we hold it. In that case we are dealing with an object whose
-+    //    QObject dtor is being executed concurrently. This is UB already without the notify lists.
-+    //    Therefore, we don't need to consider it.
-+    // 2. The connectionMask may be amended or zeroed while we are looking at it. In that case
-+    //    we "misreport" the endpoint. Since ordering of events across threads is inherently
-+    //    nondeterministic, either result is correct in that case. We can accept it.
-+
-+    NotifyList *list = notifyList.loadRelaxed();
-+    return list && isIndexInConnectionMask(list->connectionMask.loadRelaxed(), index);
- }
- 
- bool QQmlData::hasBindingBit(int coreIndex) const
 diff --git a/src/qml/qml/qqmlengine.cpp b/src/qml/qml/qqmlengine.cpp
-index 852a673ebd..5f3367e4d2 100644
+index 2325c4c1e0..069e369319 100644
 --- a/src/qml/qml/qqmlengine.cpp
 +++ b/src/qml/qml/qqmlengine.cpp
-@@ -718,18 +718,15 @@ void QQmlPrivate::qdeclarativeelement_destructor(QObject *o)
-         // Disconnect the notifiers now - during object destruction this would be too late, since
-         // the disconnect call wouldn't be able to call disconnectNotify(), as it isn't possible to
-         // get the metaobject anymore.
--        d->disconnectNotifiers();
-+        d->disconnectNotifiers(QQmlData::DeleteNotifyList::No);
-     }
- }
- 
+@@ -725,11 +725,8 @@ void QQmlPrivate::qdeclarativeelement_destructor(QObject *o)
  QQmlData::QQmlData()
      : ownedByQml1(false), ownMemory(true), indestructible(true), explicitIndestructibleSet(false),
        hasTaintedV4Object(false), isQueuedForDeletion(false), rootObjectInCreation(false),
@@ -251,19 +120,7 @@ index 852a673ebd..5f3367e4d2 100644
  {
      memset(bindingBitsValue, 0, sizeof(bindingBitsValue));
      init();
-@@ -789,7 +786,10 @@ void QQmlData::signalEmitted(QAbstractDeclarativeData *, QObject *object, int in
-     // QQmlEngine to emit signals from a different thread.  These signals are then automatically
-     // marshalled back onto the QObject's thread and handled by QML from there.  This is tested
-     // by the qqmlecmascript::threadSignal() autotest.
--    if (!ddata->notifyList)
-+
-+    // Relaxed semantics here. If we're on a different thread we might schedule a useless event,
-+    // but that should be rare.
-+    if (!ddata->notifyList.loadRelaxed())
-         return;
- 
-     auto objectThreadData = QObjectPrivate::get(object)->threadData.loadRelaxed();
-@@ -1588,17 +1588,22 @@ void qmlExecuteDeferred(QObject *object)
+@@ -1591,17 +1588,22 @@ void qmlExecuteDeferred(QObject *object)
  {
      QQmlData *data = QQmlData::get(object);
  
@@ -294,115 +151,6 @@ index 852a673ebd..5f3367e4d2 100644
  }
  
  QQmlContext *qmlContext(const QObject *obj)
-@@ -1835,49 +1840,73 @@ void QQmlData::releaseDeferredData()
- 
- void QQmlData::addNotify(int index, QQmlNotifierEndpoint *endpoint)
- {
--    if (!notifyList) {
--        notifyList = (NotifyList *)malloc(sizeof(NotifyList));
--        notifyList->connectionMask = 0;
--        notifyList->maximumTodoIndex = 0;
--        notifyList->notifiesSize = 0;
--        notifyList->todo = nullptr;
--        notifyList->notifies = nullptr;
-+    // Can only happen on "home" thread. We apply relaxed semantics when loading the atomics.
-+
-+    NotifyList *list = notifyList.loadRelaxed();
-+
-+    if (!list) {
-+        list = new NotifyList;
-+        // We don't really care when this change takes effect on other threads. The notifyList can
-+        // only become non-null once in the life time of a QQmlData. It becomes null again when the
-+        // underlying QObject is deleted. At that point any interaction with the QQmlData is UB
-+        // anyway. So, for all intents and purposese, the list becomes non-null once and then stays
-+        // non-null "forever". We can apply relaxed semantics.
-+        notifyList.storeRelaxed(list);
-     }
- 
-     Q_ASSERT(!endpoint->isConnected());
- 
-     index = qMin(index, 0xFFFF - 1);
--    notifyList->connectionMask |= (1ULL << quint64(index % 64));
- 
--    if (index < notifyList->notifiesSize) {
-+    // Likewise, we don't really care _when_ the change in the connectionMask is propagated to other
-+    // threads. Cross-thread event ordering is inherently nondeterministic. Therefore, when querying
-+    // the conenctionMask in the presence of concurrent modification, any result is correct.
-+    list->connectionMask.storeRelaxed(
-+            list->connectionMask.loadRelaxed() | (1ULL << quint64(index % 64)));
- 
--        endpoint->next = notifyList->notifies[index];
-+    if (index < list->notifiesSize) {
-+        endpoint->next = list->notifies[index];
-         if (endpoint->next) endpoint->next->prev = &endpoint->next;
--        endpoint->prev = &notifyList->notifies[index];
--        notifyList->notifies[index] = endpoint;
--
-+        endpoint->prev = &list->notifies[index];
-+        list->notifies[index] = endpoint;
-     } else {
--        notifyList->maximumTodoIndex = qMax(int(notifyList->maximumTodoIndex), index);
-+        list->maximumTodoIndex = qMax(int(list->maximumTodoIndex), index);
- 
--        endpoint->next = notifyList->todo;
-+        endpoint->next = list->todo;
-         if (endpoint->next) endpoint->next->prev = &endpoint->next;
--        endpoint->prev = &notifyList->todo;
--        notifyList->todo = endpoint;
-+        endpoint->prev = &list->todo;
-+        list->todo = endpoint;
-     }
- }
- 
--void QQmlData::disconnectNotifiers()
-+void QQmlData::disconnectNotifiers(QQmlData::DeleteNotifyList doDelete)
- {
--    if (notifyList) {
--        while (notifyList->todo)
--            notifyList->todo->disconnect();
--        for (int ii = 0; ii < notifyList->notifiesSize; ++ii) {
--            while (QQmlNotifierEndpoint *ep = notifyList->notifies[ii])
-+    // Can only happen on "home" thread. We apply relaxed semantics when loading  the atomics.
-+    if (NotifyList *list = notifyList.loadRelaxed()) {
-+        while (QQmlNotifierEndpoint *todo = list->todo)
-+            todo->disconnect();
-+        for (int ii = 0; ii < list->notifiesSize; ++ii) {
-+            while (QQmlNotifierEndpoint *ep = list->notifies[ii])
-                 ep->disconnect();
-         }
--        free(notifyList->notifies);
--        free(notifyList);
--        notifyList = nullptr;
-+        free(list->notifies);
-+
-+        if (doDelete == DeleteNotifyList::Yes) {
-+            // We can only get here from QQmlData::destroyed(), and that can only come from the
-+            // the QObject dtor. If you're still sending signals at that point you have UB already
-+            // without any threads. Therefore, it's enough to apply relaxed semantics.
-+            notifyList.storeRelaxed(nullptr);
-+            delete list;
-+        } else {
-+            // We can use relaxed semantics here. The worst thing that can happen is that some
-+            // signal is falsely reported as connected. Signal connectedness across threads
-+            // is not quite deterministic anyway.
-+            list->connectionMask.storeRelaxed(0);
-+            list->maximumTodoIndex = 0;
-+            list->notifiesSize = 0;
-+            list->notifies = nullptr;
-+
-+        }
-     }
- }
- 
-@@ -1961,7 +1990,7 @@ void QQmlData::destroyed(QObject *object)
-         guard->objectDestroyed(object);
-     }
- 
--    disconnectNotifiers();
-+    disconnectNotifiers(DeleteNotifyList::Yes);
- 
-     if (extendedData)
-         delete extendedData;
 diff --git a/src/qml/qml/qqmlimport.cpp b/src/qml/qml/qqmlimport.cpp
 index e7263d1850..289f11d006 100644
 --- a/src/qml/qml/qqmlimport.cpp
@@ -424,10 +172,10 @@ index e7263d1850..289f11d006 100644
  
  /*!
 diff --git a/src/qml/qml/qqmlvmemetaobject.cpp b/src/qml/qml/qqmlvmemetaobject.cpp
-index 1e0e4e419f..a0532d1794 100644
+index 4fd2092fd3..0d59d197dc 100644
 --- a/src/qml/qml/qqmlvmemetaobject.cpp
 +++ b/src/qml/qml/qqmlvmemetaobject.cpp
-@@ -251,7 +251,7 @@ void QQmlVMEMetaObjectEndpoint::tryConnect()
+@@ -254,7 +254,7 @@ void QQmlVMEMetaObjectEndpoint::tryConnect()
              if (!pd)
                  return;
  
@@ -520,7 +268,7 @@ index 8aab4badca..d140bfbaaf 100644
      void _q_rowsRemoved(const QModelIndex &,int,int);
      void _q_rowsMoved(const QModelIndex &, int, int, const QModelIndex &, int);
 diff --git a/src/quick/accessible/qaccessiblequickitem.cpp b/src/quick/accessible/qaccessiblequickitem.cpp
-index ae1954ae8d..99e6eff7c3 100644
+index 36b65f906c..99e6eff7c3 100644
 --- a/src/quick/accessible/qaccessiblequickitem.cpp
 +++ b/src/quick/accessible/qaccessiblequickitem.cpp
 @@ -46,6 +46,7 @@
@@ -596,15 +344,6 @@ index ae1954ae8d..99e6eff7c3 100644
      return state;
  }
  
-@@ -217,7 +230,7 @@ QAccessible::Role QAccessibleQuickItem::role() const
- 
-     QAccessible::Role role = QAccessible::NoRole;
-     if (item())
--        role = QQuickItemPrivate::get(item())->accessibleRole();
-+        role = QQuickItemPrivate::get(item())->effectiveAccessibleRole();
-     if (role == QAccessible::NoRole) {
-         if (qobject_cast<QQuickText*>(const_cast<QQuickItem *>(item())))
-             role = QAccessible::StaticText;
 diff --git a/src/quick/accessible/qaccessiblequickview_p.h b/src/quick/accessible/qaccessiblequickview_p.h
 index 39ffcaf39c..8baa01330c 100644
 --- a/src/quick/accessible/qaccessiblequickview_p.h
@@ -649,7 +388,7 @@ index 8321fcfeed..383078b3b9 100644
      drag->setMimeData(mimeData);
      if (pixmapLoader.isReady()) {
 diff --git a/src/quick/items/qquickitem.cpp b/src/quick/items/qquickitem.cpp
-index 540d12c84a..8b139cb539 100644
+index c655b4c327..8b139cb539 100644
 --- a/src/quick/items/qquickitem.cpp
 +++ b/src/quick/items/qquickitem.cpp
 @@ -2328,6 +2328,7 @@ QQuickItem::QQuickItem(QQuickItemPrivate &dd, QQuickItem *parent)
@@ -660,15 +399,6 @@ index 540d12c84a..8b139cb539 100644
  
      if (d->windowRefCount > 1)
          d->windowRefCount = 1; // Make sure window is set to null in next call to derefWindow().
-@@ -2400,7 +2401,7 @@ bool QQuickItemPrivate::canAcceptTabFocus(QQuickItem *item)
-         return true;
- 
- #if QT_CONFIG(accessibility)
--    QAccessible::Role role = QQuickItemPrivate::get(item)->accessibleRole();
-+    QAccessible::Role role = QQuickItemPrivate::get(item)->effectiveAccessibleRole();
-     if (role == QAccessible::EditableText || role == QAccessible::Table || role == QAccessible::List) {
-         return true;
-     } else if (role == QAccessible::ComboBox || role == QAccessible::SpinBox) {
 @@ -2695,9 +2696,8 @@ void QQuickItem::setParentItem(QQuickItem *parentItem)
  
          const bool wasVisible = isVisible();
@@ -755,33 +485,8 @@ index 540d12c84a..8b139cb539 100644
      emit q->enabledChanged();
  }
  
-@@ -8989,13 +9010,20 @@ QQuickItemPrivate::ExtraData::ExtraData()
- 
- 
- #if QT_CONFIG(accessibility)
--QAccessible::Role QQuickItemPrivate::accessibleRole() const
-+QAccessible::Role QQuickItemPrivate::effectiveAccessibleRole() const
- {
-     Q_Q(const QQuickItem);
--    QQuickAccessibleAttached *accessibleAttached = qobject_cast<QQuickAccessibleAttached *>(qmlAttachedPropertiesObject<QQuickAccessibleAttached>(q, false));
--    if (accessibleAttached)
--        return accessibleAttached->role();
-+    auto *attached = qmlAttachedPropertiesObject<QQuickAccessibleAttached>(q, false);
-+    auto role = QAccessible::NoRole;
-+    if (auto *accessibleAttached = qobject_cast<QQuickAccessibleAttached *>(attached))
-+        role = accessibleAttached->role();
-+    if (role == QAccessible::NoRole)
-+        role = accessibleRole();
-+    return role;
-+}
- 
-+QAccessible::Role QQuickItemPrivate::accessibleRole() const
-+{
-     return QAccessible::NoRole;
- }
- #endif
 diff --git a/src/quick/items/qquickitem_p.h b/src/quick/items/qquickitem_p.h
-index 841d91bb40..6f329bd119 100644
+index d48b551064..6f329bd119 100644
 --- a/src/quick/items/qquickitem_p.h
 +++ b/src/quick/items/qquickitem_p.h
 @@ -472,6 +472,7 @@ public:
@@ -792,17 +497,6 @@ index 841d91bb40..6f329bd119 100644
  
      enum DirtyType {
          TransformOrigin         = 0x00000001,
-@@ -574,7 +575,10 @@ public:
-     virtual void implicitHeightChanged();
- 
- #if QT_CONFIG(accessibility)
-+    QAccessible::Role effectiveAccessibleRole() const;
-+private:
-     virtual QAccessible::Role accessibleRole() const;
-+public:
- #endif
- 
-     void setImplicitAntialiasing(bool antialiasing);
 diff --git a/src/quick/items/qquickmousearea_p_p.h b/src/quick/items/qquickmousearea_p_p.h
 index fba383e268..0d63618622 100644
 --- a/src/quick/items/qquickmousearea_p_p.h
@@ -823,27 +517,6 @@ index fba383e268..0d63618622 100644
      QPointF startScene;
      QPointF targetStartPos;
      QPointF lastPos;
-diff --git a/src/quick/util/qquickstategroup.cpp b/src/quick/util/qquickstategroup.cpp
-index 7cb3138618..f732b1eb4a 100644
---- a/src/quick/util/qquickstategroup.cpp
-+++ b/src/quick/util/qquickstategroup.cpp
-@@ -381,8 +381,14 @@ bool QQuickStateGroupPrivate::updateAutoState()
-                 const auto potentialWhenBinding = QQmlPropertyPrivate::binding(whenProp);
-                 // if there is a binding, the value in when might not be up-to-date at this point
-                 // so we manually reevaluate the binding
--                if (auto abstractBinding = dynamic_cast<QQmlBinding *>(potentialWhenBinding))
--                    whenValue = abstractBinding->evaluate().toBool();
-+                if (auto abstractBinding = dynamic_cast<QQmlBinding *>(potentialWhenBinding)) {
-+                    QVariant evalResult = abstractBinding->evaluate();
-+                    if (evalResult.userType() == qMetaTypeId<QJSValue>())
-+                        whenValue = evalResult.value<QJSValue>().toBool();
-+                    else
-+                        whenValue = evalResult.toBool();
-+                }
-+
-                 if (whenValue) {
-                     if (stateChangeDebug())
-                         qWarning() << "Setting auto state due to expression";
 diff --git a/src/quickwidgets/qaccessiblequickwidget.cpp b/src/quickwidgets/qaccessiblequickwidget.cpp
 new file mode 100644
 index 0000000000..8a1c901880
@@ -1436,151 +1109,6 @@ index 9c865b3f73..1f788f7a7f 100644
  }
  
  Q_DECLARE_METATYPE(QQmlImports::ImportVersion)
-diff --git a/tests/auto/quick/qquickgridview/data/qtbug86255.qml b/tests/auto/quick/qquickgridview/data/qtbug86255.qml
-new file mode 100644
-index 0000000000..20688b1967
---- /dev/null
-+++ b/tests/auto/quick/qquickgridview/data/qtbug86255.qml
-@@ -0,0 +1,55 @@
-+import QtQuick 2.15
-+
-+Item {
-+    width: 240
-+    height: 320
-+
-+    GridView {
-+        id: grid
-+        objectName: "view"
-+        anchors.fill: parent
-+        cellWidth: 64
-+        cellHeight: 64
-+        model: ListModel {
-+            id: listModel
-+
-+            Component.onCompleted: reload()
-+
-+            function reload() {
-+                clear();
-+                for (let i = 0; i < 1000; i++) {
-+                    let magic = Math.random();
-+                    append( { magic } );
-+                }
-+            }
-+        }
-+        clip: true
-+        delegate: Item {
-+            id: d
-+            property string val: magic
-+            Loader {
-+                property alias value: d.val
-+                asynchronous: true
-+                sourceComponent: cmp
-+            }
-+        }
-+    }
-+
-+    Timer {
-+        running: true
-+        interval: 1000
-+        onTriggered: listModel.reload()
-+    }
-+    Timer {
-+        running: true
-+        interval: 500
-+        onTriggered: grid.flick(0, -4000)
-+    }
-+
-+    Component {
-+        id: cmp
-+        Text {
-+            text: value
-+        }
-+    }
-+}
-diff --git a/tests/auto/quick/qquickgridview/tst_qquickgridview.cpp b/tests/auto/quick/qquickgridview/tst_qquickgridview.cpp
-index 94ec4f44d5..7d0d9fa7a7 100644
---- a/tests/auto/quick/qquickgridview/tst_qquickgridview.cpp
-+++ b/tests/auto/quick/qquickgridview/tst_qquickgridview.cpp
-@@ -213,6 +213,7 @@ private slots:
-     void QTBUG_45640();
-     void QTBUG_49218();
-     void QTBUG_48870_fastModelUpdates();
-+    void QTBUG_86255();
- 
-     void keyNavigationEnabled();
-     void resizeDynamicCellWidthRtL();
-@@ -6814,6 +6815,18 @@ void tst_QQuickGridView::resizeDynamicCellWidthRtL()
-     QTRY_COMPARE(gridview->contentX(), 0.f);
- }
- 
-+void tst_QQuickGridView::QTBUG_86255()
-+{
-+    QScopedPointer<QQuickView> window(createView());
-+    window->setSource(testFileUrl("qtbug86255.qml"));
-+    window->show();
-+    QVERIFY(QTest::qWaitForWindowExposed(window.data()));
-+    QQuickGridView *view = findItem<QQuickGridView>(window->rootObject(), "view");
-+    QVERIFY(view != nullptr);
-+    QTRY_COMPARE(view->isFlicking(), true);
-+    QTRY_COMPARE(view->isFlicking(), false);
-+}
-+
- void tst_QQuickGridView::releaseItems()
- {
-     QScopedPointer<QQuickView> view(createView());
-diff --git a/tests/auto/quick/qquickstates/data/jsValueWhen.qml b/tests/auto/quick/qquickstates/data/jsValueWhen.qml
-new file mode 100644
-index 0000000000..6d5eb1600c
---- /dev/null
-+++ b/tests/auto/quick/qquickstates/data/jsValueWhen.qml
-@@ -0,0 +1,18 @@
-+import QtQuick 2.15
-+
-+Item {
-+    id: root
-+    property var prop: null
-+    property bool works: false
-+    states: [
-+        State {
-+            name: "mystate"
-+            when: root.prop
-+            PropertyChanges {
-+                target: root
-+                works: "works"
-+            }
-+        }
-+    ]
-+    Component.onCompleted: root.prop = new Object
-+}
-diff --git a/tests/auto/quick/qquickstates/tst_qquickstates.cpp b/tests/auto/quick/qquickstates/tst_qquickstates.cpp
-index aa55b42935..26e86672b0 100644
---- a/tests/auto/quick/qquickstates/tst_qquickstates.cpp
-+++ b/tests/auto/quick/qquickstates/tst_qquickstates.cpp
-@@ -188,6 +188,7 @@ private slots:
-     void revertListMemoryLeak();
-     void duplicateStateName();
-     void trivialWhen();
-+    void jsValueWhen();
-     void noStateOsciallation();
-     void parentChangeCorrectReversal();
-     void revertNullObjectBinding();
-@@ -1734,6 +1735,16 @@ void tst_qquickstates::trivialWhen()
-     QVERIFY(c.create());
- }
- 
-+void tst_qquickstates::jsValueWhen()
-+{
-+    QQmlEngine engine;
-+
-+    QQmlComponent c(&engine, testFileUrl("jsValueWhen.qml"));
-+    QScopedPointer<QObject> root(c.create());
-+    QVERIFY(root);
-+    QVERIFY(root->property("works").toBool());
-+}
-+
- void tst_qquickstates::noStateOsciallation()
- {
-    QQmlEngine engine;
 diff --git a/tests/manual/quickcontrols2/swipedelegate/CloseOnCompletedWorks.qml b/tests/manual/quickcontrols2/swipedelegate/CloseOnCompletedWorks.qml
 new file mode 100644
 index 0000000000..38dfde41c3
