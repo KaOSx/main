@@ -1,7 +1,8 @@
+# check latest:svn info svn://svn.mplayerhq.hu/mplayer/trunk | grep Revision: | cut -d' ' -f2
 
 pkgname=mplayer
-pkgver=38435
-pkgrel=2
+pkgver=38666
+pkgrel=1
 pkgdesc="Multimedia player."
 arch=('x86_64')
 depends=('a52dec' 'aalib' 'alsa-lib' 'bzip2' 'enca' 'faad2'
@@ -37,7 +38,11 @@ build() {
       --enable-radio \
       --enable-radio-capture \
       --prefix=/usr \
-      --disable-ffmpeg_a
+      --disable-ffmpeg_a \
+      --yasm='' \
+      --disable-libdav1d-lavc \
+      --disable-libaom-lavc \
+      --disable-libavcodec_mpegaudio_hp
     make
 }
 

@@ -1,7 +1,7 @@
 
 pkgname=gst-libav
 pkgver=1.24.9
-pkgrel=1
+pkgrel=2
 pkgdesc="Gstreamer libav Plugin"
 arch=('x86_64')
 license=('GPL')
@@ -26,7 +26,7 @@ build() {
 
 check() {
   cd build
-  # no FAIL
+  # 6/6 elements_avaudenc          FAIL
   ninja test
 }
 

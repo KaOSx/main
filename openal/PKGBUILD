@@ -1,12 +1,12 @@
 
 pkgname=openal
 pkgver=1.24.0
-pkgrel=1
+pkgrel=2
 pkgdesc="OpenAL is a cross-platform 3D audio library for use with OpenGL"
 arch=('x86_64')
 url="https://openal-soft.org/"
 license=('LGPL')
-depends=('alsa-lib' 'ffmpeg' 'fluidsynth' 'jack2' 'pipewire' 'pulseaudio' 'qt5-base' 'sdl2')
+depends=('alsa-lib' 'ffmpeg' 'fluidsynth' 'jack2' 'pipewire' 'pulseaudio' 'sdl2') #'qt5-base' 
 makedepends=('cmake')
 options=('!libtool')
 source=("https://openal-soft.org/openal-releases/${pkgname}-soft-${pkgver}.tar.bz2"
@@ -24,7 +24,8 @@ build() {
   cmake -B build -S ${pkgname}-soft-${pkgver} \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_INSTALL_LIBDIR=lib
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DALSOFT_UTILS=OFF
   cmake --build build
 }
 
