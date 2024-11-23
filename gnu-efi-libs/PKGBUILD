@@ -1,7 +1,7 @@
 
 pkgname=gnu-efi-libs
-pkgver=3.0.18
-_pkgver=3.0.18
+pkgver=4.0.0
+_pkgver=4.0.0
 pkgrel=1
 pkgdesc="Library for building UEFI Applications using GNU toolchain"
 url="https://sourceforge.net/projects/gnu-efi/"
@@ -9,8 +9,9 @@ license=('GPL')
 arch=('x86_64')
 options=('!strip' '!makeflags' '!buildflags')
 makedepends=('pciutils')
-source=("https://download.sourceforge.net/gnu-efi/gnu-efi-${pkgver}.tar.bz2")
-sha1sums=('4f12dc4ab3e7940070c87affea17bf8a6209957a')
+#source=("https://download.sourceforge.net/gnu-efi/gnu-efi-${pkgver}.tar.bz2")
+source=("https://github.com/ncroxon/gnu-efi/archive/refs/tags/${pkgver}.tar.gz")
+sha1sums=('4e8b6e4bbef8e4e1f613eea08136fa3ef6886ab3')
 
 build() {
 	cd gnu-efi-${_pkgver}/
