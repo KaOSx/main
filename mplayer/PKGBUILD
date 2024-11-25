@@ -13,7 +13,7 @@ depends=('a52dec' 'aalib' 'alsa-lib' 'bzip2' 'enca' 'faad2'
          'libxss' 'libxv' 'libxxf86vm' 'live-media' 'opus'
          'lzo2' 'mpg123' 'ncurses' 'openal' 'opencore-amr' 'orc' 'rtmpdump'  # not ready for 2.0 'openjpeg' and 1.29.9 'faac'
          'schroedinger' 'sdl' 'samba' 'speex' 'ttf-dejavu' 'x264' 'xvidcore' 'zlib' 'gnutls')
-makedepends=('mesa' 'unzip' 'yasm' 'subversion')
+makedepends=('mesa' 'unzip' 'yasm' 'subversion' 'nasm')
 license=('GPL2')
 url="http://www.mplayerhq.hu/"
 groups=('multimedia')
@@ -21,15 +21,15 @@ backup=('etc/mplayer/codecs.conf' 'etc/mplayer/input.conf')
 source=(${pkgname}-${pkgver}::"svn://svn.mplayerhq.hu/mplayer/trunk#revision=${pkgver}"
         'mplayer.desktop'
         'mplayer.png'
-        'cdio-includes.patch')
+        "https://gitlab.archlinux.org/archlinux/packaging/packages/mplayer/-/raw/main/ffmpeg-7.patch")
 md5sums=('SKIP'
          '62f44a58f072b2b1a3c3d3e4976d64b3'
          'd00874ccc644b7f43d6ef1c942fcef28'
-         '7b5be7191aafbea64218dc4916343bbc')
+         '96a22a47d168164fe928e925180e169d')
 
 build() {
     cd ${pkgname}-${pkgver}
-    #patch -p0 -i ${srcdir}/cdio-includes.patch
+    patch -p0 -i ${srcdir}/ffmpeg-7.patch
 
     ./configure \
       --confdir=/etc/mplayer \
@@ -38,11 +38,7 @@ build() {
       --enable-radio \
       --enable-radio-capture \
       --prefix=/usr \
-      --disable-ffmpeg_a \
-      --yasm='' \
-      --disable-libdav1d-lavc \
-      --disable-libaom-lavc \
-      --disable-libavcodec_mpegaudio_hp
+      --disable-ffmpeg_a
     make
 }
 

@@ -1,7 +1,7 @@
 
 pkgname=dssi
 pkgver=1.1.1
-pkgrel=8
+pkgrel=9
 pkgdesc="API for audio plugins, with particular application for software synthesis plugins with native user interfaces."
 arch=("x86_64")
 url="https://dssi.sourceforge.net/"
@@ -10,12 +10,15 @@ depends=('gcc-libs' 'liblo' 'jack2' 'libsamplerate' 'libx11')
 makedepends=('ladspa' 'pkgconfig')
 options=('!libtool')
 source=("https://downloads.sourceforge.net/dssi/${pkgname}-${pkgver}.tar.gz"
-        'LICENSE')
+        'LICENSE'
+        "https://gitweb.gentoo.org/repo/gentoo.git/plain/media-libs/dssi/files/dssi-1.1.1-incompatible-pointer.patch")
 md5sums=('619ab73c883b02dc37ddb37001591f8b'
-        '258ca4d0ca28c5c4d4675147621fac18')
+         '258ca4d0ca28c5c4d4675147621fac18'
+         'b6621bae2e8f99162d33888a1171fde9')
 
 build() {
   cd ${pkgname}-${pkgver}
+  patch -p1 -i ${srcdir}/dssi-1.1.1-incompatible-pointer.patch
 
   ./configure --prefix=/usr 
 }
